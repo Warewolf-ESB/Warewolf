@@ -34,7 +34,7 @@ using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
 using System.Transactions;
 using System.Xml;
-using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization;
 using System.IO;
 using TSQL;
 using System.Linq;
@@ -338,10 +338,33 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool MssqlIsStoredProcForXmlResult(SqlConnection connection, string procedureName)
+        // SQL Server error raised by sp_helptext when it cannot return a module's text. Despite
+        // the wording ("There is no text for object..."), the object usually exists and is
+        // perfectly executable - the caller simply lacks VIEW DEFINITION on it, or it was
+        // created WITH ENCRYPTION.
+        public const int SqlErrorProcedureTextUnavailable = 15197;
+
+        // True when ex means "the procedure's text could not be read" rather than "the procedure
+        // could not be run". Covers both shapes this surfaces as: the SqlException sp_helptext
+        // itself raises, and the WarewolfDbException MssqlGetSqlForProcedure raises when
+        // sp_helptext returns no rows at all.
+        public static bool IsProcedureTextUnavailable(Exception ex)
+        {
+            if (ex is WarewolfDbException)
+            {
+                return true;
+            }
+            return ex is SqlException sqlEx
+                   && sqlEx.Errors.Cast<SqlError>().Any(e => e.Number == SqlErrorProcedureTextUnavailable);
+        }
+
+        // Scans a procedure's T-SQL body for a FOR XML clause. Note the deliberate absence of an
+        // early exit: as originally written, each FOR token re-assigns the result, so the LAST
+        // FOR in the body decides. Preserved verbatim during extraction to keep behaviour
+        // identical - this is characterised by tests rather than changed here.
+        public static bool IsForXmlProcedureScript(string procSqlScript)
         {
             bool result = false;
-            var procSqlScript = MssqlGetSqlForProcedure(connection, procedureName);
             var statements = TSQLStatementReader.ParseStatements(procSqlScript);
             foreach (var statement in statements)
             {
@@ -364,6 +387,31 @@ namespace Dev2.Services.Execution
                 }
             }
             return result;
+        }
+
+        private bool MssqlIsStoredProcForXmlResult(SqlConnection connection, string procedureName)
+        {
+            string procSqlScript;
+            try
+            {
+                procSqlScript = MssqlGetSqlForProcedure(connection, procedureName);
+            }
+            catch (Exception ex) when (IsProcedureTextUnavailable(ex))
+            {
+                // Detecting a FOR XML result shape is an optimisation, not a precondition for
+                // running the procedure: EXECUTE and VIEW DEFINITION are separate permissions,
+                // so a caller granted only EXECUTE (the common least-privilege setup, and the
+                // case that broke the ShovelBridge load test) can run this procedure perfectly
+                // well while being unable to read its body. Failing here would reject an
+                // otherwise valid execution, so fall back to the non-FOR XML read path.
+                Dev2Logger.Warn(
+                    $"SQL Server: could not read the definition of '{procedureName}' to detect a FOR XML result shape ({BuildSqlErrorDetail(ex)}). " +
+                    "This usually means the connecting principal lacks VIEW DEFINITION, or the procedure is encrypted. " +
+                    "Continuing with the standard (non-FOR XML) result handling; grant VIEW DEFINITION if this procedure does return FOR XML.",
+                    GlobalConstants.WarewolfWarn);
+                return false;
+            }
+            return IsForXmlProcedureScript(procSqlScript);
         }
 
         void MssqlSqlExecution(int connectionTimeout, int? commandTimeout, ErrorResultTO errors, int update)
@@ -409,7 +457,13 @@ namespace Dev2.Services.Execution
                         connection.Open();
                     }
                 }
-                if (MssqlIsStoredProcForXmlResult(connection, ProcedureName))
+                // No retry around this metadata lookup: the failure it used to guard against
+                // (15197) is a permanent VIEW DEFINITION/encryption condition, not a transient
+                // one, and MssqlIsStoredProcForXmlResult now degrades gracefully instead.
+                // Retrying it only held a pooled connection open for the full backoff budget,
+                // exhausting the pool once enough executions ran concurrently.
+                var isStoredProcForXmlResult = MssqlIsStoredProcForXmlResult(connection, ProcedureName);
+                if (isStoredProcForXmlResult)
                 {
                     MssqlReadDataForXml(update, startTime, connection, commandTimeout);
                 }
@@ -454,6 +508,24 @@ namespace Dev2.Services.Execution
                         reader.Close();
                         dbTransaction.Commit();
                         Dev2Logger.Info("Time taken to process proc " + ProcedureName + ":" + startTime.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
+
+                        // Diagnostics for WOLF-8510. Two unexplained failure classes under load
+                        // (SQL 51001/51002 "invalid state transition ... for this JobLogId", and
+                        // the cascading "Error with variables in input. [[JobLogId]]") both hinge
+                        // on what the FIRST step's recordset actually returned. Log the shape and
+                        // the leading scalar - for usp_jobs*_LogStart that is the JobLogId - so a
+                        // failed execution can be joined against the dbo.jobs* row it claims to
+                        // have created. Deliberately logs only the first cell, never the whole
+                        // row: MessageContent is NVARCHAR(MAX) and would flood the log.
+                        var firstScalar = table.Rows.Count > 0 && table.Columns.Count > 0
+                            ? Convert.ToString(table.Rows[0][0])
+                            : "(no rows)";
+                        Dev2Logger.Info(
+                            $"DB proc result | Proc={ProcedureName} | Rows={table.Rows.Count} | Columns={table.Columns.Count} | " +
+                            $"FirstColumn={(table.Columns.Count > 0 ? table.Columns[0].ColumnName : "(none)")} | FirstValue={firstScalar} | " +
+                            $"ExecutionID={DataObj.ExecutionID}",
+                            DataObj.ExecutionID.ToString());
+
                         var startTime1 = Stopwatch.StartNew();
                         TranslateDataTableToEnvironment(table, DataObj.Environment, update);
                         Dev2Logger.Info("Time taken to TranslateDataTableToEnvironment " + ProcedureName + ":" + startTime1.Elapsed.Milliseconds + " Milliseconds", DataObj.ExecutionID.ToString());
@@ -927,8 +999,8 @@ namespace Dev2.Services.Execution
                         long size = 0;
                         using (Stream s = new MemoryStream())
                         {
-                            var formatter = new BinaryFormatter();
-                            formatter.Serialize(s, dataSet);
+                            var serializer = new DataContractSerializer(typeof(DataSet));
+                            serializer.WriteObject(s, dataSet);
                             size = s.Length;
                         }
                         TranslateDataSetToEnvironment(dataSet, DataObj.Environment, update);

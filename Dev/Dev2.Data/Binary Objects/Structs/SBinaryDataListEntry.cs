@@ -21,7 +21,6 @@ using Dev2.Data.Storage.ProtocolBuffers;
 
 namespace Dev2.DataList.Contract.Binary_Objects.Structs
 {
-    [Serializable]
     public struct SBinaryDataListEntry
     {
         private IndexList _myKeys;

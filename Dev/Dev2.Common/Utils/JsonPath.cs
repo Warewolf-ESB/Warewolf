@@ -70,7 +70,6 @@ namespace Dev2.Common.Utils
         bool IsPrimitive(object value);
     }
 
-    [Serializable]
     public sealed class JsonPathNode
     {
         readonly string _path;

@@ -693,6 +693,53 @@ Write-Host "  local.settings.json written with WAREWOLF_SECURE_CONFIG=$env:WAREW
 
 
 # -----------------------------------------------------------------------------
+# region: Disable concurrency snapshot / host health monitor in the deployed host.json
+# -----------------------------------------------------------------------------
+#
+# host.json's dynamicConcurrencyEnabled/snapshotPersistenceEnabled, and the
+# (host.json-implicit, default-on) host health monitor, each acquire a
+# "primary host" lease at startup and can force the WebJobs Script Host to
+# restart itself once fully up (observed as "Host lock lease acquired..."
+# followed by "Restarting host." in warewolf-server.log). With worker
+# indexing enabled (see worker.config.json), that restart hits a known
+# azure-functions-host bug where the dotnet-isolated worker channel started
+# at the webhost level is not shut down before the new host re-requests the
+# same function loads, throwing "Unable to load Function '<name>'. A
+# function with the id '<id>' name already exists." and permanently 500-ing
+# every request for the rest of the run (see
+# Azure/azure-functions-dotnet-worker#2124, Azure/azure-functions-host#9851
+# -- fixed upstream only for the "unhealthy host" restart path, not for this
+# lease/specialization-style restart).
+#
+# An AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled=false /
+# ...__healthMonitor__enabled=false local.settings.json override was tried
+# first but did NOT take effect (ConcurrencyOptions/HostHealthMonitorOptions
+# still logged as enabled) -- these options are apparently bound before, or
+# independently of, the env-var configuration layer func.exe applies. Patch
+# the deployed host.json directly instead, which we've already confirmed
+# (via the routePrefix fix) reliably takes effect. This only touches the
+# copy in $FuncDir (the shared CI test-publish output); it does not modify
+# Warewolf.Execution.Lightweight's source-controlled, production host.json.
+$hostJsonPath = Join-Path $FuncDir "host.json"
+$hostJson = Get-Content $hostJsonPath -Raw | ConvertFrom-Json
+if (-not $hostJson.concurrency) {
+    $hostJson | Add-Member -MemberType NoteProperty -Name concurrency -Value ([pscustomobject]@{})
+}
+$hostJson.concurrency | Add-Member -MemberType NoteProperty -Name dynamicConcurrencyEnabled -Value $false -Force
+$hostJson.concurrency | Add-Member -MemberType NoteProperty -Name snapshotPersistenceEnabled -Value $false -Force
+if (-not $hostJson.healthMonitor) {
+    $hostJson | Add-Member -MemberType NoteProperty -Name healthMonitor -Value ([pscustomobject]@{})
+}
+$hostJson.healthMonitor | Add-Member -MemberType NoteProperty -Name enabled -Value $false -Force
+$hostJson | ConvertTo-Json -Depth 10 | Set-Content $hostJsonPath -Encoding UTF8
+Write-Host "  host.json patched: concurrency.dynamicConcurrencyEnabled=false, healthMonitor.enabled=false (avoids known worker-indexing restart bug)"
+
+# -----------------------------------------------------------------------------
+# endregion
+# -----------------------------------------------------------------------------
+
+
+# -----------------------------------------------------------------------------
 # region: Ensure TestResults directory exists
 # -----------------------------------------------------------------------------
 

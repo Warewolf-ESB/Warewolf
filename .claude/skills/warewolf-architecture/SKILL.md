@@ -22,6 +22,28 @@ Same activity/runtime libraries, different hosting models:
 
 Both consume `Dev2.Activities`, `Dev2.Core`, `Dev2.Runtime.*`, and the shared driver/data libraries.
 
+### Azure-side satellite workers
+
+Two additional deployables exist **only on the Azure path**; each replaces an on-prem child process
+and calls the engine as a daemon (managed identity + Entra app role). The on-prem Server equivalents
+are untouched.
+
+| | `Warewolf.Execution.EngineJobProcessor` | `Warewolf.Execution.QueueProcessor` |
+|---|---|---|
+| Replaces | `hangfireserver.exe` | `N × QueueWorker.exe` (+ `QueueWorkerMonitor`) |
+| Host | Azure **Function App** (TimerTrigger) | Azure **Container Apps**, Linux container |
+| Scaling | singleton timer | **KEDA `rabbitmq` scaler, 0→N replicas, one app per queue-trigger** |
+| Engine role | `Warewolf_JobProcessor` — **global-scope** `Execute` row | `Warewolf_QueueProcessor` — **per-workflow** `Execute` row, one MI per app |
+| Engine route | POST `/secure/resume/{jobId}` | POST `/Secure/{workflow}.json` |
+| RabbitMQ client | n/a | **`RabbitMQ.Client` 7.x, worker-local** — deliberately NOT `Warewolf.Driver.RabbitMQ` (pinned to 5.1.2; `QueueingBasicConsumer`, used by `DsfConsumeRabbitMQActivity`, was removed in v6, so the shared package is not upgraded) |
+| Config source | staged `Settings/persistencesettings*.bite` | staged `Settings/triggers*.bite` + `{QueueSourceId}.bite` |
+
+Both consume the engine's Key Vault WFAES stack as **linked shared source** (two `Exe` projects
+cannot reference each other). The QueueProcessor does **not** link the engine's logger sinks:
+`ExecutionLoggerBase` depends on Functions invocation correlation, so it implements its own
+`Dev2Logger.ExternalSink` against the same `EXECUTIONLOGLEVEL`/`ENABLE*` env-var contract.
+Neither worker references `Dev2.Data` (it would re-pin `RabbitMQ.Client`).
+
 ### Lightweight (`Warewolf.Execution.Lightweight`)
 
 Azure Function App with five function classes under `Functions/`:
@@ -32,6 +54,10 @@ Azure Function App with five function classes under `Functions/`:
 - `DropboxOAuthFunction` — OAuth callback flow
 
 Startup sequence (7 steps in `Program.cs`): load config → bootstrap console logger → build host → run `StartupOrchestrator` → upgrade to composite logger (Console + App Insights + Elasticsearch + Audit) → license check → `host.RunAsync()`.
+
+**Companion Function Apps** (separate deployables, sharing the engine's auth/token model, each with its own project + `.Tests` project in `ServerTests.sln`):
+- `Warewolf.Execution.EngineJobProcessor` — polls Hangfire storage for due suspend/resume jobs and calls the engine's `/resume/{jobId}` route.
+- `Warewolf.Execution.ServiceBusWorker` — **first-class supported** Service Bus-triggered trigger for the engine (HTTPS is the other supported trigger). A `ServiceBusTrigger` Function reads `{route, workflow, inputs}` messages and calls `/secure` or `/public` via an app-only Entra token (Managed Identity). Also underpins the RabbitMQ→Service Bus "Shovel bridge" pattern (existing RabbitMQ producers can trigger the engine unmodified). See `docs/ShovelBridge-Architecture.md` and `warewolf-deploy`.
 
 Auth middleware pipeline: EasyAuth redirect → claims builder → policy enforcement. Sensitive config optionally encrypted via Azure Key Vault–backed AES.
 
@@ -48,6 +74,38 @@ Full-featured SOA/ESB server. Wraps `Dev2.Runtime.*`, exposes REST APIs on port 
 ## Shared activity and runtime libraries
 - **`Dev2.Runtime.*`** — workflow execution, variable resolution, configuration management, WebServer hosting
 - **`Dev2.Activities`** / **`Dev2.Activities.Designers`** — 100+ built-in microservice activities (file ops, data manipulation, API calls, DB access); each is drag-droppable in the Studio designer
+
+### ⚠️ Activity instances are NOT safe to share across concurrent executions
+
+`ActivityParser.Parse` **clones nothing**. It walks the `Flowchart` via
+`WorkflowInspectionServices.GetActivities()` and returns references to the *same* `Dsf*Activity`
+objects ([ActivityParser.cs:192-202](../../../Dev/Dev2.Activities/Activities/ActivityParser.cs#L192-L202)).
+Any caller caching a `DynamicActivity` and parsing it per request therefore hands **one shared activity
+graph** to every concurrent execution.
+
+That matters because activities hold **per-execution state in instance fields**. All six database
+activities do:
+
+```csharp
+public IServiceExecution ServiceExecution { get; protected set; }          // instance field
+BeforeExecutionStart(...) { ServiceExecution = new DatabaseServiceExecution(dataObject); }
+ExecutionImpl(...)        { ServiceExecution.Execute(out execErrors, update); }
+```
+
+Two concurrent executions overwrite each other's `ServiceExecution`, and the loser runs against the
+winner's `DsfDataObject` — so its output variable is silently never written. Measured 2026-08-11 on a
+SQL workflow: sequential 10/10 pass; concurrency 4/6/10 → 3/4, 4/6, 8/10, the failures reporting
+`Object reference not set…` plus `Error with variables in input. [[JobLogId]]`. A workflow with no such
+state (an Assign) passes 20/20 at concurrency 20, which is why single-message tests never catch it.
+
+- **Lightweight** — fixed. `WorkflowExecutor` pools *prepared workflows*; each execution rents one
+  exclusively and returns it in a `finally`. Three call sites: `WorkflowExecutor`, `ResumptionExecutor`,
+  `LightweightEsbChannel` (nested sub-workflows — the most exposed, one callee usually has many callers).
+- **Server** — **still exposed.** `ResourceActivityCache` shares parsed chains the same way and
+  `Dev2.Activities` was deliberately not changed. Treat concurrent execution of one workflow with a
+  DB/service activity as unsafe there until fixed.
+
+When adding an activity, keep per-execution state on the `DsfDataObject`, never on the activity.
 
 ## Studio (WPF desktop client)
 - **`Warewolf.Studio.ViewModels`** / **`Warewolf.Studio.Views`** — MVVM pair for the designer UI

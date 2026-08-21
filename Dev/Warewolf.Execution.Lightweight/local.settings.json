@@ -24,6 +24,11 @@
     "WAREWOLF_ENTRA_AUDIENCE": "api://<your-entra-app-client-id>",
     "WAREWOLF_LICENSE_CHECK_ENABLED": "true",
 
+    "ServiceBusConnection__fullyQualifiedNamespace": "<your-servicebus-namespace>.servicebus.windows.net",
+    "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE": "wwexecution-secure-trigger-queue",
+    "WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE": "api://<your-entra-app-client-id>/.default",
+    "WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS": "24",
+
     "DEBUG_PRINCIPAL_TOKEN_HOWTO": "",
     "DEBUG_PRINCIPAL_TOKEN": ""
   }

@@ -15,7 +15,7 @@ supported by the **Warewolf wwexecution** Azure Function App.
 | Build a server-rendered .NET 8 web app | [.NET 8 Web App (MVC)](#net-8-web-app-mvc) |
 | Build a .NET 8 desktop / console tool | [.NET 8 Console](#net-8-console-app) |
 | Call wwexecution from another Azure Function | [Azure Function client](#azure-function-client) |
-| Trigger wwexecution from an Azure Service Bus queue | [Azure Service Bus worker](#azure-service-bus-worker) |
+| Trigger wwexecution from an Azure Service Bus queue | [Azure Service Bus worker](#azure-service-bus-worker) — now a first-class component, see [`Warewolf.Execution.ServiceBusWorker/`](../Warewolf.Execution.ServiceBusWorker/) |
 
 ---
 
@@ -438,42 +438,15 @@ object id; `-AppRolesToAssign` then defaults to `Warewolf_ClientApps`.
 
 ## Azure Service Bus worker
 
-**Location:** [`Warewolf.Execution.Lightweight.ClientExamples/AzureServiceBus/`](AzureServiceBus/)
+The Service Bus-triggered worker has graduated from a client example to a **first-class,
+officially supported** component of the Lightweight execution engine -- it is no longer
+maintained under `ClientExamples`. See:
 
-> **Why a worker?** Azure Service Bus is a message broker — it cannot hold an
-> Entra token or make HTTP calls itself. The realistic pattern is a **Service
-> Bus–triggered worker** (a .NET 8 isolated Function) that, on each message,
-> acquires an **app-only token** and calls wwexecution over HTTP.
-
-A `ServiceBusTrigger` Function reads a `{ "route": "...", "workflow": "...", "inputs": {...} }`
-message and calls the engine's **secure** or **public** route per the optional `route` field
-(default `secure`), mirroring the Azure Function client's `run` / `runpublic` proxies. Auth is
-**Managed Identity** via `DefaultAzureCredential` (client-secret fallback for local dev). The token
-is cached/refreshed and auto-injected by a `DelegatingHandler`.
-
-```bash
-# Local dev
-az login
-func start
-
-# Enqueue a test message onto the 'wwexecution-queue' queue:
-#   secure (default): { "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
-#   public:           { "route": "public", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
-```
-
-| File | Purpose |
-|---|---|
-| `WwExecutionServiceBusWorker.csproj` | Isolated-worker project + Extensions.ServiceBus + Azure.Identity |
-| `Program.cs` | DI: `TokenCredential`, token handler, typed `HttpClient` |
-| `Auth/WwExecutionTokenHandler.cs` | App-only token acquire/cache/refresh + Bearer auto-inject |
-| `Functions/WorkflowQueueTrigger.cs` | `[ServiceBusTrigger]` → calls `/secure` or `/public` per the message `route` |
-| `WwExecutionClient.cs` | Typed engine client (public/secure/services) |
-
-**Token chain:** identical to the Azure Function client — `DefaultAzureCredential`
-(Managed Identity in Azure, az CLI locally), scope `api://<ResourceAppId>/.default`.
-The worker's MI/daemon SP **must** be assigned an app role on the resource SP (see
-the `az rest … appRoleAssignedTo` snippet above, or
-[`Configure-WwExecutionAuth-Clients.ps1 -DaemonUseManagedIdentity`](../Warewolf.Execution.Lightweight/Scripts/Configure-WwExecutionAuth-Clients.ps1)).
+- **Project:** [`Warewolf.Execution.ServiceBusWorker/`](../Warewolf.Execution.ServiceBusWorker/) --
+  its own `README.md` has the full setup, message contract and troubleshooting guide.
+- **Architecture:** [`docs/ShovelBridge-Architecture.md`](../Warewolf.Execution.Lightweight/docs/ShovelBridge-Architecture.md).
+- **Deploy:** `Deploy-WwExecutionServiceBusWorker.ps1`, or chained automatically from
+  `Deploy-WwExecutionEngine.ps1 -DeployServiceBusWorker` (see `Scripts/README.md`).
 
 ---
 

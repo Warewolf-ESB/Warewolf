@@ -14,7 +14,6 @@ using System.ComponentModel;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
-    [Serializable]
     public enum DebugItemResultType
     {
         Label,

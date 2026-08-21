@@ -303,48 +303,62 @@ namespace Warewolf.Execution.Lightweight
                 throw new InvalidOperationException($"No XamlDefinition found in '{filePath}'.");
             }
 
-            var dynamicActivity = WorkflowExecutor.GetOrLoadDynamicActivity(filePath, xamlDefinition)
-                                  ?? throw new InvalidOperationException($"Failed to load DynamicActivity from '{filePath}'.");
-
-            var parser = new Dev2.Activities.ActivityParser();
-            var startActivity = parser.Parse(dynamicActivity)
-                                ?? throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
-
-            // Mirror ResumableExecutionContainer.FindActivity: flatten and locate by UniqueID.
-            var resumeNode = parser.ParseToLinkedFlatList(startActivity)
-                .FirstOrDefault(a => a.UniqueID == startActivityId.ToString());
-            if (resumeNode is null)
+            // Rented, not shared. A resumed workflow runs the SAME Dsf*Activity instances as a
+            // normal execution, so it is exposed to the identical concurrency defect: a resume
+            // running alongside a fresh execution of the same workflow would clobber its
+            // per-execution activity state. See the _workflowPool comment in WorkflowExecutor.
+            var prepared = WorkflowExecutor.RentPreparedWorkflow(filePath, xamlDefinition);
+            if (prepared?.Activity == null)
             {
-                throw new InvalidOperationException($"Resume Node not found. UniqueID:{startActivityId}");
+                throw new InvalidOperationException($"Failed to load DynamicActivity from '{filePath}'.");
             }
 
-            if (string.IsNullOrEmpty(dataObject.ServiceName))
+            try
             {
-                dataObject.ServiceName = workflowName ?? Path.GetFileNameWithoutExtension(filePath);
+                var parser = new Dev2.Activities.ActivityParser();
+                var startActivity = prepared.StartActivity
+                                    ?? throw new InvalidOperationException(GlobalConstants.NoStartNodeError);
+
+                // Mirror ResumableExecutionContainer.FindActivity: flatten and locate by UniqueID.
+                var resumeNode = parser.ParseToLinkedFlatList(startActivity)
+                    .FirstOrDefault(a => a.UniqueID == startActivityId.ToString());
+                if (resumeNode is null)
+                {
+                    throw new InvalidOperationException($"Resume Node not found. UniqueID:{startActivityId}");
+                }
+
+                if (string.IsNullOrEmpty(dataObject.ServiceName))
+                {
+                    dataObject.ServiceName = workflowName ?? Path.GetFileNameWithoutExtension(filePath);
+                }
+
+                LightweightSourceLoader.Instance.EnsureIndexed(_workflowsDirectory);
+
+                WorkflowExecutor.ExecuteActivityChain(dataObject, resumeNode);
+
+                var errors = dataObject.Environment.Errors
+                    .Concat(dataObject.Environment.AllErrors)
+                    .Where(e => !string.IsNullOrWhiteSpace(e))
+                    .Distinct()
+                    .ToList();
+                if (dataObject.ExecutionException != null && errors.Count == 0)
+                {
+                    errors.Add(dataObject.ExecutionException.Message);
+                }
+
+                if (errors.Count > 0 && throwOnEnvironmentErrors)
+                {
+                    throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
+                }
+
+                return string.IsNullOrEmpty(dataList)
+                    ? dataObject.Environment.ToJson()
+                    : ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, dataList, 0);
             }
-
-            LightweightSourceLoader.Instance.EnsureIndexed(_workflowsDirectory);
-
-            WorkflowExecutor.ExecuteActivityChain(dataObject, resumeNode);
-
-            var errors = dataObject.Environment.Errors
-                .Concat(dataObject.Environment.AllErrors)
-                .Where(e => !string.IsNullOrWhiteSpace(e))
-                .Distinct()
-                .ToList();
-            if (dataObject.ExecutionException != null && errors.Count == 0)
+            finally
             {
-                errors.Add(dataObject.ExecutionException.Message);
+                WorkflowExecutor.ReturnPreparedWorkflow(filePath, prepared);
             }
-
-            if (errors.Count > 0 && throwOnEnvironmentErrors)
-            {
-                throw new InvalidOperationException(string.Join(Environment.NewLine, errors));
-            }
-
-            return string.IsNullOrEmpty(dataList)
-                ? dataObject.Environment.ToJson()
-                : ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, dataList, 0);
         }
 
         /// <summary>

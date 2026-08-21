@@ -13,6 +13,7 @@ using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -99,6 +100,146 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             Assert.IsTrue(mockBasicProperties.Object.Persistent);
         }
 
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
+        public void PublishRabbitMQActivity_Execute_Success_WhenExchangeMissing_ReopensChannelBeforeActiveDeclare()
+        {
+            // A failed ExchangeDeclarePassive closes the channel server-side (AMQP 404 is a
+            // channel-level exception). PublishRabbitMQActivity must not reuse that closed
+            // channel for the active ExchangeDeclare/QueueBind/BasicPublish that follow, or
+            // those calls throw AlreadyClosedException - exactly the "Already closed: ...
+            // code=404, text='NOT_FOUND - no exchange ...'" failure seen against a real broker.
+            //------------Setup for test--------------------------
+            var env = CreateExecutionEnvironment();
+            const string queueName = "Q1", message = "Test Message";
+            var param = new Dictionary<string, string> { { "QueueName", queueName }, { "Message", message } };
+            var body = Encoding.UTF8.GetBytes(message);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
+            dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
+            dataObject.Setup(o => o.Environment).Returns(env);
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new Mock<RabbitMQSource>();
+            var connectionFactory = new Mock<ConnectionFactory>();
+            var connection = new Mock<IConnection>();
+
+            // closedChannel is what the broker's passive-declare 404 closes; freshChannel is
+            // the new channel the activity must open on the same connection to continue.
+            var closedChannel = new Mock<IModel>();
+            var freshChannel = new Mock<IModel>();
+            var mockBasicProperties = new Mock<IBasicProperties>();
+            mockBasicProperties.SetupAllProperties();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(rabbitMQSource.Object);
+            connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
+            connection.SetupSequence(c => c.CreateModel())
+                .Returns(closedChannel.Object)
+                .Returns(freshChannel.Object);
+
+            var shutdown = new ShutdownEventArgs(ShutdownInitiator.Peer, 404, $"NOT_FOUND - no exchange '{queueName}' in vhost '/'");
+            closedChannel.Setup(c => c.ExchangeDeclarePassive(queueName))
+                .Throws(new OperationInterruptedException(shutdown));
+            freshChannel.Setup(c => c.QueueDeclarePassive(queueName));
+            freshChannel.Setup(c => c.CreateBasicProperties()).Returns(mockBasicProperties.Object);
+
+            var publishRabbitMQActivity =
+                new TestPublishRabbitMQActivity(resourceCatalog.Object, connectionFactory.Object);
+
+            //------------Execute Test---------------------------
+            publishRabbitMQActivity.TestExecuteTool(dataObject.Object);
+            var result = publishRabbitMQActivity.TestPerformExecution(param);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result[0]);
+            connection.Verify(c => c.CreateModel(), Times.Exactly(2));
+            closedChannel.Verify(c => c.ExchangeDeclarePassive(queueName), Times.Once);
+            closedChannel.Verify(
+                c => c.ExchangeDeclare(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(),
+                    It.IsAny<IDictionary<string, object>>()), Times.Never);
+            closedChannel.Verify(c => c.Dispose(), Times.Once);
+            freshChannel.Verify(
+                c => c.ExchangeDeclare(queueName, ExchangeType.Direct, It.IsAny<bool>(), It.IsAny<bool>(), null),
+                Times.Once);
+            freshChannel.Verify(c => c.QueueBind(queueName, queueName, "", It.IsAny<IDictionary<string, object>>()), Times.Once);
+            freshChannel.Verify(
+                c => c.BasicPublish(queueName, string.Empty, It.IsAny<bool>(), mockBasicProperties.Object, body),
+                Times.Once);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Candice Daniel")]
+        [TestCategory(nameof(PublishRabbitMQActivity))]
+        public void PublishRabbitMQActivity_Execute_Success_WhenQueueMissing_ReopensChannelBeforeActiveDeclare()
+        {
+            // Same reasoning as the exchange case above, but for the queue's own
+            // passive-declare 404 closing the channel after the exchange check already
+            // succeeded on it.
+            //------------Setup for test--------------------------
+            var env = CreateExecutionEnvironment();
+            const string queueName = "Q1", message = "Test Message";
+            var param = new Dictionary<string, string> { { "QueueName", queueName }, { "Message", message } };
+            var body = Encoding.UTF8.GetBytes(message);
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            dataObject.Setup(o => o.ExecutionID).Returns(new Guid?());
+            dataObject.Setup(o => o.CustomTransactionID).Returns(new Guid?().ToString());
+            dataObject.Setup(o => o.Environment).Returns(env);
+
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var rabbitMQSource = new Mock<RabbitMQSource>();
+            var connectionFactory = new Mock<ConnectionFactory>();
+            var connection = new Mock<IConnection>();
+
+            var closedChannel = new Mock<IModel>();
+            var freshChannel = new Mock<IModel>();
+            var mockBasicProperties = new Mock<IBasicProperties>();
+            mockBasicProperties.SetupAllProperties();
+
+            resourceCatalog.Setup(r => r.GetResource<RabbitMQSource>(It.IsAny<Guid>(), It.IsAny<Guid>()))
+                .Returns(rabbitMQSource.Object);
+            connectionFactory.Setup(c => c.CreateConnection()).Returns(connection.Object);
+            connection.SetupSequence(c => c.CreateModel())
+                .Returns(closedChannel.Object)
+                .Returns(freshChannel.Object);
+
+            // Exchange already exists (passive check succeeds on the first channel).
+            closedChannel.Setup(c => c.ExchangeDeclarePassive(queueName));
+            var shutdown = new ShutdownEventArgs(ShutdownInitiator.Peer, 404, $"NOT_FOUND - no queue '{queueName}' in vhost '/'");
+            closedChannel.Setup(c => c.QueueDeclarePassive(queueName))
+                .Throws(new OperationInterruptedException(shutdown));
+            freshChannel.Setup(c => c.CreateBasicProperties()).Returns(mockBasicProperties.Object);
+
+            var publishRabbitMQActivity =
+                new TestPublishRabbitMQActivity(resourceCatalog.Object, connectionFactory.Object);
+
+            //------------Execute Test---------------------------
+            publishRabbitMQActivity.TestExecuteTool(dataObject.Object);
+            var result = publishRabbitMQActivity.TestPerformExecution(param);
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Success", result[0]);
+            connection.Verify(c => c.CreateModel(), Times.Exactly(2));
+            closedChannel.Verify(c => c.QueueDeclarePassive(queueName), Times.Once);
+            closedChannel.Verify(
+                c => c.QueueDeclare(It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(),
+                    It.IsAny<IDictionary<string, object>>()), Times.Never);
+            closedChannel.Verify(c => c.Dispose(), Times.Once);
+            freshChannel.Verify(
+                c => c.QueueDeclare(queueName, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), null),
+                Times.Once);
+            freshChannel.Verify(c => c.QueueBind(queueName, queueName, "", It.IsAny<IDictionary<string, object>>()), Times.Once);
+            freshChannel.Verify(
+                c => c.BasicPublish(queueName, string.Empty, It.IsAny<bool>(), mockBasicProperties.Object, body),
+                Times.Once);
+        }
 
         [TestMethod]
         [Timeout(60000)]

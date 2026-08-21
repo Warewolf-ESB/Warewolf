@@ -15,8 +15,8 @@ using System.Runtime.Serialization;
 
 namespace Dev2.Workspaces
 {
-    [Serializable]
-    public class Workspace : IWorkspace
+	[DataContract]
+	public class Workspace : IWorkspace
     {
         public Workspace(Guid workspaceID)
         {
@@ -24,18 +24,27 @@ namespace Dev2.Workspaces
             Items = new List<IWorkspaceItem>();
         }
 
-        public Guid ID
+		[DataMember]
+		public Guid ID
         {
             get;
             private set;
         }
 
-        public IList<IWorkspaceItem> Items
+		[DataMember]
+		public IList<IWorkspaceItem> Items
         {
             get;
             private set;
         }
 
+        #region ISerializable - DEPRECATED: Kept for backward compatibility with BinaryFormatter only
+
+        /// <summary>
+        /// DEPRECATED: This constructor is for backward compatibility with BinaryFormatter.
+        /// DataContractSerializer does not use this constructor.
+        /// </summary>
+        [Obsolete("This constructor is for backward compatibility with BinaryFormatter only. Do not use in new code.")]
         protected Workspace(SerializationInfo info, StreamingContext context)
         {
             if(info == null)
@@ -46,6 +55,11 @@ namespace Dev2.Workspaces
             Items = (IList<IWorkspaceItem>)info.GetValue("Items", typeof(IList<IWorkspaceItem>));
         }
 
+        /// <summary>
+        /// DEPRECATED: This method is for backward compatibility with BinaryFormatter.
+        /// DataContractSerializer does not use this method.
+        /// </summary>
+        [Obsolete("This method is for backward compatibility with BinaryFormatter only. Do not use in new code.")]
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if(info == null)
@@ -55,5 +69,7 @@ namespace Dev2.Workspaces
             info.AddValue("ID", ID);
             info.AddValue("Items", Items);
         }
+
+        #endregion
     }
 }

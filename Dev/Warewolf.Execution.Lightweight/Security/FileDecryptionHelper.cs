@@ -4,7 +4,11 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using Dev2.Common;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -20,6 +24,12 @@ namespace Warewolf.Execution.Lightweight.Security
     /// Key Vault is never called from this class; all cryptography is purely
     /// in-memory using the key bytes cached at cold start by
     /// <see cref="KeyVaultSecretManager"/>.
+    ///
+    /// Decryption walks the full key ring from <see cref="KeyVaultSecretManager.GetAllKeyBytes"/>.
+    /// The primary key is always tried first (zero overhead in steady state); previous keys
+    /// are only attempted on GCM tag mismatch, in most-recently-retired-first order as
+    /// returned by the key ring. A warning is logged whenever a fallback key is used so
+    /// operators can track rotation progress.
     ///
     /// The static method <see cref="IsAesEncrypted"/> is registered into
     /// <see cref="Warewolf.Security.Encryption.DpapiWrapper.AesDecryptHook"/>
@@ -39,16 +49,32 @@ namespace Warewolf.Execution.Lightweight.Security
         const int NonceSize = 12;   // AES-GCM standard nonce size
         const int TagSize   = 16;   // AES-GCM standard tag size
 
-        readonly byte[] _keyBytes;
+        readonly IReadOnlyList<(string KeyId, byte[] KeyBytes)> _keyRing;
+        readonly ILogger<FileDecryptionHelper>                   _logger;
 
         /// <param name="secretManager">
         /// Must already be initialised (<see cref="KeyVaultSecretManager.InitializeAsync"/>
         /// called) before this constructor runs.
         /// </param>
-        public FileDecryptionHelper(KeyVaultSecretManager secretManager)
+        /// <param name="logger">Logger for fallback-key warnings during a rotation window.</param>
+        public FileDecryptionHelper(KeyVaultSecretManager secretManager, ILogger<FileDecryptionHelper> logger)
         {
+            const string executionId = "FileDecryptionHelper-Constructor";
+
             if (secretManager is null) throw new ArgumentNullException(nameof(secretManager));
-            _keyBytes = secretManager.GetKeyBytes();
+            _logger  = logger ?? throw new ArgumentNullException(nameof(logger));
+            _keyRing = secretManager.GetAllKeyBytes();
+
+            var keyIds = string.Join(", ", _keyRing.Select(k => $"'{k.KeyId}'"));
+            Dev2Logger.Info($"FileDecryptionHelper initialised with {_keyRing.Count} key(s) in ring: [{keyIds}].", executionId);
+            _logger.LogInformation(
+                "Decryption | Initialised with {KeyCount} key(s) in ring: [{KeyIds}]. " +
+                "{FallbackNote}",
+                _keyRing.Count,
+                keyIds,
+                _keyRing.Count > 1
+                    ? "Key rotation fallback is active — previous key(s) will be tried on GCM mismatch."
+                    : "Single-key mode — no previous keys loaded.");
         }
 
         /// <summary>
@@ -64,6 +90,9 @@ namespace Warewolf.Execution.Lightweight.Security
         /// Returns the input unchanged when it is not AES-encrypted, allowing
         /// the caller to pass any attribute value without conditional checks.
         ///
+        /// Tries all keys in the ring if the primary key fails GCM verification,
+        /// logging a warning whenever a fallback key succeeds.
+        ///
         /// This method is wired as <see cref="Warewolf.Security.Encryption.DpapiWrapper.AesDecryptHook"/>
         /// in <c>Program.cs</c>, so it is called automatically whenever
         /// <c>DbSource</c> (or any other class) invokes
@@ -72,10 +101,13 @@ namespace Warewolf.Execution.Lightweight.Security
         /// Decrypted bytes are never written to disk.
         /// </summary>
         /// <exception cref="CryptographicException">
-        /// Thrown when the GCM tag does not match (data tampered or wrong key).
+        /// Thrown when no key in the ring produces a valid GCM tag (data tampered
+        /// or key ring is incomplete).
         /// </exception>
         public string DecryptConnectionString(string encryptedValue)
         {
+            const string executionId = "FileDecryptionHelper-Decrypt";
+
             if (!IsAesEncrypted(encryptedValue))
                 return encryptedValue;
 
@@ -90,13 +122,72 @@ namespace Warewolf.Execution.Lightweight.Security
             var nonce      = data[..NonceSize];
             var tag        = data[^TagSize..];
             var ciphertext = data[NonceSize..^TagSize];
+            var plaintext  = new byte[ciphertext.Length];
 
-            var plaintext = new byte[ciphertext.Length];
+            CryptographicException? lastException = null;
+            var isPrimary = true;
+            var attempted = 0;
 
-            using var aes = new AesGcm(_keyBytes, TagSize);
-            aes.Decrypt(nonce, ciphertext, tag, plaintext);
+            foreach (var (keyId, keyBytes) in _keyRing)
+            {
+                try
+                {
+                    if (!isPrimary)
+                    {
+                        // NOTE: with more than two keys in the ring this is not necessarily
+                        // the primary that failed — report how many have been tried instead
+                        // of blaming the primary on every fallback attempt.
+                        Dev2Logger.Info($"FileDecryptionHelper no match after {attempted} key(s) — attempting fallback key '{keyId}'.", executionId);
+                        _logger.LogInformation(
+                            "Decryption | No match after {AttemptedCount} key(s). Attempting fallback key '{FallbackKeyId}'.",
+                            attempted, keyId);
+                    }
 
-            return Encoding.UTF8.GetString(plaintext);
+                    using var aes = new AesGcm(keyBytes, TagSize);
+                    aes.Decrypt(nonce, ciphertext, tag, plaintext);
+
+                    if (isPrimary)
+                    {
+                        Dev2Logger.Debug($"FileDecryptionHelper decrypted successfully using primary key '{keyId}'.", executionId);
+                    }
+                    else
+                    {
+                        Dev2Logger.Warn($"FileDecryptionHelper decrypted using fallback key '{keyId}'. Resource should be re-encrypted with the current key once rotation is complete.", executionId);
+                        _logger.LogWarning(
+                            "Decryption | Succeeded using fallback key '{FallbackKeyId}'. " +
+                            "This resource is still encrypted with a retired key — re-encrypt with the current key once rotation is complete.",
+                            keyId);
+                    }
+
+                    return Encoding.UTF8.GetString(plaintext);
+                }
+                catch (CryptographicException ex)
+                {
+                    lastException = ex;
+                    attempted++;
+                    Dev2Logger.Debug($"FileDecryptionHelper key '{keyId}' did not match — trying next key in ring.", executionId);
+                    isPrimary = false;
+                }
+            }
+
+            // All keys exhausted
+            var triedKeyIds = string.Join(", ", _keyRing.Select(k => $"'{k.KeyId}'"));
+            Dev2Logger.Error($"FileDecryptionHelper could not decrypt value — all keys tried: [{triedKeyIds}].", lastException!, executionId);
+            var failureMessage =
+                $"AES-GCM decryption failed for all {_keyRing.Count} key(s) in the ring " +
+                $"[{triedKeyIds}]. The .bite file may be corrupted or the key ring is " +
+                "missing the key that encrypted this value.";
+
+            // Preserve the specific exception type (.NET 8+ throws AuthenticationTagMismatchException,
+            // a CryptographicException subtype, when the GCM tag doesn't match) so callers relying on
+            // the more specific type — e.g. to distinguish tampering/wrong-key from other crypto errors —
+            // still see it after all keys in the ring have been exhausted.
+            if (lastException is AuthenticationTagMismatchException)
+            {
+                throw new AuthenticationTagMismatchException(failureMessage, lastException);
+            }
+
+            throw new CryptographicException(failureMessage, lastException);
         }
     }
 }

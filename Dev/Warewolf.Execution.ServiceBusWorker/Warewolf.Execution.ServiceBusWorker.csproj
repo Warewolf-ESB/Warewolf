@@ -1,0 +1,101 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Azure Functions v4 isolated-worker app that is triggered by an Azure Service Bus
+    queue message and calls the Warewolf Execution Engine over HTTP using an
+    app-only (client-credentials) token acquired via Managed Identity.
+
+    See README.md for the full architecture, the message contract and the
+    Entra app-role assignment requirement.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
+    <!-- Isolated worker model runs as a standalone .NET process. -->
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12.0</LangVersion>
+    <RootNamespace>Warewolf.Execution.ServiceBusWorker</RootNamespace>
+    <AssemblyName>WwExecutionServiceBusWorker</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Functions isolated worker core + SDK. -->
+    <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="2.52.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.1.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.ServiceBus" Version="5.24.0" />
+    <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.51.0" />
+
+    <!-- Auth + HTTP. -->
+    <PackageReference Include="Azure.Identity" Version="1.20.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="10.0.0" />
+
+    <!-- Configuration + options binding + logging. -->
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.0" />
+    <!-- Provides the OptionsBuilder.ValidateDataAnnotations() extension used in Program.cs. -->
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="10.0.0" />
+
+    <!--
+      Microsoft.Azure.Functions.Worker 2.52.0 (via Microsoft.Azure.Functions.Worker.Core) floors
+      Microsoft.Extensions.Hosting at 10.0.0. Compile.ps1 publishes ServerTests.sln into ONE flat
+      output directory (-p:ErrorOnDuplicatePublishOutputFiles=false), so whichever project's copy
+      of a shared DLL is written last silently overwrites the other. Pin Hosting to the
+      net10.0-aligned release explicitly so this project's own publish output only ever contains
+      the 10.0.0 family, matching Warewolf.Execution.Lightweight and avoiding a repeat of the
+      historical mismatch (this project previously floored Hosting at 5.0.0 while Lightweight
+      needed 8.0.0, and the flat-publish overwrite made the isolated-worker process fail to start
+      with FileNotFoundException; every SpecFlow test depending on the Lightweight engine being
+      reachable on port 7071 then failed with a connection-refused error).
+    -->
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.0" />
+
+    <!--
+      The Service Bus worker extension (5.24.0) requires Google.Protobuf >= 3.32.1.
+      When this sample is built INSIDE the Warewolf repo it inherits a solution-wide
+      Google.Protobuf pin from Dev/Directory.Build.props (needed by the engine),
+      which triggers NU1605 if it's lower than this floor. Override it here for this
+      standalone sample only — this has no effect on the engine. (When the folder is
+      copied out of the repo there is no inherited pin and this Update is a harmless no-op.)
+    -->
+    <PackageReference Update="Google.Protobuf" Version="3.32.1" />
+  </ItemGroup>
+
+  <!--
+    Skip 'dotnet publish' on Debug builds when a RuntimeIdentifier is set.
+
+    The hosted CI pipeline publishes ServerTests.sln (which transitively
+    includes this project) with `-r win-x64`, which triggers an MSB3030 in
+    the Azure Functions Worker SDK when it tries to copy
+    obj\Debug\net8.0\win-x64\extensions.json (the Worker SDK writes the file
+    to the non-RID-qualified obj path while the main publish target looks
+    for it under the RID subfolder). Same root cause and fix as the
+    companion Warewolf.Execution.Lightweight project.
+
+    Warewolf.Execution.ServiceBusWorker.Tests only needs this project's
+    BUILD output (via ProjectReference), not its PUBLISH output, so skipping
+    the publish step on Debug is safe for the test pipeline. Release
+    publishes (the Azure deployment path) still need to publish, so the
+    gate is scoped to Debug only.
+  -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug' AND '$(RuntimeIdentifier)' != ''">
+    <IsPublishable>false</IsPublishable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Update="host.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="local.settings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <!-- Never published; never commit real values. -->
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -109,6 +109,18 @@ param(
 
     [switch] $GenerateKeys,
 
+    # Encrypt/decrypt the ENTIRE file rather than the ConnectionString attribute.
+    #
+    # Needed for queue-trigger .bite files: those are JSON with no <Source> element, so the
+    # default attribute mode silently SKIPS them. The QueueProcessor reads a whole-file
+    # WFAES:: payload (TriggerBiteReader.Decrypt), which is what this mode produces — same
+    # WFAES:: format, same Key Vault key, so one key covers sources and triggers alike.
+    #
+    # Also the only way to carry a whole-file DPAPI-encrypted trigger to Linux: DPAPI is
+    # Windows-and-machine-scoped, so it is decrypted here (on the machine that created it)
+    # and re-encrypted as WFAES, which the container CAN read.
+    [switch] $WholeFile,
+
     [switch] $Decrypt,
 
     # In-memory verification only: decrypt every WFAES/DPAPI ConnectionString in
@@ -379,8 +391,12 @@ if (Test-Path -LiteralPath $FilePath -PathType Leaf) {
         exit 1
     }
 } elseif (Test-Path -LiteralPath $FilePath -PathType Container) {
-    $files = Get-ChildItem -LiteralPath $FilePath -Recurse -Filter '*.bite' |
-             Select-Object -ExpandProperty FullName
+    # @(...) is REQUIRED: with Set-StrictMode -Version Latest, a folder holding exactly one
+    # .bite yields a bare [string] and the later $files.Count throws
+    # "The property 'Count' cannot be found on this object." A single-source folder is the
+    # normal case for a per-trigger QueueProcessor staging tree.
+    $files = @(Get-ChildItem -LiteralPath $FilePath -Recurse -Filter '*.bite' |
+               Select-Object -ExpandProperty FullName)
 } else {
     Write-Fail "Path '$FilePath' not found."
     exit 1
@@ -400,6 +416,25 @@ if ($VerifyOnly) {
         $leafName = Split-Path $file -Leaf
         try {
             $content = Get-Content -LiteralPath $file -Raw -Encoding UTF8
+
+            # Whole-file mode: the body IS the payload. Without this branch the guard below
+            # would skip every trigger file and -VerifyOnly would report success having
+            # verified nothing - the worst possible outcome for a verification switch.
+            if ($WholeFile) {
+                $body = $content.Trim()
+                if (-not (Test-IsWfAesEncrypted $body)) { continue }
+                $vFiles++
+                try {
+                    $null = Invoke-WfAesDecrypt $keyBytes $body   # in-memory; result discarded
+                    Write-OK "  OK (whole file): $leafName"
+                    $vOk++
+                } catch {
+                    Write-Fail "  FAIL (whole file): $leafName - $_"
+                    $vFail++; $vFailFiles.Add($leafName)
+                }
+                continue
+            }
+
             if ($content -notmatch '<Source\b' -or $content -notmatch '\bConnectionString\s*=') { continue }
             [xml]$xml = $content
             $sources  = $xml.SelectNodes('//Source[@ConnectionString]')
@@ -507,6 +542,80 @@ foreach ($file in $files) {
     $fileHasEncryptedSrc  = $false
     try {
         $content = Get-Content -LiteralPath $file -Raw -Encoding UTF8
+
+        # ── Whole-file mode ──────────────────────────────────────────────────
+        # The entire file body IS the payload (queue-trigger JSON has no <Source>
+        # element, so attribute mode would silently skip it). Handled before the
+        # <Source> guard below and always `continue`s, so attribute mode is untouched.
+        if ($WholeFile) {
+            $body = $content.Trim()
+
+            if ($Decrypt) {
+                if (Test-IsWfAesEncrypted $body) {
+                    try   { $plainBody = Invoke-WfAesDecrypt $keyBytes $body }
+                    catch { Write-Fail "    [WFAES] Whole-file decryption failed for '$leafName': $_"
+                            $decryptFailCount++; continue }
+                } elseif (Test-IsDpapiEncrypted $body) {
+                    try   { $plainBody = Invoke-DpapiDecrypt $body }
+                    catch { Write-Fail "    [DPAPI] Whole-file decryption failed for '$leafName': $_"
+                            $decryptFailCount++; continue }
+                } else {
+                    Write-Skip "  SKIP (already plaintext): $leafName"
+                    $skippedCount++; continue
+                }
+
+                $rel  = [System.IO.Path]::GetRelativePath($sourceBase, $file)
+                $dest = Join-Path $decryptOutputRoot $rel
+                $null = New-Item -ItemType Directory -Force -Path (Split-Path $dest -Parent)
+                if ($PSCmdlet.ShouldProcess($dest, 'Write decrypted file')) {
+                    Set-Content -LiteralPath $dest -Value $plainBody -Encoding UTF8 -NoNewline
+                }
+                Write-OK "  DECRYPTED (whole file) -> $dest"
+                $decryptOkCount++; $filesToDecryptCount++
+                continue
+            }
+
+            # ── Encrypt ──────────────────────────────────────────────────────
+            if (Test-IsWfAesEncrypted $body) {
+                if (-not $GenerateKeys) {
+                    # Idempotent: re-running a deploy must not double-encrypt.
+                    Write-Skip "  SKIP (already WFAES, use -GenerateKeys to rotate): $leafName"
+                    $wfaesSkippedCount++; continue
+                }
+                # Rotation: unwrap with the OLD key, re-wrap with the new one.
+                try   { $plainBody = Invoke-WfAesDecrypt $oldKeyBytes $body }
+                catch { Write-Fail "    [WFAES] Could not unwrap '$leafName' with the existing key: $_"
+                        $decryptFailCount++; continue }
+            }
+            elseif (Test-IsDpapiEncrypted $body) {
+                # DPAPI is Windows/machine-scoped: this must run on the machine that
+                # created the file, which is exactly why re-encryption happens at deploy time.
+                $fileDpapiAttempted = $true
+                try   { $plainBody = Invoke-DpapiDecrypt $body }
+                catch { Write-Fail "    [DPAPI] Could not decrypt '$leafName' on this machine: $_"
+                        $dpapiDecryptFailCount++; $dpapiFileCount++; continue }
+            }
+            else {
+                $filePlainAttempted = $true
+                $plainBody = $body
+            }
+
+            try {
+                $cipher = Invoke-WfAesEncrypt $keyBytes $plainBody
+            } catch {
+                Write-Fail "    [WFAES] Whole-file encryption failed for '$leafName': $_"
+                $encryptFailCount++; continue
+            }
+
+            if ($PSCmdlet.ShouldProcess($file, 'Encrypt whole file (WFAES)')) {
+                Set-Content -LiteralPath $file -Value $cipher -Encoding UTF8 -NoNewline
+            }
+            Write-OK "  ENCRYPTED (whole file): $leafName"
+            if ($fileDpapiAttempted)     { $dpapiFileCount++; $dpapiDecryptOkCount++ }
+            elseif ($filePlainAttempted) { $plainTextFileCount++ }
+            $encryptOkCount++
+            continue
+        }
 
         # Guard: must contain <Source> element with a ConnectionString attribute.
         if ($content -notmatch '<Source\b' -or $content -notmatch '\bConnectionString\s*=') {

@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net10.0</TargetFramework>
 		<AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
 		<EnableDefaultItems>false</EnableDefaultItems>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -310,7 +310,7 @@
 		<Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginRuntimeHandler.partial.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\Plugin\PluginServiceExecutionFactory.partial.cs" />
-		<Compile Include="ServiceModel\Esb\Brokers\PostgreSqlDataBaseBroker.cs" />
+		<Compile Include="ServiceModel\Esb\Brokers\PostGreSqlDataBaseBroker.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\SqlDatabaseBroker.cs" />
 		<Compile Include="ServiceModel\Esb\Brokers\SqliteDatabaseBroker.cs" />
 		<Compile Include="ServiceModel\HubFactory.cs" />
@@ -550,17 +550,12 @@
 			<Version>1.0.118</Version>
 		</PackageReference>
 		<PackageReference Include="System.Diagnostics.EventLog" Version="8.0.2" />
-		<PackageReference Include="System.ServiceModel.Federation" Version="4.10.3" />
 		<PackageReference Include="Caliburn.Micro" Version="4.0.212" />
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
 		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
 		<PackageReference Include="Microsoft.Windows.Compatibility" Version="8.0.27" />
 		<ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
-		<PackageReference Include="CoreWCF.Http" Version="1.9.1" />
-		<PackageReference Include="CoreWCF.NetTcp" Version="1.9.1" />
-		<PackageReference Include="CoreWCF.Primitives" Version="1.9.1" />
-		<PackageReference Include="CoreWCF.WebHttp" Version="1.9.1" />
 		<PackageReference Include="MessagePack" Version="2.5.301" />
 		<PackageReference Include="log4net">
 			<Version>2.0.15</Version>
@@ -668,6 +663,7 @@
 		</PackageReference>
 		<PackageReference Include="MySql.Data" Version="8.4.0" />
 		<Reference Include="System.Activities.Presentation" />
+		<PackageReference Include="System.ServiceModel.Federation" Version="4.9.0" />
 	</ItemGroup>
 	<!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -676,7 +672,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

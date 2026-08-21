@@ -12,11 +12,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Xml.Linq;
 using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.String.Xml
 {
+    // See BasePath.cs for why this is [Serializable] rather than [DataContract].
     [Serializable]
     public class XmlPath : BasePath
     {

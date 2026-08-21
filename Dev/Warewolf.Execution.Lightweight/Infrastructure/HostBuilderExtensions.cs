@@ -29,8 +29,18 @@ internal static class HostBuilderExtensions
         => builder
             .ConfigureFunctionsWorkerDefaults(worker =>
             {
-                // ── Instance correlation — MUST be first so all subsequent
-                //    middleware and function code inherits the scope ───────────
+                // ── Usage/uptime publish — MUST be the very first middleware so its
+                //    stopwatch spans the FULL request/response lifecycle (including
+                //    every middleware below and the function body itself), instead of
+                //    only the workflow-execution portion. Its post-`next()` code still
+                //    runs last-out, after everything downstream has completed —
+                //    including error paths — so publishing here does not lose access
+                //    to the workflow-execution facts recorded further down the
+                //    pipeline (see UsagePublishContext). ─────────────────────────────
+                worker.UseMiddleware<UsagePublishMiddleware>();
+
+                // ── Instance correlation — MUST run right after usage-publish so all
+                //    subsequent middleware and function code inherits the scope ─────
                 worker.UseMiddleware<InstanceCorrelationMiddleware>();
 
                 // ── Auth middleware pipeline — ORDER IS CRITICAL ──────────────

@@ -98,13 +98,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         // ─────────────────────────────────────────────────────────────────
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
-        public void X6JsonToWorkflow_EmptyGraph_ThrowsOnFlowchartFinalisation()
+        public void X6JsonToWorkflow_EmptyGraph_ThrowsEmptyWorkflowGraphException()
         {
-            // WorkflowHelper.EnsureImplementation requires at least a StartNode on the
-            // flowchart; an empty graph throws NRE.  We assert the documented behaviour
-            // so a future fix that swallows or wraps the NRE will surface here.
+            // An empty graph has no cell that resolves to a start node, so BuildWorkflow
+            // falls back to a bare Sequence and EnsureImplementation cannot finalise it.
+            // This is now a structured, named exception rather than a raw NullReferenceException
+            // (round-trip fidelity gate hardening — see warewolf-lee-mcp-v3-addendum-a.md).
             var converter = new X6ToWorkflowConverter();
-            Assert.ThrowsException<NullReferenceException>(() =>
+            Assert.ThrowsException<EmptyWorkflowGraphException>(() =>
                 converter.X6JsonToWorkflow(Serialise("EmptyWorkflow")));
         }
 
@@ -197,14 +198,18 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
-        public void X6JsonToWorkflow_UnknownActivityType_FallsBackToWriteLine()
+        public void X6JsonToWorkflow_UnknownActivityType_ThrowsUnsupportedActivityTypeException()
         {
-            // Unknown 'type' values fall through the switch to the default → WriteLine.
-            // Verifying this branch is critical because it's the safety net for forward-
-            // compatibility with new activity types added to the studio JSON.
+            // Unknown 'type' values fall through the switch to the default case, which now
+            // throws instead of silently substituting a no-op WriteLine activity — an LLM/MCP
+            // caller must see this as a hard error, not a silently-corrupted workflow (round-trip
+            // fidelity gate hardening — see warewolf-lee-mcp-v3-addendum-a.md).
             var unknown = MakeNode("ThisIsNotARealActivityType");
-            var result  = Convert("UnknownTypeFlow", MakeStartNode(), unknown);
-            Assert.IsTrue(result.Length > 0);
+
+            var ex = Assert.ThrowsException<UnsupportedActivityTypeException>(() =>
+                Convert("UnknownTypeFlow", MakeStartNode(), unknown));
+
+            Assert.AreEqual("ThisIsNotARealActivityType", ex.ActivityType);
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
@@ -282,6 +287,89 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsTrue(result.Length > 0,
                 "Multi-activity graph with edges should produce non-empty XAML");
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_DecisionWithTrueFalseEdges_WiresBothBranches()
+        {
+            // Regression test for the round-trip fidelity bug found via
+            // RoundTripFidelityTests ("Count Records" sample, AdvancedRecordsetAcceptanceTest.bite):
+            // HandleDecisionConnection only wires FlowDecision.True/False when the connecting edge
+            // carries Constants.ISDECISIONARM/ISTRUEARM data. WorkflowToX6Converter's CreateEdge
+            // previously never set these flags, so every round-tripped FlowDecision came back with
+            // null True/False branches — silently dropping all conditional branching. This asserts
+            // the read side reconstructs both branches when the edge data is present (as
+            // WorkflowToX6Converter now emits it — see WorkflowToX6ConverterCoverageTests.
+            // Convert_Flowchart_Decision_TrueAndFalse for the write-side assertion).
+            var startId = Guid.NewGuid().ToString();
+            var decisionId = Guid.NewGuid().ToString();
+            var trueId = Guid.NewGuid().ToString();
+            var falseId = Guid.NewGuid().ToString();
+
+            var start = MakeStartNode();
+            start.id = startId;
+
+            var decision = new Cell
+            {
+                id = decisionId,
+                data = new Dictionary<string, object>
+                {
+                    ["type"] = Constants.FLOWDECISION,
+                    [Constants.DISPLAYNAME] = "Is x == 42",
+                    [Constants.DISPLAYTEXT] = "Is x == 42",
+                    [Constants.EXPRESSION] = "[[x]] = 42",
+                    [Constants.PROPERTY_UNIQUEID] = decisionId
+                }
+            };
+
+            var trueBranch = MakeNode("DsfDotNetMultiAssignActivity", "OnTrue",
+                new Dictionary<string, object>
+                {
+                    ["fields"] = JsonConvert.SerializeObject(new[] { new { FieldName = "[[r]]", FieldValue = "true-branch" } })
+                });
+            trueBranch.id = trueId;
+
+            var falseBranch = MakeNode("DsfDotNetMultiAssignActivity", "OnFalse",
+                new Dictionary<string, object>
+                {
+                    ["fields"] = JsonConvert.SerializeObject(new[] { new { FieldName = "[[r]]", FieldValue = "false-branch" } })
+                });
+            falseBranch.id = falseId;
+
+            var edgeToDecision = new Cell
+            {
+                id = Guid.NewGuid().ToString(),
+                shape = "edge",
+                Source = new Connector(startId),
+                Target = new Connector(decisionId)
+            };
+            var edgeTrue = new Cell
+            {
+                id = Guid.NewGuid().ToString(),
+                shape = "edge",
+                label = "true",
+                Source = new Connector(decisionId),
+                Target = new Connector(trueId),
+                data = new Dictionary<string, object> { [Constants.ISDECISIONARM] = true, [Constants.ISTRUEARM] = true }
+            };
+            var edgeFalse = new Cell
+            {
+                id = Guid.NewGuid().ToString(),
+                shape = "edge",
+                label = "false",
+                Source = new Connector(decisionId),
+                Target = new Connector(falseId),
+                data = new Dictionary<string, object> { [Constants.ISDECISIONARM] = true, [Constants.ISTRUEARM] = false }
+            };
+
+            var result = Convert("DecisionBranchFlow", start, decision, trueBranch, falseBranch,
+                edgeToDecision, edgeTrue, edgeFalse);
+            var xaml = result.ToString();
+
+            Assert.IsTrue(xaml.Contains("FlowDecision.True"), "Decision should have its True branch wired.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("FlowDecision.False"), "Decision should have its False branch wired.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("OnTrue"), "The True branch's target activity should be present in the XAML.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("OnFalse"), "The False branch's target activity should be present in the XAML.");
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]

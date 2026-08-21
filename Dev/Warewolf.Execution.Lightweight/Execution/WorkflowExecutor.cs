@@ -46,32 +46,60 @@ namespace Warewolf.Execution.Lightweight
     public class WorkflowExecutor : IWorkflowExecutor
     {
         readonly IExecutionLogger _executionLogger;
-        readonly IUsageEventEmitter _usageEventEmitter;
 
         // Compiled DynamicActivity instances are expensive: ActivityXamlServices.Load parses
-        // and compiles potentially hundreds of KB of XAML on every call.  Workflow files are
-        // immutable within a single function deployment, so caching by normalised file path is
-        // safe.  DynamicActivity is the compiled definition (not an execution instance) � all
-        // runtime state flows through DsfDataObject � so sharing across concurrent requests is
-        // thread-safe.  ActivityParser.Parse() is called fresh each time to get a new IDev2Activity
-        // chain; only the expensive XAML compilation step is avoided on cache hits.
-        private static readonly ConcurrentDictionary<string, DynamicActivity> _dynamicActivityCache =
+        // and compiles potentially hundreds of KB of XAML on every call, so they must be reused.
+        //
+        // THEY MUST NOT BE SHARED BY CONCURRENT EXECUTIONS. The previous design cached ONE
+        // DynamicActivity per path and relied on "all runtime state flows through DsfDataObject".
+        // That is false: ActivityParser.Parse() does not clone anything - it walks the cached
+        // Flowchart via WorkflowInspectionServices.GetActivities() and hands back references to
+        // the SAME Dsf*Activity objects (ActivityParser.cs:192-202). Those objects carry
+        // per-execution state in instance fields; every database activity assigns
+        //     ServiceExecution = new DatabaseServiceExecution(dataObject)
+        // in BeforeExecutionStart and reads it back in ExecutionImpl. Two concurrent executions
+        // therefore overwrite each other's ServiceExecution, and the loser executes against the
+        // winner's DsfDataObject - so its output variable is never written.
+        //
+        // Measured live 2026-08-11 against rabbit\RabbitProcess (a SQL workflow):
+        //     sequential x10      -> 10/10 HTTP 200
+        //     concurrency 3       ->  3/3  HTTP 200
+        //     concurrency 4/6/10  ->  3/4, 4/6, 8/10; the rest HTTP 500
+        //                            "Object reference not set to an instance of an object."
+        //                            "Error with variables in input. [[JobLogId]]"
+        //     a SQL-FREE workflow -> 20/20 at concurrency 20 (an Assign has no such instance state)
+        // In the queue path this is worse than a plain error: the worker dead-letters AND acks a
+        // business failure, so the queue drains to zero and the deployment looks healthy while
+        // valid messages are silently diverted (16 of 30 in the 2026-08-11 burst).
+        //
+        // The fix is exclusive ownership: each execution RENTS a prepared workflow and RETURNS it
+        // in a finally. The pool grows to the peak concurrency seen for that workflow and no
+        // further, so the XAML compile and the parse are both still amortised. Sequential reuse of
+        // a returned instance is exactly what the old cache already did on every call, and is
+        // proven by the 10/10 sequential result above.
+        //
+        // Fixed in Warewolf.Execution.Lightweight ONLY, deliberately: the offending instance field
+        // lives in shared Dev2.Activities code used by the on-prem server and Studio, and pooling
+        // here fixes every activity carrying that pattern - not just the six database activities -
+        // without changing behaviour for those hosts. The shared-code defect remains latent there.
+        private static readonly ConcurrentDictionary<string, ConcurrentBag<PreparedWorkflow>> _workflowPool =
             new(StringComparer.OrdinalIgnoreCase);
 
-        public WorkflowExecutor(IExecutionLogger executionLogger)
-            : this(executionLogger, usageEventEmitter: null)
+        /// <summary>
+        /// A compiled workflow plus its parsed activity chain, owned EXCLUSIVELY by one execution
+        /// between <see cref="RentPreparedWorkflow"/> and <see cref="ReturnPreparedWorkflow"/>.
+        /// The chain is kept with the activity it was parsed from because the two are the same
+        /// object graph - parsing a rented activity again would only re-walk the identical tree.
+        /// </summary>
+        internal sealed class PreparedWorkflow
         {
+            internal DynamicActivity Activity { get; init; }
+            internal IDev2Activity StartActivity { get; init; }
         }
 
-        /// <summary>
-        /// DI-friendly constructor.  <paramref name="usageEventEmitter"/> is optional —
-        /// when null, a no-op emitter is used so existing call sites and tests that
-        /// pass only the logger keep working unchanged.
-        /// </summary>
-        public WorkflowExecutor(IExecutionLogger executionLogger, IUsageEventEmitter usageEventEmitter)
+        public WorkflowExecutor(IExecutionLogger executionLogger)
         {
             _executionLogger = executionLogger ?? throw new ArgumentNullException(nameof(executionLogger));
-            _usageEventEmitter = usageEventEmitter ?? NoOpUsageEventEmitter.Instance;
         }
 
         /// <summary>
@@ -165,6 +193,10 @@ namespace Warewolf.Execution.Lightweight
 
             Dev2Logger.Info($"WorkflowExecutor Execute starting. Workflow: {WorkflowIdentifier(request)}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
 
+            // Declared outside the try so the finally can release it however this method exits -
+            // including the early returns for a missing start node and the two catch blocks.
+            PreparedWorkflow prepared = null;
+
             try
             {
                 // Step 1: Read the workflow XML file
@@ -205,19 +237,21 @@ namespace Warewolf.Execution.Lightweight
                     };
                 }
 
-                // Step 3: Load XAML into a DynamicActivity (cached per normalised file path �
-                // ActivityXamlServices.Load compiles XAML only once per unique workflow file).
-                var dynamicActivity = GetOrLoadDynamicActivity(request.WorkflowFilePath, xamlDefinition);
+                // Steps 3+4: take EXCLUSIVE ownership of a compiled+parsed workflow. Rented rather
+                // than shared because the activity instances carry per-execution state - see the
+                // _workflowPool comment. Released in the finally at the end of this method.
+                Dev2Logger.Debug("WorkflowExecutor Step 3: Renting prepared workflow (compile+parse)", executionId.ToString());
+                prepared = RentPreparedWorkflow(request.WorkflowFilePath, xamlDefinition);
+                Dev2Logger.Debug("WorkflowExecutor Step 3 completed: Prepared workflow rented", executionId.ToString());
 
-                if (dynamicActivity == null)
+                if (prepared?.Activity == null)
                 {
                     Dev2Logger.Error("WorkflowExecutor Execute: Failed to load DynamicActivity from XAML", executionId.ToString());
                     return WorkflowExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
                 }
 
-                // Step 4: Parse DynamicActivity into IDev2Activity chain
-                var activityParser = new ActivityParser();
-                var startActivity = activityParser.Parse(dynamicActivity);
+                var startActivity = prepared.StartActivity;
+                Dev2Logger.Debug("WorkflowExecutor Step 4 completed: IDev2Activity chain available", executionId.ToString());
 
                 if (startActivity == null)
                 {
@@ -302,15 +336,18 @@ namespace Warewolf.Execution.Lightweight
 
                 Dev2Logger.Info($"WorkflowExecutor Execute completed. IsSuccess: {result.IsSuccess}, ErrorCount: {result.Errors.Count}, Duration: {stopwatch.Elapsed.TotalMilliseconds}ms", executionId.ToString());
 
-                // Per-execution usage telemetry (8438) — emit AFTER the result is built so the
-                // emit never affects response latency or content.  The emitter is non-throwing.
-                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
-                    workflowName: resolvedName,
-                    executionId:  executionId,
-                    duration:     stopwatch.Elapsed,
-                    isSuccess:    result.IsSuccess,
-                    errorCount:   result.Errors.Count,
-                    startedAtUtc: startTime));
+                // Per-execution usage telemetry (8438 / 8501) — record the execution facts
+                // AFTER the result is built so building the response is never affected.
+                // The actual publish (and its full-request timing) happens in
+                // UsagePublishMiddleware, registered first in the pipeline; this only
+                // hands off the workflow-specific payload via the ambient context.
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = resolvedName,
+                    ExecutionId  = executionId,
+                    IsSuccess    = result.IsSuccess,
+                    ErrorCount   = result.Errors.Count
+                };
 
                 return result;
             }
@@ -324,19 +361,14 @@ namespace Warewolf.Execution.Lightweight
                 Dev2Logger.Error($"WorkflowExecutor Execute: InvalidWorkflowException: {iwe.Message}", executionId.ToString());
                 var msg = iwe.Message;
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
-                // The fallback must not return iwe.Message: a XAML/workflow-definition exception
-                // can embed evaluated variable values and absolute paths. The NoStartNodeError
-                // branch is unchanged. Full detail remains at Debug above.
-                var errorMessage = start > 0
-                    ? GlobalConstants.NoStartNodeError
-                    : "Workflow execution failed because the workflow definition is invalid.";
-                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
-                    workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
-                    executionId:  executionId,
-                    duration:     stopwatch.Elapsed,
-                    isSuccess:    false,
-                    errorCount:   1,
-                    startedAtUtc: startTime));
+                var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    ExecutionId  = executionId,
+                    IsSuccess    = false,
+                    ErrorCount   = 1
+                };
                 return new WorkflowExecutionResult
                 {
                     IsSuccess = false,
@@ -347,22 +379,40 @@ namespace Warewolf.Execution.Lightweight
                     Duration = stopwatch.Elapsed
                 };
             }
+            catch (OutOfMemoryException oom)
+            {
+                // TRANSIENT, not a workflow/business failure: this is the documented
+                // Consumption-plan cold-start memory-pressure signature (compile-time
+                // allocation failure, e.g. inside Roslyn/PEReader) — see the _workflowPool
+                // comment above and docs/ShovelBridge-Architecture.md. Flagging
+                // IsTransientFailure lets a broker-driven caller (ServiceBusWorkflowTriggerFunction)
+                // retry instead of treating this as terminal and dead-lettering immediately;
+                // retrying will very likely succeed once the instance has warmed up or scaled
+                // out. HTTP callers ignore the flag and see the same failure response as before.
+                stopwatch.Stop();
+                Dev2Logger.Error($"WorkflowExecutor Execute: OutOfMemoryException (transient) for workflow: {request.WorkflowFilePath}", oom, executionId.ToString());
+                _executionLogger.LogError(nameof(Execute), oom, executionId);
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    ExecutionId  = executionId,
+                    IsSuccess    = false,
+                    ErrorCount   = 1
+                };
+                return BuildTransientFailureResult(oom, executionId, startTime, stopwatch.Elapsed);
+            }
             catch (Exception ex)
             {
                 stopwatch.Stop();
-                // ex.Message is NOT logged here: this catch is uncontrolled — it covers file
-                // reads (absolute paths), XAML parsing and every activity in the chain, so the
-                // message can carry connection strings, connector credentials, request URIs and
-                // evaluated variable values. The workflow identifier and executionId are the
-                // correlators; the exception type is the triage hint.
-                Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {WorkflowIdentifier(request)}. ExceptionType={ex.GetType().Name}", executionId.ToString());
-                _usageEventEmitter.TrackWorkflowExecution(new WorkflowUsageEvent(
-                    workflowName: Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
-                    executionId:  executionId,
-                    duration:     stopwatch.Elapsed,
-                    isSuccess:    false,
-                    errorCount:   1,
-                    startedAtUtc: startTime));
+                Dev2Logger.Error($"WorkflowExecutor Execute: Unexpected exception for workflow: {request.WorkflowFilePath}", ex, executionId.ToString());
+                _executionLogger.LogError(nameof(Execute), ex, executionId);
+                UsagePublishContext.Current = new UsagePublishContext
+                {
+                    WorkflowName = Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty,
+                    ExecutionId  = executionId,
+                    IsSuccess    = false,
+                    ErrorCount   = 1
+                };
                 return new WorkflowExecutionResult
                 {
                     IsSuccess = false,
@@ -376,23 +426,36 @@ namespace Warewolf.Execution.Lightweight
                     Duration = stopwatch.Elapsed
                 };
             }
+            finally
+            {
+                // Released here rather than after ExecuteActivityChain so that a workflow which
+                // throws mid-chain still returns its instance to the pool. Returning an instance
+                // that failed is safe: the activity state it carries is overwritten by the next
+                // execution's BeforeExecutionStart, which is exactly what the previous shared-cache
+                // design relied on for every sequential execution.
+                ReturnPreparedWorkflow(request.WorkflowFilePath, prepared);
+            }
         }
 
         /// <summary>
-        /// The workflow's route-relative identifier, for logs and caller-facing messages:
-        /// the path that follows <c>/Public/</c> or <c>/Secure/</c>, already stripped of its
-        /// <c>.json</c>/<c>.xml</c>/<c>.debug</c>/<c>.api</c> suffix by
-        /// <see cref="NameSuffixParser.Parse"/> — e.g. <c>folder/myworkflow</c>.
-        ///
-        /// <para>Preferred over the file path: it is what the caller actually asked for,
-        /// preserves the folder structure, and never exposes the server's directory layout.
-        /// Falls back to the extension-free file name for the by-path entry points
-        /// (<c>/workflow</c> and the <c>Execute(string)</c> overload) which carry no route name.</para>
+        /// Builds the <see cref="WorkflowExecutionResult"/> for the <see cref="OutOfMemoryException"/>
+        /// catch clause in <see cref="Execute(WorkflowExecutionRequest)"/>. Extracted as a small,
+        /// pure, internal (<c>InternalsVisibleTo</c> the test project) helper so unit tests can verify
+        /// the transient-failure shape (<see cref="WorkflowExecutionResult.IsTransientFailure"/> = true,
+        /// error message preserved) deterministically, without needing to force a real
+        /// <see cref="OutOfMemoryException"/> by exhausting process memory.
         /// </summary>
-        static string WorkflowIdentifier(WorkflowExecutionRequest request) =>
-            !string.IsNullOrWhiteSpace(request.WorkflowName)
-                ? request.WorkflowName
-                : Path.GetFileNameWithoutExtension(request.WorkflowFilePath) ?? string.Empty;
+        internal static WorkflowExecutionResult BuildTransientFailureResult(OutOfMemoryException oom, Guid executionId, DateTime startTime, TimeSpan elapsed) =>
+            new()
+            {
+                IsSuccess = false,
+                IsTransientFailure = true,
+                ExecutionId = executionId,
+                Errors = new List<string> { oom.Message },
+                StartTime = startTime,
+                EndTime = DateTime.UtcNow,
+                Duration = elapsed
+            };
 
         /// <summary>
         /// Step 1: Read the workflow resource XML file from disk.
@@ -501,14 +564,104 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <summary>
-        /// Returns the <see cref="DynamicActivity"/> for <paramref name="filePath"/> from the
-        /// process-level cache, compiling it from <paramref name="xamlDefinition"/> on first access.
-        /// Subsequent calls for the same path skip <see cref="ActivityXamlServices.Load"/> entirely.
+        /// Takes exclusive ownership of a compiled+parsed workflow for <paramref name="filePath"/>,
+        /// reusing a previously returned one when available and compiling a new one otherwise.
+        ///
+        /// <para>The caller MUST pass the result to <see cref="ReturnPreparedWorkflow"/> in a
+        /// <c>finally</c>. Failing to return one is not a correctness bug - the next execution
+        /// simply compiles another - but it forfeits the reuse that makes this cheap.</para>
         /// </summary>
-        internal static DynamicActivity GetOrLoadDynamicActivity(string filePath, StringBuilder xamlDefinition)
-            => _dynamicActivityCache.GetOrAdd(
-                Path.GetFullPath(filePath),
-                _ => LoadDynamicActivity(xamlDefinition));
+        /// <returns>
+        /// <c>null</c> when the XAML does not yield a <see cref="DynamicActivity"/>, matching the
+        /// previous contract so the caller's existing null handling is unchanged.
+        /// </returns>
+        internal static PreparedWorkflow RentPreparedWorkflow(string filePath, StringBuilder xamlDefinition)
+        {
+            var key = Path.GetFullPath(filePath);
+
+            if (_workflowPool.TryGetValue(key, out var available) && available.TryTake(out var reused))
+            {
+                return reused;
+            }
+
+            var activity = LoadDynamicActivity(xamlDefinition);
+            if (activity == null)
+            {
+                return null;
+            }
+
+            // Parsed once per compiled instance rather than once per execution: Parse() only walks
+            // the activity's own object graph, so the chain it returns belongs to this instance and
+            // is as exclusively owned as the instance itself.
+            return new PreparedWorkflow
+            {
+                Activity      = activity,
+                StartActivity = new ActivityParser().Parse(activity)
+            };
+        }
+
+        /// <summary>
+        /// Releases a rented workflow back for reuse. Null-tolerant so callers can return
+        /// unconditionally from a <c>finally</c> without first testing whether the rent succeeded.
+        /// </summary>
+        internal static void ReturnPreparedWorkflow(string filePath, PreparedWorkflow prepared)
+        {
+            if (prepared?.Activity == null || string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            var bag = _workflowPool.GetOrAdd(Path.GetFullPath(filePath), _ => new ConcurrentBag<PreparedWorkflow>());
+
+            // BOUNDED. Beyond the cap the instance is simply not retained - it becomes garbage and
+            // the next rent compiles a fresh one. Renting is deliberately NOT throttled, so the
+            // exclusivity guarantee is untouched; only how much is KEPT is capped.
+            //
+            // Why this matters: a compiled workflow tree measured ~32 MB (engine working set rose
+            // 396 MB -> 712 MB across 10 concurrent executions, 2026-08-12). An unbounded pool grows
+            // to peak concurrency and never shrinks, so a single burst permanently raises the
+            // floor. On an Azure Functions Consumption instance (~1.5 GB) that reached exhaustion:
+            //   "Insufficient memory to continue the execution of the program."
+            //     at System.Reflection.PortableExecutable.PEReader..ctor(...)
+            // - i.e. the XAML compile itself failed for lack of memory, returning HTTP 500.
+            //
+            // Set the cap at or above expected peak concurrency and the reuse rate is unchanged;
+            // set it below and the excess simply recompiles, trading CPU for a hard memory ceiling.
+            if (bag.Count >= MaxPooledPerWorkflow)
+            {
+                return;
+            }
+
+            bag.Add(prepared);
+        }
+
+        /// <summary>
+        /// Maximum prepared workflows RETAINED per workflow path. Override with
+        /// <c>WAREWOLF_WORKFLOW_POOL_MAX</c>; values below 1 are ignored in favour of the default.
+        /// </summary>
+        /// <remarks>
+        /// 8 by default: comfortably above the per-replica concurrency the queue path generates
+        /// (<c>WORKER__MAXCONCURRENCY</c> is 1, so one replica issues one request at a time), while
+        /// bounding retained memory to roughly 8 x the compiled tree size per distinct workflow.
+        /// </remarks>
+        internal static int MaxPooledPerWorkflow { get; } = ResolvePoolCap();
+
+        static int ResolvePoolCap()
+        {
+            const int fallback = 8;
+            var raw = Environment.GetEnvironmentVariable("WAREWOLF_WORKFLOW_POOL_MAX");
+            return int.TryParse(raw, out var parsed) && parsed >= 1 ? parsed : fallback;
+        }
+
+        /// <summary>
+        /// Discards every pooled workflow. Test hook only - lets a test observe compilation
+        /// behaviour from a known-empty state without depending on execution order.
+        /// </summary>
+        internal static void ClearWorkflowPool() => _workflowPool.Clear();
+
+        /// <summary>Pooled (idle) instance count for <paramref name="filePath"/>. Test hook only.</summary>
+        internal static int PooledWorkflowCount(string filePath)
+            => _workflowPool.TryGetValue(Path.GetFullPath(filePath), out var bag) ? bag.Count : 0;
 
         /// <summary>
         /// Step 5: Build DsfDataObject and map input parameters into the execution environment.
@@ -521,7 +674,7 @@ namespace Warewolf.Execution.Lightweight
             Guid resourceId,
             int versionNumber)
         {
-            var rawPayload = BuildJsonPayload(request.InputParameters);
+            var rawPayload = ResolveInputPayload(request);
             var workflowDir = Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
 
             var dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), rawPayload)
@@ -542,9 +695,10 @@ namespace Warewolf.Execution.Lightweight
                 ExecutingUser = ResolveExecutingUser(request.ExecutingPrincipal)
             };
 
-            if (!string.IsNullOrEmpty(dataList)
-                && request.InputParameters != null
-                && request.InputParameters.Count > 0)
+            // Gate on the PAYLOAD, not on InputParameters.Count: a raw body (flat JSON or XML)
+            // carries inputs without ever populating InputParameters, and gating on the dictionary
+            // meant such a body was never handed to the environment at all.
+            if (!string.IsNullOrEmpty(dataList) && !string.IsNullOrWhiteSpace(rawPayload))
             {
                 ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload(
                     dataObject,
@@ -553,6 +707,59 @@ namespace Warewolf.Execution.Lightweight
             }
 
             return dataObject;
+        }
+
+        /// <summary>
+        /// Chooses the payload handed to <c>UpdateEnvironmentFromInputPayload</c>, preferring the
+        /// caller's ORIGINAL body over one re-synthesised from <see cref="WorkflowExecutionRequest.InputParameters"/>.
+        /// </summary>
+        /// <remarks>
+        /// Parity with Dev2.Runtime.WebServer, which passes <c>WebRequestTO.RawRequestPayload</c>
+        /// straight through. Re-synthesising from a Dictionary&lt;string,string&gt; silently dropped
+        /// flat bodies, XML bodies and nested/recordset inputs - see
+        /// <see cref="WorkflowExecutionRequest.RawInputPayload"/>.
+        ///
+        /// Query-string inputs are merged in when the raw body is a JSON object, and the BODY WINS
+        /// on a name clash - the same precedence as before, where the body was parsed after the
+        /// query string and overwrote it. An XML body is used as-is, because merging query values
+        /// into arbitrary XML would require guessing its shape.
+        /// </remarks>
+        internal static string ResolveInputPayload(WorkflowExecutionRequest request)
+        {
+            var raw = request.RawInputPayload;
+            var hasQueryInputs = request.InputParameters is { Count: > 0 };
+
+            if (string.IsNullOrWhiteSpace(raw))
+            {
+                return BuildJsonPayload(request.InputParameters);
+            }
+
+            if (!hasQueryInputs)
+            {
+                return raw;
+            }
+
+            if (raw.TrimStart().StartsWith("{", StringComparison.Ordinal))
+            {
+                try
+                {
+                    var merged = JObject.Parse(raw);
+                    foreach (var kv in request.InputParameters)
+                    {
+                        if (merged[kv.Key] == null)
+                        {
+                            merged[kv.Key] = kv.Value;
+                        }
+                    }
+                    return merged.ToString(Formatting.None);
+                }
+                catch
+                {
+                    // Not parseable after all - fall through and use the body untouched.
+                }
+            }
+
+            return raw;
         }
 
         /// <summary>
@@ -605,6 +812,24 @@ namespace Warewolf.Execution.Lightweight
             while (next != null)
             {
                 var current = next;
+
+                // Nested sub-workflow invocation nodes (e.g. "Hello World" called from a
+                // continuation) default to the Server's legacy Windows-groups authorization
+                // (ServerAuthorizationService), which the Lightweight engine has no secure.config
+                // to satisfy. The caller was already authorized at the HTTP/claims layer before
+                // execution began, so hand nested invocations a permissive service instead.
+                if (current is Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity dsfActivity)
+                {
+                    dsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
+                }
+
+                // A sub-workflow invoke may also be nested inside a composite/container
+                // activity (DsfSequenceActivity, DsfForEachActivity, GateActivity, etc.) whose
+                // own Execute() iterates its children internally, never surfacing them through
+                // this flat `next`-chain loop. Walk GetChildrenNodes() recursively so every
+                // nested DsfActivity gets the same permissive patch before `current` executes.
+                PatchNestedAuthorizationServices(current, new HashSet<string>());
+
                 next = current.Execute(dataObject, 0);
                 environment.AllErrors.UnionWith(environment.Errors);
 
@@ -617,6 +842,46 @@ namespace Warewolf.Execution.Lightweight
                     }
                     break;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Recursively walks <paramref name="node"/>'s <see cref="IDev2Activity.GetChildrenNodes"/>
+        /// tree, patching every nested <c>DsfActivity</c> (sub-workflow invoke) onto the permissive
+        /// <see cref="Security.LightweightAuthorizationService"/> — mirroring the flat top-level
+        /// patch in <see cref="ExecuteActivityChain"/> for nodes reachable only through a
+        /// composite/container activity's own internal iteration (Sequence, ForEach, Gate,
+        /// ManualResumption, RedisCache, SelectAndApply, etc.), which never surface through the
+        /// outer `next`-chain loop. <paramref name="visited"/> is keyed on <see cref="IDev2Activity.UniqueID"/>
+        /// to guard against re-processing a node twice and against any cyclic/self-referencing
+        /// GetChildrenNodes() implementation causing unbounded recursion.
+        /// </summary>
+        static void PatchNestedAuthorizationServices(IDev2Activity node, HashSet<string> visited)
+        {
+            if (node == null || !visited.Add(node.UniqueID))
+            {
+                return;
+            }
+
+            var children = node.GetChildrenNodes();
+            if (children == null)
+            {
+                return;
+            }
+
+            foreach (var child in children)
+            {
+                if (child == null)
+                {
+                    continue;
+                }
+
+                if (child is Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity childDsfActivity)
+                {
+                    childDsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
+                }
+
+                PatchNestedAuthorizationServices(child, visited);
             }
         }
 

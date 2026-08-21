@@ -1,7 +1,13 @@
 using Dev2.Web;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Azure.Functions.Worker.Http;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Frozen;
+using System.IO;
+using System.Text;
 using System.Web;
 using Warewolf.Execution.Lightweight.Models;
 
@@ -20,8 +26,14 @@ namespace Warewolf.Execution.Lightweight
     public static class WorkflowFunctionHelper
     {
         // Frozen once at startup — lookup is allocation-free and JIT-friendly.
+        //
+        // 'wid' is the workspace id. It is a TRANSPORT concern, not a workflow input: the full
+        // server explicitly skips it in both SubmittedData.ExtractKeyValuePairForGetMethod and
+        // ExtractKeyValuePairs ("Don't add the Workspace ID to DataList"). Without it here, a
+        // caller that passes ?wid=... - which every Studio-issued URL does - gets a spurious
+        // 'wid' scalar in the execution environment that the workflow never declared.
         static readonly FrozenSet<string> _reservedQueryKeys =
-            new[] { "workflowName", "workflowFilePath", "isDebug" }
+            new[] { "workflowName", "workflowFilePath", "isDebug", "wid" }
                 .ToFrozenSet(StringComparer.OrdinalIgnoreCase);
         /// <summary>
         /// Creates a <see cref="WorkflowExecutionRequest"/> from an HTTP request.
@@ -66,6 +78,20 @@ namespace Warewolf.Execution.Lightweight
             if (!string.IsNullOrWhiteSpace(workflowNameFromRoute))
             {
                 executionRequest.WorkflowName = workflowNameFromRoute;
+
+                // SECURITY: the ROUTE is authoritative once it names a workflow.
+                //
+                // Authorization is evaluated on the route-derived name (WorkflowHttpFunction:326)
+                // BEFORE this request is parsed (:365). ResolveFilePath then returns early whenever
+                // WorkflowFilePath is already populated - so a body- or query-supplied
+                // 'workflowFilePath' used to win over the route and execute a DIFFERENT workflow
+                // than the one that was authorized. On /Public that means reaching a workflow which
+                // is not public at all.
+                //
+                // Clearing it here keeps the two decisions on the same subject. The generic
+                // /workflow route passes no route name and is unaffected, so callers that legitimately
+                // select a workflow by path keep working.
+                executionRequest.WorkflowFilePath = null;
             }
 
             ResolveFilePath(executionRequest, workflowsDirectory);
@@ -159,6 +185,23 @@ namespace Warewolf.Execution.Lightweight
                 }
             }
 
+            // ── The ENTIRE query string is a raw XML or JSON payload ────────────────────────
+            // Parity with SubmittedData.GetPostData:56-70, which slices everything after '?' and,
+            // when it IsXml()/IsJSON(), returns it AS the payload without any key=value parsing.
+            // Verified against the live server: GET /secure/Hello World.json?<DataList><Name>Sachin
+            // </Name></DataList> and ?{"Name":"Sachin"} both bind and return "Hello Sachin.".
+            //
+            // This MUST be handled before ParseQueryString's key loop, because HttpUtility
+            // .ParseQueryString gives a segment with no '=' a NULL key, and the loop below skips
+            // null keys - so the whole payload was silently discarded and the workflow ran with
+            // nothing bound. Like the server, this short-circuits: a payload query carries no
+            // workflowName/wid/isDebug pairs to extract.
+            if (TryGetRawQueryPayload(request.Url.Query, out var queryPayload))
+            {
+                executionRequest.RawInputPayload = queryPayload;
+                return;
+            }
+
             var queryParams = HttpUtility.ParseQueryString(request.Url.Query);
 
             var workflowName = queryParams["workflowName"];
@@ -186,6 +229,133 @@ namespace Warewolf.Execution.Lightweight
             }
         }
 
+        /// <summary>
+        /// Binds a <c>multipart/form-data</c> body, one input parameter per part.
+        /// </summary>
+        /// <remarks>
+        /// Mirrors <c>SubmittedData.ExtractMultipartFormDataArgumentsFromDataList</c>, including
+        /// its one non-obvious rule: a part that declares its OWN <c>Content-Type</c> is bound as
+        /// <b>Base64</b>, and only an untyped part is bound as text. Verified against the live
+        /// server — posting <c>Name=Sachin</c> as a typed part returns <c>"Hello U2FjaGlu."</c>.
+        /// That is what makes file/binary uploads reachable from a workflow.
+        ///
+        /// <para>Parsing uses <see cref="MultipartReader"/> from the ASP.NET Core shared framework
+        /// rather than a hand-rolled boundary scanner: quoted boundaries, CRLF handling and
+        /// epilogues all have edge cases whose failure mode here would be a silently unbound
+        /// input, which is the exact class of bug this work exists to remove.</para>
+        ///
+        /// <para>A malformed body binds nothing instead of throwing. The request then behaves like
+        /// one with no inputs and fails on the workflow's first required variable, which is the
+        /// same outcome the server produces and is preferable to a 500 from the parser.</para>
+        /// </remarks>
+        static async Task ParseMultipartAsync(
+            HttpRequestData request, WorkflowExecutionRequest executionRequest, string contentType)
+        {
+            if (!MediaTypeHeaderValue.TryParse(contentType, out var mediaType))
+            {
+                return;
+            }
+
+            var boundary = HeaderUtilities.RemoveQuotes(mediaType.Boundary).Value;
+            if (string.IsNullOrWhiteSpace(boundary))
+            {
+                return;
+            }
+
+            try
+            {
+                var reader = new MultipartReader(boundary, request.Body);
+
+                MultipartSection section;
+                while ((section = await reader.ReadNextSectionAsync()) != null)
+                {
+                    if (!ContentDispositionHeaderValue.TryParse(section.ContentDisposition, out var disposition))
+                    {
+                        continue;
+                    }
+
+                    var name = HeaderUtilities.RemoveQuotes(disposition.Name).Value;
+                    if (string.IsNullOrEmpty(name) || _reservedQueryKeys.Contains(name))
+                    {
+                        continue;
+                    }
+
+                    using var buffer = new MemoryStream();
+                    await section.Body.CopyToAsync(buffer);
+                    var bytes = buffer.ToArray();
+
+                    executionRequest.InputParameters[name] = string.IsNullOrEmpty(section.ContentType)
+                        ? Encoding.UTF8.GetString(bytes)
+                        : Convert.ToBase64String(bytes);
+                }
+            }
+            catch (IOException)
+            {
+                // Truncated or malformed multipart stream — keep whatever parts were read.
+            }
+            catch (InvalidDataException)
+            {
+                // Boundary did not match the body — same treatment.
+            }
+        }
+
+        /// <summary>
+        /// True when the whole query string is itself an XML or JSON document rather than
+        /// key=value pairs, in which case it IS the input payload.
+        /// </summary>
+        /// <remarks>
+        /// Deliberately PARSES rather than sniffing the first character. The server's IsXml()/
+        /// IsJSON() do real validation, and a cheap '&lt;' or '{' test would capture query strings
+        /// that merely start with one - e.g. ?a=&lt;b - turning ordinary (if odd) parameters into an
+        /// unparseable payload and losing them. Failing the parse falls through to normal
+        /// key=value handling, which is the safe direction.
+        /// </remarks>
+        internal static bool TryGetRawQueryPayload(string query, out string payload)
+        {
+            payload = null;
+
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return false;
+            }
+
+            var decoded = HttpUtility.UrlDecode(query.TrimStart('?'))?.Trim();
+            if (string.IsNullOrWhiteSpace(decoded))
+            {
+                return false;
+            }
+
+            if (decoded.StartsWith("{", StringComparison.Ordinal))
+            {
+                try
+                {
+                    JObject.Parse(decoded);
+                    payload = decoded;
+                    return true;
+                }
+                catch (JsonException)
+                {
+                    return false;
+                }
+            }
+
+            if (decoded.StartsWith("<", StringComparison.Ordinal))
+            {
+                try
+                {
+                    System.Xml.Linq.XDocument.Parse(decoded);
+                    payload = decoded;
+                    return true;
+                }
+                catch (System.Xml.XmlException)
+                {
+                    return false;
+                }
+            }
+
+            return false;
+        }
+
         static async Task ParseBodyAsync(HttpRequestData request, WorkflowExecutionRequest executionRequest)
         {
             if (request.Body == null || !request.Body.CanRead)
@@ -193,16 +363,84 @@ namespace Warewolf.Execution.Lightweight
                 return;
             }
 
+            var contentType = TryGetHeaderValue(request, "Content-Type") ?? string.Empty;
+
+            // ── multipart/form-data ──────────────────────────────────────────────────────────
+            // Handled FIRST and straight off the stream, because a part may be binary and reading
+            // the body as a UTF-8 string would corrupt it. Parity with the full server's
+            // SubmittedData.ExtractMultipartFormDataArgumentsFromDataList.
+            if (contentType.Contains("multipart/form-data", StringComparison.OrdinalIgnoreCase))
+            {
+                await ParseMultipartAsync(request, executionRequest, contentType);
+                return;
+            }
+
+            string body;
+            using (var reader = new StreamReader(request.Body))
+            {
+                body = await reader.ReadToEndAsync();
+            }
+
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                return;
+            }
+
+            // ── application/x-www-form-urlencoded ────────────────────────────────────────────
+            // Parity with the full server, whose ExtractKeyValuePairForPostMethod falls through to
+            // ExtractArgumentsFromDataListOrQueryString for a non-XML, non-JSON body - i.e. it treats
+            // the body as a query string. Handled as INPUT PARAMETERS rather than as a raw payload,
+            // because ExecutionEnvironmentUtils only understands JSON and XML: passing 'a=1&b=2' to it
+            // would bind nothing at all.
+            if (contentType.Contains("application/x-www-form-urlencoded", StringComparison.OrdinalIgnoreCase))
+            {
+                var form = HttpUtility.ParseQueryString(body);
+                foreach (var key in form.AllKeys)
+                {
+                    if (key != null && !_reservedQueryKeys.Contains(key))
+                    {
+                        executionRequest.InputParameters[key] = form[key];
+                    }
+                }
+                return;
+            }
+
+            // Only attempt the DTO/envelope parse when the body actually looks like a JSON object.
+            // Previously an XML body reached JsonConvert.DeserializeObject<WorkflowExecutionRequest>,
+            // threw, and was swallowed by the catch - so XML inputs were silently discarded even
+            // though ExecutionEnvironmentUtils converts XML payloads perfectly well.
+            var trimmed = body.TrimStart();
+            var looksLikeJsonObject = trimmed.StartsWith("{", StringComparison.Ordinal);
+
+            var hasEnvelopeInputs = false;
+            if (looksLikeJsonObject)
+            {
+                try
+                {
+                    hasEnvelopeInputs = JObject.Parse(body)["inputParameters"] != null;
+                }
+                catch
+                {
+                    // Malformed JSON: fall through and treat the body as an opaque payload.
+                }
+            }
+
+            // Anything that is NOT the documented envelope is preserved VERBATIM and handed to
+            // ExecutionEnvironmentUtils, exactly as Dev2.Runtime.WebServer does with
+            // WebRequestTO.RawRequestPayload. That is what makes a flat body, an XML body and
+            // nested/recordset inputs bind here the same way they do on the full server.
+            if (!hasEnvelopeInputs)
+            {
+                executionRequest.RawInputPayload = body;
+            }
+
+            if (!looksLikeJsonObject)
+            {
+                return;
+            }
+
             try
             {
-                using var reader = new StreamReader(request.Body);
-                var body = await reader.ReadToEndAsync();
-
-                if (string.IsNullOrWhiteSpace(body))
-                {
-                    return;
-                }
-
                 var bodyRequest = JsonConvert.DeserializeObject<WorkflowExecutionRequest>(body);
                 if (bodyRequest == null)
                 {
@@ -305,7 +543,7 @@ namespace Warewolf.Execution.Lightweight
         /// is on disk.
         /// </summary>
         static string StripKnownExtension(string fileName) =>
-            fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase)  ? fileName[..^4] :
+            fileName.EndsWith(".xml", StringComparison.OrdinalIgnoreCase) ? fileName[..^4] :
             fileName.EndsWith(".bite", StringComparison.OrdinalIgnoreCase) ? fileName[..^5] :
             fileName;
 

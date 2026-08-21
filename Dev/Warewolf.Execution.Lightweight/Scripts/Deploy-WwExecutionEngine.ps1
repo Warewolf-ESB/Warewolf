@@ -236,6 +236,49 @@ param(
     [string] $JobProcessorStorageAccount,
     [string] $EngineResumeScope,             # MI token scope the processor uses (api://<engine-app-id>/.default)
 
+    # ── Warewolf.Execution.ServiceBusWorker (optional companion deploy) ───────
+    # When -DeployServiceBusWorker, after the engine deploy this calls
+    # Deploy-WwExecutionServiceBusWorker.ps1 for the Service Bus-triggered
+    # Function App (the engine's other first-class trigger path alongside
+    # HTTPS), passing the shared context (subscription/tenant/RG/location);
+    # the child prompts for anything not supplied here, including the Service
+    # Bus namespace/queue it provisions.
+    # ServiceBusWorkerPublishPath MUST be a SEPARATE publish output from the
+    # engine's (it is a different csproj / different Function App); the plan
+    # phase resolves it and fails loudly if it collides with the engine
+    # PublishPath.
+    [switch] $DeployServiceBusWorker,
+    [string] $ServiceBusWorkerAppName,
+    [string] $ServiceBusWorkerPublishPath,
+    [string] $ServiceBusWorkerStorageAccount,
+    [string] $WwExecutionScope,               # MI token scope the worker uses (api://<engine-app-id>/.default)
+
+    # ── RabbitMQ queue triggers (optional companion deploy) ───────────────────
+    # When -DeployRabbitMqTriggers, after the engine deploy this calls
+    # Deploy-WwQueueProcessor.ps1 ONCE PER TRIGGER FILE resolved from
+    # -QueueTriggerPath / -QueueTriggerFilePath / -QueueTriggerManifestPath, so one
+    # command provisions the engine AND a Container App per queue trigger. Each app is
+    # autoscaled 0..Concurrency by the KEDA rabbitmq scaler (maxReplicas is derived from
+    # the trigger's Concurrency; the KEDA target from its Prefetch).
+    # QueueProcessorPublishPath MUST be a SEPARATE publish output from both the engine's
+    # and the JobProcessor's; the plan phase resolves it and fails loudly on a collision.
+    # Docs: docs/Deploy-EndToEnd-Runbook.md section 8.
+    [switch] $DeployRabbitMqTriggers,
+    [string] $QueueTriggerPath,                       # folder of trigger .bite files
+    [string] $QueueTriggerFilter = '*.bite',
+    [string] $QueueTriggerFilePath,                   # or exactly one file
+    [string] $QueueTriggerManifestPath,               # or a manifest with per-trigger overrides
+    [string] $QueueSourcePath,                        # folder holding {QueueSourceId}.bite
+    [string] $AcaEnvironment,
+    [string] $AcrName,
+    [string] $QueueProcessorPublishPath,
+    [string] $QueueProcessorImage,                    # or reuse a pre-built digest
+    [string] $QueueEngineResourceAppId,               # engine Entra app id for the worker's token
+    [string] $RabbitMqSecretUri,                      # Key Vault secret holding the broker URI (KEDA)
+    [ValidateSet('Elastic', 'Fixed', 'Warm')]
+    [string] $QueueScalingMode = 'Elastic',
+    [switch] $ContinueOnQueueTriggerError,
+
     # ── Other logging / feature env vars ─────────────────────────────────────
     [nullable[bool]] $EnableConsoleLogging,
     [ValidateSet('TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL', 'OFF')]
@@ -670,6 +713,10 @@ function Save-DeploySummary {
         persistenceDbSource = ($enablePersistence ? $PersistenceDbSourcePath : $null)
         deployJobProcessor  = [bool]$DeployJobProcessor
         jobProcessorAppName = ($DeployJobProcessor ? $JobProcessorAppName : $null)
+        deployServiceBusWorker  = [bool]$DeployServiceBusWorker
+        serviceBusWorkerAppName = ($DeployServiceBusWorker ? $ServiceBusWorkerAppName : $null)
+        deployRabbitMqTriggers = [bool]$DeployRabbitMqTriggers
+        queueProcessorApps  = ($DeployRabbitMqTriggers ? $script:QueueProcessorApps : $null)
         keyVault        = ($kvRequired ? @{ name = $KeyVaultName; secret = $KeyVaultSecretName } : $null)
         appSettings     = $maskedSettings
     }
@@ -700,6 +747,13 @@ $PersistenceDbSourceName = 'persistencesettingsdbsource.bite'
 
 # Companion JobProcessor deploy (invoked only when -DeployJobProcessor).
 $JobProcessorScript = Join-Path $ScriptDir 'Deploy-WwJobProcessor.ps1'
+
+# Companion ServiceBusWorker deploy (invoked only when -DeployServiceBusWorker).
+$ServiceBusWorkerScript = Join-Path $ScriptDir 'Deploy-WwExecutionServiceBusWorker.ps1'
+
+# Companion QueueProcessor deploy (invoked only when -DeployRabbitMqTriggers), once per
+# resolved trigger file.
+$QueueProcessorScript = Join-Path $ScriptDir 'Deploy-WwQueueProcessor.ps1'
 
 # Test hook: stop here when only the helper functions are wanted (Pester).
 if ($LoadFunctionsOnly) { return }
@@ -852,6 +906,125 @@ if ($DeployJobProcessor) {
     }
 }
 
+# ── ServiceBusWorker companion — its publish output MUST differ from the engine's ──
+# The worker is a SEPARATE Function App built from a DIFFERENT csproj
+# (Warewolf.Execution.ServiceBusWorker). Sharing a publish/upload directory with
+# the engine would zip the engine's binaries and upload them to the worker app —
+# a silently-wrong deploy. Resolve + validate the worker publish path up-front so
+# it fails at PLAN time (before the engine is even deployed), not deep in the child.
+if ($DeployServiceBusWorker) {
+    $ServiceBusWorkerPublishPath = Read-Required -Name 'ServiceBusWorkerPublishPath' -Current $ServiceBusWorkerPublishPath -Hint 'folder or .zip of the ServiceBusWorker Release publish output — MUST differ from the engine PublishPath'
+    if (-not (Test-Path -LiteralPath $ServiceBusWorkerPublishPath)) {
+        throw "ServiceBusWorkerPublishPath not found: $ServiceBusWorkerPublishPath"
+    }
+    $sbwItem = Get-Item -LiteralPath $ServiceBusWorkerPublishPath
+    $sbwDir  =
+        if     ($sbwItem.PSIsContainer)         { $sbwItem.FullName }
+        elseif ($sbwItem.Extension -ieq '.zip') { Join-Path $sbwItem.DirectoryName $sbwItem.BaseName }
+        else   { throw "ServiceBusWorkerPublishPath must be a folder or a .zip file: $ServiceBusWorkerPublishPath" }
+    $engineFull2 = ([System.IO.Path]::GetFullPath($PublishDir)).TrimEnd('\','/')
+    $sbwFull     = ([System.IO.Path]::GetFullPath($sbwDir)).TrimEnd('\','/')
+    if ($sbwFull -ieq $engineFull2) {
+        throw ("ServiceBusWorkerPublishPath resolves to the SAME directory as the engine PublishPath ('$engineFull2'). " +
+               "The worker is a different Function App built from Warewolf.Execution.ServiceBusWorker and MUST publish to its own directory. " +
+               "Publish it separately, e.g. dotnet publish Warewolf.Execution.ServiceBusWorker -c Release -o <different-path>.")
+    }
+}
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Plan-time validation for the RabbitMQ queue-trigger companion deploy.
+# Runs BEFORE the engine is deployed so an operator sees the whole fan-out (and any
+# mistake) up front rather than after the engine is already live.
+# ─────────────────────────────────────────────────────────────────────────────
+$script:QueueTriggerFiles  = @()
+$script:QueueProcessorApps = @()
+
+if ($DeployRabbitMqTriggers) {
+    if (-not (Test-Path -LiteralPath $QueueProcessorScript)) {
+        throw "Deploy-WwQueueProcessor.ps1 not found at '$QueueProcessorScript'."
+    }
+
+    $modeCount = @([bool]$QueueTriggerPath, [bool]$QueueTriggerFilePath, [bool]$QueueTriggerManifestPath |
+                   Where-Object { $_ }).Count
+    if ($modeCount -gt 1) {
+        throw ('-QueueTriggerPath, -QueueTriggerFilePath and -QueueTriggerManifestPath are mutually ' +
+               'exclusive; pass exactly one.')
+    }
+
+    # Resolve the trigger set now, so "zero triggers" fails at plan time.
+    if ($QueueTriggerFilePath) {
+        if (-not (Test-Path -LiteralPath $QueueTriggerFilePath)) {
+            throw "QueueTriggerFilePath not found: '$QueueTriggerFilePath'."
+        }
+        $script:QueueTriggerFiles = @((Get-Item -LiteralPath $QueueTriggerFilePath).FullName)
+    }
+    elseif ($QueueTriggerManifestPath) {
+        if (-not (Test-Path -LiteralPath $QueueTriggerManifestPath)) {
+            throw "QueueTriggerManifestPath not found: '$QueueTriggerManifestPath'."
+        }
+        $qpManifest = Get-Content -LiteralPath $QueueTriggerManifestPath -Raw | ConvertFrom-Json
+        $script:QueueTriggerFiles = @($qpManifest.triggers | ForEach-Object { $_.file })
+        if ($script:QueueTriggerFiles.Count -eq 0) {
+            throw "Trigger manifest '$QueueTriggerManifestPath' declares no triggers."
+        }
+    }
+    else {
+        $QueueTriggerPath = Read-Required -Name 'QueueTriggerPath' -Current $QueueTriggerPath `
+                                          -Hint 'folder containing the queue-trigger .bite files'
+        if (-not (Test-Path -LiteralPath $QueueTriggerPath)) {
+            throw "QueueTriggerPath not found: '$QueueTriggerPath'."
+        }
+        $script:QueueTriggerFiles = @(Get-ChildItem -LiteralPath $QueueTriggerPath -Filter $QueueTriggerFilter -File |
+                                      Sort-Object Name | Select-Object -ExpandProperty FullName)
+        if ($script:QueueTriggerFiles.Count -eq 0) {
+            throw ("No trigger files matching '$QueueTriggerFilter' were found in '$QueueTriggerPath'. " +
+                   'Refusing to run a queue-trigger deploy that would deploy nothing.')
+        }
+    }
+
+    # An unsubstituted release token means maxReplicas would be derived from a token, so the
+    # app would silently get the wrong capacity. Fail here, not in the child.
+    foreach ($qpFile in $script:QueueTriggerFiles) {
+        $qpRaw = Get-Content -LiteralPath $qpFile -Raw
+        if ($qpRaw -match '#\{') {
+            throw ("Trigger file '$qpFile' still contains an unsubstituted release token ('#{...'). " +
+                   'The release pipeline must substitute Concurrency before the deploy runs.')
+        }
+    }
+
+    $QueueSourcePath = Read-Required -Name 'QueueSourcePath' -Current $QueueSourcePath `
+                                     -Hint 'folder holding the {QueueSourceId}.bite RabbitMQ source files'
+    $AcaEnvironment  = Read-Required -Name 'AcaEnvironment' -Current $AcaEnvironment `
+                                     -Hint 'Container Apps environment for the queue workers'
+
+    # Publish-path isolation: the worker is a different project (and a Linux container), so
+    # sharing a publish directory with the engine or the JobProcessor would ship the wrong bits.
+    if (-not $QueueProcessorImage) {
+        $QueueProcessorPublishPath = Read-Required -Name 'QueueProcessorPublishPath' `
+            -Current $QueueProcessorPublishPath `
+            -Hint 'folder of the Warewolf.Execution.QueueProcessor publish output (or pass -QueueProcessorImage)'
+        if (-not (Test-Path -LiteralPath $QueueProcessorPublishPath)) {
+            throw "QueueProcessorPublishPath not found: $QueueProcessorPublishPath"
+        }
+        $AcrName = Read-Required -Name 'AcrName' -Current $AcrName -Hint 'Azure Container Registry name'
+
+        $qpFull = ([System.IO.Path]::GetFullPath($QueueProcessorPublishPath)).TrimEnd('\', '/')
+        $engineFullForQp = ([System.IO.Path]::GetFullPath($PublishDir)).TrimEnd('\', '/')
+        if ($qpFull -ieq $engineFullForQp) {
+            throw ("QueueProcessorPublishPath resolves to the SAME directory as the engine PublishPath " +
+                   "('$engineFullForQp'). The queue worker is a different project " +
+                   '(Warewolf.Execution.QueueProcessor) and MUST publish to its own directory.')
+        }
+        if ($DeployJobProcessor -and $JobProcessorPublishPath) {
+            $jpFullForQp = ([System.IO.Path]::GetFullPath($JobProcessorPublishPath)).TrimEnd('\', '/')
+            if ($qpFull -ieq $jpFullForQp) {
+                throw ("QueueProcessorPublishPath resolves to the SAME directory as " +
+                       "JobProcessorPublishPath ('$jpFullForQp'). Each app must publish separately.")
+            }
+        }
+    }
+}
+
 # ── secure.config classification (validate now, before any change) ─────────────
 $secureConfigKind = $null
 if ($SecureConfigPath) {
@@ -924,6 +1097,16 @@ Write-Host ("    {0,-28}: {1}" -f 'Persistence (Hangfire)', ($enablePersistence 
 Write-Host ("    {0,-28}: {1}" -f 'Deploy JobProcessor', ($DeployJobProcessor ? "yes -> Deploy-WwJobProcessor.ps1$($JobProcessorAppName ? " ($JobProcessorAppName)" : '')" : 'no'))
 if ($DeployJobProcessor) {
     Write-Host ("    {0,-28}: {1}" -f 'JobProcessor PublishPath', "$JobProcessorPublishPath  (separate from engine PublishDir)")
+}
+Write-Host ("    {0,-28}: {1}" -f 'Deploy ServiceBusWorker', ($DeployServiceBusWorker ? "yes -> Deploy-WwExecutionServiceBusWorker.ps1$($ServiceBusWorkerAppName ? " ($ServiceBusWorkerAppName)" : '')" : 'no'))
+if ($DeployServiceBusWorker) {
+    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusWorker PublishPath', "$ServiceBusWorkerPublishPath  (separate from engine PublishDir)")
+}
+Write-Host ("    {0,-28}: {1}" -f 'Deploy RabbitMQ triggers', ($DeployRabbitMqTriggers ? "yes -> Deploy-WwQueueProcessor.ps1 ($($script:QueueTriggerFiles.Count) trigger(s): $((($script:QueueTriggerFiles | ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_) }) -join ', ')))" : 'no'))
+if ($DeployRabbitMqTriggers) {
+    Write-Host ("    {0,-28}: {1}" -f 'QueueProcessor image', ($QueueProcessorImage ? $QueueProcessorImage : "build from $QueueProcessorPublishPath -> $AcrName"))
+    Write-Host ("    {0,-28}: {1}" -f 'ACA environment', $AcaEnvironment)
+    Write-Host ("    {0,-28}: {1}" -f 'Queue scaling mode', $QueueScalingMode)
 }
 if ($kvRequired) {
     $kvPurpose = $doEncryptResources ? 'encrypt now + runtime decrypt' : 'runtime decrypt of already-encrypted sources'
@@ -1008,7 +1191,19 @@ try {
     }
 
     # 1.2 Storage account
+    # Storage account names are globally unique across the whole subscription (not
+    # scoped to a resource group), so an RG-scoped existence check can miss an
+    # account that legitimately lives in a different (often shared) RG - the same
+    # cross-RG sharing pattern already seen with the App Service Plan. Fall back to
+    # a subscription-wide lookup by name before concluding the account is absent.
     $stExists = Invoke-Az @('storage', 'account', 'show', '--name', $StorageAccount, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+    if (-not $stExists) {
+        $stExists = Invoke-Az @('storage', 'account', 'show', '--name', $StorageAccount, '-o', 'json') -AllowFail
+        if ($stExists) {
+            $stRg = ($stExists | ConvertFrom-Json).resourceGroup
+            Write-Note "Storage account '$StorageAccount' exists in a different resource group ('$stRg', not '$ResourceGroup') - treating as read-only, not recreating."
+        }
+    }
     if ($stExists) {
         Write-Ok "Storage account '$StorageAccount' already exists."
         $created['storageAccount'] = $false
@@ -1082,8 +1277,39 @@ try {
         Write-Note 'Auth provisioning skipped (-SkipAuthProvisioning).'
         $created['entraApp'] = $false
     } else {
-        $created['entraApp'] = $true
-        $created['entraAppDisplayName'] = "$AppName-auth"
+        # PROBE BEFORE PROVISIONING. Configure-WwExecutionAuth.ps1 is idempotent and happily REUSES an
+        # existing registration, so "auth provisioning ran" never meant "this run created the app".
+        #
+        # This flag is not cosmetic. Rollback-WwExecutionEngine.ps1 treats created.entraApp = true as
+        # OWNERSHIP and deletes the registration (Rollback:346-347, :406) - and a directory object
+        # survives resource-group teardown, so it is the one artefact whose removal reaches outside the
+        # deployment. Setting it unconditionally meant every redeploy of an EXISTING engine wrote a
+        # summary arming a later rollback to destroy an app registration it did not create, taking down
+        # every client that authenticates against it. Observed 2026-08-11: an in-place redeploy of
+        # wwengine-e2e-th2teq reported "CREATED Entra app registration" for an app created days earlier.
+        $entraDisplayName = "$AppName-auth"
+        $entraPreExists   = $true   # fail-safe default: never ARM a delete on an unproven assumption
+
+        $existingApp = Invoke-Az @('ad', 'app', 'list', '--display-name', $entraDisplayName,
+                                   '--only-show-errors', '-o', 'json') -AllowFail
+        if ($null -eq $existingApp) {
+            Write-Note ("Could not determine whether Entra app '$entraDisplayName' already exists " +
+                        '(the Graph probe failed). Recording it as PRE-EXISTING so rollback will not ' +
+                        'delete it; pass -IncludeEntraApp to Rollback-WwExecutionEngine.ps1 if this run ' +
+                        'really did create it.')
+        } else {
+            try {
+                $entraPreExists = @(($existingApp | Out-String | ConvertFrom-Json)).Count -gt 0
+            } catch {
+                Write-Note "Entra app probe returned unparseable JSON; treating '$entraDisplayName' as pre-existing."
+            }
+        }
+
+        $created['entraApp'] = -not $entraPreExists
+        $created['entraAppDisplayName'] = $entraDisplayName
+        Write-Ok ("Entra app registration '$entraDisplayName': " +
+                  ($entraPreExists ? 'PRE-EXISTING (reused; teardown will NOT delete it)'
+                                   : 'not present, will be created by this run'))
         $groupPermissions = @{}
         $userAssignments  = @()
         if ($AuthConfigPath) {
@@ -1481,6 +1707,131 @@ try {
         Write-Note 'Reminder: grant the JobProcessor MI the engine role Warewolf_JobProcessor (see runbook).'
     }
 
+    # ════════════════════════════════════════════════════════════════════════
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 7 — (optional) ServiceBusWorker companion deploy
+    # ════════════════════════════════════════════════════════════════════════
+    if ($DeployServiceBusWorker) {
+        Write-Phase 'Phase 7  Deploy Warewolf.Execution.ServiceBusWorker (companion)'
+        $script:DeployLastPhase = 'Phase 7  ServiceBusWorker'
+
+        if (-not (Test-Path -LiteralPath $ServiceBusWorkerScript)) {
+            throw "Deploy-WwExecutionServiceBusWorker.ps1 not found at '$ServiceBusWorkerScript'."
+        }
+
+        # Pass the shared context; Deploy-WwExecutionServiceBusWorker.ps1 prompts
+        # (interactively) for anything omitted here — including its own
+        # AppName / PublishPath / StorageAccount / Service Bus namespace+queue.
+        $sbwParams = [ordered]@{
+            SubscriptionId     = $SubscriptionId
+            TenantId           = $TenantId
+            ResourceGroup      = $ResourceGroup
+            Location           = $Location
+            WwExecutionBaseUrl = $baseUrl
+        }
+        if ($ServiceBusWorkerAppName)        { $sbwParams['AppName']        = $ServiceBusWorkerAppName }
+        if ($ServiceBusWorkerPublishPath)    { $sbwParams['PublishPath']    = $ServiceBusWorkerPublishPath }
+        if ($ServiceBusWorkerStorageAccount) { $sbwParams['StorageAccount'] = $ServiceBusWorkerStorageAccount }
+        if ($authOut) {
+            $sbwParams['WwExecutionTenantId']       = $TenantId
+            $sbwParams['WwExecutionResourceAppId']  = $authOut.ClientId
+            $sbwParams['WwExecutionScope']          = ($WwExecutionScope ? $WwExecutionScope : "api://$($authOut.ClientId)/.default")
+        } elseif ($WwExecutionScope) {
+            $sbwParams['WwExecutionScope'] = $WwExecutionScope
+        }
+        if ($enableAppInsights) { $sbwParams['EnableAppInsights'] = $true }
+        if ($NonInteractive)    { $sbwParams['NonInteractive']    = $true }
+        if ($DryRun)            { $sbwParams['DryRun']            = $true }
+
+        Invoke-ChildScript -Path $ServiceBusWorkerScript -Label 'Deploy-WwExecutionServiceBusWorker.ps1' -Parameters $sbwParams
+        Write-Ok 'ServiceBusWorker companion deploy invoked.'
+        Write-Note 'Reminder: grant the ServiceBusWorker MI the engine role Warewolf_ClientApps (see docs/KB-ClientApps-Configuration.md §2.6).'
+    }
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 8 — (optional) RabbitMQ QueueProcessors, one Container App per trigger
+    # ════════════════════════════════════════════════════════════════════════
+    if ($DeployRabbitMqTriggers) {
+        Write-Phase 'Phase 8  Deploy RabbitMQ QueueProcessors (companion, one per trigger)'
+        $script:DeployLastPhase = 'Phase 8  QueueProcessors'
+
+        # The engine is deployed by now, so its URL is known and can be handed to every worker.
+        $queueEngineBaseUrl = "https://$AppName.azurewebsites.net"
+
+        # Prefer an explicitly supplied app id; otherwise derive it from the resume scope
+        # (api://<app-id>/.default) that the JobProcessor path already uses. If neither is
+        # available the child prompts, rather than guessing an audience.
+        $queueEngineAppId = $QueueEngineResourceAppId
+        if (-not $queueEngineAppId -and $EngineResumeScope -match 'api://([^/]+)/') {
+            $queueEngineAppId = $Matches[1]
+        }
+
+        $qpFailures = 0
+
+        foreach ($qpTriggerFile in $script:QueueTriggerFiles) {
+            $qpLabel = [System.IO.Path]::GetFileNameWithoutExtension($qpTriggerFile)
+
+            $qpParams = [ordered]@{
+                ResourceGroup                 = $ResourceGroup
+                Location                      = $Location
+                AcaEnvironment                = $AcaEnvironment
+                TriggerFilePath               = $qpTriggerFile
+                QueueSourcePath               = $QueueSourcePath
+                EngineBaseUrl                 = $queueEngineBaseUrl
+                ScalingMode                   = $QueueScalingMode
+                ExecutionLogLevel             = $ExecutionLogLevel
+                # Always pass the tenant explicitly. The worker acquires an app-only engine token
+                # with its managed identity, and a BLANK tenant is legal only for a
+                # system-assigned MI - anywhere else the credential chain fails with
+                # 'Invalid tenant id provided', which looks like a missing app role rather than
+                # missing config. $TenantId is already resolved from `az account show` above.
+                EngineTenantId                = $TenantId
+            }
+
+            if ($queueEngineAppId)          { $qpParams['EngineResourceAppId'] = $queueEngineAppId }
+            if ($EngineResumeScope)          { $qpParams['EngineScope']         = $EngineResumeScope }
+            if ($QueueProcessorImage)        { $qpParams['Image']               = $QueueProcessorImage }
+            if ($QueueProcessorPublishPath)  { $qpParams['PublishPath']         = $QueueProcessorPublishPath }
+            if ($AcrName)                    { $qpParams['AcrName']             = $AcrName }
+            if ($RabbitMqSecretUri)          { $qpParams['RabbitMqSecretUri']   = $RabbitMqSecretUri }
+            if ($kvRequired) {
+                $qpParams['KeyVaultName']       = $KeyVaultName
+                $qpParams['KeyVaultSecretName'] = $KeyVaultSecretName
+                $qpParams['EncryptStagedSettings'] = $true
+            }
+            if ($enableAppInsights) { $qpParams['EnableAppInsights'] = $true }
+            if ($NonInteractive)    { $qpParams['NonInteractive']    = $true }
+            if ($DryRun)            { $qpParams['DryRun']            = $true }
+
+            try {
+                Invoke-ChildScript -Path $QueueProcessorScript `
+                    -Label "Deploy-WwQueueProcessor.ps1 ($qpLabel)" -Parameters $qpParams
+                $script:QueueProcessorApps += @{ trigger = $qpLabel; file = $qpTriggerFile; status = 'invoked' }
+            }
+            catch {
+                $qpFailures++
+                $script:QueueProcessorApps += @{
+                    trigger = $qpLabel; file = $qpTriggerFile; status = 'failed'; error = $_.Exception.Message
+                }
+                Write-Note "QueueProcessor deploy failed for '$qpLabel': $($_.Exception.Message)"
+
+                if (-not $ContinueOnQueueTriggerError) {
+                    throw ("QueueProcessor deploy failed for '$qpLabel' and -ContinueOnQueueTriggerError " +
+                           'was not supplied, so the remaining triggers were skipped. The engine deploy ' +
+                           'itself completed successfully.')
+                }
+            }
+        }
+
+        Write-Ok "QueueProcessor companion deploy invoked for $($script:QueueTriggerFiles.Count) trigger(s)."
+        Write-Note 'Reminder: grant EACH QueueProcessor MI the engine role Warewolf_QueueProcessor, and add'
+        Write-Note 'a PER-WORKFLOW Execute row to secure.config for each trigger workflow (runbook section 8).'
+
+        if ($qpFailures -gt 0) {
+            Write-Note "$qpFailures trigger deploy(s) failed - see the summary JSON."
+        }
+    }
+
     # ── Final summary — completed status ─────────────────────────────────────
     # (Incremental in-progress summaries were already written after each phase;
     # this records the terminal 'completed' state for BOTH dry-run and real runs.)
@@ -1496,6 +1847,51 @@ try {
     if (-not $SkipAuthProvisioning -and (Test-Path -LiteralPath $AuthOutputPath)) {
         Write-Host "  Auth out : $AuthOutputPath" -ForegroundColor White
     }
+
+    # ── Resources manipulated, with reachable URLs ───────────────────────────
+    # Driven by the SAME `created` map that Rollback-WwExecutionEngine.ps1 consumes, so what is
+    # printed here and what teardown will remove can never disagree. Pre-existing resources are
+    # listed as REUSED precisely so nobody mistakes them for things this run owns.
+    # NOTE the local names: $created is the run's ownership MAP (consumed by the rollback script) and
+    # must not be shadowed here.
+    $verb = $DryRun ? 'WOULD CREATE' : 'CREATED'
+    Write-Host ''
+    Write-Host '  -- Resources manipulated --' -ForegroundColor Cyan
+    $createdList = [System.Collections.Generic.List[string]]::new()
+    $reusedList  = [System.Collections.Generic.List[string]]::new()
+    $entraName   = $created['entraAppDisplayName']
+    if (-not $entraName) { $entraName = "$AppName-auth" }
+    foreach ($pair in @(
+        @{ Key = 'resourceGroup';  Kind = 'Resource group';         Name = $ResourceGroup }
+        @{ Key = 'storageAccount'; Kind = 'Storage account';        Name = $StorageAccount }
+        @{ Key = 'functionApp';    Kind = 'Function App';           Name = $AppName }
+        @{ Key = 'appInsights';    Kind = 'App Insights';           Name = $AppInsightsName }
+        @{ Key = 'keyVault';       Kind = 'Key Vault';              Name = $KeyVaultName }
+        @{ Key = 'entraApp';       Kind = 'Entra app registration'; Name = $entraName }
+    )) {
+        if (-not $pair.Name) { continue }
+        if ($created[$pair.Key]) { $createdList.Add("$($pair.Kind): $($pair.Name)") }
+        else                     { $reusedList.Add("$($pair.Kind): $($pair.Name)") }
+    }
+    if ($createdList.Count) {
+        Write-Host "     $verb" -ForegroundColor Green
+        $createdList | ForEach-Object { Write-Host "       $_" -ForegroundColor Green }
+    }
+    if ($reusedList.Count) {
+        Write-Host '     REUSED (pre-existing - teardown will NOT remove these)' -ForegroundColor Gray
+        $reusedList | ForEach-Object { Write-Host "       $_" -ForegroundColor Gray }
+    }
+    Write-Host '     UPDATED' -ForegroundColor Cyan
+    Write-Host "       Function App settings: $($appSettings.Count) applied to $AppName" -ForegroundColor Cyan
+    if (-not $SkipAuthProvisioning) { Write-Host "       Easy Auth + Entra app roles on $AppName" -ForegroundColor Cyan }
+    Write-Host ''
+    Write-Host '     ENDPOINTS' -ForegroundColor Blue
+    Write-Host "       Engine     : $baseUrl" -ForegroundColor Blue
+    Write-Host "       Discovery  : $baseUrl/apis.json" -ForegroundColor Blue
+    Write-Host "       Public     : $baseUrl/Public/{workflow}.json     (anonymous)" -ForegroundColor Blue
+    Write-Host "       Secure     : $baseUrl/Secure/{workflow}.json     (Entra JWT)" -ForegroundColor Blue
+    Write-Host "       Services   : $baseUrl/Services/{workflow}.json   (function key)" -ForegroundColor Blue
+    Write-Host "       Portal     : https://portal.azure.com/#@/resource/subscriptions/$SubscriptionId/resourceGroups/$ResourceGroup/providers/Microsoft.Web/sites/$AppName" -ForegroundColor Blue
     Write-Host ''
 }
 catch {

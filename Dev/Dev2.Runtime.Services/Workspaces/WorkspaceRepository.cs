@@ -14,7 +14,6 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Principal;
 using Dev2.Common;
 using Dev2.Runtime.Hosting;
@@ -22,6 +21,7 @@ using Dev2.Runtime.Interfaces;
 #if !NETFRAMEWORK
 using ServiceStack.Redis.Generic;
 #endif
+using System.Runtime.Serialization;
 
 namespace Dev2.Workspaces
 {
@@ -263,51 +263,56 @@ namespace Dev2.Workspaces
             Delete(workspace.ID);
         }
 
-        #endregion
+		#endregion
 
-        #region File Handling
+		#region File Handling
 
-        // TODO: Refactor file serialization handling into separate testable class
+		// TODO: Refactor file serialization handling into separate testable class
 
-        #region Read
+		#region Read
 
-        IWorkspace Read(Guid workdspaceID)
-        {
-            // force a lock on the file system ;)
-            lock (WorkspaceLock)
-            {
-                var filePath = GetFileName(workdspaceID);
-                var fileExists = File.Exists(filePath);
-                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
-                {
-                    var formatter = new BinaryFormatter();
-                    if (fileExists)
-                    {
-                        try
-                        {
-                            return (IWorkspace)formatter.Deserialize(stream);
-                        }
+		IWorkspace Read(Guid workdspaceID)
+		{
+			// force a lock on the file system ;)
+			lock (WorkspaceLock)
+			{
+				var filePath = GetFileName(workdspaceID);
+				var fileExists = File.Exists(filePath);
+				var knownTypes = new List<Type> { typeof(List<IWorkspaceItem>) };
+				var serializer = new DataContractSerializer(typeof(Workspace), knownTypes);
 
-                        catch (Exception ex)
+				if (fileExists)
+				{
+					try
+					{
+						using (var stream = File.OpenRead(filePath))
+						{
+							return (IWorkspace)serializer.ReadObject(stream);
+						}
+					}
 
-                        {
-                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                            // Deserialization failed so overwrite with new one.
-                        }
-                    }
+					catch (Exception ex)
 
-                    var result = new Workspace(workdspaceID);
-                    formatter.Serialize(stream, result);
-                    return result;
-                }
-            }
-        }
+					{
+						Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
+						// Deserialization failed so overwrite with new one.
+					}
+				}
 
-        #endregion
+				var result = new Workspace(workdspaceID);
+				using (var stream = File.Create(filePath))
+				{
+					serializer.WriteObject(stream, result);
+				}
+				return result;
+			}
+		}
 
-        #region Write
+		#endregion
 
-        void Write(IWorkspace workspace)
+		#region Write
+
+		void Write(IWorkspace workspace)
         {
             if (workspace == null)
             {
@@ -315,10 +320,12 @@ namespace Dev2.Workspaces
             }
 
             var filePath = GetFileName(workspace.ID);
+            var knownTypes = new List<Type> { typeof(List<IWorkspaceItem>) };
+            var serializer = new DataContractSerializer(typeof(Workspace), knownTypes);
+
             using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                var formatter = new BinaryFormatter();
-                formatter.Serialize(stream, workspace);
+                serializer.WriteObject(stream, workspace);
             }
         }
 
@@ -410,6 +417,12 @@ namespace Dev2.Workspaces
                         // Deserialization failed so overwrite with new one.
                         Dev2Logger.Error("WorkspaceRepository", ex, GlobalConstants.WarewolfError);
 
+                        // Legacy fallback for files still in the pre-MessagePack .NET Framework
+                        // BinaryFormatter format. On net9.0+ (where BinaryFormatter no longer
+                        // exists) this always returns null, so environments must have run a
+                        // net8.0-or-earlier build at least once to self-migrate any such files
+                        // (see BinarySerializationHelper.DeserializeFile remarks) before this
+                        // fallback stops being able to recover them.
                         var helper = new Dev2.Net6.Compatibility.BinarySerializationHelper();
                         var deserializedDictionary = helper.DeserializeFile(filePath);
                         if (deserializedDictionary != null)
@@ -417,6 +430,17 @@ namespace Dev2.Workspaces
                             WriteUserMap(deserializedDictionary, isAlreadyLocked: true);
                             return deserializedDictionary;
                         }
+
+#if NET9_0_OR_GREATER
+                        // Differentiate this from a genuine parse failure: on net9.0+ BinaryFormatter no
+                        // longer exists, so DeserializeFile() always returns null here. This is the
+                        // *expected* outcome once an environment has already self-migrated its legacy
+                        // data to MessagePack on a net8.0-or-earlier build; it only means real data loss
+                        // if that self-migration never happened for this environment.
+                        Dev2Logger.Warn($"WorkspaceRepository: legacy BinaryFormatter recovery unavailable on this runtime (net9.0+) for '{filePath}' - treating as no legacy data. Expected if this environment already migrated to MessagePack on a net8.0-or-earlier build; otherwise the legacy user map in this file is unrecoverable and a fresh empty map will be created.", GlobalConstants.WarewolfError);
+#else
+                        Dev2Logger.Warn($"WorkspaceRepository: legacy BinaryFormatter deserialization returned no data for '{filePath}' - the file may be corrupt or in an unrecognised format. A fresh empty map will be created.", GlobalConstants.WarewolfError);
+#endif
                     }
                 }
 
@@ -448,8 +472,6 @@ namespace Dev2.Workspaces
             var filePath = GetUserMapFileName();
             using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
             {
-                // var formatter = new BinaryFormatter();
-                //formatter.Serialize(stream, userMap);
                 MessagePack.MessagePackSerializer.Typeless.Serialize(stream, userMap);
             }
         }

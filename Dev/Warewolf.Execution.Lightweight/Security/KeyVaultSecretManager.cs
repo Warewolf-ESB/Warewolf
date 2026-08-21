@@ -8,6 +8,8 @@ using Azure.Core;
 using Azure.Security.KeyVault.Secrets;
 using Dev2.Common;
 using Microsoft.Extensions.Logging;
+using System.Globalization;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
@@ -36,12 +38,34 @@ namespace Warewolf.Execution.Lightweight.Security
         static readonly JsonSerializerOptions _jsonOptions =
             new(JsonSerializerDefaults.Web);
 
+        /// <summary>
+        /// Highest <c>Version</c> of the key-ring document this build understands.
+        /// Version 1 = primary key only; Version 2 = primary key + <c>previousKeys</c>.
+        /// A higher version is accepted with a warning (see <see cref="ParseAndSetMaterial"/>).
+        /// </summary>
+        const int MaxSupportedVersion = 2;
+
+        /// <summary>
+        /// Upper bound on the legacy-repair regex engine. The secret is external input, so
+        /// an unbounded match on pathological content could hang cold start indefinitely.
+        /// A timeout surfaces as a clean startup error instead of a hung Function host.
+        /// </summary>
+        static readonly TimeSpan LegacyRepairTimeout = TimeSpan.FromMilliseconds(250);
+
+        /// <summary>Quotes bare object keys: <c>{version:</c> → <c>{"version":</c>.</summary>
+        static readonly Regex LegacyKeyQuoteRegex =
+            new(@"([\{,])\s*([a-zA-Z_]\w*)\s*:", RegexOptions.None, LegacyRepairTimeout);
+
+        /// <summary>Quotes bare scalar values: <c>:abc,</c> → <c>:"abc",</c>.</summary>
+        static readonly Regex LegacyValueQuoteRegex =
+            new(@":\s*(?!"")([^,\}]+)", RegexOptions.None, LegacyRepairTimeout);
+
         readonly string                         _vaultUri;
         readonly string                         _secretName;
-        readonly TokenCredential?                _credential;
-        readonly SecretClient?                   _client;
-        readonly ILogger<KeyVaultSecretManager>  _logger;
-        readonly string?                         _debugSecret;
+        readonly TokenCredential?               _credential;
+        readonly SecretClient?                  _client;
+        readonly ILogger<KeyVaultSecretManager> _logger;
+        readonly string?                        _debugSecret;
 
         KeyRingMaterial? _material;
 
@@ -95,6 +119,25 @@ namespace Warewolf.Execution.Lightweight.Security
 
             try
             {
+                // Defence in depth. ServiceCollectionExtensions already gates the debug
+                // bypass on HostEnvironmentConfig.IsDevelopment, so _debugSecret is
+                // normally null in the cloud. This second check closes the remaining hole:
+                // someone setting ASPNETCORE_ENVIRONMENT=Development on a live Function App
+                // would otherwise re-open the bypass and inject unmanaged key material.
+                // Cloud markers are authoritative here — they cannot be faked by an env-var
+                // flip. Fail-fast is correct: this is a misconfiguration, not a rotation
+                // edge case.
+                if (_debugSecret is not null && IsProductionEnvironment())
+                {
+                    Dev2Logger.Error("DEBUG_AZURE_KEYVAULT_SECRET is set in a production/cloud-hosted environment — refusing to bypass Key Vault.", executionId);
+                    _logger.LogError(
+                        "KeyVault | DEBUG_AZURE_KEYVAULT_SECRET is set while running cloud-hosted — refusing to bypass Key Vault.");
+                    throw new InvalidOperationException(
+                        "DEBUG_AZURE_KEYVAULT_SECRET must not be used in production. " +
+                        "Remove the environment variable from the Function App and use " +
+                        "Managed Identity + Key Vault instead.");
+                }
+
                 if (_debugSecret is not null)
                 {
                     Dev2Logger.Warn("KeyVaultSecretManager using DEBUG_AZURE_KEYVAULT_SECRET (Key Vault skipped)", executionId);
@@ -136,6 +179,39 @@ namespace Warewolf.Execution.Lightweight.Security
 
         // ── Private helpers ───────────────────────────────────────────────────────
 
+        /// <summary>
+        /// <c>true</c> when the process is running cloud-hosted AND not explicitly marked
+        /// as a development environment.
+        ///
+        /// Detection uses platform-injected markers rather than a configuration value:
+        /// <c>WEBSITE_INSTANCE_ID</c> and <c>FUNCTIONS_WORKER_RUNTIME</c> are set by Azure
+        /// Functions / App Service and cannot be produced by flipping an app setting, so
+        /// they are a trustworthy signal that this is real hosted infrastructure.
+        ///
+        /// An absent environment name while cloud-hosted is treated as production — the
+        /// safe default, since the debug bypass should never be reachable by omission.
+        /// Local development is unaffected: with no cloud markers present this always
+        /// returns <c>false</c> and the bypass keeps working.
+        /// </summary>
+        static bool IsProductionEnvironment()
+        {
+            var isCloudHosted =
+                Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID")     is not null ||
+                Environment.GetEnvironmentVariable("FUNCTIONS_WORKER_RUNTIME") is not null;
+
+            if (!isCloudHosted)
+                return false;
+
+            var environmentName =
+                Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") ??
+                Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")      ??
+                Environment.GetEnvironmentVariable("DOTNET_ENVIRONMENT");
+
+            // Unset while cloud-hosted → treat as production.
+            return environmentName is null
+                || string.Equals(environmentName, "Production", StringComparison.OrdinalIgnoreCase);
+        }
+
         void ParseAndSetMaterial(string rawJson)
         {
             const string executionId = "KeyVaultSecretManager-Parse";
@@ -143,25 +219,69 @@ namespace Warewolf.Execution.Lightweight.Security
             // The secret's length characterises the key material — not logged.
             Dev2Logger.Debug("KeyVaultSecretManager ParseAndSetMaterial starting.", executionId);
 
-            // Repair legacy unquoted-key format written by old versions of Encrypt-Config.ps1
-            // e.g. {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
+            // ── Legacy unquoted-JSON repair ────────────────────────────────────────────
+            // Old versions of Encrypt-Config.ps1 wrote unquoted JSON, e.g.
+            //   {version:1,keyId:abc,...} → {"version":1,"keyId":"abc",...}
+            // The trigger below is deliberately narrow so a canonical secret is NEVER
+            // touched by the regex engine.
+            var wasRepaired = false;
+
             if (!rawJson.TrimStart().StartsWith("{\""))
             {
+                // The repair is FLAT-ONLY. Both passes are line-noise regexes with no
+                // concept of '[', ']' or nesting, so on a Version 2 secret (which carries
+                // a previousKeys array) they silently mangle the array into invalid JSON
+                // and surface later as a confusing "could not be converted to
+                // List<PreviousKeyEntry>" deserialisation error. Refuse up front and tell
+                // the operator exactly what to do instead of corrupting the document.
+                if (rawJson.Contains('['))
+                {
+                    Dev2Logger.Error($"KeyVaultSecretManager secret '{_secretName}' is unquoted JSON containing a nested array — the legacy repair cannot handle nested structures and will not be attempted.", executionId);
+                    throw new InvalidOperationException(
+                        $"Key Vault secret '{_secretName}' is in the legacy unquoted-JSON format AND contains a " +
+                        "nested array (previousKeys). The legacy auto-repair only supports the flat Version 1 " +
+                        "shape and cannot repair nested structures without corrupting them. " +
+                        "Rewrite the secret as canonical, fully-quoted JSON — e.g. re-run " +
+                        "Encrypt-Config.ps1 -GenerateKeys, or write the value from a UTF-8 (no BOM) file via " +
+                        "'az keyvault secret set --file' so the quotes are preserved.");
+                }
+
                 Dev2Logger.Warn($"KeyVaultSecretManager secret '{_secretName}' contained unquoted JSON - auto-repairing", executionId);
 
-                rawJson = Regex.Replace(rawJson, @"([\{,])\s*([a-zA-Z_]\w*)\s*:", "$1\"$2\":");
-                rawJson = Regex.Replace(rawJson, @":\s*(?!"")([^,\}]+)", ":\"$1\"");
+                try
+                {
+                    rawJson = LegacyKeyQuoteRegex.Replace(rawJson, "$1\"$2\":");
+                    rawJson = LegacyValueQuoteRegex.Replace(rawJson, ":\"$1\"");
+                }
+                catch (RegexMatchTimeoutException ex)
+                {
+                    Dev2Logger.Error($"KeyVaultSecretManager legacy repair of secret '{_secretName}' exceeded the {LegacyRepairTimeout.TotalMilliseconds}ms timeout — aborting.", ex, executionId);
+                    throw new InvalidOperationException(
+                        $"Legacy unquoted-JSON repair of Key Vault secret '{_secretName}' exceeded the " +
+                        $"{LegacyRepairTimeout.TotalMilliseconds}ms limit. The secret is malformed or " +
+                        "pathologically large. Rewrite it as canonical, fully-quoted JSON.", ex);
+                }
+
+                wasRepaired = true;
+
                 _logger.LogWarning(
-                    "KeyVault | Secret '{SecretName}' contained unquoted JSON — auto-repaired. " +
+                    "KeyVault | Secret '{SecretName}' contained unquoted JSON — auto-repaired (flat Version 1 shape). " +
                     "Re-run Encrypt-Config.ps1 -GenerateKeys to store a canonical version.",
                     _secretName);
             }
 
             try
             {
+                // Fail closed: if the repaired document still does not deserialise, the
+                // secret is a non-repairable legacy format — say so plainly rather than
+                // letting a generic parse error mislead the operator.
                 _material = JsonSerializer.Deserialize<KeyRingMaterial>(rawJson, _jsonOptions)
                             ?? throw new InvalidOperationException(
-                                $"Failed to deserialise key material from secret '{_secretName}'.");
+                                wasRepaired
+                                    ? $"Key Vault secret '{_secretName}' is a non-repairable legacy format — " +
+                                      "auto-repair of the unquoted JSON ran but the result still did not " +
+                                      "deserialise. Rewrite the secret as canonical, fully-quoted JSON."
+                                    : $"Failed to deserialise key material from secret '{_secretName}'.");
 
                 if (string.IsNullOrWhiteSpace(_material.Key))
                 {
@@ -225,13 +345,158 @@ namespace Warewolf.Execution.Lightweight.Security
             }
         }
 
-        // ── Key-material DTO (matches the JSON written by Encrypt-Config.ps1) ──
+        /// <summary>
+        /// Returns all available decryption keys: the primary key first, followed by any
+        /// previous keys sorted by <c>Retired</c> descending (most recently retired first),
+        /// so the key most likely to match is attempted earliest. Entries with a blank or
+        /// unparseable <c>Retired</c> value are retained but sorted last.
+        ///
+        /// When no <c>PreviousKeys</c> are present in the secret (Version 1 format),
+        /// only the primary key is returned — fully backward compatible.
+        ///
+        /// A previous key with malformed Base64 or a non-32-byte length is SKIPPED with a
+        /// warning rather than throwing: one bad retired entry must never prevent the ring
+        /// (and therefore the engine) from loading. The primary key remains fail-fast — an
+        /// invalid primary key is a genuine misconfiguration and still throws.
+        ///
+        /// Each entry is a tuple of (KeyId, KeyBytes) so callers can log which key
+        /// succeeded without exposing raw key material.
+        /// </summary>
+        public IReadOnlyList<(string KeyId, byte[] KeyBytes)> GetAllKeyBytes()
+        {
+            const string executionId = "KeyVaultSecretManager-GetAllKeyBytes";
 
-        internal sealed record KeyRingMaterial(
-            [property: JsonPropertyName("version")] int    Version,
-            [property: JsonPropertyName("keyId")]   string KeyId,
-            [property: JsonPropertyName("key")]     string Key,
-            [property: JsonPropertyName("created")] string Created
-        );
+            if (_material is null)
+                throw new InvalidOperationException(
+                    $"{nameof(KeyVaultSecretManager)} is not initialised. " +
+                    $"Call {nameof(InitializeAsync)} before resolving {nameof(FileDecryptionHelper)}.");
+
+            var keys = new List<(string, byte[])>
+            {
+                (_material.KeyId, GetKeyBytes()),
+            };
+
+            if (_material.PreviousKeys is { Count: > 0 })
+            {
+                // Order previous keys most-recently-retired first, so the key most likely
+                // to match a given ciphertext is attempted earliest during fallback.
+                // Blank or unparseable Retired values sort to DateTime.MinValue (last) —
+                // they are never dropped, only deprioritised.
+                var ordered = _material.PreviousKeys
+                    .OrderByDescending(p =>
+                        DateTime.TryParse(p.Retired, CultureInfo.InvariantCulture, DateTimeStyles.None, out var retiredOn)
+                            ? retiredOn
+                            : DateTime.MinValue);
+
+                var skipped = 0;
+
+                foreach (var prev in ordered)
+                {
+                    // A malformed PREVIOUS key must never abort the ring — the primary key
+                    // (already decoded above) stays usable and the engine still starts.
+                    // Only the primary key is fail-fast; see GetKeyBytes().
+                    byte[] prevBytes;
+                    try
+                    {
+                        prevBytes = Convert.FromBase64String(prev.Key);
+                    }
+                    catch (FormatException)
+                    {
+                        skipped++;
+                        Dev2Logger.Warn($"Previous key '{prev.KeyId}' has invalid Base64 material — skipping. The key ring remains usable; resources encrypted with this key will fail to decrypt until the secret is corrected.", executionId);
+                        _logger.LogWarning(
+                            "KeyVault | Previous key '{PreviousKeyId}' has invalid Base64 material — skipped. " +
+                            "Correct the '{SecretName}' secret if resources are still encrypted with this key.",
+                            prev.KeyId, _secretName);
+                        continue;
+                    }
+
+                    if (prevBytes.Length != 32)
+                    {
+                        skipped++;
+                        Dev2Logger.Warn($"Previous key '{prev.KeyId}' has invalid length {prevBytes.Length} bytes (expected 32) — skipping.", executionId);
+                        _logger.LogWarning(
+                            "KeyVault | Previous key '{PreviousKeyId}' has invalid length {KeyLength} bytes (expected 32) — skipped.",
+                            prev.KeyId, prevBytes.Length);
+                        continue;
+                    }
+
+                    keys.Add((prev.KeyId, prevBytes));
+                }
+
+                var loadedIds = string.Join(", ", keys.Skip(1).Select(k => k.Item1));
+                Dev2Logger.Info($"Key ring loaded — {keys.Count} key(s) available for decryption. PreviousKeyIds (newest retired first): [{loadedIds}]. Skipped: {skipped}.", executionId);
+                _logger.LogInformation(
+                    "KeyVault | Key ring loaded — {KeyCount} key(s) available. Primary={KeyId}, previous (newest retired first)=[{PreviousKeyIds}], skipped={SkippedCount}.",
+                    keys.Count, _material.KeyId, loadedIds, skipped);
+            }
+            else
+            {
+                Dev2Logger.Info("Key ring loaded — primary key only (no previous keys in secret). Single-key decryption mode active.", executionId);
+                _logger.LogInformation(
+                    "KeyVault | Key ring loaded — primary key only (KeyId={KeyId}). No previous keys found in secret. Single-key decryption mode active.",
+                    _material.KeyId);
+            }
+
+            return keys;
+        }
+
+        // ── Key-material DTOs (match the JSON written by Encrypt-Config.ps1) ────
+
+        /// <summary>
+        /// A previously-active key that has been rotated out. Retained in the Key Vault
+        /// secret for the duration of the rotation window so that resources encrypted
+        /// with this key can still be decrypted.
+        ///
+        /// Declared as a class with init-only properties rather than a positional record
+        /// for clarity: each JSON field maps to one explicitly-attributed property, so the
+        /// binding is obvious at a glance and does not depend on constructor-parameter
+        /// matching. (Positional records DO deserialize correctly under
+        /// <see cref="JsonSerializerDefaults.Web"/>; this is a readability choice, not a
+        /// workaround.)
+        /// </summary>
+        internal sealed class PreviousKeyEntry
+        {
+            [JsonPropertyName("keyId")]
+            public string KeyId { get; init; } = string.Empty;
+
+            [JsonPropertyName("key")]
+            public string Key { get; init; } = string.Empty;
+
+            [JsonPropertyName("retired")]
+            public string Retired { get; init; } = string.Empty;
+        }
+
+        /// <summary>
+        /// Root key-ring document stored in Key Vault.
+        ///
+        /// Version 1: primary key only (PreviousKeys absent / null).
+        /// Version 2: primary key + optional PreviousKeys array for rotation support.
+        /// Both versions are fully supported — PreviousKeys defaults to null when absent.
+        ///
+        /// Declared as a class with init-only properties rather than a positional record
+        /// for clarity: the optional nested <c>PreviousKeys</c> collection reads more
+        /// explicitly as a nullable property than as an optional constructor parameter.
+        /// (Positional records DO deserialize correctly under
+        /// <see cref="JsonSerializerDefaults.Web"/>; this is a readability choice, not a
+        /// workaround.)
+        /// </summary>
+        internal sealed class KeyRingMaterial
+        {
+            [JsonPropertyName("version")]
+            public int Version { get; init; }
+
+            [JsonPropertyName("keyId")]
+            public string KeyId { get; init; } = string.Empty;
+
+            [JsonPropertyName("key")]
+            public string Key { get; init; } = string.Empty;
+
+            [JsonPropertyName("created")]
+            public string Created { get; init; } = string.Empty;
+
+            [JsonPropertyName("previousKeys")]
+            public List<PreviousKeyEntry>? PreviousKeys { get; init; }
+        }
     }
 }

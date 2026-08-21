@@ -14,7 +14,6 @@ using System.Collections.Generic;
 
 namespace Dev2.Data.Binary_Objects
 {
-    [Serializable]
     public class IndexList
     {
         int _maxValue;

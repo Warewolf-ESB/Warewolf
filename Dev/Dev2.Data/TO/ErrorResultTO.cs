@@ -21,7 +21,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.TO
 {
-    [Serializable]
     public sealed class ErrorResultTO : IErrorResultTO
     {
         readonly HashSet<string> _errorList = new HashSet<string>();

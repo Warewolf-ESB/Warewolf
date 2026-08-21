@@ -20,6 +20,11 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
     /// <summary>
     ///     Stores the information necessary to describe the shape of a data source
     /// </summary>
+    // Deliberately [Serializable] rather than [DataContract]: see BasePath.cs for the full
+    // rationale. This keeps DataSourceShape's OutputDescription XML round-tripping via
+    // DataContractSerializer's POCO fallback (compiler-generated backing-field element names,
+    // lenient on shape mismatch), matching already-persisted OutputDescription XML and this
+    // type has no BinaryFormatter/ISerializable dependency.
     [Serializable]
     public class DataSourceShape : IDataSourceShape
     {

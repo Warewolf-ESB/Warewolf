@@ -1,0 +1,27 @@
+{
+  "$id": "1",
+  "$type": "Warewolf.Trigger.Queue.TriggerQueue, Warewolf.Trigger.Queue",
+  "Id": "1ac40da8-3b56-45f8-a1aa-00e6864db38b",
+  "TriggerId": "1ac40da8-3b56-45f8-a1aa-00e6864db38b",
+  "Name": "MandateCollectionSuccessTrigger",
+  "QueueSourceId": "0b142714-8f6d-41b7-9832-2aefa8c731ec",
+  "QueueName": "profiler.mandatecollectionsuccess.request",
+  "WorkflowName": "ProfilerWrapper\\Queue\\MandateCollectionSuccessConsume",
+  "Concurrency": 5,
+  "UserName": null,
+  "Password": null,
+  "Prefetch": "10",
+  "Options": [
+    { "$id": "2", "$type": "Warewolf.Options.OptionBool, Warewolf.Data", "Name": "Durable", "HelpText": "Set if the queue is durable", "Tooltip": "Set if the queue is durable", "Value": true, "Default": true }
+  ],
+  "QueueSinkId": "0b142714-8f6d-41b7-9832-2aefa8c731ec",
+  "DeadLetterQueue": "profiler.mandatecollectionsuccess.error.request",
+  "DeadLetterOptions": [
+    { "$id": "3", "$type": "Warewolf.Options.OptionBool, Warewolf.Data", "Name": "Durable", "HelpText": "Set if the queue is durable", "Tooltip": "Set if the queue is durable", "Value": true, "Default": true }
+  ],
+  "MapEntireMessage": true,
+  "Inputs": [
+    { "$id": "4", "$type": "Warewolf.Core.ServiceInput, Warewolf.Core", "Name": "@object", "Value": "", "RequiredField": true, "EmptyIsNull": true, "TypeName": null, "IntellisenseFilter": 0, "IsObject": false, "Dev2ReturnType": null, "ShortTypeName": null, "FullName": "PayloadRequest", "ActionName": null, "Path": null }
+  ],
+  "ResourceId": "d4708089-b314-466f-b9a7-c73c1f7baed8"
+}

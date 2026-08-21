@@ -23,7 +23,6 @@ using Warewolf.Resource.Errors;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
-    [Serializable]
     public class JsonMapper : IMapper
     {
         #region Methods

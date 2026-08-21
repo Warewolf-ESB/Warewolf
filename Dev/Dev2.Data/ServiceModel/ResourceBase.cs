@@ -31,7 +31,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    [Serializable]
     public abstract class ResourceBase : IResource, IFilePathResource
     {
         IVersionInfo _versionInfo;

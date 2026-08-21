@@ -51,6 +51,26 @@ namespace Dev2.Sql.Tests
         }
 
         [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("AzureSqlTransientErrorRetry")]
+        public void IsTransientErrorNumber_GivenProcedureTextUnavailableError_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            // 15197 ("There is no text for object '%s'.") was previously (incorrectly) treated as
+            // transient. It is raised whenever the caller cannot read a module's definition -
+            // missing VIEW DEFINITION, or an encrypted procedure - which is deterministic and
+            // per-principal. Retrying can never clear it and only holds a pooled connection open
+            // for the entire backoff budget, exhausting the pool under concurrent load.
+            const int procedureTextUnavailable = 15197;
+
+            //------------Execute Test---------------------------
+            var result = AzureSqlTransientErrorRetry.IsTransientErrorNumber(procedureTextUnavailable);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result, "Error 15197 is a permanent VIEW DEFINITION/encryption condition and must never be retried.");
+        }
+
+        [TestMethod]
         [Owner("Copilot")]
         [TestCategory("AzureSqlTransientErrorRetry")]
         public void IsTransient_GivenNonSqlException_ReturnsFalse()

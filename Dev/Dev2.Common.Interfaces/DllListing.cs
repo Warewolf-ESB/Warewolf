@@ -10,10 +10,11 @@
 
 using System;
 using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Dev2.Common.Interfaces
 {
-    [Serializable]
+    [DataContract]
     public class DllListing : IFileListing
     {
         public DllListing(IDllListingModel selectedDll)
@@ -72,11 +73,17 @@ namespace Dev2.Common.Interfaces
 
         public static bool operator !=(DllListing left, DllListing right) => !Equals(left, right);
 
+        [DataMember]
         public string Name { get; set; }
+        [DataMember]
         public ICollection<IFileListing> Children { get; set; }
+        [DataMember]
         public string FullName { get; set; }
+        [DataMember]
         public bool IsDirectory { get; set; }
+        [DataMember]
         public bool Is32Bit { get; set; }
+        [DataMember]
         public string ClsId { get; set; }
 
     }

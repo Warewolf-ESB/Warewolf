@@ -14,7 +14,6 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.DataList.Contract.Binary_Objects
 {
-    [Serializable]
     public class Dev2Column : IEquatable<Dev2Column>
     {
         #region Properties

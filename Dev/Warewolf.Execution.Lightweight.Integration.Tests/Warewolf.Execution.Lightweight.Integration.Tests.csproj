@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -27,10 +27,11 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
     <ProjectReference Include="..\Dev2.Data\Dev2.Data.csproj" />
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj" />
+    <ProjectReference Include="..\Dev2.Runtime\Dev2.Runtime.csproj" />
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj" />
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj" />
   </ItemGroup>
-  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

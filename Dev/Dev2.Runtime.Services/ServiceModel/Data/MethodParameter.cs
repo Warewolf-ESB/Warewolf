@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces;
 
 namespace Dev2.Runtime.ServiceModel.Data
@@ -16,22 +17,38 @@ namespace Dev2.Runtime.ServiceModel.Data
     /// <summary>
     /// A Method Parameter
     /// </summary>
-    [Serializable]
+    [DataContract]
     public class MethodParameter : IMethodParameter
     {
+        [DataMember]
         public string Name { get; set; }
+
+        [DataMember]
         public bool EmptyToNull { get; set; }
+
+        [DataMember]
         public bool IsRequired { get; set; }
+
+        [DataMember]
         public string Value { get; set; }
+
+        [DataMember]
         public string DefaultValue { get; set; }
+
+        [DataMember]
         public string TypeName
         {
             get;
             set;
         }
 
+        [DataMember]
         public bool IsObject { get; set; }
+
+        [DataMember]
         public string Dev2ReturnType { get; set; }
+
+        [DataMember]
         public string ShortTypeName { get; set; }
     }
 }

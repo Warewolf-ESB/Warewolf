@@ -1,0 +1,90 @@
+# =============================================================================
+# Local development stack for the queue processor.
+#
+# The worker's Dockerfile is single-stage and builds FROM A PUBLISH OUTPUT, not the repo (see
+# its header) - there is no SDK stage and no `dotnet publish`/`dotnet build` inside it. So,
+# unlike a typical `docker compose up --build`, publish first:
+#
+#   dotnet publish Dev/Warewolf.Execution.QueueProcessor -c Release `
+#       -o Dev/Warewolf.Execution.QueueProcessor/bin/publish
+#   docker compose -f Dev/Warewolf.Execution.QueueProcessor/docker-compose.yml up --build
+#
+# (bin/ is already git-ignored, so bin/publish is never committed.) Pointing the build context
+# at the repo instead - as this file previously did - copies raw source into /app, and the
+# container fails immediately with no Warewolf.Execution.QueueProcessor.dll to run.
+#
+# Brings up RabbitMQ (with the management UI) and the worker, pointed at a stub
+# engine. Publish a message to the queue and watch it flow through to the stub:
+#
+#   RabbitMQ UI:  http://localhost:15672  (guest/guest)
+#   Stub engine:  http://localhost:8080/secure/...
+#
+# Staged config lives in ./Settings.local/ (git-ignored), NOT the committed ./Settings/.
+# Start from the committed sample and repoint it at the broker this compose file brings up:
+#
+#   cp -r Settings Settings.local
+#   # then in Settings.local/sources/'Warewolf DevOps RabbitMQ Source.bite' replace
+#   # ConnectionString with
+#   #   HostName=rabbitmq;Port=5672;UserName=guest;Password=guest;VirtualHost=/
+#
+# The committed ./Settings/ is deliberately NOT mounted here: its source points at the shared
+# dev broker, so mounting it would make `docker compose up` silently bypass the rabbitmq
+# service below and consume from the shared queue instead. ./Settings/ is for `dotnet run`.
+# Plaintext JSON/XML is fine locally - no Key Vault, see the worker's startup warning.
+# =============================================================================
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: wwqp-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  # Stands in for the Execution Engine's /Secure/{workflow}.json route. WireMock is
+  # already the engine integration tests' stub of choice
+  # (Warewolf.Execution.Lightweight.Integration.Tests/docker/wiremock).
+  engine-stub:
+    image: wiremock/wiremock:3.9.1
+    container_name: wwqp-engine-stub
+    command: ["--verbose", "--global-response-templating"]
+    ports:
+      - "8080:8080"
+
+  queueprocessor:
+    container_name: wwqp-worker
+    build:
+      # A `dotnet publish` output directory (see the file header), NOT the repo - the Dockerfile
+      # has no build stage, so the context must already contain the built DLLs.
+      context: ./bin/publish
+      dockerfile: ../../Dockerfile
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    volumes:
+      - ./Settings.local:/app/Settings:ro
+    environment:
+      DOTNET_ENVIRONMENT: Development
+      ASPNETCORE_ENVIRONMENT: Development
+      ENABLECONSOLELOGGING: "true"
+      EXECUTIONLOGLEVEL: DEBUG
+      STRUCTURED_LOGS: "false"
+
+      QUEUE__SETTINGSPATH: /app/Settings
+
+      # The stub accepts anything, so a real token is not needed locally. Point
+      # ENGINE__USECLIENTSECRETFALLBACK at a dev app registration to exercise real auth.
+      ENGINE__BASEURL: http://engine-stub:8080
+      ENGINE__RESOURCEAPPID: 00000000-0000-0000-0000-000000000001
+      ENGINE__TIMEOUTSECONDS: "45"
+
+      WORKER__MAXCONCURRENCY: "1"
+      WORKER__SHUTDOWNGRACESECONDS: "30"
+    # Mirrors the ACA terminationGracePeriodSeconds > ShutdownGraceSeconds rule so the
+    # drain path behaves locally as it will in Azure.
+    stop_grace_period: 45s

@@ -7,7 +7,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2A8088A6-8F8D-42FD-B877-D809C494C561}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <EnableMSTestRunner>true</EnableMSTestRunner>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <EnableDefaultItems>false</EnableDefaultItems>
@@ -159,7 +159,7 @@
     <Compile Include="ActivityComparerTests\WebTools\WebPutActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\XPath\DsfXPathActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointUpdateListItemActivityEqualityTests.cs" />
-    <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />
+    <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMQActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfPublishRabbitMqActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\RecordsetOld\DsfCountRecordsetActivityTests.cs" />
     <Compile Include="ActivityComparerTests\Scripting\DsfJavascriptActivityTests.cs" />
@@ -562,7 +562,7 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  <Target Condition="'$(TargetFramework)' == 'net8.0'" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />

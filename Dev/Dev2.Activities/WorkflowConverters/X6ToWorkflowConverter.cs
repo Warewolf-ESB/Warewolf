@@ -89,6 +89,14 @@ namespace Dev2.Activities.WF
 
                 var activityBuilder = X6JsonToActivityBuilder(x6Graph);
                 var flowChart = activityBuilder.Implementation as Flowchart;
+                if (flowChart == null)
+                {
+                    // Either the graph had no cells, or none of its cells resolved to a start
+                    // node — BuildWorkflow falls back to a bare Sequence in that case, which
+                    // WorkflowHelper.EnsureImplementation cannot finalise. Fail with a structured,
+                    // named exception here instead of letting it throw a raw NullReferenceException.
+                    throw new EmptyWorkflowGraphException();
+                }
                 var workflowHelper = new WorkflowHelper();
                 workflowHelper.EnsureImplementation(activityBuilder, flowChart);
                 var workflowXaml = workflowHelper.GetXamlDefinition(activityBuilder);
@@ -136,6 +144,7 @@ namespace Dev2.Activities.WF
                 var activity = CreateActivityFromNode(node, out bool isStartNode);
                 if (activity != null)
                 {
+                    ApplyDisplayNameFromNode(node, activity);
                     activityMap[node.id] = activity;
 
                     if (isStartNode)
@@ -207,6 +216,8 @@ namespace Dev2.Activities.WF
 
                     if (nestedActivity != null)
                     {
+                        ApplyDisplayNameFromNode(nestedNode, nestedActivity);
+
                         // Initialize DataFunc if it doesn't exist
                         if (forEach.DataFunc == null)
                         {
@@ -429,6 +440,27 @@ namespace Dev2.Activities.WF
                 flowchart.StartNode = startFlowNode.Next ?? startFlowNode;
 
             return flowchart;
+        }
+
+        /// <summary>
+        /// Restores an activity's DisplayName from the X6 node's canonical "displayname" data
+        /// key. WorkflowToX6Converter always writes this key for every node (see its
+        /// CreateNode-equivalent fallback), but most Create*Activity factory methods below only
+        /// use it to validate the node before calling the activity's own FromX6Json — they never
+        /// assign it back to Activity.DisplayName, and most activities' FromX6Json implementations
+        /// don't set DisplayName either (DsfNativeActivity's base FromX6Json only restores
+        /// OnError-related state). Without this, every round-tripped activity silently reverts to
+        /// its constructor's default DisplayName (e.g. "Assign" instead of "Assign (1)").
+        /// </summary>
+        private static void ApplyDisplayNameFromNode(Cell node, Activity activity)
+        {
+            if (node?.data != null &&
+                node.data.TryGetValue(Constants.DISPLAYNAME, out var displayNameObj) &&
+                displayNameObj is string displayName &&
+                !string.IsNullOrWhiteSpace(displayName))
+            {
+                activity.DisplayName = displayName;
+            }
         }
 
         /// <summary>
@@ -672,7 +704,10 @@ namespace Dev2.Activities.WF
 
 
                 default:
-                    return new WriteLine { Text = "Unknown type" };
+                    // Previously fell back to a no-op WriteLine, silently accepting an
+                    // unrecognised activity type as if conversion had succeeded. Fail loudly
+                    // instead so callers (e.g. validate_workflow) can surface a structured error.
+                    throw new UnsupportedActivityTypeException(type);
             }
         }
         

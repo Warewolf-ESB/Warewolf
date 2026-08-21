@@ -1,0 +1,46 @@
+# Build context for Dev/Warewolf.Execution.QueueProcessor/Dockerfile is the REPO ROOT, because the
+# image builds from source and the worker links shared files from sibling projects (COPY Dev/ Dev/).
+# `az acr build` tars this whole context and uploads it, so without these exclusions it:
+#   * FAILS on '.vs' — Visual Studio holds the FileContentIndex *.vsidx files open, and the tar
+#     step dies with "[Errno 13] Permission denied" (this blocked three Phase C runs)
+#   * uploads every bin/ and obj/ across ~133 projects, which is gigabytes per deploy
+#   * risks stale host build output leaking into the image; the Dockerfile restores and builds
+#     inside the container, so host artefacts are never wanted
+#
+# TWO SYNTAX RULES, both learned the hard way from `az acr build --debug`, which logs
+# ".dockerignore: rule '<p>' matches '<path>'" or ".dockerignore: no rule for '<path>'":
+#
+#  1. NO TRAILING SLASH. The CLI tests context-relative paths with no trailing separator
+#     ('Dev/.vs'), so a pattern written '.vs/' matches nothing at all.
+#  2. LIST BOTH THE BARE AND '**/' FORM. A bare name is anchored at the context root, and the
+#     CLI's matcher does not treat '**/' as also matching depth zero. This repo has FOUR .vs
+#     directories - root, Dev, and two under ClientExamples - so both forms are required.
+#
+# Verify any change with:
+#   az acr build --registry <acr> --image probe:t --file <dockerfile> <context> --no-push --debug
+# and confirm the offending paths report "rule ... matches", not "no rule for".
+.vs
+**/.vs
+.vscode
+**/.vscode
+bin
+**/bin
+obj
+**/obj
+TestResults
+**/TestResults
+node_modules
+**/node_modules
+packages
+**/packages
+.github
+*.user
+*.suo
+*.log
+
+# Publish output: the image is built from source, not from a host publish. Staged deployment inputs
+# under these folders can also contain credentials, so they must never enter a layer.
+publish
+**/publish
+Settings.local
+**/Settings.local

@@ -98,7 +98,7 @@ What happens, in order:
 5. **User assignments** — for each user in `$UserAssignments`, posts an `appRoleAssignment` for the group role plus every permission role mapped to that group.
 6. **Client secret** — generates a 1-year secret if no secret survives the next 30 days (or when called with `-RotateSecret`).
 7. **Easy Auth** — substitutes `<TENANT_ID>` / `<CLIENT_ID>` into `Scripts/authsettingsV2.json` and PUTs it to `Microsoft.Web/.../authsettingsV2`.
-8. **App settings** — sets `WAREWOLF_ENTRA_TENANT_ID`, `WAREWOLF_ENTRA_AUDIENCE`, `WAREWOLF_SECURE_CONFIG`, and (when rotated) `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET`.
+8. **App settings** — sets `WAREWOLF_ENTRA_TENANT_ID`, `WAREWOLF_ENTRA_AUDIENCE`, `WAREWOLF_ENTRA_CLIENT_ID`, `WAREWOLF_SECURE_CONFIG`, and (when rotated) `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET`. `WAREWOLF_ENTRA_CLIENT_ID` carries the bare client GUID as an extra accepted `aud` value — Entra has been observed (2026-08-18) minting tokens whose `aud` is the bare GUID rather than the `api://<clientId>` URI form, and without this setting `EntraAuthOptions.ValidAudiences` only contains the URI form, so every caller is rejected with 401 regardless of role assignment.
 9. **Output** — writes `Scripts/Configure-WwExecutionAuth.output.json` containing `clientId`, `audience`, role IDs, and assignment summary.
 
 Expected output (excerpt):

@@ -9,13 +9,14 @@
 */
 
 using System;
+using System.Runtime.Serialization;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Warewolf.Data;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    [Serializable]
+    [DataContract]
     public class VersionInfo : IVersionInfo
     {
         public  VersionInfo(DateTime dateTimeStamp, string  reason, string user, string versionNumber, Guid resourceId ,Guid versionId)
@@ -57,11 +58,17 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #region Implementation of IVersionInfo
 
+        [DataMember]
         public DateTime DateTimeStamp { get; set; }
+        [DataMember]
         public string Reason { get; set; }
+        [DataMember]
         public string User { get; set; }
+        [DataMember]
         public string VersionNumber { get; set; }
+        [DataMember]
         public Guid ResourceId { get; set; }
+        [DataMember]
         public Guid VersionId { get; set; }
 
         public override string ToString() => $"ResourceId:{ResourceId} Version:{VersionId} ";

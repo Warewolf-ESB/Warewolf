@@ -20,7 +20,6 @@ using Unlimited.Framework.Converters.Graph.String.Xml;
 
 namespace Unlimited.Framework.Converters.Graph.String
 {
-    [Serializable]
     public class StringInterrogator : IInterrogator
     {
         public IMapper CreateMapper(object data)

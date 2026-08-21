@@ -379,6 +379,109 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				Write-Host "dotnet publish failed for $SolutionFile."
 				exit 1
 			}
+			if ($OutputFolderName -eq "ServerTests") {
+				# WOLF-8508: ServerTests.sln publishes Warewolf.Execution.Lightweight
+				# alongside its companion Function Apps (EngineJobProcessor,
+				# ServiceBusWorker) into this one shared flat directory
+				# (-p:ErrorOnDuplicatePublishOutputFiles=false above silences the
+				# resulting filename collisions). Two SDK-generated/static files are
+				# named identically across all three projects, so whichever project's
+				# copy happens to publish last wins non-deterministically:
+				#   - host.json: only Lightweight's sets extensions.http.routePrefix to
+				#     "", so a sibling's host.json winning breaks every documented
+				#     unprefixed route (e.g. /Public/apis.json 404s under the
+				#     Functions-default "api" prefix).
+				#   - worker.config.json: its defaultWorkerPath names which project's own
+				#     .dll is actually launched as the dotnet-isolated worker process. If
+				#     a sibling's wins, THAT project's Program.cs becomes the process's
+				#     composition root instead of Lightweight's -- e.g.
+				#     ServiceBusWorker's Program.cs eagerly validates its own
+				#     WwExecutionOptions (TenantId/ResourceAppId) via DataAnnotations. The
+				#     "Other Specs" test harness (StartAsAzureFunction.ps1) only ever
+				#     writes Lightweight's own required local.settings.json values, so
+				#     when ServiceBusWorker's worker.config.json wins the race the
+				#     process crashes at startup with "OptionsValidationException: ...
+				#     'TenantId' ... is required", even though Lightweight (the app under
+				#     test) never uses that option at all.
+				# (local.settings.json itself isn't part of this collision:
+				# StartAsAzureFunction.ps1 unconditionally regenerates it with exactly
+				# Lightweight's required keys immediately before starting func, for every
+				# test run.)
+				# Re-pin both files so Lightweight's own routing and worker process
+				# always win regardless of companion-project publish order.
+				$_lightweightHostJson = "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\host.json"
+				if (Test-Path $_lightweightHostJson) {
+					Copy-Item -Path $_lightweightHostJson -Destination "$PSScriptRoot\Bin\$OutputFolderName\host.json" -Force
+					Write-Host "Pinned Warewolf.Execution.Lightweight's host.json in $OutputFolderName (routePrefix, logging, functionTimeout)."
+				}
+				$_workerConfigPath = "$PSScriptRoot\Bin\$OutputFolderName\worker.config.json"
+				$_workerConfig = [ordered]@{
+					description = [ordered]@{
+						language              = "dotnet-isolated"
+						extensions            = @(".dll")
+						defaultExecutablePath = "dotnet"
+						defaultWorkerPath     = "Warewolf.Execution.Lightweight.dll"
+						workerIndexing        = "true"
+						canUsePlaceholder     = $true
+					}
+				}
+				$_workerConfig | ConvertTo-Json -Depth 4 | Set-Content -Path $_workerConfigPath -Encoding UTF8
+				Write-Host "Pinned worker.config.json's defaultWorkerPath to Warewolf.Execution.Lightweight.dll in $OutputFolderName."
+
+				# Re-pin RabbitMQ.Client.dll to 5.1.2: ServerTests.sln also publishes
+				# Warewolf.Execution.QueueProcessor(.Tests), which is deliberately pinned to
+				# RabbitMQ.Client 7.1.2 (async-only IChannel API - see that project's own
+				# csproj comments) precisely so NuGet would NOT unify the dependency graph
+				# to 7.x for everything else. But -p:ErrorOnDuplicatePublishOutputFiles=false
+				# above means both versions' identically-named RabbitMQ.Client.dll still
+				# collide as physical files in this one shared flat directory, and whichever
+				# project's copy happens to publish last wins non-deterministically -
+				# regardless of what each test assembly's own .deps.json expects. RabbitMQ.Client
+				# 7.x removed the synchronous ConnectionFactory.CreateConnection() overload
+				# (fully async now), so when its DLL wins the race, every 5.1.2-based
+				# consumer built from this same solution (Warewolf.Driver.RabbitMQ(.Tests),
+				# Dev2.Data, Dev2.Activities(.Tests), Dev2.Runtime.Services) throws
+				# System.MissingMethodException at runtime instead of connecting. 5.1.2 has
+				# far more consumers in this solution than 7.1.2 (only
+				# Warewolf.Execution.QueueProcessor(.Tests) needs 7.x), so pin 5.1.2 as the
+				# deterministic winner here.
+				$_nugetPackagesRoot = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { "$env:USERPROFILE\.nuget\packages" }
+				$_rabbitMqDll = Join-Path $_nugetPackagesRoot "rabbitmq.client\5.1.2\lib\netstandard2.0\RabbitMQ.Client.dll"
+				if (Test-Path $_rabbitMqDll) {
+					Copy-Item -Path $_rabbitMqDll -Destination "$PSScriptRoot\Bin\$OutputFolderName\RabbitMQ.Client.dll" -Force
+					Write-Host "Pinned RabbitMQ.Client.dll to 5.1.2 in $OutputFolderName (majority of consumers; QueueProcessor's 7.1.2 is isolated to its own test job)."
+				} else {
+					Write-Host "WARNING: could not find RabbitMQ.Client 5.1.2 at '$_rabbitMqDll' to pin in $OutputFolderName - RabbitMQ.Client.dll version in this shared output may be non-deterministic."
+				}
+
+				# WOLF-8508 follow-up: the pin above is a physical file overwrite in this one
+				# shared flat directory, so it also clobbered Warewolf.Execution.QueueProcessor.Tests'
+				# own RabbitMQ.Client 7.1.2 (async-only IChannel API) even though that project's own
+				# test job (pipeline.yml "LightweightExecutionUnitTests") runs it separately -
+				# separate test EXECUTION was never separate PUBLISH. Fix: republish
+				# Warewolf.Execution.QueueProcessor.Tests into its own isolated subfolder, which
+				# .NET Core's per-assembly .deps.json/AssemblyDependencyResolver will resolve RabbitMQ.Client
+				# from independently of the flat directory's pinned copy. TestRun.ps1's direct-mode
+				# assembly lookup already does `Get-ChildItem ".\$p.dll" -Recurse` from its working
+				# directory, so it finds this isolated copy with no TestRun.ps1/pipeline.yml changes.
+				$_queueProcessorTestsProj = "$PSScriptRoot\Dev\Warewolf.Execution.QueueProcessor.Tests\Warewolf.Execution.QueueProcessor.Tests.csproj"
+				$_queueProcessorOut = "$PSScriptRoot\Bin\$OutputFolderName\QueueProcessor"
+				if (Test-Path $_queueProcessorTestsProj) {
+					# Remove the flat copy first so TestRun.ps1's -Recurse assembly search does not
+					# also match the stale, wrongly-pinned copy left behind by the solution-wide publish.
+					Get-ChildItem "$PSScriptRoot\Bin\$OutputFolderName" -Filter "Warewolf.Execution.QueueProcessor.Tests.*" -File -ErrorAction SilentlyContinue |
+						Remove-Item -Force -ErrorAction SilentlyContinue
+					dotnet restore "$_queueProcessorTestsProj" -r $Runtime --nologo -v minimal --force
+					dotnet publish "$_queueProcessorTestsProj" -c $Config -r $Runtime $_scFlag --no-restore -o "$_queueProcessorOut" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true
+					if ($LASTEXITCODE -ne 0) {
+						Write-Host "dotnet publish failed for Warewolf.Execution.QueueProcessor.Tests.csproj."
+						exit 1
+					}
+					Write-Host "Republished Warewolf.Execution.QueueProcessor.Tests in isolation to $_queueProcessorOut (keeps its own RabbitMQ.Client 7.1.2 out of the 5.1.2 pin above)."
+				} else {
+					Write-Host "WARNING: could not find $_queueProcessorTestsProj to isolate from the RabbitMQ.Client 5.1.2 pin."
+				}
+			}
 			if ($RuntimeIsSelfContained) {
 				# Patch 'Warewolf Server.runtimeconfig.json' so the exe can be run on a Windows
 				# host when the publish targeted linux-x64 --self-contained.  A self-contained
@@ -428,6 +531,49 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				if (Test-Path $_sqliteInterop) {
 					Copy-Item $_sqliteInterop "$PSScriptRoot\Bin\$OutputFolderName\SQLite.Interop.dll" -Force
 					Write-Host "Copied win-x64 SQLite.Interop.dll to flat output root in $OutputFolderName."
+				}
+				# WOLF-8508: framework-dependent, RID-specific publishes (SelfContained=false,
+				# -r win-x64) flatten Windows-specific *managed* assemblies (e.g.
+				# Microsoft.Win32.SystemEvents.dll, System.Management.dll, System.DirectoryServices.dll,
+				# etc.) to the flat output root, but each project's own *.deps.json still records
+				# them at their nested NuGet-relative path (e.g.
+				# "runtimes/win/lib/net8.0/Microsoft.Win32.SystemEvents.dll"). With many projects
+				# publishing into this one shared directory, the .NET assembly binder used by some
+				# hosts (notably the Azure Functions isolated-worker process backing
+				# Warewolf.Execution.Lightweight) resolves purely via deps.json and does not fall
+				# back to the flat root, so it throws FileNotFoundException for an assembly that is
+				# actually present, just at the "wrong" path. Repair every affected package by
+				# recreating the nested runtimes/win*/... path from the flat copy that publish
+				# already produced.
+				$_depsFiles = Get-ChildItem "$PSScriptRoot\Bin\$OutputFolderName\*.deps.json" -ErrorAction SilentlyContinue
+				foreach ($_depsFileInfo in $_depsFiles) {
+					try {
+						$_deps = Get-Content $_depsFileInfo.FullName -Raw | ConvertFrom-Json
+					} catch {
+						Write-Host "Skipping unreadable deps.json: $($_depsFileInfo.FullName)"
+						continue
+					}
+					$_winTargetName = $null
+					foreach ($_tName in $_deps.targets.PSObject.Properties.Name) {
+						if ($_tName -like "*/win*") { $_winTargetName = $_tName; break }
+					}
+					if (-not $_winTargetName) { continue }
+					$_target = $_deps.targets.$_winTargetName
+					foreach ($_pkgName in $_target.PSObject.Properties.Name) {
+						$_pkg = $_target.$_pkgName
+						if (-not $_pkg.runtime) { continue }
+						foreach ($_relPath in $_pkg.runtime.PSObject.Properties.Name) {
+							if ($_relPath -notlike "runtimes/win*") { continue }
+							$_nestedPath = Join-Path "$PSScriptRoot\Bin\$OutputFolderName" ($_relPath -replace '/', '\')
+							if (Test-Path $_nestedPath) { continue }
+							$_flatPath = Join-Path "$PSScriptRoot\Bin\$OutputFolderName" (Split-Path $_relPath -Leaf)
+							if (Test-Path $_flatPath) {
+								$null = New-Item -Path (Split-Path $_nestedPath -Parent) -ItemType Directory -Force
+								Copy-Item -Path $_flatPath -Destination $_nestedPath -Force
+								Write-Host "Restored nested $_relPath from flat output root in $OutputFolderName (per $($_depsFileInfo.Name))."
+							}
+						}
+					}
 				}
 			}
 			Copy-Item "$PSScriptRoot\TestRun.ps1" "$PSScriptRoot\Bin\$OutputFolderName\TestRun.ps1"

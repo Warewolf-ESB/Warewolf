@@ -18,7 +18,6 @@ namespace Dev2.Data
     /// <summary>
     /// Used to drive recordset lanaguage use
     /// </summary>
-    [Serializable]
     public class IndexIterator : IIndexIterator
     {
         int _curValue;

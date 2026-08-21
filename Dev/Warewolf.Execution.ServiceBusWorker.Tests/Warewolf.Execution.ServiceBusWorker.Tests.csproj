@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageReference Include="Moq" Version="4.18.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Warewolf.Execution.ServiceBusWorker\Warewolf.Execution.ServiceBusWorker.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Source-link (NOT ProjectReference) a single pure helper from the E2E harness. The harness
+      is an Exe deliberately kept out of ServerTests.sln / TestRun.ps1's globs (see its own
+      csproj comment); referencing it as a project would drag that Exe into a flat ServerTests
+      publish. Compiling this one dependency-free file directly gives the helper unit coverage
+      without disturbing that isolation.
+    -->
+    <Compile Include="..\Warewolf.Execution.ServiceBusWorker.E2EHarness\WorkflowInputTemplate.cs"
+             Link="Harness\WorkflowInputTemplate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Mirrors the same override in Warewolf.Execution.ServiceBusWorker.csproj: the worker's
+      Service Bus extension requires Google.Protobuf >= 3.32.1, but this solution's
+      Dev/Directory.Build.props pins a lower floor for the engine — causing NU1605 here too since
+      this project pulls the worker in transitively.
+    -->
+    <PackageReference Update="Google.Protobuf" Version="3.32.1" />
+
+    <!--
+      Mirrors the same override in Warewolf.Execution.ServiceBusWorker.csproj: without it this
+      project's own restore/publish graph also pulls an older Microsoft.Extensions.Hosting family
+      (via Microsoft.Azure.Functions.Worker 2.52.0, inherited transitively through the
+      ProjectReference below), which can win a flat multi-project ServerTests.sln publish and
+      crash the Lightweight engine's isolated worker at startup. See the worker project for
+      the full explanation.
+    -->
+    <PackageReference Update="Microsoft.Extensions.Hosting" Version="10.0.0" />
+  </ItemGroup>
+
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
+</Project>

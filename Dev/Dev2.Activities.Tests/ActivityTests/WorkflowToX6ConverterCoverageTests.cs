@@ -493,6 +493,23 @@ namespace Dev2.Tests.Activities.ActivityTests
             var model = Convert(new Flowchart { StartNode = decision });
             Assert.IsTrue(model.Nodes.Count >= 3);
             Assert.IsTrue(model.Edges.Exists(e => e.label == "True" || e.label == "true"));
+
+            // Regression assertion for the round-trip fidelity bug found via RoundTripFidelityTests
+            // ("Count Records" sample): X6ToWorkflowConverter's HandleDecisionConnection only wires
+            // FlowDecision.True/False when the edge carries Constants.ISDECISIONARM/ISTRUEARM data.
+            // Assert CreateEdge actually emits those flags so the read side can reconstruct them.
+            var trueEdge = model.Edges.Find(e => string.Equals(e.label, Constants.TRUE, StringComparison.OrdinalIgnoreCase));
+            var falseEdge = model.Edges.Find(e => string.Equals(e.label, Constants.FALSE, StringComparison.OrdinalIgnoreCase));
+            Assert.IsNotNull(trueEdge, "Expected a True-branch edge from the decision node.");
+            Assert.IsNotNull(falseEdge, "Expected a False-branch edge from the decision node.");
+            Assert.IsTrue(trueEdge.data != null && trueEdge.data.TryGetValue(Constants.ISDECISIONARM, out var trueIsDecision) && (bool)trueIsDecision,
+                "True-branch edge must carry isDecisionArm=true so X6ToWorkflowConverter can wire FlowDecision.True.");
+            Assert.IsTrue(trueEdge.data.TryGetValue(Constants.ISTRUEARM, out var trueIsTrue) && (bool)trueIsTrue,
+                "True-branch edge must carry isTrue=true.");
+            Assert.IsTrue(falseEdge.data != null && falseEdge.data.TryGetValue(Constants.ISDECISIONARM, out var falseIsDecision) && (bool)falseIsDecision,
+                "False-branch edge must carry isDecisionArm=true so X6ToWorkflowConverter can wire FlowDecision.False.");
+            Assert.IsTrue(falseEdge.data.TryGetValue(Constants.ISTRUEARM, out var falseIsTrue) && !(bool)falseIsTrue,
+                "False-branch edge must carry isTrue=false.");
         }
 
         // A minimal Activity<bool> usable as a FlowDecision.Condition.

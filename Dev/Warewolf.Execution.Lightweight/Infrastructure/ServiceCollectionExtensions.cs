@@ -68,6 +68,25 @@ internal static class ServiceCollectionExtensions
             // can be injected into health checks, audit, and tests.
             services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
 
+            // Dedicated, narrow "trigger-via-service-bus" Entra audience — a token minted
+            // for the general HTTP audience must never validate against this one (spec
+            // §4.2 step 2). Registered as its own singleton type rather than a second
+            // keyed EntraAuthOptions instance (no keyed-service DI pattern in this project).
+            services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
+            services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment());
+
+            // The Service Bus secure trigger's token validator MUST be a DI singleton, not
+            // constructed per-invocation: EntraBearerTokenValidator caches Entra's OIDC
+            // metadata/JWKS internally, and ServiceBusWorkflowTriggerFunction (unlike
+            // IPrincipalParser's HTTP-path implementations) is not itself registered here,
+            // so the Functions isolated-worker host resolves a new instance per invocation.
+            // Without this singleton, a burst of concurrent Service Bus messages triggers
+            // one cold OIDC-metadata fetch per message — reproduced by the ShovelBridge
+            // 1000-message load test as widespread IDX20803/IDX20804 + InvalidToken
+            // failures once the Function App scales out under load.
+            services.AddSingleton(sp =>
+                new EntraBearerTokenValidator(sp.GetRequiredService<ServiceBusEntraAuthOptions>()));
+
             // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
             // AuditLogger is registered unconditionally so authorization middleware
             // can emit structured 401/403 audit events even when encryption is off.
@@ -166,7 +185,8 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IRouteAuthorizationRegistry>(
             _ => RouteAuthorizationRegistry.BuildFrom(
                 typeof(WorkflowHttpFunction),
-                typeof(Functions.WorkflowResumeFunction)));
+                typeof(Functions.WorkflowResumeFunction),
+                typeof(Functions.ServiceBusResultFunction)));
 
         // Suspend/resume: executes suspended-workflow continuations on the lightweight
         // pipeline (resume route + both manual-resumption paths via the driver seam).
@@ -175,6 +195,13 @@ internal static class ServiceCollectionExtensions
         // Principal parsers — ordered chain (Easy Auth preferred, bearer fallback).
         services.AddSingleton<IPrincipalParser, EasyAuthPrincipalParser>();
         services.AddSingleton<IPrincipalParser, BearerTokenPrincipalParser>();
+
+        // Secure Service Bus workflow trigger (Model A) — jti replay cache,
+        // business-idempotency dedupe, and correlation-id → result store shared by
+        // ServiceBusWorkflowTriggerFunction and the ServiceBusResultFunction polling
+        // endpoint. Hangfire-hash-backed when Config.Persistence is enabled, in-memory
+        // fallback otherwise (single-instance-only caveat — see the class docs).
+        services.AddSingleton<IServiceBusReplayAndResultStore, ServiceBusReplayAndResultStore>();
 
         // (POL-08) Hot-reload secure.config + policy loader at runtime.
         services.AddHostedService<SecureConfigWatcher>();
@@ -208,7 +235,9 @@ internal static class ServiceCollectionExtensions
         // FileDecryptionHelper / FileEncryptionHelper are resolved AFTER InitializeAsync()
         // completes, so GetKeyBytes() is always safe at construction time.
         services.AddSingleton(sp =>
-            new FileDecryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
+            new FileDecryptionHelper(
+                sp.GetRequiredService<KeyVaultSecretManager>(),
+                sp.GetRequiredService<ILogger<FileDecryptionHelper>>()));
         services.AddSingleton(sp =>
             new FileEncryptionHelper(sp.GetRequiredService<KeyVaultSecretManager>()));
 

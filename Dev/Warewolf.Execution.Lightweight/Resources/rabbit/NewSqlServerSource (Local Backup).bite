@@ -1,0 +1,22 @@
+
+<Source ID="d3f6a2e1-8b4c-4a3d-9e1f-6c2b0a7d5e94" Name="NewSqlServerSource (Local Backup)" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAUHAZzXJIpUOHxqHui3oSuwQAAAACAAAAAAAQZgAAAAEAACAAAABtRQGT15XU5QA7UD2FzRzzC61B2a5DPw7yiIbXEDPU5AAAAAAOgAAAAAIAACAAAADJRP8BTZL2FGXvQ71v+u4mnmca5nYwgpGi96eobEJKxRABAADJYsDRHwcuZ3gGLQRoPCnyFSJi4Ldb6qW2aHZp0+JlXl0ky5Y48nSMO0aTbm3rCY7vqkT/J9EA0cTkH8DpsVz8YDzS0frvK0MNRc/binUAQX3h5d1idtTmObcyoTRm7gr9ExYWOTYTzfRiLfV4qzQrgJ8Empdk6YiTJgUPFRMXyGKLKA4d2HrBPlXsy976qg/DB1cGtQ62QxBHqvCGBOqsThyHzi2yvuav/jfbQxY1R7+qMkimVW94TUfhHRhw6lwUbB2Iv+yu//KDUHiZTrrrF01ljJdWrfwjfsmYf8hYfqnGgHqvZMBBA9u74q5586U+MDEDfpff/lNZIwBGDHE+1ZNJMVF7uu9MVbHAp5Y4nkAAAAA6vnBAXzfBm/DTgcUH6ilb4pbJNwyYvf/LkKr9L8YSqJZeS2d0XBHEbAaezTdY1LY92qxOXjJr3PsbLF2msWjV" ServerVersion="2.8.6.59" ServerID="52a976df-c196-4165-8ae4-13131b1bddc6">
+  <DisplayName>NewSqlServerSource (Local Backup)</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2026-08-10T18:45:58.1358901+05:30" Reason="" User="CYGNET\spshah" VersionNumber="2" ResourceId="d3f6a2e1-8b4c-4a3d-9e1f-6c2b0a7d5e94" VersionId="82cde008-5987-4247-a926-75c57bfed30f" />
+</Source>

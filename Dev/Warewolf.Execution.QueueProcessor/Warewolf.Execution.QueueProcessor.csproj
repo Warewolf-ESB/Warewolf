@@ -1,0 +1,161 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- ============================================================= -->
+  <!-- Warewolf.Execution.QueueProcessor                              -->
+  <!--                                                                -->
+  <!-- Linux container worker that consumes ONE RabbitMQ queue trigger -->
+  <!-- and invokes the target workflow on the Execution Engine with a  -->
+  <!-- managed-identity bearer token. Hosted on Azure Container Apps,  -->
+  <!-- autoscaled 0..N by the KEDA rabbitmq scaler (one app per        -->
+  <!-- trigger). Replaces N x QueueWorker.exe for the Azure path; the  -->
+  <!-- on-prem Server + QueueWorker.exe path is untouched.             -->
+  <!--                                                                -->
+  <!-- Plan: docs/QueueWorker-Migration-To-AzureContainerApps-KEDA-    -->
+  <!--       Plan-Step-By-Step.md                                      -->
+  <!-- ============================================================= -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+
+    <RootNamespace>Warewolf.Execution.QueueProcessor</RootNamespace>
+    <AssemblyName>Warewolf.Execution.QueueProcessor</AssemblyName>
+
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultItems>true</EnableDefaultItems>
+
+    <!-- Container image supplies the runtime; keep the publish output lean. -->
+    <SelfContained>false</SelfContained>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
+  </ItemGroup>
+
+  <!--
+    InternalsVisibleTo is declared in Properties\InternalsVisibleTo.cs, not here: this project
+    sets GenerateAssemblyInfo=false, so MSBuild <AssemblyAttribute> items are never emitted.
+  -->
+
+  <ItemGroup>
+    <!--
+      RabbitMQ.Client 7.x (decision #24): async IChannel + async consumers +
+      ConsumerDispatchConcurrency. DELIBERATELY NOT the 5.1.2 version used by
+      Warewolf.Driver.RabbitMQ - see plan section 1.6. This project must NOT
+      reference Warewolf.Driver.RabbitMQ or Dev2.Data, because those pin
+      RabbitMQ.Client 5.1.2 and NuGet would unify the graph to 7.x, breaking
+      types compiled against v5 (IModel / QueueingBasicConsumer).
+    -->
+    <PackageReference Include="RabbitMQ.Client" Version="7.1.2" />
+
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.1" />
+
+    <!-- Managed-identity token acquisition + Key Vault AES key (linked security files). -->
+    <PackageReference Include="Azure.Identity" Version="1.20.0" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.7.0" />
+
+    <!-- App Insights sink, gated by ENABLEAPPLICATIONINSIGHTS (engine parity). -->
+    <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.22.0" />
+
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Dev2.Common brings Dev2Logger (decision #6) and transitively Warewolf.Common
+      (MessageToInputsMapper), Warewolf.Interfaces (IConsumer/IPublisher/Headers/
+      ConsumerResult) and Warewolf.Security (DpapiWrapper + the WFAES hook).
+      Verified RabbitMQ-free: Dev2.Common.csproj has no RabbitMQ.Client reference,
+      so referencing it does not reintroduce the 5.1.2 pin.
+    -->
+    <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj" />
+    <!--
+      Dev2Logger itself lives in Dev2.Diagnostics (namespace Dev2.Common) - the same
+      project the engine references for it (Warewolf.Execution.Lightweight.csproj:156).
+      Required by the linked Key Vault sources, which log through Dev2Logger.
+    -->
+    <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj" />
+    <ProjectReference Include="..\Warewolf.Common\Warewolf.Common.csproj" />
+    <ProjectReference Include="..\Warewolf.Interfaces\Warewolf.Interfaces.csproj" />
+    <ProjectReference Include="..\Warewolf.Security\Warewolf.Security.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Shared-source links from the Execution Engine, same mechanism the
+      EngineJobProcessor uses (Warewolf.Execution.EngineJobProcessor.csproj:60-72):
+      two Exe projects cannot reference each other, and these files are
+      host-agnostic. Any change to the originals flows in at build time.
+
+      LIMITED ON PURPOSE: the engine's IExecutionLogger sink stack
+      (ExecutionLoggerBase / Console / Azure / Elasticsearch sinks) is NOT linked
+      because ExecutionLoggerBase depends on InstanceCorrelationContext /
+      InstanceCorrelationMiddleware - Azure Functions invocation correlation.
+      Linking it would drag Microsoft.Azure.Functions.Worker into a container that
+      is not a Function App. The two files below are the parts that define the
+      CONTRACT (level semantics + env-var config) and would otherwise drift;
+      the sink itself is implemented locally in Logging\.
+    -->
+    <Compile Include="..\Warewolf.Execution.Lightweight\Logging\ExecutionLogLevel.cs"
+             Link="Shared\ExecutionLogLevel.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Logging\LoggingConfiguration.cs"
+             Link="Shared\LoggingConfiguration.cs" />
+
+    <!-- Key Vault AES (WFAES::) decryption stack - identical to the JobProcessor. -->
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultSecretManager.cs"
+             Link="Shared\KeyVaultSecretManager.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\FileDecryptionHelper.cs"
+             Link="Shared\FileDecryptionHelper.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultCredentialFactory.cs"
+             Link="Shared\KeyVaultCredentialFactory.cs" />
+    <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultCredentialOptions.cs"
+             Link="Shared\KeyVaultCredentialOptions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!--
+      Local-development settings tree, mirroring what Deploy-WwQueueProcessor.ps1 stages into
+      the container (plan section 2.3 / 8.2) and the engine's own Settings\ convention
+      (Warewolf.Execution.Lightweight.csproj:262 - Settings\ElasticsearchLoggingSource.bite):
+
+        Settings\<source>.bite            RabbitMQ source, named file directly in Settings\
+        Settings\triggers\<id>.bite       queue-trigger definition(s)
+
+      The wildcard preserves the relative path, so a second trigger dropped into
+      Settings\triggers\ is picked up with no csproj change (set QUEUE__TRIGGERID to
+      disambiguate - QueueConfigurationLoader.SelectTrigger refuses to guess).
+
+      CopyToPublishDirectory is Never ON PURPOSE. `dotnet publish` output is what the
+      Dockerfile copies into the image, and this sample source carries a plaintext
+      development broker credential. Shipping it would (a) bake a secret into an image layer
+      and (b) let a real deployment silently fall back to the dev broker if the deploy script
+      failed to stage its own files. Production files arrive via
+      Deploy-WwQueueProcessor.ps1 (WFAES-encrypted) + the Key Vault AES key.
+    -->
+    <None Update="Settings\**\*.bite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
+</Project>

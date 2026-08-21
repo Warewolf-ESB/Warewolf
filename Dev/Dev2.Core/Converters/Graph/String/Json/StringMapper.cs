@@ -5,7 +5,6 @@ using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
-    [Serializable]
     public class StringMapper : IMapper
     {
         #region Methods

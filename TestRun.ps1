@@ -59,6 +59,7 @@ param(
     [ValidateSet('','LightweightExecution','FullServer')]
     [String]   $ServerType = "",
     [String]   $FuncExePath = "",
+    [String]   $AzuriteExePath = "",
     [String]   $LightweightExecutionDir = "",
     [String]   $SharedConfigDir = "",
 
@@ -151,6 +152,16 @@ function Test-Exit([string]$label) {
 # Docker Desktop on Windows accepts C:/foo/bar in -v mounts
 function dp([string]$path) {
     [System.IO.Path]::GetFullPath($path) -replace '\\', '/'
+}
+
+# [System.IO.Path]::GetRelativePath() only exists on .NET Core/.NET 5+ (and thus pwsh);
+# CI agents invoke this script under Windows PowerShell 5.1 (.NET Framework), which lacks
+# it entirely, so use a Uri-based equivalent that works under both hosts.
+function Get-RelativePathCompat([string]$FromDirectory, [string]$ToPath) {
+    $fromUri = [System.Uri]((Join-Path $FromDirectory ''))
+    $toUri   = [System.Uri]$ToPath
+    $relative = [System.Uri]::UnescapeDataString($fromUri.MakeRelativeUri($toUri).ToString())
+    return $relative -replace '/', [System.IO.Path]::DirectorySeparatorChar
 }
 
 function Get-Slug([string]$JobName) {
@@ -1375,6 +1386,7 @@ function Stop-HostMSSQLServer { docker rm -f sqlserver 2>$null | Out-Null }
 
 $script:_serverProcess   = $null
 $script:_coverageProcess = $null
+$script:_azuriteProcess  = $null
 $script:_sessionId       = ""
 
 function Ensure-DotnetCoverage {
@@ -1410,6 +1422,76 @@ function Resolve-FuncExe {
     throw "func.exe not found. Provide -FuncExePath or install azure-functions-core-tools@4."
 }
 
+function Resolve-AzuriteExe {
+    # Azurite is optional: if it can't be found, Start-Azurite falls back to
+    # the previous no-storage-account behavior. Returns $null when not found.
+    if ($AzuriteExePath -and (Test-Path $AzuriteExePath)) { return $AzuriteExePath }
+    $candidates = @(
+        "$env:APPDATA\npm\node_modules\.bin\azurite.cmd",
+        "$env:APPDATA\npm\node_modules\azurite\bin\azurite",
+        "azurite.cmd",
+        "azurite"
+    )
+    foreach ($c in $candidates) {
+        if (Test-Path $c) { return $c }
+        $cmd = Get-Command $c -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
+    return $null
+}
+
+function Start-Azurite {
+    # Root cause #4 (see Start-LightweightExecution comment below): with
+    # AzureWebJobsStorage empty, the WebJobs Script Host falls back to an
+    # in-memory distributed lock manager for "primary host" lease
+    # coordination. That fallback path triggers a "Host lock lease
+    # acquired..." -> "Restarting host." dance that, combined with worker
+    # indexing, hits a known azure-functions-host worker-channel-teardown bug
+    # ("already exists" 500s -- see Azure/azure-functions-dotnet-worker#2124).
+    # The project's own local.settings.json template uses
+    # AzureWebJobsStorage=UseDevelopmentStorage=true (i.e. Azurite), which
+    # takes the standard, heavily-used blob-lease coordinator path instead.
+    # Start a real (emulated) storage backend here so CI takes that same,
+    # well-tested path rather than the rare in-memory fallback.
+    if ($env:AzureWebJobsStorage) {
+        Write-Host "AzureWebJobsStorage already set; skipping Azurite startup."
+        return
+    }
+    $azurite = Resolve-AzuriteExe
+    if (-not $azurite) {
+        Write-Warn "Azurite not found (install with 'npm install -g azurite' or pass -AzuriteExePath). Falling back to no-storage-account mode; this may hit the known 'Host lock lease acquired' / 'already exists' restart bug."
+        return
+    }
+    $dataDir = Join-Path ([System.IO.Path]::GetTempPath()) ("azurite-" + [guid]::NewGuid().ToString("N"))
+    New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
+    Write-Host "Starting Azurite from $azurite (data dir: $dataDir)"
+    $azuriteOut = Join-Path $dataDir 'azurite.log'
+    $azuriteErr = Join-Path $dataDir 'azurite.err.log'
+    $script:_azuriteProcess = Start-Process $azurite -ArgumentList @("--silent", "--location", $dataDir, "--debug", (Join-Path $dataDir 'azurite-debug.log')) -PassThru -WindowStyle Hidden -RedirectStandardOutput $azuriteOut -RedirectStandardError $azuriteErr
+    $deadline = (Get-Date).AddSeconds(30)
+    $up = $false
+    while ((Get-Date) -lt $deadline) {
+        if ($script:_azuriteProcess.HasExited) { break }
+        try {
+            $client = New-Object System.Net.Sockets.TcpClient
+            $client.Connect("127.0.0.1", 10000)
+            $client.Close()
+            $up = $true
+            break
+        } catch { Start-Sleep -Milliseconds 500 }
+    }
+    if (-not $up) {
+        Write-Warn "Azurite did not become ready on port 10000 within 30s. Falling back to no-storage-account mode."
+        if ($script:_azuriteProcess -and -not $script:_azuriteProcess.HasExited) {
+            $script:_azuriteProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+        }
+        $script:_azuriteProcess = $null
+        return
+    }
+    Write-Host "Azurite ready on port 10000 (blob)."
+    $env:AzureWebJobsStorage = 'UseDevelopmentStorage=true'
+}
+
 function Wait-ForEngine {
     param([int]$Port = 7071, [int]$MaxSeconds = 120)
     Write-Host "Waiting for engine on port $Port (up to ${MaxSeconds}s)..."
@@ -1427,6 +1509,115 @@ function Wait-ForEngine {
     Write-Warn "Engine did not become ready within $MaxSeconds seconds."
 }
 
+function Wait-ForLightweightEngineStable {
+    # Root cause #4 (continued): func.exe's cold start for a worker-indexed
+    # isolated-worker app does a one-or-twice "Host lock lease acquired" ->
+    # "Restarting host." dance a few (5-19) seconds after its first response,
+    # regardless of concurrency/health-monitor settings or storage backend
+    # (all ruled out via CI evidence). Combined with a known
+    # azure-functions-host bug where the old worker channel isn't torn down
+    # (Azure/azure-functions-dotnet-worker#2124), each restart briefly (and
+    # sometimes permanently) 500s every function route with "already exists."
+    # Wait-ForEngine's generic check treats any non-503 status -- including
+    # 500 -- as "ready" and only probes "/", so it was returning "ready"
+    # immediately after the very first host generation's first response,
+    # before the restart window even started. That let SpecFlow's own
+    # single-shot readiness probe (GivenTheLightweightWarewolfServerIsRunning
+    # in EasyAuthMiddlewareSteps.cs, which only accepts 200/401 and does not
+    # retry) land squarely in the collision window and fail immediately.
+    # Fix: poll the same route the SpecFlow probe uses and require a
+    # continuous run of non-5xx responses spanning at least $MinStableSeconds
+    # (resetting the streak -- and its start time -- on any 5xx) before
+    # declaring the engine ready, so we wait out the restart/collision window
+    # here instead of failing the first scenario that happens to run into it.
+    #
+    # A short "N consecutive polls" check is NOT enough: CI build 30240 showed
+    # the host emitting "Host lock lease acquired" ~5s after its first
+    # response and then "Restarting host." ~5s after THAT (~10s total), with
+    # the lease-acquire/restart pair recurring again shortly after the next
+    # generation started -- i.e. the collision can recur in ~10s waves rather
+    # than happening once near cold start. A 3-poll/~4-6s window can finish
+    # (and declare "stable") in the brief calm between two such waves. Anchor
+    # on elapsed wall-clock time since the streak began, not just poll count,
+    # so the window comfortably spans more than one observed wave.
+    param(
+        [int]$Port = 7071,
+        [int]$MaxSeconds = 150,
+        [string]$Path = "/public/apis.json",
+        [int]$RequiredConsecutiveSuccesses = 3,
+        [int]$MinStableSeconds = 30,
+        [int]$PollIntervalSeconds = 3
+    )
+    Write-Host "Waiting for Lightweight engine to stabilize on port $Port$Path (up to ${MaxSeconds}s, needs $MinStableSeconds continuous stable seconds and $RequiredConsecutiveSuccesses+ non-5xx polls)..."
+    $deadline = (Get-Date).AddSeconds($MaxSeconds)
+    $consecutive = 0
+    $streakStart = $null
+    while ((Get-Date) -lt $deadline) {
+        # Invoke-WebRequest throws on ANY non-2xx status (401 included), so a
+        # status code has to be pulled out of the exception's response too --
+        # otherwise every legitimate 401 (which the SpecFlow probe itself
+        # accepts as "ready") would be misclassified as a failure here and
+        # the streak would never reach $RequiredConsecutiveSuccesses.
+        $statusCode = $null
+        try {
+            $resp = Invoke-WebRequest -Uri "http://localhost:${Port}${Path}" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+            $statusCode = [int]$resp.StatusCode
+        } catch [System.Net.WebException] {
+            if ($_.Exception.Response) {
+                $statusCode = [int]$_.Exception.Response.StatusCode
+            }
+        } catch {
+            if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+                $statusCode = [int]$_.Exception.Response.StatusCode
+            }
+        }
+
+        if ($null -ne $statusCode -and $statusCode -lt 500) {
+            if ($consecutive -eq 0) { $streakStart = Get-Date }
+            $consecutive++
+            $streakElapsed = ((Get-Date) - $streakStart).TotalSeconds
+            if ($consecutive -ge $RequiredConsecutiveSuccesses -and $streakElapsed -ge $MinStableSeconds) {
+                Write-Host "Lightweight engine stable (HTTP $statusCode x$consecutive over $([int]$streakElapsed)s)."
+                return
+            }
+        } else {
+            if ($consecutive -gt 0) {
+                Write-Host "Got HTTP $statusCode after $consecutive good response(s); resetting streak (host likely mid-restart)."
+            }
+            $consecutive = 0
+            $streakStart = $null
+        }
+        Start-Sleep -Seconds $PollIntervalSeconds
+    }
+    Write-Warn "Lightweight engine did not stabilize (>= $MinStableSeconds continuous stable seconds on $Path) within $MaxSeconds seconds."
+}
+
+function Test-LightweightEngineHealthy {
+    # Root cause #4 (continued): the "Host lock lease acquired" -> "Restarting
+    # host." collision that Wait-ForLightweightEngineStable waits out before
+    # the first test attempt can *also* recur later, mid-run -- a captured
+    # "Other Specs" CI run (2026-08-06) showed the stability check pass (HTTP
+    # 200 x11 over 32s) and then, seconds after vstest started, the exact
+    # same restart/collision hit and permanently 500'd every route for the
+    # rest of that run (every retry included, since Wait-ForLightweightEngineStable
+    # only runs once, before the retry loop). Give the retry loop a cheap way
+    # to notice that and recover instead of burning every remaining retry
+    # against a permanently broken engine.
+    param([int]$Port = 7071, [string]$Path = "/public/apis.json")
+    try {
+        $resp = Invoke-WebRequest -Uri "http://localhost:${Port}${Path}" -UseBasicParsing -TimeoutSec 5 -ErrorAction Stop
+        return ([int]$resp.StatusCode -lt 500)
+    } catch [System.Net.WebException] {
+        if ($_.Exception.Response) { return ([int]$_.Exception.Response.StatusCode -lt 500) }
+        return $false
+    } catch {
+        if ($_.Exception.Response -and $_.Exception.Response.StatusCode) {
+            return ([int]$_.Exception.Response.StatusCode -lt 500)
+        }
+        return $false
+    }
+}
+
 function Start-LightweightExecution {
     $runDir = if ($LightweightExecutionDir) { $LightweightExecutionDir } else { "$PWD" }
     $func   = Resolve-FuncExe
@@ -1439,9 +1630,13 @@ function Start-LightweightExecution {
     if (-not $env:FUNCTIONS_WORKER_RUNTIME)     { $env:FUNCTIONS_WORKER_RUNTIME = 'dotnet-isolated' }
     if (-not $env:ASPNETCORE_ENVIRONMENT)       { $env:ASPNETCORE_ENVIRONMENT = 'Development' }
     if (-not $env:AZURE_FUNCTIONS_ENVIRONMENT) { $env:AZURE_FUNCTIONS_ENVIRONMENT = 'Development' }
-    # Use in-memory distributed lock manager so the engine works without Azurite.
-    # CI agents that have a real storage account can override this by setting
+    # Start Azurite (if available) so AzureWebJobsStorage points at a real
+    # (emulated) storage account instead of falling back to the in-memory
+    # distributed lock manager -- see Start-Azurite for why that fallback
+    # matters (root cause #4: "Host lock lease acquired" / "already exists").
+    # CI agents that have a real storage account can skip this by setting
     # AzureWebJobsStorage before invoking the script.
+    Start-Azurite
     if (-not $env:AzureWebJobsStorage)          { $env:AzureWebJobsStorage = '' }
     if ($SharedConfigDir) {
         # WAREWOLF_SECURE_CONFIG must point to a file path, not the dir.
@@ -1520,6 +1715,63 @@ function Start-LightweightExecution {
     if (-not $env:AzureFunctionsJobHost__Logging__LogLevel__Default) {
         $env:AzureFunctionsJobHost__Logging__LogLevel__Default = 'Debug'
     }
+    # Disable dynamic concurrency (snapshot persistence) and the host health
+    # monitor. Both features acquire a "primary host" lease at startup and can
+    # make the WebJobs Script Host restart itself once fully up (observed as
+    # "Host lock lease acquired..." followed by "Restarting host." in
+    # warewolf-server.log). With worker indexing enabled (see
+    # worker.config.json), that restart hits a known azure-functions-host bug
+    # where the dotnet-isolated worker channel started at the webhost level is
+    # not shut down before the new host re-requests the same function loads,
+    # throwing "Unable to load Function '<name>'. A function with the id
+    # '<id>' name already exists." and permanently 500-ing every request for
+    # the rest of the run (see Azure/azure-functions-dotnet-worker#2124,
+    # Azure/azure-functions-host#9851 -- fixed upstream only for the
+    # "unhealthy host" restart path, not for this lease/specialization-style
+    # restart). Neither feature has any value for this short-lived,
+    # single-instance CI test host, so disabling both here avoids triggering
+    # the restart at all rather than trying to survive it.
+    if (-not $env:AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled) {
+        $env:AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled = 'false'
+    }
+    if (-not $env:AzureFunctionsJobHost__healthMonitor__enabled) {
+        $env:AzureFunctionsJobHost__healthMonitor__enabled = 'false'
+    }
+    # NOTE (confirmed by a captured "Other Specs" CI run, 2026-08-06): the two
+    # env-var overrides above do NOT reliably disable the behaviour -- that
+    # run had both set to 'false' in the diagnostic snapshot below and still
+    # hit "Host lock lease acquired..." -> "Restarting host." -> "Unable to
+    # load Function '<name>'. A function with the id '<id>' name already
+    # exists." for every request thereafter. StartAsAzureFunction.ps1 hit the
+    # same wall for local/manual runs and found that ConcurrencyOptions /
+    # HostHealthMonitorOptions are apparently bound before, or independently
+    # of, the env-var configuration layer func.exe applies -- only patching
+    # the deployed host.json directly reliably takes effect. Apply the same
+    # patch here so CI gets the proven fix instead of the ineffective one.
+    # This only touches the copy under $runDir (the test-publish output);
+    # it never modifies Warewolf.Execution.Lightweight's source-controlled,
+    # production host.json.
+    $hostJsonPath = Join-Path $runDir 'host.json'
+    if (Test-Path $hostJsonPath) {
+        try {
+            $hostJson = Get-Content $hostJsonPath -Raw | ConvertFrom-Json
+            if (-not $hostJson.concurrency) {
+                $hostJson | Add-Member -MemberType NoteProperty -Name concurrency -Value ([pscustomobject]@{})
+            }
+            $hostJson.concurrency | Add-Member -MemberType NoteProperty -Name dynamicConcurrencyEnabled -Value $false -Force
+            $hostJson.concurrency | Add-Member -MemberType NoteProperty -Name snapshotPersistenceEnabled -Value $false -Force
+            if (-not $hostJson.healthMonitor) {
+                $hostJson | Add-Member -MemberType NoteProperty -Name healthMonitor -Value ([pscustomobject]@{})
+            }
+            $hostJson.healthMonitor | Add-Member -MemberType NoteProperty -Name enabled -Value $false -Force
+            $hostJson | ConvertTo-Json -Depth 10 | Set-Content $hostJsonPath -Encoding UTF8
+            Write-Host "host.json patched: concurrency.dynamicConcurrencyEnabled=false, concurrency.snapshotPersistenceEnabled=false, healthMonitor.enabled=false (avoids known worker-indexing restart bug)"
+        } catch {
+            Write-Warn "Failed to patch host.json at $hostJsonPath for concurrency/healthMonitor overrides: $_"
+        }
+    } else {
+        Write-Warn "host.json not found at $hostJsonPath -- cannot apply concurrency/healthMonitor restart-avoidance patch."
+    }
     # Capture engine stdout/stderr to a log so a 500 from /Secure/<slug>
     # leaves a trail. PublishBuildArtifacts in pipeline.yml uploads
     # $TestResultsPath\warewolf-server.log when the test step finishes.
@@ -1579,7 +1831,10 @@ function Start-LightweightExecution {
         "Func          : $func"
         "WAREWOLF_SECURE_CONFIG : $($env:WAREWOLF_SECURE_CONFIG)"
         "WorkflowsDirectory     : $($env:WorkflowsDirectory)"
+        "AzureWebJobsStorage    : $($env:AzureWebJobsStorage)"
         "AzureFunctionsJobHost__Logging__LogLevel__Default : $($env:AzureFunctionsJobHost__Logging__LogLevel__Default)"
+        "AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled : $($env:AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled)"
+        "AzureFunctionsJobHost__healthMonitor__enabled : $($env:AzureFunctionsJobHost__healthMonitor__enabled)"
         ""
         "RunDir top-level (first 60):"
     ) + $runDirTop + @(
@@ -1609,6 +1864,7 @@ function Start-LightweightExecution {
         Pop-Location
     }
     Wait-ForEngine -Port 7071 -MaxSeconds 180
+    Wait-ForLightweightEngineStable -Port 7071
 }
 
 function Start-WarewolfServer {
@@ -1652,9 +1908,13 @@ function Stop-Engine {
     if ($script:_serverProcess -and -not $script:_serverProcess.HasExited) {
         $script:_serverProcess | Stop-Process -Force -ErrorAction SilentlyContinue
     }
+    if ($script:_azuriteProcess -and -not $script:_azuriteProcess.HasExited) {
+        $script:_azuriteProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+    }
     Get-Process -Name "func"                           -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "Warewolf Server"                -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "Warewolf.Execution.Lightweight" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    Get-Process -Name "azurite"                        -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
 }
 
 # ============================================================================
@@ -2466,7 +2726,13 @@ try {
             }
             $asmList = @()
             foreach ($a in $allAsm) {
-                if ([array]::indexof($ExcludeProjects, $a.Name.TrimEnd(".dll")) -eq -1) { $asmList += $a.Name }
+                if ([array]::indexof($ExcludeProjects, $a.Name.TrimEnd(".dll")) -eq -1) {
+                    # Preserve the subdirectory (e.g. QueueProcessor\Warewolf.Execution.QueueProcessor.Tests.dll,
+                    # isolated there by Compile.ps1 to keep its own RabbitMQ.Client 7.1.2 out of the flat
+                    # directory's 5.1.2 pin) instead of just $a.Name, so the -Recurse search above and the
+                    # vstest invocation below agree on where the assembly actually is.
+                    $asmList += Get-RelativePathCompat $PWD.Path $a.FullName
+                }
             }
             if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
                 Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
@@ -2547,6 +2813,23 @@ try {
             $break = Merge-RetryTrx -TestResultsPath $TestResultsPath
             if ($break) { break }
             $TestsToRun = (Get-FailedTestNames -TestResultsPath $TestResultsPath) -join ","
+
+            # Recover from a permanently-broken engine before burning the
+            # remaining retries on it. Wait-ForLightweightEngineStable only
+            # runs once, before this loop starts -- it cannot see a "Host
+            # lock lease acquired" -> "Restarting host." collision (root
+            # cause #4) that hits mid-run, after the pre-loop stability
+            # check already passed. A captured "Other Specs" CI run
+            # (2026-08-06) showed exactly that: stability check passed, then
+            # every route 500'd with "already exists" for the rest of the
+            # run, so all $RetryCount retries re-ran against the same
+            # broken engine and failed identically. Detect that here and
+            # restart the whole engine so the next retry gets a healthy one.
+            if ($ServerType -eq 'LightweightExecution' -and $loop -lt $RetryCount -and -not (Test-LightweightEngineHealthy)) {
+                Write-Warn "Lightweight engine failed its post-run health probe (likely the known 'Host lock lease acquired' / 'Restarting host.' collision, root cause #4) -- restarting the engine before the next retry instead of re-running against a broken one."
+                Stop-Engine
+                Start-LightweightExecution
+            }
 
             if ($StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent) { Stop-HostFTPServer; Stop-HostFTPSServer }
             if ($StartSFTPServer.IsPresent)          { Stop-HostSFTPServer }

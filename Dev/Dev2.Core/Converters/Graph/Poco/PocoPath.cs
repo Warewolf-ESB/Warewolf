@@ -12,10 +12,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
+    // See BasePath.cs for why this is [Serializable] rather than [DataContract].
     [Serializable]
     public class PocoPath : BasePath
     {
