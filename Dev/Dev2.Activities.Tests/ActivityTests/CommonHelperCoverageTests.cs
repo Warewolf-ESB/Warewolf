@@ -305,6 +305,72 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         // ─────────────────────────────────────────────────────────────────
+        // TryAsJArray
+        //
+        // get_tool_schema documented every collection field as "a JSON-encoded
+        // array", so callers sent a *string*. The old `value as JArray` cast
+        // returned null for it and the collection was dropped with no error at
+        // all — create_workflow still reported success and the activity produced
+        // nothing (seen for Assign on warewolfserver-mcp, 2026-08-21).
+        // TryAsJArray accepts both shapes; anything genuinely unusable returns
+        // false so validate_workflow can reject it loudly instead.
+        // ─────────────────────────────────────────────────────────────────
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJArray_JArray_ReturnsSameInstance()
+        {
+            var payload = new JArray { 1, 2, 3 };
+            Assert.IsTrue(CommonHelper.TryAsJArray(payload, out var arr));
+            Assert.AreSame(payload, arr);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJArray_JsonArrayString_IsParsed()
+        {
+            const string json = "[{\"FieldName\":\"[[Result]]\",\"FieldValue\":\"hello\"}]";
+
+            Assert.IsTrue(CommonHelper.TryAsJArray(json, out var arr));
+            Assert.AreEqual(1, arr.Count);
+            Assert.AreEqual("[[Result]]", arr[0]["FieldName"].Value<string>());
+            Assert.AreEqual("hello", arr[0]["FieldValue"].Value<string>());
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJArray_MalformedJsonString_ReturnsFalse()
+        {
+            Assert.IsFalse(CommonHelper.TryAsJArray("[{\"FieldName\": ", out var arr));
+            Assert.IsNull(arr);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJArray_JsonObjectString_ReturnsFalse()
+        {
+            // Valid JSON, but an object rather than an array — must not be coerced.
+            Assert.IsFalse(CommonHelper.TryAsJArray("{\"FieldName\":\"[[a]]\"}", out var arr));
+            Assert.IsNull(arr);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJArray_NullOrWhitespaceOrScalar_ReturnsFalse()
+        {
+            Assert.IsFalse(CommonHelper.TryAsJArray(null, out _));
+            Assert.IsFalse(CommonHelper.TryAsJArray("   ", out _));
+            Assert.IsFalse(CommonHelper.TryAsJArray(42, out _));
+            Assert.IsFalse(CommonHelper.TryAsJArray(new JObject(), out _));
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryGetJArray_JsonArrayString_IsAcceptedViaTryAsJArray()
+        {
+            // The multi-key reader — and therefore TryGetList<> and every converter
+            // built on it — inherits the string form from TryAsJArray.
+            var d = new Dictionary<string, object> { ["fields"] = "[1,2,3]" };
+
+            Assert.IsTrue(CommonHelper.TryGetJArray(d, out var arr, "updatedfields", "fields"));
+            Assert.AreEqual(3, arr.Count);
+        }
+
+        // ─────────────────────────────────────────────────────────────────
         // TryGetOutputs / TryGetOutputDescription
         // ─────────────────────────────────────────────────────────────────
 

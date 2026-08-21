@@ -11,8 +11,7 @@ using System.Text.Json.Serialization;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>list_tools</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>, "Tools" §
-/// <c>list_tools</c>): returns the toolbox activities the MCP server can place inside a
+/// Implements the <c>list_tools</c> MCP tool: returns the toolbox activities the MCP server can place inside a
 /// workflow body via <c>create_workflow</c>/<c>edit_workflow</c>/<c>add_step</c> — the static
 /// **Toolbox subset (v3)** table, sourced from <see cref="ToolCatalog"/>.
 ///

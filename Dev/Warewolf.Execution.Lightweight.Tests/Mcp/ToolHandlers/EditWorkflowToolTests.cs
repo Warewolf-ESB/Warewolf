@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for EditWorkflowTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  edit_workflow): required-parameter/validation delegation to
+ *  Unit tests for EditWorkflowTool: required-parameter/validation delegation to
  *  ValidateWorkflowTool, not-found rejection for a name that doesn't already
  *  exist, Contribute permission gating (mirrors CreateWorkflowTool), the
  *  success path (in-place overwrite preserving Service ID, incrementing

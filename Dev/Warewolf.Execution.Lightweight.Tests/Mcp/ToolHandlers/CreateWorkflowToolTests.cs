@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for CreateWorkflowTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  create_workflow): required-parameter/validation delegation to
+ *  Unit tests for CreateWorkflowTool: required-parameter/validation delegation to
  *  ValidateWorkflowTool, name-already-exists rejection, Contribute
  *  permission gating (reusing ListWorkflowsTool's generalised rule), and the
  *  success path — a written .bite file that round-trips correctly through

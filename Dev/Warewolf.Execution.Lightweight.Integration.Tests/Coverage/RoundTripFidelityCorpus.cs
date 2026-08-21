@@ -1,7 +1,6 @@
 /*
  * Corpus discovery and classification helpers for the round-trip fidelity gate
- * (see warewolf-lee-mcp-v3-spec.md's "bodyEditable gating" section and
- * warewolf-lee-mcp-v3-addendum-a.md's recommended next step).
+ * behind `bodyEditable`.
  *
  * This file is intentionally decoupled from the test class so the corpus/classification
  * logic can be exercised or extended independently of the MSTest lifecycle.
@@ -43,7 +42,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
     public static class RoundTripFidelityCorpus
     {
         /// <summary>
-        /// The "Toolbox subset (v3)" table from warewolf-lee-mcp-v3-spec.md, condensed to the
+        /// The toolbox subset table, condensed to the
         /// class-name substrings needed to find real corpus samples. Kept in one place so the
         /// fidelity gate and any future MCP `list_tools` implementation can be diffed against
         /// each other for drift.

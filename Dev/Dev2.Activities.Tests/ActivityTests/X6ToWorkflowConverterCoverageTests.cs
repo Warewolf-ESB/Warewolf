@@ -121,7 +121,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // An empty graph has no cell that resolves to a start node, so BuildWorkflow
             // falls back to a bare Sequence and EnsureImplementation cannot finalise it.
             // This is now a structured, named exception rather than a raw NullReferenceException
-            // (round-trip fidelity gate hardening — see warewolf-lee-mcp-v3-addendum-a.md).
+            // (round-trip fidelity gate hardening).
             var converter = new X6ToWorkflowConverter();
             Assert.ThrowsException<EmptyWorkflowGraphException>(() =>
                 converter.X6JsonToWorkflow(Serialise("EmptyWorkflow")));
@@ -268,7 +268,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // Unknown 'type' values fall through the switch to the default case, which now
             // throws instead of silently substituting a no-op WriteLine activity — an LLM/MCP
             // caller must see this as a hard error, not a silently-corrupted workflow (round-trip
-            // fidelity gate hardening — see warewolf-lee-mcp-v3-addendum-a.md).
+            // fidelity gate hardening).
             var unknown = MakeNode("ThisIsNotARealActivityType");
 
             var ex = Assert.ThrowsException<UnsupportedActivityTypeException>(() =>

@@ -4,8 +4,7 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
  *  Unit tests for ToolSchemaCatalog: the static per-tool `data` field schema
- *  documents backing get_tool_schema (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  get_tool_schema). Chiefly guards the 1:1 coverage invariant GetToolSchemaTool
+ *  documents backing get_tool_schema. Chiefly guards the 1:1 coverage invariant GetToolSchemaTool
  *  relies on — every ToolCatalog entry must have a matching schema document.
  */
 

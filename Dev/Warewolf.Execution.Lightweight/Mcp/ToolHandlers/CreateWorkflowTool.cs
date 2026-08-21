@@ -19,8 +19,7 @@ using Warewolf.Execution.Lightweight.Infrastructure;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>create_workflow</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>, "Tools" §
-/// <c>create_workflow</c>): compiles an <c>envelope</c> + <c>body</c> pair to a <c>.bite</c> file
+/// Implements the <c>create_workflow</c> MCP tool: compiles an <c>envelope</c> + <c>body</c> pair to a <c>.bite</c> file
 /// and persists it as a new workflow.
 ///
 /// <para>

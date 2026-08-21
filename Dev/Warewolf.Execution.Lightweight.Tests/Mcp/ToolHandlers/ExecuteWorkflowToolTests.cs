@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for ExecuteWorkflowTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  execute_workflow): name resolution/not-found, Execute permission gating
+ *  Unit tests for ExecuteWorkflowTool: name resolution/not-found, Execute permission gating
  *  (reusing ListWorkflowsTool's rule), inputs → RawInputPayload binding,
  *  and outputs/status/error/executionId shape for both a successful and a
  *  failing execution.

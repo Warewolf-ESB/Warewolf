@@ -11,8 +11,7 @@ using System.Linq;
 namespace Warewolf.Execution.Lightweight.Mcp;
 
 /// <summary>
-/// The static "Toolbox subset (v3)" table from <c>warewolf-lee-mcp-v3-spec.md</c>'s
-/// <c>list_tools</c> section — every activity type the converter pair in
+/// The static toolbox subset backing <c>list_tools</c> — every activity type the converter pair in
 /// <c>Dev/Dev2.Activities/WorkflowConverters/</c> can place inside a workflow body via
 /// <c>create_workflow</c>/<c>edit_workflow</c>/<c>add_step</c>.
 ///

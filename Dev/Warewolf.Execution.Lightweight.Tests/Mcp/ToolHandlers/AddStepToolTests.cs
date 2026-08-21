@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for AddStepTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  add_step, new in v3): name resolution/not-found, Contribute permission
+ *  Unit tests for AddStepTool: name resolution/not-found, Contribute permission
  *  gating, the bodyEditable precondition (reusing GetWorkflowDefinitionTool's
  *  gate), step normalization/validation, the end-to-end "simple append"
  *  success path (seeded via CreateWorkflowTool with a Pass-fidelity "Assign

@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for GetToolSchemaTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  get_tool_schema): verifies lookup-by-name semantics (case-insensitive match
+ *  Unit tests for GetToolSchemaTool: verifies lookup-by-name semantics (case-insensitive match
  *  against ToolCatalog.Entry.Name, distinct from ToolCatalog.Resolve's
  *  data.type substring match), the tool_name/activity_type/dataType passthrough,
  *  error behavior for unknown/empty names, and that control-flow tools document

@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for ListToolsTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  list_tools): verifies the response shape mirrors ToolCatalog exactly,
+ *  Unit tests for ListToolsTool: verifies the response shape mirrors ToolCatalog exactly,
  *  including the "primary data type" projection and always-true editable flag.
  */
 

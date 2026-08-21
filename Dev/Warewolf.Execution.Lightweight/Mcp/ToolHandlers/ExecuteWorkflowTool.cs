@@ -20,8 +20,7 @@ using Warewolf.Execution.Lightweight.Models;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>execute_workflow</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>, "Tools" §
-/// <c>execute_workflow</c>): runs a workflow on this instance via <see cref="IWorkflowExecutor"/>
+/// Implements the <c>execute_workflow</c> MCP tool: runs a workflow on this instance via <see cref="IWorkflowExecutor"/>
 /// and returns its result. Unchanged from v2 in every respect — execution never inspects the
 /// body format (XAML), editable or not, so this tool works identically for a workflow with
 /// <c>bodyEditable: true</c> or <c>false</c>.

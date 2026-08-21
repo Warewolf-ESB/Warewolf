@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for GetWorkflowSchemaTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  get_workflow_schema): verifies the three static schema documents are present,
+ *  Unit tests for GetWorkflowSchemaTool: verifies the three static schema documents are present,
  *  stable across calls, and shaped per the spec's envelope_schema/body_schema/
  *  add_step_schema descriptions.
  */

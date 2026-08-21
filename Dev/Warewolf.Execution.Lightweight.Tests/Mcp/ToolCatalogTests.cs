@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for ToolCatalog: the static "Toolbox subset (v3)" table
- *  (warewolf-lee-mcp-v3-spec.md, "Tools" § list_tools) and its Resolve()
+ *  Unit tests for ToolCatalog: the static "Toolbox subset (v3)" table and its Resolve()
  *  case-insensitive data-type matcher.
  */
 

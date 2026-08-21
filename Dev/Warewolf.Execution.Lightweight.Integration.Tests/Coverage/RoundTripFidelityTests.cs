@@ -1,9 +1,9 @@
 /*
  * Round-trip fidelity gate for Dev2.Activities.WF.WorkflowToX6Converter /
- * X6ToWorkflowConverter — the blocker flagged by warewolf-lee-mcp-v3-addendum-a.md
- * before the v3 spec's `bodyEditable` gating rule can be trusted.
+ * X6ToWorkflowConverter — the gate that must pass before the `bodyEditable`
+ * rule can be trusted.
  *
- * Question this answers, per activity type in the v3 spec's "Toolbox subset (v3)" table:
+ * Question this answers, per activity type in the toolbox subset table:
  *   Does XAML --ConvertToX6Json--> X6 JSON --X6JsonToWorkflow--> XAML' produce a workflow
  *   that executes IDENTICALLY (same success/failure, same JSON payload) to the original?
  *

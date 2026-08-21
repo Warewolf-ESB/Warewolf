@@ -683,8 +683,7 @@ namespace Dev2.Activities
             {
                 cell.data.TryGetValue(Dev2.Common.X6.Constants.XPATH_RESULTSCOLLECTION, out fieldObject);
             }
-            var array = fieldObject as JArray;
-            if (array != null)
+            if (CommonHelper.TryAsJArray(fieldObject, out var array))
             {
                 ResultsCollection = array.ToObject<System.Collections.Generic.List<Unlimited.Applications.BusinessDesignStudio.Activities.XPathDTO>>();
             }

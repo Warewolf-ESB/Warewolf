@@ -646,8 +646,7 @@ namespace Dev2.Activities
             // Gather System Information specific properties
             if (cell.data.TryGetValue(Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION, out var collectionObj))
             {
-                var array = collectionObj as JArray;
-                if (array != null)
+                if (CommonHelper.TryAsJArray(collectionObj, out var array))
                 {
                     SystemInformationCollection = array.ToObject<List<GatherSystemInformationTO>>();
                 }

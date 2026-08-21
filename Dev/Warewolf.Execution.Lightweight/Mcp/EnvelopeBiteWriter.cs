@@ -15,9 +15,8 @@ namespace Warewolf.Execution.Lightweight.Mcp;
 
 /// <summary>
 /// Builds a <c>.bite</c> file's XML text from an MCP <c>envelope</c> + a compiled XAML
-/// definition — the "envelope-wrapping step" <c>warewolf-lee-mcp-v3-spec.md</c>'s
-/// <c>create_workflow</c> section describes as "new Lightweight-local code (mirrors
-/// <c>Hello World.bite</c>'s structure)". Shared by <see cref="ToolHandlers.CreateWorkflowTool"/>
+/// definition — the "envelope-wrapping step" for <c>create_workflow</c>, mirroring
+/// <c>Hello World.bite</c>'s structure. Shared by <see cref="ToolHandlers.CreateWorkflowTool"/>
 /// and <see cref="ToolHandlers.EditWorkflowTool"/>, since both tools produce the exact same
 /// <c>&lt;Service&gt;</c> shape — only the mutable pieces
 /// (<c>Service ID</c>/<c>VersionNumber</c>/<c>IsNewWorkflow</c>) differ between "first save" and

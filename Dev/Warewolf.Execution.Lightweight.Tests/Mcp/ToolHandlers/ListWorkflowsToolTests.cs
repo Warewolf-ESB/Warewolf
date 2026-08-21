@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for ListWorkflowsTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  list_workflows): enumeration, folder scoping, pagination, per-item View
+ *  Unit tests for ListWorkflowsTool: enumeration, folder scoping, pagination, per-item View
  *  permission filtering (open-access vs. secure-config-effective modes), and
  *  DataList inputs/outputs/description extraction.
  */

@@ -22,8 +22,7 @@ using ModelContextProtocol;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>validate_workflow</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>,
-/// "Tools" § <c>validate_workflow</c>): checks an <c>envelope</c> + <c>body</c> pair for
+/// Implements the <c>validate_workflow</c> MCP tool: checks an <c>envelope</c> + <c>body</c> pair for
 /// structural and semantic validity without saving or running it, against the X6 graph shape.
 ///
 /// <para>
@@ -48,8 +47,7 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <c>cells</c>) — a parse failure is a single structured error, never a thrown exception.</item>
 /// <item>The graph must contain a node with <c>data.type == "start"</c> — mirrors
 /// <c>Flowchart.StartNode</c>; missing start is a structured error (the same condition
-/// <see cref="EmptyWorkflowGraphException"/> now guards in the converter itself, see
-/// <c>warewolf-lee-mcp-v3-addendum-a.md</c> §1).</item>
+/// <see cref="EmptyWorkflowGraphException"/> now guards in the converter itself).</item>
 /// <item>Every non-edge, non-start cell's <c>data.type</c> must resolve via
 /// <see cref="ToolCatalog.Resolve"/> — an unresolved type is a hard error naming the cell
 /// (closes the converter's former silent "Unknown type" fallback, per spec).</item>
@@ -234,6 +232,8 @@ internal static class ValidateWorkflowTool
                 continue;
             }
 
+            ValidateCollectionFields(cell, entry, index, errors);
+
             if (IsDecisionEntry(entry))
             {
                 ValidateDecisionBranches(cell, edges, index, errors);
@@ -269,6 +269,77 @@ internal static class ValidateWorkflowTool
         cell.data != null && cell.data.TryGetValue(Constants.TYPE, out var typeObj) && typeObj is string type
             ? type
             : null;
+
+    /// <summary>
+    /// Collection-valued <c>data</c> fields, keyed by <see cref="ToolCatalog.Entry.Name"/> — the
+    /// fields whose activity converters read a JSON array via
+    /// <see cref="CommonHelper.TryAsJArray"/>. Every other documented <c>data</c> field is a
+    /// scalar string, so listing only these keeps the check narrow.
+    ///
+    /// <para>
+    /// This exists because a value the converter could not read as an array was previously
+    /// discarded in silence: <c>create_workflow</c> still returned <c>created: true</c>, the
+    /// workflow still executed "successfully", and the activity simply produced nothing. Observed
+    /// for Assign on <c>warewolfserver-mcp</c> (2026-08-21) when <c>fields</c> was supplied as the
+    /// JSON-encoded *string* <c>get_tool_schema</c> documented at the time. That string form is
+    /// now accepted by the converters, so this check fires only for values that are genuinely
+    /// unusable — and it fails the call instead of losing data.
+    /// </para>
+    /// </summary>
+    static readonly IReadOnlyDictionary<string, string[]> _collectionFieldsByToolName =
+        new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Assign"] = new[] { Constants.FIELDS, Constants.UPDATEDFIELDS },
+            ["Assign Object"] = new[] { Constants.FIELDS, Constants.UPDATEDFIELDS },
+            ["Create JSON"] = new[] { Constants.CREATEJSON_JSONMAPPINGS, Constants.CREATEJSON_UPDATEDJSONMAPPINGS },
+            ["Data Merge"] = new[] { Constants.MERGECOLLECTION, Constants.UPDATEDMERGECOLLECTION },
+            ["Data Split"] = new[] { Constants.RESULTSCOLLECTION },
+            ["Base Conversion"] = new[] { Constants.CONVERTCOLLECTION, Constants.UPDATEDCONVERTCOLLECTION },
+            ["XPath"] = new[] { Constants.XPATH_RESULTSCOLLECTION, Constants.XPATH_UPDATEDRESULTSCOLLECTION },
+            ["Gather System Information"] = new[] { Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION },
+        };
+
+    /// <summary>
+    /// Reports an error for any collection field on <paramref name="node"/> whose value cannot be
+    /// read as a JSON array. A field that is absent or null is left alone — whether it is required
+    /// is the schema's business, not this check's.
+    /// </summary>
+    static void ValidateCollectionFields(Cell node, ToolCatalog.Entry entry, int index, List<ValidationIssue> errors)
+    {
+        if (node.data is null || !_collectionFieldsByToolName.TryGetValue(entry.Name, out var keys))
+        {
+            return;
+        }
+
+        foreach (var key in keys)
+        {
+            if (!node.data.TryGetValue(key, out var raw) || raw is null)
+            {
+                continue;
+            }
+
+            if (!CommonHelper.TryAsJArray(raw, out _))
+            {
+                errors.Add(ValidationIssue.Error(
+                    $"cell '{node.id}' field '{key}' must be a JSON array, or a string containing one; "
+                    + $"{DescribeUnusableValue(raw)} cannot be read as either and would be discarded silently.",
+                    $"/cells/{index}/data/{key}"));
+            }
+        }
+    }
+
+    /// <summary>Renders an offending value for an error message without dumping a large payload.</summary>
+    static string DescribeUnusableValue(object raw)
+    {
+        const int maxLength = 40;
+        if (raw is string s)
+        {
+            var shown = s.Length <= maxLength ? s : s[..maxLength] + "…";
+            return $"the string \"{shown}\"";
+        }
+
+        return $"a value of type {raw.GetType().Name}";
+    }
 
     static bool IsDecisionEntry(ToolCatalog.Entry entry) =>
         string.Equals(entry.Name, "Decision", StringComparison.OrdinalIgnoreCase) ||

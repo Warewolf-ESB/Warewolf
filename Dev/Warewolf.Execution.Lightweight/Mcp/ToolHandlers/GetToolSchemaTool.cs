@@ -13,8 +13,7 @@ using ModelContextProtocol;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>get_tool_schema</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>, "Tools" §
-/// <c>get_tool_schema</c>): returns the JSON shape of one toolbox tool's <c>data</c> fields, for
+/// Implements the <c>get_tool_schema</c> MCP tool: returns the JSON shape of one toolbox tool's <c>data</c> fields, for
 /// placement inside a workflow body's <c>cells</c> array (<c>create_workflow</c>/
 /// <c>edit_workflow</c>) or as an <c>add_step</c> payload.
 ///

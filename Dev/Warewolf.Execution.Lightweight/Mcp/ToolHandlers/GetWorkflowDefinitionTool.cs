@@ -22,8 +22,7 @@ using Warewolf.Execution.Lightweight.Infrastructure;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>get_workflow_definition</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>,
-/// "Tools" § <c>get_workflow_definition</c>): returns a workflow's envelope, and its body
+/// Implements the <c>get_workflow_definition</c> MCP tool: returns a workflow's envelope, and its body
 /// (the X6 graph) only when the fidelity gate proves every activity type it uses round-trips.
 ///
 /// <para>

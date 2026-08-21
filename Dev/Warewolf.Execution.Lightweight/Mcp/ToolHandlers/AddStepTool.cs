@@ -25,8 +25,7 @@ using Warewolf.Execution.Lightweight.Infrastructure;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>add_step</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>, "Tools" §
-/// <c>add_step</c>, new in v3): appends a single activity node to the end (or a specified
+/// Implements the <c>add_step</c> MCP tool: appends a single activity node to the end (or a specified
 /// branch point) of an existing, <c>bodyEditable: true</c> workflow's X6 graph, without the
 /// caller resubmitting the whole <c>body</c> — mirrors the Angular Web Studio chatbot's
 /// <c>dropToolOntoBottomAutoConnector</c>/<c>findChainTail</c> protocol
@@ -66,13 +65,14 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// </para>
 ///
 /// <para>
-/// <b>Known current limitation (fidelity-allowlist.json, not a bug in this tool):</b> "Decision"
-/// (<c>DsfFlowDecisionActivity</c>) and "Decision (legacy)" (<c>DsfDecision</c>) are not yet
-/// Pass-fidelity, so once a workflow contains either, <see cref="GetWorkflowDefinitionTool.BuildBody"/>
-/// reports <c>bodyEditable:false</c> for it. Because <c>add_step</c> reuses that exact gate, a real
-/// two-call sequence — add a Decision node, then a follow-up call to wire its True/False arm —
-/// cannot complete end-to-end today; the second call is correctly rejected as not-editable. Switch
-/// is Pass-fidelity, so Switch branch-wiring works end-to-end. The Decision/Switch branch-selection
+/// <b>Known current limitation (fidelity-allowlist.json, not a bug in this tool):</b> as of the
+/// 2026-08-21 allow-list regeneration, "Decision" (<c>DsfFlowDecisionActivity</c>) is
+/// <c>Pass</c>-fidelity, so the two-call sequence — add a Decision node, then a follow-up call to
+/// wire its True/False arm — now completes end-to-end, as it already did for Switch. Only
+/// "Decision (legacy)" (<c>DsfDecision</c>) remains non-Pass (<c>NoCorpusSample</c>): once a
+/// workflow contains one, <see cref="GetWorkflowDefinitionTool.BuildBody"/> reports
+/// <c>bodyEditable:false</c>, and because <c>add_step</c> reuses that exact gate the second call is
+/// correctly rejected as not-editable. The Decision/Switch branch-selection
 /// rules themselves (required branch, invalid value, already-wired arm/case) are still fully
 /// implemented and unit-tested directly against <see cref="BuildConnectingEdge"/>, independent of
 /// the fidelity gate.

@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for GetWorkflowDefinitionTool (warewolf-lee-mcp-v3-spec.md,
- *  "Tools" § get_workflow_definition): name resolution/not-found, View
+ *  Unit tests for GetWorkflowDefinitionTool: name resolution/not-found, View
  *  permission gating (reusing ListWorkflowsTool's rule), envelope shape,
  *  and the bodyEditable fidelity gate (both a real Pass-only workflow and
  *  a real workflow using a non-Pass activity type).

@@ -10,8 +10,7 @@ using System.Text.Json.Serialization;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>get_workflow_schema</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>,
-/// "Tools" § <c>get_workflow_schema</c>): returns the hard-coded JSON shape of the overall
+/// Implements the <c>get_workflow_schema</c> MCP tool: returns the hard-coded JSON shape of the overall
 /// workflow <b>envelope</b> and the <b>body</b>/<b>add_step</b> graph shapes used by
 /// <c>create_workflow</c>/<c>edit_workflow</c>/<c>add_step</c>.
 ///

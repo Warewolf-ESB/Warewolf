@@ -83,6 +83,53 @@ namespace Dev2.WorkflowConverters
             }
         }
 
+        /// <summary>
+        /// Converts an already-read <c>cell.data</c> value into a <see cref="JArray"/>, accepting
+        /// either a real <see cref="JArray"/> or a string containing a JSON array.
+        ///
+        /// <para>
+        /// The string form is supported because <c>get_tool_schema</c> documented every collection
+        /// field as "a JSON-encoded array of ...". Callers following that documentation sent a
+        /// string, the previous <c>value as JArray</c> cast produced <c>null</c> for it, and the
+        /// whole collection was dropped with no error at all — the activity then executed
+        /// "successfully" and returned nothing (observed for Assign on warewolfserver-mcp,
+        /// 2026-08-21).
+        /// </para>
+        ///
+        /// <para>
+        /// Returns <c>false</c> — and never throws — when the value is null, is a string that is
+        /// not valid JSON or not a JSON array, or is neither an array nor a string. Callers that
+        /// need such input to fail loudly validate it separately (see
+        /// <c>Warewolf.Execution.Lightweight</c>'s <c>validate_workflow</c>); keeping this lenient
+        /// means the Studio converters still accept exactly what they accepted before.
+        /// </para>
+        /// </summary>
+        public static bool TryAsJArray(object raw, out JArray array)
+        {
+            array = null;
+
+            switch (raw)
+            {
+                case null:
+                    return false;
+                case JArray jArray:
+                    array = jArray;
+                    return true;
+                case string s when !string.IsNullOrWhiteSpace(s):
+                    try
+                    {
+                        array = JArray.Parse(s);
+                        return true;
+                    }
+                    catch (JsonException)
+                    {
+                        return false;
+                    }
+                default:
+                    return false;
+            }
+        }
+
         public static bool TryGetInt(Dictionary<string, object> data, string key, out int value)
         {
             value = default;
@@ -211,6 +258,13 @@ namespace Dev2.WorkflowConverters
             return true;
         }
 
+        /// <summary>
+        /// Returns the first of <paramref name="keys"/> whose value can be read as a JSON array.
+        /// Delegates to <see cref="TryAsJArray"/>, so a string containing a JSON array is accepted
+        /// as well as a real <see cref="JArray"/> — this is what everything built on top of it
+        /// (notably <see cref="TryGetList{TConcrete,TInterface}"/>) inherits. A key whose value is
+        /// unusable is skipped, exactly as a non-array value was skipped before.
+        /// </summary>
         public static bool TryGetJArray(IDictionary<string, object> data, out JArray array, params string[] keys)
         {
             array = null;
@@ -218,7 +272,7 @@ namespace Dev2.WorkflowConverters
 
             foreach (var key in keys)
             {
-                if (!data.TryGetValue(key, out var raw) || raw is not JArray ja) continue;
+                if (!data.TryGetValue(key, out var raw) || !TryAsJArray(raw, out var ja)) continue;
                 array = ja;
                 return true;
             }

@@ -3,8 +3,7 @@
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for ValidateWorkflowTool (warewolf-lee-mcp-v3-spec.md, "Tools" §
- *  validate_workflow): the 7 spec-mandated checks — body JSON/shape parse,
+ *  Unit tests for ValidateWorkflowTool: the 7 spec-mandated checks — body JSON/shape parse,
  *  start-node presence, per-node activity-type resolution, Decision/Switch
  *  branch completeness, envelope⇄body variable cross-references (undeclared
  *  = error, unused = warning), and the final real-compile safety net — using
@@ -111,6 +110,91 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
             Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
             Assert.AreEqual(0, result.Errors.Count);
+        }
+
+        // ── collection fields (Assign.fields et al) ────────────────────────
+        //
+        // get_tool_schema documented these as "a JSON-encoded array", so callers sent a
+        // string. The converter's `value as JArray` cast returned null for it and the
+        // collection was dropped in silence — create_workflow reported created:true and the
+        // activity produced nothing (Assign on warewolfserver-mcp, 2026-08-21). The string
+        // form is now accepted; a value that is neither must fail loudly rather than lose data.
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_CollectionFieldAsJsonArrayString_IsValid()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "Message", kind = "scalar", fields = new string[0] } },
+                outputs = new[] { new { name = "Result", kind = "scalar", fields = new string[0] } }
+            });
+
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object>
+                {
+                    ["displayName"] = "Assign",
+                    ["fields"] = "[{\"FieldName\":\"[[Result]]\",\"FieldValue\":\"[[Message]]\",\"IndexNumber\":1}]"
+                });
+            var body = BodyOf("StringFieldsWf", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_CollectionFieldNotAnArray_ReturnsInvalid_NamingCellAndField()
+        {
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign", ["fields"] = "not-an-array" });
+            var body = BodyOf("BadFieldsWf", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            var issue = result.Errors.SingleOrDefault(e => e.Message.Contains("'fields'"));
+            Assert.IsNotNull(issue, "expected an error naming the offending field; got: "
+                + string.Join("; ", result.Errors.Select(e => e.Message)));
+            StringAssert.Contains(issue.Message, "assign1");
+            StringAssert.Contains(issue.Message, "not-an-array");
+            Assert.AreEqual("/cells/1/data/fields", issue.Path);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_CollectionFieldIsJsonObjectNotArray_ReturnsInvalid()
+        {
+            // Valid JSON, but an object — must not be silently coerced into a one-row collection.
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object>
+                {
+                    ["displayName"] = "Assign",
+                    ["fields"] = "{\"FieldName\":\"[[Result]]\"}"
+                });
+            var body = BodyOf("ObjFieldsWf", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e => e.Message.Contains("'fields'")));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_CollectionFieldAbsent_ReportsNoCollectionError()
+        {
+            // Whether the field is required is the schema's business; this check only rejects
+            // a value that is present and unusable.
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign" });
+            var body = BodyOf("NoFieldsWf", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("'fields'")),
+                "an absent collection field must not raise a collection error");
         }
 
         // ── body parse / shape ─────────────────────────────────────────────

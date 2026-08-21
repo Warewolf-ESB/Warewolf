@@ -22,8 +22,7 @@ using Warewolf.Execution.Lightweight.Infrastructure;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>list_workflows</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>,
-/// "Tools" § <c>list_workflows</c>): returns workflows stored on this instance, filtered
+/// Implements the <c>list_workflows</c> MCP tool: returns workflows stored on this instance, filtered
 /// to what the caller is authorized to <b>view</b>.
 ///
 /// <para>
@@ -49,19 +48,26 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// </para>
 ///
 /// <para>
-/// <b><c>bodyEditable</c> (fidelity gate, v3).</b> Per spec, "bodyEditable" now means
-/// "this workflow's XAML round-trips losslessly through <c>WorkflowToX6Converter</c> →
-/// <c>X6ToWorkflowConverter</c>" — a per-activity-type allow-list built from executing
-/// both the original and round-tripped XAML and diffing outputs. That allow-list
-/// consumption (mapping each workflow's actual activity types to the fidelity-test
-/// results and flipping <c>bodyEditable</c> only when every type used passes) is a
-/// separate, not-yet-implemented increment (no <c>StudioName</c> ↔ XAML-activity-type
-/// mapping exists yet, and <c>create_workflow</c> — the only source of unconditionally
-/// editable workflows — is not implemented either). Per the spec's own default
-/// ("a workflow using even one non-allow-listed or failing-fidelity activity type stays
-/// <c>bodyEditable: false</c>"), every workflow in this increment is conservatively
-/// reported as <c>bodyEditable: false</c> until that consumption logic lands — this is
-/// the spec-compliant default for "unproven", not a shortcut.
+/// <b><c>bodyEditable</c> — KNOWN BUG: this tool always reports <c>false</c>.</b>
+/// <c>bodyEditable</c> means "this workflow's XAML round-trips losslessly through
+/// <c>WorkflowToX6Converter</c> → <c>X6ToWorkflowConverter</c>", decided per activity
+/// type by <see cref="FidelityAllowList"/>.
+/// </para>
+///
+/// <para>
+/// The note previously here said that allow-list consumption was a separate
+/// "not-yet-implemented increment", and every row was therefore hard-coded to
+/// <c>false</c>. That increment HAS since landed —
+/// <see cref="GetWorkflowDefinitionTool.BuildBody"/> performs exactly the
+/// <c>StudioName</c> ↔ activity-type mapping the old note said did not exist — but this
+/// tool was never updated to match. So <c>list_workflows</c> and
+/// <c>get_workflow_definition</c> now disagree about the same workflow at the same
+/// moment (observed on <c>warewolfserver-mcp</c> 2026-08-21: the list said <c>false</c>
+/// while the definition returned a full body with <c>nonEditableReason: null</c>).
+/// Because callers browse the list first, this makes <c>add_step</c> and
+/// read-modify-write look globally unavailable when they are not.
+/// Fix by calling the same gate here, or by dropping the field from this response so
+/// there is a single source of truth.
 /// </para>
 /// </summary>
 internal static class ListWorkflowsTool
@@ -274,9 +280,9 @@ internal static class ListWorkflowsTool
             // a valid WorkflowService by its root attributes), just without detail.
         }
 
-        // bodyEditable: see the fidelity-gate remarks on this class — conservatively
-        // false until the allow-list consumption logic (StudioName ↔ activity-type
-        // mapping + per-workflow scan) is implemented in a follow-up increment.
+        // bodyEditable: KNOWN BUG — hard-coded false. The allow-list consumption logic
+        // this once waited on now exists (GetWorkflowDefinitionTool.BuildBody), so this
+        // contradicts get_workflow_definition for the same workflow. See the class remarks.
         return new WorkflowSummary(file.Name, file.RelativePath, description, inputs, outputs, false);
     }
 

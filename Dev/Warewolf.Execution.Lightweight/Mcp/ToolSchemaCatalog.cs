@@ -11,8 +11,7 @@ using System.Text.Json;
 namespace Warewolf.Execution.Lightweight.Mcp;
 
 /// <summary>
-/// Per-tool <c>data</c> field documentation backing the <c>get_tool_schema</c> MCP tool
-/// (<c>warewolf-lee-mcp-v3-spec.md</c>, "Tools" § <c>get_tool_schema</c>) — one JSON schema
+/// Per-tool <c>data</c> field documentation backing the <c>get_tool_schema</c> MCP tool — one JSON schema
 /// document per <see cref="ToolCatalog.Entry.Name"/>.
 ///
 /// <para>
@@ -82,7 +81,7 @@ internal static class ToolSchemaCatalog
             ["Assign"] = """
                 {
                   "fields": {
-                    "fields": "string, required — JSON-encoded array of { \"FieldName\": string, \"FieldValue\": string } (Constants.FIELDS; DsfDotNetMultiAssignActivity.ToX6Json/FromX6Json). A field name is a Warewolf variable expression, e.g. \"[[a]]\"."
+                    "fields": "array, required — a JSON array of { \"FieldName\": string, \"FieldValue\": string } (Constants.FIELDS; DsfDotNetMultiAssignActivity.ToX6Json/FromX6Json). Send a real JSON array, not a string; a string containing a JSON array is also accepted, and anything else is rejected by validate_workflow. A field name is a Warewolf variable expression, e.g. \"[[a]]\"."
                   },
                   "notes": [
                     "FromX6Json prefers Constants.UPDATEDFIELDS ('updatedfields') over 'fields' when both are present — an edit round-trip convention, not a required input field."
@@ -92,7 +91,7 @@ internal static class ToolSchemaCatalog
             ["Assign Object"] = """
                 {
                   "fields": {
-                    "fields": "string, required — JSON-encoded array of { \"FieldName\": string, \"FieldValue\": string } (Constants.FIELDS; DsfDotNetMultiAssignObjectActivity.ToX6Json). FieldValue is typically a JSON object/array literal assigned to a JSON-typed variable, unlike Assign's scalar FieldValue."
+                    "fields": "array, required — a JSON array of { \"FieldName\": string, \"FieldValue\": string } (Constants.FIELDS; DsfDotNetMultiAssignObjectActivity.ToX6Json). Send a real JSON array, not a string; a string containing a JSON array is also accepted, and anything else is rejected by validate_workflow. FieldValue is typically a JSON object/array literal assigned to a JSON-typed variable, unlike Assign's scalar FieldValue."
                   },
                   "notes": [
                     "Same UPDATEDFIELDS/fields precedence on read as Assign."
@@ -288,7 +287,7 @@ internal static class ToolSchemaCatalog
             ["Create JSON"] = """
                 {
                   "fields": {
-                    "jsonmappings": "string, required — JSON-encoded array of name/value mapping entries used to build the output object (Constants.CREATEJSON_JSONMAPPINGS).",
+                    "jsonmappings": "array, required — a JSON array of name/value mapping entries used to build the output object (Constants.CREATEJSON_JSONMAPPINGS).",
                     "jsonstring": "string, optional — the resulting/target JSON variable (Constants.CREATEJSON_JSONSTRING)."
                   },
                   "notes": [
@@ -299,7 +298,7 @@ internal static class ToolSchemaCatalog
             ["Data Merge"] = """
                 {
                   "fields": {
-                    "mergecollection": "string, required — JSON-encoded array describing each merge-into-template mapping (Constants.MERGECOLLECTION).",
+                    "mergecollection": "array, required — a JSON array describing each merge-into-template mapping (Constants.MERGECOLLECTION).",
                     "result": "string, optional — output variable for the merged string (Constants.RESULT)."
                   },
                   "notes": [
@@ -313,14 +312,14 @@ internal static class ToolSchemaCatalog
                     "sourcestring": "string, required — the input string to split (Constants.DATASPLIT_SOURCESTRING).",
                     "reverseorder": "boolean, optional — split from the end of the string backwards (Constants.DATASPLIT_REVERSEORDER).",
                     "skipblankrows": "boolean, optional — omit empty rows from the resulting recordset (Constants.DATASPLIT_SKIPBLANKROWS).",
-                    "resultscollection": "string, required — JSON-encoded array of split-rule entries (delimiter/index/character) producing the output recordset (Constants.RESULTSCOLLECTION)."
+                    "resultscollection": "array, required — a JSON array of split-rule entries (delimiter/index/character) producing the output recordset (Constants.RESULTSCOLLECTION)."
                   }
                 }
                 """,
             ["Base Conversion"] = """
                 {
                   "fields": {
-                    "convertcollection": "string, required — JSON-encoded array of { value, from-encoding, to-encoding, result } conversion rows (Constants.CONVERTCOLLECTION)."
+                    "convertcollection": "array, required — a JSON array of { value, from-encoding, to-encoding, result } conversion rows (Constants.CONVERTCOLLECTION)."
                   },
                   "notes": [
                     "FromX6Json prefers Constants.UPDATEDCONVERTCOLLECTION ('updatedconvertcollection') over 'convertcollection' when both are present. Case Conversion (below) shares this exact field shape."
@@ -385,7 +384,7 @@ internal static class ToolSchemaCatalog
                 {
                   "fields": {
                     "sourcestring": "string, required — the XML input and XPath expression pairing (Constants.XPATH_SOURCESTRING).",
-                    "resultscollection": "string, required — JSON-encoded array of XPath query/result-variable rows (Constants.XPATH_RESULTSCOLLECTION)."
+                    "resultscollection": "array, required — a JSON array of XPath query/result-variable rows (Constants.XPATH_RESULTSCOLLECTION)."
                   },
                   "notes": [
                     "FromX6Json prefers Constants.XPATH_UPDATEDRESULTSCOLLECTION ('updatedresultscollection') over 'resultscollection' when both are present."
@@ -967,7 +966,7 @@ internal static class ToolSchemaCatalog
             ["Gather System Information"] = """
                 {
                   "fields": {
-                    "systeminformationcollection": "string, required — JSON-encoded list of { system-property, result-variable } rows selecting which system properties (OS, memory, etc.) to gather (Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION)."
+                    "systeminformationcollection": "array, required — a JSON array of { system-property, result-variable } rows selecting which system properties (OS, memory, etc.) to gather (Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION)."
                   }
                 }
                 """,

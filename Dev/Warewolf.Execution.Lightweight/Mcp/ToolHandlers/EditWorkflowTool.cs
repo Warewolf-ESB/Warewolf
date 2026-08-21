@@ -20,8 +20,7 @@ using Warewolf.Execution.Lightweight.Infrastructure;
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
-/// Implements the <c>edit_workflow</c> MCP tool (<c>warewolf-lee-mcp-v3-spec.md</c>, "Tools" §
-/// <c>edit_workflow</c>): re-compiles an <c>envelope</c> + <c>body</c> pair and overwrites an
+/// Implements the <c>edit_workflow</c> MCP tool: re-compiles an <c>envelope</c> + <c>body</c> pair and overwrites an
 /// <b>existing</b> workflow's <c>.bite</c> file in place — the save-side mirror of
 /// <see cref="CreateWorkflowTool"/> for a workflow that already exists.
 ///

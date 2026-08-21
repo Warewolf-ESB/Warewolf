@@ -336,8 +336,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 cell.data.TryGetValue(Dev2.Common.X6.Constants.CREATEJSON_JSONMAPPINGS, out fieldObject);
             }
-            var array = fieldObject as JArray;
-            if (array != null)
+            if (CommonHelper.TryAsJArray(fieldObject, out var array))
             {
                 JsonMappings = array.ToObject<List<JsonMappingTo>>();
             }
