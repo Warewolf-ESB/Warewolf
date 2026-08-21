@@ -161,7 +161,7 @@ namespace Warewolf.Execution.Lightweight
 
             if (!File.Exists(request.WorkflowFilePath))
             {
-                Dev2Logger.Error($"WorkflowExecutor Execute: Workflow not found: {WorkflowIdentifier(request)}", "WorkflowExecutor-Validation");
+               // Dev2Logger.Error($"WorkflowExecutor Execute: Workflow not found: {WorkflowIdentifier(request)}", "WorkflowExecutor-Validation");
                 return WorkflowExecutionResult.Failure("Workflow not found.");
             }
 
@@ -191,7 +191,7 @@ namespace Warewolf.Execution.Lightweight
             var startTime = DateTime.UtcNow;
             var executionId = Guid.NewGuid();
 
-            Dev2Logger.Info($"WorkflowExecutor Execute starting. Workflow: {WorkflowIdentifier(request)}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
+           // Dev2Logger.Info($"WorkflowExecutor Execute starting. Workflow: {WorkflowIdentifier(request)}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
 
             // Declared outside the try so the finally can release it however this method exits -
             // including the early returns for a missing start node and the two catch blocks.
