@@ -299,6 +299,22 @@ namespace Warewolf.Execution.Lightweight.Functions
                 return await WriteErrorResponse(req, HttpStatusCode.BadRequest,
                     "bad_request", "Request body is not valid JSON.", correlationId);
             }
+            catch (Exception ex)
+            {
+                // Without this, any exception a tool handler did not anticipate escapes to the
+                // Functions host, which returns a bare 500 with an empty body and no log entry of
+                // its own — leaving an MCP caller with only `failed: 500` and nothing to act on.
+                // That is exactly how the ValidateWorkflowTool.ParseEnvelopeVariables
+                // InvalidOperationException presented on 2026-08-21: diagnosing it needed
+                // Application Insights access rather than the tool's own response. Log it against
+                // the correlation id and return the same structured error shape as every other
+                // failure path.
+                _logger.LogError(ex, "MCP API request failed with an unhandled exception (correlationId={CorrelationId})", correlationId);
+                return await WriteErrorResponse(req, HttpStatusCode.InternalServerError,
+                    "internal_error",
+                    $"The tool handler failed with an unexpected {ex.GetType().Name}: {ex.Message}",
+                    correlationId);
+            }
 
             var response = req.CreateResponse(HttpStatusCode.OK);
             response.Headers.Add("Content-Type", "application/json");

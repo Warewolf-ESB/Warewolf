@@ -117,6 +117,29 @@ internal static class ValidateWorkflowTool
             throw new McpException($"{string.Join(" and ", missingRequired)} {verb} required.");
         }
 
+        // `envelope`/`body` bind as a raw JsonElement, so a caller that sends either as a JSON
+        // *string* (or array/number) binds cleanly here and only fails much further down, where
+        // ParseEnvelopeVariables calls TryGetProperty and JsonElement throws
+        // InvalidOperationException. McpApiFunctions.Invoke does not catch that, so it reached the
+        // caller as a bare HTTP 500 with an empty body — observed 2026-08-21 against
+        // warewolfserver-mcp, where the MCP server's z.any() field schema (no `type`) let clients
+        // send envelope/body as JSON strings. Reject a non-object up front instead, the same way
+        // AddStepTool guards `step` and AddSourceTool guards `config`.
+        var notObjects = new List<string>();
+        if (envelope.ValueKind is not JsonValueKind.Object)
+        {
+            notObjects.Add($"`envelope` must be a JSON object, but a {envelope.ValueKind} was supplied");
+        }
+        if (body.ValueKind is not JsonValueKind.Object)
+        {
+            notObjects.Add($"`body` must be a JSON object, but a {body.ValueKind} was supplied");
+        }
+        if (notObjects.Count > 0)
+        {
+            throw new McpException(
+                $"{string.Join("; ", notObjects)}. See get_workflow_schema for the expected shapes.");
+        }
+
         var errors = new List<ValidationIssue>();
 
         var envelopeVariables = ParseEnvelopeVariables(envelope);

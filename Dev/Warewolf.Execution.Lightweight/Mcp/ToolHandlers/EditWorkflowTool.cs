@@ -157,6 +157,12 @@ internal static class EditWorkflowTool
         }
 
         File.WriteAllText(existingFilePath, biteContents);
+        // Drop any pooled compilation of this workflow so the next execution picks the new
+        // definition up. WorkflowExecutor's pool key already includes the file's timestamp+length,
+        // so this is belt-and-braces for the one case that cannot see: a rewrite of identical
+        // length landing within the filesystem's timestamp granularity - which is exactly what an
+        // agent making rapid successive edits produces.
+        WorkflowExecutor.EvictWorkflow(existingFilePath);
 
         // The name/path is unchanged by an edit, but refreshing the cache entry keeps this tool
         // consistent with create_workflow's own guarantee and costs nothing extra.

@@ -201,9 +201,30 @@
       Files from Resources - Release\Resources that are needed for integration
       tests have been copied here and are tracked in source control.
     -->
-    <Content Include="Resources\**\*" Condition="Exists('Resources') AND '$(Configuration)' == 'Debug'">
+    <Content Include="Resources\**\*" Condition="Exists('Resources') AND '$(Configuration)' == 'Debug'" Exclude="Resources\fidelity-allowlist.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+
+    <!--
+      fidelity-allowlist.json is ENGINE METADATA, not a workflow resource, so it ships in EVERY
+      configuration - it is excluded from the Debug-only Resources glob above and included here
+      unconditionally instead.
+
+      It is the per-activity round-trip fidelity result set FidelityAllowList reads to answer
+      `bodyEditable`. That class fails CLOSED when the file is missing, so a Release deployment
+      without it reports bodyEditable:false for EVERY workflow - which silently disables
+      add_step entirely and makes get_workflow_definition always return a null body, leaving an
+      MCP caller no way to read-modify-write any workflow. Observed on warewolfserver-mcp
+      2026-08-21: "FidelityAllowList file not found at: C:\home\site\wwwroot\Resources\fidelity-allowlist.json. All workflows will report bodyEditable:false."
+
+      Deployers supply their own *workflows*; they cannot be expected to supply the engine's own
+      capability manifest.
+    -->
+    <Content Include="Resources\fidelity-allowlist.json" Condition="Exists('Resources\fidelity-allowlist.json')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <Link>Resources\fidelity-allowlist.json</Link>
     </Content>
 
     <!--
@@ -285,6 +306,28 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <!-- ========================================================= -->
+  <!-- LICENSE FILE PUBLISH GUARD -->
+  <!-- "Warewolf License.secureconfig" (SubscriptionConfig.FileName) is written at   -->
+  <!-- RUNTIME by SubscriptionConfig against AppContext.BaseDirectory — i.e. this    -->
+  <!-- project's own bin/<Config>/<TFM> output directory whenever the app/tests run  -->
+  <!-- locally. It is NOT project content and must NEVER travel in a publish/deploy  -->
+  <!-- package: doing so overwrites a live, already-activated instance's license     -->
+  <!-- with a placeholder/default (NotActive) one on every redeploy. `dotnet publish`-->
+  <!-- copies the full build output directory verbatim, so a stray local copy of     -->
+  <!-- this file WILL be swept into the publish folder unless explicitly removed —   -->
+  <!-- confirmed root cause of a live license regression (2026). This target deletes-->
+  <!-- it (and the legacy Dev2.Server equivalent) from $(PublishDir) unconditionally,-->
+  <!-- every publish, regardless of which deploy script/method is used afterwards.   -->
+  <!-- ========================================================= -->
+  <Target Name="RemoveRuntimeLicenseFileFromPublish" AfterTargets="Publish;ComputeFilesToPublish">
+    <ItemGroup>
+      <_LicenseFilesToRemove Include="$(PublishDir)Warewolf License.secureconfig" />
+      <_LicenseFilesToRemove Include="$(PublishDir)Warewolf Server.exe.secureconfig" />
+    </ItemGroup>
+    <Delete Files="@(_LicenseFilesToRemove)" Condition="Exists('%(_LicenseFilesToRemove.Identity)')" />
+  </Target>
 
   <!-- ========================================================= -->
   <!-- WORKFLOW INDEX GENERATION -->

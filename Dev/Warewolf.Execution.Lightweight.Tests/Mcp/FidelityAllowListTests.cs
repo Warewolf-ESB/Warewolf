@@ -171,5 +171,56 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
         {
             Assert.IsFalse(FidelityAllowList.IsEditable("Not A Real Studio Name At All"));
         }
+        // ── Shipping the allow-list with the engine ──────────────────────────
+        //
+        // Regression: fidelity-allowlist.json was swept up in the csproj's Resources glob, which is
+        // conditioned on '$(Configuration)' == 'Debug' because deployers supply their own workflow
+        // resources. But this file is ENGINE METADATA, not a workflow - and FidelityAllowList fails
+        // CLOSED when it is absent, so every Release deployment reported bodyEditable:false for
+        // EVERY workflow. That silently disabled add_step outright and made get_workflow_definition
+        // always return a null body. Confirmed on warewolfserver-mcp 2026-08-21:
+        //   "FidelityAllowList file not found at: C:\home\site\wwwroot\Resources\
+        //    fidelity-allowlist.json. All workflows will report bodyEditable:false."
+        // It is now included unconditionally, so it must be present in the build output.
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void AllowList_ShipsInTheBuildOutput_WhereFidelityAllowListLooksForIt()
+        {
+            var deployedPath = Path.Combine(AppContext.BaseDirectory, "Resources", "fidelity-allowlist.json");
+
+            Assert.IsTrue(File.Exists(deployedPath),
+                $"fidelity-allowlist.json must ship with the engine, but was not found at '{deployedPath}'. " +
+                "Without it FidelityAllowList fails closed and every workflow reports bodyEditable:false, " +
+                "which disables add_step and makes get_workflow_definition return a null body.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void AllowList_AsShipped_MarksKnownPassingActivitiesEditable()
+        {
+            // Proves the shipped file is not merely present but parses and answers correctly, via
+            // the real AppContext.BaseDirectory lookup the engine itself uses. "Sequence" is a
+            // stable Pass entry; if the corpus is ever regenerated and this fails, the allow-list
+            // regressed rather than the test.
+            Assert.IsTrue(FidelityAllowList.IsEditable("Sequence"),
+                "the shipped allow-list should mark 'Sequence' editable");
+            Assert.AreEqual(FidelityAllowList.PassStatus, FidelityAllowList.StatusFor("Sequence"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void AllowList_AsShipped_TreatsPassBothFailedIdenticallyAsNotEditable()
+        {
+            // "Assign" currently sits at PassBothFailedIdentically, NOT Pass: its corpus sample
+            // ("Hello World.bite") needs an input the fidelity harness does not supply, so original
+            // and round-tripped both failed identically and the activity's own logic was never
+            // actually proven to round-trip. Documented here because it is the single most common
+            // toolbox activity, so any workflow using an Assign stays bodyEditable:false and cannot
+            // be driven through add_step - a corpus gap, not an allow-list bug.
+            Assert.AreEqual("PassBothFailedIdentically", FidelityAllowList.StatusFor("Assign"));
+            Assert.IsFalse(FidelityAllowList.IsEditable("Assign"),
+                "only Status == Pass may count as editable");
+        }
     }
 }

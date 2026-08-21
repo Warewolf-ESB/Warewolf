@@ -95,6 +95,14 @@ namespace Warewolf.Execution.Lightweight
         {
             internal DynamicActivity Activity { get; init; }
             internal IDev2Activity StartActivity { get; init; }
+
+            /// <summary>
+            /// The pool key this instance was compiled under, stamped at rent time. Returning uses
+            /// THIS rather than recomputing from the file, so an instance compiled from the old
+            /// definition can never be filed under the key of a definition that changed while it
+            /// was executing.
+            /// </summary>
+            internal string PoolKey { get; set; }
         }
 
         public WorkflowExecutor(IExecutionLogger executionLogger)
@@ -597,12 +605,91 @@ namespace Warewolf.Execution.Lightweight
         /// <c>null</c> when the XAML does not yield a <see cref="DynamicActivity"/>, matching the
         /// previous contract so the caller's existing null handling is unchanged.
         /// </returns>
+        /// <summary>
+        /// Builds the pool key for <paramref name="filePath"/>: its full path PLUS a content
+        /// discriminator (last-write timestamp + length).
+        ///
+        /// <para>
+        /// The key used to be the path alone, which meant a pooled instance was reused for a file
+        /// that had since changed on disk - <c>RentPreparedWorkflow</c> returns the pooled instance
+        /// before it ever looks at the freshly-read <c>xamlDefinition</c>. So after
+        /// <c>edit_workflow</c> rewrote a .bite, every later execution silently replayed the
+        /// PRE-EDIT compilation until the process restarted: the tool reported success, the file
+        /// genuinely changed, and behaviour did not. Reproduced on warewolfserver-mcp 2026-08-21 -
+        /// get_workflow_definition showed the edited description while execute_workflow kept
+        /// returning the old output.
+        /// </para>
+        ///
+        /// <para>
+        /// Including the file's identity in the key means a changed definition simply lands in a
+        /// different bucket, so a stale instance can never be handed out - no cache-invalidation
+        /// call is required at the write site, and out-of-band edits are covered too. MCP writes
+        /// additionally call <see cref="EvictWorkflow"/>, which closes the one gap this cannot see:
+        /// two edits of identical length landing within the filesystem's timestamp granularity.
+        /// </para>
+        /// </summary>
+        static string BuildPoolKey(string filePath)
+        {
+            var fullPath = Path.GetFullPath(filePath);
+            try
+            {
+                var info = new FileInfo(fullPath);
+                if (info.Exists)
+                {
+                    return $"{fullPath}|{info.LastWriteTimeUtc.Ticks}|{info.Length}";
+                }
+            }
+            catch (Exception ex)
+            {
+                // A stat failure must never fail an execution - fall back to the path-only key,
+                // which is exactly the pre-fix behaviour rather than a new failure mode.
+                Dev2Logger.Warn($"WorkflowExecutor BuildPoolKey could not stat '{fullPath}': {ex.Message}", "WorkflowExecutor-Pool");
+            }
+
+            return fullPath;
+        }
+
+        /// <summary>
+        /// Drops every pooled instance for <paramref name="filePath"/>, whatever version they were
+        /// compiled from. Called by the MCP write tools after a successful save so the very next
+        /// execution recompiles, even when the rewrite is indistinguishable by timestamp+length.
+        /// Safe to call for a path that was never pooled.
+        /// </summary>
+        internal static void EvictWorkflow(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return;
+            }
+
+            string fullPath;
+            try
+            {
+                fullPath = Path.GetFullPath(filePath);
+            }
+            catch
+            {
+                return;
+            }
+
+            var prefix = fullPath + "|";
+            foreach (var key in _workflowPool.Keys)
+            {
+                if (string.Equals(key, fullPath, StringComparison.OrdinalIgnoreCase) ||
+                    key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    _workflowPool.TryRemove(key, out _);
+                }
+            }
+        }
+
         internal static PreparedWorkflow RentPreparedWorkflow(string filePath, StringBuilder xamlDefinition)
         {
-            var key = Path.GetFullPath(filePath);
+            var key = BuildPoolKey(filePath);
 
             if (_workflowPool.TryGetValue(key, out var available) && available.TryTake(out var reused))
             {
+                reused.PoolKey = key;
                 return reused;
             }
 
@@ -618,7 +705,8 @@ namespace Warewolf.Execution.Lightweight
             return new PreparedWorkflow
             {
                 Activity      = activity,
-                StartActivity = new ActivityParser().Parse(activity)
+                StartActivity = new ActivityParser().Parse(activity),
+                PoolKey       = key
             };
         }
 
@@ -633,7 +721,11 @@ namespace Warewolf.Execution.Lightweight
                 return;
             }
 
-            var bag = _workflowPool.GetOrAdd(Path.GetFullPath(filePath), _ => new ConcurrentBag<PreparedWorkflow>());
+            // Prefer the key stamped at rent time: recomputing from the file here would file an
+            // instance compiled from the OLD definition under the NEW definition's key whenever the
+            // .bite changed mid-execution.
+            var key = string.IsNullOrEmpty(prepared.PoolKey) ? BuildPoolKey(filePath) : prepared.PoolKey;
+            var bag = _workflowPool.GetOrAdd(key, _ => new ConcurrentBag<PreparedWorkflow>());
 
             // BOUNDED. Beyond the cap the instance is simply not retained - it becomes garbage and
             // the next rent compiles a fresh one. Renting is deliberately NOT throttled, so the
@@ -683,7 +775,25 @@ namespace Warewolf.Execution.Lightweight
 
         /// <summary>Pooled (idle) instance count for <paramref name="filePath"/>. Test hook only.</summary>
         internal static int PooledWorkflowCount(string filePath)
-            => _workflowPool.TryGetValue(Path.GetFullPath(filePath), out var bag) ? bag.Count : 0;
+        {
+            // Sums every key belonging to this workflow, not just one. The pool key gained a
+            // content discriminator (see BuildPoolKey), so a single .bite can legitimately own
+            // several buckets - one per file version still holding instances. Callers ask "how
+            // many compilations of THIS workflow are pooled", which is the total.
+            var fullPath = Path.GetFullPath(filePath);
+            var prefix = fullPath + "|";
+            var total = 0;
+            foreach (var pair in _workflowPool)
+            {
+                if (string.Equals(pair.Key, fullPath, StringComparison.OrdinalIgnoreCase) ||
+                    pair.Key.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    total += pair.Value.Count;
+                }
+            }
+
+            return total;
+        }
 
         /// <summary>
         /// Step 5: Build DsfDataObject and map input parameters into the execution environment.

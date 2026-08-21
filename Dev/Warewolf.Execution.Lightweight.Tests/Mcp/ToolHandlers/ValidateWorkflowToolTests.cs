@@ -377,5 +377,76 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsFalse(result.Valid);
             Assert.IsTrue(result.Errors.Any(e => e.Message.Contains("failed to compile")));
         }
+        // ── non-object envelope/body guards ───────────────────────────────
+        //
+        // Regression: `envelope`/`body` bind as a raw JsonElement, so a caller sending either as a
+        // JSON *string* used to bind cleanly and then blow up deep inside ParseEnvelopeVariables,
+        // where JsonElement.TryGetProperty throws InvalidOperationException ("requires an element
+        // of type 'Object', but the target element has type 'String'"). McpApiFunctions.Invoke did
+        // not catch that, so an MCP caller saw only a bare HTTP 500 with an empty body — observed
+        // 2026-08-21 against warewolfserver-mcp. These assert a clean McpException (which Invoke
+        // maps to a 400 carrying the message) for every non-object JsonValueKind.
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_EnvelopeSentAsJsonString_ThrowsMcpException_NotInvalidOperationException()
+        {
+            var envelope = JsonDocument.Parse("\"{\\\"inputs\\\":[]}\"").RootElement;
+            Assert.AreEqual(JsonValueKind.String, envelope.ValueKind);
+
+            var ex = Assert.ThrowsException<McpException>(
+                () => ValidateWorkflowTool.Handle(envelope, BodyOf("Wf", MakeStartNode())));
+
+            StringAssert.Contains(ex.Message, "`envelope` must be a JSON object");
+            StringAssert.Contains(ex.Message, "String");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_BodySentAsJsonString_ThrowsMcpException()
+        {
+            var body = JsonDocument.Parse("\"{\\\"cells\\\":[]}\"").RootElement;
+
+            var ex = Assert.ThrowsException<McpException>(
+                () => ValidateWorkflowTool.Handle(EmptyEnvelope, body));
+
+            StringAssert.Contains(ex.Message, "`body` must be a JSON object");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_BothSentAsJsonStrings_ReportsBothInOneMessage()
+        {
+            var asString = JsonDocument.Parse("\"{}\"").RootElement;
+
+            var ex = Assert.ThrowsException<McpException>(
+                () => ValidateWorkflowTool.Handle(asString, asString));
+
+            StringAssert.Contains(ex.Message, "`envelope` must be a JSON object");
+            StringAssert.Contains(ex.Message, "`body` must be a JSON object");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_EnvelopeSentAsArrayOrNumber_ThrowsMcpException()
+        {
+            var asArray = JsonDocument.Parse("[]").RootElement;
+            var asNumber = JsonDocument.Parse("42").RootElement;
+            var body = BodyOf("Wf", MakeStartNode());
+
+            Assert.ThrowsException<McpException>(() => ValidateWorkflowTool.Handle(asArray, body));
+            Assert.ThrowsException<McpException>(() => ValidateWorkflowTool.Handle(asNumber, body));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ProperObjectEnvelopeAndBody_StillValidatesNormally()
+        {
+            // Guards against the new ValueKind check rejecting the happy path it must let through.
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, BodyOf("Wf", MakeStartNode(), 
+                MakeNode("assign1", "dsfdotnetmultiassignactivity"), MakeEdge("e1", "start", "assign1")));
+
+            Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
     }
 }

@@ -1,14 +1,28 @@
 # Spec — `Warewolf License.secureconfig` is silently discarded under the Lightweight (Azure Functions isolated-worker) host
 
-**Status:** Root-caused and reproduced live against `warewolfserver-mcp` (RG `DEV2`,
-subscription `dd0bc517-5cc7-4b56-bd6a-68e6140db7b3`). **Fixed in code** (§6, option 2 implemented;
-§9 records what shipped and its tests) — **not yet deployed** to `warewolfserver-mcp`. The
-temporary **workaround** (`WAREWOLF_LICENSE_CHECK_ENABLED=false`, bypassing the gate rather than
-fixing licensing) described in §8.1 is still in place on that live instance until this fix is
-deployed and a real license verified end-to-end per §7's acceptance test.
+**Status:** Root-caused, fixed in code (§6, option 2), and **now live-verified end-to-end against
+`warewolfserver-mcp`** (RG `DEV2`, subscription `dd0bc517-5cc7-4b56-bd6a-68e6140db7b3`) — §7's
+acceptance test passed 2026-08-21: `set_license` → `get_license_status` round-tripped `Active`/
+`isLicensed:true` correctly across the file-backed path, and `execute_workflow` against a real
+`start → Assign` workflow returned a genuine successful result (no license-blocked error).
+`WAREWOLF_LICENSE_CHECK_ENABLED` is `true` (enforced, not bypassed) on the live instance — §8.1's
+workaround is no longer needed/active.
+**2026-08-21 addendum — a *second*, related regression found and fixed:** the live license
+reverted to `NotActive` mid-session, traced to an unrelated redeploy (zip-deploy of a fresh
+`dotnet publish` output) picking up a stray placeholder `Warewolf License.secureconfig` left in
+this project's local `bin/Release/<TFM>` output by an earlier local run/test (see the fix's own
+constructor, `SubscriptionConfig()` → `AppContext.BaseDirectory`) and shipping it as if it were
+build content, overwriting the live activated license on deploy. Fixed defensively at the project
+level: `Warewolf.Execution.Lightweight.csproj`'s new `RemoveRuntimeLicenseFileFromPublish` target
+(`AfterTargets="Publish"`) deletes any such file from `$(PublishDir)` on every publish, regardless
+of which deploy script/method runs afterwards — confirmed by test (a stray file placed in the
+Release build output no longer appears in the publish output). This is a distinct failure mode
+from the one this spec originally documents (CWD-vs-`AppContext.BaseDirectory` resolution) but has
+the same symptom (license silently reset) and the same underlying lesson: this file is
+**runtime-owned state, never build/publish content**, on either host.
 **Author:** drafted 2026-08-20 while investigating `warewolfserver-mcp-workflow-authoring-bugs.md`
 bug 3 ("`execute_workflow` is blocked by licensing on this instance"); fix + new MCP licensing
-tools added the same day.
+tools added the same day; live-verified and hardened against the publish-time regression 2026-08-21.
 **Affects:** every Lightweight Function App deployment that stages a license via
 `Deploy-WwExecutionEngine.ps1 -LicenseConfigPath` (or any other means) — this is not specific to
 `warewolfserver-mcp`.
@@ -193,28 +207,39 @@ weighed; **option 2 was chosen and implemented** (2026-08-20):
    `Error` level the original spec recommended. Worth a follow-up if that distinction proves useful
    in practice once the fix is live.
 
-## 7. Acceptance test — automated, now passing (§9 has the full list)
+## 7. Acceptance test — automated AND live, now passing
 
-The manual acceptance steps originally sketched here are now backed by real automated tests (see
-§9) exercising the actual file-backed constructor path end-to-end — previously **zero** tests
+The manual acceptance steps originally sketched here are backed by real automated tests (see §9)
+exercising the actual file-backed constructor path end-to-end — previously **zero** tests
 exercised that path at all (every existing test used the `NameValueCollection` constructor
 directly, bypassing file resolution entirely, which is exactly how this bug shipped unnoticed).
-Manual/live verification against a real deployed Function App is still outstanding — do this before
-closing out the bug:
 
-1. Deploy the fixed package with `-LicenseConfigPath` pointing at a real, `Status="Active"` `Warewolf
-   License.secureconfig`.
-2. `GET /IsLicensed` → expect `{"isLicensed": true, "status": "Active", ...}` on the **first**
-   cold start (no manual restart/retry required).
-3. Re-fetch the staged file via Kudu VFS → expect its real values (plaintext or correctly
-   re-encrypted, per `Initialize()`'s existing `isPlainText` logic) — not the
-   `SubscriptionDefault*`/`SubscriptionLive*` constants from `SubscriptionProvider.cs`.
-4. `execute_workflow` (MCP tool) against a trivial workflow → expect a successful execution result,
-   not `"Execution blocked: a valid Warewolf license/subscription is required."`.
-5. Once live-verified, remove the `WAREWOLF_LICENSE_CHECK_ENABLED=false` workaround (§8.1) so the
-   license gate is enforced normally again.
+**Live verification against `warewolfserver-mcp`, completed 2026-08-21:**
+
+1. ~~Deploy the fixed package~~ — done (zip-deploy via `az functionapp deployment source
+   config-zip`, `dotnet publish -c Release` output).
+2. `set_license` (`status: "Active"`) → `get_license_status` → `{"isLicensed": true, "status":
+   "Active", ...}`, confirmed on the running instance with no manual restart/retry required
+   (verified via direct `POST /mcp-api/set_license` + `POST /mcp-api/get_license_status`, since
+   `-LicenseConfigPath` pre-staging wasn't used this round — the new `set_license` MCP tool, §10,
+   bootstrapped it live instead, which is exactly the scenario it was added for).
+3. *(Not repeated this round — covered by §9's `SubscriptionConfigTests` regression tests instead
+   of a fresh Kudu VFS re-fetch.)*
+4. `execute_workflow` against a real `start → Assign` workflow (`FixVerification/AcceptanceTest`)
+   → `{"outputs": {"Result": "hello from acceptance test"}, "status": "success", "error": null}` —
+   a genuine successful execution, not the licensing block.
+5. `WAREWOLF_LICENSE_CHECK_ENABLED` confirmed `true` (enforced) on the live instance — §8.1's
+   workaround was not active going into this round and remains unnecessary.
 
 ## 8. Current live state (as left)
+
+**Superseded — see the 2026-08-21 addendum at the top of this doc and §7's live verification.**
+`warewolfserver-mcp` is licensed (`isLicensed: true`, `status: "Active"`) via the new `set_license`
+MCP tool, and `execute_workflow` runs real workflows successfully. The publish-time regression this
+addendum describes (a stray build-output license file overwriting the live one on redeploy) is now
+guarded against by `Warewolf.Execution.Lightweight.csproj`'s `RemoveRuntimeLicenseFileFromPublish`
+target. The history below (as originally written 2026-08-20) is kept for context on why the
+workaround in §8.1 existed.
 
 `warewolfserver-mcp`'s `site/wwwroot/Warewolf License.secureconfig` was re-staged with the
 original real (plaintext) content as a best-effort restore after this investigation. Given the

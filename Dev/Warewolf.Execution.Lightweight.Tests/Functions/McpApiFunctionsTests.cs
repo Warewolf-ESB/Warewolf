@@ -17,6 +17,7 @@
 using Dev2.Common.X6;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -85,6 +86,23 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
                 throw new McpException($"Secret reference '${{{name}}}' could not be resolved: no secret named '{name}' is staged.");
         }
 
+        /// <summary>
+        /// Captures log entries so the unhandled-exception path can assert it actually logs — the
+        /// point of that catch block is diagnosability, so a silent 500 would defeat it.
+        /// </summary>
+        private sealed class CapturingLogger<T> : ILogger<T>
+        {
+            public List<(LogLevel Level, string Message, Exception? Exception)> Entries { get; } = new();
+
+            public IDisposable? BeginScope<TState>(TState state) where TState : notnull => null;
+
+            public bool IsEnabled(LogLevel logLevel) => true;
+
+            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception,
+                Func<TState, Exception?, string> formatter) =>
+                Entries.Add((logLevel, formatter(state, exception), exception));
+        }
+
         private sealed class FakeWorkflowExecutor : IWorkflowExecutor
         {
             private readonly Func<WorkflowExecutionRequest, WorkflowExecutionResult> _impl;
@@ -120,7 +138,8 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
         private McpApiFunctions NewFunctions(
             IWorkflowAuthPolicyLoader? authPolicyLoader = null,
             IWorkflowExecutor? workflowExecutor = null,
-            IMcpSecretResolver? secretResolver = null)
+            IMcpSecretResolver? secretResolver = null,
+            ILogger<McpApiFunctions>? logger = null)
         {
             var services = new ServiceCollection();
             services.AddSingleton(secretResolver ?? new FakeSecretResolver());
@@ -132,7 +151,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
                 workflowExecutor ?? new FakeWorkflowExecutor(
                     _ => throw new InvalidOperationException("Executor should not have been invoked.")),
                 provider,
-                NullLogger<McpApiFunctions>.Instance);
+                logger ?? NullLogger<McpApiFunctions>.Instance);
         }
 
         private static (HttpFunctionContext Context, FakeHttpRequestData Request) NewRequest(
@@ -586,5 +605,70 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
         // here; full business-rule coverage (permission gating, partial-update semantics, status
         // validation, secret resolution) lives in SetLicenseToolTests.cs/GetLicenseStatusToolTests.cs
         // against a fully mocked ISubscriptionProvider, with no shared/global state.
+        // ── unhandled-exception mapping ──────────────────────────────────────
+        //
+        // Regression: Invoke used to catch only McpException and JsonException, so anything else a
+        // tool handler threw escaped to the Functions host, which answers with a bare 500 carrying
+        // an empty body and no log entry of its own. An MCP caller got literally `failed: 500` with
+        // nothing to act on — diagnosing the ValidateWorkflowTool.ParseEnvelopeVariables
+        // InvalidOperationException on 2026-08-21 needed Application Insights instead of the
+        // response. Invoke now catches everything, logs it against the correlation id, and returns
+        // the same structured error body as every other failure path.
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task UnhandledException_Returns500_WithStructuredBodyNamingTheException()
+        {
+            SeedWorkflowBite("Workflow1");
+            var executor = new FakeWorkflowExecutor(
+                _ => throw new InvalidOperationException("boom from the executor"));
+            var function = NewFunctions(workflowExecutor: executor);
+            var (ctx, req) = NewRequest("execute_workflow", "{\"name\":\"Workflow1\"}");
+
+            var (status, body) = await Invoke(function.ExecuteWorkflow(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.InternalServerError, status);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(body), "the 500 must carry a body, not be empty");
+
+            var json = JObject.Parse(body);
+            Assert.AreEqual("internal_error", json["error"]?.ToString());
+            StringAssert.Contains(json["message"]?.ToString(), nameof(InvalidOperationException));
+            StringAssert.Contains(json["message"]?.ToString(), "boom from the executor");
+            Assert.IsFalse(string.IsNullOrWhiteSpace(json["correlationId"]?.ToString()));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task UnhandledException_IsLoggedAsError_WithTheOriginalException()
+        {
+            SeedWorkflowBite("Workflow1");
+            var logger = new CapturingLogger<McpApiFunctions>();
+            var executor = new FakeWorkflowExecutor(
+                _ => throw new InvalidOperationException("boom from the executor"));
+            var function = NewFunctions(workflowExecutor: executor, logger: logger);
+            var (ctx, req) = NewRequest("execute_workflow", "{\"name\":\"Workflow1\"}");
+
+            await Invoke(function.ExecuteWorkflow(req, ctx));
+
+            var errorEntry = logger.Entries.SingleOrDefault(e => e.Level == LogLevel.Error);
+            Assert.IsNotNull(errorEntry.Message, "the unhandled exception must be logged at Error level");
+            Assert.IsInstanceOfType(errorEntry.Exception, typeof(InvalidOperationException));
+            StringAssert.Contains(errorEntry.Message, "unhandled exception");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task McpException_StillMapsTo400_NotSwallowedByTheCatchAll()
+        {
+            // The catch-all must sit *after* the McpException/JsonException arms, so a validation
+            // failure keeps its 400 + specific message rather than degrading to a generic 500.
+            var function = NewFunctions();
+            var (ctx, req) = NewRequest("get_workflow_definition", "{\"name\":\"NoSuchWorkflow\"}");
+
+            var (status, body) = await Invoke(function.GetWorkflowDefinition(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, status);
+            Assert.AreEqual("bad_request", JObject.Parse(body)["error"]?.ToString());
+        }
     }
 }
