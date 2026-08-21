@@ -526,7 +526,7 @@ namespace Dev2.Activities
             var label = GetDisplayName();
             cell.label = label;
             cell.shape = Constants.DSFDECISION;
-            cell.data.Add(Constants.TYPE, Constants.FLOWDECISION);
+            cell.data.Add(Constants.TYPE, Constants.DSFDECISION.ToLower());
             cell.data.Add(Constants.DISPLAYTEXT, label);
             cell.data.Add(Constants.TRUEARMTEXT, Conditions.TrueArmText);
             cell.data.Add(Constants.FALSEARMTEXT, Conditions.FalseArmText);

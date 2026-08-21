@@ -2,6 +2,7 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using Dev2.Activities;
 using Dev2.Activities.WF;
 using Dev2.Common.X6;
 using Dev2.Data.SystemTemplates.Models;
@@ -313,5 +314,102 @@ namespace Dev2.Tests.Activities.ActivityTests
             var defaultCase = switchExpression.DefaultCase;
             Assert.IsTrue(defaultCase == null || defaultCase.Type == Newtonsoft.Json.Linq.JTokenType.Null);
         }
+
+        // ─────────────────────────────────────────────────────────────────
+        // Legacy activity type identity (round-trip fidelity)
+        //
+        // Each of these activities has a "DotNet" sibling class, and each used to serialize itself
+        // using its sibling's type constant. Because X6ToWorkflowConverter dispatches on that
+        // constant, a round trip silently rebuilt the activity as the DotNet class — a different
+        // implementation with different behaviour. For DsfDateTimeActivity that surfaced as the
+        // round-tripped workflow failing with "Could not parse input datetime with given input
+        // format" while the original succeeded.
+        // ─────────────────────────────────────────────────────────────────
+
+        static string TypeOf(Action<Cell> serialise)
+        {
+            var cell = new Cell { id = Guid.NewGuid().ToString(), data = new Dictionary<string, object>() };
+            serialise(cell);
+            return cell.data[Constants.TYPE] as string;
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_LegacyTypeIdentity")]
+        public void ToX6Json_LegacyDateTimeActivity_EmitsItsOwnTypeNotTheDotNetSibling()
+        {
+            var emitted = TypeOf(cell => new DsfDateTimeActivity { DisplayName = "Date and Time" }.ToX6Json(cell));
+
+            Assert.AreEqual(Constants.DSFDATETIMEACTIVITY.ToLower(), emitted,
+                "A legacy DsfDateTimeActivity must round-trip back as itself, not as DsfDotNetDateTimeActivity.");
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_LegacyTypeIdentity")]
+        public void ToX6Json_LegacyDateTimeDifferenceActivity_EmitsItsOwnType()
+        {
+            var emitted = TypeOf(cell => new DsfDateTimeDifferenceActivity { DisplayName = "Date and Time Difference" }.ToX6Json(cell));
+
+            Assert.AreEqual(Constants.DSFDATETIMEDIFFERENCEACTIVITY.ToLower(), emitted);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_LegacyTypeIdentity")]
+        public void ToX6Json_LegacyAggregateCalculateActivity_EmitsItsOwnType()
+        {
+            var emitted = TypeOf(cell => new DsfAggregateCalculateActivity { DisplayName = "Aggregate Calculate" }.ToX6Json(cell));
+
+            Assert.AreEqual(Constants.DSFAGGREGATECALCULATEACTIVITY.ToLower(), emitted);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_LegacyTypeIdentity")]
+        public void ToX6Json_LegacyCalculateActivity_EmitsItsOwnType()
+        {
+            var emitted = TypeOf(cell => new DsfCalculateActivity { DisplayName = "Calculate" }.ToX6Json(cell));
+
+            Assert.AreEqual(Constants.DSFCALCULATEACTIVITY.ToLower(), emitted,
+                "A legacy DsfCalculateActivity must round-trip back as itself, not as DsfDotNetCalculateActivity.");
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_LegacyTypeIdentity")]
+        public void ToX6Json_LegacyGatherSystemInformationActivity_EmitsItsOwnType()
+        {
+            var emitted = TypeOf(cell => new DsfGatherSystemInformationActivity { DisplayName = "Gather System Information" }.ToX6Json(cell));
+
+            Assert.AreEqual(Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY.ToLower(), emitted);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_LegacyTypeIdentity")]
+        public void ToX6Json_LegacyDsfDecisionActivity_EmitsItsOwnTypeNotFlowDecision()
+        {
+            var decision = new DsfDecision
+            {
+                Conditions = new Dev2DecisionStack
+                {
+                    DisplayText = "Is x == 42",
+                    TheStack = new List<Dev2Decision>()
+                }
+            };
+
+            var emitted = TypeOf(cell => decision.ToX6Json(cell));
+
+            Assert.AreEqual(Constants.DSFDECISION.ToLower(), emitted,
+                "A legacy DsfDecision must round-trip back as itself, not as DsfFlowDecisionActivity (Constants.FLOWDECISION).");
+        }
+
     }
 }

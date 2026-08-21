@@ -14,10 +14,10 @@ namespace Dev2.Activities.WF
         private static DsfSequenceActivity CreateSequenceActivity(Cell node)
         {
             // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
-                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            var hasDisplayName = node.data.TryGetString("displayName", out var displayName) ||
+                                 node.data.TryGetString(Constants.DISPLAYNAME, out displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfSequenceActivity();

@@ -294,8 +294,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             base.ToX6Json(cell);
 
-            cell.shape = Constants.DSFDOTNETAGGREGATECALCULATEACTIVITY;
-            cell.data[Constants.TYPE] = Constants.DSFDOTNETAGGREGATECALCULATEACTIVITY.ToLower();
+            cell.shape = Constants.DSFAGGREGATECALCULATEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFAGGREGATECALCULATEACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_AGGREGATECALCULATE;
             cell.data[Constants.UNIQUEID] = UniqueID;
 

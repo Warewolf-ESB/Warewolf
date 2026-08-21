@@ -26,19 +26,13 @@ namespace Warewolf.Execution.Lightweight.Mcp;
 /// </para>
 ///
 /// <para>
-/// <b>Known gap (verified, not a copy of the spec's own claim): "Calculate".</b> The spec
-/// table lists <c>dsfdotnetcalculateactivity</c> as supported. <c>Dev2.Common.X6.Constants
-/// .DSFDOTNETCALCULATEACTIVITY</c> and a <c>DsfDotNetCalculateActivity.ToX6Json</c> exist, and
-/// there's an <c>X6ToWorkflowConverter_CalculateActivityHelper.CreateCalculateActivity</c> —
-/// but that helper is <b>never called</b> from <c>CreateActivityFromNode</c>'s switch (only
-/// "Aggregate Calculate" is wired in). A "Calculate" node fed back through
-/// <c>X6JsonToWorkflow</c> today falls through to the <c>default</c> case and throws
-/// <c>UnsupportedActivityTypeException</c>. Kept in this catalog anyway (per explicit product
-/// decision) to match the spec table literally; <see cref="Entry.ActivityType"/> is still
-/// accurate (it names the class the XAML-writer already emits), it is simply not yet
-/// reachable from the JSON-writer direction. <c>validate_workflow</c>/<c>create_workflow</c>/
-/// <c>edit_workflow</c> will surface the real converter exception if a caller ever tries to
-/// use it — this catalog does not paper over that.
+/// <b>Former gap, now closed: "Calculate".</b> Both the legacy <c>DsfCalculateActivity</c> and
+/// its DotNet sibling <c>DsfDotNetCalculateActivity</c> now have their own
+/// <c>ToX6Json</c>/<c>FromX6Json</c> overrides and dedicated dispatch arms in
+/// <c>CreateActivityFromNode</c>'s switch (see
+/// <c>Dev/Dev2.Activities/docs/X6-Converter-Missing-Activity-Support-Spec.md</c> §3.1). A
+/// "Calculate" node now round-trips through <c>X6JsonToWorkflow</c> like any other supported
+/// type.
 /// </para>
 /// </summary>
 internal static class ToolCatalog
@@ -58,8 +52,7 @@ internal static class ToolCatalog
         bool RequiresSource);
 
     /// <summary>
-    /// The full catalog, in the spec table's own order. 66 entries — the spec's ~65 plus the
-    /// one verified-unreachable "Calculate" row kept per explicit decision (see class remarks).
+    /// The full catalog, in the spec table's own order. 66 entries.
     /// </summary>
     internal static readonly IReadOnlyList<Entry> Entries = new List<Entry>
     {
@@ -89,8 +82,8 @@ internal static class ToolCatalog
             "Invokes another workflow or service by name.", true),
         new("Comment", "DsfCommentActivity", new[] { "dsfcommentactivity" }, "Utility",
             "A non-executing annotation node.", false),
-        new("Calculate", "DsfDotNetCalculateActivity", new[] { "dsfdotnetcalculateactivity" }, "Data",
-            "Evaluates a single arithmetic/formula expression. Not yet reachable via X6JsonToWorkflow — see class remarks.", false),
+        new("Calculate", "DsfDotNetCalculateActivity", new[] { "dsfdotnetcalculateactivity", "dsfcalculateactivity" }, "Data",
+            "Evaluates a single arithmetic/formula expression.", false),
         new("Aggregate Calculate", "DsfDotNetAggregateCalculateActivity", new[] { "dsfaggregatecalculateactivity", "dsfdotnetaggregatecalculateactivity" }, "Data",
             "Evaluates an aggregate expression (sum/avg/etc.) over a recordset column.", false),
         new("Create JSON", "DsfCreateJsonActivity", new[] { "dsfcreatejsonactivity" }, "Data",

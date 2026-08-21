@@ -274,10 +274,7 @@ internal static class ToolSchemaCatalog
                   "fields": {
                     "expression": "string, required — the arithmetic/formula expression to evaluate (Constants.CALCULATE_EXPRESSION).",
                     "result": "string, optional — output variable for the calculation result (Constants.CALCULATE_RESULT)."
-                  },
-                  "notes": [
-                    "Not yet reachable via X6JsonToWorkflow — CreateActivityFromNode's switch has no case wired to X6ToWorkflowConverter_CalculateActivityHelper (see ToolCatalog's class remarks). This schema documents the JSON-writer (read) shape only; attempting to author a Calculate node today will surface the converter's real UnsupportedActivityTypeException via validate_workflow/create_workflow/edit_workflow, not a silent no-op."
-                  ]
+                  }
                 }
                 """,
             ["Aggregate Calculate"] = """

@@ -21,8 +21,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
         [TestCategory("UnitTest")]
         public void Entries_ContainsExactly66Rows()
         {
-            // Spec's ~65-row Toolbox subset (v3) table plus the verified-unreachable
-            // "Calculate" row, kept per explicit product decision (see ToolCatalog remarks).
+            // Spec's ~65-row Toolbox subset (v3) table plus the "Calculate" row.
             Assert.AreEqual(66, ToolCatalog.Entries.Count);
         }
 
@@ -122,14 +121,27 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void Entries_ContainsKnownUnreachableCalculateRow()
+        public void Entries_ContainsCalculateRow()
         {
-            // Verified gap: kept in the catalog per explicit product decision even though
-            // X6ToWorkflowConverter.CreateActivityFromNode's switch never reaches it.
             var calculate = ToolCatalog.Entries.SingleOrDefault(e => e.Name == "Calculate");
 
-            Assert.IsNotNull(calculate, "The 'Calculate' row must remain in the catalog per the accepted spec-literal decision.");
+            Assert.IsNotNull(calculate, "The 'Calculate' row must remain in the catalog.");
             Assert.AreEqual("DsfDotNetCalculateActivity", calculate!.ActivityType);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Resolve_LegacyCalculateAlias_ReturnsSameEntryAsDotNetPrimary()
+        {
+            // Regression guard: Calculate used to be unreachable via X6JsonToWorkflow for either
+            // variant (see X6-Converter-Missing-Activity-Support-Spec.md §3.1). Both the DotNet
+            // primary and the legacy alias must now resolve to the same catalog entry.
+            var viaPrimary = ToolCatalog.Resolve("dsfdotnetcalculateactivity");
+            var viaLegacyAlias = ToolCatalog.Resolve("dsfcalculateactivity");
+
+            Assert.IsNotNull(viaPrimary);
+            Assert.IsNotNull(viaLegacyAlias);
+            Assert.AreEqual(viaPrimary!.Name, viaLegacyAlias!.Name);
         }
     }
 }

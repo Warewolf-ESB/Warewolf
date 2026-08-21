@@ -918,6 +918,10 @@ namespace Dev2.Activities.WF
             {
                 cell = CreateCalculateActivity(calculateActivity, nodeId);
             }
+            else if (activity is DsfCalculateActivity legacyCalculateActivity)
+            {
+                cell = CreateCalculateActivity(legacyCalculateActivity, nodeId);
+            }
             else if (activity is DsfDotNetAggregateCalculateActivity dotnetAggregateCalculateActivity)
             {
                 cell = CreateDotNetAggregateCalculateActivity(dotnetAggregateCalculateActivity, nodeId);

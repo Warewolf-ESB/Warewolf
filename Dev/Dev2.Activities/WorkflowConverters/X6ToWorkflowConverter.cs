@@ -15,6 +15,7 @@ using System.Text;
 using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+using Dev2.WorkflowConverters;
 namespace Dev2.Activities.WF
 {
     /// <summary>
@@ -143,16 +144,28 @@ namespace Dev2.Activities.WF
             foreach (var node in topLevelNodes)
             {
                 var activity = CreateActivityFromNode(node, out bool isStartNode);
-                if (activity != null)
+                if (activity == null)
                 {
-                    ApplyDisplayNameFromNode(node, activity);
-                    ApplyUniqueIdFromNode(node, activity);
-                    activityMap[node.id] = activity;
+                    // Previously this node was skipped in silence, producing a workflow that was
+                    // missing a step while every caller was told the conversion had succeeded — the
+                    // worst possible outcome for a round trip, since the loss is invisible until the
+                    // workflow runs and behaves differently. CreateActivityFromNode returns null only
+                    // for a genuine defect (an absent/blank node type, or a Create* helper that could
+                    // not read the node's display name), so fail loudly for the same reason an
+                    // unrecognised activity type throws UnsupportedActivityTypeException.
+                    node.data.TryGetString(Constants.TYPE, out var unconvertibleType);
+                    throw new InvalidOperationException(
+                        $"Could not convert node '{node.id}' (type '{unconvertibleType}') into an activity. " +
+                        "Dropping it would silently change the workflow.");
+                }
 
-                    if (isStartNode)
-                    {
-                        startcell = node;
-                    }
+                ApplyDisplayNameFromNode(node, activity);
+                ApplyUniqueIdFromNode(node, activity);
+                activityMap[node.id] = activity;
+
+                if (isStartNode)
+                {
+                    startcell = node;
                 }
             }
 
@@ -711,6 +724,10 @@ namespace Dev2.Activities.WF
                     return CreateDotNetAggregateCalculateActivity(node);
                 case var t when t.Contains(Constants.DSFAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETCALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFCALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCalculateActivity(node);
                 case var t when t.Contains(Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDotNetGatherSystemInformationActivity(node);
                 case var t when t.Contains(Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -781,8 +798,8 @@ namespace Dev2.Activities.WF
         /// <returns>DsfFlowDecisionActivity</returns>
         private static DsfFlowDecisionActivity CreateFlowDecisionActivity(Cell node)
         {
-            if (!node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
-                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!node.data.TryGetString(Constants.DISPLAYTEXT, out var displayName)
+                || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfFlowDecisionActivity();
@@ -797,8 +814,8 @@ namespace Dev2.Activities.WF
         /// <returns>DsfDecision</returns>
         private static DsfDecision CreateDecisionActivity(Cell node)
         {
-            if (!node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
-                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!node.data.TryGetString(Constants.DISPLAYTEXT, out var displayName)
+                || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDecision();
@@ -814,10 +831,10 @@ namespace Dev2.Activities.WF
         private static DsfDotNetMultiAssignObjectActivity CreateAssignObectActivity(Cell node)
         {
             // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
-                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            var hasDisplayName = node.data.TryGetString("displayName", out var displayName) ||
+                                 node.data.TryGetString(Constants.DISPLAYNAME, out displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDotNetMultiAssignObjectActivity();
@@ -833,10 +850,10 @@ namespace Dev2.Activities.WF
         private static DsfDotNetMultiAssignActivity CreateAssignActivity(Cell node)
         {
             // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
-                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            var hasDisplayName = node.data.TryGetString("displayName", out var displayName) ||
+                                 node.data.TryGetString(Constants.DISPLAYNAME, out displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDotNetMultiAssignActivity();
@@ -852,10 +869,10 @@ namespace Dev2.Activities.WF
         private static DsfForEachActivity CreateForEachActivity(Cell node)
         {
             // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
-                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            var hasDisplayName = node.data.TryGetString("displayName", out var displayName) ||
+                                 node.data.TryGetString(Constants.DISPLAYNAME, out displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfForEachActivity();

@@ -15,12 +15,24 @@ namespace Dev2.Activities.WF
     /// </summary>
     public partial class X6ToWorkflowConverter
     {
+        private static DsfDotNetCalculateActivity CreateDotNetCalculateActivity(Cell node)
+        {
+            var hasDisplayName = node.data.TryGetString(Constants.DISPLAYNAME, out var displayName);
+
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
+                return null;
+
+            var activity = new DsfDotNetCalculateActivity();
+            activity.FromX6Json(node);
+            return activity;
+        }
+
         private static DsfCalculateActivity CreateCalculateActivity(Cell node)
         {
             // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject);
+            var hasDisplayName = node.data.TryGetString(Constants.DISPLAYNAME, out var displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfCalculateActivity();

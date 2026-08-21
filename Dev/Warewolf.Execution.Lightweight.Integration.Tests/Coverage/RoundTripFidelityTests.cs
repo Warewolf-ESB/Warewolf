@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using Dev2.Activities.WF;
@@ -50,6 +51,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             TranslationFailed,
             ExecutionMismatch,
             ExecutionAsymmetric,
+            NonDeterministic,
         }
 
         sealed class FidelityResult
@@ -82,6 +84,141 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
         static IWorkflowExecutor CreateExecutor() => new WorkflowExecutor(new NoOpLogger());
 
+        /// <summary>
+        /// How many corpus samples to evaluate per toolbox entry. Every sample costs two workflow
+        /// executions, so this is a deliberate bound on runtime rather than an exhaustive sweep —
+        /// the corpus holds 139 samples for Assign alone.
+        /// </summary>
+        const int MaxSamplesPerType = 8;
+
+        /// <summary>
+        /// Bound to every declared input. "1" is chosen because it is simultaneously a valid number,
+        /// a valid non-empty string and a valid index, so it satisfies far more activities than an
+        /// empty or purely alphabetic value would.
+        /// </summary>
+        const string SyntheticInputValue = "1";
+
+        /// <summary>
+        /// Matches a Warewolf *scalar* variable reference. Recordset and object expressions
+        /// (<c>[[rs().field]]</c>, <c>[[@obj.member]]</c>) are deliberately excluded: binding those
+        /// needs shape information the DataList alone does not carry.
+        /// </summary>
+        static readonly Regex ScalarReferenceRegex =
+            new(@"\[\[([A-Za-z_][A-Za-z0-9_]*)\]\]", RegexOptions.Compiled);
+
+        /// <summary>Matches the whole &lt;DataList&gt; block, including the self-closing empty form.</summary>
+        static readonly Regex DataListBlockRegex =
+            new(@"<DataList\s*/>|<DataList[^>]*>.*?</DataList>",
+                RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+
+        static readonly Dictionary<string, string> NoInputs = new();
+
+        /// <summary>
+        /// Preference order used only to break ties between samples that all failed to prove a pass.
+        /// Genuine behavioural gaps are NOT ranked here — see <see cref="SelectRepresentative"/>.
+        /// </summary>
+        static int Rank(string status) =>
+            status == FidelityStatus.Pass.ToString() ? 0
+            : status == FidelityStatus.PassBothFailedIdentically.ToString() ? 1
+            : status == FidelityStatus.NonDeterministic.ToString() ? 2
+            : status == FidelityStatus.TranslationFailed.ToString() ? 3
+            : 4;
+
+        /// <summary>
+        /// Reduces the per-sample verdicts for one activity to the single result reported for it.
+        ///
+        /// <para>
+        /// A genuine behavioural gap in <em>any</em> sample wins outright. That asymmetry is
+        /// deliberate: <c>ExecutionMismatch</c>/<c>ExecutionAsymmetric</c> mean the round-trip
+        /// demonstrably changed what the workflow does, and letting a passing sample mask that would
+        /// turn this report into exactly the false reassurance the fidelity gate exists to prevent.
+        /// Absent such a gap, one sample proving a clean round-trip is enough.
+        /// </para>
+        /// </summary>
+        static FidelityResult SelectRepresentative(List<FidelityResult> attempts)
+        {
+            var genuineGap = attempts.FirstOrDefault(a =>
+                a.Status == FidelityStatus.ExecutionMismatch.ToString() ||
+                a.Status == FidelityStatus.ExecutionAsymmetric.ToString());
+            if (genuineGap != null)
+            {
+                return genuineGap;
+            }
+
+            var passed = attempts.FirstOrDefault(a => a.Status == FidelityStatus.Pass.ToString());
+            if (passed != null)
+            {
+                return passed;
+            }
+
+            var best = attempts.OrderBy(a => Rank(a.Status)).First();
+            if (attempts.Count > 1)
+            {
+                best.Detail = $"Best of {attempts.Count} corpus samples. " + best.Detail;
+            }
+            return best;
+        }
+
+        /// <summary>
+        /// Returns the .bite text with every scalar the workflow references but does not declare
+        /// added to its DataList as an Input, together with the input values to bind at execution.
+        /// Declaring the variable is a design-time change to the workflow definition; binding a value
+        /// is the execution-time counterpart, and both are applied identically to the original and
+        /// the round-tripped copy.
+        /// </summary>
+        static (string BiteText, Dictionary<string, string> Inputs) PrepareInputs(string biteText)
+        {
+            var inputs = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var dataListMatch = DataListBlockRegex.Match(biteText);
+            if (!dataListMatch.Success)
+            {
+                return (biteText, inputs);
+            }
+
+            var dataList = XElement.Parse(dataListMatch.Value, LoadOptions.PreserveWhitespace);
+
+            var declared = new HashSet<string>(
+                dataList.Elements().Select(e => e.Name.LocalName), StringComparer.OrdinalIgnoreCase);
+
+            foreach (Match match in ScalarReferenceRegex.Matches(biteText))
+            {
+                var name = match.Groups[1].Value;
+                if (!declared.Add(name))
+                {
+                    continue;
+                }
+                var declaration = new XElement(name);
+                declaration.SetAttributeValue("Description", "");
+                declaration.SetAttributeValue("IsEditable", "True");
+                declaration.SetAttributeValue("ColumnIODirection", "Input");
+                dataList.Add(declaration);
+            }
+
+            foreach (var element in dataList.Elements())
+            {
+                // A recordset declares its fields as child elements; only scalars are bound here.
+                if (element.HasElements)
+                {
+                    continue;
+                }
+                var direction = (string)element.Attribute("ColumnIODirection") ?? "None";
+                if (direction.Equals("Input", StringComparison.OrdinalIgnoreCase) ||
+                    direction.Equals("Both", StringComparison.OrdinalIgnoreCase))
+                {
+                    inputs[element.Name.LocalName] = SyntheticInputValue;
+                }
+            }
+
+            // Splice the amended DataList back in textually. Re-serialising the whole .bite via
+            // XElement would also rewrite the escaped XamlDefinition, and that silently corrupted
+            // samples whose XAML then failed to convert at all (observed: "An item with the same key
+            // has already been added" out of the X6 converter). Only the DataList may change here.
+            var amended = biteText.Substring(0, dataListMatch.Index)
+                          + dataList.ToString(SaveOptions.DisableFormatting)
+                          + biteText.Substring(dataListMatch.Index + dataListMatch.Length);
+            return (amended, inputs);
+        }
+
         [TestMethod]
         public async Task RoundTripFidelity_AcrossToolboxSubset_GeneratesAllowListReport()
         {
@@ -101,7 +238,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 return;
             }
 
-            var classified = RoundTripFidelityCorpus.ClassifyCorpus(biteFiles);
+            var classified = RoundTripFidelityCorpus.ClassifyCorpus(biteFiles, MaxSamplesPerType);
             var results = new List<FidelityResult>();
 
             foreach (var entry in RoundTripFidelityCorpus.ToolboxSubset)
@@ -122,9 +259,25 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                     continue;
                 }
 
-                var sample = samples[0];
-                var result = await EvaluateSampleAsync(entry, sample);
-                results.Add(result);
+                // Evaluate every candidate sample, not just the first. A single sample is a poor
+                // proxy for "can this activity round-trip": the corpus sample that happens to sort
+                // first often fails for reasons that have nothing to do with the activity under test
+                // (most commonly it also contains some *other*, legacy activity the X6 converter does
+                // not support, which aborts the whole conversion). See SelectRepresentative for how
+                // the per-sample verdicts are reduced to one result.
+                var attempts = new List<FidelityResult>();
+                foreach (var sample in samples)
+                {
+                    attempts.AddRange(await EvaluateSampleAsync(entry, sample));
+                    if (attempts.Any(a => a.Status == FidelityStatus.Pass.ToString()))
+                    {
+                        // One clean round-trip is all this gate asks for; the remaining samples would
+                        // cost two workflow executions each to re-prove the same thing.
+                        break;
+                    }
+                }
+
+                results.Add(SelectRepresentative(attempts));
             }
 
             WriteReport(devRoot, results);
@@ -138,7 +291,85 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 "zero matches suggests the classifier or corpus roots are broken, not that the corpus is empty.");
         }
 
-        async Task<FidelityResult> EvaluateSampleAsync(ToolboxEntry entry, string samplePath)
+        /// <summary>
+        /// Evaluates one corpus sample and returns every attempt made against it.
+        ///
+        /// <para>
+        /// Two attempts are made, in order. First the workflow exactly as authored, with nothing
+        /// bound — this is the ground truth, and if it already proves a clean round-trip there is
+        /// nothing more to learn. Only if that does not pass are inputs declared and bound, because
+        /// binding is not free of side effects: a synthetic value is a poor stand-in for a path or a
+        /// connection string, and forcing one can push a workflow that previously ran into failing
+        /// (observed: Delete Records, whose sample passed unbound and failed once "1" was bound to
+        /// its path variable). Returning both attempts lets <see cref="SelectRepresentative"/> keep
+        /// the better outcome, so binding can only ever add evidence, never destroy it.
+        /// </para>
+        /// </summary>
+        async Task<List<FidelityResult>> EvaluateSampleAsync(ToolboxEntry entry, string samplePath)
+        {
+            var attempts = new List<FidelityResult>();
+
+            string rawFileText;
+            try
+            {
+                rawFileText = File.ReadAllText(samplePath, Encoding.UTF8);
+            }
+            catch (IOException ex)
+            {
+                attempts.Add(new FidelityResult
+                {
+                    StudioName = entry.StudioName,
+                    Category = entry.Category,
+                    RequiresSource = entry.RequiresSource,
+                    SamplePath = samplePath,
+                    Status = FidelityStatus.TranslationFailed.ToString(),
+                    Detail = "Could not read sample file: " + ex.Message,
+                });
+                return attempts;
+            }
+
+            var unbound = await EvaluateOnceAsync(entry, samplePath, rawFileText, NoInputs, "as authored");
+            attempts.Add(unbound);
+            if (unbound.Status == FidelityStatus.Pass.ToString())
+            {
+                return attempts;
+            }
+
+            string boundFileText;
+            Dictionary<string, string> inputParameters;
+            try
+            {
+                (boundFileText, inputParameters) = PrepareInputs(rawFileText);
+            }
+            catch (Exception ex)
+            {
+                attempts.Add(new FidelityResult
+                {
+                    StudioName = entry.StudioName,
+                    Category = entry.Category,
+                    RequiresSource = entry.RequiresSource,
+                    SamplePath = samplePath,
+                    Status = FidelityStatus.TranslationFailed.ToString(),
+                    Detail = "Could not prepare DataList inputs: " + ex.GetType().Name + ": " + ex.Message,
+                });
+                return attempts;
+            }
+
+            if (inputParameters.Count > 0)
+            {
+                attempts.Add(await EvaluateOnceAsync(
+                    entry, samplePath, boundFileText, inputParameters, "with inputs bound"));
+            }
+
+            return attempts;
+        }
+
+        async Task<FidelityResult> EvaluateOnceAsync(
+            ToolboxEntry entry,
+            string samplePath,
+            string originalFileText,
+            Dictionary<string, string> inputParameters,
+            string mode)
         {
             var result = new FidelityResult
             {
@@ -147,18 +378,6 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 RequiresSource = entry.RequiresSource,
                 SamplePath = samplePath,
             };
-
-            string originalFileText;
-            try
-            {
-                originalFileText = File.ReadAllText(samplePath, Encoding.UTF8);
-            }
-            catch (IOException ex)
-            {
-                result.Status = FidelityStatus.TranslationFailed.ToString();
-                result.Detail = "Could not read sample file: " + ex.Message;
-                return result;
-            }
 
             var fileContents = new StringBuilder(originalFileText);
             var (xamlDefinition, _, _) = WorkflowExecutor.ExtractWorkflowParts(fileContents);
@@ -172,17 +391,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             string roundTrippedXaml;
             try
             {
-                var activityBuilder = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(xamlDefinition);
-                var loadJson = new WorkflowToX6Converter().ConvertToX6Json(activityBuilder, xamlDefinition.ToString());
-                // ConvertToX6Json emits an X6WorkflowLoadModel ("nodes"+"edges" arrays) — the shape
-                // the AntV/X6 JS graph library is loaded from. X6JsonToWorkflow instead expects an
-                // X6WorkflowSaveModel ("cells" — a single merged array where edges are the AntV/X6
-                // library's own `shape: "edge"` convention). In production the X6 web client performs
-                // this merge when the user saves the graph; there is no C# bridge for it since the
-                // web-studio frontend lives outside this repo. Reproduce that merge here so the
-                // underlying converter round-trip can be exercised in isolation.
-                var saveJson = BridgeLoadModelToSaveModel(loadJson);
-                roundTrippedXaml = new X6ToWorkflowConverter().X6JsonToWorkflow(saveJson).ToString();
+                roundTrippedXaml = X6RoundTripBridge.RoundTripXaml(xamlDefinition);
             }
             catch (Exception ex)
             {
@@ -212,17 +421,37 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 {
                     WorkflowFilePath = originalPath,
                     ReturnType = EmitionTypes.JSON,
-                    InputParameters = new Dictionary<string, string>()
+                    InputParameters = inputParameters
                 });
                 var roundTrippedExec = executor.Execute(new WorkflowExecutionRequest
                 {
                     WorkflowFilePath = roundTrippedPath,
                     ReturnType = EmitionTypes.JSON,
-                    InputParameters = new Dictionary<string, string>()
+                    InputParameters = inputParameters
                 });
 
                 var originalPayload = await originalExec.ReadPayloadAsync();
                 var roundTrippedPayload = await roundTrippedExec.ReadPayloadAsync();
+
+                // Before blaming the converter for any difference, prove the workflow is stable
+                // against itself. Anything built on Random, the current date/time, or a live external
+                // service returns something different on every run, so comparing one execution to
+                // another cannot say anything about round-trip fidelity — Dice Roll.bite rolled a 3
+                // then a 4 and was duly reported as an ExecutionMismatch. Re-running the original is
+                // only paid for when the two executions actually disagreed, which is rare.
+                var disagrees = originalExec.IsSuccess != roundTrippedExec.IsSuccess
+                                || originalPayload != roundTrippedPayload
+                                || !originalExec.Errors.SequenceEqual(roundTrippedExec.Errors);
+                if (disagrees && !await IsSelfConsistentAsync(
+                        originalPath, originalExec.IsSuccess, originalPayload, inputParameters))
+                {
+                    result.Status = FidelityStatus.NonDeterministic.ToString();
+                    result.Detail = "The original workflow does not produce the same result twice, so a " +
+                                    "difference after round-tripping proves nothing about the converter. " +
+                                    "Proving this activity needs a deterministic fixture (seeded/frozen " +
+                                    "inputs, or a stubbed source). Original payload: " + Truncate(originalPayload);
+                    return result;
+                }
 
                 if (!originalExec.IsSuccess && !roundTrippedExec.IsSuccess)
                 {
@@ -248,7 +477,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                         result.Detail = "Both original and round-tripped executions failed identically " +
                                         (entry.RequiresSource
                                             ? "(expected — this activity needs a live source not present in this sandbox). "
-                                            : "(likely a missing required input under the empty InputParameters used by this harness). ") +
+                                            : "(the activity's own preconditions are not met by this sample even with its declared inputs bound). ") +
                                         "Error: " + string.Join("; ", originalExec.Errors);
                     }
                     else
@@ -285,34 +514,29 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             }
             finally
             {
+                result.Detail = $"[{mode}] " + result.Detail;
                 TryDeleteParent(originalPath);
                 TryDeleteParent(roundTrippedPath);
             }
         }
 
         /// <summary>
-        /// Merges an X6WorkflowLoadModel JSON string (separate "nodes"/"edges" arrays, as emitted
-        /// by WorkflowToX6Converter.ConvertToX6Json) into an X6WorkflowSaveModel JSON string (a
-        /// single "cells" array, as expected by X6ToWorkflowConverter.X6JsonToWorkflow), tagging
-        /// every edge with the AntV/X6 library's own <c>shape: "edge"</c> convention so
-        /// X6JsonToWorkflow's <c>c.shape != "edge"</c> node/edge split resolves correctly.
-        /// This mirrors what the X6 web client does when it saves an edited graph — there is no
-        /// equivalent bridge in the .NET codebase because the web-studio frontend that owns the X6
-        /// graph instance lives outside this repo.
+        /// Re-runs the original (un-round-tripped) workflow and reports whether it produced the same
+        /// outcome twice. Used to tell "the converter changed the behaviour" apart from "this workflow
+        /// never produces the same answer twice in the first place".
         /// </summary>
-        static string BridgeLoadModelToSaveModel(string loadModelJson)
+        static async Task<bool> IsSelfConsistentAsync(
+            string originalPath, bool firstIsSuccess, string firstPayload, Dictionary<string, string> inputParameters)
         {
-            var load = JsonConvert.DeserializeObject<X6WorkflowLoadModel>(loadModelJson);
-            foreach (var edge in load.Edges)
+            var executor = CreateExecutor();
+            var repeat = executor.Execute(new WorkflowExecutionRequest
             {
-                edge.shape = "edge";
-            }
-            var save = new X6WorkflowSaveModel
-            {
-                WorkflowXml = load.WorkflowXml,
-                Cells = load.Nodes.Concat(load.Edges).ToList()
-            };
-            return JsonConvert.SerializeObject(save);
+                WorkflowFilePath = originalPath,
+                ReturnType = EmitionTypes.JSON,
+                InputParameters = inputParameters
+            });
+            var repeatPayload = await repeat.ReadPayloadAsync();
+            return repeat.IsSuccess == firstIsSuccess && repeatPayload == firstPayload;
         }
 
         static string Truncate(string s, int max = 400) =>

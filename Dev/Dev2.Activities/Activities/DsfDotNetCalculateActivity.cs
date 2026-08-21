@@ -18,12 +18,14 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.WorkflowConverters;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Exceptions;
@@ -235,6 +237,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             cell.data[Dev2.Common.X6.Constants.CALCULATE_EXPRESSION] = Expression ?? string.Empty;
             cell.data[Dev2.Common.X6.Constants.CALCULATE_RESULT] = Result ?? string.Empty;
+        }
+
+        public override void FromX6Json(Dev2.Common.X6.Cell cell)
+        {
+            if (cell == null || cell.data == null) return;
+
+            base.FromX6Json(cell);
+
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.DISPLAYNAME, out var displayName))
+                DisplayName = displayName;
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.UNIQUEID, out var uniqueId))
+                UniqueID = uniqueId;
+
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.CALCULATE_EXPRESSION, out var expression))
+                Expression = expression;
+            if (cell.data.TryGetString(Dev2.Common.X6.Constants.CALCULATE_RESULT, out var result))
+                Result = result;
+
+            Expression ??= string.Empty;
+            Result ??= string.Empty;
         }
     }
 }

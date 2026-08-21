@@ -430,8 +430,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             base.ToX6Json(cell);
 
-            cell.shape = Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY;
-            cell.data[Constants.TYPE] = Constants.DSFDOTNETDATETIMEDIFFERENCEACTIVITY.ToLower();
+            cell.shape = Constants.DSFDATETIMEDIFFERENCEACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFDATETIMEDIFFERENCEACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_DATETIMEDIFFERENCE;
             cell.data[Constants.UNIQUEID] = UniqueID;
 

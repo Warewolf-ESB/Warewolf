@@ -38,8 +38,10 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Activities.WF;
 using Dev2.Common.X6;
+using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -65,6 +67,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             return new Cell { id = id, data = data };
         }
+
+
+        /// <summary>
+        /// A DsfDecision's EXPRESSION is a serialized <see cref="Dev2DecisionStack"/>, not a raw
+        /// Warewolf expression. Passing "[[a]] = 1" made Newtonsoft read the leading '[' as the start
+        /// of a JSON array and throw. That went unnoticed because the decision node was being dropped
+        /// before the expression was ever parsed.
+        /// </summary>
+        static string DecisionStack(string displayText) =>
+            JsonConvert.SerializeObject(new Dev2DecisionStack
+            {
+                TheStack      = new List<Dev2Decision>(),
+                DisplayText   = displayText,
+                TrueArmText   = "Yes",
+                FalseArmText  = "No"
+            });
 
         static Cell MakeStartNode()
         {
@@ -142,7 +160,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var decision = MakeNode("DsfDecision", "Is A == 1",
                 new Dictionary<string, object>
                 {
-                    [Constants.EXPRESSION]   = "[[a]] = 1",
+                    // CreateDecisionActivity reads DISPLAYTEXT, not DISPLAYNAME. Without it the
+                    // decision was silently dropped and this test passed on the start node alone.
+                    [Constants.DISPLAYTEXT]  = "Is A == 1",
+                    [Constants.EXPRESSION]   = DecisionStack("Is A == 1"),
                     [Constants.TRUEARMTEXT]  = "Yes",
                     [Constants.FALSEARMTEXT] = "No"
                 });
@@ -198,6 +219,50 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_CalculateActivity_PreservesExpressionAndResult()
+        {
+            // Regression test for the "Calculate" gap documented in
+            // X6-Converter-Missing-Activity-Support-Spec.md §3.1: the legacy DsfCalculateActivity
+            // had no ToX6Json/FromX6Json at all, so a Calculate node fell through
+            // CreateActivityFromNode's default case and threw UnsupportedActivityTypeException.
+            // Assert on the actual Expression/Result values surviving the round trip, not merely
+            // that XAML was produced — see spec §4 for why the weaker assertion previously hid
+            // vacuous coverage.
+            var calculate = MakeNode("DsfCalculateActivity", "Calculate",
+                new Dictionary<string, object>
+                {
+                    [Constants.CALCULATE_EXPRESSION] = "1+1",
+                    [Constants.CALCULATE_RESULT] = "[[legacyCalcResult]]"
+                });
+
+            var result = Convert("CalculateFlow", MakeStartNode(), calculate);
+            var xaml = result.ToString();
+
+            Assert.IsTrue(xaml.Contains("1+1"), "The Calculate activity's Expression should survive the round trip.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("legacyCalcResult"), "The Calculate activity's Result should survive the round trip.\n" + xaml);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_DotNetCalculateActivity_PreservesExpressionAndResult()
+        {
+            // DsfDotNetCalculateActivity had a ToX6Json but no FromX6Json override at all, so this
+            // direction of the round trip silently dropped Expression/Result even once dispatch
+            // was wired up (see spec §3.1 step 3).
+            var calculate = MakeNode("DsfDotNetCalculateActivity", "Calculate",
+                new Dictionary<string, object>
+                {
+                    [Constants.CALCULATE_EXPRESSION] = "2+2",
+                    [Constants.CALCULATE_RESULT] = "[[dotnetCalcResult]]"
+                });
+
+            var result = Convert("DotNetCalculateFlow", MakeStartNode(), calculate);
+            var xaml = result.ToString();
+
+            Assert.IsTrue(xaml.Contains("2+2"), "The Calculate activity's Expression should survive the round trip.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("dotnetCalcResult"), "The Calculate activity's Result should survive the round trip.\n" + xaml);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
         public void X6JsonToWorkflow_UnknownActivityType_ThrowsUnsupportedActivityTypeException()
         {
             // Unknown 'type' values fall through the switch to the default case, which now
@@ -213,19 +278,22 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
-        public void X6JsonToWorkflow_NodeMissingType_IsSkipped()
+        public void X6JsonToWorkflow_NodeMissingType_ThrowsRatherThanBeingSkipped()
         {
-            // A node whose 'data' has no 'type' key returns null from CreateActivityFromNode
-            // and should be silently skipped.  We still need a start node so that
-            // WorkflowHelper.EnsureImplementation has something to finalise.
+            // A node whose 'data' has no 'type' key cannot be turned into an activity. This used to
+            // be skipped in silence, so the converter returned a workflow quietly missing a step
+            // while reporting success. It now fails loudly instead — see the call site in
+            // X6ToWorkflowConverter.X6JsonToActivityBuilder.
             var noType = new Cell
             {
                 id   = Guid.NewGuid().ToString(),
                 data = new Dictionary<string, object> { ["displayname"] = "no-type" }
             };
-            var result = Convert("NoTypeFlow", MakeStartNode(), noType);
-            Assert.IsTrue(result.Length > 0,
-                "Workflow with one start node and one typeless node should still build");
+
+            var ex = Assert.ThrowsException<InvalidOperationException>(() =>
+                Convert("NoTypeFlow", MakeStartNode(), noType));
+
+            StringAssert.Contains(ex.Message, noType.id);
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
@@ -262,7 +330,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     ["type"] = "DsfDecision",
                     [Constants.DISPLAYNAME] = "Is x == 42",
-                    [Constants.EXPRESSION]  = "[[x]] = 42",
+                    // CreateDecisionActivity reads DISPLAYTEXT; without it the decision was dropped
+                    // and this test's "non-empty XAML" assertion never actually covered the decision.
+                    [Constants.DISPLAYTEXT]  = "Is x == 42",
+                    [Constants.EXPRESSION]  = DecisionStack("Is x == 42"),
                     [Constants.PROPERTY_UNIQUEID] = decisionId
                 }
             };
@@ -547,5 +618,44 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreSame(input, result,
                 "On parse failure AddReplaceNameSpace must return the original StringBuilder instance");
         }
+
+        // ─────────────────────────────────────────────────────────────────
+        // Unconvertible nodes must not vanish
+        //
+        // CreateActivityFromNode returns null when a node cannot be turned into an activity.
+        // The caller used to skip such nodes in silence, so conversion "succeeded" while quietly
+        // producing a workflow with a step missing — invisible until the workflow ran and behaved
+        // differently. That is the exact failure the round-trip fidelity gate exists to prevent.
+        // ─────────────────────────────────────────────────────────────────
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_NodeWithBlankDisplayName_ThrowsRatherThanDroppingTheStep()
+        {
+            // A blank display name makes the Create* helper return null. Conversion must fail
+            // loudly rather than return a workflow that is silently one step short.
+            var unconvertible = MakeNode("dsfdotnetmultiassignactivity", displayName: "   ");
+
+            var ex = Assert.ThrowsException<InvalidOperationException>(() =>
+                Convert("DropsAStep", MakeStartNode(), unconvertible));
+
+            StringAssert.Contains(ex.Message, unconvertible.id,
+                "The error must name the offending node so the caller can find it.");
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_DisplayNameThatSurvivedJsonAsNonString_StillResolves()
+        {
+            // Cell.data is Dictionary<string, object>. After a serialize/deserialize cycle a value
+            // arrives as a Newtonsoft JValue, not a string, so the old "is not string" guard
+            // rejected a perfectly good display name and dropped the activity. TryGetString
+            // tolerates it, matching what the FromX6Json implementations already did.
+            var node = MakeNode("dsfdotnetmultiassignactivity");
+            node.data[Constants.DISPLAYNAME] = new JValue("Assign");
+
+            var xaml = Convert("NonStringDisplayName", MakeStartNode(), node);
+
+            Assert.IsTrue(xaml.Length > 0, "A JValue display name must not cause the activity to be dropped.");
+        }
+
     }
 }

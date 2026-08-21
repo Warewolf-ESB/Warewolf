@@ -481,9 +481,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Call base implementation for common properties (OnError handling, etc.)
             // Note: Base class doesn't have ToX6Json, so we handle common properties here
 
-            cell.shape = Constants.DSFDOTNETDATETIMEACTIVITY;
+            cell.shape = Constants.DSFDATETIMEACTIVITY;
             // Set the activity type
-            cell.data[Constants.TYPE] = Constants.DSFDOTNETDATETIMEACTIVITY.ToLower();
+            cell.data[Constants.TYPE] = Constants.DSFDATETIMEACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_DOTNETDATETIME;
 
             // Serialize DotNet DateTime specific properties

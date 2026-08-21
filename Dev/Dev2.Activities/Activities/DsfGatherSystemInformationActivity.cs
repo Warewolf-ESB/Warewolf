@@ -623,8 +623,8 @@ namespace Dev2.Activities
 
             base.ToX6Json(cell);
 
-            cell.shape = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY;
-            cell.data[Constants.TYPE] = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY.ToLower();
+            cell.shape = Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_GATHERSYSTEMINFORMATION;
             cell.data[Constants.UNIQUEID] = UniqueID;
 
