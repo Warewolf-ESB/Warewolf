@@ -1519,9 +1519,18 @@ if ($rotationReason) {
 Write-Host ""
 Write-Host "═══ Stage 8  Function App settings ════════════════════════════════" -ForegroundColor Cyan
 
+# WAREWOLF_ENTRA_CLIENT_ID is written alongside WAREWOLF_ENTRA_AUDIENCE (not merely as a
+# fallback) because Entra does not reliably issue the `api://{clientId}` App ID URI as the
+# `aud` claim for this app registration - observed live (2026-08-18) minting tokens with a
+# BARE `aud` of just the client GUID, which `api://$ClientId` alone does not match. Without
+# this second setting EntraAuthOptions.ValidAudiences contains only the api://-prefixed form
+# and every caller is rejected with 401 "Authentication required" regardless of role
+# assignment (see EntraAuthOptions.ClientId doc comment and the pipeline-CLOUD.yml diagnostic
+# probe for the full aud/WAREWOLF_ENTRA_AUDIENCE mismatch writeup).
 $settings = @(
     "WAREWOLF_ENTRA_TENANT_ID=$TenantId",
     "WAREWOLF_ENTRA_AUDIENCE=api://$ClientId",
+    "WAREWOLF_ENTRA_CLIENT_ID=$ClientId",
     "WAREWOLF_SECURE_CONFIG=$SecureConfigMountPath"
 )
 if ($ClientSecret) {
@@ -1810,6 +1819,7 @@ if (-not $hasUserImpersonationLive) {
 $requiredSettings = @(
     'WAREWOLF_ENTRA_TENANT_ID',
     'WAREWOLF_ENTRA_AUDIENCE',
+    'WAREWOLF_ENTRA_CLIENT_ID',
     'WAREWOLF_SECURE_CONFIG',
     $ClientSecretSettingName
 )

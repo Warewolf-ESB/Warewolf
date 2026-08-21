@@ -140,7 +140,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             payload[payload.Length / 2] ^= 0xFF; // flip bits mid-payload
             var tampered = FileDecryptionHelper.WfAesPrefix + Convert.ToBase64String(payload);
 
-            var ex = Assert.ThrowsException<CryptographicException>(
+            var ex = Assert.ThrowsException<AuthenticationTagMismatchException>(
                 () => decryptor.DecryptConnectionString(tampered),
                 "The GCM tag must reject any modified payload.");
             Assert.IsInstanceOfType<AuthenticationTagMismatchException>(ex.InnerException,
@@ -185,7 +185,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Security
             var otherDecryptor = new FileDecryptionHelper(
                 NewManagerWithKey(otherKey), NullLogger<FileDecryptionHelper>.Instance);
 
-            var ex = Assert.ThrowsException<CryptographicException>(
+            var ex = Assert.ThrowsException<AuthenticationTagMismatchException>(
                 () => otherDecryptor.DecryptConnectionString(encrypted),
                 "A rotated/mismatched key must fail with a clean GCM tag error — old-key data is unrecoverable, never silently mis-decrypted.");
             Assert.IsInstanceOfType<AuthenticationTagMismatchException>(ex.InnerException,

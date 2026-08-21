@@ -197,6 +197,18 @@
     when -MessageCount > 1) to reach a terminal result before failing. Default: 90. Raise this
     substantially for large -MessageCount values (e.g. 1000) since each execution takes real
     engine processing time and this timeout is shared across all of them.
+.PARAMETER EnginePrewarmTimeoutSeconds
+    Only used when -VerifyWorkflowExecution. -EngineBaseUrl frequently runs on an Azure
+    Functions Consumption plan with no 'alwaysOn' (e.g. WarewolfServer-UAT), so it scales to
+    zero when idle and a cold start can take a minute or more (see docs/LoadTest-Guide.md).
+    -ResultTimeoutSeconds is a budget for Phase 4's timed result poll, NOT for a cold start -
+    hitting an idle engine there risks burning the whole budget on transient 503s (the
+    platform's generic "The service is unavailable.", not the app's own JSON error body) before
+    the host finishes initialising. Phase 0 pings a cheap, unauthenticated public route
+    (GET /apis.json) up to this many seconds, in parallel with Phases 1-3's own setup time,
+    so the engine is warm well before Phase 4 starts its clock. Default: 120. A failed/timed-out
+    pre-warm is logged as a warning, not a hard failure - Phase 4 still runs and may recover on
+    its own retries.
 #>
 [CmdletBinding()]
 param(
@@ -269,7 +281,8 @@ param(
     [string] $Jti,
     [string] $EngineBaseUrl,
     [securestring] $ResultPollAuthToken,
-    [int]    $ResultTimeoutSeconds = 90
+    [int]    $ResultTimeoutSeconds = 90,
+    [int]    $EnginePrewarmTimeoutSeconds = 120
 )
 
 Set-StrictMode -Version Latest
@@ -500,6 +513,41 @@ if ($VerifyWorkflowExecution) {
             throw "$tokenName expires in ${remaining}s, less than the ${requiredLifetimeSeconds}s this run may need (-ResultTimeoutSeconds $ResultTimeoutSeconds + a ${setupBufferSeconds}s buffer for Phases 1-3 setup). It WILL expire mid-poll and surface as '401: Authentication required' HttpErrors on whichever correlationIds are still pending at that point - indistinguishable at a glance from a real authorization failure. Mint a fresh token immediately before invoking this script rather than reusing an older one."
         }
         Write-Ok "$tokenName has ${remaining}s remaining - comfortably covers this run (needs ${requiredLifetimeSeconds}s)."
+    }
+
+    # ── Pre-warm the target engine ─────────────────────────────────────────
+    # -EngineBaseUrl commonly points at an Azure Functions Consumption plan with no
+    # 'alwaysOn' (e.g. WarewolfServer-UAT - see docs/Deploy-UAT-Redeploy-Spec.md R3), which
+    # scales to zero when idle. Phase 4's -ResultTimeoutSeconds window is a budget for the
+    # RESULT POLL, not for a cold start - firing the first request against an idle engine
+    # there risks burning the whole budget on transient 503s ("The service is unavailable.",
+    # Azure's generic platform response while the host initialises - distinct from the app's
+    # own JSON error/result body) before the host is even ready. Ping a cheap, unauthenticated
+    # public route now so cold start overlaps with Phases 1-3's own setup time instead.
+    Write-Step "Pre-warming $EngineBaseUrl (up to ${EnginePrewarmTimeoutSeconds}s - Consumption-plan cold start can otherwise consume the whole result-poll budget)"
+    $warmDeadline = (Get-Date).AddSeconds($EnginePrewarmTimeoutSeconds)
+    $engineWarm = $false
+    $lastPrewarmError = $null
+    do {
+        try {
+            $prewarmResponse = Invoke-WebRequest -Uri "$EngineBaseUrl/apis.json" -UseBasicParsing -TimeoutSec 20
+            if ($prewarmResponse.StatusCode -ge 200 -and $prewarmResponse.StatusCode -lt 500) {
+                $engineWarm = $true
+            } else {
+                $lastPrewarmError = "HTTP $($prewarmResponse.StatusCode)"
+            }
+        } catch {
+            $lastPrewarmError = $_.Exception.Message
+        }
+        if (-not $engineWarm -and (Get-Date) -lt $warmDeadline) {
+            Start-Sleep -Seconds 5
+        }
+    } while (-not $engineWarm -and (Get-Date) -lt $warmDeadline)
+
+    if ($engineWarm) {
+        Write-Ok "$EngineBaseUrl responded - engine is warm."
+    } else {
+        Write-Note "$EngineBaseUrl did not respond within ${EnginePrewarmTimeoutSeconds}s (last error: $lastPrewarmError). Phase 4 may still hit a cold-start 503 - consider raising -EnginePrewarmTimeoutSeconds and/or -ResultTimeoutSeconds. Continuing anyway; Phase 4's own retries may still recover."
     }
 }
 

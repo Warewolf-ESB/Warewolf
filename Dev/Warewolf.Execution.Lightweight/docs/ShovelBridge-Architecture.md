@@ -1,5 +1,97 @@
 # Shovel Bridge Architecture — RabbitMQ → Azure Service Bus → Lightweight Execution Engine
 
+> **2026-08-19 update — database migrated.** `WarewolfEntraTestDb` (referenced throughout
+> the history below) permanently exhausted Azure SQL's monthly free-limit allowance and was
+> deleted. `Resources/rabbit/NewSqlServerSource.bite` (`SourceId=b9184f70-…`) now points at
+> **`WarewolfDevOpsTestDb`**, a new, non-free-limit database on the same server
+> (`warewolf-dev2-mcgeaj.database.windows.net`) and reusing the same `devops_warewolf`
+> server-level login/password, so no other connection details changed. The `jobs1`/`jobs2`
+> tables, all 16 `usp_jobs{1,2}_*` procedures, `sp_TestEntraConnectivity`, and the
+> `EXECUTE`/`VIEW DEFINITION` grants described below (the fix for the 15197 issue) were
+> reproduced identically on the new database from a live-schema extraction taken
+> immediately before the old database was deleted, and are now committed as
+> `Resources/rabbit/Provision-ShovelBridgeSchema.sql` — closing the "no provisioning script
+> exists in the repo" gap called out below. The historical narrative below is left as-is
+> since it documents real incidents against the (now-deleted) old database; read
+> `WarewolfEntraTestDb` there as "the database in use at the time." **`WarewolfServer-UAT`'s
+> Managed Identity was also re-added as an Entra ID (`FROM EXTERNAL PROVIDER`) database user
+> on `WarewolfDevOpsTestDb`, with `EXECUTE`/`VIEW DEFINITION` on `dbo` — matching the state it
+> reached on the old database per the 2026-08-13 16:33 UTC entry below — so the engine's own
+> Managed-Identity probe (see the "does not exist as a database user" note below) no longer
+> falls through on the new database either.**
+
+> **2026-08-19 follow-up — masked-password source fixed; deploy step hardened.** The
+> `Resources/rabbit/NewSqlServerSource.bite` committed as part of the migration above had its
+> `ConnectionString`'s password field accidentally set to the literal, six-character `******`
+> placeholder (Studio's UI display convention for a password field — see
+> `Dev2.Runtime.Services/ServiceModel/Data/DbSource.cs`'s masked `ConnectionString` getter and
+> the matching SpecFlow "Password field is `******`" assertions) instead of the real
+> `devops_warewolf` password, presumably copied from a Studio screen rather than re-supplied as
+> plain text before running `Encrypt-Config.ps1`. This produced SQL error 18456 ("Login failed
+> for user 'devops_warewolf'") on every execution, not a credentials mismatch. Fixed by
+> decrypting the committed source with `Encrypt-Config.ps1 -Decrypt` (Key Vault
+> `WWExecutionEngine` / secret `WWExecutionEngineTestSecret` — same key `WarewolfServer-UAT`
+> reads at runtime), substituting the real password, and re-encrypting in place; verified
+> byte-for-byte via SHA-256 comparison before committing (never round-tripped through a display
+> layer that would re-mask it). A concurrent 1000-message load test run also surfaced SQL error
+> 4060 ("Cannot open database `WarewolfEntraTestDb`") on some executions in the very same burst
+> that got 18456 on others — proof that some Consumption-plan (Y1) instances were still serving
+> a pre-migration, in-memory-cached copy of the source alongside freshly cold-started instances
+> running the current one. `pipeline-LOADTEST.yml`'s post-deploy step used `az functionapp
+> restart`, which `docs/KB-Deploying-Encrypted-Sources.md` §3 already documents as insufficient
+> to force this on a Consumption plan (a warm worker can survive a `restart` with its old
+> decrypted source still resident); that step now does a full `stop` then `start` instead, so
+> every scaled-out instance cold-starts and re-decrypts the resources on the next deploy.
+
+> **2026-08-19 correction — the actual live root cause was a stale `WorkflowsDirectory`
+> override, not (only) warm workers; the app setting has now been removed.** After committing
+> the fix above, a full local `Deploy-WwExecutionEngine.ps1` redeploy plus a genuine
+> `stop`/`start` (both confirmed to run successfully) *still* returned SQL error 4060 against
+> `WarewolfEntraTestDb` on direct `POST /Public/rabbit/RabbitProcess.json` calls. Root cause,
+> confirmed directly via Kudu (`/api/vfs/`), was **not** in-memory worker staleness:
+> `WarewolfServer-UAT` had an app setting `WorkflowsDirectory=D:\home\data\Warewolf\Resources`
+> — a persistent Azure Files path *outside* the deployed package — which
+> `Infrastructure/HostEnvironmentConfig.cs` reads in preference to the default
+> `<wwwroot>\Resources`. Every zip-deploy (pipeline or manual) stages `-WorkflowsSourcePath`
+> into `<PublishDir>\Resources` (i.e. **inside** the package, per
+> `docs/Deploy-UAT-Redeploy-Spec.md` §5.4) — so with this override in place, **no deploy has
+> ever reached the files the running engine actually reads**, on this app, since whenever the
+> setting was first added. The persistent folder still held whatever had been manually pushed
+> there via Kudu on 2026-08-14: `RabbitProcess.bite`/`RabbitProcess2.bite` (fine), plus a
+> **second, unencrypted, plaintext-password copy of `NewSqlServerSource.bite`** sitting directly
+> under `Resources\` (not `Resources\rabbit\`) — same `SourceId=b9184f70-…`, but still pointing
+> at `WarewolfEntraTestDb` via `Authentication=Active Directory Managed Identity`. Because
+> `Infrastructure/LightweightSourceLoader.BuildFileIndex` indexes `.bite` files by `ResourceID`
+> across the *entire* `WorkflowsDirectory` tree via `Directory.EnumerateFiles(..., AllDirectories)`
+> and lets the last one found win (exactly the failure mode `docs/Deploy-UAT-Redeploy-Spec.md`
+> §5.4 already warned about for a *different* stray file), this orphaned root-level copy was the
+> **only** copy of that source ID actually present at runtime (the correct one had never
+> physically arrived), so every DB activity resolved to it and failed against the deleted
+> database. Remediated in two steps, in order:
+> 1. Uploaded the corrected, WFAES-encrypted `Resources/rabbit/NewSqlServerSource.bite` (same
+>    ciphertext committed to source control) directly into
+>    `D:\home\data\Warewolf\Resources\rabbit\` via Kudu VFS `PUT`, and deleted the stale
+>    plaintext root-level duplicate via Kudu VFS `DELETE` (`If-Match: *`), as an immediate
+>    tactical fix — confirmed working via repeated direct `POST /Public/rabbit/RabbitProcess.json`
+>    calls (SQL auth to `WarewolfDevOpsTestDb` now succeeds consistently; only a pre-existing,
+>    unrelated `jobs1` `UQ_jobs1_ContentHash_AttemptNumber` unique-constraint collision remains,
+>    an artifact of ad-hoc test payloads sharing a `NULL` content hash, not a credentials issue).
+> 2. **Removed the `WorkflowsDirectory` app setting from `WarewolfServer-UAT` entirely**
+>    (`az functionapp config appsettings delete --setting-names WorkflowsDirectory`, followed by
+>    a `stop`/`start`) as the durable fix, since `Deploy-WwExecutionEngine.ps1` already solves the
+>    original Release-publish-has-no-`Resources`-folder problem the override likely existed to
+>    work around (§5.4) by staging `-WorkflowsSourcePath` straight into the package. Re-tested
+>    after removal: the engine now serves correctly from the package's bundled `Resources`
+>    folder with **no** manual Kudu step required, confirmed by a fresh cold `stop`/`start` cycle
+>    followed by successful `POST /Public/rabbit/RabbitProcess.json` calls. The now-unused
+>    `D:\home\data\Warewolf\Resources` tree was deleted via Kudu VFS to avoid a future engineer
+>    mistaking it for the live source of truth. **Net effect: `pipeline-LOADTEST.yml`'s existing
+>    `Deploy_UAT` job (including today's `stop`/`start` hardening above) is now sufficient on its
+>    own — no additional Kudu-sync step is needed** — because the package it already builds and
+>    deploys is, for the first time, actually what the running app reads. If `WorkflowsDirectory`
+>    is ever reintroduced on this app (e.g. copied from another app's settings), treat it as a
+>    footgun: it silently makes every future deploy a no-op for workflow/source content.
+
 ## Purpose
 
 Trigger Warewolf workflow executions on the **Lightweight** (Azure Functions) execution
@@ -379,8 +471,9 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   `RabbitProcess.bite` (the workflow both `-VerifyWorkflowExecution` legs execute) calls
   three stored procedures in sequence — `dbo.usp_jobs1_LogStart`, `usp_jobs1_LogProcessing`,
   `usp_jobs1_LogFinished`. All three of its DB activities bind to
-  `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"` — the shared `NewSqlServerSource` that
-  `pipeline-CLOUD.yml` downloads from the devops endpoint, **not** the
+  `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"` — the shared `NewSqlServerSource` committed
+  pre-encrypted (WFAES) at `Resources/rabbit/NewSqlServerSource.bite` (WOLF-8510, superseding the
+  devops-endpoint fetch `pipeline-LOADTEST.yml` previously ran on every build), **not** the
   `NewSqlServerSource (Local Backup)` source (`d3f6a2e1-…`) sitting alongside it in
   `Resources/rabbit/`. That bundled source is unreferenced by any activity, and its
   connection string is DPAPI-encrypted under its author's Windows account, so it cannot be
@@ -1046,19 +1139,38 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     A lower-risk, no-cost alternative worth trying first: tune `ServiceBusOptions
     .MaxAutoLockRenewalDuration` (isolated-worker `worker.json`/host configuration) so lock renewal
     keeps pace with slower cold-start invocations without changing the queue's own `LockDuration`.
-  - **A proven, already-built no-cost fix for this exact class of problem exists but is NOT on this
-    branch**: `origin/8504-Execution-Engine-Queue-Processor-End-to-end-testing`'s
-    `Scripts/Invoke-WwEnginePreWarm.ps1` (commit `bcca73646e`) warms a Consumption-plan engine
-    sequentially (Phase A, until latency stabilizes) then at the burst's own target concurrency
-    (Phase B, 3 rounds, to force scale-out) *before* publishing, calling the same
-    `Secure/{workflow}.json` HTTP route and therefore the same `WorkflowExecutor` the Service Bus
-    trigger uses. Its own header cites first-call-cold 64.7s vs ~3.1s warm, and a 100-message burst
-    going from 31/100 discarded (502/503/504, no pre-warm, 10 replicas) to 0 failures (pre-warmed, 6
-    replicas). Only 8504's `WorkflowExecutor` pool fix was ported to this branch/pipeline
-    (`2b784fe7b6`, "port the patch for concurrency from the 8504 branch") — the pre-warm script was
-    not, and `pipeline-LOADTEST.yml` has no warm-up step between `Deploy_UAT` and `Load_Test`.
-    Porting it (or an equivalent warm-up step against `warewolfserver-uat` before the 1000-message
-    publish) is the most direct untried fix for this run's failure signature.
+
+- **2026-08-17 — Fix: `Test-ShovelBridgeE2E.ps1` now pre-warms `-EngineBaseUrl` in Phase 0.** The
+  `ShovelBridgeE2ETest_ExternalServiceBus` job's `-VerifyWorkflowExecution` leg (run ID `7ead1234`,
+  correlationId `0903d48c96d148bb820458c241213837`) failed with `FAIL: no result was recorded for
+  correlationId '...' at https://warewolfserver-uat.azurewebsites.net/... within 90s. Last transient
+  error: GET .../secure/servicebus-result/... returned 503: The service is unavailable.` — the
+  Shovel itself bridged the message fine (`forwarded: 1`, `state: flow` in the Phase 4b diagnostics),
+  so this was purely a read-path failure against the UAT engine.
+  - **Root cause: `WarewolfServer-UAT` Consumption-plan (Y1, `alwaysOn: false`) cold start
+    consuming the entire 90s `-ResultTimeoutSeconds` budget**, the same capacity limitation as Risk
+    R3 (`Deploy-UAT-Redeploy-Spec.md`) and every prior entry in this log. Ruled out an
+    auth/config-policy cause first: the response body was the literal platform string `"The service
+    is unavailable."`, not the app's own JSON error shape (`WorkflowAuthorizationMiddleware.cs`'s
+    `ConfigMissingDeny` path always returns `{"error":"config_missing",...}`); confirmed live that
+    `BYPASS_SECURE_CONFIG=true` is still set on the app (so `ConfigMissingDeny` can't fire); and
+    confirmed the app was reachable and warm (`GET /apis.json` → `200`) minutes later — consistent
+    with a cold instance finishing initialisation shortly after the harness gave up, not a
+    persistent outage.
+  - **Fix**: added a new `-EnginePrewarmTimeoutSeconds` parameter (default `120`) and a Phase 0
+    pre-warm loop that polls the public, unauthenticated `GET /apis.json` route on `-EngineBaseUrl`
+    (retrying every 5s) until it responds or the budget elapses, **before** Phases 1-3's own RabbitMQ/
+    Shovel setup time — so cold start now overlaps with that setup instead of eating into Phase 4's
+    timed result-poll window. A failed/timed-out pre-warm logs a warning and does not abort the run;
+    Phase 4's existing transient-503 retry logic (`Warewolf.Execution.ServiceBusWorker.E2EHarness`)
+    is unchanged and still the last line of defence. This is exactly the "pre-warming request burst
+    before starting the load test" lever flagged as open, low-risk and no-cost in the entries above —
+    it does not address the underlying Y1-capacity limitation (still open, still a cost/infra
+    decision), only the specific failure mode of the harness's own fixed poll window being consumed
+    by a cold start it never triggered proactively.
+  - **Not yet re-verified against a live pipeline run** — the change has been parse-checked and the
+    pre-warm probe manually confirmed to succeed against the (currently warm) live engine, but the
+    `ShovelBridgeE2ETest_ExternalServiceBus` job itself has not been re-run post-fix.
 
 ## Promotion status
 

@@ -441,7 +441,7 @@ prompted by Microsoft to consent on their own behalf. This works only when your 
 
 | Problem | Solution |
 |---|---|
-| 401 on `/secure/*` with valid token | Check `WAREWOLF_ENTRA_AUDIENCE` matches token `aud` claim |
+| 401 on `/secure/*` with valid token | Check `WAREWOLF_ENTRA_AUDIENCE` matches token `aud` claim. Also confirm `WAREWOLF_ENTRA_CLIENT_ID` is set to the bare client GUID — Entra can mint tokens with `aud` as the bare GUID instead of the `api://<clientId>` URI form, and `EntraAuthOptions.ValidAudiences` only accepts that bare form via `WAREWOLF_ENTRA_CLIENT_ID` (observed live 2026-08-18 on `warewolfserver`, see `pipeline-CLOUD.yml`'s engine-probe diagnostic step) |
 | 403 with valid token | Add caller's group/role to `secure.config` for that workflow |
 | `AADSTS700054` on browser login | Re-run `Configure-WwExecutionAuth.ps1` (fixes ID token issuance) |
 | `AADSTS650057` acquiring token | Re-run `Configure-WwExecutionAuth.ps1` (adds user_impersonation scope) |

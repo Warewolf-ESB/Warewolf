@@ -1153,7 +1153,16 @@ Write-Step 'Ensuring the containerapp CLI extension is present'
 Invoke-Az -AzArgs @('extension', 'add', '--name', 'containerapp', '--upgrade', '--only-show-errors') -Mutating -AllowFail | Out-Null
 
 Write-Step "Ensuring resource group '$ResourceGroup'"
-Invoke-Az -AzArgs @('group', 'create', '--name', $ResourceGroup, '--location', $Location, '-o', 'none') -Mutating | Out-Null
+# Check existence first (mirrors Deploy-WwExecutionEngine.ps1 and the ACR/ACA-env checks just below):
+# 'az group create' is NOT idempotent across a location mismatch - it fails outright if the group
+# already exists in a different region than -Location, which is fatal for a resource group shared
+# with other components/pipelines that may have been provisioned against a different default.
+$rgExists = (Invoke-Az -AzArgs @('group', 'exists', '--name', $ResourceGroup)) -join ''
+if ($rgExists -eq 'true') {
+    Write-Ok "Resource group '$ResourceGroup' already exists."
+} else {
+    Invoke-Az -AzArgs @('group', 'create', '--name', $ResourceGroup, '--location', $Location, '-o', 'none') -Mutating | Out-Null
+}
 
 if (-not $Image) {
     Write-Step "Ensuring ACR '$AcrName'"
