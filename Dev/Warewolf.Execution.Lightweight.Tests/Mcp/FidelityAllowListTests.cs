@@ -210,17 +210,27 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void AllowList_AsShipped_TreatsPassBothFailedIdenticallyAsNotEditable()
+        public void AllowList_AsShipped_MarksExactlyThePassEntriesEditable()
         {
-            // "Assign" currently sits at PassBothFailedIdentically, NOT Pass: its corpus sample
-            // ("Hello World.bite") needs an input the fidelity harness does not supply, so original
-            // and round-tripped both failed identically and the activity's own logic was never
-            // actually proven to round-trip. Documented here because it is the single most common
-            // toolbox activity, so any workflow using an Assign stays bodyEditable:false and cannot
-            // be driven through add_step - a corpus gap, not an allow-list bug.
-            Assert.AreEqual("PassBothFailedIdentically", FidelityAllowList.StatusFor("Assign"));
-            Assert.IsFalse(FidelityAllowList.IsEditable("Assign"),
-                "only Status == Pass may count as editable");
+            // Asserts the gate itself against the real shipped file rather than any one activity's
+            // status, because those statuses move whenever the corpus is regenerated: "Assign" alone
+            // has been PassBothFailedIdentically, then Pass, then ExecutionMismatch on this branch.
+            // A test that pins a status therefore fails on a corpus regeneration - which says nothing
+            // about the allow-list - while the rule it exists to protect (only Status == Pass may
+            // count as editable, so a workflow can never be reported bodyEditable on an unproven
+            // activity) holds no matter what the corpus reports.
+            var shipped = FidelityAllowList.LoadFromFile(
+                Path.Combine(AppContext.BaseDirectory, "Resources", "fidelity-allowlist.json"));
+
+            Assert.IsTrue(shipped.Count > 0,
+                "the shipped allow-list parsed to an empty map; every workflow would report bodyEditable:false");
+
+            foreach (var entry in shipped)
+            {
+                var expected = string.Equals(entry.Value, FidelityAllowList.PassStatus, StringComparison.OrdinalIgnoreCase);
+                Assert.AreEqual(expected, FidelityAllowList.IsEditable(entry.Key),
+                    $"'{entry.Key}' is Status '{entry.Value}' but IsEditable returned {!expected}");
+            }
         }
     }
 }

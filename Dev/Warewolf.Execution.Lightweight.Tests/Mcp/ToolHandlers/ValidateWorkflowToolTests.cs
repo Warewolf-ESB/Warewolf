@@ -527,8 +527,14 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         public void Handle_ProperObjectEnvelopeAndBody_StillValidatesNormally()
         {
             // Guards against the new ValueKind check rejecting the happy path it must let through.
-            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, BodyOf("Wf", MakeStartNode(), 
-                MakeNode("assign1", "dsfdotnetmultiassignactivity"), MakeEdge("e1", "start", "assign1")));
+            // The Assign node carries a displayName because X6ToWorkflowConverter.CreateAssignActivity
+            // returns null without one, and an unconvertible node now fails the compile instead of
+            // being dropped in silence - so a fixture missing it is not the happy path.
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign" });
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, BodyOf("Wf", MakeStartNode(),
+                assign, MakeEdge("e1", "start", "assign1")));
 
             Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
         }
