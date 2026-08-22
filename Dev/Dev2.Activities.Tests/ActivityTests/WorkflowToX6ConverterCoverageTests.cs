@@ -39,6 +39,7 @@ using Dev2.Activities.Scripting;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.WF;
 using Dev2.Common.X6;
+using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -512,10 +513,186 @@ namespace Dev2.Tests.Activities.ActivityTests
                 "False-branch edge must carry isTrue=false.");
         }
 
+        /// <summary>
+        /// Builds the FlowDecision.Condition a real workflow carries. ActivityParser
+        /// .ParseDsfDecisionOnly returns null for anything that is not a DsfFlowDecisionActivity,
+        /// and it parses the decision stack back out of ExpressionText — so a bare stub condition
+        /// yields a DsfDecision with no DisplayText, which the read side then refuses. This mirrors
+        /// the exact ExpressionText shape DsfFlowDecisionActivity.FromX6Json emits.
+        /// </summary>
+        static DsfFlowDecisionActivity RealDecisionCondition(string displayText)
+        {
+            var stack = new Dev2DecisionStack
+            {
+                TheStack = new List<Dev2Decision>(),
+                DisplayText = displayText,
+                TrueArmText = "Yes",
+                FalseArmText = "No"
+            };
+            var encoded = JsonConvert.SerializeObject(stack).Replace("\"", "!");
+            return new DsfFlowDecisionActivity
+            {
+                ExpressionText =
+                    "Dev2.Data.Decision.Dev2DataListDecisionHandler.Instance.ExecuteDecisionStack(\"" +
+                    encoded + "\",AmbientDataList)"
+            };
+        }
+
         // A minimal Activity<bool> usable as a FlowDecision.Condition.
         public sealed class DsfFlowDecisionActivityStub : CodeActivity<bool>
         {
             protected override bool Execute(CodeActivityContext context) => false;
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        // Decision round-trip fidelity (WOLF: FlowDecision flattened to FlowStep)
+        //
+        // A WF FlowDecision is modelled as a DsfDecision purely to reuse that type's X6
+        // serialisation, but the two are NOT interchangeable on the way back:
+        //   "flowdecision" -> CreateFlowDecisionActivity -> DsfFlowDecisionActivity
+        //                  -> CreateFlowNode wraps it in a real branching FlowDecision.
+        //   "dsfdecision"  -> CreateDecisionActivity     -> DsfDecision
+        //                  -> CreateFlowNode falls through to a plain FlowStep.
+        // A FlowStep has a single Next, so both arms collapsed onto it and every branch in
+        // every round-tripped workflow was destroyed. X6JsonToWorkflow_DecisionWithTrueFalseEdges_
+        // WiresBothBranches already proved the READ side handles "flowdecision" correctly — it
+        // hand-builds that cell — which is exactly why it never caught that the WRITE side was
+        // emitting "dsfdecision". These tests cover that seam.
+        // ─────────────────────────────────────────────────────────────────
+
+        [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
+        public void Convert_Flowchart_Decision_EmitsFlowDecisionType_NotLegacyDsfDecision()
+        {
+            var decision = new FlowDecision
+            {
+                Condition = new DsfFlowDecisionActivityStub(),
+                True = new FlowStep { Action = new DsfMultiAssignActivity() },
+                False = new FlowStep { Action = new DsfDataSplitActivity() }
+            };
+
+            var model = Convert(new Flowchart { StartNode = decision });
+
+            var decisionNodes = model.Nodes.FindAll(n =>
+                n.data != null &&
+                n.data.TryGetValue(Constants.TYPE, out var t) &&
+                string.Equals(t as string, Constants.FLOWDECISION, StringComparison.OrdinalIgnoreCase));
+
+            Assert.AreEqual(1, decisionNodes.Count,
+                "A FlowDecision must be emitted with data.type='flowdecision' so X6ToWorkflowConverter " +
+                "rebuilds a branching FlowDecision. Emitting the legacy 'dsfdecision' routes it to a " +
+                "plain FlowStep and silently destroys both arms.");
+        }
+
+        [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
+        public void Convert_Flowchart_Decision_EmitsExactlyOneDecisionNode()
+        {
+            // ProcessFlowDecision must register the decision in activityNodeMap (keyed by
+            // Condition, the key GetTargetNodeId looks up). Without it, a decision reached from
+            // more than one path is re-created instead of linked, leaving an unreachable duplicate
+            // in the round-tripped XAML — two DsfDecision cells appeared for the single
+            // <FlowDecision> in GetFalse.bite.
+            // ProcessFlowchart walks StartNode first, then re-walks flowchart.Nodes and skips
+            // anything already in activityNodeMap — resolving a decision through
+            // GetActivityFromFlowNode, i.e. flowDecision.Condition. Studio-authored XAML lists
+            // its nodes in BOTH places, so the decision is visited twice; without the
+            // registration the second visit mints a duplicate. A decision reachable only from
+            // StartNode never exercises this.
+            var decision = new FlowDecision
+            {
+                Condition = RealDecisionCondition("If [[x]] Is > 0"),
+                True = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnTrue" } },
+                False = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnFalse" } }
+            };
+            var start = new FlowStep
+            {
+                Action = new DsfDotNetMultiAssignActivity { DisplayName = "Seed" },
+                Next = decision
+            };
+
+            var flowchart = new Flowchart { StartNode = start };
+            flowchart.Nodes.Add(start);
+            flowchart.Nodes.Add(decision);
+
+            var model = Convert(flowchart);
+
+            var decisionNodes = model.Nodes.FindAll(n =>
+                n.data != null &&
+                n.data.TryGetValue(Constants.TYPE, out var t) &&
+                string.Equals(t as string, Constants.FLOWDECISION, StringComparison.OrdinalIgnoreCase));
+
+            Assert.AreEqual(1, decisionNodes.Count,
+                $"One source FlowDecision must produce exactly one decision node, got {decisionNodes.Count}.");
+        }
+
+        [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
+        public void Convert_StandaloneDsfDecision_StillEmitsLegacyDsfDecisionType()
+        {
+            // Guard on the fix's blast radius: re-typing applies only to the FlowDecision
+            // overload of CreateDecisionNode. A genuine DsfDecision activity is a different
+            // toolbox entry ("Decision (legacy)") and must keep its own type so it keeps
+            // rebuilding as a DsfDecision rather than being promoted to a branching FlowDecision.
+            var model = Convert(new DsfDecision
+            {
+                DisplayName = "Legacy decision",
+                // DsfDecision.GetDisplayName() dereferences Conditions.DisplayText.
+                Conditions = new Dev2DecisionStack
+                {
+                    TheStack = new List<Dev2Decision>(),
+                    DisplayText = "Legacy decision"
+                }
+            });
+
+            var legacyNodes = model.Nodes.FindAll(n =>
+                n.data != null &&
+                n.data.TryGetValue(Constants.TYPE, out var t) &&
+                string.Equals(t as string, "dsfdecision", StringComparison.OrdinalIgnoreCase));
+
+            Assert.AreEqual(1, legacyNodes.Count,
+                "A standalone DsfDecision activity must still be emitted as 'dsfdecision'.");
+        }
+
+        [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
+        public void RoundTrip_FlowchartWithDecision_PreservesBranchingFlowDecision()
+        {
+            // The seam test: XAML -> X6 -> XAML through BOTH converters, which is the only
+            // place the type mismatch was observable. Before the fix a single <FlowDecision>
+            // came back as zero, flattened into a linear FlowStep chain.
+            var decision = new FlowDecision
+            {
+                DisplayName = "If [[x]] Is > 0",
+                Condition = RealDecisionCondition("If [[x]] Is > 0"),
+                // Both arms must be types X6ToWorkflowConverter can rebuild, or the read side
+                // throws on the arm rather than on the decision this test is about.
+                True = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnTrue" } },
+                False = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnFalse" } }
+            };
+
+            var loadModel = Convert(new Flowchart { StartNode = decision });
+
+            // The X6 web client performs this load-model -> save-model merge on save; there is no
+            // equivalent bridge in .NET, so mirror it here (same step as X6RoundTripBridge).
+            foreach (var edge in loadModel.Edges)
+            {
+                edge.shape = "edge";
+            }
+            var saveModel = new X6WorkflowSaveModel
+            {
+                ResourceName = "DecisionRoundTrip",
+                Cells = new List<Cell>(loadModel.Nodes)
+            };
+            saveModel.Cells.AddRange(loadModel.Edges);
+
+            var xaml = new X6ToWorkflowConverter()
+                .X6JsonToWorkflow(JsonConvert.SerializeObject(saveModel))
+                .ToString();
+
+            StringAssert.Contains(xaml, "<FlowDecision",
+                "The round-tripped workflow must still contain a FlowDecision — a flattened " +
+                "FlowStep chain executes only one arm and silently drops the branch. " + xaml);
+            StringAssert.Contains(xaml, "FlowDecision.True",
+                "The round-tripped FlowDecision must keep its True arm. " + xaml);
+            StringAssert.Contains(xaml, "FlowDecision.False",
+                "The round-tripped FlowDecision must keep its False arm. " + xaml);
         }
 
         // ─────────────────────────────────────────────────────────────────

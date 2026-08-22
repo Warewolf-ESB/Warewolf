@@ -303,7 +303,17 @@ namespace Dev2.Activities.WF
             var decisionNodeId = CommonHelper.GenerateNodeId();
             var decisionNode = CreateDecisionNode(flowDecision, decisionNodeId);
             graphData.Nodes.Add(decisionNode);
-            //graphData.ActivityNodeMap[flowDecision] = decisionNode;
+
+            // GetTargetNodeId resolves a FlowDecision back to its node through
+            // flowDecision.Condition, so the mapping has to be recorded here. Without it a
+            // decision reached from more than one path (or re-enumerated from Flowchart.Nodes)
+            // mints a second node instead of linking to this one — observed as two DsfDecision
+            // cells for the single <FlowDecision> in GetFalse.bite, leaving an unreachable
+            // duplicate in the round-tripped XAML.
+            if (flowDecision.Condition != null)
+            {
+                activityNodeMap[flowDecision.Condition] = decisionNodeId;
+            }
 
             CreateEdgeIfNotExists(graphData, previousNodeId, decisionNodeId);
 
@@ -1025,7 +1035,22 @@ namespace Dev2.Activities.WF
             var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>()) ??
                              new DsfDecision { Conditions = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() } };
 
-            return CreateDecisionNode(dsfDecision, nodeId);
+            var cell = CreateDecisionNode(dsfDecision, nodeId);
+
+            // A WF FlowDecision is only modelled as a DsfDecision to reuse its X6 serialisation —
+            // it is NOT the legacy DsfDecision activity, and the two must not share a data.type.
+            // DsfDecision.ToX6Json stamps "dsfdecision", which X6ToWorkflowConverter routes to
+            // CreateDecisionActivity -> a DsfDecision wrapped by CreateFlowNode in a plain FlowStep.
+            // A FlowStep has one Next, so both decision arms collapse onto it (the second edge
+            // overwrites the first) and the branch is destroyed: GetFalse.bite round-tripped from
+            // one <FlowDecision> to zero, and the arm's Assign never ran. Re-stamping the type
+            // routes it to CreateFlowDecisionActivity -> DsfFlowDecisionActivity -> a real
+            // FlowDecision, which HandleDecisionConnection then wires True/False from the
+            // isDecisionArm/isTrue data the edges already carry. The legacy activity keeps
+            // emitting "dsfdecision" via the DsfDecision overload below.
+            cell.data[Constants.TYPE] = Constants.FLOWDECISION;
+
+            return cell;
         }
 
         private Cell CreateDecisionNode(DsfDecision dsfDecision, string nodeId)

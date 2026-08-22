@@ -193,6 +193,61 @@ namespace Warewolf.Execution.Lightweight
             }
         }
 
+        /// <summary>
+        /// Drops a single entry from the in-memory index for <paramref name="workflowsDirectory"/>,
+        /// so a workflow just deleted from disk by <c>delete_workflow</c> stops resolving via the
+        /// fast <see cref="Resolve"/> path immediately — without waiting for a process restart.
+        /// The exact inverse of <see cref="AddOrUpdate"/>, and it shares that method's contract:
+        /// only the in-memory <see cref="FrozenDictionary{TKey,TValue}"/> cache is touched, the
+        /// persisted <c>workflow-index.json</c> build artefact is left for the next build to
+        /// reconcile.
+        ///
+        /// <para>
+        /// Removing a key that was never present is a no-op, so this is safe to call
+        /// unconditionally after a delete, and safe before the index for this directory has ever
+        /// been loaded (loads it first via <see cref="GetIndex"/>).
+        /// </para>
+        /// </summary>
+        /// <param name="workflowsDirectory">Base directory that hosts workflow files.</param>
+        /// <param name="nameWithoutExtension">Relative path without extension, any casing/separator.</param>
+        internal void Remove(string workflowsDirectory, string nameWithoutExtension)
+        {
+            if (string.IsNullOrWhiteSpace(workflowsDirectory) ||
+                string.IsNullOrWhiteSpace(nameWithoutExtension))
+            {
+                return;
+            }
+
+            try
+            {
+                var cacheKey = Path.GetFullPath(workflowsDirectory);
+                var normalizedName = nameWithoutExtension.Replace('\\', '/').TrimStart('/').ToLowerInvariant();
+
+                // Same read-copy-replace as AddOrUpdate: snapshot, drop the key, re-freeze. A
+                // concurrent Resolve() racing this sees the old snapshot and resolves a path whose
+                // file has already been deleted — which its caller must handle regardless, since
+                // any file can vanish between Resolve and open.
+                var current = GetIndex(workflowsDirectory);
+                if (!current.ContainsKey(normalizedName))
+                {
+                    return;
+                }
+
+                var updated = new Dictionary<string, string>(current, StringComparer.OrdinalIgnoreCase);
+                updated.Remove(normalizedName);
+
+                _cache[cacheKey] = new Lazy<FrozenDictionary<string, string>>(
+                    () => updated.ToFrozenDictionary(StringComparer.OrdinalIgnoreCase),
+                    LazyThreadSafetyMode.ExecutionAndPublication);
+
+                Dev2Logger.Info($"WorkflowIndex Remove: '{normalizedName}' in directory: {workflowsDirectory}", ExecutionIdForInfrastructure);
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error($"WorkflowIndex Remove failed for: '{nameWithoutExtension}' in directory: {workflowsDirectory}", ex, ExecutionIdForInfrastructure);
+            }
+        }
+
         // ── Internal helpers ──────────────────────────────────────────────────
 
         FrozenDictionary<string, string> GetIndex(string workflowsDirectory)

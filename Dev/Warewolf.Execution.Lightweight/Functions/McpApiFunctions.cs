@@ -191,6 +191,16 @@ namespace Warewolf.Execution.Lightweight.Functions
                 return DeployWorkflowTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.BiteContent, p.Overwrite);
             });
 
+        [Function("McpApiDeleteWorkflow")]
+        public Task<HttpResponseData> DeleteWorkflow(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/delete_workflow")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<NameRequest>(req, ct) ?? new NameRequest();
+                return DeleteWorkflowTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name);
+            });
+
         [Function("McpApiAddStep")]
         public Task<HttpResponseData> AddStep(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/add_step")] HttpRequestData req,

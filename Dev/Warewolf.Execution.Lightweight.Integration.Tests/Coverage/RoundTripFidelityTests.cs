@@ -54,6 +54,26 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             NonDeterministic,
         }
 
+        /// <summary>
+        /// Minimal read-side shape of the generated <c>fidelity-allowlist.json</c>, kept local so the
+        /// drift gate does not depend on the engine assembly's internal FidelityAllowList DTOs.
+        /// Only the two fields the gate compares are modelled.
+        /// </summary>
+        sealed class BaselineDocument
+        {
+            [JsonProperty("results")]
+            public List<BaselineEntry> Results { get; set; }
+        }
+
+        sealed class BaselineEntry
+        {
+            [JsonProperty("StudioName")]
+            public string StudioName { get; set; }
+
+            [JsonProperty("Status")]
+            public string Status { get; set; }
+        }
+
         sealed class FidelityResult
         {
             public string StudioName { get; set; }
@@ -289,6 +309,111 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             Assert.IsTrue(withSamples > 0,
                 "Expected at least one toolbox entry to have a real corpus sample — " +
                 "zero matches suggests the classifier or corpus roots are broken, not that the corpus is empty.");
+
+            AssertNoRegressionAgainstCommittedBaseline(results);
+        }
+
+        /// <summary>
+        /// Drift gate: fails when an activity type that the committed
+        /// <c>fidelity-allowlist.json</c> records as <c>Pass</c> no longer passes.
+        ///
+        /// <para>
+        /// This is the one place the suite does assert on fidelity outcomes, and it is
+        /// deliberately one-directional. The file header's "informational discovery pass" rule
+        /// still holds for *discovering* what a type's status is — a type that has never passed
+        /// is never asserted on, so unsupported activities cannot block CI. What is asserted is
+        /// that a type which HAS been proven to round-trip does not silently stop doing so, which
+        /// is exactly the regression that went unnoticed: FlowDecision was flattened into a
+        /// non-branching FlowStep, and the only signal was a row quietly changing status in a
+        /// generated file nobody diffed.
+        /// </para>
+        ///
+        /// <para>
+        /// The baseline is read from the copy shipped beside the test binaries
+        /// (<see cref="AppContext.BaseDirectory"/><c>/Resources/fidelity-allowlist.json</c>) rather
+        /// than from <paramref name="results"/>' own output path, because the run has already
+        /// overwritten that path by this point. That copy comes from the committed file via the
+        /// build, and is present both in a local checkout and in the CI test-binaries artifact.
+        /// </para>
+        ///
+        /// <para>
+        /// Improvements are never failures: a type moving to <c>Pass</c> is reported and welcomed.
+        /// When a regression is genuine and accepted, re-run this test to regenerate the allow-list
+        /// and commit it — that re-baselines the gate deliberately, in a reviewable diff.
+        /// </para>
+        /// </summary>
+        static void AssertNoRegressionAgainstCommittedBaseline(List<FidelityResult> results)
+        {
+            var baselinePath = Path.Combine(AppContext.BaseDirectory, "Resources", "fidelity-allowlist.json");
+            if (!File.Exists(baselinePath))
+            {
+                Assert.Inconclusive(
+                    "No committed fidelity baseline found at " + baselinePath +
+                    " — cannot check for regressions. Commit Resources/fidelity-allowlist.json to enable this gate.");
+                return;
+            }
+
+            BaselineDocument baseline;
+            try
+            {
+                baseline = JsonConvert.DeserializeObject<BaselineDocument>(File.ReadAllText(baselinePath));
+            }
+            catch (Exception ex)
+            {
+                Assert.Inconclusive($"Committed fidelity baseline at {baselinePath} could not be parsed: {ex.Message}");
+                return;
+            }
+
+            if (baseline?.Results == null || baseline.Results.Count == 0)
+            {
+                Assert.Inconclusive($"Committed fidelity baseline at {baselinePath} contains no results.");
+                return;
+            }
+
+            var current = results.ToDictionary(r => r.StudioName, r => r.Status, StringComparer.OrdinalIgnoreCase);
+            var pass = FidelityStatus.Pass.ToString();
+
+            var regressions = new List<string>();
+            var improvements = new List<string>();
+
+            foreach (var previous in baseline.Results)
+            {
+                if (string.IsNullOrWhiteSpace(previous.StudioName) ||
+                    !current.TryGetValue(previous.StudioName, out var nowStatus))
+                {
+                    // Retired or renamed toolbox entry — the subset table is the source of truth.
+                    continue;
+                }
+
+                var wasPass = string.Equals(previous.Status, pass, StringComparison.OrdinalIgnoreCase);
+                var isPass = string.Equals(nowStatus, pass, StringComparison.OrdinalIgnoreCase);
+
+                if (wasPass && !isPass)
+                {
+                    var detail = results.FirstOrDefault(r =>
+                        string.Equals(r.StudioName, previous.StudioName, StringComparison.OrdinalIgnoreCase))?.Detail;
+                    regressions.Add($"  {previous.StudioName}: Pass -> {nowStatus}. {Truncate(detail ?? string.Empty)}");
+                }
+                else if (!wasPass && isPass)
+                {
+                    improvements.Add($"  {previous.StudioName}: {previous.Status} -> Pass");
+                }
+            }
+
+            if (improvements.Count > 0)
+            {
+                Console.WriteLine("Round-trip fidelity IMPROVED for " + improvements.Count + " activity type(s):");
+                improvements.ForEach(Console.WriteLine);
+                Console.WriteLine("Commit the regenerated fidelity-allowlist.json to lock these in.");
+            }
+
+            Assert.AreEqual(0, regressions.Count,
+                "Round-trip fidelity REGRESSED for " + regressions.Count + " activity type(s) that the committed " +
+                "baseline records as Pass:" + Environment.NewLine + string.Join(Environment.NewLine, regressions) +
+                Environment.NewLine +
+                "A workflow using these can no longer be edited losslessly, so bodyEditable would start " +
+                "reporting false for them. Fix the converter, or — if the change is intended — re-run this " +
+                "test and commit the regenerated Resources/fidelity-allowlist.json to re-baseline.");
         }
 
         /// <summary>
@@ -414,6 +539,32 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
             var originalPath = CopyToTemp(originalFileText, Path.GetFileName(samplePath));
             var roundTrippedPath = CopyToTemp(roundTrippedBiteText, Path.GetFileName(samplePath));
+
+            // Each temp copy sits alone in a fresh directory, so WorkflowExecutor's
+            // `request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath)`
+            // fallback hands LightweightSourceLoader.EnsureIndexed an empty folder and no SourceId
+            // can ever resolve. Every source-backed activity then failed on its missing source
+            // ("The web source has an incomplete web address", "An invalid request URI was
+            // provided", ...) instead of exercising the activity, which says nothing about
+            // round-trip fidelity.
+            //
+            // Index the sample's real corpus directory directly rather than by setting
+            // request.WorkflowsDirectory. That property is NOT source-indexing-only: it is also
+            // handed to `new LightweightEsbChannel(...)` (WorkflowExecutor.cs), whose constructor
+            // warms the process-wide, name-keyed WorkflowResourceCache over the entire directory —
+            // and would give the original and round-tripped copies a shared cache scope they do
+            // not have today. Doing so regressed Assign/Decision/Comment/Count Records from Pass
+            // to ExecutionMismatch (the round-tripped copy returned an empty payload) while fixing
+            // the web tools, so the two effects are deliberately separated here: take the source
+            // index, leave sub-workflow resolution scoped to the temp copy exactly as before.
+            //
+            // The index is registered on a singleton and keyed by directory, so one call covers
+            // both executions below and the IsSelfConsistentAsync re-run.
+            var sourcesDirectory = Path.GetDirectoryName(samplePath) ?? string.Empty;
+            if (!string.IsNullOrEmpty(sourcesDirectory))
+            {
+                LightweightSourceLoader.Instance.EnsureIndexed(sourcesDirectory);
+            }
             try
             {
                 var executor = CreateExecutor();

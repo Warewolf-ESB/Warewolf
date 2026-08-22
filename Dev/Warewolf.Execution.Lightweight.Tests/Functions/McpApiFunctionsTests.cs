@@ -6,7 +6,7 @@
  *  Wrapper-plumbing tests for McpApiFunctions (the REST replacement for the
  *  retired /mcp JSON-RPC endpoint): the baseline authentication gate,
  *  malformed-JSON-body handling, McpException -> 400 mapping, and one
- *  happy-path round-trip per all 14 /mcp-api/{tool_name} routes verifying
+ *  happy-path round-trip per all 15 /mcp-api/{tool_name} routes verifying
  *  correct request-body binding into each tool handler's Handle(...) call
  *  and correct response JSON shape. Business-rule coverage for each tool
  *  (permission gating, validation, edge cases) lives in that tool's own
@@ -486,6 +486,23 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
             var json = JObject.Parse(body);
             Assert.AreEqual("Deployed", json["name"]?.ToString());
             Assert.AreEqual(true, json["deployed"]?.ToObject<bool>());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task DeleteWorkflow_HappyPath()
+        {
+            SeedEditableWorkflow("ToDelete");
+            var function = NewFunctions();
+            var payload = JsonSerializer.Serialize(new { name = "ToDelete" });
+            var (ctx, req) = NewRequest("delete_workflow", payload);
+
+            var (status, body) = await Invoke(function.DeleteWorkflow(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.OK, status);
+            var json = JObject.Parse(body);
+            Assert.AreEqual("ToDelete", json["name"]?.ToString());
+            Assert.AreEqual(true, json["deleted"]?.ToObject<bool>());
         }
 
         [TestMethod]
