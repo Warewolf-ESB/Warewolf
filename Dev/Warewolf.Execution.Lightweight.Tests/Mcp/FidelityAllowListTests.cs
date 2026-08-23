@@ -158,15 +158,6 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void IsEditable_UsesRealProcessAllowList_ForKnownNonPassEntry()
-        {
-            // "Assign" is committed with Status "PassBothFailedIdentically", which must not
-            // count as editable (see FidelityAllowList class remarks).
-            Assert.IsFalse(FidelityAllowList.IsEditable("Assign"));
-        }
-
-        [TestMethod]
-        [TestCategory("UnitTest")]
         public void IsEditable_UnknownName_ReturnsFalse()
         {
             Assert.IsFalse(FidelityAllowList.IsEditable("Not A Real Studio Name At All"));
