@@ -1,4 +1,4 @@
-Param(
+﻿Param(
   [string]$MSBuildPath="C:\Program Files\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\MSBuild.exe",
   [string]$Target="",
   [string]$CustomVersion="",
@@ -586,6 +586,24 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			                Copy-Item -Path "$PSScriptRoot\Dev\Resources - ServerTests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 							                Copy-Item -Path "$PSScriptRoot\Dev\Resources - UITests" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
 											                Copy-Item -Path "$PSScriptRoot\Dev\Resources - Load" -Destination "$PSScriptRoot\Bin\$OutputFolderName" -Force -Recurse
+			# Fourth corpus root for the round-trip fidelity sweep. RoundTripFidelityCorpus.CorpusRoots
+			# declares 'Warewolf.Execution.Lightweight\Resources' alongside the three 'Resources - *' trees
+			# above, but nothing staged it, so it existed only in a source checkout. The sweep resolves its
+			# corpus by walking up from the test binaries: locally that reaches Dev\ and reads the fixtures
+			# from source, while in CI it reaches the flat TestBinaries artifact and finds nothing - so CI
+			# silently measured a SMALLER corpus than a dev run, and every purpose-built fixture under
+			# Resources\tools, \hangfiredemo and \rabbit was never exercised. Observed on the 2026-08-23 CI
+			# allow-list: harness.corpusRoots recorded only three roots, and Suspend Execution reported
+			# NoCorpusSample despite having a committed fixture. Staged here rather than via the csproj
+			# Resources glob because that glob controls what SHIPS to Azure (deployers supply their own
+			# workflows); this is test-corpus staging, exactly like the four copies above.
+			if (Test-Path "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\Resources") {
+				$LightweightCorpusParent = "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.Execution.Lightweight"
+				if (!(Test-Path $LightweightCorpusParent)) {
+					New-Item -ItemType Directory -Path $LightweightCorpusParent -Force | Out-Null
+				}
+				Copy-Item -Path "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\Resources" -Destination $LightweightCorpusParent -Force -Recurse
+			}
             if ($OutputFolderName -ne "COMIPCProject" -and $OutputFolderName -ne "StudioProject") {
                 if (!($ProjectSpecificOutputs.IsPresent)) {
                     if ($Target -eq "/t:Debug" -or $Target -eq "") {

@@ -59,10 +59,17 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             new() { StudioName = "Select and apply", Category = "Control Flow", SearchTokens = new[] { "DsfSelectAndApplyActivity" } },
             new() { StudioName = "Gate", Category = "Control Flow", SearchTokens = new[] { "GateActivity" } },
             new() { StudioName = "Suspend Execution", Category = "Control Flow", SearchTokens = new[] { "SuspendExecutionActivity" } },
-            new() { StudioName = "Manual Resumption", Category = "Control Flow", SearchTokens = new[] { "DsfManualResumptionActivity" } },
+            // The class is ManualResumptionActivity — there is no Dsf-prefixed variant. The old
+            // "DsfManualResumptionActivity" token matched nothing, so this row reported
+            // NoCorpusSample even though Resources\hangfiredemo\Manual Resumption Tool Example.bite
+            // has covered it all along.
+            new() { StudioName = "Manual Resumption", Category = "Control Flow", SearchTokens = new[] { "ManualResumptionActivity" } },
             new() { StudioName = "Service (sub-workflow)", Category = "Control Flow", RequiresSource = true, SearchTokens = new[] { "DsfWorkflowActivity" } },
             new() { StudioName = "Comment", Category = "Utility", SearchTokens = new[] { "DsfCommentActivity" } },
-            new() { StudioName = "Calculate", Category = "Data", SearchTokens = new[] { "DsfDotNetCalculateActivity" } },
+            // Both the legacy and .NET variants exist as real classes, exactly as for the sibling
+            // "Aggregate Calculate" row below. Listing only the DotNet one hid the 6 corpus samples
+            // that use DsfCalculateActivity (e.g. Utility - Calculate.bite).
+            new() { StudioName = "Calculate", Category = "Data", SearchTokens = new[] { "DsfDotNetCalculateActivity", "DsfCalculateActivity" } },
             new() { StudioName = "Aggregate Calculate", Category = "Data", SearchTokens = new[] { "DsfAggregateCalculateActivity", "DsfDotNetAggregateCalculateActivity" } },
             new() { StudioName = "Create JSON", Category = "Data", SearchTokens = new[] { "DsfCreateJsonActivity" } },
             new() { StudioName = "Data Merge", Category = "Data", SearchTokens = new[] { "DsfDataMergeActivity" } },
@@ -82,7 +89,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             new() { StudioName = "Unique Records", Category = "Recordset", SearchTokens = new[] { "DsfUniqueActivity" } },
             new() { StudioName = "Advanced Recordset", Category = "Recordset", SearchTokens = new[] { "AdvancedRecordsetActivity" } },
             new() { StudioName = "Read File", Category = "Files & Folders", SearchTokens = new[] { "DsfFileRead", "FileReadWithBase64" } },
-            new() { StudioName = "Write File", Category = "Files & Folders", SearchTokens = new[] { "FileWriteWithBase64" } },
+            // "FileWriteWithBase64" names no class that exists, so this row could never match. The
+            // real classes are DsfFileWrite and FileWriteActivity — mirroring the "Read File" row
+            // above, which works precisely because it lists its DsfFileRead alias.
+            new() { StudioName = "Write File", Category = "Files & Folders", SearchTokens = new[] { "DsfFileWrite", "FileWriteActivity", "FileWriteWithBase64" } },
             new() { StudioName = "Folder Read", Category = "Files & Folders", SearchTokens = new[] { "DsfFolderReadActivity", "DsfFolderRead" } },
             new() { StudioName = "Create (path)", Category = "Files & Folders", SearchTokens = new[] { "DsfPathCreate" } },
             new() { StudioName = "Copy", Category = "Files & Folders", SearchTokens = new[] { "DsfPathCopy" } },
@@ -133,10 +143,14 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             // source-backed activities failing fast on "source is not configured" and starts them
             // dialling real hosts that are not there. Measured 2026-08-23 on the same checkout:
             // 60 seconds without it, 22.4 minutes with it, the difference being connection
-            // timeouts (38 MySQL alone). It buys samples for exactly three rows - Select and
-            // apply, Suspend Execution, Length - none of which the baseline records as Pass, and
-            // the source-backed rows it slows down all land on PassBothFailedIdentically either
-            // way, which this gate does not score. Leaving it out also keeps a dev checkout and
+            // timeouts (38 MySQL alone). It used to buy samples for three rows - Select and apply,
+            // Suspend Execution, Length - and as of 2026-08-23 it buys NOTHING: all three are now
+            // covered from the included roots, because *.xml resources are discovered (see
+            // ResourceFilePatterns) and the Warewolf.Execution.Lightweight\Resources fixtures are
+            // staged into the test artifact. Re-measured against all 66 toolbox rows: zero rows
+            // would gain a sample from this tree. The source-backed rows it slows down all land on
+            // PassBothFailedIdentically either way, which this gate does not score. Leaving it out
+            // also keeps a dev checkout and
             // the CI TestBinaries artifact measuring the SAME corpus, so a baseline generated on
             // one is comparable to a run on the other - see FidelityRegressionGate.
             Path.Combine("Warewolf.Execution.Lightweight", "Resources"),
@@ -180,9 +194,25 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         }
 
         /// <summary>
-        /// Enumerates every `.bite` file under the known corpus roots. Returns an empty list
-        /// (never null/throws) when the repo root cannot be located, so callers degrade to
-        /// Inconclusive rather than failing.
+        /// Workflow-resource file extensions the corpus is built from. Both carry the identical
+        /// <c>&lt;Service ... ResourceType="WorkflowService"&gt;</c> envelope with an escaped
+        /// <c>XamlDefinition</c> — `.bite` is simply the newer name for the same format.
+        ///
+        /// <para>
+        /// `.xml` was originally omitted, which silently excluded whole workflows from the sweep.
+        /// The most consequential was <c>Resources - Load\Resources\All Tools.xml</c> (187 KB,
+        /// <c>IsValid="true"</c>), which alone contains 51 of the 66 toolbox types — including
+        /// Length, ODBC Database and SQL Bulk Insert, all three of which the 2026-08-23 CI
+        /// allow-list reported as <c>NoCorpusSample</c> while a sample for them sat in an
+        /// already-declared corpus root.
+        /// </para>
+        /// </summary>
+        public static readonly IReadOnlyList<string> ResourceFilePatterns = new[] { "*.bite", "*.xml" };
+
+        /// <summary>
+        /// Enumerates every workflow-resource file (see <see cref="ResourceFilePatterns"/>) under
+        /// the known corpus roots. Returns an empty list (never null/throws) when the repo root
+        /// cannot be located, so callers degrade to Inconclusive rather than failing.
         /// </summary>
         public static List<string> DiscoverBiteFiles(string devRoot)
         {
@@ -199,13 +229,16 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 {
                     continue;
                 }
-                try
+                foreach (var pattern in ResourceFilePatterns)
                 {
-                    results.AddRange(Directory.EnumerateFiles(full, "*.bite", SearchOption.AllDirectories));
-                }
-                catch (IOException)
-                {
-                    // Best-effort: skip roots that vanish/lock mid-enumeration.
+                    try
+                    {
+                        results.AddRange(Directory.EnumerateFiles(full, pattern, SearchOption.AllDirectories));
+                    }
+                    catch (IOException)
+                    {
+                        // Best-effort: skip roots that vanish/lock mid-enumeration.
+                    }
                 }
             }
             return results;

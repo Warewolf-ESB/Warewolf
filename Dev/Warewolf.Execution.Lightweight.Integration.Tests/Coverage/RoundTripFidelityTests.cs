@@ -282,12 +282,61 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             // Harness-integrity assertions only — never assert on individual fidelity outcomes here.
             Assert.IsTrue(results.Count == RoundTripFidelityCorpus.ToolboxSubset.Count,
                 "Expected one result row per toolbox entry.");
-            var withSamples = results.Count(r => r.Status != FidelityStatus.NoCorpusSample.ToString());
-            Assert.IsTrue(withSamples > 0,
-                "Expected at least one toolbox entry to have a real corpus sample — " +
-                "zero matches suggests the classifier or corpus roots are broken, not that the corpus is empty.");
+
+            AssertCorpusCoversEveryTool(results, presentRoots);
 
             AssertNoRegressionAgainstCommittedBaseline(results, presentRoots);
+        }
+
+        /// <summary>
+        /// Coverage gate: every toolbox type must be measured against at least one corpus sample,
+        /// and every declared corpus root must actually be on disk.
+        ///
+        /// <para>
+        /// This is a harness-integrity assertion, not a fidelity one — it says nothing about whether
+        /// a type round-trips, only that the sweep looked. It exists because the two ways this
+        /// harness silently under-measures are indistinguishable from a healthy run in the report:
+        /// a corpus root that was never staged, and a <see cref="ToolboxEntry.SearchTokens"/> entry
+        /// naming a class that does not exist. Both surface as <c>NoCorpusSample</c>, which the old
+        /// "at least one type has a sample" check happily tolerated for the other 65.
+        /// </para>
+        ///
+        /// <para>
+        /// Both failures were real. On the 2026-08-23 CI allow-list, 10 of 66 types reported
+        /// <c>NoCorpusSample</c>: <c>Warewolf.Execution.Lightweight\Resources</c> was declared in
+        /// <see cref="RoundTripFidelityCorpus.CorpusRoots"/> but never staged into the TestBinaries
+        /// artifact (so every purpose-built fixture was invisible to CI, and Suspend Execution
+        /// reported no sample despite having a committed one); <c>*.xml</c> resources were not
+        /// discovered at all (hiding <c>All Tools.xml</c>, which alone covers 51 types); and three
+        /// rows named classes that do not exist — <c>DsfManualResumptionActivity</c>,
+        /// <c>FileWriteWithBase64</c>, and a Calculate row missing its <c>DsfCalculateActivity</c>
+        /// alias.
+        /// </para>
+        /// </summary>
+        static void AssertCorpusCoversEveryTool(List<FidelityResult> results, List<string> presentRoots)
+        {
+            var missingRoots = RoundTripFidelityCorpus.CorpusRoots
+                .Where(root => !presentRoots.Contains(root))
+                .ToList();
+            Assert.AreEqual(0, missingRoots.Count,
+                "Declared corpus root(s) absent from this run: " + string.Join(", ", missingRoots) + "." +
+                Environment.NewLine +
+                "The sweep measured a smaller corpus than it claims to. If this is CI, the root was not " +
+                "staged into the TestBinaries artifact — see the corpus-staging block in Compile.ps1. " +
+                "A run against a partial corpus must not produce a baseline.");
+
+            var uncovered = results
+                .Where(r => r.Status == FidelityStatus.NoCorpusSample.ToString())
+                .Select(r => r.StudioName)
+                .ToList();
+            Assert.AreEqual(0, uncovered.Count,
+                "No corpus sample found for " + uncovered.Count + " of " + results.Count +
+                " toolbox type(s): " + string.Join(", ", uncovered) + "." + Environment.NewLine +
+                "Every toolbox type must be exercised by at least one workflow resource under a corpus " +
+                "root. Either the type's SearchTokens name a class that does not exist (check the real " +
+                "class name under Dev2.Activities\\Activities), or the type genuinely has no sample and " +
+                "needs a purpose-built fixture committed under " +
+                "Warewolf.Execution.Lightweight\\Resources\\tools\\<tool>\\.");
         }
 
         /// <summary>
