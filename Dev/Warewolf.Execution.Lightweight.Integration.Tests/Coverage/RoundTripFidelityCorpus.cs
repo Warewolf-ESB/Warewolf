@@ -122,14 +122,37 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// (Studio and Web-Studio saved). Mirrors the "Resources*"/"Server Tests Setup" scan the
         /// addendum's residual-activity-list pass already did manually.
         /// </summary>
-        static readonly string[] CorpusRoots =
+        public static readonly IReadOnlyList<string> CorpusRoots = new[]
         {
             "Resources - Release",
             "Resources - ServerTests",
             "Resources - Load",
-            "Server Tests Setup",
+            // 'Server Tests Setup' is deliberately NOT a corpus root, though it holds 341 more
+            // .bite files than every other root combined. It is the only tree that carries
+            // configured Database/RabbitMQ *source* definitions, so including it stops the
+            // source-backed activities failing fast on "source is not configured" and starts them
+            // dialling real hosts that are not there. Measured 2026-08-23 on the same checkout:
+            // 60 seconds without it, 22.4 minutes with it, the difference being connection
+            // timeouts (38 MySQL alone). It buys samples for exactly three rows - Select and
+            // apply, Suspend Execution, Length - none of which the baseline records as Pass, and
+            // the source-backed rows it slows down all land on PassBothFailedIdentically either
+            // way, which this gate does not score. Leaving it out also keeps a dev checkout and
+            // the CI TestBinaries artifact measuring the SAME corpus, so a baseline generated on
+            // one is comparable to a run on the other - see FidelityRegressionGate.
             Path.Combine("Warewolf.Execution.Lightweight", "Resources"),
         };
+
+        /// <summary>
+        /// The subset of <see cref="CorpusRoots"/> that actually exists under
+        /// <paramref name="devRoot"/>. Recorded in the generated report and used by
+        /// <see cref="FidelityRegressionGate.Compare"/>, because which roots are present decides
+        /// which samples an activity is measured against — and a dev checkout and the CI
+        /// TestBinaries artifact do not carry the same set.
+        /// </summary>
+        public static List<string> PresentCorpusRoots(string devRoot) =>
+            string.IsNullOrEmpty(devRoot)
+                ? new List<string>()
+                : CorpusRoots.Where(root => Directory.Exists(Path.Combine(devRoot, root))).ToList();
 
         /// <summary>
         /// Walks parents of the test assembly's base directory looking for the repo root

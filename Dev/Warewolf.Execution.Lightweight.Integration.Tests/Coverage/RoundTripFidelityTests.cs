@@ -7,13 +7,17 @@
  *   Does XAML --ConvertToX6Json--> X6 JSON --X6JsonToWorkflow--> XAML' produce a workflow
  *   that executes IDENTICALLY (same success/failure, same JSON payload) to the original?
  *
- * This is an *informational discovery* pass, not a hard pass/fail gate: the goal is to
- * produce the empirical `fidelity-allowlist.json` artifact the MCP `bodyEditable` logic
- * will consume, not to block CI on activity types that are not yet supported. Individual
- * per-type mismatches are recorded and reported, never asserted on directly. The test
- * only fails if the harness itself is broken (e.g. it finds zero corpus at all when the
- * corpus tree is known to be deployed), which would indicate a wiring bug rather than a
- * genuine converter fidelity gap.
+ * This is primarily an *informational discovery* pass: the goal is to produce the empirical
+ * `fidelity-allowlist.json` artifact the MCP `bodyEditable` logic will consume, not to block
+ * CI on activity types that are not yet supported. A per-type mismatch is recorded and
+ * reported, never asserted on for its own sake — an activity that has never round-tripped
+ * cannot fail this build.
+ *
+ * There are exactly two ways it does fail. The harness being broken (e.g. it finds zero corpus
+ * at all when the corpus tree is known to be deployed), and an activity type the committed
+ * baseline proved to round-trip demonstrably losing that property — see
+ * AssertNoRegressionAgainstCommittedBaseline and FidelityRegressionGate, which decide what
+ * "demonstrably" means and refuse to compare against a baseline that is not comparable.
  *
  * Real corpus samples are classified by RoundTripFidelityCorpus (see that file). Every
  * result is written to Console (captured in test output/CI logs) and to
@@ -43,37 +47,6 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
     [TestCategory("RoundTripFidelity")]
     public class RoundTripFidelityTests
     {
-        enum FidelityStatus
-        {
-            Pass,
-            PassBothFailedIdentically,
-            NoCorpusSample,
-            TranslationFailed,
-            ExecutionMismatch,
-            ExecutionAsymmetric,
-            NonDeterministic,
-        }
-
-        /// <summary>
-        /// Minimal read-side shape of the generated <c>fidelity-allowlist.json</c>, kept local so the
-        /// drift gate does not depend on the engine assembly's internal FidelityAllowList DTOs.
-        /// Only the two fields the gate compares are modelled.
-        /// </summary>
-        sealed class BaselineDocument
-        {
-            [JsonProperty("results")]
-            public List<BaselineEntry> Results { get; set; }
-        }
-
-        sealed class BaselineEntry
-        {
-            [JsonProperty("StudioName")]
-            public string StudioName { get; set; }
-
-            [JsonProperty("Status")]
-            public string Status { get; set; }
-        }
-
         sealed class FidelityResult
         {
             public string StudioName { get; set; }
@@ -251,6 +224,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 return;
             }
 
+            // Captured once, before the report directory is created: WriteReport creates
+            // <devRoot>/Warewolf.Execution.Lightweight/Resources, which is itself a corpus root,
+            // so computing this later would claim a root that contributed no samples to this run.
+            var presentRoots = RoundTripFidelityCorpus.PresentCorpusRoots(devRoot);
             var biteFiles = RoundTripFidelityCorpus.DiscoverBiteFiles(devRoot);
             if (biteFiles.Count == 0)
             {
@@ -300,7 +277,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 results.Add(SelectRepresentative(attempts));
             }
 
-            WriteReport(devRoot, results);
+            WriteReport(devRoot, results, presentRoots);
 
             // Harness-integrity assertions only — never assert on individual fidelity outcomes here.
             Assert.IsTrue(results.Count == RoundTripFidelityCorpus.ToolboxSubset.Count,
@@ -310,22 +287,27 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 "Expected at least one toolbox entry to have a real corpus sample — " +
                 "zero matches suggests the classifier or corpus roots are broken, not that the corpus is empty.");
 
-            AssertNoRegressionAgainstCommittedBaseline(results);
+            AssertNoRegressionAgainstCommittedBaseline(results, presentRoots);
         }
 
         /// <summary>
         /// Drift gate: fails when an activity type that the committed
-        /// <c>fidelity-allowlist.json</c> records as <c>Pass</c> no longer passes.
+        /// <c>fidelity-allowlist.json</c> records as <c>Pass</c> demonstrably stops round-tripping.
         ///
         /// <para>
-        /// This is the one place the suite does assert on fidelity outcomes, and it is
-        /// deliberately one-directional. The file header's "informational discovery pass" rule
-        /// still holds for *discovering* what a type's status is — a type that has never passed
-        /// is never asserted on, so unsupported activities cannot block CI. What is asserted is
-        /// that a type which HAS been proven to round-trip does not silently stop doing so, which
-        /// is exactly the regression that went unnoticed: FlowDecision was flattened into a
-        /// non-branching FlowStep, and the only signal was a row quietly changing status in a
-        /// generated file nobody diffed.
+        /// This is the one place the suite does assert on fidelity outcomes, and it is deliberately
+        /// one-directional and narrow. The file header's "informational discovery pass" rule still
+        /// holds for *discovering* what a type's status is — a type that has never passed is never
+        /// asserted on, so unsupported activities cannot block CI. What is asserted is that a type
+        /// which HAS been proven to round-trip does not silently stop doing so, which is exactly the
+        /// regression that went unnoticed: FlowDecision was flattened into a non-branching FlowStep,
+        /// and the only signal was a row quietly changing status in a generated file nobody diffed.
+        /// </para>
+        ///
+        /// <para>
+        /// Which transitions count as a regression, and why a row can be skipped from comparison
+        /// entirely, live in <see cref="FidelityRegressionGate"/> so they can be unit-tested without
+        /// paying for this sweep's ~60 workflow executions.
         /// </para>
         ///
         /// <para>
@@ -342,7 +324,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// and commit it — that re-baselines the gate deliberately, in a reviewable diff.
         /// </para>
         /// </summary>
-        static void AssertNoRegressionAgainstCommittedBaseline(List<FidelityResult> results)
+        static void AssertNoRegressionAgainstCommittedBaseline(
+            List<FidelityResult> results, IReadOnlyCollection<string> presentRoots)
         {
             var baselinePath = Path.Combine(AppContext.BaseDirectory, "Resources", "fidelity-allowlist.json");
             if (!File.Exists(baselinePath))
@@ -353,7 +336,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 return;
             }
 
-            BaselineDocument baseline;
+            BaselineDocument? baseline;
             try
             {
                 baseline = JsonConvert.DeserializeObject<BaselineDocument>(File.ReadAllText(baselinePath));
@@ -370,50 +353,36 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 return;
             }
 
-            var current = results.ToDictionary(r => r.StudioName, r => r.Status, StringComparer.OrdinalIgnoreCase);
-            var pass = FidelityStatus.Pass.ToString();
+            // Checked before any comparison: a baseline captured under different execution semantics
+            // produces confident nonsense in both directions, so there is nothing to learn from
+            // comparing against it. This is an authoring mistake (the allow-list and the code that
+            // generates it drifted apart), not an environment problem, so it fails rather than skips.
+            var provenanceMismatch = FidelityRegressionGate.DescribeProvenanceMismatch(baseline);
+            Assert.IsNull(provenanceMismatch, provenanceMismatch + " Baseline: " + baselinePath);
 
-            var regressions = new List<string>();
-            var improvements = new List<string>();
+            var verdict = FidelityRegressionGate.Compare(
+                baseline,
+                results
+                    .Select(r => new FidelityRow(r.StudioName, r.Status, r.SamplePath, r.Detail))
+                    .ToList(),
+                presentRoots);
 
-            foreach (var previous in baseline.Results)
+            if (verdict.Skipped.Count > 0)
             {
-                if (string.IsNullOrWhiteSpace(previous.StudioName) ||
-                    !current.TryGetValue(previous.StudioName, out var nowStatus))
-                {
-                    // Retired or renamed toolbox entry — the subset table is the source of truth.
-                    continue;
-                }
-
-                var wasPass = string.Equals(previous.Status, pass, StringComparison.OrdinalIgnoreCase);
-                var isPass = string.Equals(nowStatus, pass, StringComparison.OrdinalIgnoreCase);
-
-                if (wasPass && !isPass)
-                {
-                    var detail = results.FirstOrDefault(r =>
-                        string.Equals(r.StudioName, previous.StudioName, StringComparison.OrdinalIgnoreCase))?.Detail;
-                    regressions.Add($"  {previous.StudioName}: Pass -> {nowStatus}. {Truncate(detail ?? string.Empty)}");
-                }
-                else if (!wasPass && isPass)
-                {
-                    improvements.Add($"  {previous.StudioName}: {previous.Status} -> Pass");
-                }
+                Console.WriteLine(
+                    "Not compared — " + verdict.Skipped.Count + " activity type(s) were baselined against a " +
+                    "corpus root this run cannot see:");
+                verdict.Skipped.ForEach(Console.WriteLine);
             }
 
-            if (improvements.Count > 0)
+            if (verdict.Improvements.Count > 0)
             {
-                Console.WriteLine("Round-trip fidelity IMPROVED for " + improvements.Count + " activity type(s):");
-                improvements.ForEach(Console.WriteLine);
+                Console.WriteLine("Round-trip fidelity IMPROVED for " + verdict.Improvements.Count + " activity type(s):");
+                verdict.Improvements.ForEach(Console.WriteLine);
                 Console.WriteLine("Commit the regenerated fidelity-allowlist.json to lock these in.");
             }
 
-            Assert.AreEqual(0, regressions.Count,
-                "Round-trip fidelity REGRESSED for " + regressions.Count + " activity type(s) that the committed " +
-                "baseline records as Pass:" + Environment.NewLine + string.Join(Environment.NewLine, regressions) +
-                Environment.NewLine +
-                "A workflow using these can no longer be edited losslessly, so bodyEditable would start " +
-                "reporting false for them. Fix the converter, or — if the change is intended — re-run this " +
-                "test and commit the regenerated Resources/fidelity-allowlist.json to re-baseline.");
+            Assert.AreEqual(0, verdict.Regressions.Count, FidelityRegressionGate.BuildFailureMessage(verdict));
         }
 
         /// <summary>
@@ -737,7 +706,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             }
         }
 
-        static void WriteReport(string devRoot, List<FidelityResult> results)
+        static void WriteReport(
+            string devRoot, List<FidelityResult> results, List<string> presentRoots)
         {
             Console.WriteLine("=== Round-Trip Fidelity Report ===");
             foreach (var r in results.OrderBy(r => r.Category).ThenBy(r => r.StudioName))
@@ -761,9 +731,20 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 var reportDir = Path.Combine(devRoot, "Warewolf.Execution.Lightweight", "Resources");
                 Directory.CreateDirectory(reportDir);
                 var reportPath = Path.Combine(reportDir, "fidelity-allowlist.json");
+                // The provenance block is what lets a later run decide whether this file is
+                // comparable to what it just measured. Without it, a baseline captured under
+                // different execution semantics or against a different corpus is indistinguishable
+                // from a genuine converter change — which is precisely how a set of phantom
+                // regressions once reached CI.
                 var json = JsonConvert.SerializeObject(new
                 {
                     generatedAtUtc = DateTime.UtcNow,
+                    harness = new HarnessProvenance
+                    {
+                        HarnessVersion = FidelityRegressionGate.CurrentHarnessVersion,
+                        MaxSamplesPerType = MaxSamplesPerType,
+                        CorpusRoots = presentRoots,
+                    },
                     results
                 }, Formatting.Indented);
                 File.WriteAllText(reportPath, json, Encoding.UTF8);
