@@ -50,6 +50,8 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     private const string JtiHashKey = "sbtrigger:jti-seen";
     private const string ResultHashKeyPrefix = "sbtrigger:result:";
     private const string ResultFieldName = "json";
+    private const string ClaimHashKeyPrefix = "sbtrigger:claim:";
+    private const string ClaimFieldName = "claimedAtUtc";
     private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(10);
 
     private readonly bool _usePersistence;
@@ -57,6 +59,7 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
 
     private readonly ConcurrentDictionary<string, byte> _inMemoryJti = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, string> _inMemoryResults = new(StringComparer.Ordinal);
+    private readonly ConcurrentDictionary<string, byte> _inMemoryClaims = new(StringComparer.Ordinal);
 
     public ServiceBusReplayAndResultStore()
     {
@@ -158,5 +161,73 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
         connection.SetRangeInHash(
             ResultHashKeyPrefix + result.CorrelationId,
             new[] { new KeyValuePair<string, string>(ResultFieldName, json) });
+    }
+
+    /// <inheritdoc/>
+    public bool TryClaim(string correlationId)
+    {
+        if (string.IsNullOrWhiteSpace(correlationId))
+        {
+            // No correlation id to dedupe on - never treated as a claim conflict, same
+            // convention TryRegisterJti uses for an empty jti.
+            return true;
+        }
+
+        if (!_usePersistence)
+        {
+            if (_inMemoryResults.ContainsKey(correlationId))
+            {
+                return false;
+            }
+
+            return _inMemoryClaims.TryAdd(correlationId, 0);
+        }
+
+        using var connection = _jobStorage!.Value.GetConnection();
+        using (connection.AcquireDistributedLock($"sbtrigger:corr-lock:{correlationId}", LockTimeout))
+        {
+            var resultHash = connection.GetAllEntriesFromHash(ResultHashKeyPrefix + correlationId);
+            if (resultHash != null && resultHash.ContainsKey(ResultFieldName))
+            {
+                // A terminal result already exists - genuine duplicate, not a race.
+                return false;
+            }
+
+            var claimHash = connection.GetAllEntriesFromHash(ClaimHashKeyPrefix + correlationId);
+            if (claimHash != null && claimHash.ContainsKey(ClaimFieldName))
+            {
+                // Another delivery already holds the claim and hasn't finished (or failed
+                // without releasing it) yet.
+                return false;
+            }
+
+            connection.SetRangeInHash(
+                ClaimHashKeyPrefix + correlationId,
+                new[] { new KeyValuePair<string, string>(ClaimFieldName, DateTimeOffset.UtcNow.ToString("O")) });
+            return true;
+        }
+    }
+
+    /// <inheritdoc/>
+    public void ReleaseClaim(string correlationId)
+    {
+        if (string.IsNullOrWhiteSpace(correlationId))
+        {
+            return;
+        }
+
+        if (!_usePersistence)
+        {
+            _inMemoryClaims.TryRemove(correlationId, out _);
+            return;
+        }
+
+        using var connection = _jobStorage!.Value.GetConnection();
+        using (connection.AcquireDistributedLock($"sbtrigger:corr-lock:{correlationId}", LockTimeout))
+        {
+            using var transaction = connection.CreateWriteTransaction();
+            transaction.RemoveHash(ClaimHashKeyPrefix + correlationId);
+            transaction.Commit();
+        }
     }
 }

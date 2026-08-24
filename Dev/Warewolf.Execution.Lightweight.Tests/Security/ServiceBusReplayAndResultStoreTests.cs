@@ -140,6 +140,112 @@ public class ServiceBusReplayAndResultStoreTests
         Assert.ThrowsException<ArgumentNullException>(() => store.SaveResult(null!));
     }
 
+    // ── Claim reservation / race-window closure (Hangfire-backed) ───────────────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_FirstTime_ReturnsTrue()
+    {
+        var store = NewHangfireBackedStore();
+
+        Assert.IsTrue(store.TryClaim("claim-001"));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_SecondTimeWhileStillClaimed_ReturnsFalse()
+    {
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("claim-002"));
+
+        var second = store.TryClaim("claim-002");
+
+        Assert.IsFalse(second, "A correlation id already claimed (no result yet) must reject a second concurrent claim.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_DifferentCorrelationIds_BothSucceed()
+    {
+        var store = NewHangfireBackedStore();
+
+        Assert.IsTrue(store.TryClaim("claim-a"));
+        Assert.IsTrue(store.TryClaim("claim-b"));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_ResultAlreadySaved_ReturnsFalse_EvenWithoutAPriorClaim()
+    {
+        // Mirrors a genuine duplicate delivery arriving after the first attempt already
+        // completed and saved its result - TryClaim must reject it just as reliably as the
+        // in-flight-claim case above, without ever needing an explicit claim to have been
+        // taken first.
+        var store = NewHangfireBackedStore();
+        store.SaveResult(SampleResult("claim-with-result"));
+
+        Assert.IsFalse(store.TryClaim("claim-with-result"));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ReleaseClaim_ThenTryClaim_SucceedsAgain()
+    {
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("claim-release"));
+
+        store.ReleaseClaim("claim-release");
+
+        Assert.IsTrue(store.TryClaim("claim-release"),
+            "Releasing a claim must allow a subsequent (e.g. redelivered) attempt to claim it again.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ReleaseClaim_UnknownCorrelationId_IsANoOp()
+    {
+        var store = NewHangfireBackedStore();
+
+        store.ReleaseClaim("never-claimed"); // must not throw
+
+        Assert.IsTrue(store.TryClaim("never-claimed"));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ReleaseClaim_AfterResultSaved_DoesNotAllowReClaimingAResolvedCorrelationId()
+    {
+        // ReleaseClaim is only ever called on the throw paths, which never save a result -
+        // but defensively, releasing after a result exists must not reopen a genuinely
+        // completed correlation id to re-execution.
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("claim-then-result"));
+        store.SaveResult(SampleResult("claim-then-result"));
+
+        store.ReleaseClaim("claim-then-result");
+
+        Assert.IsFalse(store.TryClaim("claim-then-result"),
+            "A saved result must still block re-claiming even after a (harmless, no-op) release.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_ConcurrentClaimsForSameCorrelationId_ExactlyOneSucceeds()
+    {
+        var store = NewHangfireBackedStore();
+        const int attempts = 8;
+        var barrier = new Barrier(attempts);
+        var results = new bool[attempts];
+
+        Parallel.For(0, attempts, i =>
+        {
+            barrier.SignalAndWait();
+            results[i] = store.TryClaim("claim-concurrent");
+        });
+
+        Assert.AreEqual(1, results.Count(r => r), "Exactly one concurrent claim attempt for the same correlation id must succeed.");
+    }
+
     // ── In-memory fallback (Config.Persistence disabled) ────────────────────────
 
     [TestMethod]
@@ -171,5 +277,23 @@ public class ServiceBusReplayAndResultStoreTests
 
         Assert.IsFalse(store.TryGetResult("does-not-exist", out var result));
         Assert.IsNull(result);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    [DoNotParallelize] // swaps process-global Config.Persistence
+    public void PersistenceDisabled_TryClaim_StillClosesTheSameRaceWindowForOneInstance()
+    {
+        using var _ = ResumeTestSupport.SwapPersistence(enable: false);
+        var store = new ServiceBusReplayAndResultStore();
+
+        Assert.IsTrue(store.TryClaim("fallback-claim"));
+        Assert.IsFalse(store.TryClaim("fallback-claim"), "A second claim while the first is still in flight must be rejected even in the single-instance fallback.");
+
+        store.ReleaseClaim("fallback-claim");
+        Assert.IsTrue(store.TryClaim("fallback-claim"), "Releasing must allow re-claiming in the fallback path too.");
+
+        store.SaveResult(SampleResult("fallback-claim"));
+        Assert.IsFalse(store.TryClaim("fallback-claim"), "A saved result must block re-claiming in the fallback path too.");
     }
 }

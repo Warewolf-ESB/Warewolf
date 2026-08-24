@@ -58,12 +58,22 @@ public class ServiceBusWorkflowTriggerFunctionTests
     {
         public int CompleteCalls { get; private set; }
         public int DeadLetterCalls { get; private set; }
+        public int AbandonCalls { get; private set; }
         public string? LastDeadLetterReason { get; private set; }
         public string? LastDeadLetterDescription { get; private set; }
 
         public override Task CompleteMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken = default)
         {
             CompleteCalls++;
+            return Task.CompletedTask;
+        }
+
+        public override Task AbandonMessageAsync(
+            ServiceBusReceivedMessage message,
+            IDictionary<string, object>? propertiesToModify = null,
+            CancellationToken cancellationToken = default)
+        {
+            AbandonCalls++;
             return Task.CompletedTask;
         }
 
@@ -215,6 +225,68 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.AreEqual(0, executor.CallCount, "A duplicate delivery must not re-execute the workflow.");
         Assert.AreEqual(1, actions.CompleteCalls);
         Assert.AreEqual(0, actions.DeadLetterCalls);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_ClaimAlreadyHeldByInFlightDelivery_AbandonsWithoutExecutingOrSettling()
+    {
+        // Simulates a redelivery landing while a first delivery is still mid-execution
+        // (claimed, no result saved yet) - the exact race the plain TryGetResult check used
+        // to miss. Must not execute a second time, and must not complete/dead-letter either
+        // (that's for Service Bus's own lock-expiry/redelivery timing to resolve).
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("must not execute"));
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        Assert.IsTrue(store.TryClaim("corr-in-flight"), "Pre-claim to simulate the first, still-executing delivery.");
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var message = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-in-flight\"}", correlationId: "corr-in-flight");
+
+        await sut.Run(message, actions, CancellationToken.None);
+
+        Assert.AreEqual(0, executor.CallCount, "A delivery racing an in-flight claim must not execute the workflow.");
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        Assert.AreEqual(1, actions.AbandonCalls, "Must abandon rather than settle, leaving redelivery timing to Service Bus.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_ConcurrentDeliveriesOfSameCorrelationId_ExecutesExactlyOnce()
+    {
+        // Real concurrency, not a pre-seeded claim: two deliveries of the same message race
+        // through Run(...) at once. The first blocks mid-execution (simulating a slow
+        // workflow) until the second delivery has already been dispatched and observed the
+        // claim - proving TryClaim, not just TryGetResult, is what prevents the second
+        // execution.
+        var firstCallStarted = new TaskCompletionSource();
+        var releaseFirstCall = new TaskCompletionSource();
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            firstCallStarted.TrySetResult();
+            releaseFirstCall.Task.GetAwaiter().GetResult();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(executor: executor, store: store);
+        var actions1 = new FakeServiceBusMessageActions();
+        var actions2 = new FakeServiceBusMessageActions();
+        var message1 = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-concurrent\"}", correlationId: "corr-concurrent");
+        var message2 = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-concurrent\"}", correlationId: "corr-concurrent");
+
+        var firstRun = sut.Run(message1, actions1, CancellationToken.None);
+        await firstCallStarted.Task; // first delivery is now mid-execution, claim held
+        var secondRun = sut.Run(message2, actions2, CancellationToken.None);
+        await secondRun; // the racing delivery must resolve (abandon) without waiting on the first
+
+        Assert.AreEqual(1, executor.CallCount, "Only the first delivery may execute the workflow.");
+        Assert.AreEqual(0, actions2.CompleteCalls);
+        Assert.AreEqual(0, actions2.DeadLetterCalls);
+        Assert.AreEqual(1, actions2.AbandonCalls, "The racing delivery must be abandoned, not settled.");
+
+        releaseFirstCall.SetResult();
+        await firstRun;
+        Assert.AreEqual(1, actions1.CompleteCalls, "The first delivery completes normally once its execution finishes.");
     }
 
     [TestMethod]
@@ -399,6 +471,29 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutionTransientFailure_ReleasesClaim_AllowingRetryToReExecute()
+    {
+        // The claim must not survive a transient failure - otherwise the very redelivery
+        // this throw exists to trigger would be permanently blocked by its own failed
+        // attempt's claim, silently losing the message instead of retrying it.
+        var executor = new FakeWorkflowExecutor(_ => WorkflowExecutionResult.TransientFailure("OOM"));
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-transient-release");
+        Assert.IsTrue(store.TryClaim("corr-transient-release"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-transient-release", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.IsTrue(store.TryClaim("corr-transient-release"),
+            "The claim must be released on a transient failure so a genuine Service Bus redelivery can re-execute.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
     public async Task ProcessAuthenticated_ExecutorThrowsUnexpectedException_RethrowsWithoutSwallowing()
     {
         var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));
@@ -417,6 +512,26 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.AreEqual(0, actions.CompleteCalls);
         Assert.AreEqual(0, actions.DeadLetterCalls);
         Assert.IsFalse(store.TryGetResult("corr-exception", out _));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutorThrowsUnexpectedException_ReleasesClaim_AllowingRetryToReExecute()
+    {
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-exception-release");
+        Assert.IsTrue(store.TryClaim("corr-exception-release"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-exception-release", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.IsTrue(store.TryClaim("corr-exception-release"),
+            "The claim must be released on an unexpected exception so a genuine Service Bus redelivery can re-execute.");
     }
 
     [TestMethod]

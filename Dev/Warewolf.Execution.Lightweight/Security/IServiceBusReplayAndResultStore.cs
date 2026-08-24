@@ -39,4 +39,33 @@ public interface IServiceBusReplayAndResultStore
 
     /// <summary>Persists the terminal outcome for <paramref name="result"/>.<see cref="ServiceBusTriggerResult.CorrelationId"/>.</summary>
     void SaveResult(ServiceBusTriggerResult result);
+
+    /// <summary>
+    /// Atomically reserves <paramref name="correlationId"/> for processing. Returns
+    /// <c>true</c> only when neither a completed result NOR an existing claim is present
+    /// for this correlation id — i.e. this is the only delivery currently allowed to
+    /// execute the workflow for it. Returns <c>false</c> when a result already exists
+    /// (genuine duplicate — caller should complete without re-executing) or when another
+    /// delivery already holds the claim (a concurrent/redelivered attempt is in flight —
+    /// caller should abandon this delivery rather than race a second execution).
+    ///
+    /// <para>
+    /// This closes the race the plain <see cref="TryGetResult"/> check-then-<see
+    /// cref="SaveResult"/> pattern leaves open: <see cref="SaveResult"/> only happens
+    /// after the whole workflow executes, so a redelivery landing in that window would
+    /// otherwise always see "no result yet" and execute a second time.
+    /// </para>
+    /// </summary>
+    bool TryClaim(string correlationId);
+
+    /// <summary>
+    /// Releases a claim taken by <see cref="TryClaim"/> without ever calling <see
+    /// cref="SaveResult"/> — used on the transient-failure and unexpected-exception
+    /// paths, which deliberately leave no persisted result so Service Bus's own
+    /// retry/backoff can redeliver the message. Without releasing the claim here, that
+    /// redelivery would be permanently blocked by the first (failed) attempt's stale
+    /// claim. A no-op if no claim is held (e.g. <paramref name="correlationId"/> is
+    /// empty, or a result was already saved instead).
+    /// </summary>
+    void ReleaseClaim(string correlationId);
 }

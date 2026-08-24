@@ -134,12 +134,31 @@ public sealed class ServiceBusWorkflowTriggerFunction
         }
 
         // ── Business-idempotency dedupe ────────────────────────────────────────
-        if (_store.TryGetResult(correlationId, out var existing) && existing != null)
+        // TryClaim atomically reserves this correlationId for processing so a redelivery
+        // landing while the FIRST attempt is still executing (i.e. before it has reached
+        // SaveResult below) is caught here too - a plain TryGetResult-then-SaveResult check
+        // leaves that whole execution window open to a duplicate run (see
+        // IServiceBusReplayAndResultStore.TryClaim's doc comment).
+        if (!_store.TryClaim(correlationId))
         {
+            if (_store.TryGetResult(correlationId, out var existing) && existing != null)
+            {
+                _logger.LogInformation(
+                    "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Duplicate message — result already recorded (Status={Status}); completing without re-execution.",
+                    correlationId, existing.Status);
+                await messageActions.CompleteMessageAsync(message, cancellationToken).ConfigureAwait(false);
+                return;
+            }
+
+            // No terminal result yet, but another delivery already holds the claim - it is
+            // still executing (or failed without releasing it, which is itself a bug).
+            // Do NOT execute a second time, and do NOT settle this delivery either way:
+            // abandon it so Service Bus's own lock-expiry/redelivery timing governs the
+            // retry instead of racing a concurrent second execution right now.
             _logger.LogInformation(
-                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Duplicate message — result already recorded (Status={Status}); completing without re-execution.",
-                correlationId, existing.Status);
-            await messageActions.CompleteMessageAsync(message, cancellationToken).ConfigureAwait(false);
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Another delivery is already in flight for this correlation id — abandoning this delivery instead of racing a duplicate execution.",
+                correlationId);
+            await messageActions.AbandonMessageAsync(message, cancellationToken: cancellationToken).ConfigureAwait(false);
             return;
         }
 
@@ -254,7 +273,10 @@ public sealed class ServiceBusWorkflowTriggerFunction
             // Unexpected — NOT a policy/token/malformed-message failure. Let it bubble so
             // the Service Bus extension applies its standard retry/backoff and eventual
             // max-delivery-count dead-letter, per the spec's "no retry on non-transient
-            // failures ONLY" requirement.
+            // failures ONLY" requirement. Release the claim taken above so the eventual
+            // redelivery this retry produces isn't permanently blocked by this failed
+            // attempt's own claim (see TryClaim's doc comment).
+            _store.ReleaseClaim(correlationId);
             _logger.LogError(
                 ex,
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Unexpected execution exception — leaving message for standard Service Bus retry.",
@@ -273,6 +295,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             // retry/backoff, exactly like the unexpected-exception path above, and only dead-letters
             // once maxDeliveryCount is exhausted, instead of failing the whole run on the first hit.
             var transientError = string.Join("; ", result.Errors);
+            _store.ReleaseClaim(correlationId);
             _logger.LogWarning(
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Transient execution failure ({Error}) — leaving message for standard Service Bus retry instead of dead-lettering.",
                 correlationId, payload.Workflow, transientError);
