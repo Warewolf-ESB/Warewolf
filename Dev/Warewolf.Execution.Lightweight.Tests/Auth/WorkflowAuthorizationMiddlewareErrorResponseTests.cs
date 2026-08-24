@@ -14,7 +14,10 @@
  *   • NoPolicyFound (open-access)     → pass-through (next), no response written
  *   • Forbidden (policy denial)       → 500 wrapped error    (nested "Error" object) — the engine
  *     currently wraps denials as 500 to match the existing server (middleware lines 239-247,
- *     WOLF-8418); the 403 path is commented out. Flip to 403 when that lands.
+ *     WOLF-8418); the 403 path is commented out. Flip to 403 when that lands. The wrapped
+ *     Description is a fixed, caller-safe string ("Insufficient permissions.") — the matcher's
+ *     DenialReason (caller UPN / group membership) goes only to the audit log, never to the
+ *     response (see middleware lines 244-250).
  */
 
 using Microsoft.Azure.Functions.Worker;
@@ -121,8 +124,8 @@ public class WorkflowAuthorizationMiddlewareErrorResponseTests
         var err  = body.GetProperty("Error");
         Assert.AreEqual(500, err.GetProperty("Status").GetInt32());
         Assert.AreEqual("internal_server_error", err.GetProperty("Title").GetString());
-        Assert.AreEqual("group_mismatch", err.GetProperty("Description").GetString(),
-            "The denial reason must be surfaced in the wrapped error's Description.");
+        Assert.AreEqual("Insufficient permissions.", err.GetProperty("Description").GetString(),
+            "Description must be a fixed, caller-safe message — DenialReason (caller UPN/groups) must never reach the response.");
         Assert.IsTrue(err.TryGetProperty("CorrelationId", out _), "Wrapped error must include CorrelationId.");
     }
 
