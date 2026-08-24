@@ -1,5 +1,52 @@
 # Shovel Bridge Architecture — RabbitMQ → Azure Service Bus → Lightweight Execution Engine
 
+> **2026-08-24 — the load test never started: the pre-warm step killed the job, and its own
+> Phase B was part of what it was meant to prevent.** `pipeline-LOADTEST.yml`'s
+> `ShovelBridgeLoadTest_ExternalServiceBus` job failed in *Warm up UAT engine before the
+> load-test burst*, so the 1000-message run below it never executed. Two independent defects,
+> both fixed in `Scripts/Invoke-WwEnginePreWarm.ps1` and regression-tested in
+> `Scripts/Tests/Invoke-WwEnginePreWarm.Tests.ps1`.
+>
+> **1 — a per-call timeout failed the whole step, contradicting the documented contract.**
+> `-SkipHttpErrorCheck` suppresses non-2xx **status codes** only. An `Invoke-WebRequest
+> -TimeoutSec` expiry is a `TaskCanceledException` — an exception, not a response — so it
+> bypassed that switch entirely. Inside `ForEach-Object -Parallel` the child runspace runs at
+> `$ErrorActionPreference = 'Continue'` (child runspaces do **not** inherit the preference,
+> verified directly), so it was written non-terminating, relayed into the caller's error
+> stream, and there converted to a terminating error by the script's own script-level
+> `'Stop'`. The script died inside Phase B and never reached its own `[!] the final round
+> still had failures` verdict — the branch whose comment reads "Not fatal by design" was
+> **unreachable** for any transport-level failure. `Scripts/README.md` and the pipeline
+> comment both documented a non-fatal contract that had never held for timeouts.
+>
+> Fixed by normalising both outcomes through `ConvertTo-WarmupResult`: a failed call becomes a
+> counted result with the `Code 0` sentinel (rendered `TIMEOUT`/`ERROR`, never a misleading
+> `0x3`), so `Test-WarmupRoundClean` correctly marks the round dirty. `-ErrorAction Stop` on
+> every `Invoke-WebRequest` is load-bearing — without it the parallel runspace's `Continue`
+> makes the exception non-terminating and it skips the `try/catch`. The script now **always
+> exits 0** once its parameters validate; only parameter validation throws.
+>
+> **2 — Phase B opened at full concurrency, which is itself a cold-start trigger.** The
+> observed round 1 at `-TargetConcurrency 20` against `warewolfserver-uat`: `OK=22/60`, median
+> **41,725 ms**, max **159,896 ms**, `200x22 500x16 502x20 503x2` — a 63% failure rate, and
+> the exact cold-start/scale-out signature the 2026-08-16 entry below describes. Phase A had
+> already settled (42,694 ms cold → ~900 ms by call 5), so this was scale-out, not cold start:
+> 60 simultaneous executions arriving at a still-single-instance app is the same load the
+> pre-warm exists to protect the burst *from*.
+>
+> Phase B now ramps — `ceil(Target / 2^(Rounds - i))`, so 20 over 3 rounds is **5 → 10 → 20**
+> and the queue path's 6 is **2 → 3 → 6**. The last round is always the full target, so
+> `[+] WARM — the final round was clean at concurrency N` still means clean at the target and
+> nothing weaker. Costs fewer calls too (105 vs 180 at target 20), so fewer warm-up rows.
+>
+> **Still open — UAT capacity.** The ramp reduces how often the burst meets a cold app; it does
+> not raise `warewolfserver-uat`'s Consumption (Y1) ceiling. Whether that app should move to a
+> Premium/EP plan for load testing is an unresolved cost decision, deliberately not bundled
+> into this fix. Until it is resolved, **read the warm-up verdict alongside the load-test
+> result**: the burst is now published even when warming failed, so a poor result following
+> `[!] the final round still had failures` is an engine capacity problem and not necessarily a
+> product defect.
+
 > **2026-08-19 update — database migrated.** `WarewolfEntraTestDb` (referenced throughout
 > the history below) permanently exhausted Azure SQL's monthly free-limit allowance and was
 > deleted. `Resources/rabbit/NewSqlServerSource.bite` (`SourceId=b9184f70-…`) now points at
