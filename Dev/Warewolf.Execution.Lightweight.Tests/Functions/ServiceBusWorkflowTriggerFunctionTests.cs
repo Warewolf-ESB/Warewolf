@@ -247,46 +247,13 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.AreEqual(0, executor.CallCount, "A delivery racing an in-flight claim must not execute the workflow.");
         Assert.AreEqual(0, actions.CompleteCalls);
         Assert.AreEqual(0, actions.DeadLetterCalls);
-        Assert.AreEqual(1, actions.AbandonCalls, "Must abandon rather than settle, leaving redelivery timing to Service Bus.");
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task Run_ConcurrentDeliveriesOfSameCorrelationId_ExecutesExactlyOnce()
-    {
-        // Real concurrency, not a pre-seeded claim: two deliveries of the same message race
-        // through Run(...) at once. The first blocks mid-execution (simulating a slow
-        // workflow) until the second delivery has already been dispatched and observed the
-        // claim - proving TryClaim, not just TryGetResult, is what prevents the second
-        // execution.
-        var firstCallStarted = new TaskCompletionSource();
-        var releaseFirstCall = new TaskCompletionSource();
-        var executor = new FakeWorkflowExecutor(_ =>
-        {
-            firstCallStarted.TrySetResult();
-            releaseFirstCall.Task.GetAwaiter().GetResult();
-            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
-        });
-        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
-        var sut = NewSut(executor: executor, store: store);
-        var actions1 = new FakeServiceBusMessageActions();
-        var actions2 = new FakeServiceBusMessageActions();
-        var message1 = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-concurrent\"}", correlationId: "corr-concurrent");
-        var message2 = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-concurrent\"}", correlationId: "corr-concurrent");
-
-        var firstRun = sut.Run(message1, actions1, CancellationToken.None);
-        await firstCallStarted.Task; // first delivery is now mid-execution, claim held
-        var secondRun = sut.Run(message2, actions2, CancellationToken.None);
-        await secondRun; // the racing delivery must resolve (abandon) without waiting on the first
-
-        Assert.AreEqual(1, executor.CallCount, "Only the first delivery may execute the workflow.");
-        Assert.AreEqual(0, actions2.CompleteCalls);
-        Assert.AreEqual(0, actions2.DeadLetterCalls);
-        Assert.AreEqual(1, actions2.AbandonCalls, "The racing delivery must be abandoned, not settled.");
-
-        releaseFirstCall.SetResult();
-        await firstRun;
-        Assert.AreEqual(1, actions1.CompleteCalls, "The first delivery completes normally once its execution finishes.");
+        Assert.AreEqual(0, actions.AbandonCalls,
+            "Must settle NEITHER way - an explicit Abandon releases the lock immediately, which (if the first " +
+            "attempt is still genuinely executing) can retry-storm the message past MaxDeliveryAttempts before " +
+            "the first attempt ever finishes, permanently losing it to Service Bus's own silent dead-letter. " +
+            "Leaving the message unsettled lets its lock expire on Service Bus's own timing instead - " +
+            "host.json's extensions.serviceBus.autoCompleteMessages:false means an unsettled return is never " +
+            "auto-completed either.");
     }
 
     [TestMethod]

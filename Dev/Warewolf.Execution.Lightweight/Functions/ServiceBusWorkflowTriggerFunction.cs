@@ -152,13 +152,21 @@ public sealed class ServiceBusWorkflowTriggerFunction
 
             // No terminal result yet, but another delivery already holds the claim - it is
             // still executing (or failed without releasing it, which is itself a bug).
-            // Do NOT execute a second time, and do NOT settle this delivery either way:
-            // abandon it so Service Bus's own lock-expiry/redelivery timing governs the
-            // retry instead of racing a concurrent second execution right now.
+            // Do NOT execute a second time, and do NOT settle this delivery either way.
+            // Deliberately NOT calling AbandonMessageAsync here: Abandon releases the lock
+            // IMMEDIATELY, so if the first attempt is still genuinely executing, an
+            // immediate redelivery would hit the same still-held claim and abandon again -
+            // a tight retry storm that can exhaust MaxDeliveryAttempts (as low as 2) in
+            // milliseconds, long before the first attempt ever finishes and calls
+            // SaveResult. Service Bus would then dead-letter the message itself, silently,
+            // outside this code entirely - permanent message loss with no recorded result.
+            // Returning without any settlement leaves the lock to expire on its own natural
+            // timing instead (host.json's extensions.serviceBus.autoCompleteMessages:false
+            // means an unsettled return is never auto-completed either), giving the first
+            // attempt its full lock duration before a genuine redelivery is even possible.
             _logger.LogInformation(
-                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Another delivery is already in flight for this correlation id — abandoning this delivery instead of racing a duplicate execution.",
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Another delivery is already in flight for this correlation id — leaving this delivery unsettled instead of racing a duplicate execution.",
                 correlationId);
-            await messageActions.AbandonMessageAsync(message, cancellationToken: cancellationToken).ConfigureAwait(false);
             return;
         }
 
