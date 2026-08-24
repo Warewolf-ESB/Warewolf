@@ -55,6 +55,13 @@ public interface IServiceBusReplayAndResultStore
     /// after the whole workflow executes, so a redelivery landing in that window would
     /// otherwise always see "no result yet" and execute a second time.
     /// </para>
+    ///
+    /// <para>
+    /// A claim older than the implementation's staleness threshold is treated as
+    /// abandoned (the attempt holding it is presumed dead or permanently hung) and is
+    /// taken over rather than rejected — see <c>ServiceBusReplayAndResultStore</c>'s
+    /// "Claim staleness" class doc note.
+    /// </para>
     /// </summary>
     bool TryClaim(string correlationId);
 

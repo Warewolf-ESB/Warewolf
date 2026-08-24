@@ -164,6 +164,12 @@ public sealed class ServiceBusWorkflowTriggerFunction
             // timing instead (host.json's extensions.serviceBus.autoCompleteMessages:false
             // means an unsettled return is never auto-completed either), giving the first
             // attempt its full lock duration before a genuine redelivery is even possible.
+            // If the first attempt is not merely slow but actually dead or permanently hung
+            // (no cancellation path reaches WorkflowExecutor.Execute — see the 1000-message
+            // ShovelBridge load test incident of 2026-08-24), this claim would otherwise
+            // block every future redelivery forever with no result ever recorded; TryClaim's
+            // staleness check (IServiceBusReplayAndResultStore) is what eventually lets a
+            // later redelivery take the claim over instead.
             _logger.LogInformation(
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Another delivery is already in flight for this correlation id — leaving this delivery unsettled instead of racing a duplicate execution.",
                 correlationId);
