@@ -1,0 +1,7 @@
+<Source ID="8a3f1c2d-5e6b-4a90-9c1f-7b2d4e8a6f30" Name="Fidelity SQL Server Source" ResourceType="SqlDatabase" IsValid="true" ConnectionString="Data Source=localhost,1433;Initial Catalog=Dev2TestingDB;User ID=testUser;Password=Ex@mple!23Secure#PWD;Encrypt=False;" Type="DbSource" ServerType="SqlDatabase" ServerVersion="0.0.0.0" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>Fidelity SQL Server Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>DbSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-08-23T00:00:00.0000000+00:00" Reason="" User="FidelityFixtureGenerator" VersionNumber="1" ResourceId="8a3f1c2d-5e6b-4a90-9c1f-7b2d4e8a6f30" VersionId="8a3f1c2d-5e6b-4a90-9c1f-7b2d4e8a6f30" />
+</Source>

@@ -245,6 +245,16 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         }
 
         /// <summary>
+        /// Repo-relative folder FidelityFixtureGenerator writes its purpose-built fixtures under.
+        /// <see cref="ClassifyCorpus"/> gives files here first shot at a type's sample bucket — see
+        /// its remarks.
+        /// </summary>
+        static readonly string GeneratedFixturesMarker = Path.Combine("Warewolf.Execution.Lightweight", "Resources", "tools");
+
+        static bool IsGeneratedFixture(string path) =>
+            path.Replace('/', '\\').IndexOf(GeneratedFixturesMarker, StringComparison.OrdinalIgnoreCase) >= 0;
+
+        /// <summary>
         /// Classifies the discovered `.bite` corpus against <see cref="ToolboxSubset"/>, returning
         /// up to <paramref name="maxSamplesPerType"/> sample file paths per toolbox entry whose raw
         /// file content contains one of that entry's <see cref="ToolboxEntry.SearchTokens"/>.
@@ -252,12 +262,29 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// rather than a full XAML parse — the class names appear verbatim inside the escaped
         /// XamlDefinition, so this is a cheap, reliable-enough classifier for corpus discovery
         /// (not for the actual conversion, which always goes through the real converter).
+        ///
+        /// <para>
+        /// Files under <see cref="GeneratedFixturesMarker"/> are considered FIRST, ahead of every
+        /// other corpus root, so a purpose-built fixture always gets a chance to be measured even
+        /// when real corpus samples for the same type already fill the bucket first. Real corpus
+        /// samples still fill any remaining slots up to <paramref name="maxSamplesPerType"/>.
+        /// <c>OrderByDescending</c> is stable, so relative order within each group is unchanged —
+        /// this is a no-op for every type whose generated-fixture-plus-real-sample count does not
+        /// exceed the cap (i.e. every type FidelityFixtureGenerator covered before SQL Server
+        /// Database, none of which had more than a couple of competing real samples). It matters
+        /// only where real corpus samples for a RequiresSource type outnumber the cap and are all
+        /// broken/unreachable — e.g. "SQL Server Database", which had 10 real candidates (the
+        /// committed NewSqlServerSource.bite's DPAPI connection string crashes off-machine — see
+        /// FidelityFixtureGenerator.MssqlConnectionString) filling all 8 slots from 'Resources -
+        /// ServerTests' before 'Warewolf.Execution.Lightweight\Resources' — scanned last — was ever
+        /// reached, silently excluding the generated fixture from every attempt.
+        /// </para>
         /// </summary>
         public static Dictionary<string, List<string>> ClassifyCorpus(IEnumerable<string> biteFiles, int maxSamplesPerType = 2)
         {
             var byToolboxName = ToolboxSubset.ToDictionary(t => t.StudioName, t => new List<string>());
 
-            foreach (var file in biteFiles)
+            foreach (var file in biteFiles.OrderByDescending(IsGeneratedFixture))
             {
                 string content;
                 try

@@ -56,6 +56,7 @@ using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.RedisRemove;
+using Dev2.Common.Interfaces.DB;
 using Dev2.Utilities;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
@@ -85,6 +86,28 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// </summary>
         static readonly Guid RedisSourceId = new("6c2f5f4e-9d1a-4f27-9d3e-2a5b8c7e1d40");
 
+        /// <summary>
+        /// Host/credentials the generated SQL Server fixture points at. Matches TestRun.ps1's
+        /// <c>Start-HostMSSQLServer</c> (the native-Windows path hosted windows-2022 agents use),
+        /// which provisions login <c>testUser</c>/<c>Ex@mple!23Secure#PWD</c> against database
+        /// <c>Dev2TestingDB</c> on localhost:1433, and its deterministic seed which creates
+        /// <c>dbo.FidelityPing</c> — a parameterless stored procedure guaranteed present even when
+        /// no .bak/.bacpac fixture is available.
+        ///
+        /// Deliberately NOT the committed 'Resources - ServerTests\Resources\Sources\Database\
+        /// NewSqlServerSource.bite': that source's ConnectionString is a DPAPI-encrypted blob from
+        /// a 2020 dev machine, and DPAPI ciphertext cannot be decrypted on a different machine/user
+        /// — on any other host it deserialises to unparseable garbage, which crashes
+        /// Microsoft.Data.SqlClient deep inside SqlConnection's endpoint-detection with an
+        /// unhandled IndexOutOfRangeException on an empty Data Source, rather than failing cleanly.
+        /// Written here as a fresh, portable, PLAINTEXT source for the same reason RedisSource is
+        /// plaintext below — see WriteRedisSource's remarks.
+        /// </summary>
+        const string MssqlConnectionString =
+            "Data Source=localhost,1433;Initial Catalog=Dev2TestingDB;User ID=testUser;Password=Ex@mple!23Secure#PWD;Encrypt=False;";
+
+        static readonly Guid MssqlSourceId = new("8a3f1c2d-5e6b-4a90-9c1f-7b2d4e8a6f30");
+
         static string FixtureRoot
         {
             get
@@ -107,6 +130,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 WriteWorkflow("decision legacy", "Fidelity_DecisionLegacy", BuildLegacyDecisionStep(), DecisionDataList()),
                 WriteWorkflow("odbc database", "Fidelity_OdbcDatabase", BuildOdbcStep(), SimpleDataList("result")),
                 WriteWorkflow("sql bulk insert", "Fidelity_SqlBulkInsert", BuildSqlBulkInsertStep(), SimpleDataList("result")),
+                WriteMssqlSource(),
+                WriteWorkflow("sql server database", "Fidelity_SqlServerDatabase", BuildSqlServerStep(), SimpleDataList("result")),
             };
 
             foreach (var path in written)
@@ -204,6 +229,27 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             },
         };
 
+        /// <summary>
+        /// Calls dbo.FidelityPing (see MssqlConnectionString remarks) — a real, parameterless
+        /// stored procedure guaranteed present by Start-HostMSSQLServer's deterministic seed, so
+        /// this fixture executes against actual SQL Server logic rather than merely resolving a
+        /// source. Outputs is set (empty, not null) only to satisfy DsfSqlServerDatabaseActivity's
+        /// null guard — exact column mapping is not needed for round-trip fidelity, only that both
+        /// the original and round-tripped executions succeed identically.
+        /// </summary>
+        static FlowStep BuildSqlServerStep() => new()
+        {
+            Action = new DsfSqlServerDatabaseActivity
+            {
+                DisplayName = "SQL Server Database",
+                SourceId = MssqlSourceId,
+                ActionName = "dbo.FidelityPing",
+                ProcedureName = "dbo.FidelityPing",
+                Inputs = new List<IServiceInput>(),
+                Outputs = new List<IServiceOutputMapping>(),
+            },
+        };
+
         // ── DataLists ─────────────────────────────────────────────────────────
 
         static XElement RedisDataList() => new("DataList",
@@ -283,6 +329,38 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                     new XAttribute("VersionId", RedisSourceId.ToString())));
 
             return WriteFixture("redis cache", "Fidelity Redis Source.bite", source.ToString());
+        }
+
+        /// <summary>
+        /// The SQL Server source Fidelity_SqlServerDatabase resolves through <c>SourceId</c>. See
+        /// MssqlConnectionString's remarks for why this is a fresh, plaintext source rather than
+        /// the committed (and unusable-off-machine) NewSqlServerSource.bite.
+        /// </summary>
+        static string WriteMssqlSource()
+        {
+            var source = new XElement("Source",
+                new XAttribute("ID", MssqlSourceId.ToString()),
+                new XAttribute("Name", "Fidelity SQL Server Source"),
+                new XAttribute("ResourceType", "SqlDatabase"),
+                new XAttribute("IsValid", "true"),
+                new XAttribute("ConnectionString", MssqlConnectionString),
+                new XAttribute("Type", "DbSource"),
+                new XAttribute("ServerType", "SqlDatabase"),
+                new XAttribute("ServerVersion", "0.0.0.0"),
+                new XAttribute("ServerID", Guid.Empty.ToString()),
+                new XElement("DisplayName", "Fidelity SQL Server Source"),
+                new XElement("AuthorRoles", string.Empty),
+                new XElement("ErrorMessages"),
+                new XElement("TypeOf", "DbSource"),
+                new XElement("VersionInfo",
+                    new XAttribute("DateTimeStamp", FixedTimestamp.ToString("o")),
+                    new XAttribute("Reason", string.Empty),
+                    new XAttribute("User", "FidelityFixtureGenerator"),
+                    new XAttribute("VersionNumber", "1"),
+                    new XAttribute("ResourceId", MssqlSourceId.ToString()),
+                    new XAttribute("VersionId", MssqlSourceId.ToString())));
+
+            return WriteFixture("sql server database", "Fidelity SQL Server Source.bite", source.ToString());
         }
 
         static string WriteFixture(string folder, string fileName, string contents)
