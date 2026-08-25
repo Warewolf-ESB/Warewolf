@@ -414,28 +414,42 @@ namespace Dev2.Services.Execution
             return IsForXmlProcedureScript(procSqlScript);
         }
 
+        /// <summary>
+        /// WOLF-8512: no DB activity ever sets <see cref="ConnectionTimeout"/> (always the C# default
+        /// of 0), so only defer to it when it is a genuine positive override; otherwise use the
+        /// source's own already-correct timeout instead of clobbering it with 0.
+        /// </summary>
+        static int ResolveEffectiveConnectionTimeout(int connectionTimeout, int sourceConnectionTimeout) =>
+            connectionTimeout > 0 ? connectionTimeout : sourceConnectionTimeout;
+
         void MssqlSqlExecution(int connectionTimeout, int? commandTimeout, ErrorResultTO errors, int update)
         {
 
 
             var connectionBuilder = new ConnectionBuilder();
-            var connectionStringWithTimeout = Source.GetConnectionStringWithTimeout(connectionTimeout);
+
+            // WOLF-8512: no DB activity (Sql/Oracle/MySql/Postgres/ODBC) ever sets this
+            // ConnectionTimeout property - it is always the C# default of 0. Passed straight
+            // through, that clobbers Source's own already-correct ConnectionTimeout (parsed from
+            // the source's connection string, or 30s by default - see DbSource.ConnectionString
+            // setter) with a literal "Connection Timeout=0", which is SqlClient's convention for
+            // "no client-side bound - SqlConnection.Open() below waits INDEFINITELY". Under load
+            // this left a small but persistent set of executions permanently blocked in
+            // connection.Open() with no timeout, no exception, and no dead-letter possible - the
+            // trigger's own execution-timeout and concurrency-slot-wait bounds can stop WAITING on
+            // this call but cannot cancel it once inside it. Only override the source's timeout
+            // when a caller has actually supplied a positive one; otherwise defer to the source.
+            var effectiveConnectionTimeout = ResolveEffectiveConnectionTimeout(connectionTimeout, Source.ConnectionTimeout);
+            var connectionStringWithTimeout = Source.GetConnectionStringWithTimeout(effectiveConnectionTimeout);
             var connection = new SqlConnection(connectionBuilder.ConnectionString(connectionStringWithTimeout));
             var entraFallbackConnectionString = connectionBuilder.FallbackConnectionString(connectionStringWithTimeout);
             var startTime = Stopwatch.StartNew();
 
-            // WOLF-8512 diagnostics: connectionTimeout=0 means Microsoft.Data.SqlClient's
-            // "Connection Timeout=0" - SqlConnection.Open() below then has NO client-side bound
-            // and can block indefinitely if the server/pool never accepts the connection. This is
-            // the prime suspect for the 1000-message ShovelBridge load test's small (~2%) but
-            // persistent set of executions that never reach any terminal state (no result, no
-            // dead-letter) even with the trigger's own execution-timeout and concurrency-slot-wait
-            // bounds in place - those bounds can stop WAITING on this call but cannot cancel it.
-            // Kept as Info (not Debug) deliberately, same level as the existing per-step timing
-            // lines below, so it survives whatever log level this host runs at without needing a
-            // redeploy to re-enable it.
+            // WOLF-8512 diagnostics: kept as Info (not Debug) deliberately, same level as the
+            // existing per-step timing lines below, so it survives whatever log level this host
+            // runs at without needing a redeploy to re-enable it.
             Dev2Logger.Info(
-                $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | ConnectionTimeout={connectionTimeout}{(connectionTimeout == 0 ? " (0 = SqlClient default: SqlConnection.Open() below waits INDEFINITELY, no client-side bound)" : "s")} | CommandTimeout={(commandTimeout?.ToString() ?? "null (SqlCommand default: 30s)")} | ExecutionID={DataObj.ExecutionID}",
+                $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | ConnectionTimeout={effectiveConnectionTimeout}{(effectiveConnectionTimeout == 0 ? " (0 = SqlClient default: SqlConnection.Open() below waits INDEFINITELY, no client-side bound)" : "s")} | CommandTimeout={(commandTimeout?.ToString() ?? "null (SqlCommand default: 30s)")} | ExecutionID={DataObj.ExecutionID}",
                 DataObj.ExecutionID.ToString());
 
             try
