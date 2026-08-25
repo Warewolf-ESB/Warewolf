@@ -82,7 +82,18 @@ ServiceBusWorkflowTriggerFunction  (Warewolf.Execution.Lightweight, in-process)
    7. IWorkflowPolicyMatcher.Evaluate(workflow, principal, permissions)  ← SAME matcher HTTP uses
       ├─ Forbidden / ConfigMissingDeny → dead-letter + record (Denied)
       └─ Allowed                        → continue
-   8. IWorkflowExecutor.Execute(...) in-process (ExecutingPrincipal = validated principal)
+   8. Wait for a free execution slot (SemaphoreSlim, ServiceBusTriggerOptions.MaxConcurrentExecutions,
+      default 8) → caps how many workflows this instance runs at once so a large burst is processed
+      at a sustainable rate instead of overwhelming a single (typically Consumption-plan) instance's
+      thread pool all at once; Service Bus's own durable queue absorbs the rest while they wait.
+   9. IWorkflowExecutor.Execute(...) in-process (ExecutingPrincipal = validated principal), run on the
+      thread pool and bounded by ServiceBusTriggerOptions.ExecutionTimeout (default 5 min) — Execute
+      has no cancellation seam, so a timed-out execution is abandoned (left running in the background
+      until it finishes on its own), not cancelled; its concurrency slot from step 8 is only released
+      once it actually finishes, not merely once the timeout fires.
+      ├─ timeout                  → claim released, TimeoutException thrown — SB extension retry/backoff
+      │  applies, eventually dead-lettering once maxDeliveryCount is exhausted instead of the delivery
+      │  waiting forever with no result ever recorded
       ├─ transient failure (IsTransientFailure, e.g. OutOfMemoryException under Consumption-plan
       │  cold-start memory pressure) → thrown, NOT recorded, NOT dead-lettered — SB extension
       │  retry/backoff applies, same as an unexpected exception below
@@ -169,6 +180,8 @@ follow-up could add a scheduled cleanup job if this becomes an operational conce
 | `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE` | Expected `aud` claim for tokens carried in Service-Bus-triggered messages. Deliberately **separate** from `WAREWOLF_ENTRA_AUDIENCE` (the HTTP audience) so the two trust boundaries can use different app registrations/scopes if desired. |
 | `WAREWOLF_ENTRA_TENANT_ID` | Reused from the existing HTTP Entra config (same tenant). |
 | `WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS` | How long a `jti` is remembered for replay-prevention purposes (default: 24). |
+| `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS` | Hard time budget for a single workflow execution before it is treated as failed and left for Service Bus's own retry/backoff (default: 300 = 5 minutes). See flow step 9. |
+| `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 8. |
 | `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. |
 
 `host.json` requires `extensions.serviceBus.autoCompleteMessages: false` so the trigger's

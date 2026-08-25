@@ -158,15 +158,22 @@ public class ServiceBusWorkflowTriggerFunctionTests
         IWorkflowPolicyMatcher? policyMatcher = null,
         IWorkflowExecutor? executor = null,
         IServiceBusReplayAndResultStore? store = null,
-        ServiceBusEntraAuthOptions? authOptions = null) =>
-        new(
+        ServiceBusEntraAuthOptions? authOptions = null,
+        ServiceBusTriggerOptions? triggerOptions = null,
+        SemaphoreSlim? executionConcurrencyLimiter = null)
+    {
+        var effectiveTriggerOptions = triggerOptions ?? new ServiceBusTriggerOptions();
+        return new(
             new EntraBearerTokenValidator(authOptions ?? new ServiceBusEntraAuthOptions()),
             policyMatcher ?? new FakePolicyMatcher(PolicyMatchResult.Allow()),
             executor ?? new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" }),
             store ?? new ServiceBusReplayAndResultStore(new MemoryStorage()),
             new AuditLogger(NullLogger<AuditLogger>.Instance),
             HostEnvironmentConfig.Load(),
+            effectiveTriggerOptions,
+            executionConcurrencyLimiter ?? new SemaphoreSlim(effectiveTriggerOptions.MaxConcurrentExecutions, effectiveTriggerOptions.MaxConcurrentExecutions),
             NullLogger<ServiceBusWorkflowTriggerFunction>.Instance);
+    }
 
     // ── Run(...) — pre-authentication branches (no network dependency) ──────────
 
@@ -521,5 +528,187 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
         store.TryGetResult("corr-app-only", out var result);
         Assert.AreEqual("app:11111111-2222-3333-4444-555555555555", result!.Caller);
+    }
+
+    // ── Bounded execution time (ServiceBusTriggerOptions.ExecutionTimeout) ──────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutionExceedsTimeout_ThrowsTimeoutException_ReleasesClaim_NoResultPersisted()
+    {
+        // gate is never set during the assertion window below - simulates an execution that
+        // hangs (e.g. thread-pool starvation under load), not one that merely errors.
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-timeout");
+        Assert.IsTrue(store.TryClaim("corr-timeout"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        await Assert.ThrowsExceptionAsync<TimeoutException>(
+            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-timeout", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.IsTrue(store.TryClaim("corr-timeout"),
+            "The claim must be released on a timeout so a genuine Service Bus redelivery can re-execute.");
+        Assert.IsFalse(store.TryGetResult("corr-timeout", out _),
+            "No result should be persisted for an execution that timed out.");
+
+        gate.Set(); // let the orphaned background execution finish so it doesn't leak past the test
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutionFasterThanTimeout_CompletesNormally()
+    {
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-fast");
+
+        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-fast", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+
+        Assert.AreEqual(1, actions.CompleteCalls);
+        store.TryGetResult("corr-fast", out var result);
+        Assert.AreEqual(ServiceBusTriggerStatus.Succeeded, result!.Status);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_TimedOutExecution_ReleasesConcurrencySlot_OnlyWhenBackgroundExecutionActuallyFinishes()
+    {
+        // Pins the deliberate design decision documented on ServiceBusTriggerOptions.
+        // MaxConcurrentExecutions: a timed-out (abandoned, not cancelled) execution keeps
+        // consuming a real resource until it actually finishes, so its concurrency slot
+        // must stay charged against the cap for that whole time - freeing it the moment we
+        // merely stop waiting would let timed-out background work become invisible extra
+        // load beyond the configured cap.
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var limiter = new SemaphoreSlim(1, 1);
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50), MaxConcurrentExecutions = 1 };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-slot-honesty");
+        Assert.IsTrue(store.TryClaim("corr-slot-honesty"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        await Assert.ThrowsExceptionAsync<TimeoutException>(
+            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-slot-honesty", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.AreEqual(0, limiter.CurrentCount,
+            "The slot must stay charged against the cap while the abandoned execution is still actually running in the background.");
+
+        gate.Set();
+        var released = SpinWait.SpinUntil(() => limiter.CurrentCount == 1, TimeSpan.FromSeconds(2));
+        Assert.IsTrue(released, "The slot must be released once the abandoned execution actually finishes.");
+    }
+
+    // ── Bounded concurrency (ServiceBusTriggerOptions.MaxConcurrentExecutions) ──
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ConcurrencyLimiterAtCapacity_NextDeliveryWaitsForAFreeSlot()
+    {
+        var gateA = new ManualResetEventSlim(false);
+        var startedA = new ManualResetEventSlim(false);
+        var startedB = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(request =>
+        {
+            if (request.InputParameters["marker"] == "A")
+            {
+                startedA.Set();
+                gateA.Wait();
+            }
+            else
+            {
+                startedB.Set();
+            }
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var limiter = new SemaphoreSlim(1, 1);
+        var triggerOptions = new ServiceBusTriggerOptions { MaxConcurrentExecutions = 1 };
+        var sut = NewSut(executor: executor, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
+        var actionsA = new FakeServiceBusMessageActions();
+        var actionsB = new FakeServiceBusMessageActions();
+        var payloadA = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
+        var payloadB = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
+        var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
+        var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
+
+        var taskA = sut.ProcessAuthenticatedMessageAsync(
+            NewUserIdentity(jti: "jti-cap-a"), payloadA, "corr-cap-a", messageA, actionsA, DateTimeOffset.UtcNow, CancellationToken.None);
+        Assert.IsTrue(startedA.Wait(TimeSpan.FromSeconds(2)), "First delivery must acquire the only slot and start executing.");
+
+        var taskB = sut.ProcessAuthenticatedMessageAsync(
+            NewUserIdentity(jti: "jti-cap-b"), payloadB, "corr-cap-b", messageB, actionsB, DateTimeOffset.UtcNow, CancellationToken.None);
+        Assert.IsFalse(startedB.Wait(TimeSpan.FromMilliseconds(200)),
+            "Second delivery must wait for a free execution slot instead of running immediately while the cap is exhausted.");
+
+        gateA.Set();
+        await taskA;
+        Assert.IsTrue(startedB.Wait(TimeSpan.FromSeconds(2)), "Second delivery must proceed once the first releases its slot.");
+        await taskB;
+
+        Assert.AreEqual(1, actionsA.CompleteCalls);
+        Assert.AreEqual(1, actionsB.CompleteCalls);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_DifferentCorrelationIds_WithinCapacity_BothProceedWithoutWaitingOnEachOther()
+    {
+        var gateA = new ManualResetEventSlim(false);
+        var gateB = new ManualResetEventSlim(false);
+        var startedA = new ManualResetEventSlim(false);
+        var startedB = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(request =>
+        {
+            if (request.InputParameters["marker"] == "A")
+            {
+                startedA.Set();
+                gateA.Wait();
+            }
+            else
+            {
+                startedB.Set();
+                gateB.Wait();
+            }
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var limiter = new SemaphoreSlim(2, 2);
+        var triggerOptions = new ServiceBusTriggerOptions { MaxConcurrentExecutions = 2 };
+        var sut = NewSut(executor: executor, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
+        var payloadA = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
+        var payloadB = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
+        var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
+        var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
+
+        var taskA = sut.ProcessAuthenticatedMessageAsync(
+            NewUserIdentity(jti: "jti-within-a"), payloadA, "corr-within-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
+        var taskB = sut.ProcessAuthenticatedMessageAsync(
+            NewUserIdentity(jti: "jti-within-b"), payloadB, "corr-within-b", messageB, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
+
+        Assert.IsTrue(startedA.Wait(TimeSpan.FromSeconds(2)) && startedB.Wait(TimeSpan.FromSeconds(2)),
+            "Both deliveries must be able to start concurrently when the cap is not exceeded.");
+
+        gateA.Set();
+        gateB.Set();
+        await Task.WhenAll(taskA, taskB);
     }
 }

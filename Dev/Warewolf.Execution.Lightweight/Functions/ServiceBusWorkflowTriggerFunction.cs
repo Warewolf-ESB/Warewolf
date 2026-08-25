@@ -41,7 +41,10 @@ namespace Warewolf.Execution.Lightweight.Functions;
 ///         bound to the DEDICATED <see cref="ServiceBusEntraAuthOptions"/> audience (never the general HTTP audience — confused-deputy prevention).</item>
 ///   <item>Replay protection: register the token's <c>jti</c> (mirrored application property preferred, falls back to the token claim) — a repeat is dead-lettered, never retried.</item>
 ///   <item>Authorize via <see cref="IWorkflowPolicyMatcher.Evaluate"/> — denial is dead-lettered, never retried.</item>
-///   <item>Execute in-process via <see cref="IWorkflowExecutor"/>. A genuine business/activity failure is dead-lettered (not transient — retrying will not help).
+///   <item>Wait for a free execution slot (<see cref="Auth.Models.ServiceBusTriggerOptions.MaxConcurrentExecutions"/>), then execute in-process
+///         via <see cref="IWorkflowExecutor"/>, bounded by <see cref="Auth.Models.ServiceBusTriggerOptions.ExecutionTimeout"/> — an execution that
+///         does not finish in time is treated as failed the same way an unexpected exception is (see below), instead of leaving the delivery
+///         waiting forever with no result ever recorded. A genuine business/activity failure is dead-lettered (not transient — retrying will not help).
 ///         A <see cref="WorkflowExecutionResult.IsTransientFailure"/> result (e.g. an <see cref="OutOfMemoryException"/> under Consumption-plan
 ///         cold-start memory pressure) is neither persisted nor dead-lettered — it is thrown instead, same as an unexpected exception below.
 ///         An unexpected exception (thrown, not returned) is rethrown so the Service Bus extension applies its normal retry/backoff and eventual max-delivery-count dead-letter.</item>
@@ -63,6 +66,8 @@ public sealed class ServiceBusWorkflowTriggerFunction
     private readonly IServiceBusReplayAndResultStore _store;
     private readonly AuditLogger _audit;
     private readonly HostEnvironmentConfig _config;
+    private readonly ServiceBusTriggerOptions _triggerOptions;
+    private readonly SemaphoreSlim _executionConcurrencyLimiter;
     private readonly ILogger<ServiceBusWorkflowTriggerFunction> _logger;
 
     public ServiceBusWorkflowTriggerFunction(
@@ -72,6 +77,8 @@ public sealed class ServiceBusWorkflowTriggerFunction
         IServiceBusReplayAndResultStore store,
         AuditLogger audit,
         HostEnvironmentConfig config,
+        ServiceBusTriggerOptions triggerOptions,
+        SemaphoreSlim executionConcurrencyLimiter,
         ILogger<ServiceBusWorkflowTriggerFunction> logger)
     {
         // tokenValidator MUST be DI-injected as a singleton (see ServiceCollectionExtensions
@@ -86,13 +93,15 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // (reproduced by the 1000-message ShovelBridge load test). Injecting the singleton
         // gives this trigger the same one-cache-for-app-lifetime behaviour that
         // BearerTokenPrincipalParser already has for the HTTP path.
-        _tokenValidator = tokenValidator;
-        _policyMatcher  = policyMatcher;
-        _executor       = executor;
-        _store          = store;
-        _audit          = audit;
-        _config         = config;
-        _logger         = logger;
+        _tokenValidator              = tokenValidator;
+        _policyMatcher               = policyMatcher;
+        _executor                    = executor;
+        _store                       = store;
+        _audit                       = audit;
+        _config                      = config;
+        _triggerOptions              = triggerOptions;
+        _executionConcurrencyLimiter = executionConcurrencyLimiter;
+        _logger                      = logger;
     }
 
     [Function("ServiceBusWorkflowTrigger")]
@@ -278,9 +287,67 @@ public sealed class ServiceBusWorkflowTriggerFunction
         executionRequest.ExecutingPrincipal = principal;
 
         WorkflowExecutionResult result;
+
+        // ── Bounded concurrency ─────────────────────────────────────────────────
+        // Wait for a free execution slot rather than starting immediately - caps how many
+        // workflow executions run at once on this instance (ServiceBusTriggerOptions.
+        // MaxConcurrentExecutions) so a large burst is processed at a sustainable rate
+        // instead of overwhelming a single instance's thread pool all at once. Service
+        // Bus's own durable queue absorbs the rest while they wait; nothing is lost.
         try
         {
-            result = _executor.Execute(executionRequest);
+            await _executionConcurrencyLimiter.WaitAsync(cancellationToken).ConfigureAwait(false);
+        }
+        catch (Exception ex)
+        {
+            // Never got a slot at all (e.g. the trigger's own cancellation fired while
+            // waiting - a fully-saturated limiter for longer than functionTimeout). Release
+            // the claim so a redelivery can retry once capacity frees up.
+            _store.ReleaseClaim(correlationId);
+            _logger.LogError(
+                ex,
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Timed out waiting for a free execution slot ({MaxConcurrent} max concurrent) — leaving message for standard Service Bus retry.",
+                correlationId, payload.Workflow, _triggerOptions.MaxConcurrentExecutions);
+            throw;
+        }
+
+        // ── Bounded execution time ──────────────────────────────────────────────
+        // IWorkflowExecutor.Execute is synchronous with no cancellation seam, so it cannot
+        // be interrupted directly. Run it on the thread pool and race it against a timeout
+        // instead: if it has not finished within ServiceBusTriggerOptions.ExecutionTimeout,
+        // treat the delivery as failed exactly like the unexpected-exception path below
+        // (release the claim, throw so Service Bus's own retry/backoff applies, eventually
+        // dead-lettering once maxDeliveryCount is exhausted) rather than waiting forever
+        // with no result ever recorded (see the 1000-message ShovelBridge load test
+        // incidents of 2026-08-24/25).
+        var executionTask = Task.Run(() => _executor.Execute(executionRequest));
+
+        // The concurrency slot is released only once execution actually finishes (success,
+        // failure, or - if we time out below - whenever the abandoned task eventually
+        // completes on its own), not merely once we stop waiting on it: a timed-out
+        // execution keeps running and keeps consuming real resources, so the slot it
+        // occupies must stay charged against the cap until it genuinely frees up.
+        _ = executionTask.ContinueWith(
+            _ => _executionConcurrencyLimiter.Release(),
+            CancellationToken.None,
+            TaskContinuationOptions.ExecuteSynchronously,
+            TaskScheduler.Default);
+
+        var winner = await Task.WhenAny(executionTask, Task.Delay(_triggerOptions.ExecutionTimeout, cancellationToken))
+            .ConfigureAwait(false);
+        if (winner != executionTask)
+        {
+            _store.ReleaseClaim(correlationId);
+            _logger.LogWarning(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution exceeded the configured timeout ({Timeout}) — leaving message for standard Service Bus retry instead of waiting indefinitely. The abandoned execution keeps running in the background (IWorkflowExecutor.Execute has no cancellation seam) and will release its concurrency slot whenever it eventually finishes.",
+                correlationId, payload.Workflow, _triggerOptions.ExecutionTimeout);
+            throw new TimeoutException(
+                $"Workflow execution for correlationId '{correlationId}' exceeded the configured timeout ({_triggerOptions.ExecutionTimeout}).");
+        }
+
+        try
+        {
+            result = await executionTask.ConfigureAwait(false);
         }
         catch (Exception ex)
         {

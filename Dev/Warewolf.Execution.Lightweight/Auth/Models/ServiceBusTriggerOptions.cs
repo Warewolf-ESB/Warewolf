@@ -41,6 +41,37 @@ public sealed class ServiceBusTriggerOptions
     /// </summary>
     public TimeSpan JtiReplayWindow { get; init; } = TimeSpan.FromHours(24);
 
+    /// <summary>
+    /// Hard time budget for a single workflow execution
+    /// (<c>Functions.ServiceBusWorkflowTriggerFunction</c>'s call into
+    /// <c>IWorkflowExecutor.Execute</c>). If execution has not completed within this
+    /// window, the trigger treats it as failed: the claim is released and a
+    /// <see cref="TimeoutException"/> is thrown so Service Bus's own retry/backoff
+    /// applies, exactly like the transient-failure/unexpected-exception paths — the
+    /// message eventually dead-letters once <c>maxDeliveryCount</c> is exhausted instead
+    /// of never reaching any terminal state (see the 1000-message ShovelBridge load test
+    /// incidents of 2026-08-24/25, where a resource-starved Consumption-plan instance left
+    /// executions running with no result ever recorded and nothing reaching the DLQ).
+    ///
+    /// <para>
+    /// <b>Known limitation.</b> <c>IWorkflowExecutor.Execute</c> takes no
+    /// <see cref="CancellationToken"/>, so a timed-out execution is abandoned, not
+    /// cancelled — it keeps running in the background until it finishes on its own.
+    /// </para>
+    /// </summary>
+    public TimeSpan ExecutionTimeout { get; init; } = TimeSpan.FromMinutes(5);
+
+    /// <summary>
+    /// Maximum number of workflow executions this instance will run concurrently. Excess
+    /// concurrent trigger invocations wait for a free slot before calling
+    /// <c>IWorkflowExecutor.Execute</c> — Service Bus's own durable queue absorbs the rest
+    /// while they wait, so a burst is processed at a sustainable rate instead of
+    /// overwhelming a single (typically Consumption-plan) instance's thread pool all at
+    /// once. See <c>Infrastructure.ServiceCollectionExtensions</c> for the DI-singleton
+    /// <see cref="System.Threading.SemaphoreSlim"/> sized from this value.
+    /// </summary>
+    public int MaxConcurrentExecutions { get; init; } = 8;
+
     /// <summary>Reads tunables from environment variables.</summary>
     public static ServiceBusTriggerOptions FromEnvironment()
     {
@@ -49,6 +80,21 @@ public sealed class ServiceBusTriggerOptions
             ? TimeSpan.FromHours(hours)
             : TimeSpan.FromHours(24);
 
-        return new ServiceBusTriggerOptions { JtiReplayWindow = window };
+        var timeoutRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS");
+        var executionTimeout = double.TryParse(timeoutRaw, out var seconds) && seconds > 0
+            ? TimeSpan.FromSeconds(seconds)
+            : TimeSpan.FromMinutes(5);
+
+        var maxConcurrentRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS");
+        var maxConcurrentExecutions = int.TryParse(maxConcurrentRaw, out var maxConcurrent) && maxConcurrent > 0
+            ? maxConcurrent
+            : 8;
+
+        return new ServiceBusTriggerOptions
+        {
+            JtiReplayWindow = window,
+            ExecutionTimeout = executionTimeout,
+            MaxConcurrentExecutions = maxConcurrentExecutions,
+        };
     }
 }

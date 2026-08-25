@@ -75,6 +75,21 @@ internal static class ServiceCollectionExtensions
             services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
             services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment());
 
+            // Caps how many workflow executions ServiceBusWorkflowTriggerFunction runs
+            // concurrently on this instance (ServiceBusTriggerOptions.MaxConcurrentExecutions).
+            // MUST be a DI singleton, not an instance field on the Function class itself:
+            // the trigger function is not registered here (see the EntraBearerTokenValidator
+            // comment just below) and is resolved fresh per invocation, so an instance field
+            // would not actually be shared across concurrent invocations and would cap
+            // nothing. Sized once at startup — nothing else in this project currently needs
+            // a SemaphoreSlim, so this registration is unambiguous; if that changes, this one
+            // should move behind its own named wrapper type instead of a bare SemaphoreSlim.
+            services.AddSingleton(sp =>
+            {
+                var capacity = sp.GetRequiredService<ServiceBusTriggerOptions>().MaxConcurrentExecutions;
+                return new SemaphoreSlim(capacity, capacity);
+            });
+
             // The Service Bus secure trigger's token validator MUST be a DI singleton, not
             // constructed per-invocation: EntraBearerTokenValidator caches Entra's OIDC
             // metadata/JWKS internally, and ServiceBusWorkflowTriggerFunction (unlike
