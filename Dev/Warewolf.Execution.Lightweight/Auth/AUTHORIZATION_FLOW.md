@@ -119,7 +119,8 @@ When the environment variable `BYPASS_SECURE_CONFIG=true` is set, the loader ret
 3. principal.IsInAnyGroup(policy.AllowedGroups)?
    └─ NO → PolicyMatchResult.DenyGroup()
 
-4. loader.GetEffectivePermissions(workflowName, principal.Groups)
+4. loader.GetEffectivePermissions(workflowName, callerRoles)
+   → callerRoles = principal.Groups + principal.UserName + principal.UserId
    → stamps result onto principal via SetResolvedPermissions()
 
 5. principal.HasPermissionFlag(requiredPermissions)?
@@ -165,6 +166,10 @@ does **not** inherit global permissions when the workflow has its own resource e
 
 ```
 GetEffectivePermissions(workflowName, callerRoles):
+callerRoles = Groups (role claims) + UserName (display name/UPN) + UserId (Entra object id).
+UserId is included alongside UserName because display name/UPN claims can drift or be
+ambiguous; the object id is the one identity claim guaranteed stable, so a secure.config
+row keyed on it (WindowsGroup = the caller's oid) matches regardless of how UserName resolves.
 
 1. Super-admin check (hot-read, WAREWOLF_SUPER_ADMIN_ENABLED)
    └─ If enabled AND any callerRole holds Administrator flag in _globalRoleMap

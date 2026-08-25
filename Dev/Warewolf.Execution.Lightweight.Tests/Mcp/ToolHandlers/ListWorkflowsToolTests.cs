@@ -236,6 +236,74 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public void Handle_SecureConfigEffective_CallerRolesIncludesUserId()
+        {
+            // HasPermission must feed the caller's Entra object id into callerRoles
+            // alongside Groups/UserName, so a secure.config row keyed on the object id
+            // (the one claim guaranteed stable across display-name/UPN drift) can match.
+            WriteWorkflow("Wf.bite", "Wf");
+
+            IEnumerable<string>? capturedRoles = null;
+            var loader = new StubAuthPolicyLoader
+            {
+                IsConfigEffective = true,
+                EffectivePermissions = (_, roles) =>
+                {
+                    capturedRoles = roles;
+                    return WorkflowPermission.None;
+                },
+            };
+
+            var principal = new WorkflowClaimsPrincipal(new ClaimsIdentity(
+                new[]
+                {
+                    new Claim(AuthConstants.ObjectIdentifier, "11111111-1111-1111-1111-111111111111"),
+                    new Claim(ClaimTypes.Name, "alice"),
+                },
+                "Bearer", ClaimTypes.Name, ClaimTypes.Role));
+
+            Handle(HostConfig(), loader, user: principal);
+
+            Assert.IsNotNull(capturedRoles, "EffectivePermissions must have been invoked for the workflow.");
+            CollectionAssert.Contains(capturedRoles!.ToList(), "11111111-1111-1111-1111-111111111111");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_SecureConfigEffective_PrincipalMatchedOnlyByUserId_IncludesWorkflow()
+        {
+            // End-to-end version of the above: a secure.config row keyed purely on the
+            // caller's object id must grant access even when UserName/Groups match nothing
+            // — reproduces the reported symptom ("granting my AAD user Contribute has zero
+            // effect") for a caller whose token's display name doesn't match any row.
+            WriteWorkflow("Visible.bite", "Visible");
+
+            const string userId = "22222222-2222-2222-2222-222222222222";
+            var loader = new StubAuthPolicyLoader
+            {
+                IsConfigEffective = true,
+                EffectivePermissions = (_, roles) =>
+                    roles.Contains(userId, StringComparer.OrdinalIgnoreCase)
+                        ? WorkflowPermission.View
+                        : WorkflowPermission.None,
+            };
+
+            var principal = new WorkflowClaimsPrincipal(new ClaimsIdentity(
+                new[]
+                {
+                    new Claim(AuthConstants.ObjectIdentifier, userId),
+                    new Claim(ClaimTypes.Name, "alice"),
+                },
+                "Bearer", ClaimTypes.Name, ClaimTypes.Role));
+
+            var result = Handle(HostConfig(), loader, user: principal);
+
+            var wf = result.Workflows.Single();
+            Assert.AreEqual("Visible", wf.Name);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public void Handle_MalformedWorkflowBody_StillListedWithoutDetail()
         {
             var fullPath = Path.Combine(_root, "Malformed.bite");

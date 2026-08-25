@@ -153,6 +153,7 @@ internal static class ListWorkflowsTool
         var groups = principal?.Groups ?? Array.Empty<string>();
         var callerRoles = groups
             .Append(principal?.UserName ?? string.Empty)
+            .Append(principal?.UserId ?? string.Empty)
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
