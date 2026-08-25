@@ -41,10 +41,12 @@ namespace Warewolf.Execution.Lightweight.Functions;
 ///         bound to the DEDICATED <see cref="ServiceBusEntraAuthOptions"/> audience (never the general HTTP audience — confused-deputy prevention).</item>
 ///   <item>Replay protection: register the token's <c>jti</c> (mirrored application property preferred, falls back to the token claim) — a repeat is dead-lettered, never retried.</item>
 ///   <item>Authorize via <see cref="IWorkflowPolicyMatcher.Evaluate"/> — denial is dead-lettered, never retried.</item>
-///   <item>Wait for a free execution slot (<see cref="Auth.Models.ServiceBusTriggerOptions.MaxConcurrentExecutions"/>), then execute in-process
-///         via <see cref="IWorkflowExecutor"/>, bounded by <see cref="Auth.Models.ServiceBusTriggerOptions.ExecutionTimeout"/> — an execution that
-///         does not finish in time is treated as failed the same way an unexpected exception is (see below), instead of leaving the delivery
-///         waiting forever with no result ever recorded. A genuine business/activity failure is dead-lettered (not transient — retrying will not help).
+///   <item>Wait for a free execution slot (<see cref="Auth.Models.ServiceBusTriggerOptions.MaxConcurrentExecutions"/>), itself bounded by
+///         <see cref="Auth.Models.ServiceBusTriggerOptions.SlotWaitTimeout"/> so a slot held by a deadlocked execution cannot block a queued
+///         delivery forever either, then execute in-process via <see cref="IWorkflowExecutor"/>, bounded by
+///         <see cref="Auth.Models.ServiceBusTriggerOptions.ExecutionTimeout"/> — either bound expiring is treated as failed the same way an
+///         unexpected exception is (see below), instead of leaving the delivery waiting forever with no result ever recorded. A genuine
+///         business/activity failure is dead-lettered (not transient — retrying will not help).
 ///         A <see cref="WorkflowExecutionResult.IsTransientFailure"/> result (e.g. an <see cref="OutOfMemoryException"/> under Consumption-plan
 ///         cold-start memory pressure) is neither persisted nor dead-lettered — it is thrown instead, same as an unexpected exception below.
 ///         An unexpected exception (thrown, not returned) is rethrown so the Service Bus extension applies its normal retry/backoff and eventual max-delivery-count dead-letter.</item>
@@ -294,20 +296,38 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // MaxConcurrentExecutions) so a large burst is processed at a sustainable rate
         // instead of overwhelming a single instance's thread pool all at once. Service
         // Bus's own durable queue absorbs the rest while they wait; nothing is lost.
+        //
+        // The wait itself is bounded (ServiceBusTriggerOptions.SlotWaitTimeout), not just
+        // the execution that follows it: a slot held by a genuinely deadlocked execution is
+        // never released (ExecutionTimeout cannot reclaim it either - see that property's
+        // "Known limitation"), so without a bound here a delivery queued behind it would
+        // wait forever with no result, no error, and nothing ever reaching the DLQ (observed
+        // directly in the 1000-message ShovelBridge load test incident of 2026-08-25, even
+        // with ExecutionTimeout and MaxConcurrentExecutions both already in place).
         try
         {
-            await _executionConcurrencyLimiter.WaitAsync(cancellationToken).ConfigureAwait(false);
+            var acquiredSlot = await _executionConcurrencyLimiter
+                .WaitAsync(_triggerOptions.SlotWaitTimeout, cancellationToken)
+                .ConfigureAwait(false);
+            if (!acquiredSlot)
+            {
+                _store.ReleaseClaim(correlationId);
+                _logger.LogWarning(
+                    "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Timed out after {SlotWaitTimeout} waiting for a free execution slot ({MaxConcurrent} max concurrent) — leaving message for standard Service Bus retry instead of waiting indefinitely.",
+                    correlationId, payload.Workflow, _triggerOptions.SlotWaitTimeout, _triggerOptions.MaxConcurrentExecutions);
+                throw new TimeoutException(
+                    $"Timed out waiting for a free execution slot for correlationId '{correlationId}' after {_triggerOptions.SlotWaitTimeout}.");
+            }
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not TimeoutException)
         {
-            // Never got a slot at all (e.g. the trigger's own cancellation fired while
-            // waiting - a fully-saturated limiter for longer than functionTimeout). Release
-            // the claim so a redelivery can retry once capacity frees up.
+            // Failed to even finish waiting (e.g. the trigger's own cancellation fired while
+            // waiting). Release the claim so a redelivery can retry once capacity frees up.
             _store.ReleaseClaim(correlationId);
             _logger.LogError(
                 ex,
-                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Timed out waiting for a free execution slot ({MaxConcurrent} max concurrent) — leaving message for standard Service Bus retry.",
-                correlationId, payload.Workflow, _triggerOptions.MaxConcurrentExecutions);
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Failed while waiting for a free execution slot — leaving message for standard Service Bus retry.",
+                correlationId, payload.Workflow);
             throw;
         }
 

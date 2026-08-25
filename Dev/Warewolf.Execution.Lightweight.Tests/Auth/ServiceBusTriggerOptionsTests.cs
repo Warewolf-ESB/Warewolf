@@ -23,10 +23,12 @@ public class ServiceBusTriggerOptionsTests
     private const string JtiWindowVar = "WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS";
     private const string ExecutionTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS";
     private const string MaxConcurrentExecutionsVar = "WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS";
+    private const string SlotWaitTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS";
 
     private string? _previousJtiWindow;
     private string? _previousExecutionTimeout;
     private string? _previousMaxConcurrentExecutions;
+    private string? _previousSlotWaitTimeout;
 
     [TestInitialize]
     public void SaveEnvironment()
@@ -34,6 +36,7 @@ public class ServiceBusTriggerOptionsTests
         _previousJtiWindow = Environment.GetEnvironmentVariable(JtiWindowVar);
         _previousExecutionTimeout = Environment.GetEnvironmentVariable(ExecutionTimeoutVar);
         _previousMaxConcurrentExecutions = Environment.GetEnvironmentVariable(MaxConcurrentExecutionsVar);
+        _previousSlotWaitTimeout = Environment.GetEnvironmentVariable(SlotWaitTimeoutVar);
     }
 
     [TestCleanup]
@@ -42,6 +45,7 @@ public class ServiceBusTriggerOptionsTests
         Environment.SetEnvironmentVariable(JtiWindowVar, _previousJtiWindow);
         Environment.SetEnvironmentVariable(ExecutionTimeoutVar, _previousExecutionTimeout);
         Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, _previousMaxConcurrentExecutions);
+        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, _previousSlotWaitTimeout);
     }
 
     // ── Property defaults (no environment involved) ─────────────────────────────
@@ -73,6 +77,15 @@ public class ServiceBusTriggerOptionsTests
         Assert.AreEqual(8, options.MaxConcurrentExecutions);
     }
 
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void Defaults_SlotWaitTimeoutIs5Minutes()
+    {
+        var options = new ServiceBusTriggerOptions();
+
+        Assert.AreEqual(TimeSpan.FromMinutes(5), options.SlotWaitTimeout);
+    }
+
     // ── FromEnvironment() — no variables set ─────────────────────────────────────
 
     [TestMethod]
@@ -82,12 +95,14 @@ public class ServiceBusTriggerOptionsTests
         Environment.SetEnvironmentVariable(JtiWindowVar, null);
         Environment.SetEnvironmentVariable(ExecutionTimeoutVar, null);
         Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, null);
+        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, null);
 
         var options = ServiceBusTriggerOptions.FromEnvironment();
 
         Assert.AreEqual(TimeSpan.FromHours(24), options.JtiReplayWindow);
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.ExecutionTimeout);
         Assert.AreEqual(8, options.MaxConcurrentExecutions);
+        Assert.AreEqual(TimeSpan.FromMinutes(5), options.SlotWaitTimeout);
     }
 
     // ── FromEnvironment() — JtiReplayWindow ──────────────────────────────────────
@@ -174,20 +189,68 @@ public class ServiceBusTriggerOptionsTests
         Assert.AreEqual(8, options.MaxConcurrentExecutions);
     }
 
-    // ── FromEnvironment() — all three set independently ──────────────────────────
+    // ── FromEnvironment() — SlotWaitTimeout ──────────────────────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_AllThreeVariablesSet_EachParsedIndependently()
+    public void FromEnvironment_ValidSlotWaitTimeoutSeconds_IsParsed()
+    {
+        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, "60");
+
+        var options = ServiceBusTriggerOptions.FromEnvironment();
+
+        Assert.AreEqual(TimeSpan.FromSeconds(60), options.SlotWaitTimeout);
+    }
+
+    [DataTestMethod]
+    [DataRow("not-a-number")]
+    [DataRow("0")]
+    [DataRow("-10")]
+    [DataRow("")]
+    [TestCategory("UnitTest")]
+    public void FromEnvironment_UnparseableOrNonPositiveSlotWaitTimeoutSeconds_FallsBackToExecutionTimeoutDefault(string value)
+    {
+        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, null);
+        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, value);
+
+        var options = ServiceBusTriggerOptions.FromEnvironment();
+
+        Assert.AreEqual(TimeSpan.FromMinutes(5), options.SlotWaitTimeout);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void FromEnvironment_SlotWaitTimeoutNotSet_FallsBackToTheConfiguredExecutionTimeout_NotAFixedValue()
+    {
+        // The fallback tracks whatever ExecutionTimeout resolved to, not a hardcoded
+        // duration - a message legitimately queued behind a slow-but-healthy execution
+        // must be able to wait at least one full execution's worth of time for a slot,
+        // whatever that configured execution budget is.
+        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, "45");
+        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, null);
+
+        var options = ServiceBusTriggerOptions.FromEnvironment();
+
+        Assert.AreEqual(TimeSpan.FromSeconds(45), options.ExecutionTimeout);
+        Assert.AreEqual(TimeSpan.FromSeconds(45), options.SlotWaitTimeout);
+    }
+
+    // ── FromEnvironment() — all four set independently ───────────────────────────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void FromEnvironment_AllFourVariablesSet_EachParsedIndependently()
     {
         Environment.SetEnvironmentVariable(JtiWindowVar, "12");
         Environment.SetEnvironmentVariable(ExecutionTimeoutVar, "90");
         Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, "4");
+        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, "30");
 
         var options = ServiceBusTriggerOptions.FromEnvironment();
 
         Assert.AreEqual(TimeSpan.FromHours(12), options.JtiReplayWindow);
         Assert.AreEqual(TimeSpan.FromSeconds(90), options.ExecutionTimeout);
         Assert.AreEqual(4, options.MaxConcurrentExecutions);
+        Assert.AreEqual(TimeSpan.FromSeconds(30), options.SlotWaitTimeout);
     }
 }

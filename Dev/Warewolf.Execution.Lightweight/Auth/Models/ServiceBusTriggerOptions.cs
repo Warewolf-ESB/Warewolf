@@ -72,6 +72,29 @@ public sealed class ServiceBusTriggerOptions
     /// </summary>
     public int MaxConcurrentExecutions { get; init; } = 8;
 
+    /// <summary>
+    /// Hard time budget for waiting on a free execution slot (the
+    /// <see cref="MaxConcurrentExecutions"/> semaphore) before <c>Execute</c> is even
+    /// called. Without this bound, a delivery queued behind a slot whose holder never
+    /// finishes — a genuine deadlock inside <c>IWorkflowExecutor.Execute</c>, which
+    /// <see cref="ExecutionTimeout"/> cannot reclaim (see that property's "Known
+    /// limitation" note: a timed-out execution is abandoned, not cancelled, so its slot is
+    /// never released) — would itself wait forever with no result, no error, and nothing
+    /// ever reaching the dead-letter queue (see the 1000-message ShovelBridge load test
+    /// incidents of 2026-08-24/25, where this exact silent-forever-wait was observed even
+    /// after <see cref="ExecutionTimeout"/> and <see cref="MaxConcurrentExecutions"/> were
+    /// both in place). On expiry the claim is released and a <see cref="TimeoutException"/>
+    /// is thrown, same as <see cref="ExecutionTimeout"/> expiring.
+    ///
+    /// <para>
+    /// Defaults to the same value as <see cref="ExecutionTimeout"/>: under healthy load a
+    /// message may legitimately need to wait up to one full execution's worth of time for
+    /// a slot to free, so setting this any shorter risks dead-lettering perfectly healthy,
+    /// merely-queued messages.
+    /// </para>
+    /// </summary>
+    public TimeSpan SlotWaitTimeout { get; init; } = TimeSpan.FromMinutes(5);
+
     /// <summary>Reads tunables from environment variables.</summary>
     public static ServiceBusTriggerOptions FromEnvironment()
     {
@@ -90,11 +113,17 @@ public sealed class ServiceBusTriggerOptions
             ? maxConcurrent
             : 8;
 
+        var slotWaitTimeoutRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS");
+        var slotWaitTimeout = double.TryParse(slotWaitTimeoutRaw, out var slotWaitSeconds) && slotWaitSeconds > 0
+            ? TimeSpan.FromSeconds(slotWaitSeconds)
+            : executionTimeout;
+
         return new ServiceBusTriggerOptions
         {
             JtiReplayWindow = window,
             ExecutionTimeout = executionTimeout,
             MaxConcurrentExecutions = maxConcurrentExecutions,
+            SlotWaitTimeout = slotWaitTimeout,
         };
     }
 }

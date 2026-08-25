@@ -85,7 +85,13 @@ ServiceBusWorkflowTriggerFunction  (Warewolf.Execution.Lightweight, in-process)
    8. Wait for a free execution slot (SemaphoreSlim, ServiceBusTriggerOptions.MaxConcurrentExecutions,
       default 8) → caps how many workflows this instance runs at once so a large burst is processed
       at a sustainable rate instead of overwhelming a single (typically Consumption-plan) instance's
-      thread pool all at once; Service Bus's own durable queue absorbs the rest while they wait.
+      thread pool all at once; Service Bus's own durable queue absorbs the rest while they wait. The
+      wait itself is bounded too (ServiceBusTriggerOptions.SlotWaitTimeout, default = ExecutionTimeout)
+      → claim released, TimeoutException thrown, same outcome as step 9's timeout below — a slot held
+      by a genuinely deadlocked execution (step 9 cannot reclaim it either) would otherwise leave a
+      queued delivery waiting forever with no result, no error, and nothing ever reaching the DLQ
+      (observed directly in the 1000-message ShovelBridge load test incident of 2026-08-25, even with
+      step 9's timeout already in place).
    9. IWorkflowExecutor.Execute(...) in-process (ExecutingPrincipal = validated principal), run on the
       thread pool and bounded by ServiceBusTriggerOptions.ExecutionTimeout (default 5 min) — Execute
       has no cancellation seam, so a timed-out execution is abandoned (left running in the background
@@ -182,6 +188,7 @@ follow-up could add a scheduled cleanup job if this becomes an operational conce
 | `WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS` | How long a `jti` is remembered for replay-prevention purposes (default: 24). |
 | `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS` | Hard time budget for a single workflow execution before it is treated as failed and left for Service Bus's own retry/backoff (default: 300 = 5 minutes). See flow step 9. |
 | `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 8. |
+| `WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS` | Hard bound on how long a delivery waits for a free execution slot before it is treated as failed (default: same as `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS`). See flow step 8. |
 | `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. |
 
 `host.json` requires `extensions.serviceBus.autoCompleteMessages: false` so the trigger's

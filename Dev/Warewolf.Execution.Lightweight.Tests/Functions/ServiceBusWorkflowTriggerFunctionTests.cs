@@ -669,6 +669,57 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.AreEqual(1, actionsB.CompleteCalls);
     }
 
+    // ── Bounded slot wait (ServiceBusTriggerOptions.SlotWaitTimeout) ────────────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_SlotWaitExceedsTimeout_ThrowsTimeoutException_ReleasesClaim_NeverAcquiresSlot()
+    {
+        // Covers the gap ExecutionTimeout alone cannot close: a slot held by a genuinely
+        // deadlocked execution is never released (see ExecutionTimeout's "Known
+        // limitation"), so a delivery queued behind it must have its own bound on the WAIT
+        // itself - otherwise it waits forever with no result, no error, and nothing ever
+        // reaching the DLQ (observed directly in the 1000-message ShovelBridge load test
+        // incident of 2026-08-25, even with ExecutionTimeout and MaxConcurrentExecutions
+        // both already in place).
+        var gateA = new ManualResetEventSlim(false); // holder never releases within this test
+        var startedA = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(request =>
+        {
+            if (request.InputParameters["marker"] == "A")
+            {
+                startedA.Set();
+                gateA.Wait();
+            }
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var limiter = new SemaphoreSlim(1, 1);
+        var triggerOptions = new ServiceBusTriggerOptions { MaxConcurrentExecutions = 1, SlotWaitTimeout = TimeSpan.FromMilliseconds(50) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
+        var payloadA = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
+        var payloadB = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
+        var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
+        var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
+        Assert.IsTrue(store.TryClaim("corr-slot-wait-b"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        var taskA = sut.ProcessAuthenticatedMessageAsync(
+            NewUserIdentity(jti: "jti-slot-wait-a"), payloadA, "corr-slot-wait-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
+        Assert.IsTrue(startedA.Wait(TimeSpan.FromSeconds(2)), "First delivery must acquire the only slot and start executing.");
+
+        await Assert.ThrowsExceptionAsync<TimeoutException>(
+            () => sut.ProcessAuthenticatedMessageAsync(
+                NewUserIdentity(jti: "jti-slot-wait-b"), payloadB, "corr-slot-wait-b", messageB, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.IsTrue(store.TryClaim("corr-slot-wait-b"),
+            "The claim must be released when the wait for a free slot itself times out, so a redelivery can retry.");
+        Assert.AreEqual(0, limiter.CurrentCount,
+            "The second delivery never acquired a slot at all, so it must not have changed the limiter's count.");
+
+        gateA.Set(); // let the first delivery's execution finish so it doesn't leak past the test
+        await taskA;
+    }
+
     [TestMethod]
     [TestCategory("UnitTest")]
     public async Task ProcessAuthenticated_DifferentCorrelationIds_WithinCapacity_BothProceedWithoutWaitingOnEachOther()
