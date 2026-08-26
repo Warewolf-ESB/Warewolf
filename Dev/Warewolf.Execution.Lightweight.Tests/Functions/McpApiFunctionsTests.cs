@@ -6,7 +6,7 @@
  *  Wrapper-plumbing tests for McpApiFunctions (the REST replacement for the
  *  retired /mcp JSON-RPC endpoint): the baseline authentication gate,
  *  malformed-JSON-body handling, McpException -> 400 mapping, and one
- *  happy-path round-trip per all 15 /mcp-api/{tool_name} routes verifying
+ *  happy-path round-trip per all 18 /mcp-api/{tool_name} routes verifying
  *  correct request-body binding into each tool handler's Handle(...) call
  *  and correct response JSON shape. Business-rule coverage for each tool
  *  (permission gating, validation, edge cases) lives in that tool's own
@@ -396,6 +396,42 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
 
             Assert.AreEqual(HttpStatusCode.OK, status);
             Assert.AreEqual("Hello", JObject.Parse(body)["name"]?.ToString());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task GetWorkflowUrl_ToolLevelMcpException_MapsTo400_WithMessagePassthrough()
+        {
+            var function = NewFunctions();
+            var (ctx, req) = NewRequest("get_workflow_url", "{\"name\":\"\"}");
+
+            var (status, body) = await Invoke(function.GetWorkflowUrl(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, status);
+            var json = JObject.Parse(body);
+            Assert.AreEqual("bad_request", json["error"]?.ToString());
+            Assert.AreEqual("`name` is required.", json["message"]?.ToString());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task GetWorkflowUrl_HappyPath_ReturnsSecureUrlOnly()
+        {
+            SeedWorkflowBite("Hello", "Says hello");
+            var function = NewFunctions(authPolicyLoader: new StubAuthPolicyLoader
+            {
+                IsConfigEffective = true,
+                EffectivePermissions = (_, _) => WorkflowPermission.View,
+            });
+            var (ctx, req) = NewRequest("get_workflow_url", "{\"name\":\"Hello\"}", Principal("Developers"));
+
+            var (status, body) = await Invoke(function.GetWorkflowUrl(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.OK, status);
+            var json = JObject.Parse(body);
+            Assert.AreEqual("Hello", json["name"]?.ToString());
+            Assert.AreEqual("/Secure/Hello", json["url"]?.ToString());
+            Assert.IsNull(json["publicUrl"]);
         }
 
         [TestMethod]
