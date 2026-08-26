@@ -153,6 +153,46 @@ If an existing RabbitMQ producer uses a different schema, it must be changed to 
 this contract, or an adapter service must sit between the producer and the source
 queue — Shovel itself cannot transform messages.
 
+## Trigger binding configuration
+
+`WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to the queue named by the
+`WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` app setting (`%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%`
+indirection — the standard Azure Functions mechanism for a configurable binding without
+recompiling, mirroring the in-engine "Model A" trigger,
+`Functions/ServiceBusWorkflowTriggerFunction.cs`). `Deploy-WwExecutionServiceBusWorker.ps1`
+sets this app setting from `-ServiceBusQueueName` (default `wwexecution-queue`) — the same
+parameter that provisions the destination queue in Phase 2 — so the queue name only needs
+to be set in one place. Local dev supplies the matching default via `local.settings.json`.
+
+Four additional trigger tunables, otherwise fixed in the worker's `host.json`
+(`extensions.serviceBus`), are exposed as deploy parameters and applied via the standard
+Azure Functions `AzureFunctionsJobHost__extensions__serviceBus__<setting>` app-setting
+override convention — so they can be tuned per environment without editing/republishing
+`host.json`:
+
+| Parameter | app setting | `host.json` default |
+|---|---|---|
+| `-ServiceBusTriggerMaxConcurrentCalls` | `AzureFunctionsJobHost__extensions__serviceBus__maxConcurrentCalls` | `16` |
+| `-ServiceBusTriggerPrefetchCount` | `AzureFunctionsJobHost__extensions__serviceBus__prefetchCount` | `0` |
+| `-ServiceBusTriggerMaxAutoLockRenewalMinutes` | `AzureFunctionsJobHost__extensions__serviceBus__maxAutoLockRenewalDuration` | `00:05:00` |
+| `-ServiceBusTriggerAutoCompleteMessages` | `AzureFunctionsJobHost__extensions__serviceBus__autoCompleteMessages` | `true` |
+
+**Reliability caveat.** This override path has confirmed prior art in this repo for
+*other* `host.json` sections — `Logging__*` in `TestRun.ps1` and the engine's Dockerfile —
+but no prior art specifically for the `serviceBus` extension, and one archived note
+(`docs/archive/Warewolf-Lightweight-Logger-Guide.md`) records that the analogous
+`concurrency`/`healthMonitor` overrides did **not** reliably take effect in this host
+version. Treat the app-setting override as best-effort: the committed `host.json` values
+remain the source of truth if a setting doesn't visibly take effect, and — if precise
+tuning matters operationally — verify post-deploy with
+`az functionapp config appsettings list --name <app> --resource-group <rg>` plus observed
+trigger throughput/lock-renewal behaviour, rather than assuming the override applied.
+
+There is deliberately no per-queue/manifest fan-out for the Service Bus trigger analogous
+to the RabbitMQ QueueProcessor's `-DeployRabbitMqTriggers`/`-QueueTriggerPath` pattern
+(one Container App per trigger file) — `WorkflowQueueTrigger` is a single Function bound to
+a single queue by design, so one worker deploy covers the whole shovel-bridge destination.
+
 ## Provisioning
 
 Two scripts under `Scripts/`, run in order:

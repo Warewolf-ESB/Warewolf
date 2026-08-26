@@ -696,6 +696,13 @@ prompts for anything not passed):
   -ServiceBusWorkerStorageAccount stwwsbworker
 ```
 
+`-ServiceBusQueueName` is live-wired to the trigger (not just queue provisioning), and four
+`-ServiceBusTrigger*` parameters tune the trigger's binding (concurrency/prefetch/lock-renewal/
+auto-complete) without editing `host.json` — both only available on the **standalone** worker
+invocation above, not the engine-companion form. See
+[`docs/ShovelBridge-Architecture.md`](ShovelBridge-Architecture.md) § "Trigger binding
+configuration" for the full list, defaults, and an override-reliability caveat.
+
 ### 8.5b Authorize the worker MI (role `Warewolf_ClientApps`)
 
 Mirror the daemon registration from [§5](#5-register-the-client-as-a-daemon) — `-AppRolesToAssign`
