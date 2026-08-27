@@ -72,6 +72,13 @@ Load-test-critical values (non-secret):
 - `BYPASS_SECURE_CONFIG = true`, `WAREWOLF_LICENSE_CHECK_ENABLED = false`,
   `ASPNETCORE_ENVIRONMENT = Production`, `EXECUTIONLOGLEVEL = INFO`.
 
+  **2026-08-27 correction:** `WAREWOLF_LICENSE_CHECK_ENABLED` is now `true`.
+  `pipeline-LOADTEST.yml`'s `Deploy_UAT` job passes `-LicenseCheckEnabled:$true` with
+  `-LicenseConfigPath` staging a licensed `Warewolf License.secureconfig` downloaded from
+  the Azure DevOps Library (Secure files) — see that job's own comments. A redeploy that
+  omits `-LicenseConfigPath` will re-enable the gate with no license staged, and
+  `WorkflowExecutor`'s license/subscription check will fail every workflow execution.
+
 **Take a full backup of app settings before touching anything** (§5.1) — several are secrets and
 are not reconstructible from the repo.
 
