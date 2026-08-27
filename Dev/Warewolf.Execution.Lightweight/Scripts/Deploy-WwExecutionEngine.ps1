@@ -1354,7 +1354,14 @@ try {
     #   real run -> removed after a successful upload (Phase 4).
     #   dry run  -> kept as the inspectable preview artifact (path printed at the end).
     $stageSuffix = if ($DryRun) { '-dryrun' } else { '' }
-    $StagingDir  = Join-Path ([System.IO.Path]::GetTempPath()) "wwexecutionengine-stage-$AppName-$runStamp$stageSuffix"
+    # UNIQUIFIER — do not drop. $runStamp is SECOND-resolution and $AppName is fixed for a given
+    # app, so two runs of the same app starting inside the same second resolved to the SAME
+    # directory, and the Remove-Item below then deleted the other run's staging tree while it was
+    # still being copied into (or threw on a handle Windows had not yet released). $PID separates
+    # concurrent processes; the short token separates sequential runs within one process.
+    # The resolved path is printed below and recorded in the summary as publishDir.
+    $stageToken  = '{0}-{1}' -f $PID, ([guid]::NewGuid().ToString('N').Substring(0, 6))
+    $StagingDir  = Join-Path ([System.IO.Path]::GetTempPath()) "wwexecutionengine-stage-$AppName-$runStamp-$stageToken$stageSuffix"
     Write-Step "$($DryRun ? 'Dry-run: building preview artifact' : 'Staging deploy artifact') in '$StagingDir' (your publish output is left untouched)"
     if (Test-Path -LiteralPath $StagingDir) { Remove-Item -LiteralPath $StagingDir -Recurse -Force }
     New-Item -ItemType Directory -Path $StagingDir -Force | Out-Null

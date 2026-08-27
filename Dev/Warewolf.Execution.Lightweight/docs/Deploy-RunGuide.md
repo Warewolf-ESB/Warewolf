@@ -267,7 +267,7 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `-PublishPath` | string | **required** | The already-published package — a **folder** or a **`.zip`** of the publish output. The publish output is never modified: it is copied/extracted into a fresh temp staging dir (`wwexecutionengine-stage-<AppName>-<stamp>`) that is zipped, uploaded, and removed on a successful real run (kept, with a `-dryrun` suffix, under `-DryRun`). |
+| `-PublishPath` | string | **required** | The already-published package — a **folder** or a **`.zip`** of the publish output. The publish output is never modified: it is copied/extracted into a fresh temp staging dir (`wwexecutionengine-stage-<AppName>-<stamp>-<pid>-<token>`, unique per run) that is zipped, uploaded, and removed on a successful real run (kept, with a `-dryrun` suffix, under `-DryRun`). |
 | `-PublishMethod` | `Auto` \| `Zip` \| `Func` | `Auto` | `Auto`/`Zip` both use `az` zip-deploy (config-zip) — correct for the pre-built artifact. `Func` uses `func azure functionapp publish --dotnet-isolated --no-build` and is **advanced/opt-in only** (it expects a project source dir and fails on a pre-built package). |
 
 ### Application Insights
