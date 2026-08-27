@@ -45,6 +45,30 @@ Describe 'Deploy-WwExecutionEngine — static' {
         { & $script:DeployScript -ExecutionLogLevel 'LOUD' -LoadFunctionsOnly } | Should -Throw
     }
 
+    It 'assigns roles by object id + principal type, never by --assignee' {
+        # REGRESSION (operator machine). `--assignee` makes az resolve the principal through
+        # Microsoft Graph. A system-assigned managed identity enabled seconds earlier has not
+        # replicated there yet, so Phase 3 died with:
+        #   Cannot find user or service principal in graph database for '<principalId>'
+        # The object-id form skips the lookup, matching Deploy-WwQueueProcessor.ps1.
+        $src = Get-Content $script:DeployScript -Raw
+        $src | Should -Not -Match "'role',\s*'assignment',\s*'create'[^)]*'--assignee',"
+        $src | Should -Match '--assignee-object-id'
+        $src | Should -Match '--assignee-principal-type'
+    }
+
+    It 'retries the role assignment while the directory replicates' {
+        . $script:DeployScript -LoadFunctionsOnly
+        $cmd = Get-Command Grant-RoleAssignment -CommandType Function -ErrorAction SilentlyContinue
+        $cmd | Should -Not -BeNullOrEmpty
+        $cmd.Parameters['MaxAttempts'].Attributes.Where({ $_ -is [System.Management.Automation.ParameterAttribute] }) |
+            Should -Not -BeNullOrEmpty
+        # PrincipalType must be constrained - a User assigned as ServicePrincipal silently fails.
+        ($cmd.Parameters['PrincipalType'].Attributes |
+            Where-Object { $_ -is [System.Management.Automation.ValidateSetAttribute] }).ValidValues |
+            Should -Contain 'User'
+    }
+
     It 'defines its helper functions under -LoadFunctionsOnly without running a phase' {
         $out = (. $script:DeployScript -LoadFunctionsOnly) 6>&1 | Out-String
         $out | Should -Not -Match 'Phase 0  Pre-flight'

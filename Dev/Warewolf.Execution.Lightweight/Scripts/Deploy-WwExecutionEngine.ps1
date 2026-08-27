@@ -756,6 +756,66 @@ $ServiceBusWorkerScript = Join-Path $ScriptDir 'Deploy-WwExecutionServiceBusWork
 $QueueProcessorScript = Join-Path $ScriptDir 'Deploy-WwQueueProcessor.ps1'
 
 # Test hook: stop here when only the helper functions are wanted (Pester).
+function Grant-RoleAssignment {
+    <#
+        Creates a role assignment, retrying while Microsoft Entra replicates.
+
+        WHY --assignee-object-id AND --assignee-principal-type, NOT --assignee:
+        `--assignee` makes az RESOLVE the principal through Microsoft Graph first. A
+        system-assigned managed identity enabled seconds earlier is not yet visible there, so the
+        call fails with
+
+            Cannot find user or service principal in graph database for '<principalId>'.
+            If the assignee is an appId, make sure the corresponding service principal is created
+            with 'az ad sp create --id <principalId>'
+
+        The advice in that message is a red herring here - the service principal DOES exist, it has
+        simply not replicated. Passing the object id and its type skips the lookup entirely, which
+        is what Deploy-WwQueueProcessor.ps1's Assert-RoleAssigned already does.
+
+        The write itself can still fail transiently, hence the retry.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $PrincipalId,
+        [Parameter(Mandatory)][string] $Role,
+        [Parameter(Mandatory)][string] $Scope,
+        [ValidateSet('ServicePrincipal', 'User', 'Group')]
+        [string] $PrincipalType = 'ServicePrincipal',
+        [string] $Label,
+        [int]    $MaxAttempts   = 6,
+        [int]    $DelaySeconds  = 10
+    )
+    $what = if ($Label) { $Label } else { "$PrincipalType $PrincipalId" }
+    $azArgs = @('role', 'assignment', 'create',
+                '--role', $Role,
+                '--assignee-object-id', $PrincipalId,
+                '--assignee-principal-type', $PrincipalType,
+                '--scope', $Scope, '-o', 'json')
+
+    if ($DryRun) {
+        Invoke-Az $azArgs -Mutating | Out-Null      # echoes the [DRYRUN] line
+        Write-Ok "Would grant '$Role' to $what."
+        return
+    }
+
+    for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
+        $res = Invoke-Az $azArgs -Mutating -AllowFail
+        if ($res) {
+            Write-Ok ("Granted '{0}' to {1}{2}." -f $Role, $what,
+                      $(if ($attempt -gt 1) { " (attempt $attempt)" } else { '' }))
+            return
+        }
+        if ($attempt -lt $MaxAttempts) {
+            Write-Note ("Role assignment attempt {0}/{1} failed - Entra replication lag; retrying in {2}s." -f
+                        $attempt, $MaxAttempts, $DelaySeconds)
+            Start-Sleep -Seconds $DelaySeconds
+        }
+    }
+    throw ("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). " +
+           "If the identity was only just created, re-running the deploy usually succeeds." -f
+           $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds))
+}
+
 if ($LoadFunctionsOnly) { return }
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -1453,14 +1513,18 @@ try {
         $vaultId = if ($DryRun) { '<dryrun-vault-id>' } else { (Invoke-Az @('keyvault', 'show', '--name', $KeyVaultName, '--query', 'id', '-o', 'tsv')) -join '' }
 
         # ALWAYS: the engine's managed identity must read the key at runtime.
+        # The identity was enabled moments ago, so this retries while Entra replicates.
         Write-Step 'Assigning RBAC: Key Vault Secrets User -> Function App managed identity'
-        Invoke-Az @('role', 'assignment', 'create', '--role', 'Key Vault Secrets User', '--assignee', $funcPrincipalId, '--scope', $vaultId) -Mutating | Out-Null
+        Grant-RoleAssignment -PrincipalId $funcPrincipalId -Role 'Key Vault Secrets User' `
+                             -Scope $vaultId -PrincipalType 'ServicePrincipal' `
+                             -Label "the '$AppName' managed identity"
 
         # ONLY when encrypting now: the operator needs Secrets Officer to read/write the key.
         if ($doEncryptResources) {
             $devOid = if ($DryRun) { '<dryrun-dev-oid>' } else { (Invoke-Az @('ad', 'signed-in-user', 'show', '--query', 'id', '-o', 'tsv')) -join '' }
             Write-Step 'Assigning RBAC: Key Vault Secrets Officer -> current user (for encryption)'
-            Invoke-Az @('role', 'assignment', 'create', '--role', 'Key Vault Secrets Officer', '--assignee', $devOid, '--scope', $vaultId) -Mutating | Out-Null
+            Grant-RoleAssignment -PrincipalId $devOid -Role 'Key Vault Secrets Officer' `
+                                 -Scope $vaultId -PrincipalType 'User' -Label 'the signed-in user'
             if (-not $DryRun) { Write-Note 'RBAC propagation can take ~1-2 min before the secret can be written.'; Start-Sleep -Seconds 30 }
         }
     }
