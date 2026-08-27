@@ -19,6 +19,7 @@
     <LangVersion>12.0</LangVersion>
     <RootNamespace>Warewolf.Execution.ServiceBusWorker</RootNamespace>
     <AssemblyName>WwExecutionServiceBusWorker</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
