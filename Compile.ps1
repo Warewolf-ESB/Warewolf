@@ -468,22 +468,32 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				# from independently of the flat directory's pinned copy. TestRun.ps1's direct-mode
 				# assembly lookup already does `Get-ChildItem ".\$p.dll" -Recurse` from its working
 				# directory, so it finds this isolated copy with no TestRun.ps1/pipeline.yml changes.
-				$_queueProcessorTestsProj = "$PSScriptRoot\Dev\Warewolf.Execution.QueueProcessor.Tests\Warewolf.Execution.QueueProcessor.Tests.csproj"
-				$_queueProcessorOut = "$PSScriptRoot\Bin\$OutputFolderName\QueueProcessor"
-				if (Test-Path $_queueProcessorTestsProj) {
-					# Remove the flat copy first so TestRun.ps1's -Recurse assembly search does not
-					# also match the stale, wrongly-pinned copy left behind by the solution-wide publish.
-					Get-ChildItem "$PSScriptRoot\Bin\$OutputFolderName" -Filter "Warewolf.Execution.QueueProcessor.Tests.*" -File -ErrorAction SilentlyContinue |
-						Remove-Item -Force -ErrorAction SilentlyContinue
-					dotnet restore "$_queueProcessorTestsProj" -r $Runtime --nologo -v minimal --force
-					dotnet publish "$_queueProcessorTestsProj" -c $Config -r $Runtime $_scFlag --no-restore -o "$_queueProcessorOut" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true
-					if ($LASTEXITCODE -ne 0) {
-						Write-Host "dotnet publish failed for Warewolf.Execution.QueueProcessor.Tests.csproj."
-						exit 1
-					}
-					Write-Host "Republished Warewolf.Execution.QueueProcessor.Tests in isolation to $_queueProcessorOut (keeps its own RabbitMQ.Client 7.1.2 out of the 5.1.2 pin above)."
+				# This isolation republish only serves test EXECUTION (TestRun.ps1 finding an
+				# isolated copy with the right RabbitMQ.Client build) - the "Compile for Release"
+				# job never runs tests and never publishes Bin\ServerTests as an artifact, so
+				# skip it there. It also means Warewolf.Execution.QueueProcessor.Tests is never
+				# actually built in Release config, consistent with every other *.Tests project
+				# being excluded from ServerTests.sln's Release build configuration.
+				if ($Config -eq "Release") {
+					Write-Host "Skipping Warewolf.Execution.QueueProcessor.Tests isolation republish (test-execution-only step, not needed for a Release compile)."
 				} else {
-					Write-Host "WARNING: could not find $_queueProcessorTestsProj to isolate from the RabbitMQ.Client 5.1.2 pin."
+					$_queueProcessorTestsProj = "$PSScriptRoot\Dev\Warewolf.Execution.QueueProcessor.Tests\Warewolf.Execution.QueueProcessor.Tests.csproj"
+					$_queueProcessorOut = "$PSScriptRoot\Bin\$OutputFolderName\QueueProcessor"
+					if (Test-Path $_queueProcessorTestsProj) {
+						# Remove the flat copy first so TestRun.ps1's -Recurse assembly search does not
+						# also match the stale, wrongly-pinned copy left behind by the solution-wide publish.
+						Get-ChildItem "$PSScriptRoot\Bin\$OutputFolderName" -Filter "Warewolf.Execution.QueueProcessor.Tests.*" -File -ErrorAction SilentlyContinue |
+							Remove-Item -Force -ErrorAction SilentlyContinue
+						dotnet restore "$_queueProcessorTestsProj" -r $Runtime --nologo -v minimal --force
+						dotnet publish "$_queueProcessorTestsProj" -c $Config -r $Runtime $_scFlag --no-restore -o "$_queueProcessorOut" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true
+						if ($LASTEXITCODE -ne 0) {
+							Write-Host "dotnet publish failed for Warewolf.Execution.QueueProcessor.Tests.csproj."
+							exit 1
+						}
+						Write-Host "Republished Warewolf.Execution.QueueProcessor.Tests in isolation to $_queueProcessorOut (keeps its own RabbitMQ.Client 7.1.2 out of the 5.1.2 pin above)."
+					} else {
+						Write-Host "WARNING: could not find $_queueProcessorTestsProj to isolate from the RabbitMQ.Client 5.1.2 pin."
+					}
 				}
 			}
 			if ($RuntimeIsSelfContained) {
