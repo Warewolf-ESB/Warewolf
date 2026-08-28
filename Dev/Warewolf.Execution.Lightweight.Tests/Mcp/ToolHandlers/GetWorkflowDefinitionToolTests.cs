@@ -198,8 +198,46 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
             Assert.AreEqual("Hello", result.Envelope.Name);
             Assert.AreEqual("Says hello", result.Envelope.Description);
-            CollectionAssert.Contains(result.Envelope.Inputs.ToList(), "Name");
-            CollectionAssert.Contains(result.Envelope.Outputs.ToList(), "Message");
+            Assert.IsTrue(result.Envelope.Inputs.Any(v => v.Name == "Name" && v.Kind == "scalar"));
+            Assert.IsTrue(result.Envelope.Outputs.Any(v => v.Name == "Message" && v.Kind == "scalar"));
+        }
+
+        /// <summary>
+        /// F6: get_workflow_definition previously flattened inputs/outputs to bracket-notation
+        /// strings (DataListTO's shape) — cheap to derive, but not re-submittable: an object
+        /// entry's kind and a recordset's declared fields were both lost. Confirms all three kinds
+        /// now round-trip, including a recordset's per-field direction.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_Envelope_DistinguishesScalarObjectAndRecordsetKinds()
+        {
+            WriteWorkflow("Kinds.bite", "Kinds", comment: "Exercises all three kinds",
+                dataListXml: "<DataList>" +
+                             "<PlainScalar Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" />" +
+                             "<JsonObject Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" IsJson=\"True\"><![CDATA[{}]]></JsonObject>" +
+                             "<Customers Description=\"\" IsEditable=\"True\">" +
+                             "<Name Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Input\" />" +
+                             "<Age Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                             "</Customers>" +
+                             "</DataList>");
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Kinds");
+
+            var plainScalar = result.Envelope.Inputs.Single(v => v.Name == "PlainScalar");
+            Assert.AreEqual("scalar", plainScalar.Kind);
+            Assert.IsNull(plainScalar.Fields);
+
+            var jsonObject = result.Envelope.Outputs.Single(v => v.Name == "JsonObject");
+            Assert.AreEqual("object", jsonObject.Kind);
+
+            var customersInput = result.Envelope.Inputs.Single(v => v.Name == "Customers");
+            Assert.AreEqual("recordset", customersInput.Kind);
+            CollectionAssert.AreEqual(new[] { "Name" }, customersInput.Fields!.ToList());
+
+            var customersOutput = result.Envelope.Outputs.Single(v => v.Name == "Customers");
+            Assert.AreEqual("recordset", customersOutput.Kind);
+            CollectionAssert.AreEqual(new[] { "Age" }, customersOutput.Fields!.ToList());
         }
 
         [TestMethod]

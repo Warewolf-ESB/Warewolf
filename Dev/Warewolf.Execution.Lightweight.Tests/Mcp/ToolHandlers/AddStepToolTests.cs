@@ -25,6 +25,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Json;
+using System.Xml.Linq;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -356,6 +357,137 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 AssignObjectStepOf("Appended"), afterStepId: assignNodeId);
 
             Assert.IsTrue(result.Updated);
+        }
+
+        // ── Tests: auto-declaring undeclared variable references (F5) ────────────
+        //
+        // Before this fix, add_step never ran ValidateWorkflowTool's checks, so a step
+        // referencing an undeclared variable wrote successfully - and that exact workflow's
+        // own round-tripped body then failed edit_workflow's validation, an unrecoverable
+        // trap state. Auto-declare closes that gap without requiring add_step to take an
+        // envelope input.
+
+        static XElement ReadDataList(string root, string workflowName) =>
+            XDocument.Parse(File.ReadAllText(Path.Combine(root, workflowName + ".bite"))).Root!.Element("DataList")!;
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StepReferencingDeclaredVariable_DoesNotChangeDataList()
+        {
+            SeedSimpleWorkflow("DeclaredRef");
+            var namesBefore = ReadDataList(_root, "DeclaredRef").Elements().Select(e => e.Name.LocalName).ToList();
+
+            var fields = new JArray(new JObject { ["FieldName"] = "[[Result]]", ["FieldValue"] = "world", ["IndexNumber"] = 1 });
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"),
+                "DeclaredRef", AssignObjectStepOf("Second Assign", fields));
+
+            Assert.IsTrue(result.Updated);
+            var namesAfter = ReadDataList(_root, "DeclaredRef").Elements().Select(e => e.Name.LocalName).ToList();
+            CollectionAssert.AreEquivalent(namesBefore, namesAfter);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StepReferencingUndeclaredScalar_AutoDeclaresIt()
+        {
+            SeedSimpleWorkflow("UndeclaredScalar");
+
+            var fields = new JArray(new JObject { ["FieldName"] = "[[NewVar]]", ["FieldValue"] = "world", ["IndexNumber"] = 1 });
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"),
+                "UndeclaredScalar", AssignObjectStepOf("Writes NewVar", fields));
+
+            Assert.IsTrue(result.Updated);
+            var dataList = ReadDataList(_root, "UndeclaredScalar");
+            var newVar = dataList.Element("NewVar");
+            Assert.IsNotNull(newVar, "expected NewVar to be auto-declared in the DataList");
+            Assert.AreEqual("Both", newVar!.Attribute("ColumnIODirection")?.Value);
+            Assert.IsNull(newVar.Attribute("IsJson"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StepReferencingUndeclaredObject_AutoDeclaresObjectKind()
+        {
+            SeedSimpleWorkflow("UndeclaredObject");
+
+            var fields = new JArray(new JObject { ["FieldName"] = "[[@NewObj]]", ["FieldValue"] = "{}", ["IndexNumber"] = 1 });
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"),
+                "UndeclaredObject", AssignObjectStepOf("Writes NewObj", fields));
+
+            Assert.IsTrue(result.Updated);
+            var newObj = ReadDataList(_root, "UndeclaredObject").Element("NewObj");
+            Assert.IsNotNull(newObj, "expected NewObj to be auto-declared in the DataList");
+            Assert.AreEqual("True", newObj!.Attribute("IsJson")?.Value);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StepReferencingUndeclaredRecordsetField_AutoDeclaresRecordsetWithField()
+        {
+            SeedSimpleWorkflow("UndeclaredRecordset");
+
+            var fields = new JArray(new JObject { ["FieldName"] = "[[Customers(1).Age]]", ["FieldValue"] = "42", ["IndexNumber"] = 1 });
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"),
+                "UndeclaredRecordset", AssignObjectStepOf("Writes Customers().Age", fields));
+
+            Assert.IsTrue(result.Updated);
+            var customers = ReadDataList(_root, "UndeclaredRecordset").Element("Customers");
+            Assert.IsNotNull(customers, "expected Customers to be auto-declared as a recordset");
+            Assert.IsNotNull(customers!.Element("Age"));
+            Assert.AreEqual("Both", customers.Element("Age")!.Attribute("ColumnIODirection")?.Value);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StepReferencingAlreadyDeclaredRecordsetNewField_AddsOnlyMissingField()
+        {
+            var body = BodyOf("PartialRecordset", MakeStartNode(), MakeAssignObject("assign1", "Assign Object",
+                new JArray(new JObject { ["FieldName"] = "[[Result]]", ["FieldValue"] = "hello", ["IndexNumber"] = 1 })),
+                MakeEdge("e1", "start", "assign1"));
+            var envelope = EnvelopeOf(new
+            {
+                name = "PartialRecordset",
+                description = "seed workflow",
+                inputs = new[] { new { name = "Customers", kind = "recordset", fields = new[] { "Name" } } },
+                outputs = new[] { new { name = "Result", kind = "scalar", fields = Array.Empty<string>() } },
+            });
+            CreateWorkflowTool.Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"), "PartialRecordset", envelope, body);
+
+            var fields = new JArray(new JObject { ["FieldName"] = "[[Result]]", ["FieldValue"] = "[[Customers(1).Age]]", ["IndexNumber"] = 1 });
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"),
+                "PartialRecordset", AssignObjectStepOf("Reads Customers().Age", fields));
+
+            Assert.IsTrue(result.Updated);
+            var customersElements = ReadDataList(_root, "PartialRecordset").Elements("Customers").ToList();
+            Assert.AreEqual(1, customersElements.Count, "must not create a duplicate Customers recordset");
+            Assert.IsNotNull(customersElements[0].Element("Name"), "the pre-existing field must survive");
+            Assert.IsNotNull(customersElements[0].Element("Age"), "the newly referenced field must be added");
+        }
+
+        /// <summary>
+        /// Trap-state guard: this is the exact scenario F5 fixes - before it, a step referencing
+        /// an undeclared variable wrote successfully, and the resulting workflow's own
+        /// round-tripped definition then failed edit_workflow because the reference had no
+        /// matching envelope entry. After auto-declaring, that round trip must now succeed.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_AfterAutoDeclare_DefinitionRoundTripsThroughEditWorkflow()
+        {
+            SeedSimpleWorkflow("TrapStateGuard");
+            var fields = new JArray(new JObject { ["FieldName"] = "[[NewVar]]", ["FieldValue"] = "world", ["IndexNumber"] = 1 });
+            Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"),
+                "TrapStateGuard", AssignObjectStepOf("Writes NewVar", fields));
+
+            var hostConfig = HostConfig();
+            var definition = GetWorkflowDefinitionTool.Handle(hostConfig, new StubAuthPolicyLoader { IsConfigEffective = false }, null, "TrapStateGuard");
+            Assert.IsTrue(definition.BodyEditable, definition.NonEditableReason);
+
+            var envelope = System.Text.Json.JsonSerializer.SerializeToElement(definition.Envelope);
+            var editResult = EditWorkflowTool.Handle(hostConfig, new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"),
+                "TrapStateGuard", envelope, definition.Body!.Value);
+
+            Assert.IsTrue(editResult.Updated);
         }
 
         [TestMethod]

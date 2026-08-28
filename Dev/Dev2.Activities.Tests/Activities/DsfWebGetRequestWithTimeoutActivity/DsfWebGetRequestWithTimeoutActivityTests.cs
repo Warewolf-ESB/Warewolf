@@ -251,7 +251,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(It.IsAny<int>(), activity.Method, activity.Url, string.Empty, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
         }
 
         [TestMethod]
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
             var mock = new Mock<IWebRequestInvoker>();
 
-            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Throws(new InvalidDataException(Message));
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<int>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Throws(new InvalidDataException(Message));
 
             var activity = GetWebGetRequestWithTimeoutActivity(mock);
             activity.Method = "GET";
@@ -277,7 +277,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             //------------Execute Test---------------------------
             ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(It.IsAny<int>(), activity.Method, activity.Url, string.Empty, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             var errorString = DataObject.Environment.FetchErrors();
             StringAssert.Contains(errorString, Message);
         }
@@ -338,7 +338,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
             var mock = new Mock<IWebRequestInvoker>();
 
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<int>(), "GET", Url, It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Returns(ExpectedResult);
 
             var activity = GetWebGetRequestWithTimeoutActivity(mock);
             activity.Method = "GET";
@@ -352,7 +352,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Never());
+            mock.Verify(sender => sender.ExecuteRequest(It.IsAny<int>(), activity.Method, Url, It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>()), Times.Never());
             GetScalarValueFromEnvironment(result.Environment, "Res", out string actual, out string error);
             Assert.AreNotEqual(ExpectedResult, actual);
             Assert.IsNotNull(error);
@@ -370,7 +370,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
 
             var mock = new Mock<IWebRequestInvoker>();
 
-            mock.Setup(invoker => invoker.ExecuteRequest("GET", Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>())).Returns(ExpectedResult);
+            mock.Setup(invoker => invoker.ExecuteRequest(It.IsAny<int>(), "GET", Url, It.IsAny<string>(), It.IsAny<List<Tuple<string, string>>>())).Returns(ExpectedResult);
 
             var activity = GetWebGetRequestWithTimeoutActivity(mock);
             activity.Method = "GET";
@@ -384,7 +384,7 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
             //------------Execute Test---------------------------
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
-            mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
+            mock.Verify(sender => sender.ExecuteRequest(It.IsAny<int>(), activity.Method, Url, string.Empty, It.IsAny<List<Tuple<string, string>>>()), Times.Once());
             GetScalarValueFromEnvironment(result.Environment, "Res", out string actual, out string error);
             Assert.AreEqual(ExpectedResult, actual);
         }

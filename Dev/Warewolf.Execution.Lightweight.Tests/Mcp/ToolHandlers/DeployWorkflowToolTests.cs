@@ -387,7 +387,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
             Assert.AreEqual("RoundTrip", definition.Envelope.Name);
             Assert.AreEqual("A deployable workflow", definition.Envelope.Description);
-            CollectionAssert.Contains(definition.Envelope.Outputs.ToList(), "Result");
+            Assert.IsTrue(definition.Envelope.Outputs.Any(v => v.Name == "Result"));
         }
     }
 }

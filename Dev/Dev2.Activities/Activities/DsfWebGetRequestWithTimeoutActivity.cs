@@ -1,4 +1,4 @@
-#pragma warning disable
+﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -12,6 +12,7 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading;
 using Dev2.Common;
@@ -68,6 +69,13 @@ namespace Dev2.Activities
         public string Headers { get; set; }
 
         /// <summary>
+        /// Request body sent with verbs that carry one (POST/PUT/PATCH). Ignored for GET.
+        /// </summary>
+        [Inputs("Post Data")]
+        [FindMissing]
+        public string PostData { get; set; }
+
+        /// <summary>
         /// The property that holds the result string the user enters into the "Result" box
         /// </summary>
         [Outputs("Result")]
@@ -79,6 +87,7 @@ namespace Dev2.Activities
         {
             Method = "GET";
             Headers = string.Empty;
+            PostData = string.Empty;
             TimeoutSeconds = 100;  // default of 100 seconds
             TimeOutText = "100";
         }
@@ -96,6 +105,12 @@ namespace Dev2.Activities
                 {
                     Name = "Headers",
                     Value = Headers,
+                    Type = StateVariable.StateType.Input
+                },
+                new StateVariable
+                {
+                    Name = "PostData",
+                    Value = PostData,
                     Type = StateVariable.StateType.Input
                 },
                 new StateVariable
@@ -181,9 +196,11 @@ namespace Dev2.Activities
             var colItr = new WarewolfListIterator();
             var urlitr = new WarewolfIterator(dataObject.Environment.Eval(Url, update));
             var headerItr = new WarewolfIterator(dataObject.Environment.Eval(Headers, update));
+            var postDataItr = new WarewolfIterator(dataObject.Environment.Eval(PostData ?? string.Empty, update));
 
             colItr.AddVariableToIterateOn(urlitr);
             colItr.AddVariableToIterateOn(headerItr);
+            colItr.AddVariableToIterateOn(postDataItr);
 
             var counter = 1;
 
@@ -196,14 +213,15 @@ namespace Dev2.Activities
                     : headerValue.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
                 var headersEntries = new List<Tuple<string, string>>();
+                var postDataValue = colItr.FetchNextValue(postDataItr);
 
-                counter = DebugInputItemsAdd(dataObject, update, allErrors, counter, c, headers, headersEntries);
+                counter = DebugInputItemsAdd(dataObject, update, allErrors, counter, c, headers, headersEntries, postDataValue);
             }
 
             return allErrors;
         }
 
-        private int DebugInputItemsAdd(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int counter, string c, string[] headers, List<Tuple<string, string>> headersEntries)
+        private int DebugInputItemsAdd(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int counter, string c, string[] headers, List<Tuple<string, string>> headersEntries, string postDataValue)
         {
             AddHeaderDebug(dataObject, update, headers, headersEntries);
             var timeoutSecondsError = false;
@@ -218,19 +236,21 @@ namespace Dev2.Activities
                     _debugInputs.Add(debugItem);
                 }
             }
-            var NewCount = IncrementDataListCounter(dataObject, update, allErrors, counter, c, headersEntries, timeoutSecondsError);
+            var NewCount = IncrementDataListCounter(dataObject, update, allErrors, counter, c, headersEntries, timeoutSecondsError, postDataValue);
 
             return NewCount;
         }
 
-        private int IncrementDataListCounter(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int counter, string c, List<Tuple<string, string>> headersEntries, bool timeoutSecondsError)
+        private int IncrementDataListCounter(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int counter, string c, List<Tuple<string, string>> headersEntries, bool timeoutSecondsError, string postDataValue)
         {
             if (!timeoutSecondsError)
             {
-                var result = WebRequestInvoker.ExecuteRequest(Method,
+                var result = WebRequestInvoker.ExecuteRequest(
+                    TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000,  // important to list the parameter name here to see the conversion from seconds to milliseconds
+                    Method,
                     c,
-                    headersEntries, TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000  // important to list the parameter name here to see the conversion from seconds to milliseconds
-                    );
+                    postDataValue,
+                    headersEntries);
 
                 allErrors.MergeErrors(_errorsTo);
                 PushResultsToDataList(Result, result, dataObject, update == 0 ? counter : update);
@@ -365,6 +385,7 @@ namespace Dev2.Activities
             isEqual &= TimeOutText == other.TimeOutText;
             isEqual &= Url == other.Url;
             isEqual &= Headers == other.Headers;
+            isEqual &= PostData == other.PostData;
             isEqual &= Result == other.Result;
 
             return isEqual;
@@ -400,6 +421,7 @@ namespace Dev2.Activities
                 hashCode = (hashCode * 397) ^ (TimeOutText != null ? TimeOutText.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Url != null ? Url.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PostData != null ? PostData.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
             }
@@ -419,6 +441,7 @@ namespace Dev2.Activities
             cell.data[Constants.WEBREQUEST_TIMEOUTTEXT] = TimeOutText;
             cell.data[Constants.WEBREQUEST_URL] = Url;
             cell.data[Constants.WEBREQUEST_HEADERS] = Headers;
+            cell.data[Constants.WEBREQUEST_POSTDATA] = PostData;
             cell.data[Constants.WEBREQUEST_RESULT] = Result;
         }
 
@@ -430,9 +453,11 @@ namespace Dev2.Activities
             if (cell.data.TryGetString(Constants.DISPLAYNAME, out var displayName)) DisplayName = displayName;
             if (cell.data.TryGetString(Constants.UNIQUEID, out var uniqueId)) UniqueID = uniqueId;
             if (cell.data.TryGetString(Constants.WEBREQUEST_METHOD, out var method)) Method = method;
-            if (cell.data.TryGetString(Constants.WEBREQUEST_TIMEOUTTEXT, out var timeOutText)) TimeOutText = timeOutText;
+            var timeOutTextSupplied = cell.data.TryGetString(Constants.WEBREQUEST_TIMEOUTTEXT, out var timeOutText);
+            if (timeOutTextSupplied) TimeOutText = timeOutText;
             if (cell.data.TryGetString(Constants.WEBREQUEST_URL, out var url)) Url = url;
             if (cell.data.TryGetString(Constants.WEBREQUEST_HEADERS, out var headers)) Headers = headers;
+            if (cell.data.TryGetString(Constants.WEBREQUEST_POSTDATA, out var postData)) PostData = postData;
             if (cell.data.TryGetString(Constants.WEBREQUEST_RESULT, out var result)) Result = result;
 
             if (cell.data.TryGetValue(Constants.WEBREQUEST_TIMEOUTSECONDS, out var timeoutSecondsObj) &&
@@ -443,7 +468,18 @@ namespace Dev2.Activities
 
             Method ??= "GET";
             Headers ??= string.Empty;
-            TimeOutText ??= "100";
+            PostData ??= string.Empty;
+            // Derive from TimeoutSeconds (parsed above) rather than the constructor's literal
+            // "100" — a cell with webrequest_timeoutseconds but no webrequest_timeouttext
+            // previously persisted a contradiction (e.g. 30 / "100"), because execution
+            // re-derives the effective timeout from TimeOutText, not from TimeoutSeconds (F11).
+            // `TimeOutText ??=` would not work here: the constructor already sets it to a
+            // non-null "100" default, so `??=` is a no-op regardless of what's on its right —
+            // the omitted-key case must be tracked explicitly instead.
+            if (!timeOutTextSupplied)
+            {
+                TimeOutText = TimeoutSeconds.ToString(CultureInfo.InvariantCulture);
+            }
         }
     }
 }

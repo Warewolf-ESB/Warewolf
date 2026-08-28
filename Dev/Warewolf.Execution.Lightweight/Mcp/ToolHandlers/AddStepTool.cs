@@ -253,6 +253,13 @@ internal static class AddStepTool
         var (existingServiceId, existingVersionNumber, existingDisplayName, existingDescription, existingDataList) =
             ReadExistingServiceMetadata(filePath);
 
+        // F5: add_step previously never ran ValidateWorkflowTool's checks, so a step referencing
+        // an undeclared variable wrote successfully — and then that exact workflow's own
+        // round-tripped body failed edit_workflow's validation, an unrecoverable trap state.
+        // Auto-declare rather than reject: friendlier, and add_step has no envelope input to
+        // reject *against* in the first place.
+        AutoDeclareReferencedVariables(newNode, existingDataList);
+
         var serviceId = string.IsNullOrWhiteSpace(existingServiceId) ? Guid.NewGuid().ToString() : existingServiceId;
         var displayName = string.IsNullOrWhiteSpace(existingDisplayName) ? headerName : existingDisplayName;
         var callerIdentity = principal?.CallerIdentity is { Length: > 0 } identity ? identity : "Anonymous";
@@ -470,6 +477,62 @@ internal static class AddStepTool
             {
                 data[Constants.WEBMETHOD_QUERYSTRING] = alias;
             }
+        }
+    }
+
+    // ── Auto-declare undeclared variable references (F5) ────────────────────────
+
+    /// <summary>
+    /// Scans <paramref name="node"/>'s <c>data</c> for <c>[[...]]</c> references and mutates
+    /// <paramref name="dataList"/> in place, adding a <c>ColumnIODirection="Both"</c> declaration
+    /// for any name (or recordset field) not already present. Reuses
+    /// <see cref="ValidateWorkflowTool.ExtractVariableTokens"/>/<see cref="ValidateWorkflowTool.SplitReference"/>
+    /// so the reference shape this recognises is identical to what <c>validate_workflow</c> checks
+    /// — including the object sigil (<c>@Name</c>, F4) and recordset field syntax
+    /// (<c>Recordset().Field</c>). Operates on the caller's already-cloned copy of the existing
+    /// <c>&lt;DataList&gt;</c> (see <see cref="ReadExistingServiceMetadata"/>), so mutating it here
+    /// is safe.
+    /// </summary>
+    static void AutoDeclareReferencedVariables(Cell node, XElement dataList)
+    {
+        var declaredNames = new HashSet<string>(
+            dataList.Elements().Select(e => e.Name.LocalName),
+            StringComparer.Ordinal);
+
+        foreach (var raw in ValidateWorkflowTool.ExtractVariableTokens(node.data))
+        {
+            var (baseName, fieldName, isObjectReference) = ValidateWorkflowTool.SplitReference(raw);
+            if (string.IsNullOrWhiteSpace(baseName))
+            {
+                continue;
+            }
+
+            if (fieldName is not null)
+            {
+                var recordsetElement = dataList.Elements()
+                    .FirstOrDefault(e => string.Equals(e.Name.LocalName, baseName, StringComparison.Ordinal));
+
+                if (recordsetElement is null)
+                {
+                    dataList.Add(EnvelopeBiteWriter.BuildRecordsetVariableElement(baseName, fieldName));
+                    declaredNames.Add(baseName);
+                }
+                else if (!recordsetElement.Elements().Any(f => string.Equals(f.Name.LocalName, fieldName, StringComparison.Ordinal)))
+                {
+                    recordsetElement.Add(EnvelopeBiteWriter.BuildRecordsetFieldElement(fieldName));
+                }
+
+                continue;
+            }
+
+            if (declaredNames.Contains(baseName))
+            {
+                continue;
+            }
+
+            var kind = isObjectReference ? "object" : "scalar";
+            dataList.Add(EnvelopeBiteWriter.BuildScalarVariableElement(baseName, kind));
+            declaredNames.Add(baseName);
         }
     }
 

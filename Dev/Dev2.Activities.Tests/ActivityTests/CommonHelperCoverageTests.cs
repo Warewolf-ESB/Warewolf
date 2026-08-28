@@ -20,8 +20,14 @@
  *     happy paths across multiple candidate keys.
  *   • TryGetList<TConcrete,TInterface> — happy path and the swallow-exception
  *     branch (achieved by passing an array whose element shape is unmappable).
- *   • TryGetOutputs / TryGetOutputDescription — JArray and JObject readers
- *     including the nested JsonPath block on each ServiceOutputMapping.
+ *   • TryAsJObject — the JObject counterpart to TryAsJArray: instance, string,
+ *     malformed-string, wrong-shape-string and null/whitespace/scalar branches.
+ *   • TryGetOutputs / TryGetOutputDescription — array/object and JSON-encoded
+ *     string forms, including the nested JsonPath block on each
+ *     ServiceOutputMapping.
+ *   • The JSON-encoded string form at every top-level reader — the six readers
+ *     that previously pattern-matched the raw type directly and so dropped a
+ *     documented string payload silently.
  *   • TryGetHeaders / TryGetInputs / TryGetSettings — thin wrappers around
  *     TryGetList; covered to exercise both the "updatedheaders" fallback and
  *     the empty-payload branch.
@@ -368,6 +374,145 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.IsTrue(CommonHelper.TryGetJArray(d, out var arr, "updatedfields", "fields"));
             Assert.AreEqual(3, arr.Count);
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        // TryAsJObject
+        //
+        // The JObject counterpart to TryAsJArray, added for the same reason:
+        // get_tool_schema documents object-shaped fields as a "JSON-encoded"
+        // string, so callers send one. Without it the value was dropped
+        // silently and the activity ran with the field unset.
+        // ─────────────────────────────────────────────────────────────────
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJObject_JObject_ReturnsSameInstance()
+        {
+            var payload = new JObject { ["a"] = 1 };
+            Assert.IsTrue(CommonHelper.TryAsJObject(payload, out var obj));
+            Assert.AreSame(payload, obj);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJObject_JsonObjectString_IsParsed()
+        {
+            const string json = "{\"FieldName\":\"[[Result]]\",\"FieldValue\":\"hello\"}";
+
+            Assert.IsTrue(CommonHelper.TryAsJObject(json, out var obj));
+            Assert.AreEqual("[[Result]]", obj["FieldName"].Value<string>());
+            Assert.AreEqual("hello", obj["FieldValue"].Value<string>());
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJObject_MalformedJsonString_ReturnsFalse()
+        {
+            Assert.IsFalse(CommonHelper.TryAsJObject("{\"FieldName\": ", out var obj));
+            Assert.IsNull(obj);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJObject_JsonArrayString_ReturnsFalse()
+        {
+            // Valid JSON, but an array rather than an object — must not be coerced.
+            Assert.IsFalse(CommonHelper.TryAsJObject("[{\"FieldName\":\"[[a]]\"}]", out var obj));
+            Assert.IsNull(obj);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryAsJObject_NullOrWhitespaceOrScalar_ReturnsFalse()
+        {
+            Assert.IsFalse(CommonHelper.TryAsJObject(null, out _));
+            Assert.IsFalse(CommonHelper.TryAsJObject("   ", out _));
+            Assert.IsFalse(CommonHelper.TryAsJObject(42, out _));
+            Assert.IsFalse(CommonHelper.TryAsJObject(new JArray(), out _));
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        // String form accepted at every top-level reader
+        //
+        // TryAsJArray already gave the TryGetList<>-based readers (headers,
+        // inputs, settings) tolerance of the documented "JSON-encoded string"
+        // form. Six top-level readers pattern-matched the raw type directly
+        // instead and so dropped a string silently — create_workflow reported
+        // success and the mapping simply vanished (observed for `outputs` on a
+        // GET Web Method, warewolfserver-mcp, 2026-08-28). Each now routes
+        // through TryAsJArray/TryAsJObject; these pin that down so the six do
+        // not drift back apart.
+        // ─────────────────────────────────────────────────────────────────
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryGetOutputs_JsonArrayString_IsParsed()
+        {
+            const string json = "[{\"MappedFrom\":\"from\",\"MappedTo\":\"to\",\"RecordSetName\":\"rs\"}]";
+            var d = new Dictionary<string, object> { [Constants.WEBMETHOD_OUTPUTS] = json };
+
+            Assert.IsTrue(CommonHelper.TryGetOutputs(d, out var outputs));
+            Assert.AreEqual(1, outputs.Count);
+            Assert.AreEqual("from", outputs[0].MappedFrom);
+            Assert.AreEqual("rs", outputs[0].RecordSetName);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryGetOutputDescription_JsonObjectString_IsParsed()
+        {
+            const string json =
+                "{\"DataSourceShapes\":[{\"Paths\":[{\"ActualPath\":\"ap\",\"DisplayPath\":\"dp\"," +
+                "\"OutputExpression\":\"oe\",\"SampleData\":\"sd\"}]}]}";
+            var d = new Dictionary<string, object> { [Constants.WEBMETHOD_OUTPUTDESCRIPTION] = json };
+
+            Assert.IsTrue(CommonHelper.TryGetOutputDescription(d, out var outputDescription));
+            Assert.IsNotNull(outputDescription);
+            Assert.AreEqual(1, outputDescription.DataSourceShapes.Count);
+            Assert.AreEqual("ap", outputDescription.DataSourceShapes[0].Paths[0].ActualPath);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryGetConditions_JsonArrayString_IsParsed()
+        {
+            const string json = "[{\"Key\":\"field\",\"Cond\":{\"TableType\":\"Text\",\"Value\":\"abc\"}}]";
+            var d = new Dictionary<string, object> { [Constants.WEBMETHOD_CONDITIONS] = json };
+
+            Assert.IsTrue(CommonHelper.TryGetConditions(d, out var conditions));
+            Assert.AreEqual(1, conditions.Count);
+            Assert.AreEqual("field", conditions[0].Key);
+            var textCond = conditions[0].Cond as FormDataConditionText;
+            Assert.IsNotNull(textCond);
+            Assert.AreEqual("abc", textCond.Value);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryGetInputMappings_JsonArrayString_IsParsed()
+        {
+            const string json =
+                "[{\"InputColumn\":\"in\",\"IndexNumber\":1,\"Inserted\":true," +
+                "\"OutputColumn\":{\"ColumnName\":\"out\",\"DataType\":\"System.String\"}}]";
+            var d = new Dictionary<string, object> { [Constants.SQLBULKINSERT_INPUTMAPPINGS] = json };
+
+            Assert.IsTrue(CommonHelper.TryGetInputMappings(d, out var list));
+            Assert.AreEqual(1, list.Count);
+            Assert.AreEqual("in", list[0].InputColumn);
+            Assert.AreEqual("out", list[0].OutputColumn.ColumnName);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryGetFindRecordsCollection_JsonArrayString_IsParsed()
+        {
+            const string json =
+                "[{\"SearchType\":\"Equal\",\"SearchCriteria\":\"abc\",\"From\":\"1\",\"To\":\"9\"}]";
+            var d = new Dictionary<string, object> { [Constants.FINDRECORDS_RESULTSCOLLECTION] = json };
+
+            Assert.IsTrue(CommonHelper.TryGetFindRecordsCollection(d, out var list));
+            Assert.AreEqual(1, list.Count);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("CommonHelper_Coverage")]
+        public void TryGetRabbitMqPublishOptions_JsonObjectString_IsParsed()
+        {
+            var json = "{\"AutoCorrelation\":{\"Correlation\":" + (int)CorrelationAction.ExecutionID + "}}";
+            var d = new Dictionary<string, object> { [Constants.RABBITMQPUBLISH_BASICPROPERTIES] = json };
+
+            Assert.IsTrue(CommonHelper.TryGetRabbitMqPublishOptions(d, out var opts));
+            Assert.IsNotNull(opts);
         }
 
         // ─────────────────────────────────────────────────────────────────

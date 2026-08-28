@@ -4,7 +4,8 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
  *  Unit tests for FidelityAllowList: the fidelity-allowlist.json reader that
- *  gates get_workflow_definition/list_workflows' bodyEditable flag. Exercises
+ *  gates get_workflow_definition's bodyEditable flag (F8: list_workflows no longer reports one).
+ *  Exercises
  *  LoadFromFile directly (a fixture path, not AppContext.BaseDirectory) so
  *  Pass/non-Pass/missing-file/malformed-file behaviour is independently
  *  verifiable from the shared process-wide Resources copy.

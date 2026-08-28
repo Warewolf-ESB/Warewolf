@@ -16,12 +16,71 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 using Dev2.Common.Interfaces.Core.Graph;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces;
+using Dev2.Common.X6;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.WebTools
 {
     [TestClass]
     public class WebPutActivityComparerTests
     {
+        /// <summary>
+        /// F10: omitting the optional headers key left Headers null; ConfigureHttp then silently
+        /// sent no headers instead of hard-failing, but null vs. empty should not be a distinction
+        /// callers have to know about.
+        /// </summary>
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_FromX6Json_CellWithoutHeaders_DefaultsToEmptyNotNull()
+        {
+            //---------------Set up test pack-------------------
+            var cell = new Cell
+            {
+                data = new Dictionary<string, object>
+                {
+                    { Constants.TYPE, Constants.WEBPUTACTIVITY.ToLower() },
+                    { Constants.WEBMETHOD_QUERYSTRING, "search?q=warewolf" }
+                }
+            };
+            var activity = new WebPutActivity();
+            //---------------Execute Test ----------------------
+            activity.FromX6Json(cell);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(activity.Headers);
+            Assert.AreEqual(0, activity.Headers.Count);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_FromX6Json_HeadersSupplied_ArePreserved()
+        {
+            //---------------Set up test pack-------------------
+            // Headers is a JArray on the wire (ToX6Json writes the live IList<INameValue>
+            // directly, which only round-trips through an actual JSON pass — as it does in
+            // production via X6WorkflowSaveModel serialization — so the fixture is built as the
+            // wire shape TryGetHeaders actually reads).
+            var cell = new Cell
+            {
+                data = new Dictionary<string, object>
+                {
+                    { Constants.TYPE, Constants.WEBPUTACTIVITY.ToLower() },
+                    { Constants.WEBMETHOD_QUERYSTRING, "search?q=warewolf" },
+                    { Constants.WEBMETHOD_HEADERS, JArray.FromObject(new List<NameValue> { new NameValue("Accept", "application/json") }) }
+                }
+            };
+            var restored = new WebPutActivity();
+            //---------------Execute Test ----------------------
+            restored.FromX6Json(cell);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, restored.Headers.Count);
+            Assert.AreEqual("Accept", restored.Headers[0].Name);
+            Assert.AreEqual("application/json", restored.Headers[0].Value);
+        }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]

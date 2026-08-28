@@ -211,6 +211,31 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsTrue(result.Updated);
         }
 
+        /// <summary>
+        /// F6: get_workflow_definition's envelope used to flatten inputs/outputs to bracket-
+        /// notation strings, which edit_workflow (via EnvelopeBiteWriter.ParseArray) cannot parse
+        /// back — the first read-modify-write cycle a normal agent workflow would attempt always
+        /// failed. Feeding a real definition's envelope + body straight back into edit_workflow
+        /// must now succeed unmodified.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_DefinitionOutput_FedBackVerbatim_Succeeds()
+        {
+            var hostConfig = HostConfig();
+            SeedExisting(hostConfig, "RoundTrip");
+
+            var definition = GetWorkflowDefinitionTool.Handle(hostConfig, new StubAuthPolicyLoader { IsConfigEffective = false }, null, "RoundTrip");
+            Assert.IsTrue(definition.BodyEditable, definition.NonEditableReason);
+
+            var envelope = System.Text.Json.JsonSerializer.SerializeToElement(definition.Envelope);
+
+            var result = Handle(hostConfig, new StubAuthPolicyLoader { IsConfigEffective = false }, null,
+                "RoundTrip", envelope, definition.Body!.Value);
+
+            Assert.IsTrue(result.Updated);
+        }
+
         [TestMethod]
         [TestCategory("UnitTest")]
         public void Handle_Edit_PreservesServiceId_AndIncrementsVersionNumber()

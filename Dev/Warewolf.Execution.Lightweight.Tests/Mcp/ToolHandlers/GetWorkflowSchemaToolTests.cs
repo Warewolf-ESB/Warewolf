@@ -9,6 +9,7 @@
  */
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 using System.Text.Json;
 using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
@@ -52,6 +53,26 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsTrue(result.BodySchema.TryGetProperty("cells", out var cells));
             Assert.AreEqual(JsonValueKind.Array, cells.ValueKind);
             Assert.IsTrue(cells.GetArrayLength() >= 2, "cells should document both a node shape and an edge shape.");
+        }
+
+        /// <summary>
+        /// F7: shape:"edge" is mandatory on an edge cell (ValidateWorkflowTool/
+        /// X6ToWorkflowConverter both identify edges purely by it) but was previously undocumented
+        /// here, leaving the edge cell looking identical to {source, target, label?} with no clue
+        /// that shape was required.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_BodySchema_EdgeCell_DocumentsRequiredShape()
+        {
+            var result = GetWorkflowSchemaTool.Handle();
+
+            var cells = result.BodySchema.GetProperty("cells");
+            var edgeCell = cells.EnumerateArray().FirstOrDefault(c => c.TryGetProperty("source", out _));
+
+            Assert.AreNotEqual(JsonValueKind.Undefined, edgeCell.ValueKind, "body_schema should document an edge cell shape.");
+            Assert.IsTrue(edgeCell.TryGetProperty("shape", out var shape));
+            StringAssert.Contains(shape.GetString(), "edge");
         }
 
         [TestMethod]

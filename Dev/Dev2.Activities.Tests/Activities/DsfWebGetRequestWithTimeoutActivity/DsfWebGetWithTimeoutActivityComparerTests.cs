@@ -12,6 +12,7 @@ using System;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.State;
+using Dev2.Common.X6;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
@@ -19,6 +20,139 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
     [TestClass]
     public class DsfWebGetWithTimeoutActivityComparerTests
     {
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_X6RoundTrip_PreservesPostData()
+        {
+            //---------------Set up test pack-------------------
+            var original = new DsfWebGetRequestWithTimeoutActivity
+            {
+                Url = "http://localhost/orders",
+                Method = "POST",
+                Headers = "Content-Type:application/json",
+                PostData = "{\"orderId\":\"A-1001\"}",
+                Result = "[[res]]"
+            };
+            var cell = new Cell();
+            //---------------Execute Test ----------------------
+            original.ToX6Json(cell);
+            var restored = new DsfWebGetRequestWithTimeoutActivity();
+            restored.FromX6Json(cell);
+            //---------------Test Result -----------------------
+            Assert.AreEqual("{\"orderId\":\"A-1001\"}", restored.PostData);
+            Assert.AreEqual("POST", restored.Method);
+            Assert.AreEqual("http://localhost/orders", restored.Url);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_FromX6Json_CellWithoutPostData_DefaultsToEmpty()
+        {
+            //---------------Set up test pack-------------------
+            // A .bite authored before PostData existed has no webrequest_postdata key;
+            // loading one must not produce a null body.
+            var cell = new Cell
+            {
+                data = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { Constants.TYPE, Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY.ToLower() },
+                    { Constants.WEBREQUEST_METHOD, "GET" },
+                    { Constants.WEBREQUEST_URL, "http://localhost" }
+                }
+            };
+            var activity = new DsfWebGetRequestWithTimeoutActivity();
+            //---------------Execute Test ----------------------
+            activity.FromX6Json(cell);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(string.Empty, activity.PostData);
+        }
+
+        /// <summary>
+        /// F11: TimeOutText was previously defaulted to a literal "100" independent of
+        /// TimeoutSeconds, so a cell with webrequest_timeoutseconds but no webrequest_timeouttext
+        /// (e.g. an older save with only the seconds field) persisted a contradiction — and
+        /// execution re-derives its effective timeout from TimeOutText, not TimeoutSeconds, so the
+        /// drift was live, not cosmetic.
+        /// </summary>
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_FromX6Json_TimeoutSecondsWithoutTimeoutText_DerivesText()
+        {
+            //---------------Set up test pack-------------------
+            var cell = new Cell
+            {
+                data = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { Constants.TYPE, Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY.ToLower() },
+                    { Constants.WEBREQUEST_METHOD, "GET" },
+                    { Constants.WEBREQUEST_URL, "http://localhost" },
+                    { Constants.WEBREQUEST_TIMEOUTSECONDS, 300 }
+                }
+            };
+            var activity = new DsfWebGetRequestWithTimeoutActivity();
+            //---------------Execute Test ----------------------
+            activity.FromX6Json(cell);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(300, activity.TimeoutSeconds);
+            Assert.AreEqual("300", activity.TimeOutText);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_FromX6Json_BothTimeoutFieldsSupplied_PreservesExplicitText()
+        {
+            //---------------Set up test pack-------------------
+            var cell = new Cell
+            {
+                data = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { Constants.TYPE, Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY.ToLower() },
+                    { Constants.WEBREQUEST_METHOD, "GET" },
+                    { Constants.WEBREQUEST_URL, "http://localhost" },
+                    { Constants.WEBREQUEST_TIMEOUTSECONDS, 300 },
+                    { Constants.WEBREQUEST_TIMEOUTTEXT, "five minutes" }
+                }
+            };
+            var activity = new DsfWebGetRequestWithTimeoutActivity();
+            //---------------Execute Test ----------------------
+            activity.FromX6Json(cell);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(300, activity.TimeoutSeconds);
+            Assert.AreEqual("five minutes", activity.TimeOutText);
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(DsfWebGetRequestWithTimeoutActivity))]
+        public void DsfWebGetRequestWithTimeoutActivity_FromX6Json_NeitherTimeoutFieldSupplied_DefaultsToOneHundred()
+        {
+            //---------------Set up test pack-------------------
+            var cell = new Cell
+            {
+                data = new System.Collections.Generic.Dictionary<string, object>
+                {
+                    { Constants.TYPE, Constants.DSFWEBGETREQUESTWITHTIMEOUTACTIVITY.ToLower() },
+                    { Constants.WEBREQUEST_METHOD, "GET" },
+                    { Constants.WEBREQUEST_URL, "http://localhost" }
+                }
+            };
+            var activity = new DsfWebGetRequestWithTimeoutActivity();
+            //---------------Execute Test ----------------------
+            activity.FromX6Json(cell);
+            //---------------Test Result -----------------------
+            Assert.AreEqual(100, activity.TimeoutSeconds);
+            Assert.AreEqual("100", activity.TimeOutText);
+        }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
@@ -367,10 +501,10 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
         {
             //---------------Set up test pack-------------------
             //------------Setup for test--------------------------
-            var act = new DsfWebGetRequestWithTimeoutActivity { Url = "http://localhsot", Headers = "Content-Type:json", TimeOutText = "10", Result = "[[res]]" };
+            var act = new DsfWebGetRequestWithTimeoutActivity { Url = "http://localhsot", Headers = "Content-Type:json", PostData = "{\"a\":1}", TimeOutText = "10", Result = "[[res]]" };
             //------------Execute Test---------------------------
             var stateItems = act.GetState();
-            Assert.AreEqual(4, stateItems.Count());
+            Assert.AreEqual(5, stateItems.Count());
 
             var expectedResults = new[]
             {
@@ -385,6 +519,12 @@ namespace Dev2.Tests.Activities.DsfWebGetRequestWithTimeoutActivityTests
                     Name = "Headers",
                     Type = StateVariable.StateType.Input,
                     Value ="Content-Type:json"
+                },
+                new StateVariable
+                {
+                    Name = "PostData",
+                    Type = StateVariable.StateType.Input,
+                    Value ="{\"a\":1}"
                 },
                 new StateVariable
                 {

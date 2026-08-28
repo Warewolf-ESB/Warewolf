@@ -13,6 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Xml.Linq;
 using ModelContextProtocol;
 using Newtonsoft.Json.Linq;
 using Warewolf.Execution.Lightweight.Auth;
@@ -90,8 +91,8 @@ internal static class GetWorkflowDefinitionTool
             throw new McpException($"You do not have permission to view workflow '{name}'.");
         }
 
-        var detail = ListWorkflowsTool.ReadDetail(new ListWorkflowsTool.WorkflowFile(headerName, relativePath, filePath));
-        var envelope = new WorkflowEnvelope(headerName, detail.Description, detail.Inputs, detail.Outputs);
+        var (description, inputs, outputs) = ReadEnvelopeDetail(filePath);
+        var envelope = new WorkflowEnvelope(headerName, description, inputs, outputs);
 
         var (bodyEditable, body, nonEditableReason) = BuildBody(filePath, headerName);
 
@@ -231,14 +232,96 @@ internal static class GetWorkflowDefinitionTool
 
         return null;
     }
+
+    // ── Envelope production (F6: {kind, name, fields?} shape, not flat strings) ────────────
+
+    /// <summary>
+    /// Reads a workflow's <c>&lt;Comment&gt;</c> (→ <c>description</c>) and <c>&lt;DataList&gt;</c>
+    /// (→ <c>inputs</c>/<c>outputs</c>) directly, producing the same rich <c>{kind, name, fields?}</c>
+    /// shape <c>get_workflow_schema</c>'s <c>envelope_schema</c> documents and
+    /// <c>create_workflow</c>/<c>edit_workflow</c>/<c>validate_workflow</c> all expect — replacing
+    /// the previous flat bracket-notation strings (<see cref="Dev2.Data.DataListTO"/>'s shape, cheap
+    /// to derive but not re-submittable: an entry's <c>kind</c> and a recordset's declared
+    /// <c>fields</c> are both lost). Malformed/unreadable bodies degrade to an empty envelope
+    /// rather than throwing, mirroring <see cref="ListWorkflowsTool.ReadDetail"/>'s leniency.
+    /// </summary>
+    static (string Description, List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs) ReadEnvelopeDetail(string filePath)
+    {
+        try
+        {
+            var root = XElement.Load(filePath);
+            var description = root.Element("Comment")?.Value.Trim() ?? string.Empty;
+            var (inputs, outputs) = ParseDataListVariables(root.Element("DataList"));
+            return (description, inputs, outputs);
+        }
+        catch
+        {
+            return (string.Empty, new List<EnvelopeVariableDto>(), new List<EnvelopeVariableDto>());
+        }
+    }
+
+    /// <summary>
+    /// Mirrors <see cref="Dev2.Data.DataListTO"/>'s own <c>ColumnIODirection</c>/<c>IsJson</c>
+    /// attribute reading exactly (same string comparisons, same "no direction attribute → excluded
+    /// from both arrays" rule), but keeps each top-level element's <c>kind</c> (object vs. scalar
+    /// vs. recordset) and — for a recordset — which of its fields carry which direction, all of
+    /// which <c>DataListTO</c>'s flattened <c>List&lt;string&gt;</c> shape discards. A recordset
+    /// field's direction comes from that field's own attribute, not its parent's — a recordset can
+    /// legitimately be part-input, part-output.
+    /// </summary>
+    static (List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs) ParseDataListVariables(XElement? dataList)
+    {
+        var inputs = new List<EnvelopeVariableDto>();
+        var outputs = new List<EnvelopeVariableDto>();
+        if (dataList is null)
+        {
+            return (inputs, outputs);
+        }
+
+        foreach (var element in dataList.Elements())
+        {
+            var isJson = string.Equals(element.Attribute("IsJson")?.Value, "true", StringComparison.OrdinalIgnoreCase);
+            var name = element.Name.LocalName;
+
+            if (element.HasElements && !isJson)
+            {
+                var inputFields = new List<string>();
+                var outputFields = new List<string>();
+                foreach (var field in element.Elements())
+                {
+                    var fieldDirection = field.Attribute("ColumnIODirection")?.Value;
+                    if (fieldDirection is "Input" or "Both") inputFields.Add(field.Name.LocalName);
+                    if (fieldDirection is "Output" or "Both") outputFields.Add(field.Name.LocalName);
+                }
+
+                if (inputFields.Count > 0) inputs.Add(new EnvelopeVariableDto("recordset", name, inputFields));
+                if (outputFields.Count > 0) outputs.Add(new EnvelopeVariableDto("recordset", name, outputFields));
+                continue;
+            }
+
+            var kind = isJson ? "object" : "scalar";
+            var direction = element.Attribute("ColumnIODirection")?.Value;
+            if (direction is "Input" or "Both") inputs.Add(new EnvelopeVariableDto(kind, name, null));
+            if (direction is "Output" or "Both") outputs.Add(new EnvelopeVariableDto(kind, name, null));
+        }
+
+        return (inputs, outputs);
+    }
 }
 
 /// <summary>The <c>envelope</c> object in a <c>get_workflow_definition</c> response, per <c>envelope_schema</c>.</summary>
 internal sealed record WorkflowEnvelope(
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("description")] string Description,
-    [property: JsonPropertyName("inputs")] IReadOnlyList<string> Inputs,
-    [property: JsonPropertyName("outputs")] IReadOnlyList<string> Outputs);
+    [property: JsonPropertyName("inputs")] IReadOnlyList<EnvelopeVariableDto> Inputs,
+    [property: JsonPropertyName("outputs")] IReadOnlyList<EnvelopeVariableDto> Outputs);
+
+/// <summary>One <c>envelope.inputs</c>/<c>outputs</c> entry, per <c>envelope_schema</c>'s
+/// <c>{kind, name, fields?}</c> shape (F6).</summary>
+internal sealed record EnvelopeVariableDto(
+    [property: JsonPropertyName("kind")] string Kind,
+    [property: JsonPropertyName("name")] string Name,
+    [property: JsonPropertyName("fields"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] IReadOnlyList<string>? Fields);
 
 /// <summary>The full <c>get_workflow_definition</c> response payload.</summary>
 internal sealed record GetWorkflowDefinitionResult(

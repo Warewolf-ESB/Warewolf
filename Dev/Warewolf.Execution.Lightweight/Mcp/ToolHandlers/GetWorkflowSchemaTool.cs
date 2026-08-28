@@ -60,6 +60,7 @@ internal static class GetWorkflowSchemaTool
               "size": { "width": "number, optional", "height": "number, optional" }
             },
             {
+              "shape": "string, required — must be exactly \"edge\"; this is how a cell is told apart from a node",
               "source": { "cell": "string (a node id)" },
               "target": { "cell": "string (a node id)" },
               "label": "string, optional (branch/case label — e.g. true/false for Decision, a case name for Switch)"

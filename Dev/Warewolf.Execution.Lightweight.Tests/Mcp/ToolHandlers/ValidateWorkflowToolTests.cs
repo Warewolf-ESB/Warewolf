@@ -197,6 +197,120 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 "an absent collection field must not raise a collection error");
         }
 
+        // ── envelope name legality (F9) ──────────────────────────────────────
+
+        /// <summary>
+        /// F9: EnvelopeBiteWriter's rejection of an illegal XML element name was purely incidental
+        /// (XElement construction throwing, caught and rewrapped) - validate_workflow never
+        /// diagnosed it ahead of time, contradicting the tool description's claim that a payload
+        /// passing validate_workflow is accepted by create_workflow.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_IllegalEnvelopeVariableName_ReturnsInvalid()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "1 bad name", kind = "scalar", fields = new string[0] } },
+                outputs = new object[0]
+            });
+            var body = BodyOf("IllegalName", MakeStartNode());
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e =>
+                e.Severity == "error" && e.Message.Contains("1 bad name") && e.Message.Contains("not a legal XML element name")));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_IllegalRecordsetFieldName_ReturnsInvalid()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "Customers", kind = "recordset", fields = new[] { "bad field" } } },
+                outputs = new object[0]
+            });
+            var body = BodyOf("IllegalFieldName", MakeStartNode());
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e =>
+                e.Severity == "error" && e.Message.Contains("bad field") && e.Message.Contains("Customers") && e.Message.Contains("not a legal XML element name")));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_LegalEnvelopeNames_AreUnaffected()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "Customers", kind = "recordset", fields = new[] { "Name" } } },
+                outputs = new object[0]
+            });
+            var body = BodyOf("LegalNames", MakeStartNode());
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("not a legal XML element name")));
+        }
+
+        // ── newly-covered array fields (F9) ──────────────────────────────────
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_GetWebMethodHeaders_AsJsonArray_IsValid()
+        {
+            var node = MakeNode("get1", "webgetactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "GET",
+                ["querystring"] = "search?q=warewolf",
+                ["headers"] = new JArray(new JObject { ["Name"] = "Accept", ["Value"] = "application/json" })
+            });
+            var body = BodyOf("WebGetHeadersOk", MakeStartNode(), node, MakeEdge("e1", "start", "get1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("'headers'")));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_GetWebMethodHeaders_NotAnArray_ReturnsInvalid()
+        {
+            var node = MakeNode("get1", "webgetactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "GET",
+                ["querystring"] = "search?q=warewolf",
+                ["headers"] = "not-an-array"
+            });
+            var body = BodyOf("WebGetHeadersBad", MakeStartNode(), node, MakeEdge("e1", "start", "get1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e => e.Message.Contains("'headers'") && e.Message.Contains("get1")));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_SqlBulkInsertInputMappings_NotAnArray_ReturnsInvalid()
+        {
+            var node = MakeNode("bulk1", "dsfsqlbulkinsertactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "Bulk Insert",
+                ["inputmappings"] = "not-an-array"
+            });
+            var body = BodyOf("BulkInsertBad", MakeStartNode(), node, MakeEdge("e1", "start", "bulk1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e => e.Message.Contains("'inputmappings'") && e.Message.Contains("bulk1")));
+        }
+
         // ── body parse / shape ─────────────────────────────────────────────
 
         [TestMethod]
@@ -279,6 +393,51 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsFalse(result.Valid);
             Assert.IsTrue(result.Errors.Any(e => e.Severity == "error" &&
                 e.Message.Contains("no outgoing connection", StringComparison.OrdinalIgnoreCase)));
+        }
+
+        // ── edge detection tolerates a missing `shape` (F7) ───────────────
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_EdgeWithExplicitShape_StillValidates()
+        {
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign", ["fields"] = new JArray() });
+            var body = BodyOf("ExplicitShapeEdge", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        /// <summary>
+        /// get_workflow_schema documents shape:"edge" as required, but X6ToWorkflowConverter (the
+        /// real compiler validate_workflow's final check defers to) still requires it strictly - a
+        /// {source, target} cell with no shape genuinely cannot be authored as a connection. Before
+        /// F7, the resulting "no outgoing connection" error gave no hint why: it looked identical
+        /// to a workflow with no connection at all. The fix is a more specific message, not
+        /// silently accepting the missing shape.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StartNodeConnectedOnlyByShapelessCell_NamesTheMissingShapeAsCause()
+        {
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign", ["fields"] = new JArray() });
+            var shapelessEdge = new Cell
+            {
+                data = new Dictionary<string, object>(),
+                Source = new Connector("start"),
+                Target = new Connector("assign1")
+            };
+            var body = BodyOf("ShapelessEdge", MakeStartNode(), assign, shapelessEdge);
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e => e.Severity == "error" &&
+                e.Message.Contains("shape", StringComparison.OrdinalIgnoreCase) &&
+                e.Message.Contains("edge", StringComparison.OrdinalIgnoreCase)));
         }
 
         // ── unresolved activity type ───────────────────────────────────────
@@ -388,6 +547,85 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsFalse(result.Valid);
             Assert.IsTrue(result.Errors.Any(e =>
                 e.Severity == "error" && e.Message.Contains("NeverDeclared") && e.Message.Contains("not declared")));
+        }
+
+        // ── object sigil ('@') references (F4) ─────────────────────────────
+
+        /// <summary>
+        /// F4: SplitReference used to leave the '@' object sigil on the base name, so
+        /// [[@Response]] never matched a declared 'Response' entry — an object-mode variable
+        /// could not be declared and referenced at the same time. Confirms the fix.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectSigilReference_AgainstDeclaredObject_ValidatesClean()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new object[0],
+                outputs = new[] { new { name = "Response", kind = "object", fields = new string[0] } }
+            });
+            var fields = new JArray(new JObject
+            {
+                ["FieldName"] = "[[@Response]]",
+                ["FieldValue"] = "{}",
+                ["IndexNumber"] = 1
+            });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignobjectactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign Object", ["fields"] = fields });
+            var body = BodyOf("ObjectRef", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectSigilReference_AgainstDeclaredScalar_ReturnsError_NamingKindMismatch()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new object[0],
+                outputs = new[] { new { name = "Response", kind = "scalar", fields = new string[0] } }
+            });
+            var fields = new JArray(new JObject
+            {
+                ["FieldName"] = "[[@Response]]",
+                ["FieldValue"] = "{}",
+                ["IndexNumber"] = 1
+            });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignobjectactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign Object", ["fields"] = fields });
+            var body = BodyOf("ObjectKindMismatch", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e =>
+                e.Severity == "error" && e.Message.Contains("Response") && e.Message.Contains("scalar") && e.Message.Contains("object")));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectSigilReference_Undeclared_ReturnsError_NamingStrippedName()
+        {
+            var fields = new JArray(new JObject
+            {
+                ["FieldName"] = "[[@Missing]]",
+                ["FieldValue"] = "{}",
+                ["IndexNumber"] = 1
+            });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignobjectactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign Object", ["fields"] = fields });
+            var body = BodyOf("ObjectUndeclared", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            var error = result.Errors.Single(e => e.Severity == "error");
+            Assert.IsTrue(error.Message.Contains("'Missing' is not declared"));
+            Assert.IsFalse(error.Message.Contains("'@Missing' is not declared"));
         }
 
         [TestMethod]
@@ -520,6 +758,26 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
             Assert.ThrowsException<McpException>(() => ValidateWorkflowTool.Handle(asArray, body));
             Assert.ThrowsException<McpException>(() => ValidateWorkflowTool.Handle(asNumber, body));
+        }
+
+        /// <summary>
+        /// F6: get_workflow_definition used to emit envelope.inputs/outputs as bare strings — this
+        /// is exactly that shape fed back in. It used to throw an unhandled
+        /// InvalidOperationException (from TryGetProperty on a JSON string), which McpApiFunctions
+        /// mapped to a raw 500; it must now be a structured McpException (→ 400) naming the array
+        /// and index.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StringShapedEnvelopeEntry_ThrowsMcpException_NamingArrayAndIndex()
+        {
+            var envelope = EnvelopeOf(new { inputs = new[] { "JustAString" }, outputs = Array.Empty<object>() });
+            var body = BodyOf("Wf", MakeStartNode());
+
+            var ex = Assert.ThrowsException<McpException>(
+                () => ValidateWorkflowTool.Handle(envelope, body));
+
+            StringAssert.Contains(ex.Message, "inputs[0]");
         }
 
         [TestMethod]

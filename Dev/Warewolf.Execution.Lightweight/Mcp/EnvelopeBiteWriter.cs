@@ -193,6 +193,27 @@ internal static class EnvelopeBiteWriter
     static string Direction(bool isInput, bool isOutput) =>
         isInput && isOutput ? "Both" : isInput ? "Input" : "Output";
 
+    /// <summary>
+    /// Builds a single scalar/object <c>&lt;DataList&gt;</c> child element, declared both-directions
+    /// (<c>ColumnIODirection="Both"</c>) — used by <see cref="ToolHandlers.AddStepTool"/> to
+    /// auto-declare a variable a new step references that isn't already declared (F5). Reuses
+    /// <see cref="BuildScalarElement"/>'s exact element shape rather than duplicating it; "Both"
+    /// is the simplest safe default when the caller (unlike <c>create_workflow</c>'s envelope)
+    /// never says whether the reference is conceptually an input or an output.
+    /// </summary>
+    internal static XElement BuildScalarVariableElement(string name, string kind) =>
+        BuildScalarElement(new ScalarEntry(name, kind) { IsInput = true, IsOutput = true });
+
+    /// <summary>One recordset field element, declared both-directions — see
+    /// <see cref="BuildScalarVariableElement"/>'s remarks (F5).</summary>
+    internal static XElement BuildRecordsetFieldElement(string fieldName) =>
+        new(fieldName, new XAttribute("ColumnIODirection", "Both"));
+
+    /// <summary>A brand-new recordset element declaring exactly one field — see
+    /// <see cref="BuildScalarVariableElement"/>'s remarks (F5).</summary>
+    internal static XElement BuildRecordsetVariableElement(string recordsetName, string fieldName) =>
+        new(recordsetName, BuildRecordsetFieldElement(fieldName));
+
     static void ParseArray(
         JsonElement envelope,
         string arrayName,
@@ -206,8 +227,21 @@ internal static class EnvelopeBiteWriter
             return;
         }
 
+        var index = -1;
         foreach (var item in array.EnumerateArray())
         {
+            index++;
+            if (item.ValueKind != JsonValueKind.Object)
+            {
+                // F6: get_workflow_definition used to emit envelope.inputs/outputs as flat
+                // strings, so round-tripping that output straight back into create_workflow/
+                // edit_workflow fed a bare JSON string here, which TryGetProperty below throws
+                // InvalidOperationException for — an exception type McpApiFunctions doesn't map
+                // to 400, so it surfaced as a 500. Reject the shape mismatch explicitly instead.
+                throw new ModelContextProtocol.McpException(
+                    $"`envelope.{arrayName}[{index}]` must be a JSON object shaped {{kind, name, fields?}}, but a {item.ValueKind} was supplied.");
+            }
+
             var name = item.TryGetProperty("name", out var nameEl) ? nameEl.GetString() : null;
             if (string.IsNullOrWhiteSpace(name))
             {

@@ -135,7 +135,26 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.AreEqual("Says hello", wf.Description);
             CollectionAssert.Contains(wf.Inputs.ToList(), "Name");
             CollectionAssert.Contains(wf.Outputs.ToList(), "Message");
-            Assert.IsFalse(wf.BodyEditable, "bodyEditable must default false until fidelity-gate consumption lands.");
+        }
+
+        /// <summary>
+        /// F8: list_workflows previously reported a bodyEditable flag hard-coded to false for
+        /// every row, disagreeing with get_workflow_definition's authoritative fidelity gate for
+        /// the same workflow. The field is now removed entirely rather than duplicated — assert
+        /// its absence from the serialized response, not merely that it's false (a test asserting
+        /// only falseness would still pass on the removed bug, per the spec's own warning about
+        /// tests that encode a defect as intended behaviour).
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_Response_DoesNotContainBodyEditableField()
+        {
+            WriteWorkflow("Hello.bite", "Hello");
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false });
+
+            var json = System.Text.Json.JsonSerializer.Serialize(result);
+            StringAssert.DoesNotMatch(json, new System.Text.RegularExpressions.Regex("bodyEditable", System.Text.RegularExpressions.RegexOptions.IgnoreCase));
         }
 
         [TestMethod]

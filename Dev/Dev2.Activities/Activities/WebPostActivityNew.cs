@@ -413,6 +413,11 @@ namespace Dev2.Activities
             if (cell.data.TryGetInputs(out var inputs)) Inputs = inputs;
             if (cell.data.TryGetOutputs(out var outputs)) Outputs = outputs;
             if (cell.data.TryGetOutputDescription(out var outputDesc)) OutputDescription = outputDesc;
+
+            // Omitting the optional headers key left Headers null; GetEnvironmentInputVariables
+            // then silently sent no headers instead of hard-failing, but null vs. empty should not
+            // be a distinction callers have to know about (F10).
+            Headers ??= new List<INameValue>();
         }
     }
 }

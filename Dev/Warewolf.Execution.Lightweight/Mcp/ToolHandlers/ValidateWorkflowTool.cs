@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
+using System.Xml;
 using ModelContextProtocol;
 
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
@@ -26,18 +27,18 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// structural and semantic validity without saving or running it, against the X6 graph shape.
 ///
 /// <para>
-/// <b>Envelope shape (deliberate divergence from <see cref="GetWorkflowDefinitionTool"/>'s
-/// output).</b> <see cref="GetWorkflowDefinitionTool"/>'s <c>WorkflowEnvelope</c> flattens
-/// inputs/outputs to bracket-notation strings (e.g. <c>"[[Recordset(*).Field]]"</c>, per
-/// <c>DataListTO</c>) because that is what's cheap to derive from an existing workflow's
-/// <c>DataList</c> XML. <c>get_workflow_schema</c>'s own <c>envelope_schema</c> — the contract
-/// this tool (and, later, <c>create_workflow</c>/<c>edit_workflow</c>) actually exposes to an
-/// MCP caller — documents the richer <c>{ kind, name, fields }</c> shape instead, because only
-/// that shape can distinguish a <c>recordset</c> entry's declared field names from a plain
-/// <c>scalar</c>/<c>object</c> entry — required by the "recordset field references resolve to a
-/// <c>fields</c> entry declared on that recordset's envelope entry" check below. This handler
-/// therefore parses <c>envelope.inputs</c>/<c>outputs</c> as arrays of <see cref="EnvelopeVariable"/>,
-/// not strings.
+/// <b>Envelope shape.</b> <c>get_workflow_schema</c>'s own <c>envelope_schema</c> — the contract
+/// this tool (and <c>create_workflow</c>/<c>edit_workflow</c>) exposes to an MCP caller —
+/// documents the rich <c>{ kind, name, fields }</c> shape, because only that shape can
+/// distinguish a <c>recordset</c> entry's declared field names, and a <c>scalar</c> entry from an
+/// <c>object</c> one — required by the "recordset field references resolve to a <c>fields</c>
+/// entry declared on that recordset's envelope entry" check below. This handler therefore parses
+/// <c>envelope.inputs</c>/<c>outputs</c> as arrays of <see cref="EnvelopeVariable"/>, not strings.
+/// <see cref="GetWorkflowDefinitionTool"/>'s <c>WorkflowEnvelope</c> used to flatten
+/// inputs/outputs to bracket-notation strings instead (cheaper to derive from an existing
+/// workflow's <c>DataList</c> XML, via <c>DataListTO</c>) — that divergence meant a
+/// <c>get_workflow_definition</c> response could never be fed straight back into this tool or
+/// <c>create_workflow</c>/<c>edit_workflow</c> (F6); it now emits the same rich shape.
 /// </para>
 ///
 /// <para>
@@ -141,6 +142,7 @@ internal static class ValidateWorkflowTool
         var errors = new List<ValidationIssue>();
 
         var envelopeVariables = ParseEnvelopeVariables(envelope);
+        ValidateEnvelopeNamesAreLegalXml(envelopeVariables, errors);
 
         X6WorkflowSaveModel? graph;
         string bodyJson;
@@ -206,10 +208,23 @@ internal static class ValidateWorkflowTool
                 var hasOutgoingEdge = edges.Any(e => e.Source?.Id == startCell.id);
                 if (!hasOutgoingEdge)
                 {
-                    errors.Add(ValidationIssue.Error(
-                        $"The start node (cell '{startCell.id}') has no outgoing connection to another step; " +
-                        "a workflow must contain at least one activity reachable from its start node.",
-                        $"/cells/{index}"));
+                    // F7: shape:"edge" is how X6ToWorkflowConverter/this validator tell an edge
+                    // apart from a node, but that requirement was undocumented — a caller who
+                    // authored a connection as {source, target} with no shape got a generic
+                    // "no outgoing connection" error that never hinted at the real, fixable cause.
+                    var looksLikeUnshapedEdge = nodes.Any(n =>
+                        string.IsNullOrEmpty(n.Cell.shape) &&
+                        n.Cell.Source?.Id == startCell.id &&
+                        n.Cell.Target is not null);
+
+                    var message = looksLikeUnshapedEdge
+                        ? $"The start node (cell '{startCell.id}') has no outgoing connection to another step, because a " +
+                          "cell with a `source`/`target` pointing from it is missing the required `shape: \"edge\"` " +
+                          "attribute (see get_workflow_schema's body_schema) and so was read as a node, not a connection."
+                        : $"The start node (cell '{startCell.id}') has no outgoing connection to another step; " +
+                          "a workflow must contain at least one activity reachable from its start node.";
+
+                    errors.Add(ValidationIssue.Error(message, $"/cells/{index}"));
                 }
             }
         }
@@ -297,6 +312,23 @@ internal static class ValidateWorkflowTool
             ["Base Conversion"] = new[] { Constants.CONVERTCOLLECTION, Constants.UPDATEDCONVERTCOLLECTION },
             ["XPath"] = new[] { Constants.XPATH_RESULTSCOLLECTION, Constants.XPATH_UPDATEDRESULTSCOLLECTION },
             ["Gather System Information"] = new[] { Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION },
+
+            // F9: the remaining array-typed fields ToolSchemaCatalog documents as "array, ..." but
+            // this check didn't yet cover — added mechanically by scanning that catalog for every
+            // such field, no new mechanism.
+            ["Service (sub-workflow)"] = new[] { Constants.WORKFLOW_INPUTS, Constants.WORKFLOW_OUTPUTS },
+            ["Advanced Recordset"] = new[] { Constants.WEBMETHOD_OUTPUTS },
+            ["GET Web Method"] = new[] { Constants.WEBMETHOD_HEADERS, Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["POST Web Method"] = new[] { Constants.WEBMETHOD_HEADERS, Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["PUT Web Method"] = new[] { Constants.WEBMETHOD_HEADERS, Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["DELETE Web Method"] = new[] { Constants.WEBMETHOD_HEADERS, Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["Web Request"] = new[] { Constants.WEBREQUEST_HEADERS },
+            ["SQL Server Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["PostgreSQL Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["MySQL Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["Oracle Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["ODBC Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
+            ["SQL Bulk Insert"] = new[] { Constants.SQLBULKINSERT_INPUTMAPPINGS },
         };
 
     /// <summary>
@@ -412,6 +444,52 @@ internal static class ValidateWorkflowTool
         }
     }
 
+    // ── envelope name legality (F9) ─────────────────────────────────────────────
+
+    /// <summary>
+    /// F9: <c>EnvelopeBiteWriter</c>'s rejection of an illegal XML element name
+    /// (<c>envelope</c> declares a variable/field name <c>&lt;XElement&gt;</c> construction can't
+    /// use) is purely incidental — there is no explicit name-legality check anywhere; it's just
+    /// .NET's own <c>XElement</c>/<c>XName</c> construction throwing, caught and rewrapped. So
+    /// <c>create_workflow</c> enforces this but <c>validate_workflow</c> never diagnosed it ahead
+    /// of time, contradicting the tool description's claim that a payload passing
+    /// <c>validate_workflow</c> is accepted by <c>create_workflow</c>. Mirrors the same
+    /// construction check explicitly via <see cref="XmlConvert.VerifyName"/>.
+    /// </summary>
+    static void ValidateEnvelopeNamesAreLegalXml(List<EnvelopeVariable> envelopeVariables, List<ValidationIssue> errors)
+    {
+        foreach (var variable in envelopeVariables)
+        {
+            if (!IsLegalXmlElementName(variable.Name))
+            {
+                errors.Add(ValidationIssue.Error(
+                    $"envelope declares variable '{variable.Name}', which is not a legal XML element name and cannot be written to the workflow's DataList."));
+            }
+
+            foreach (var field in variable.Fields)
+            {
+                if (!IsLegalXmlElementName(field))
+                {
+                    errors.Add(ValidationIssue.Error(
+                        $"envelope declares field '{field}' on recordset '{variable.Name}', which is not a legal XML element name and cannot be written to the workflow's DataList."));
+                }
+            }
+        }
+    }
+
+    static bool IsLegalXmlElementName(string name)
+    {
+        try
+        {
+            XmlConvert.VerifyName(name);
+            return true;
+        }
+        catch (XmlException)
+        {
+            return false;
+        }
+    }
+
     // ── envelope.inputs/outputs ⇄ body [[...]] reference cross-check ──────────
 
     static List<EnvelopeVariable> ParseEnvelopeVariables(JsonElement envelope)
@@ -424,8 +502,20 @@ internal static class ValidateWorkflowTool
                 continue;
             }
 
+            var index = -1;
             foreach (var item in array.EnumerateArray())
             {
+                index++;
+                if (item.ValueKind != JsonValueKind.Object)
+                {
+                    // F6: mirrors EnvelopeBiteWriter.ParseArray's guard, so validate_workflow gets
+                    // the same 400 behaviour as create_workflow/edit_workflow for a mismatched
+                    // envelope shape (e.g. get_workflow_definition's old flat-string output fed
+                    // straight back in), instead of an unhandled InvalidOperationException.
+                    throw new McpException(
+                        $"`envelope.{arrayName}[{index}]` must be a JSON object shaped {{kind, name, fields?}}, but a {item.ValueKind} was supplied.");
+                }
+
                 var name = item.TryGetProperty("name", out var nameEl) ? nameEl.GetString() : null;
                 if (string.IsNullOrWhiteSpace(name))
                 {
@@ -463,7 +553,7 @@ internal static class ValidateWorkflowTool
         {
             foreach (var raw in ExtractVariableTokens(cell.data))
             {
-                var (baseName, fieldName) = SplitReference(raw);
+                var (baseName, fieldName, isObjectReference) = SplitReference(raw);
                 if (string.IsNullOrWhiteSpace(baseName))
                 {
                     continue;
@@ -475,6 +565,17 @@ internal static class ValidateWorkflowTool
                 {
                     errors.Add(ValidationIssue.Error(
                         $"cell '{cell.id}' references undeclared variable '[[{raw}]]' — '{baseName}' is not declared in envelope.inputs/outputs.",
+                        $"/cells/{index}"));
+                    continue;
+                }
+
+                if (isObjectReference && !string.Equals(declared.Kind, "object", StringComparison.OrdinalIgnoreCase))
+                {
+                    // F4: the '@' object sigil (DataListUtil.ObjectStartMarker) used to be left on
+                    // the base name, so it never matched a declared name at all — every object
+                    // reference looked undeclared even when correctly declared as kind:"object".
+                    errors.Add(ValidationIssue.Error(
+                        $"cell '{cell.id}' references '[[{raw}]]' using the object sigil '@', but '{baseName}' is declared as kind '{declared.Kind}', not 'object'.",
                         $"/cells/{index}"));
                     continue;
                 }
@@ -520,8 +621,10 @@ internal static class ValidateWorkflowTool
     /// plain string field (e.g. Assign's <c>fields</c>, which some activities store as a raw
     /// JSON-encoded string) or inside a real nested array/object (e.g. Assign's <c>fields</c> as
     /// authored per <c>body_schema</c>'s own example, a <c>JArray</c> of field objects).
+    /// <c>internal</c> so <see cref="AddStepTool"/> shares this exact token extraction when
+    /// auto-declaring a variable a new step references, rather than duplicating it (F5).
     /// </summary>
-    static IEnumerable<string> ExtractVariableTokens(Dictionary<string, object>? data)
+    internal static IEnumerable<string> ExtractVariableTokens(Dictionary<string, object>? data)
     {
         if (data is null)
         {
@@ -574,21 +677,40 @@ internal static class ValidateWorkflowTool
     }
 
     /// <summary>
-    /// Splits a raw <c>[[...]]</c> token body (e.g. <c>"Name"</c> or <c>"Recordset().Field"</c>)
-    /// into its base variable name and, for a recordset field reference, the field name — using
-    /// the same <see cref="DataListUtil"/> recordset-notation helpers the rest of the codebase
-    /// uses (they tolerate the value with or without its own <c>[[ ]]</c> wrapper).
+    /// Splits a raw <c>[[...]]</c> token body (e.g. <c>"Name"</c>, <c>"@Name"</c>, or
+    /// <c>"Recordset().Field"</c>) into its base variable name, and, for a recordset field
+    /// reference, the field name — using the same <see cref="DataListUtil"/> recordset-notation
+    /// helpers the rest of the codebase uses (they tolerate the value with or without its own
+    /// <c>[[ ]]</c> wrapper). Also strips a leading <see cref="DataListUtil.ObjectStartMarker"/>
+    /// (<c>"@"</c>) and reports whether it was present: before F4, <c>[[@Response]]</c> kept the
+    /// <c>@</c> on its base name, which then never matched a declared <c>Response</c> entry — the
+    /// object-mode variable was undeclarable and unauthorable at the same time. <c>internal</c> so
+    /// <see cref="AddStepTool"/> shares this exact reference-shape logic rather than duplicating
+    /// it when auto-declaring a variable a new step references (F5).
     /// </summary>
-    static (string BaseName, string? FieldName) SplitReference(string raw)
+    internal static (string BaseName, string? FieldName, bool IsObjectReference) SplitReference(string raw)
     {
         if (DataListUtil.IsValueRecordset(raw))
         {
             var recordsetName = DataListUtil.ExtractRecordsetNameFromValue(raw);
             var fieldName = DataListUtil.ExtractFieldNameFromValue(raw);
-            return (recordsetName, string.IsNullOrEmpty(fieldName) ? null : fieldName);
+            var isObjectRecordset = recordsetName.StartsWith(DataListUtil.ObjectStartMarker, StringComparison.Ordinal);
+            if (isObjectRecordset)
+            {
+                recordsetName = recordsetName[DataListUtil.ObjectStartMarker.Length..];
+            }
+
+            return (recordsetName, string.IsNullOrEmpty(fieldName) ? null : fieldName, isObjectRecordset);
         }
 
-        return (DataListUtil.StripBracketsFromValue(raw).Trim(), null);
+        var baseName = DataListUtil.StripBracketsFromValue(raw).Trim();
+        var isObjectReference = baseName.StartsWith(DataListUtil.ObjectStartMarker, StringComparison.Ordinal);
+        if (isObjectReference)
+        {
+            baseName = baseName[DataListUtil.ObjectStartMarker.Length..];
+        }
+
+        return (baseName, null, isObjectReference);
     }
 }
 

@@ -23,9 +23,11 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
+using Warewolf.Execution.Lightweight.Mcp;
 using Warewolf.Execution.Lightweight.Mcp.Secrets;
 using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
@@ -401,6 +403,98 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 ConfigOf(new { Host = "smtp.local", UserName = "bot", Password = "pw" }));
 
             Assert.IsTrue(result.Created);
+        }
+
+        // ── F2: Web source type ─────────────────────────────────────────────────
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void SourceCatalog_Web_ResolvesCaseInsensitively_AndIsListed()
+        {
+            Assert.IsNotNull(SourceCatalog.Resolve("web"));
+            Assert.IsNotNull(SourceCatalog.Resolve("WEB"));
+            StringAssert.Contains(SourceCatalog.SupportedTypesList, "Web");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_Web_Succeeds()
+        {
+            var result = await Handle(HostConfig(), OpenPolicy, null, "WebSource1", "Web",
+                ConfigOf(new { Address = "https://api.example.com" }));
+
+            Assert.AreEqual("Web", result.SourceType);
+            Assert.IsTrue(result.Created);
+            Assert.IsTrue(File.Exists(Path.Combine(_root, "WebSource1.bite")));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public async Task Handle_Web_MissingAddress_Throws()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "NewSource", "Web", ConfigOf(new { DefaultQuery = "search" }));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public async Task Handle_Web_UserAuthWithoutPassword_Throws()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "NewSource", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "User", UserName = "bob" }));
+        }
+
+        /// <summary>
+        /// F2 round-trip (the strongest guard): the XML add_source writes must be readable by
+        /// WebSource's own XML constructor, preserving Address/DefaultQuery. Also proves the
+        /// Windows-default-trap fix: WebSource.ToXml()'s XML constructor falls back to
+        /// AuthenticationType.Windows when the connection string's AuthenticationType segment is
+        /// missing/unparseable, so an omitted AuthenticationType must still round-trip to
+        /// Anonymous (SourceCatalog's Field.Default), never silently becoming Windows-auth.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_Web_AnonymousAuth_RoundTripsThroughWebSource_DefaultsToAnonymous()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "WebRoundTrip", "Web",
+                ConfigOf(new { Address = "https://api.example.com/base", DefaultQuery = "?x=1" }));
+
+            var xml = XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebRoundTrip.bite"))).Root!;
+            var webSource = new WebSource(xml);
+
+            Assert.AreEqual("https://api.example.com/base", webSource.Address);
+            Assert.AreEqual(AuthenticationType.Anonymous, webSource.AuthenticationType);
+            Assert.AreEqual("?x=1", webSource.DefaultQuery);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_Web_UserAuth_RoundTripsThroughWebSource_PreservesCredentials()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "WebUserAuth", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "User", UserName = "bob", Password = "s3cret" }));
+
+            var xml = XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebUserAuth.bite"))).Root!;
+            var webSource = new WebSource(xml);
+
+            Assert.AreEqual("https://api.example.com", webSource.Address);
+            Assert.AreEqual(AuthenticationType.User, webSource.AuthenticationType);
+            Assert.AreEqual("bob", webSource.UserName);
+            Assert.AreEqual("s3cret", webSource.Password);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_Web_WrittenFile_HasWebSourceResourceTypeAndNoServerType()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "WebShape", "Web", ConfigOf(new { Address = "https://api.example.com" }));
+
+            var source = XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebShape.bite"))).Root!;
+
+            Assert.AreEqual("WebSource", source.Attribute("ResourceType")!.Value);
+            Assert.AreEqual("WebSource", source.Attribute("Type")!.Value);
+            Assert.IsNull(source.Attribute("ServerType"), "Web is not a DbSource entry; it must not get the DB-only ServerType attribute.");
         }
     }
 }

@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Warewolf - Once bitten, there's no going back
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -248,8 +248,8 @@ internal static class ToolSchemaCatalog
                     "workflow_inputmapping": "string, optional — input variable mapping to the target service's inputs (Constants.WORKFLOW_INPUTMAPPING).",
                     "workflow_outputmapping": "string, optional — output variable mapping from the target service's outputs (Constants.WORKFLOW_OUTPUTMAPPING).",
                     "workflow_isworkflow": "boolean, optional — true when the target is a workflow (vs. a plain service) (Constants.WORKFLOW_ISWORKFLOW).",
-                    "workflow_inputs": "string, optional — JSON-encoded input parameter list (Constants.WORKFLOW_INPUTS).",
-                    "workflow_outputs": "string, optional — JSON-encoded output parameter list (Constants.WORKFLOW_OUTPUTS).",
+                    "workflow_inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WORKFLOW_INPUTS).",
+                    "workflow_outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WORKFLOW_OUTPUTS).",
                     "workflow_category": "string, optional — the target service's toolbox category (Constants.WORKFLOW_CATEGORY).",
                     "workflow_type": "string, optional — the target service's type discriminator (Constants.WORKFLOW_TYPE)."
                   },
@@ -457,7 +457,7 @@ internal static class ToolSchemaCatalog
                     "recordsetname": "string, required — the output recordset name (Constants.ADVANCEDRECORDSET_RECORDSETNAME).",
                     "declarevariables": "string, optional — variable declarations available to the query (Constants.ADVANCEDRECORDSET_DECLAREVARIABLES).",
                     "sourceId": "string, optional — connection source id, if the query reads from an external source rather than an in-memory recordset (Constants.WEBMETHOD_SOURCEID).",
-                    "outputs": "string, optional — JSON-encoded output parameter list (Constants.WEBMETHOD_OUTPUTS)."
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
                   }
                 }
                 """,
@@ -605,12 +605,12 @@ internal static class ToolSchemaCatalog
             ["GET Web Method"] = """
                 {
                   "fields": {
-                    "headers": "string, optional — JSON-encoded HTTP headers (Constants.WEBMETHOD_HEADERS).",
+                    "headers": "array, optional — HTTP headers, or a JSON-encoded string of them (Constants.WEBMETHOD_HEADERS).",
                     "querystring": "string, required — the request URL/query string (Constants.WEBMETHOD_QUERYSTRING). Accepts requestUrl/url as caller-supplied aliases per the Angular chatbot normalizer leniency the spec references — this MCP server should apply the same tolerance when authoring bodies.",
                     "sourceId": "string, optional — connection source id, when calling through a saved web source rather than an ad-hoc URL (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — a sample/description of the expected response shape, used to derive output mappings (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
-                    "inputs": "string, optional — JSON-encoded input parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output parameter list (Constants.WEBMETHOD_OUTPUTS).",
+                    "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — the object variable to receive the response when isOutputToObject is true (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT).",
@@ -621,7 +621,7 @@ internal static class ToolSchemaCatalog
             ["POST Web Method"] = """
                 {
                   "fields": {
-                    "headers": "string, optional — JSON-encoded HTTP headers (Constants.WEBMETHOD_HEADERS).",
+                    "headers": "array, optional — HTTP headers, or a JSON-encoded string of them (Constants.WEBMETHOD_HEADERS).",
                     "querystring": "string, required — the request URL/query string (Constants.WEBMETHOD_QUERYSTRING).",
                     "settings": "string, optional — additional request settings (Constants.WEBMETHOD_SETTINGS).",
                     "conditions": "string, optional — pre-request condition rules (Constants.WEBMETHOD_CONDITIONS).",
@@ -629,8 +629,8 @@ internal static class ToolSchemaCatalog
                     "postdata": "string, optional — the POST body content (Constants.WEBMETHOD_POSTDATA).",
                     "sourceId": "string, optional — connection source id (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — sample/description of the expected response shape (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
-                    "inputs": "string, optional — JSON-encoded input parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output parameter list (Constants.WEBMETHOD_OUTPUTS).",
+                    "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT)."
@@ -640,14 +640,14 @@ internal static class ToolSchemaCatalog
             ["PUT Web Method"] = """
                 {
                   "fields": {
-                    "headers": "string, optional — JSON-encoded HTTP headers (Constants.WEBMETHOD_HEADERS).",
+                    "headers": "array, optional — HTTP headers, or a JSON-encoded string of them (Constants.WEBMETHOD_HEADERS).",
                     "querystring": "string, required — the request URL/query string (Constants.WEBMETHOD_QUERYSTRING).",
                     "isputdatabase64": "boolean, optional — treat postdata as Base64-encoded (Constants.WEBMETHOD_ISPUTDATABASE64).",
                     "postdata": "string, optional — the PUT body content (Constants.WEBMETHOD_POSTDATA, reused as PutData for PUT).",
                     "sourceId": "string, optional — connection source id (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — sample/description of the expected response shape (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
-                    "inputs": "string, optional — JSON-encoded input parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output parameter list (Constants.WEBMETHOD_OUTPUTS).",
+                    "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT)."
@@ -657,12 +657,12 @@ internal static class ToolSchemaCatalog
             ["DELETE Web Method"] = """
                 {
                   "fields": {
-                    "headers": "string, optional — JSON-encoded HTTP headers (Constants.WEBMETHOD_HEADERS).",
+                    "headers": "array, optional — HTTP headers, or a JSON-encoded string of them (Constants.WEBMETHOD_HEADERS).",
                     "querystring": "string, required — the request URL/query string (Constants.WEBMETHOD_QUERYSTRING).",
                     "sourceId": "string, optional — connection source id (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — sample/description of the expected response shape (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
-                    "inputs": "string, optional — JSON-encoded input parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output parameter list (Constants.WEBMETHOD_OUTPUTS).",
+                    "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT)."
@@ -672,15 +672,17 @@ internal static class ToolSchemaCatalog
             ["Web Request"] = """
                 {
                   "fields": {
-                    "webrequest_method": "string, required — the HTTP method to use (Constants.WEBREQUEST_METHOD).",
+                    "webrequest_method": "string, required — the HTTP method to use (Constants.WEBREQUEST_METHOD). One of GET, POST, PUT, DELETE, PATCH; any other value is rejected at execution time.",
                     "webrequest_timeoutseconds": "number, optional — request timeout in seconds (Constants.WEBREQUEST_TIMEOUTSECONDS).",
                     "webrequest_timeouttext": "string, optional — human-readable timeout description (Constants.WEBREQUEST_TIMEOUTTEXT).",
                     "webrequest_url": "string, required — the request URL (Constants.WEBREQUEST_URL).",
-                    "webrequest_headers": "string, optional — JSON-encoded HTTP headers (Constants.WEBREQUEST_HEADERS).",
+                    "webrequest_headers": "array, optional — HTTP headers, or a JSON-encoded string of them (Constants.WEBREQUEST_HEADERS).",
+                    "webrequest_postdata": "string, optional — request body for verbs that carry one (POST/PUT/PATCH); ignored for GET/DELETE. Omitted or empty sends an empty body (Constants.WEBREQUEST_POSTDATA).",
                     "webrequest_result": "string, optional — output variable for the response (Constants.WEBREQUEST_RESULT)."
                   },
                   "notes": [
-                    "Unlike the other web method tools, this activity's own field keys are prefixed with webrequest_ rather than sharing the WEBMETHOD_* keys — confirmed directly in DsfWebGetRequestWithTimeoutActivity.ToX6Json."
+                    "Unlike the other web method tools, this activity's own field keys are prefixed with webrequest_ rather than sharing the WEBMETHOD_* keys — confirmed directly in DsfWebGetRequestWithTimeoutActivity.ToX6Json.",
+                    "Unlike the WEBMETHOD_* tools this activity resolves no connection source, so webrequest_url takes a full absolute URL and no sourceId is involved."
                   ]
                 }
                 """,
@@ -695,8 +697,8 @@ internal static class ToolSchemaCatalog
                     "isOutputToObject": "boolean, optional — map the result onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode result payload (Constants.WEBMETHOD_OBJECTRESULT).",
-                    "inputs": "string, optional — JSON-encoded stored-procedure parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output/result-column mapping (Constants.WEBMETHOD_OUTPUTS)."
+                    "inputs": "array, optional — stored-procedure parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
                   },
                   "notes": [
                     "requiresSource: true per list_tools — sourceId must reference an existing SQL Server connection resource on this instance."
@@ -713,8 +715,8 @@ internal static class ToolSchemaCatalog
                     "isOutputToObject": "boolean, optional — see SQL Server Database (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
-                    "inputs": "string, optional — JSON-encoded parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output/result-column mapping (Constants.WEBMETHOD_OUTPUTS)."
+                    "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
                   },
                   "notes": [
                     "requiresSource: true. Unlike SQL Server Database, PostgreSQL has no executeactionstring field — only procedurename (confirmed directly in DsfPostgreSqlActivity.ToX6Json)."
@@ -731,8 +733,8 @@ internal static class ToolSchemaCatalog
                     "isOutputToObject": "boolean, optional — see SQL Server Database (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
-                    "inputs": "string, optional — JSON-encoded parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output/result-column mapping (Constants.WEBMETHOD_OUTPUTS)."
+                    "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
                   },
                   "notes": [
                     "requiresSource: true. No executeactionstring field, same as PostgreSQL/Oracle/ODBC."
@@ -749,8 +751,8 @@ internal static class ToolSchemaCatalog
                     "isOutputToObject": "boolean, optional — see SQL Server Database (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
-                    "inputs": "string, optional — JSON-encoded parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output/result-column mapping (Constants.WEBMETHOD_OUTPUTS)."
+                    "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
                   },
                   "notes": [
                     "requiresSource: true. No executeactionstring field."
@@ -767,8 +769,8 @@ internal static class ToolSchemaCatalog
                     "isOutputToObject": "boolean, optional — see SQL Server Database (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
-                    "inputs": "string, optional — JSON-encoded parameter list (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "string, optional — JSON-encoded output/result-column mapping (Constants.WEBMETHOD_OUTPUTS)."
+                    "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
                   },
                   "notes": [
                     "requiresSource: true. Confirmed directly in DsfODBCDatabaseActivity.ToX6Json — this is the one database activity using DATABASE_COMMANDTEXT ('commandtext') rather than DATABASE_PROCEDURENAME."
@@ -787,7 +789,7 @@ internal static class ToolSchemaCatalog
                     "keepidentity": "boolean, optional — preserve identity column values from the source data (Constants.SQLBULKINSERT_KEEPIDENTITY).",
                     "keeptablelock": "boolean, optional — hold a table lock for the duration of the insert (Constants.SQLBULKINSERT_KEEPTABLELOCK).",
                     "ignoreblankrows": "boolean, optional — skip blank source rows (Constants.SQLBULKINSERT_IGNOREBLANKROWS).",
-                    "inputmappings": "string, required — JSON-encoded source-recordset-field-to-column mapping (Constants.SQLBULKINSERT_INPUTMAPPINGS).",
+                    "inputmappings": "array, required — source-recordset-field-to-column mapping, or a JSON-encoded string of one (Constants.SQLBULKINSERT_INPUTMAPPINGS).",
                     "database": "string, required — the target database connection's resource id (Constants.SQLBULKINSERT_DATABASE).",
                     "result": "string, optional — output variable for the insert result (Constants.RESULT)."
                   },

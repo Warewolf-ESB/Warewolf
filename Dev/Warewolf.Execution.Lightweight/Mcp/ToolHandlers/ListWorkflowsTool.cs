@@ -48,26 +48,18 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// </para>
 ///
 /// <para>
-/// <b><c>bodyEditable</c> — KNOWN BUG: this tool always reports <c>false</c>.</b>
-/// <c>bodyEditable</c> means "this workflow's XAML round-trips losslessly through
-/// <c>WorkflowToX6Converter</c> → <c>X6ToWorkflowConverter</c>", decided per activity
-/// type by <see cref="FidelityAllowList"/>.
-/// </para>
-///
-/// <para>
-/// The note previously here said that allow-list consumption was a separate
-/// "not-yet-implemented increment", and every row was therefore hard-coded to
-/// <c>false</c>. That increment HAS since landed —
-/// <see cref="GetWorkflowDefinitionTool.BuildBody"/> performs exactly the
-/// <c>StudioName</c> ↔ activity-type mapping the old note said did not exist — but this
-/// tool was never updated to match. So <c>list_workflows</c> and
-/// <c>get_workflow_definition</c> now disagree about the same workflow at the same
-/// moment (observed on <c>warewolfserver-mcp</c> 2026-08-21: the list said <c>false</c>
-/// while the definition returned a full body with <c>nonEditableReason: null</c>).
-/// Because callers browse the list first, this makes <c>add_step</c> and
-/// read-modify-write look globally unavailable when they are not.
-/// Fix by calling the same gate here, or by dropping the field from this response so
-/// there is a single source of truth.
+/// <b>No <c>bodyEditable</c> here (deliberate, F8).</b> This tool previously reported a
+/// <c>bodyEditable</c> flag, hard-coded to <c>false</c> for every row — a "not-yet-implemented
+/// increment" note that was never updated once <see cref="GetWorkflowDefinitionTool.BuildBody"/>'s
+/// fidelity gate landed, so <c>list_workflows</c> and <c>get_workflow_definition</c> disagreed
+/// about the same workflow at the same moment (observed on <c>warewolfserver-mcp</c> 2026-08-21:
+/// the list said <c>false</c> while the definition returned a full body with
+/// <c>nonEditableReason: null</c>). Computing it per row here would mean paying
+/// <c>BuildBody</c>'s XAML-read/compile/X6-convert cost for every listed workflow just to answer a
+/// question <c>get_workflow_definition</c> already answers authoritatively — so the field is
+/// removed rather than duplicated. <c>get_workflow_definition</c> (<c>bodyEditable</c> +
+/// <c>nonEditableReason</c>) is the single source of truth; callers deciding whether to
+/// <c>add_step</c>/edit a workflow should call it, not infer from the list.
 /// </para>
 /// </summary>
 internal static class ListWorkflowsTool
@@ -281,10 +273,7 @@ internal static class ListWorkflowsTool
             // a valid WorkflowService by its root attributes), just without detail.
         }
 
-        // bodyEditable: KNOWN BUG — hard-coded false. The allow-list consumption logic
-        // this once waited on now exists (GetWorkflowDefinitionTool.BuildBody), so this
-        // contradicts get_workflow_definition for the same workflow. See the class remarks.
-        return new WorkflowSummary(file.Name, file.RelativePath, description, inputs, outputs, false);
+        return new WorkflowSummary(file.Name, file.RelativePath, description, inputs, outputs);
     }
 
     // ── Pagination cursor (opaque offset token) ───────────────────────────────
@@ -319,14 +308,14 @@ internal static class ListWorkflowsTool
         Convert.ToBase64String(Encoding.UTF8.GetBytes($"offset:{offset}"));
 }
 
-/// <summary>One workflow entry in a <c>list_workflows</c> response.</summary>
+/// <summary>One workflow entry in a <c>list_workflows</c> response. No <c>bodyEditable</c> — see
+/// the class remarks; call <see cref="GetWorkflowDefinitionTool"/> for that.</summary>
 internal sealed record WorkflowSummary(
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("path")] string Path,
     [property: JsonPropertyName("description")] string Description,
     [property: JsonPropertyName("inputs")] IReadOnlyList<string> Inputs,
-    [property: JsonPropertyName("outputs")] IReadOnlyList<string> Outputs,
-    [property: JsonPropertyName("bodyEditable")] bool BodyEditable);
+    [property: JsonPropertyName("outputs")] IReadOnlyList<string> Outputs);
 
 /// <summary>The full <c>list_workflows</c> response payload.</summary>
 internal sealed record ListWorkflowsResult(

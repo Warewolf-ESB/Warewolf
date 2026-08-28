@@ -19,12 +19,22 @@ namespace Warewolf.Execution.Lightweight.Mcp;
 /// both RabbitMQ activities share one <c>RabbitMQSource</c>).
 ///
 /// <para>
+/// <b>Deliberate exception: <c>Web</c>.</b> The four Web Method tools (GET/POST/PUT/DELETE) keep
+/// <c>RequiresSource: false</c> — an ad-hoc <c>querystring</c> still works standalone, with no
+/// source — but they also accept an optional <c>sourceId</c> referencing a saved <c>WebSource</c>.
+/// Before this entry existed, that second path was permanently dead: nothing could ever create a
+/// <c>WebSource</c> for a caller to reference (F2). So <c>Web</c> is here despite its tools
+/// reporting <c>RequiresSource: false</c>, which is the one entry that breaks the "one entry per
+/// `RequiresSource: true` row" rule above.
+/// </para>
+///
+/// <para>
 /// Each entry's <see cref="Entry.Fields"/> mirrors the same property set the corresponding
 /// hand-authored source class in <c>Dev2.Runtime.ServiceModel.Data</c>/<c>Dev2.Data.ServiceModel</c>
-/// exposes (<c>DbSource</c>, <c>RedisSource</c>, <c>EmailSource</c>, <c>RabbitMQSource</c>) — see
-/// those classes' own <c>ToXml()</c>/constructor-from-XML pairs, which this catalog was
-/// cross-checked against field-for-field. <see cref="AddSourceTool"/> does not reuse those
-/// classes directly (same "Lightweight-local, no heavier dependency" choice
+/// exposes (<c>DbSource</c>, <c>RedisSource</c>, <c>EmailSource</c>, <c>RabbitMQSource</c>,
+/// <c>WebSource</c>) — see those classes' own <c>ToXml()</c>/constructor-from-XML pairs, which this
+/// catalog was cross-checked against field-for-field. <see cref="AddSourceTool"/> does not reuse
+/// those classes directly (same "Lightweight-local, no heavier dependency" choice
 /// <see cref="EnvelopeBiteWriter"/> already made for workflows) but reproduces their
 /// connection-string shape exactly, so a source this tool creates decrypts and runs identically
 /// to one saved from Studio.
@@ -130,6 +140,14 @@ internal static class SourceCatalog
             new Field("UserName", FieldKind.String, false, false, null, "Broker user name."),
             new Field("Password", FieldKind.String, false, true, null, "Broker password. Use ${secret-name} — never a literal secret."),
             new Field("VirtualHost", FieldKind.String, false, false, "/", "Broker virtual host."),
+        }),
+        new("Web", "WebSource", "Integration", "An ad-hoc HTTP/HTTPS endpoint for the GET/POST/PUT/DELETE Web Method tools.", new[]
+        {
+            new Field("Address", FieldKind.String, true, false, null, "Base URL, e.g. https://api.example.com."),
+            new Field("DefaultQuery", FieldKind.String, false, false, "", "Default query string/path appended to Address when the calling tool's own querystring is omitted."),
+            new Field("AuthenticationType", FieldKind.String, false, false, "Anonymous", "\"Anonymous\" or \"User\"."),
+            new Field("UserName", FieldKind.String, false, false, null, "Required when AuthenticationType is \"User\"."),
+            new Field("Password", FieldKind.String, false, true, null, "Required when AuthenticationType is \"User\". Use ${secret-name} — never a literal secret."),
         }),
     };
 

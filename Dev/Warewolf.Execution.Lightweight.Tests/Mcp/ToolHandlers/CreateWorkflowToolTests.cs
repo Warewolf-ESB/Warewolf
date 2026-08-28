@@ -184,6 +184,28 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Existing", ValidEnvelope(), ValidBody());
         }
 
+        /// <summary>
+        /// F6: get_workflow_definition used to emit envelope.inputs/outputs as bare strings — this
+        /// is exactly that shape fed back into create_workflow. Must be a structured McpException
+        /// (→ 400), not an unhandled InvalidOperationException (→ raw 500).
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StringShapedEnvelopeEntry_ThrowsMcpException_WithoutWriting()
+        {
+            var envelope = EnvelopeOf(new { inputs = new[] { "JustAString" }, outputs = Array.Empty<object>() });
+
+            try
+            {
+                Assert.ThrowsException<McpException>(
+                    () => Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "StringShaped", envelope, ValidBody("StringShaped")));
+            }
+            finally
+            {
+                Assert.IsFalse(File.Exists(Path.Combine(_root, "StringShaped.bite")));
+            }
+        }
+
         [TestMethod]
         [TestCategory("UnitTest")]
         [ExpectedException(typeof(McpException))]
@@ -261,7 +283,80 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
             Assert.AreEqual("NewWorkflow", definition.Envelope.Name); // envelope.name, not the file-path name
             Assert.AreEqual("A freshly created workflow", definition.Envelope.Description);
-            CollectionAssert.Contains(definition.Envelope.Outputs.ToList(), "Result");
+            Assert.IsTrue(definition.Envelope.Outputs.Any(v => v.Name == "Result" && v.Kind == "scalar"));
+        }
+
+        /// <summary>
+        /// F4 end-to-end: before the fix, [[@Response]] never matched the declared 'Response'
+        /// entry (the '@' sigil was left on the base name), so an isOutputToObject workflow could
+        /// not be created at all - the object-mode variable was simultaneously undeclarable and
+        /// unauthorable. This is the whole point of the fix: it now survives create_workflow.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectModeOutput_WithAtSigilReference_Succeeds()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                name = "ObjectModeWorkflow",
+                description = "Writes an object-mode output",
+                inputs = Array.Empty<object>(),
+                outputs = new[] { new { name = "Response", kind = "object", fields = Array.Empty<string>() } },
+            });
+            var fields = new JArray(new JObject
+            {
+                ["FieldName"] = "[[@Response]]",
+                ["FieldValue"] = "{}",
+                ["IndexNumber"] = 1
+            });
+            var assignObject = new Cell
+            {
+                id = "assign1",
+                shape = "rect",
+                data = new Dictionary<string, object>
+                {
+                    ["type"] = "dsfdotnetmultiassignobjectactivity",
+                    ["displayName"] = "Assign Object",
+                    ["fields"] = fields,
+                }
+            };
+            var body = BodyOf("ObjectModeWorkflow", MakeStartNode(), assignObject, MakeEdge("e1", "start", "assign1"));
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "ObjectModeWorkflow", envelope, body);
+
+            Assert.IsTrue(result.Created);
+            Assert.IsTrue(File.Exists(Path.Combine(_root, "ObjectModeWorkflow.bite")));
+        }
+
+        /// <summary>
+        /// F9 parity: validate_workflow's tool description asserts that a payload it passes is
+        /// accepted by create_workflow. Extends that guarantee to a newly-covered array field
+        /// (GET Web Method's headers) - regression guard against the two checks drifting apart.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_GetWebMethodWithHeadersArray_ValidatesAndCreatesSuccessfully()
+        {
+            var getNode = new Cell
+            {
+                id = "get1",
+                shape = "rect",
+                data = new Dictionary<string, object>
+                {
+                    ["type"] = "webgetactivity",
+                    ["displayname"] = "GET",
+                    ["querystring"] = "search?q=warewolf",
+                    ["headers"] = new JArray(new JObject { ["Name"] = "Accept", ["Value"] = "application/json" }),
+                }
+            };
+            var body = BodyOf("WebGetParity", MakeStartNode(), getNode, MakeEdge("e1", "start", "get1"));
+            var envelope = EnvelopeOf(new { name = "WebGetParity", description = "", inputs = Array.Empty<object>(), outputs = Array.Empty<object>() });
+
+            var validation = ValidateWorkflowTool.Handle(envelope, body);
+            Assert.IsTrue(validation.Valid, string.Join("; ", validation.Errors.Select(e => e.Message)));
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "WebGetParity", envelope, body);
+            Assert.IsTrue(result.Created);
         }
 
         [TestMethod]

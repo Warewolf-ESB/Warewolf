@@ -130,6 +130,48 @@ namespace Dev2.WorkflowConverters
             }
         }
 
+        /// <summary>
+        /// Converts an already-read <c>cell.data</c> value into a <see cref="JObject"/>, accepting
+        /// either a real <see cref="JObject"/> or a string containing a JSON object.
+        ///
+        /// <para>
+        /// The <see cref="JObject"/> counterpart to <see cref="TryAsJArray"/>, and supported for the
+        /// same reason: <c>get_tool_schema</c> documents object-shaped fields as "a JSON-encoded
+        /// ..." string, so callers following that documentation send a string. Without this the
+        /// value was dropped silently and the activity ran with the field unset.
+        /// </para>
+        ///
+        /// <para>
+        /// Returns <c>false</c> — and never throws — when the value is null, is a string that is
+        /// not valid JSON or not a JSON object, or is neither an object nor a string.
+        /// </para>
+        /// </summary>
+        public static bool TryAsJObject(object raw, out JObject obj)
+        {
+            obj = null;
+
+            switch (raw)
+            {
+                case null:
+                    return false;
+                case JObject jObject:
+                    obj = jObject;
+                    return true;
+                case string s when !string.IsNullOrWhiteSpace(s):
+                    try
+                    {
+                        obj = JObject.Parse(s);
+                        return true;
+                    }
+                    catch (JsonException)
+                    {
+                        return false;
+                    }
+                default:
+                    return false;
+            }
+        }
+
         public static bool TryGetInt(Dictionary<string, object> data, string key, out int value)
         {
             value = default;
@@ -187,7 +229,7 @@ namespace Dev2.WorkflowConverters
         public static bool TryGetOutputs(IDictionary<string, object> data, string key, out IList<IServiceOutputMapping> outputs)
         {
             outputs = null;
-            if (!data.TryGetValue(key, out var raw) || raw is not JArray arr) return false;
+            if (!data.TryGetValue(key, out var raw) || !TryAsJArray(raw, out var arr)) return false;
 
             outputs = arr
                 .Children<JObject>()
@@ -217,7 +259,7 @@ namespace Dev2.WorkflowConverters
         public static bool TryGetOutputDescription(IDictionary<string, object> data, out IOutputDescription outputDescription)
         {
             outputDescription = null;
-            if (!data.TryGetValue(Constants.WEBMETHOD_OUTPUTDESCRIPTION, out var raw) || raw is not JObject obj) return false;
+            if (!data.TryGetValue(Constants.WEBMETHOD_OUTPUTDESCRIPTION, out var raw) || !TryAsJObject(raw, out var obj)) return false;
 
             var serializer = JsonSerializer.Create(OutputDescSerializerSettings);
             var od = new OutputDescription();
@@ -311,7 +353,7 @@ namespace Dev2.WorkflowConverters
         public static bool TryGetConditions(IDictionary<string, object> data, out IList<FormDataConditionExpression> conditions)
         {
             conditions = null;
-            if (!data.TryGetValue(Constants.WEBMETHOD_CONDITIONS, out var raw) || raw is not JArray arr) return false;
+            if (!data.TryGetValue(Constants.WEBMETHOD_CONDITIONS, out var raw) || !TryAsJArray(raw, out var arr)) return false;
 
             conditions = arr
                 .Children<JObject>()
@@ -379,7 +421,7 @@ namespace Dev2.WorkflowConverters
 
             try
             {
-                if (raw is JArray arr)
+                if (TryAsJArray(raw, out var arr))
                 {
                     var mappings = arr
                         .Children<JObject>()
@@ -469,7 +511,7 @@ namespace Dev2.WorkflowConverters
 
             try
             {
-                if (raw is JArray arr)
+                if (TryAsJArray(raw, out var arr))
                 {
                     var collection = arr
                         .Children<JObject>()
@@ -527,7 +569,7 @@ namespace Dev2.WorkflowConverters
 
             try
             {
-                if (raw is JObject obj)
+                if (TryAsJObject(raw, out var obj))
                 {
                     basicProperties = new RabbitMqPublishOptions();
 

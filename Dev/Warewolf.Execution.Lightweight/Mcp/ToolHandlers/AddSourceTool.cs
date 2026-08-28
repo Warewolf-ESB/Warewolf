@@ -99,12 +99,13 @@ internal static class AddSourceTool
         ClaimsPrincipal? user,
         [Description("The new source's name — a relative path (forward slashes), no extension. Must not already exist.")]
         string name,
-        [Description("The kind of source to create. One of: SqlDatabase, MySqlDatabase, PostgreSQL, Oracle, ODBC, Redis, Email, RabbitMQ.")]
+        [Description("The kind of source to create. One of: SqlDatabase, MySqlDatabase, PostgreSQL, Oracle, ODBC, Redis, Email, RabbitMQ, Web.")]
         string sourceType,
         [Description("The source's connection fields as a flat JSON object of name/value pairs — the accepted field names, types, defaults and " +
             "required-ness depend on sourceType (e.g. SqlDatabase: Server*, DatabaseName*, Port, AuthenticationType [Windows|User], UserID, Password, " +
             "ConnectionTimeout, TrustServerCertificate — * = required; Redis: HostName*, Port, AuthenticationType [Anonymous|Password], Password; " +
-            "Email: Host*, Port, UserName, Password, EnableSsl, Timeout; RabbitMQ: HostName*, Port, UserName, Password, VirtualHost). " +
+            "Email: Host*, Port, UserName, Password, EnableSsl, Timeout; RabbitMQ: HostName*, Port, UserName, Password, VirtualHost; " +
+            "Web: Address*, DefaultQuery, AuthenticationType [Anonymous|User], UserName, Password [required when AuthenticationType is User]). " +
             "IMPORTANT — for any password/secret-shaped field, do not put the literal secret in this JSON. Instead set its value to " +
             "\"${secret-name}\", where secret-name is a secret already staged in this server's Key Vault (e.g. via `az keyvault secret set`) " +
             "ahead of time — the server fetches the real value itself when saving and never echoes it back. (Only on a Key-Vault-less local " +
@@ -303,6 +304,15 @@ internal static class AddSourceTool
                 }
 
                 break;
+
+            case "Web":
+                if (string.Equals(values.GetValueOrDefault("AuthenticationType"), "User", StringComparison.OrdinalIgnoreCase) &&
+                    string.IsNullOrEmpty(values.GetValueOrDefault("Password")))
+                {
+                    throw new McpException("`config.Password` is required when `config.AuthenticationType` is \"User\".");
+                }
+
+                break;
         }
     }
 
@@ -406,6 +416,28 @@ internal static class AddSourceTool
                     $"UserName={Get("UserName")}",
                     $"Password={Get("Password")}",
                     $"VirtualHost={virtualHost}");
+            }
+
+            case "Web":
+            {
+                // Mirrors WebSource.ToXml() exactly (Dev2.Data.ServiceModel.WebSource): key=value
+                // segments in this order, UserName/Password appended only for "User" auth, then
+                // EscapeString() on the whole joined string before the caller's DpapiWrapper.Encrypt.
+                var authType = string.IsNullOrEmpty(Get("AuthenticationType")) ? "Anonymous" : Get("AuthenticationType");
+                var parts = new List<string>
+                {
+                    $"Address={Get("Address")}",
+                    $"DefaultQuery={Get("DefaultQuery")}",
+                    $"AuthenticationType={authType}",
+                };
+
+                if (string.Equals(authType, "User", StringComparison.OrdinalIgnoreCase))
+                {
+                    parts.Add($"UserName={Get("UserName")}");
+                    parts.Add($"Password={Get("Password")}");
+                }
+
+                return string.Join(";", parts).EscapeString();
             }
 
             default:
