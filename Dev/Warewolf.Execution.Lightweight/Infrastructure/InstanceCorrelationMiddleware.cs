@@ -21,10 +21,10 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
     ///
     /// <para><b>What it adds:</b></para>
     /// <list type="bullet">
-    ///   <item><c>InstanceId</c> — first 8 chars of <c>WEBSITE_INSTANCE_ID</c> (stable per instance lifetime)</item>
-    ///   <item><c>InvocationId</c> — unique per function invocation</item>
-    ///   <item><c>Function</c> — the triggered function name</item>
-    ///   <item><c>TraceId</c> — W3C distributed trace ID (if available)</item>
+    ///   <item><c>InstanceId</c> ï¿½ first 8 chars of <c>WEBSITE_INSTANCE_ID</c> (stable per instance lifetime)</item>
+    ///   <item><c>InvocationId</c> ï¿½ unique per function invocation</item>
+    ///   <item><c>Function</c> ï¿½ the triggered function name</item>
+    ///   <item><c>TraceId</c> ï¿½ W3C distributed trace ID (if available)</item>
     /// </list>
     ///
     /// For MEL-based loggers (<see cref="Logging.AzureExecutionLogger"/>), these flow
@@ -61,7 +61,7 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
                 TraceId      = traceId,
             };
 
-            // MEL scope — flows automatically to AzureExecutionLogger / Application Insights.
+            // MEL scope ï¿½ flows automatically to AzureExecutionLogger / Application Insights.
             var logger = context.GetLogger<InstanceCorrelationMiddleware>();
             using var scope = logger.BeginScope(new Dictionary<string, object>
             {
@@ -86,9 +86,17 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
             catch (Exception ex)
             {
                 stopwatch.Stop();
+
+                // This is the outermost middleware, so the catch sees exceptions raised by ANY
+                // activity â€” their message/stack can carry connector credentials, connection
+                // strings or evaluated workflow values. Only safe identifiers and the exception
+                // type reach Error; the exception object is never passed to it (the sinks would
+                // persist ex.ToString()). The failure is logged exactly once â€” the exception
+                // still propagates via the rethrow below.
                 Dev2Logger.Error(
-                    $"Request failed for function '{functionName}' (InvocationId: {invocationId}) after {stopwatch.ElapsedMilliseconds}ms: {ex.Message}",
-                    ex, invocationId);
+                    $"Request failed for function '{functionName}' (InvocationId: {invocationId}) " +
+                    $"after {stopwatch.ElapsedMilliseconds}ms: {ex.Message}",
+                    invocationId);
                 throw;
             }
             finally

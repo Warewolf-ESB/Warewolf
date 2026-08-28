@@ -60,7 +60,7 @@ internal static class StartupOrchestrator
         }
         catch (Exception ex)
         {
-            Dev2Logger.Error("StartupOrchestrator RunStartupAsync failed", ex, executionId);
+            Dev2Logger.Error($"StartupOrchestrator RunStartupAsync failed. ExceptionType={ex.GetType().Name}", executionId);
             throw;
         }
     }
@@ -186,7 +186,8 @@ internal static class StartupOrchestrator
     {
         const string executionId = "StartupOrchestrator-Diagnostics";
 
-        Dev2Logger.Info($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}, VaultName: {config.VaultName ?? "(not set)"}, WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
+        // Vault name and the absolute workflows directory are never logged. Emitted once.
+        Dev2Logger.Info($"StartupOrchestrator LogEnvironmentDiagnostics - EncryptionEnabled: {config.EncryptionEnabled}", executionId);
 
         Dev2Logger.Warn(
             $"Startup | Phase=Diagnostics | EncryptionEnabled={config.EncryptionEnabled} | " +
@@ -197,7 +198,7 @@ internal static class StartupOrchestrator
         if (Directory.Exists(config.WorkflowsDirectory))
         {
             var biteFiles = Directory.GetFiles(config.WorkflowsDirectory, "*.bite", SearchOption.AllDirectories);
-            Dev2Logger.Info($"StartupOrchestrator found {biteFiles.Length} .bite files in {config.WorkflowsDirectory}", executionId);
+            Dev2Logger.Info($"StartupOrchestrator found {biteFiles.Length} .bite files", executionId);
 
             Dev2Logger.Warn(
                 $"Startup | Phase=Diagnostics | ResourceDirectory={config.WorkflowsDirectory} | BiteFileCount={biteFiles.Length} | Files=[{string.Join(", ", biteFiles.Select(Path.GetFileName))}]",
@@ -223,28 +224,30 @@ internal static class StartupOrchestrator
             return;
         }
 
-        Dev2Logger.Info($"StartupOrchestrator InitializeEncryptionAsync starting for vault: {config.VaultName}, secret: {config.SecretName}", executionId);
+        Dev2Logger.Info("StartupOrchestrator InitializeEncryptionAsync starting", executionId);
 
         try
         {
             await host.InitializeKeyVaultAsync(config).ConfigureAwait(false);
-            Dev2Logger.Info($"StartupOrchestrator KeyVault initialization successful for vault: {config.VaultName}", executionId);
+            Dev2Logger.Info("StartupOrchestrator KeyVault initialization successful", executionId);
         }
         catch (Exception ex) when (ex is not OperationCanceledException)
         {
-            var (category, guidance) = ClassifyKeyVaultException(ex, config);
-
-            Dev2Logger.Error($"StartupOrchestrator KeyVault initialization failed. Category: {category}, VaultName: {config.VaultName}, SecretName: {config.SecretName}", ex, executionId);
+            var (category, _) = ClassifyKeyVaultException(ex, config);
 
             if (!config.SkipFailureToRetrieveSecret)
             {
+                // VaultName, SecretName, Guidance and the exception object are all withheld:
+                // ClassifyKeyVaultException embeds the vault and secret names in its guidance
+                // (and rfe.Message for RequestFailedException), and the sinks persist
+                // ex.ToString() — Azure SDK failures name the vault URI and refused identity.
+                // Category, InstanceId and the bypass instruction are the safe, actionable parts.
                 Dev2Logger.Fatal(
                     $"Startup | Phase=KeyVaultInit | Status=Failed | Category={category} | " +
-                    $"VaultName={config.VaultName} | SecretName={config.SecretName} | InstanceId={config.InstanceId} | " +
-                    $"Guidance={guidance} | " +
+                    $"InstanceId={config.InstanceId} | ExceptionType={ex.GetType().Name} | " +
                     "To bypass this failure and start with degraded decryption, " +
                     "set environment variable SkipFailureToRetrieveSecret=true (NOT recommended for production).",
-                    ex, executionId);
+                    executionId);
 
                 throw; // Fail fast — host cannot serve encrypted sources without the AES key.
             }
@@ -252,10 +255,12 @@ internal static class StartupOrchestrator
             // SkipFailureToRetrieveSecret=true: allow host to start in degraded mode.
             Dev2Logger.Warn($"StartupOrchestrator KeyVault initialization failed but SkipFailureToRetrieveSecret=true, starting in degraded mode. Category: {category}", executionId);
 
+            // VaultName, SecretName and Guidance are withheld: guidance embeds the vault and
+            // secret names, and rfe.Message for a RequestFailedException — which on a 403 carries
+            // the caller client IP. Category, InstanceId and the exception type are the safe parts.
             Dev2Logger.Warn(
                 $"Startup | Phase=KeyVaultInit | Status=Degraded | Category={category} | " +
-                $"VaultName={config.VaultName} | SecretName={config.SecretName} | InstanceId={config.InstanceId} | " +
-                $"Guidance={guidance} | " +
+                $"InstanceId={config.InstanceId} | ExceptionType={ex.GetType().Name} | " +
                 "SkipFailureToRetrieveSecret=true — host is starting WITHOUT the AES decryption key. " +
                 "All workflows that read encrypted sources (connection strings, credentials) " +
                 "will FAIL at execution time with a decryption error. " +
@@ -322,14 +327,12 @@ internal static class StartupOrchestrator
     {
         const string executionId = "StartupOrchestrator-WarmUp";
 
-        Dev2Logger.Info($"StartupOrchestrator WarmUpWorkflowIndex starting for directory: {config.WorkflowsDirectory}", executionId);
+        Dev2Logger.Info("StartupOrchestrator WarmUpWorkflowIndex starting", executionId);
 
         try
         {
             WorkflowIndex.Instance.WarmUp(config.WorkflowsDirectory);
-            Dev2Logger.Info(
-                $"Startup | Phase=WorkflowIndexWarmUp | Status=Completed | Directory={config.WorkflowsDirectory}",
-                executionId);
+            Dev2Logger.Info("Startup | Phase=WorkflowIndexWarmUp | Status=Completed", executionId);
         }
         catch (Exception ex)
         {

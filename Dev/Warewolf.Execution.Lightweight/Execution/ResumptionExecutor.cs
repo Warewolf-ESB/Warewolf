@@ -153,8 +153,20 @@ namespace Warewolf.Execution.Lightweight
                     new FailedState(ex) { Reason = "Resume execution failed on the Execution Engine" },
                     ProcessingState.StateName);
 
-                _executionLogger.LogError($"Resume | JobId={suspensionId} | Failed | {ex.Message}", ex, Guid.Empty);
-                return new ResumeExecutionResult(false, ex.Message, null, stopwatch.ElapsedMilliseconds);
+                // ex.Message here is workflow data by construction: RunContinuation throws with
+                // string.Join(NewLine, errors) built from Environment.Errors / AllErrors — i.e.
+                // evaluated variable values — and other throw sites embed absolute paths.
+                // It therefore reaches neither the log nor the response: only the exception type
+                // is logged (the exception object is never passed, since the sinks persist
+                // ex.ToString()), and the returned Error string is generic. The failure is
+                // logged exactly once; suspensionId is the correlator. Hangfire retains the
+                // full exception on the job's FailedState above for diagnostics.
+                // ex.Message is NOT logged: RunContinuation throws with
+                // string.Join(NewLine, errors) built from Environment.Errors / AllErrors — i.e.
+                // evaluated variable values — other throw sites embed absolute paths, and any
+                // activity exception propagates here. JobId is the correlator.
+                _executionLogger.LogError($"Resume operation failed. JobId={suspensionId}. ExceptionType={ex.GetType().Name}", Guid.Empty);
+                return new ResumeExecutionResult(false, "Resume execution failed due to an unexpected error.", null, stopwatch.ElapsedMilliseconds);
             }
         }
 
@@ -252,7 +264,7 @@ namespace Warewolf.Execution.Lightweight
             {
                 Dev2Logger.Warn(
                     $"Resume version mismatch: job was suspended at workflow version {versionNumber} but the deployed " +
-                    $"'{Path.GetFileName(filePath)}' is version {fileVersion}. Resuming against the deployed version " +
+                    $"'{Path.GetFileNameWithoutExtension(filePath)}' is version {fileVersion}. Resuming against the deployed version " +
                     "(the engine has no version catalog).", "ResumptionExecutor");
             }
 

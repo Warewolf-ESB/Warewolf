@@ -36,7 +36,6 @@ internal static class ServiceCollectionExtensions
     {
         const string executionId = "ServiceCollectionExtensions-CoreServices";
 
-        Dev2Logger.Info($"ServiceCollectionExtensions AddCoreServices starting. WorkflowsDirectory: {config.WorkflowsDirectory}", executionId);
 
         try
         {
@@ -138,7 +137,6 @@ internal static class ServiceCollectionExtensions
     {
         const string executionId = "ServiceCollectionExtensions-ExecutionLogging";
 
-        Dev2Logger.Debug($"ServiceCollectionExtensions AddExecutionLogging registering. EnableAI={loggingConfig.RegisterApplicationInsightsSdk}, EnableElastic={loggingConfig.EnableElasticsearch}", executionId);
 
         services.AddSingleton(loggingConfig);
 
@@ -160,7 +158,6 @@ internal static class ServiceCollectionExtensions
                 loggers.Add(new AzureExecutionLogger(
                     sp.GetRequiredService<ILogger<AzureExecutionLogger>>(),
                     loggingConfig.MinimumLevel));
-                Dev2Logger.Debug("AddExecutionLogging added AzureExecutionLogger (AI + stdout)", executionId);
             }
             else if (loggingConfig.EnableConsoleLogging)
             {
@@ -170,7 +167,6 @@ internal static class ServiceCollectionExtensions
                 loggers.Add(new ConsoleExecutionLogger(
                     sp.GetRequiredService<ILogger<ConsoleExecutionLogger>>(),
                     loggingConfig.MinimumLevel));
-                Dev2Logger.Debug("AddExecutionLogging added ConsoleExecutionLogger (stdout only)", executionId);
             }
 
             // 2. ElasticsearchExecutionLogger — opt-in
@@ -179,13 +175,11 @@ internal static class ServiceCollectionExtensions
                 var elasticOptions = ElasticsearchLoggingOptions.FromBiteFile(loggingConfig.ElasticsearchSettingsPath);
                 elasticOptions.EnableDebugMode = loggingConfig.ElasticDebugMode;
                 loggers.Add(new ElasticsearchExecutionLogger(elasticOptions, loggingConfig.MinimumLevel));
-                Dev2Logger.Debug("AddExecutionLogging added ElasticsearchExecutionLogger", executionId);
             }
 
             // 3. AuditExecutionLogger — ALWAYS present (security events only)
             loggers.Add(new AuditExecutionLogger(
                 sp.GetRequiredService<ILogger<AuditExecutionLogger>>()));
-            Dev2Logger.Debug("AddExecutionLogging added AuditExecutionLogger (always-on)", executionId);
 
             Dev2Logger.Info($"AddExecutionLogging created CompositeExecutionLogger with {loggers.Count} sink(s)", executionId);
             return new CompositeExecutionLogger(loggers);

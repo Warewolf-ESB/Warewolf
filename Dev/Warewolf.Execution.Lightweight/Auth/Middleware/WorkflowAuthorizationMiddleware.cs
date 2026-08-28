@@ -175,9 +175,8 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
         switch (result.Outcome)
         {
             case PolicyMatchOutcome.Allowed:
-                _logger.LogDebug(
-                    "Authorised '{Caller}' for workflow '{Workflow}'",
-                    principal.CallerIdentity, workflowName);
+                // Caller identity is never logged, at any level.
+                _logger.LogDebug("Authorised request for workflow '{Workflow}'", workflowName);
                 await next(context);
                 return;
 
@@ -186,9 +185,9 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 // Operator has explicitly opted in; log a prominent warning.
                 _logger.LogDebug(
                     "OPEN-ACCESS MODE: secure.config not effective and BYPASS_SECURE_CONFIG=true. " +
-                    "Allowing '{Caller}' for workflow '{Workflow}' without policy enforcement. " +
+                    "Allowing workflow '{Workflow}' without policy enforcement. " +
                     "This setting must NOT be used in production.",
-                    principal.CallerIdentity, workflowName);
+                    workflowName);
                 await next(context);
                 return;
 
@@ -242,9 +241,13 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 //    "forbidden", result.DenialReason ?? "Insufficient permissions.", path, correlationId,
                 //    new { workflow = workflowName });
 
+                // DenialReason names the caller (UPN) and lists their group membership —
+                // it goes to the audit trail above, never to the caller. The response
+                // carries a fixed description plus the correlation id, which is how an
+                // operator ties the 500 back to the audit entry.
                 await HttpResponseHelper.WriteWrappedErrorAsync(request, context, HttpStatusCode.InternalServerError,
                     (int)HttpStatusCode.InternalServerError, "internal_server_error", "Invalid Authentication Token or invalid permissions to Execute resource",
-                    result.DenialReason ?? "Insufficient permissions.", correlationId);
+                    "Insufficient permissions.", correlationId);
 
                 return;
         }

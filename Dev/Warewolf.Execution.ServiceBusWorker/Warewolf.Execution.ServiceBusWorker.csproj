@@ -19,6 +19,7 @@
     <LangVersion>12.0</LangVersion>
     <RootNamespace>Warewolf.Execution.ServiceBusWorker</RootNamespace>
     <AssemblyName>WwExecutionServiceBusWorker</AssemblyName>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 
   <ItemGroup>
@@ -61,6 +62,7 @@
       copied out of the repo there is no inherited pin and this Update is a harmless no-op.)
     -->
     <PackageReference Update="Google.Protobuf" Version="3.32.1" />
+    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
   </ItemGroup>
 
   <!--

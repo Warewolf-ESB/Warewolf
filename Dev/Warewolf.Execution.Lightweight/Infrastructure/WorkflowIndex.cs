@@ -123,7 +123,7 @@ namespace Warewolf.Execution.Lightweight
                 if (index.TryGetValue(key, out var relPath))
                 {
                     var resolvedPath = Path.Combine(workflowsDirectory, relPath.Replace('/', Path.DirectorySeparatorChar));
-                    Dev2Logger.Debug($"WorkflowIndex Resolve successful. Key: '{key}' -> Path: '{resolvedPath}'", ExecutionIdForInfrastructure);
+                    Dev2Logger.Debug($"WorkflowIndex Resolve successful. Key: '{key}'", ExecutionIdForInfrastructure);
                     return resolvedPath;
                 }
 
@@ -273,7 +273,7 @@ namespace Warewolf.Execution.Lightweight
         static FrozenDictionary<string, string> LoadIndex(string workflowsDirectory)
         {
             var indexPath = Path.Combine(workflowsDirectory, IndexFileName);
-            Dev2Logger.Debug($"WorkflowIndex LoadIndex attempting to load from: {indexPath}", "WorkflowIndex-Infrastructure");
+            Dev2Logger.Debug("WorkflowIndex LoadIndex attempting to load index file", "WorkflowIndex-Infrastructure");
 
             if (File.Exists(indexPath))
             {
@@ -355,7 +355,7 @@ namespace Warewolf.Execution.Lightweight
                 try
                 {
                     var files = Directory.EnumerateFiles(workflowsDirectory, $"*{ext}", SearchOption.AllDirectories).ToList();
-                    Dev2Logger.Debug($"WorkflowIndex found {files.Count} {ext} files in: {workflowsDirectory}", "WorkflowIndex-Infrastructure");
+                    Dev2Logger.Debug($"WorkflowIndex found {files.Count} {ext} files", "WorkflowIndex-Infrastructure");
 
                     foreach (var file in files)
                     {
@@ -368,7 +368,7 @@ namespace Warewolf.Execution.Lightweight
 
                             if (dict.TryAdd(key, value))
                             {
-                                Dev2Logger.Debug($"WorkflowIndex indexed: '{key}' -> '{value}'", "WorkflowIndex-Infrastructure");
+                                Dev2Logger.Debug($"WorkflowIndex indexed: '{key}'", "WorkflowIndex-Infrastructure");
                             }
                             else
                             {

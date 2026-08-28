@@ -52,22 +52,30 @@ internal static class KeyVaultStartupExtensions
             var encryptionHelper = host.Services.GetRequiredService<FileEncryptionHelper>();
             DpapiWrapper.AesEncryptHook = encryptionHelper.Encrypt;
 
-            Dev2Logger.Info($"KeyVaultStartupExtensions AES decryption + encryption hooks wired. KeyId: {secretManager.KeyId}", executionId);
-     
+            // KeyId is key-material metadata — never logged at Info/Error/Warning.
+            Dev2Logger.Info("KeyVaultStartupExtensions AES decryption + encryption hooks wired.", executionId);
+
             var log = audit.GetColdStartLog(config.InstanceId, secretManager.KeyId);
             Dev2Logger.Info(log, executionId);
             audit.LogColdStart(config.InstanceId, secretManager.KeyId);
 
-            Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully. InstanceId: {config.InstanceId}, KeyId: {secretManager.KeyId}", executionId);
+            Dev2Logger.Info($"KeyVaultStartupExtensions InitializeKeyVaultAsync completed successfully. InstanceId: {config.InstanceId}", executionId);
         }
         catch (Exception ex)
         {
-            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}", ex, executionId);
+            // ex.Message is NOT logged: KeyVaultSecretManager's own throw embeds the secret
+            // name, and Azure SDK failures name the vault URI, secret and refused identity.
+            // InstanceId stays as the correlator; the exception type is the triage hint.
+            Dev2Logger.Error($"KeyVaultStartupExtensions InitializeKeyVaultAsync failed for instance: {config.InstanceId}. ExceptionType={ex.GetType().Name}", executionId);
 
+            // The audit event is emitted through Dev2Logger alone: its ExternalSink fans out to
+            // CompositeExecutionLogger, whose AuditExecutionLogger is always present and is never
+            // level-filtered, so SECURITY_AUDIT | Event=KeyVaultError still reaches the audit sink.
+            // audit.LogKeyVaultErrorAndMessage(log, ex) is deliberately NOT called: it duplicated
+            // this same message and passed the exception object, which the sink persists as
+            // ex.ToString() — the Azure SDK text naming the caller client IP on a 403.
             var log = audit.GetKeyVaultErrorLog(config.InstanceId);
-            Dev2Logger.Error(log, ex, executionId);
-
-            audit.LogKeyVaultErrorAndMessage(log, ex);
+            Dev2Logger.Error($"{log} | ExceptionType={ex.GetType().Name}", executionId);
             throw; // Fail fast: cannot serve requests without the AES key.
         }
     }

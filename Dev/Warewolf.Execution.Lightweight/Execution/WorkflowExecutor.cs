@@ -115,17 +115,13 @@ namespace Warewolf.Execution.Lightweight
         /// </summary>
         public WorkflowExecutionResult Execute(string workflowFilePath, Dictionary<string, string> inputs = null)
         {
-            var executionId = Guid.NewGuid();
-            Dev2Logger.Info($"WorkflowExecutor Execute starting for file: {workflowFilePath}", executionId.ToString());
-
-            var result = Execute(new WorkflowExecutionRequest
+            // No logging here: the request overload below logs start and completion with
+            // richer data (workflow, return type, duration, error count).
+            return Execute(new WorkflowExecutionRequest
             {
                 WorkflowFilePath = workflowFilePath,
                 InputParameters = inputs ?? new Dictionary<string, string>()
             });
-
-            Dev2Logger.Info($"WorkflowExecutor Execute completed. IsSuccess: {result.IsSuccess}, Duration: {result.Duration.TotalMilliseconds}ms", executionId.ToString());
-            return result;
         }
 
         /// <summary>
@@ -159,7 +155,6 @@ namespace Warewolf.Execution.Lightweight
                     request.WorkflowFilePath,
                     resolvedNameForSpec,
                     request.WebServerUri ?? new Uri("https://localhost"));
-                Dev2Logger.Info("WorkflowExecutor OpenAPI spec generated successfully (pre-file-check path).", openapiId.ToString());
                 return new WorkflowExecutionResult
                 {
                     IsSuccess     = true,
@@ -174,8 +169,8 @@ namespace Warewolf.Execution.Lightweight
 
             if (!File.Exists(request.WorkflowFilePath))
             {
-                Dev2Logger.Error($"WorkflowExecutor Execute: Workflow file not found: {request.WorkflowFilePath}", "WorkflowExecutor-Validation");
-                return WorkflowExecutionResult.Failure($"Workflow file not found: {request.WorkflowFilePath}");
+               // Dev2Logger.Error($"WorkflowExecutor Execute: Workflow not found: {WorkflowIdentifier(request)}", "WorkflowExecutor-Validation");
+                return WorkflowExecutionResult.Failure("Workflow not found.");
             }
 
             // License/subscription gate — mirrors ExecutorBase.TryExecute subscription check.
@@ -193,6 +188,8 @@ namespace Warewolf.Execution.Lightweight
                 }
                 catch (Exception licEx)
                 {
+                    // Log only the exception type — a licensing/subscription failure can surface
+                    // provider detail (endpoints, tokens) in its message. Logged once.
                     Dev2Logger.Error($"WorkflowExecutor Execute: License check threw an exception: {licEx.Message}", "WorkflowExecutor-License");
                     return WorkflowExecutionResult.Failure("Execution blocked: unable to validate license/subscription.");
                 }
@@ -202,7 +199,7 @@ namespace Warewolf.Execution.Lightweight
             var startTime = DateTime.UtcNow;
             var executionId = Guid.NewGuid();
 
-            Dev2Logger.Info($"WorkflowExecutor Execute starting. File: {request.WorkflowFilePath}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
+           // Dev2Logger.Info($"WorkflowExecutor Execute starting. Workflow: {WorkflowIdentifier(request)}, ReturnType: {request.ReturnType}, IsDebug: {request.IsDebug}", executionId.ToString());
 
             // Declared outside the try so the finally can release it however this method exits -
             // including the early returns for a missing start node and the two catch blocks.
@@ -211,14 +208,10 @@ namespace Warewolf.Execution.Lightweight
             try
             {
                 // Step 1: Read the workflow XML file
-                Dev2Logger.Debug($"WorkflowExecutor Step 1: Reading workflow file: {request.WorkflowFilePath}", executionId.ToString());
                 var fileContents = ReadWorkflowFile(request.WorkflowFilePath);
-                Dev2Logger.Debug($"WorkflowExecutor Step 1 completed: Successfully read workflow file: {request.WorkflowFilePath}", executionId.ToString());
 
                 // Step 2: Extract XamlDefinition and DataList from the XML
-                Dev2Logger.Debug("WorkflowExecutor Step 2: Extracting workflow parts (XAML, DataList)", executionId.ToString());
                 var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
-                Dev2Logger.Debug("WorkflowExecutor Step 2 completed: Successfully extracted workflow parts", executionId.ToString());
 
                 if (xamlDefinition == null || xamlDefinition.Length == 0)
                 {
@@ -230,12 +223,10 @@ namespace Warewolf.Execution.Lightweight
                     ?? workflowName
                     ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
 
-                Dev2Logger.Debug($"WorkflowExecutor Resolved workflow name: {resolvedName}", executionId.ToString());
 
                 // OPENAPI � generate the spec from the DataList only; no XAML load or execution needed.
                 if (request.ReturnType == EmitionTypes.OPENAPI)
                 {
-                    Dev2Logger.Info($"WorkflowExecutor generating OpenAPI spec for: {resolvedName}", executionId.ToString());
                     var spec = WorkflowOpenApiGenerator.Generate(
                         request.WorkflowFilePath,
                         resolvedName,
@@ -277,26 +268,19 @@ namespace Warewolf.Execution.Lightweight
                 }
 
                 // Step 5: Build DsfDataObject with inputs
-                Dev2Logger.Debug("WorkflowExecutor Step 5: Building DsfDataObject with inputs", executionId.ToString());
                 var (resourceId, versionNumber) = ExtractResourceIdentity(fileContents);
                 var dataObject = BuildDataObject(request, executionId, resolvedName, dataList, resourceId, versionNumber);
-                Dev2Logger.Debug("WorkflowExecutor Step 5 completed: Successfully built DsfDataObject with inputs", executionId.ToString());
 
                 // Index DbSource bite files in the resources directory so they can be loaded
                 // on demand by ServiceExecutionAbstract.GetSource(Guid) without pre-loading them all.
                 var resourcesDir = request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
-                Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed for resources directory: {resourcesDir}", executionId.ToString());
                 LightweightSourceLoader.Instance.EnsureIndexed(resourcesDir);
-                _executionLogger.LogInfo($"[SourceLoader] EnsureIndexed dir='{resourcesDir}' | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
-                Dev2Logger.Debug($"WorkflowExecutor EnsureIndexed completed for resources directory: {resourcesDir}", executionId.ToString());
 
                 // Step 6: Execute the activity chain; route debug writes to a per-request
                 // capturer so no global singleton (DebugMessageRepo) is touched.
-                Dev2Logger.Debug("WorkflowExecutor Step 6: Executing activity chain", executionId.ToString());
                 PerRequestDebugCapturer debugCapturer = null;
                 if (request.IsDebug)
                 {
-                    Dev2Logger.Debug("WorkflowExecutor Debug mode enabled, creating PerRequestDebugCapturer", executionId.ToString());
                     debugCapturer = new PerRequestDebugCapturer();
                 }
 
@@ -313,17 +297,14 @@ namespace Warewolf.Execution.Lightweight
                         EmitWorkflowStartState(resolvedName, request, startTime);
 
                     ExecuteActivityChain(dataObject, startActivity);
-                    _executionLogger.LogInfo($"[SourceLoader] post-execution | {AmbientSourceLoader.Current?.GetDiagnostics() ?? "AmbientSourceLoader.Current=null"}", executionId);
 
                     // Emit workflow End state after activities finish � mirrors the End marker
                     // the full Warewolf server emits, including the final output variable values.
                     if (debugCapturer != null)
                         EmitWorkflowEndState(dataObject, resolvedName, dataList, startTime);
                 }
-                Dev2Logger.Debug("WorkflowExecutor Step 6 completed: Successfully executed activity chain", executionId.ToString());
 
                 // Step 7: Extract outputs
-                Dev2Logger.Debug("WorkflowExecutor Step 7: Extracting outputs and building result", executionId.ToString());
                 stopwatch.Stop();
                 var result = new WorkflowExecutionResult
                 {
@@ -335,7 +316,6 @@ namespace Warewolf.Execution.Lightweight
 
                 CollectErrors(dataObject, result, executionId);
                 ExtractPayload(dataObject, dataList, request, result);
-                Dev2Logger.Debug("WorkflowExecutor Step 7 completed: Successfully extracted outputs and built result", executionId.ToString());
                 if (debugCapturer != null)
                 {
                     // Mirror Executor.DebugFromWebExecutionResponse: build a parent?child tree
@@ -382,8 +362,11 @@ namespace Warewolf.Execution.Lightweight
             catch (InvalidWorkflowException iwe)
             {
                 stopwatch.Stop();
-                Dev2Logger.Error("WorkflowExecutor Execute: InvalidWorkflowException", iwe, executionId.ToString());
-                _executionLogger.LogError(nameof(Execute), iwe, executionId);
+                // Exception is not passed to the Error sinks: the composite sinks persist
+                // exception.ToString() (message + stack) and workflow exception text can embed
+                // evaluated variable values. Logged once — Dev2Logger.Error already routes into
+                // the IExecutionLogger sinks via Dev2LoggerSinkAdapter.
+                Dev2Logger.Error($"WorkflowExecutor Execute: InvalidWorkflowException: {iwe.Message}", executionId.ToString());
                 var msg = iwe.Message;
                 var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
@@ -1134,17 +1117,24 @@ namespace Warewolf.Execution.Lightweight
 
             if (errors.HasErrors())
             {
+                // Not logged, matching the server: Executor.DefaultExecutionResponse folds the
+                // same Environment.Errors / AllErrors into the response and logs nothing —
+                // a workflow reporting errors is business output, not a server fault. The count
+                // is already on the "Execute completed" Info line, and the errors themselves
+                // reach the caller via result.Errors.
                 result.Errors = errors.FetchErrors().ToList();
-                foreach (var err in result.Errors)
-                {
-                    _executionLogger.LogWarning(err, executionId);
-                }
             }
 
             if (dataObject.ExecutionException != null && result.Errors.Count == 0)
             {
-                _executionLogger.LogError("ExecuteActivityChain", dataObject.ExecutionException, executionId);
-                result.Errors.Add($"{dataObject.ExecutionException.Message}{Environment.NewLine}{dataObject.ExecutionException.StackTrace}");
+                // The message is NOT logged: ExecutionException is constructed from
+                // environment.FetchErrors() (see ExecuteActivityChain), so it IS the workflow's
+                // evaluated variable values. executionId correlates this to the completion line,
+                // which already carries the error count.
+                _executionLogger.LogError("ExecuteActivityChain failed.", executionId);
+                // Response body carries a generic message only — the activity exception's
+                // message and stack stay out of it (full detail is at Debug above).
+                result.Errors.Add("Workflow execution failed due to an unexpected error.");
             }
         }
 
