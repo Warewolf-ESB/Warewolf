@@ -123,7 +123,6 @@ public sealed class EntraBearerTokenValidator
                 "oid"                           => ClaimTypes.NameIdentifier,
                 AuthConstants.ObjectIdentifier   => ClaimTypes.NameIdentifier,
                 "name"                           => ClaimTypes.Name,
-                AuthConstants.PreferredUsername  => ClaimTypes.Name,
                 AuthConstants.Roles              => ClaimTypes.Role,
                 _                                => claim.Type,
             };

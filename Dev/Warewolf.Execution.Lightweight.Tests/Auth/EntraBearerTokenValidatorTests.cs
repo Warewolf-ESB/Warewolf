@@ -92,13 +92,40 @@ public class EntraBearerTokenValidatorTests
     }
 
     [TestMethod]
-    public void NormalizeClaims_MapsPreferredUsernameToClaimTypesName()
+    public void NormalizeClaims_PreferredUsernamePassesThroughUnchanged()
     {
+        // preferred_username (the UPN) must NOT be collapsed onto ClaimTypes.Name —
+        // doing so makes it indistinguishable from the "name" (display name) claim,
+        // and WorkflowClaimsPrincipal.UserName silently picks whichever claim happens
+        // to come first in the token. secure.config's WindowsGroup rows are keyed on
+        // UPN/email, so that ambiguity broke permission matching for real callers
+        // (observed against warewolfserver-mcp: create_workflow 400s despite a
+        // correctly-configured Contribute row for the caller's email).
         var source = new[] { new Claim(AuthConstants.PreferredUsername, "alice@example.com") };
 
         var normalized = EntraBearerTokenValidator.NormalizeClaims(source).Single();
 
-        Assert.AreEqual(ClaimTypes.Name, normalized.Type);
+        Assert.AreEqual(AuthConstants.PreferredUsername, normalized.Type);
+        Assert.AreEqual("alice@example.com", normalized.Value);
+    }
+
+    [TestMethod]
+    public void NormalizeClaims_NameAndPreferredUsername_RemainDistinctClaims()
+    {
+        // Regression guard: a token carrying both claims (the normal Entra v2.0 shape)
+        // must yield two distinct claim types after normalization, not one collapsed
+        // ClaimTypes.Name claim whose value depends on source claim order.
+        var source = new[]
+        {
+            new Claim("name", "Alice Example"),
+            new Claim(AuthConstants.PreferredUsername, "alice@example.com"),
+        };
+
+        var normalized = EntraBearerTokenValidator.NormalizeClaims(source).ToList();
+
+        Assert.AreEqual(2, normalized.Count);
+        Assert.AreEqual("Alice Example", normalized.Single(c => c.Type == ClaimTypes.Name).Value);
+        Assert.AreEqual("alice@example.com", normalized.Single(c => c.Type == AuthConstants.PreferredUsername).Value);
     }
 
     [TestMethod]

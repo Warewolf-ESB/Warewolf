@@ -45,8 +45,8 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
                 ?? FindFirst(ClaimTypes.NameIdentifier)?.Value
                 ?? string.Empty;
 
-        UserName = FindFirst(ClaimTypes.Name)?.Value
-                ?? FindFirst(AuthConstants.PreferredUsername)?.Value
+        UserName = FindFirst(AuthConstants.PreferredUsername)?.Value
+                ?? FindFirst(ClaimTypes.Name)?.Value
                 ?? string.Empty;
 
         IsUserToken    = Claims.Any(c => c.Type == AuthConstants.Scope);
