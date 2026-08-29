@@ -249,7 +249,7 @@ internal static class ToolSchemaCatalog
                     "workflow_outputmapping": "string, optional — output variable mapping from the target service's outputs (Constants.WORKFLOW_OUTPUTMAPPING).",
                     "workflow_isworkflow": "boolean, optional — true when the target is a workflow (vs. a plain service) (Constants.WORKFLOW_ISWORKFLOW).",
                     "workflow_inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WORKFLOW_INPUTS).",
-                    "workflow_outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WORKFLOW_OUTPUTS).",
+                    "workflow_outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WORKFLOW_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names is silently treated as an all-empty mapping.",
                     "workflow_category": "string, optional — the target service's toolbox category (Constants.WORKFLOW_CATEGORY).",
                     "workflow_type": "string, optional — the target service's type discriminator (Constants.WORKFLOW_TYPE)."
                   },
@@ -457,7 +457,7 @@ internal static class ToolSchemaCatalog
                     "recordsetname": "string, required — the output recordset name (Constants.ADVANCEDRECORDSET_RECORDSETNAME).",
                     "declarevariables": "string, optional — variable declarations available to the query (Constants.ADVANCEDRECORDSET_DECLAREVARIABLES).",
                     "sourceId": "string, optional — connection source id, if the query reads from an external source rather than an in-memory recordset (Constants.WEBMETHOD_SOURCEID).",
-                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names is silently treated as an all-empty mapping."
                   }
                 }
                 """,
@@ -610,7 +610,7 @@ internal static class ToolSchemaCatalog
                     "sourceId": "string, optional — connection source id, when calling through a saved web source rather than an ad-hoc URL (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — a sample/description of the expected response shape, used to derive output mappings (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
                     "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names (e.g. {name, mapsTo}) is silently treated as an all-empty mapping. MappedFrom is the source expression (e.g. '[[ResponseBody]]'), MappedTo the destination variable, RecordSetName set only when mapping into a recordset field. Path is optional: {ActualPath, DisplayPath, OutputExpression, SampleData}.",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — the object variable to receive the response when isOutputToObject is true (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT).",
@@ -630,7 +630,7 @@ internal static class ToolSchemaCatalog
                     "sourceId": "string, optional — connection source id (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — sample/description of the expected response shape (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
                     "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names (e.g. {name, mapsTo}) is silently treated as an all-empty mapping. MappedFrom is the source expression (e.g. '[[ResponseBody]]'), MappedTo the destination variable, RecordSetName set only when mapping into a recordset field. Path is optional: {ActualPath, DisplayPath, OutputExpression, SampleData}.",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT)."
@@ -647,7 +647,7 @@ internal static class ToolSchemaCatalog
                     "sourceId": "string, optional — connection source id (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — sample/description of the expected response shape (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
                     "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names (e.g. {name, mapsTo}) is silently treated as an all-empty mapping. MappedFrom is the source expression (e.g. '[[ResponseBody]]'), MappedTo the destination variable, RecordSetName set only when mapping into a recordset field. Path is optional: {ActualPath, DisplayPath, OutputExpression, SampleData}.",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT)."
@@ -662,7 +662,7 @@ internal static class ToolSchemaCatalog
                     "sourceId": "string, optional — connection source id (Constants.WEBMETHOD_SOURCEID).",
                     "outputdescription": "string, optional — sample/description of the expected response shape (Constants.WEBMETHOD_OUTPUTDESCRIPTION).",
                     "inputs": "array, optional — input parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS).",
+                    "outputs": "array, optional — output parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names (e.g. {name, mapsTo}) is silently treated as an all-empty mapping. MappedFrom is the source expression (e.g. '[[ResponseBody]]'), MappedTo the destination variable, RecordSetName set only when mapping into a recordset field. Path is optional: {ActualPath, DisplayPath, OutputExpression, SampleData}.",
                     "isOutputToObject": "boolean, optional — map the response onto a single JSON object variable (Constants.WEBMETHOD_ISOBJECT).",
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode response payload (Constants.WEBMETHOD_OBJECTRESULT)."
@@ -698,7 +698,7 @@ internal static class ToolSchemaCatalog
                     "objectname": "string, optional — object variable for isOutputToObject (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — raw object-mode result payload (Constants.WEBMETHOD_OBJECTRESULT).",
                     "inputs": "array, optional — stored-procedure parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names is silently treated as an all-empty mapping."
                   },
                   "notes": [
                     "requiresSource: true per list_tools — sourceId must reference an existing SQL Server connection resource on this instance."
@@ -716,7 +716,7 @@ internal static class ToolSchemaCatalog
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
                     "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names is silently treated as an all-empty mapping."
                   },
                   "notes": [
                     "requiresSource: true. Unlike SQL Server Database, PostgreSQL has no executeactionstring field — only procedurename (confirmed directly in DsfPostgreSqlActivity.ToX6Json)."
@@ -734,7 +734,7 @@ internal static class ToolSchemaCatalog
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
                     "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names is silently treated as an all-empty mapping."
                   },
                   "notes": [
                     "requiresSource: true. No executeactionstring field, same as PostgreSQL/Oracle/ODBC."
@@ -752,7 +752,7 @@ internal static class ToolSchemaCatalog
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
                     "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names is silently treated as an all-empty mapping."
                   },
                   "notes": [
                     "requiresSource: true. No executeactionstring field."
@@ -770,7 +770,7 @@ internal static class ToolSchemaCatalog
                     "objectname": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTNAME).",
                     "objectresult": "string, optional — see SQL Server Database (Constants.WEBMETHOD_OBJECTRESULT).",
                     "inputs": "array, optional — parameter list, or a JSON-encoded string of one (Constants.WEBMETHOD_INPUTS).",
-                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS)."
+                    "outputs": "array, optional — output/result-column mapping, or a JSON-encoded string of one (Constants.WEBMETHOD_OUTPUTS). Each element is {MappedFrom, MappedTo, RecordSetName, Path?} — these are the ONLY keys read; an element using any other key names is silently treated as an all-empty mapping."
                   },
                   "notes": [
                     "requiresSource: true. Confirmed directly in DsfODBCDatabaseActivity.ToX6Json — this is the one database activity using DATABASE_COMMANDTEXT ('commandtext') rather than DATABASE_PROCEDURENAME."

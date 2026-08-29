@@ -4,6 +4,7 @@
 *  Licensed under GNU Affero General Public License 3.0 or later.
 */
 
+using Dev2.Common;
 using Dev2.Services.Security;
 using Newtonsoft.Json;
 using System;
@@ -114,7 +115,17 @@ namespace Warewolf.Execution.Lightweight.Security
                 var settings  = JsonConvert.DeserializeObject<SecuritySettingsTO>(decrypted);
 
                 if (settings is null)
+                {
+                    // File existed and decrypted cleanly, but deserialised to nothing — distinct
+                    // from "no file" (line above) and worth knowing about on a live deployment,
+                    // since it silently degrades this instance to open-access/deny-all depending
+                    // on BYPASS_SECURE_CONFIG, indistinguishable from "config genuinely absent"
+                    // without this log line.
+                    Dev2Logger.Error(
+                        $"SecureConfigLoader: secure.config at '{configPath}' decrypted but deserialised to null; falling back to AllowAll.",
+                        LogExecutionId);
                     return SecureConfigData.AllowAll;
+                }
 
                 // If the config has no secret key yet, generate one so the engine can
                 // still issue and validate JWT tokens consistently within this process.
@@ -135,11 +146,26 @@ namespace Warewolf.Execution.Lightweight.Security
                     entraAudience:     entraAudience,
                     loginWorkflowName: loginWorkflowName);
             }
-            catch
+            catch (Exception ex)
             {
+                // Previously swallowed with no trace at all: a transient read (file locked mid-write,
+                // FileShare.ReadWrite above notwithstanding) or decrypt/deserialize failure on ANY
+                // one instance silently drops that instance to AllowAll (open-access if
+                // BYPASS_SECURE_CONFIG=true, deny-all/503 otherwise) while sibling instances that
+                // read the file fine keep enforcing normally — indistinguishable from a deliberately
+                // absent config without this log line. On Azure Functions Consumption there is no
+                // instance affinity, so two calls in the same logical session can land on different
+                // instances in exactly this split state (observed against warewolfserver-mcp: a
+                // create_workflow response with null httpEndpoints immediately followed by a
+                // Public/{name} invoke that got a real permission-denied response).
+                Dev2Logger.Error(
+                    $"SecureConfigLoader: failed to read/decrypt secure.config at '{configPath}'; falling back to AllowAll.",
+                    ex, LogExecutionId);
                 return SecureConfigData.AllowAll;
             }
         }
+
+        const string LogExecutionId = "SecureConfigLoader";
 
         static IReadOnlyList<PermissionEntry> BuildPermissions(SecuritySettingsTO settings)
         {

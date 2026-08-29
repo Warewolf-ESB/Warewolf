@@ -297,6 +297,28 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 AssignObjectStepOf(), afterStepId: "does-not-exist");
         }
 
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_WebGetOutputsWrongKeys_ThrowsInsteadOfSilentlyDroppingMapping()
+        {
+            // add_step never ran ValidateWorkflowTool's checks (see the F5 remark on
+            // ValidateWorkflowTool.FindOutputMappingShapeErrors) — CommonHelper.TryGetOutputs
+            // silently defaults an unrecognised output-mapping key (e.g. {name, mapsTo} instead of
+            // {MappedFrom, MappedTo, RecordSetName}) to an all-empty mapping with no error at all.
+            SeedSimpleWorkflow("WebGetBadOutputs");
+            var step = StepOf("webgetactivity", "GET", new
+            {
+                type = "webgetactivity",
+                querystring = "search?q=warewolf",
+                outputs = new object[] { new { name = "[[ResponseBody]]", mapsTo = "" } },
+            });
+
+            var ex = Assert.ThrowsException<McpException>(() =>
+                Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, Principal("Developers"), "WebGetBadOutputs", step));
+
+            StringAssert.Contains(ex.Message, "output-mapping shape");
+        }
+
         // ── Tests: success path (real end-to-end, seeded via CreateWorkflowTool) ──
 
         [TestMethod]

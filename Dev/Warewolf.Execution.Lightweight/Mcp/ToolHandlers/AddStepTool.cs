@@ -233,6 +233,16 @@ internal static class AddStepTool
                 : new Position(100, 100),
         };
 
+        // F#: mirrors ValidateWorkflowTool.Handle's output-mapping shape check — add_step never ran
+        // through that gate (see the F5 remark below), so a step's outputs field using the wrong
+        // per-item keys (e.g. {name, mapsTo} instead of {MappedFrom, MappedTo, RecordSetName})
+        // previously wrote silently, producing an all-empty mapping with no error.
+        var outputShapeErrors = ValidateWorkflowTool.FindOutputMappingShapeErrors(newNode.data, entry).ToList();
+        if (outputShapeErrors.Count > 0)
+        {
+            throw new McpException($"`step` failed validation: {string.Join("; ", outputShapeErrors)}");
+        }
+
         graph.Cells.Add(newNode);
         graph.Cells.Add(newEdge);
 

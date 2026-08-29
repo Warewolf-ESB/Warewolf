@@ -249,6 +249,11 @@ internal static class ValidateWorkflowTool
 
             ValidateCollectionFields(cell, entry, index, errors);
 
+            foreach (var message in FindOutputMappingShapeErrors(cell.data, entry))
+            {
+                errors.Add(ValidationIssue.Error($"cell '{cell.id}' {message}", $"/cells/{index}"));
+            }
+
             if (IsDecisionEntry(entry))
             {
                 ValidateDecisionBranches(cell, edges, index, errors);
@@ -356,6 +361,68 @@ internal static class ValidateWorkflowTool
                     $"cell '{node.id}' field '{key}' must be a JSON array, or a string containing one; "
                     + $"{DescribeUnusableValue(raw)} cannot be read as either and would be discarded silently.",
                     $"/cells/{index}/data/{key}"));
+            }
+        }
+    }
+
+    /// <summary>
+    /// The collection-field names (from <see cref="_collectionFieldsByToolName"/>) that carry
+    /// <c>ServiceOutputMapping</c>-shaped elements, i.e. every field read via
+    /// <c>CommonHelper.TryGetOutputs</c> — <c>WEBMETHOD_OUTPUTS</c> (GET/POST/PUT/DELETE Web
+    /// Method, Advanced Recordset, every SQL/ODBC database activity) and <c>WORKFLOW_OUTPUTS</c>
+    /// (Service (sub-workflow)). Other collection fields in that table (Assign's <c>fields</c>,
+    /// Data Merge's <c>mergeCollection</c>, etc.) have their own unrelated per-item shapes.
+    /// </summary>
+    static readonly HashSet<string> OutputsCollectionFieldNames = new(StringComparer.OrdinalIgnoreCase)
+    {
+        Constants.WEBMETHOD_OUTPUTS,
+        Constants.WORKFLOW_OUTPUTS,
+    };
+
+    /// <summary>The only keys <c>CommonHelper.TryGetOutputs</c> (`Dev2.Activities/WorkflowConverters/CommonHelper.cs`) actually reads off each output-mapping element.</summary>
+    static readonly string[] OutputMappingKeys = { "MappedFrom", "MappedTo", "RecordSetName", "Path" };
+
+    /// <summary>
+    /// Flags output-mapping elements that match none of <see cref="OutputMappingKeys"/>.
+    /// <c>CommonHelper.TryGetOutputs</c> reads each element's <c>MappedFrom</c>/<c>MappedTo</c>/
+    /// <c>RecordSetName</c>/<c>Path</c> keys via <c>JObject.Value&lt;string&gt;(...)</c>, silently
+    /// defaulting any key it doesn't find to <c>""</c> — so a caller-supplied shape like
+    /// <c>{name, mapsTo}</c> (get_tool_schema never documented the real key names) previously wrote
+    /// an all-empty mapping with no error at all (observed against warewolfserver-mcp:
+    /// `[[ResponseBody]]` silently became <c>MappedFrom: ""</c>). <c>internal</c> so
+    /// <see cref="AddStepTool"/> runs the identical check on the one node it appends, rather than
+    /// duplicating it — the same sharing pattern as <see cref="ExtractVariableTokens"/>/
+    /// <see cref="SplitReference"/>.
+    /// </summary>
+    internal static IEnumerable<string> FindOutputMappingShapeErrors(Dictionary<string, object>? data, ToolCatalog.Entry entry)
+    {
+        if (data is null || !_collectionFieldsByToolName.TryGetValue(entry.Name, out var keys))
+        {
+            yield break;
+        }
+
+        foreach (var key in keys)
+        {
+            if (!OutputsCollectionFieldNames.Contains(key) ||
+                !data.TryGetValue(key, out var raw) || raw is null ||
+                !CommonHelper.TryAsJArray(raw, out var array))
+            {
+                continue;
+            }
+
+            var itemIndex = -1;
+            foreach (var child in array.Children<JObject>())
+            {
+                itemIndex++;
+                if (OutputMappingKeys.Any(child.ContainsKey))
+                {
+                    continue;
+                }
+
+                var foundKeys = string.Join(", ", child.Properties().Select(p => p.Name));
+                yield return $"field '{key}[{itemIndex}]' does not match the output-mapping shape " +
+                    $"{{MappedFrom, MappedTo, RecordSetName, Path?}} get_tool_schema documents for '{entry.Name}'; " +
+                    $"keys found were [{foundKeys}], none of which are recognised, so this mapping would be silently discarded.";
             }
         }
     }

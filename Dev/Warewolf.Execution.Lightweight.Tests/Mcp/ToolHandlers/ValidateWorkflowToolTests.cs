@@ -311,6 +311,84 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsTrue(result.Errors.Any(e => e.Message.Contains("'inputmappings'") && e.Message.Contains("bulk1")));
         }
 
+        // ── output-mapping shape (GET/POST/PUT/DELETE Web Method, Advanced Recordset, ─────
+        // Service (sub-workflow), every SQL/ODBC database activity — anything read via
+        // CommonHelper.TryGetOutputs) ────────────────────────────────────────────────────
+        //
+        // CommonHelper.TryGetOutputs reads each element's MappedFrom/MappedTo/RecordSetName/Path
+        // keys via JObject.Value<string>(...), silently defaulting any key it doesn't find to "" —
+        // a caller-supplied shape like {name, mapsTo} (get_tool_schema never documented the real
+        // key names) previously wrote an all-empty mapping with no error at all (observed against
+        // warewolfserver-mcp: [[ResponseBody]] silently became MappedFrom: "").
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_GetWebMethodOutputs_WrongKeys_ReturnsInvalid_NamingCellAndField()
+        {
+            var node = MakeNode("get1", "webgetactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "GET",
+                ["querystring"] = "search?q=warewolf",
+                ["outputs"] = new JArray(new JObject { ["name"] = "[[ResponseBody]]", ["mapsTo"] = "" })
+            });
+            var body = BodyOf("WebGetOutputsBadKeys", MakeStartNode(), node, MakeEdge("e1", "start", "get1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            var issue = result.Errors.SingleOrDefault(e => e.Message.Contains("output-mapping shape"));
+            Assert.IsNotNull(issue, "expected an output-mapping-shape error; got: "
+                + string.Join("; ", result.Errors.Select(e => e.Message)));
+            StringAssert.Contains(issue.Message, "get1");
+            StringAssert.Contains(issue.Message, "outputs[0]");
+            StringAssert.Contains(issue.Message, "MappedFrom");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_GetWebMethodOutputs_CorrectKeys_IsValid()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new object[0],
+                outputs = new[] { new { name = "ResponseBody", kind = "scalar", fields = new string[0] } }
+            });
+            var node = MakeNode("get1", "webgetactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "GET",
+                ["querystring"] = "search?q=warewolf",
+                ["outputs"] = new JArray(new JObject
+                {
+                    ["MappedFrom"] = "[[ResponseBody]]",
+                    ["MappedTo"] = "",
+                    ["RecordSetName"] = ""
+                })
+            });
+            var body = BodyOf("WebGetOutputsOk", MakeStartNode(), node, MakeEdge("e1", "start", "get1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("output-mapping shape")),
+                string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_SqlServerDatabaseOutputs_WrongKeys_ReturnsInvalid()
+        {
+            var node = MakeNode("sql1", "dsfsqlserverdatabaseactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "SQL",
+                ["outputs"] = new JArray(new JObject { ["column"] = "Id" })
+            });
+            var body = BodyOf("SqlOutputsBadKeys", MakeStartNode(), node, MakeEdge("e1", "start", "sql1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e => e.Message.Contains("output-mapping shape") && e.Message.Contains("sql1")));
+        }
+
         // ── body parse / shape ─────────────────────────────────────────────
 
         [TestMethod]
