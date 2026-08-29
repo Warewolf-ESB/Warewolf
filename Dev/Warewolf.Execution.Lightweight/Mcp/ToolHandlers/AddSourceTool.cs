@@ -169,6 +169,16 @@ internal static class AddSourceTool
 
         File.WriteAllText(fullPath, xmlContents);
 
+        // Without this, LightweightSourceLoader.EnsureSourceLoaded can never find this source on
+        // an instance whose directory index was already built (e.g. by an earlier request) before
+        // this file existed — its per-directory index is a Lazy built at most once, with no
+        // staleness check of its own. See LightweightSourceLoader.InvalidateDirectory's XML doc.
+        LightweightSourceLoader.Instance.InvalidateDirectory(workflowsDirectory);
+
+        // Keeps name-based resolution (WorkflowNameResolver) as fast as a freshly-created
+        // workflow's, mirroring EditSourceTool's own equivalent call.
+        WorkflowIndex.Instance.AddOrUpdate(workflowsDirectory, relativePath, relativePath + ".bite");
+
         return new AddSourceResult(name, entry.SourceType, true, resolvedSecretFields);
     }
 

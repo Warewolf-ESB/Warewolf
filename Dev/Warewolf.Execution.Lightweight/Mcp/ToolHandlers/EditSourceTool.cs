@@ -134,6 +134,18 @@ internal static class EditSourceTool
         // consistent with edit_workflow's own guarantee and costs nothing extra.
         WorkflowIndex.Instance.AddOrUpdate(workflowsDirectory, relativePath, relativePath + ".bite");
 
+        // Without these, an instance that already loaded this source once keeps serving the OLD
+        // connection details indefinitely: EnsureSourceLoaded's per-ID "already registered" flag
+        // short-circuits without re-reading the file, and even if it didn't, the directory index
+        // itself never rebuilds on its own. Invalidate clears the stale registration/ResourceCatalog
+        // entry for this specific ID; InvalidateDirectory covers the (rarer) case where the on-disk
+        // Type changed. See LightweightSourceLoader.InvalidateDirectory's XML doc.
+        LightweightSourceLoader.Instance.InvalidateDirectory(workflowsDirectory);
+        if (Guid.TryParse(resourceId, out var resourceGuid))
+        {
+            LightweightSourceLoader.Instance.Invalidate(resourceGuid);
+        }
+
         return new EditSourceResult(name, entry.SourceType, true, resolvedSecretFields);
     }
 

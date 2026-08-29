@@ -24,6 +24,10 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Dev2.Common;
+using Dev2.Runtime.Hosting;
+using Dev2.Runtime.Interfaces;
+using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -426,6 +430,34 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 ConfigOf(new { Host = "smtp.local2", UserName = "bot", Password = "pw" }));
 
             Assert.IsTrue(result.Updated);
+        }
+
+        // ── Fix for: an edited source kept serving its OLD connection details indefinitely on any
+        // instance that had already loaded it once — EnsureSourceLoaded's per-ID "already
+        // registered" flag short-circuits without re-reading the file, and Handle never cleared it.
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_EditedSource_IsImmediatelyReflectedByLightweightSourceLoader_EvenIfAlreadyLoadedOnce()
+        {
+            var path = await SeedExistingSourceAsync("WebToEdit", "Web", new { Address = "https://old-host.example.com" });
+            var resourceId = Guid.Parse(XDocument.Parse(File.ReadAllText(path)).Root!.Attribute("ID")!.Value);
+
+            // Simulate a warm instance that already resolved this source once before the edit.
+            LightweightSourceLoader.Instance.EnsureIndexed(_root);
+            Assert.IsTrue(((IOnDemandSourceLoader)LightweightSourceLoader.Instance).EnsureSourceLoaded(resourceId));
+
+            await Handle(HostConfig(), OpenPolicy, null, "WebToEdit", "Web", ConfigOf(new { Address = "https://new-host.example.com" }));
+
+            Assert.IsTrue(((IOnDemandSourceLoader)LightweightSourceLoader.Instance).EnsureSourceLoaded(resourceId),
+                "The edited source must still resolve (it was not deleted, only reloaded).");
+
+            var reloaded = ResourceCatalog.Instance.WorkspaceResources.TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws)
+                ? ws.OfType<WebSource>().FirstOrDefault(r => r.ResourceID == resourceId)
+                : null;
+            Assert.IsNotNull(reloaded, "The edited source should still be registered in ResourceCatalog.");
+            Assert.AreEqual("https://new-host.example.com", reloaded!.Address,
+                "Reflects the fix: without it, this would still read the pre-edit 'https://old-host.example.com'.");
         }
     }
 }

@@ -252,5 +252,119 @@ namespace Warewolf.Execution.Lightweight.Tests
                 Assert.AreEqual(1, count, "ResourceCatalog should contain exactly one entry for the source ID");
             }
         }
+
+        // ── InvalidateDirectory / Invalidate (add_source / edit_source staleness) ───────────────────
+        // Fix for: add_source writes a new .bite file, but _directoryIndices is a Lazy built at
+        // most once per directory with no staleness check — a source created AFTER an instance
+        // already indexed its directory was invisible to EnsureSourceLoaded forever (reproduced
+        // live against warewolfserver-mcp: a real, correctly-configured sourceId still resolved to
+        // a null WebSource). InvalidateDirectory forces the next EnsureSourceLoaded to rebuild the
+        // index from disk.
+
+        /// <summary>
+        /// Materializes <paramref name="dir"/>'s index (a Lazy that otherwise wouldn't build until
+        /// first accessed) without permanently caching a negative result for any specific real ID —
+        /// EnsureSourceLoaded's own per-ID cache (<c>_registeredIds</c>) commits its result (found
+        /// or not) forever for whatever ID it's called with, so looking up the ID under test BEFORE
+        /// it exists would poison that exact test, not reproduce the real bug: in production, an
+        /// instance's index is materialized by resolving a DIFFERENT, already-existing source
+        /// (e.g. an earlier workflow execution), never by a premature lookup of the new source's own
+        /// not-yet-minted ID.
+        /// </summary>
+        private static void MaterializeIndex(LightweightSourceLoader loader) =>
+            ((IOnDemandSourceLoader)loader).EnsureSourceLoaded(Guid.NewGuid());
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TC_SourceAddedAfterIndexing_NotFound_WithoutInvalidateDirectory()
+        {
+            var dir = Path.Combine(Path.GetTempPath(), $"lwsl-tests-{Guid.NewGuid():N}");
+            Directory.CreateDirectory(dir);
+            _tempDirs.Add(dir);
+
+            var loader = LightweightSourceLoader.Instance;
+            loader.EnsureIndexed(dir);
+            MaterializeIndex(loader);
+
+            // Simulate add_source writing a new file AFTER the directory was already indexed.
+            var newId = Guid.NewGuid();
+            File.WriteAllText(Path.Combine(dir, $"{newId:N}.bite"), BuildBiteXml("WebSource", newId, "Address=http://localhost/api"));
+
+            Assert.IsFalse(((IOnDemandSourceLoader)loader).EnsureSourceLoaded(newId),
+                "Reproduces the bug: a source file written after the directory was indexed is invisible to EnsureSourceLoaded.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TC_SourceAddedAfterIndexing_FoundAfterInvalidateDirectory()
+        {
+            var dir = Path.Combine(Path.GetTempPath(), $"lwsl-tests-{Guid.NewGuid():N}");
+            Directory.CreateDirectory(dir);
+            _tempDirs.Add(dir);
+
+            var loader = LightweightSourceLoader.Instance;
+            loader.EnsureIndexed(dir);
+            MaterializeIndex(loader);
+
+            var newId = Guid.NewGuid();
+            File.WriteAllText(Path.Combine(dir, $"{newId:N}.bite"), BuildBiteXml("WebSource", newId, "Address=http://localhost/api"));
+
+            loader.InvalidateDirectory(dir);
+
+            Assert.IsTrue(((IOnDemandSourceLoader)loader).EnsureSourceLoaded(newId),
+                "After InvalidateDirectory, the newly-written source should be found on its first EnsureSourceLoaded call.");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TC_InvalidateDirectory_OnNeverIndexedDirectory_DoesNotThrow()
+        {
+            var dir = Path.Combine(Path.GetTempPath(), $"lwsl-tests-{Guid.NewGuid():N}");
+            _tempDirs.Add(dir); // deliberately not created — matches add_source's fresh-directory case
+
+            Assert.IsFalse(string.IsNullOrEmpty(dir));
+            LightweightSourceLoader.Instance.InvalidateDirectory(dir);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void TC_EditedSource_StaleUntilInvalidate_ThenReflectsNewContent()
+        {
+            var (dir, id) = CreateBiteDir("WebSource", "Address=http://old-host/api");
+            var loader = GetLoader(dir);
+
+            Assert.IsTrue(((IOnDemandSourceLoader)loader).EnsureSourceLoaded(id));
+            var beforeEdit = ResolveWebSourceAddress(id);
+            Assert.AreEqual("http://old-host/api", beforeEdit);
+
+            // Simulate edit_source overwriting the SAME file path/ID with new content.
+            File.WriteAllText(Path.Combine(dir, $"{id:N}.bite"), BuildBiteXml("WebSource", id, "Address=http://new-host/api"));
+
+            Assert.IsTrue(((IOnDemandSourceLoader)loader).EnsureSourceLoaded(id),
+                "Already-registered id short-circuits to true without re-reading the file.");
+            Assert.AreEqual("http://old-host/api", ResolveWebSourceAddress(id),
+                "Reproduces the bug: the edit is invisible until Invalidate(id) is called.");
+
+            LightweightSourceLoader.Instance.Invalidate(id);
+
+            Assert.IsTrue(((IOnDemandSourceLoader)loader).EnsureSourceLoaded(id));
+            Assert.AreEqual("http://new-host/api", ResolveWebSourceAddress(id),
+                "After Invalidate, the edited source's new content should be loaded.");
+        }
+
+        /// <summary>Reads the Address a registered WebSource currently holds in ResourceCatalog.</summary>
+        private static string ResolveWebSourceAddress(Guid id)
+        {
+            if (ResourceCatalog.Instance.WorkspaceResources
+                    .TryGetValue(GlobalConstants.ServerWorkspaceID, out var ws))
+            {
+                lock (ws)
+                {
+                    var source = ws.FirstOrDefault(r => r.ResourceID == id) as Dev2.Runtime.ServiceModel.Data.WebSource;
+                    return source?.Address ?? string.Empty;
+                }
+            }
+            return string.Empty;
+        }
     }
 }

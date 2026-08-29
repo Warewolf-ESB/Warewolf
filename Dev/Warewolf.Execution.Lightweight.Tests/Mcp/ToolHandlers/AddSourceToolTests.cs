@@ -23,6 +23,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
@@ -495,6 +496,27 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.AreEqual("WebSource", source.Attribute("ResourceType")!.Value);
             Assert.AreEqual("WebSource", source.Attribute("Type")!.Value);
             Assert.IsNull(source.Attribute("ServerType"), "Web is not a DbSource entry; it must not get the DB-only ServerType attribute.");
+        }
+
+        // ── Fix for: a source created on an instance whose directory index was already built ──
+        // (LightweightSourceLoader._directoryIndices is a Lazy per directory, built at most once)
+        // was invisible to EnsureSourceLoaded forever — Handle must invalidate that cache.
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_SourceIsImmediatelyResolvableByLightweightSourceLoader_EvenIfDirectoryWasAlreadyIndexed()
+        {
+            // Simulate a warm instance that already resolved some other source in _root before
+            // this call — e.g. an earlier workflow execution — materializing the directory's index.
+            LightweightSourceLoader.Instance.EnsureIndexed(_root);
+            ((IOnDemandSourceLoader)LightweightSourceLoader.Instance).EnsureSourceLoaded(Guid.NewGuid());
+
+            await Handle(HostConfig(), OpenPolicy, null, "WebImmediate", "Web", ConfigOf(new { Address = "https://api.example.com" }));
+
+            var resourceId = Guid.Parse(XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebImmediate.bite"))).Root!.Attribute("ID")!.Value);
+
+            Assert.IsTrue(((IOnDemandSourceLoader)LightweightSourceLoader.Instance).EnsureSourceLoaded(resourceId),
+                "The newly-created source must be resolvable on its very next EnsureSourceLoaded call, without a process restart.");
         }
     }
 }
