@@ -1254,6 +1254,65 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     reopening this gap.
   - **Not yet re-verified against a live pipeline run** — same caveat as the 2026-08-17 entry.
 
+- **2026-08-30 — Fix: `DbSource.GetConnectionStringWithTimeout` now honours the timeout override
+  for Entra Managed Identity sources too, and `ResolveEffectiveConnectionTimeout` gets a final
+  positive floor.** `ShovelBridgeLoadTest_ExternalServiceBus` build 30583 (`8512-ProcessingReliabilityTests`,
+  commit `6eeeaaa5ab`, run after the `maxAutoLockRenewalDuration` fix above) improved from 16 to
+  **12** correlation ids stuck forever, still never resolving across the full 30-minute poll
+  window: `987/1000` succeeded, `1` recorded failure (`-000601`, "Workflow not found" — a distinct,
+  already-understood issue), `12` never got a result. Confirmed via `az devops invoke` against the
+  build's own logs (not a partial paste) that these 12 clustered tightly (`...-000582`,
+  `...-000588` through `...-000599`), the same contiguous-block shape as the 16-id incident above.
+  - **Diagnosis, this time backed by direct SQL ground truth against the Hangfire persistence
+    store** (`wwexecution-uat-hangfire`, confirmed live and enabled — `Deploy_UAT`'s
+    `-EnablePersistence:$true` per `Deploy-UAT-Redeploy-Spec.md` §14 was in effect for this build,
+    ruling out the in-memory-fallback theory this investigation initially suspected): all 1000
+    correlation ids had a claim row; exactly 988 had a matching result row. The control case
+    (`-000601`) had both, proving the store and `/secure/servicebus-result/{id}` polling path work
+    correctly for any execution that returns. For the 12: a claim row exists (execution started)
+    but no result row was ever written — `SaveResult` was never reached by success, business
+    failure, malformed message, denial, or invalid-token path, and the claim's timestamp was never
+    updated by a later stale-claim steal (`ClaimStaleAfter` = 20 min), even hours after the run.
+    Peeking the live queue (0 active messages) and the entire accumulated 19,459-message
+    dead-letter queue (0 matches for this run's correlation prefix, non-destructively, via
+    `PeekMessagesAsync`) ruled out both an in-flight lock and a dead-letter outcome as the visible
+    end state.
+  - **Root cause**: `IWorkflowExecutor.Execute()` (`WorkflowExecutor.cs`) has no internal timeout or
+    cancellation seam anywhere in its call chain — the trigger's `Task.WhenAny(executionTask,
+    Task.Delay(ExecutionTimeout))` race in `ServiceBusWorkflowTriggerFunction.cs` can only stop
+    *waiting* on a hung call, never cancel it. `rabbit/RabbitProcess` makes three real SQL Server
+    calls (`DsfSqlServerDatabaseActivity` → `dbo.usp_jobs1_LogStart/LogProcessing/LogFinished`).
+    `DatabaseServiceExecution.MssqlSqlExecution` already had a WOLF-8512 guard
+    (`ResolveEffectiveConnectionTimeout`, added earlier this same investigation) specifically for
+    "no DB activity ever sets `ConnectionTimeout` → SqlClient's `Connection Timeout=0` → `
+    connection.Open()` waits indefinitely" — but that guard applied its resolved value via
+    `DbSource.GetConnectionStringWithTimeout`, which rebuilds the connection string from properties
+    for every server type **except** Entra Managed Identity, where `ConnectionString`'s getter
+    returns `_entraRawConnectionString` verbatim (deliberately, so the embedded fallback
+    credentials survive intact — see `DbSource_ConnectionString_SqlDatabase_EntraManagedIdentity_
+    RoundTripsVerbatim`). This UAT deployment's DB source (`NewSqlServerSource.bite` →
+    `WarewolfDevOpsTestDb`) uses `Authentication=Active Directory Managed Identity` (per the
+    2026-08-13 entry above), so the WOLF-8512 fix's override was silently discarded for exactly
+    the source this workflow uses — whatever timeout (or lack thereof) was originally baked into
+    that raw connection string is what actually governed `connection.Open()`, regardless of the
+    guard.
+  - **Fix** (`Dev2.Services.Execution/DatabaseServiceExecution.cs`,
+    `Dev2.Runtime.Services/ServiceModel/Data/DbSource.cs`): `ResolveEffectiveConnectionTimeout` now
+    falls back to a 30s floor when the source's own configured timeout is *also* non-positive, not
+    just the caller-supplied one. `GetConnectionStringWithTimeout` gained an Entra-aware branch
+    that surgically patches (or appends) just the `Connect`/`Connection Timeout` token in the raw
+    connection string, leaving every other part — including the fallback credentials — untouched;
+    the plain `ConnectionString` getter/setter and the non-Entra path are unchanged. New tests:
+    `ResolveEffectiveConnectionTimeout_GivenVariousInputs_ShouldReturnExpectedTimeout`'s two new
+    `DataRow`s (`DatabaseServiceExecutionTests.cs`) and three new `DbSource_
+    GetConnectionStringWithTimeout_*` tests (`DbSourceTests.cs`), all confirmed to fail against the
+    pre-fix code and pass after it; the existing `RoundTripsVerbatim` test remains green, confirming
+    the plain-getter contract for direct reads is untouched.
+  - **Not yet re-verified against a live pipeline run** — the fix is implemented and unit-tested
+    locally (`Dev2.Services.Execution.Tests`: 30/30; `Dev2.Runtime.Tests`'s `DbSourceTests`: 21/21)
+    but not yet committed, deployed to `WarewolfServer-UAT`, or proven against another
+    `ShovelBridgeLoadTest_ExternalServiceBus` run.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

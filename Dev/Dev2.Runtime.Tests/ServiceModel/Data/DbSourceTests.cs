@@ -147,6 +147,60 @@ namespace Dev2.Tests.Runtime.ServiceModel
         }
 
         [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("DbSource_GetConnectionStringWithTimeout")]
+        public void DbSource_GetConnectionStringWithTimeout_SqlDatabase_EntraManagedIdentity_OverridesTimeout_PreservesRestVerbatim()
+        {
+            // WOLF-8512: DbSource.ConnectionString's Entra branch returns _entraRawConnectionString
+            // verbatim, never reading ConnectionTimeout - so GetConnectionStringWithTimeout's
+            // temporary property override had no effect at all for a Managed Identity source, and
+            // an explicit "Connection Timeout=0" (SqlClient's "wait forever" convention) baked into
+            // the source could never be overridden here, leaving connection.Open() unbounded.
+            var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
+            dbSource.ConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=fallbackuser;Password=fallbackpwd;Connection Timeout=0";
+
+            var result = dbSource.GetConnectionStringWithTimeout(30);
+
+            StringAssert.Contains(result, "Connection Timeout=30");
+            Assert.IsFalse(result.Contains("Connection Timeout=0"), "The stale zero timeout must not survive the override.");
+            StringAssert.Contains(result, "Data Source=myserver");
+            StringAssert.Contains(result, "Initial Catalog=testdb");
+            StringAssert.Contains(result, "Authentication=Active Directory Managed Identity");
+            StringAssert.Contains(result, "User ID=fallbackuser");
+            StringAssert.Contains(result, "Password=fallbackpwd");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("DbSource_GetConnectionStringWithTimeout")]
+        public void DbSource_GetConnectionStringWithTimeout_SqlDatabase_EntraManagedIdentity_NoExistingTimeoutKey_AppendsIt()
+        {
+            var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
+            dbSource.ConnectionString = "Data Source=myserver;Initial Catalog=testdb;Authentication=Active Directory Managed Identity;User ID=fallbackuser;Password=fallbackpwd";
+
+            var result = dbSource.GetConnectionStringWithTimeout(30);
+
+            StringAssert.Contains(result, "Connection Timeout=30");
+            StringAssert.Contains(result, "Data Source=myserver");
+            StringAssert.Contains(result, "User ID=fallbackuser");
+            StringAssert.Contains(result, "Password=fallbackpwd");
+        }
+
+        [TestMethod]
+        [Owner("Copilot")]
+        [TestCategory("DbSource_GetConnectionStringWithTimeout")]
+        public void DbSource_GetConnectionStringWithTimeout_SqlDatabase_NonEntra_BehaviorUnchanged()
+        {
+            var dbSource = new DbSource { ServerType = enSourceType.SqlDatabase };
+            dbSource.ConnectionString = "Data Source=myserver,1433;Initial Catalog=testdb;User ID=u;Password=p;Connection Timeout=30";
+
+            var result = dbSource.GetConnectionStringWithTimeout(45);
+
+            StringAssert.Contains(result, "Connection Timeout=45");
+            Assert.AreEqual(30, dbSource.ConnectionTimeout, "The override must be temporary and not leak back into the source's own property.");
+        }
+
+        [TestMethod]
         [Owner("Security Review")]
         [TestCategory("DbSource_ConnectionString")]
         public void DbSource_ConnectionString_NonSqlDatabase_AuthenticationKeyword_DoesNotShortCircuitMasking()

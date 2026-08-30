@@ -417,10 +417,18 @@ namespace Dev2.Services.Execution
         /// <summary>
         /// WOLF-8512: no DB activity ever sets <see cref="ConnectionTimeout"/> (always the C# default
         /// of 0), so only defer to it when it is a genuine positive override; otherwise use the
-        /// source's own already-correct timeout instead of clobbering it with 0.
+        /// source's own already-correct timeout instead of clobbering it with 0. The source's own
+        /// timeout can ALSO be an explicit/unset zero (e.g. a hand-authored Entra Managed Identity
+        /// connection string with "Connection Timeout=0" - see the 2026-08-30 ShovelBridge load-test
+        /// incident), so a final positive floor is required regardless of what the source itself is
+        /// configured with, or SqlConnection.Open() waits indefinitely with no client-side bound.
         /// </summary>
+        const int DefaultConnectionTimeoutSeconds = 30;
+
         static int ResolveEffectiveConnectionTimeout(int connectionTimeout, int sourceConnectionTimeout) =>
-            connectionTimeout > 0 ? connectionTimeout : sourceConnectionTimeout;
+            connectionTimeout > 0 ? connectionTimeout
+            : sourceConnectionTimeout > 0 ? sourceConnectionTimeout
+            : DefaultConnectionTimeoutSeconds;
 
         void MssqlSqlExecution(int connectionTimeout, int? commandTimeout, ErrorResultTO errors, int update)
         {

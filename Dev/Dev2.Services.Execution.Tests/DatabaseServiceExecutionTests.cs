@@ -126,6 +126,8 @@ namespace Dev2.Services.Execution.Tests
         [DataRow(0, 30, 30, DisplayName = "Zero falls back to source timeout")]
         [DataRow(-1, 30, 30, DisplayName = "Negative falls back to source timeout")]
         [DataRow(45, 30, 45, DisplayName = "Positive override wins over source timeout")]
+        [DataRow(0, 0, 30, DisplayName = "Both zero falls back to 30s floor")]
+        [DataRow(-1, 0, 30, DisplayName = "Negative override + zero source falls back to 30s floor")]
         public void ResolveEffectiveConnectionTimeout_GivenVariousInputs_ShouldReturnExpectedTimeout(int connectionTimeout, int sourceConnectionTimeout, int expected)
         {
             // WOLF-8512: DatabaseServiceExecution.ConnectionTimeout is never set by any DB
@@ -133,6 +135,12 @@ namespace Dev2.Services.Execution.Tests
             // straight through to DbSource.GetConnectionStringWithTimeout, that used to clobber
             // the source's own already-correct ConnectionTimeout with a literal "Connection
             // Timeout=0" - SqlClient's convention for "wait indefinitely, no client-side bound".
+            //
+            // A source's own ConnectionTimeout can ALSO be an explicit/unset zero (e.g. a hand-
+            // authored Entra Managed Identity connection string with "Connection Timeout=0",
+            // observed in the 2026-08-30 ShovelBridge load-test incident): deferring to it
+            // faithfully would silently preserve the exact same unbounded-hang bug, so a final
+            // positive floor is required regardless of what the source itself is configured with.
             //---------------Set up test pack-------------------
             var methodInfo = typeof(DatabaseServiceExecution).GetMethod("ResolveEffectiveConnectionTimeout", BindingFlags.NonPublic | BindingFlags.Static);
             //---------------Assert Precondition----------------

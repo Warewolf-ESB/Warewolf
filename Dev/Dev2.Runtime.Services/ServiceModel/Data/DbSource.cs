@@ -317,12 +317,50 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         public string GetConnectionStringWithTimeout(int timeout)
         {
+            // WOLF-8512: an Entra Managed Identity connection string is returned verbatim by the
+            // ConnectionString getter above (never rebuilt from properties, so the embedded fallback
+            // credentials survive intact) - which means mutating ConnectionTimeout and re-reading
+            // ConnectionString, as the non-Entra path below does, has NO effect on it at all. That
+            // left a caller-supplied timeout override silently ignored for any Managed Identity
+            // source, so an explicit "Connection Timeout=0" baked into the raw string (SqlClient's
+            // "wait forever" convention) could never be overridden here.
+            if (_isEntraManagedIdentityConnectionString && !string.IsNullOrEmpty(_entraRawConnectionString))
+            {
+                return ReplaceOrAppendConnectionTimeout(_entraRawConnectionString, timeout);
+            }
+
             var oldTimeout = ConnectionTimeout;
             ConnectionTimeout = timeout;
             var result = ConnectionString;
             ConnectionTimeout = oldTimeout;
 
             return result;
+        }
+
+        // Surgically overrides just the Connect/Connection Timeout token in a raw connection
+        // string, leaving every other part (including embedded fallback credentials) untouched -
+        // unlike the property-driven reconstruction the non-Entra path uses, which cannot represent
+        // Entra-specific auth + fallback credentials without risking corrupting them.
+        static string ReplaceOrAppendConnectionTimeout(string connectionString, int timeout)
+        {
+            var parts = connectionString.Split(';');
+            var found = false;
+            for (var i = 0; i < parts.Length; i++)
+            {
+                var kv = parts[i].Split(new[] { '=' }, 2);
+                if (kv.Length == 2)
+                {
+                    var key = kv[0].Trim().ToLowerInvariant();
+                    if (key == "connect timeout" || key == "connection timeout")
+                    {
+                        parts[i] = $"{kv[0]}={timeout}";
+                        found = true;
+                    }
+                }
+            }
+
+            var rebuilt = string.Join(";", parts);
+            return found ? rebuilt : $"{rebuilt.TrimEnd(';')};Connection Timeout={timeout}";
         }
 
         #endregion
