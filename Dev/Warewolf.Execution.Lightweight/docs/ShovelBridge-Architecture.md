@@ -1219,6 +1219,41 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     pre-warm probe manually confirmed to succeed against the (currently warm) live engine, but the
     `ShovelBridgeE2ETest_ExternalServiceBus` job itself has not been re-run post-fix.
 
+- **2026-08-30 — Fix: `host.json` now sets `extensions.serviceBus.maxAutoLockRenewalDuration`,
+  closing the gap flagged as "not yet actioned" in the 2026-08-16 entry above.** `ShovelBridgeLoadTest_ExternalServiceBus`
+  build 30578 (`8512-ProcessingReliabilityTests`, commit `c9f5ecfa99`) ran with the Aug 24/25
+  `ServiceBusTriggerOptions` mitigations (`MaxConcurrentExecutions`, `ExecutionTimeout`,
+  `SlotWaitTimeout`, stale-claim takeover) already in place: 984/1000 resolved within 47s, but
+  16 correlation ids (a contiguous block, `...-000721` through `...-000736`) never got a result
+  and the count never moved again across the remaining ~29 minutes of polling. RabbitMQ
+  diagnostics confirmed all 1000 messages left the source queue via the shovel cleanly — the
+  loss was downstream, in Service Bus → engine trigger processing.
+  - **Root cause**: the same lock-renewal race first identified in the 2026-08-16 entry, not yet
+    closed. The load test's queue (`Test-ShovelBridgeE2E.ps1`) has `LockDuration=PT1M` and
+    `maxDeliveryCount=10`; `ServiceBusTriggerOptions` gives a delivery up to `SlotWaitTimeout`
+    (5 min) + `ExecutionTimeout` (5 min) = 10 min worst case, but the Functions SDK's default
+    `maxAutoLockRenewalDuration` is only 5 min and `host.json` never overrode it. A delivery
+    that genuinely needs close to the full budget loses its lock at the 5-minute mark; a
+    duplicate delivery then races it, hits `ServiceBusWorkflowTriggerFunction.cs`'s
+    "leave unsettled" branch (added for exactly this case), and the pair burn through
+    `maxDeliveryCount` in rapid short cycles until Service Bus auto-dead-letters the message
+    **inside the SDK, without the trigger's own code ever running again** — the one path that
+    produces "no result, ever" instead of a recorded failure. Confirmed live that this happens
+    at volume in this environment: `wwexecution-secure-trigger-queue-e2e`'s dead-letter queue
+    held 19,459 unpurged messages at the time of this investigation. (Could not pin the exact
+    dead-letter reason for these specific 16: `warewolfserver-uat`'s Application Insights had
+    zero telemetry for the Aug 28 run window, and the Service Bus namespace has no diagnostic
+    settings configured — a full 19k-message DLQ scan was judged not worth the effort for this
+    pass.)
+  - **Fix**: `host.json`'s `extensions.serviceBus.maxAutoLockRenewalDuration` set to `00:11:00`
+    (a 1-minute margin over the current 10-minute worst case, matching the margin style already
+    used for `ServiceBusReplayAndResultStore.ClaimStaleAfter` vs `functionTimeout`). New test
+    `HostJsonConfigurationTests` asserts the value is set and is `>=` `ServiceBusTriggerOptions`'
+    own `SlotWaitTimeout + ExecutionTimeout` defaults (not a hardcoded duration), so widening
+    either timeout without widening this renewal window fails the build instead of silently
+    reopening this gap.
+  - **Not yet re-verified against a live pipeline run** — same caveat as the 2026-08-17 entry.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

@@ -27,6 +27,9 @@
   <ItemGroup>
     <!-- Real suspend/resume demo workflows used by ResumeEndToEndTests (Phase 8). -->
     <Content Include="TestResources\**\*.bite" CopyToOutputDirectory="PreserveNewest" />
+    <!-- Linked so HostJsonConfigurationTests can assert against the actual deployed
+         host.json rather than a copy that can drift out of sync with it. -->
+    <None Include="..\Warewolf.Execution.Lightweight\host.json" Link="host.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,7 +6,8 @@
             "routePrefix": ""
         },
         "serviceBus": {
-            "autoCompleteMessages": false
+            "autoCompleteMessages": false,
+            "maxAutoLockRenewalDuration": "00:11:00"
         }
     },
     "logging": {
