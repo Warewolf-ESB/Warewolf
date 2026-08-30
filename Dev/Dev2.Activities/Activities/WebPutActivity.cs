@@ -15,6 +15,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.X6;
 using Dev2.Data.TO;
+using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.Runtime.Interfaces;
@@ -96,6 +97,7 @@ namespace Dev2.Activities
 
                 var bytes = webRequestResult.Base64StringToByteArray();
                 var response = bytes.ReadToString();
+                response = Scrubber.Scrub(response);
 
                 ResponseManager = new ResponseManager
                 {

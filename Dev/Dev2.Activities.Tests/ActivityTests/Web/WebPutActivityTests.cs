@@ -229,6 +229,47 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             }
         }
 
+        // Fix for: unlike WebGetActivity/WebPostActivityNew, WebPutActivity never called
+        // Scrubber.Scrub() on the response before pushing it into the environment. Real APIs
+        // (confirmed against httpbin.org) end JSON bodies with a trailing newline; Scrub's Trim()
+        // strips it, but AssignEvaluation.isJsonString requires the string to literally end with
+        // '}' with no whitespace tolerance. Without scrubbing, object-mode output silently failed
+        // to assign at all (no exception, nothing logged) whenever the response had trailing
+        // whitespace — reproduced live against a real httpbin.org PUT.
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Warewolf")]
+        [TestCategory(nameof(WebPutActivity))]
+        public void WebPutActivity_Execute_ObjectMode_ResponseWithTrailingWhitespace_StillAssignsObject()
+        {
+            //------------Setup for test--------------------------
+            const string response = "{\"Location\": \"Paris\"}\r\n";
+            var environment = new ExecutionEnvironment();
+            var DsfWebPutActivity = new TestWebPutActivity
+            {
+                ResourceCatalog = new Mock<IResourceCatalog>().Object,
+                IsObject = true,
+                ObjectName = "[[@PutResult]]",
+                ResponseFromWeb = response,
+            };
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+            DsfWebPutActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            DsfWebPutActivity.QueryString = "";
+            DsfWebPutActivity.PutData = "";
+            DsfWebPutActivity.SourceId = Guid.Empty;
+            DsfWebPutActivity.Headers = new List<INameValue>();
+
+            //------------Execute Test---------------------------
+            DsfWebPutActivity.Execute(dataObjectMock.Object, 0);
+
+            //------------Assert Results-------------------------
+            var result = environment.EvalJContainer("[[@PutResult]]");
+            Assert.IsNotNull(result, "the object should have been assigned despite the response's trailing whitespace");
+            Assert.AreEqual("Paris", result["Location"]?.ToString());
+        }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]

@@ -220,6 +220,42 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.AreEqual("from the NW (320 degrees) at 10 MPH (9 KT) (direction variable):0", ExecutionEnvironment.WarewolfEvalResultToString(environment.Eval("[[weather().Wind]]", 0)));
         }
 
+        // Fix for: unlike WebGetActivity/WebPostActivityNew, DsfWebDeleteActivity never called
+        // Scrubber.Scrub() on the response before pushing it into the environment. Real APIs
+        // (confirmed against httpbin.org) end JSON bodies with a trailing newline; Scrub's Trim()
+        // strips it, but AssignEvaluation.isJsonString requires the string to literally end with
+        // '}' with no whitespace tolerance. Without scrubbing, object-mode output silently failed
+        // to assign at all (no exception, nothing logged) whenever the response had trailing
+        // whitespace — reproduced live against a real httpbin.org DELETE.
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Warewolf")]
+        [TestCategory("DsfWebDeleteActivity_Execute")]
+        public void DsfWebDeleteActivity_Delete_ObjectMode_ResponseWithTrailingWhitespace_StillAssignsObject()
+        {
+            //------------Setup for test--------------------------
+            const string response = "{\"Location\": \"Paris\"}\r\n";
+            var environment = new ExecutionEnvironment();
+            var dsfWebDeleteActivity = CreateTestDeleteActivity();
+            dsfWebDeleteActivity.IsObject = true;
+            dsfWebDeleteActivity.ObjectName = "[[@DeleteResult]]";
+            dsfWebDeleteActivity.ResponseFromWeb = response;
+            var dataObjectMock = new Mock<IDSFDataObject>();
+            dataObjectMock.Setup(o => o.Environment).Returns(environment);
+            dataObjectMock.Setup(o => o.EsbChannel).Returns(new Mock<IEsbChannel>().Object);
+            dsfWebDeleteActivity.ResourceID = InArgument<Guid>.FromValue(Guid.Empty);
+            dsfWebDeleteActivity.QueryString = "";
+            dsfWebDeleteActivity.SourceId = Guid.Empty;
+            dsfWebDeleteActivity.Headers = new List<INameValue>();
+
+            //------------Execute Test---------------------------
+            dsfWebDeleteActivity.Execute(dataObjectMock.Object, 0);
+
+            //------------Assert Results-------------------------
+            var result = environment.EvalJContainer("[[@DeleteResult]]");
+            Assert.IsNotNull(result, "the object should have been assigned despite the response's trailing whitespace");
+            Assert.AreEqual("Paris", result["Location"]?.ToString());
+        }
 
         [TestMethod]
         [Timeout(60000)]
