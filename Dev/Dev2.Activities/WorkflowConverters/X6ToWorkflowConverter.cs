@@ -180,6 +180,9 @@ namespace Dev2.Activities.WF
 
         private void EmbedNestedActivities(List<Cell> allNodes)
         {
+            // Legacy first, generic second: a body that carries both key sets resolves to the
+            // documented isNested/parentId mechanism, which is the one callers are told to author.
+            EmbedLegacyNestedActivitiesIntoForEachActivities(allNodes);
             EmbedNestedActivitiesIntoForEachActivities(allNodes);
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
@@ -192,10 +195,14 @@ namespace Dev2.Activities.WF
 
 
         /// <summary>
-        /// Embeds nested activities into their parent ForEach activities' DataFunc.Handler property
+        /// Embeds nested activities into their parent ForEach activities' DataFunc.Handler property,
+        /// for bodies authored against the legacy isNestedInForEach/forEachParentId keys.
+        /// New bodies use the generic isNested/parentId mechanism — see
+        /// <see cref="EmbedNestedActivitiesIntoForEachActivities"/>, which runs after this and
+        /// takes precedence.
         /// </summary>
         /// <param name="allNodes">All nodes from the X6 graph</param>
-        private void EmbedNestedActivitiesIntoForEachActivities(List<Cell> allNodes)
+        private void EmbedLegacyNestedActivitiesIntoForEachActivities(List<Cell> allNodes)
         {
             // Group nested nodes by their parent ForEach ID
             var nestedNodesByParent = new Dictionary<string, List<Cell>>();

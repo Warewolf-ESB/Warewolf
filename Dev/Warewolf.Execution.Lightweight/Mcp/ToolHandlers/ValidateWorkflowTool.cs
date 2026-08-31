@@ -529,8 +529,15 @@ internal static class ValidateWorkflowTool
         {
             if (!IsLegalXmlElementName(variable.Name))
             {
+                // The '@' object sigil belongs on the reference ([[@person.name]]), never on the
+                // declaration — say so, rather than leaving the caller to guess which character
+                // XmlConvert.VerifyName objected to.
+                var hint = variable.Name.StartsWith(DataListUtil.ObjectStartMarker, StringComparison.Ordinal)
+                    ? $" Declare it as '{variable.Name[DataListUtil.ObjectStartMarker.Length..]}' with kind \"object\"; the '{DataListUtil.ObjectStartMarker}' sigil is used only when referencing it from the body."
+                    : string.Empty;
+
                 errors.Add(ValidationIssue.Error(
-                    $"envelope declares variable '{variable.Name}', which is not a legal XML element name and cannot be written to the workflow's DataList."));
+                    $"envelope declares variable '{variable.Name}', which is not a legal XML element name and cannot be written to the workflow's DataList.{hint}"));
             }
 
             foreach (var field in variable.Fields)
@@ -775,6 +782,17 @@ internal static class ValidateWorkflowTool
         if (isObjectReference)
         {
             baseName = baseName[DataListUtil.ObjectStartMarker.Length..];
+
+            // A JSON object is addressed into with dots ([[@person.address.city]]). Only the
+            // first segment names the declared variable; the rest is a path inside the JSON that
+            // the DataList resolves at run time and that the envelope cannot declare. Matching the
+            // whole dotted string against envelope.inputs/outputs reported every such reference as
+            // undeclared, which made kind:"object" variables unusable for anything but assignment.
+            var pathStart = baseName.IndexOf('.', StringComparison.Ordinal);
+            if (pathStart > 0)
+            {
+                baseName = baseName[..pathStart];
+            }
         }
 
         return (baseName, null, isObjectReference);

@@ -104,11 +104,12 @@ internal static class ToolSchemaCatalog
                     "displaytext": "string, optional — the decision node's label (Constants.DISPLAYTEXT).",
                     "truearmtext": "string, optional — label shown on the true-branch edge (Constants.TRUEARMTEXT).",
                     "falsearmtext": "string, optional — label shown on the false-branch edge (Constants.FALSEARMTEXT).",
-                    "expression": "string, required — the decision condition, serialized from a Dev2DecisionStack via Conditions.ToWebModel() (Constants.EXPRESSION).",
-                    "and": "boolean, optional — true to AND-combine multiple decision conditions, false to OR-combine (Constants.AND)."
+                    "expression": "string, required — the decision condition, serialized from a Dev2DecisionStack via Conditions.ToWebModel() (Constants.EXPRESSION). It is a JSON *string*, not a nested object, shaped {\"TheStack\":[{\"Col1\":\"[[var]]\",\"Col2\":\"comparand\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsContains\"}],\"TotalDecisions\":1,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\"}. Col1 is the left operand, Col2 the right (Col3 is the upper bound for IsBetween/NotBetween, so PopulatedColumnCount is 1, 2 or 3). Mode is \"AND\" or \"OR\" and matches the `and` field.",
+                    "and": "boolean, optional — true to AND-combine multiple decision conditions, false to OR-combine (Constants.AND).",
+                    "EvaluationFn": "string, required within each TheStack entry — an enDecisionType *member name*, NOT the operator text the Studio displays: passing a display value such as \"Contains\" or \"=\" fails at execution with 'Error converting value \"…\" to type Dev2.Data.Decisions.Operations.enDecisionType'. Legal values: Choose, IsError, IsNotError, IsNull, IsNotNull, IsNumeric, IsNotNumeric, IsText, IsNotText, IsAlphanumeric, IsNotAlphanumeric, IsXML, IsNotXML, IsDate, IsNotDate, IsEmail, IsNotEmail, IsRegEx, NotRegEx, IsEqual, IsNotEqual, IsLessThan, IsLessThanOrEqual, IsGreaterThan, IsGreaterThanOrEqual, IsContains, NotContain, IsEndsWith, NotEndsWith, IsStartsWith, NotStartsWith, IsBetween, NotBetween, IsBinary, IsNotBinary, IsHex, IsNotHex, IsBase64, IsNotBase64."
                   },
                   "branching": {
-                    "mechanism": "Two outgoing edges from this node: one labeled \"true\" (Constants.TRUE) and one labeled \"false\" (Constants.FALSE) — matches DsfNativeActivity/FlowDecision handling in WorkflowToX6Converter.ProcessFlowDecision. Both arms are optional individually, but at least one is expected for a useful graph.",
+                    "mechanism": "Two outgoing edges from this node, distinguished by edge data, not by label: the true arm carries data.isDecisionArm=true with data.isTrue=true, the false arm data.isDecisionArm=true with data.isTrue=false — the exact flags X6ToWorkflowConverter.HandleDecisionConnection reads back and validate_workflow requires. An edge whose only marker is label \"true\"/\"false\" is not recognised as an arm. Both arms are optional individually, but at least one is expected for a useful graph.",
                     "dataType": "Both the modern Decision ('flowdecision') and legacy Decision (legacy) ('dsfdecision') dataType values compile through the same DsfDecision field shape above — the converter always writes type=flowdecision on read-back regardless of which was authored."
                   },
                   "notes": [
@@ -171,7 +172,7 @@ internal static class ToolSchemaCatalog
                     "failOnFirstError": "boolean, optional — stop the loop on the first iteration error."
                   },
                   "nesting": {
-                    "mechanism": "Same generic isNested/parentId mechanism as Sequence — child activities are separate cells with data.parentId pointing at this node's id."
+                    "mechanism": "Same generic isNested/parentId mechanism as Sequence — child activities are separate cells with data.parentId pointing at this node's id. A ForEach runs one handler, so when more than one child is nested under it they are wrapped in a Sequence in index order rather than only the first surviving."
                   },
                   "notes": [
                     "DsfForEachActivity.ToX6Json also writes a legacy droppedNodes ([]) and dataFunc (serialized nested-activity info) field for backward read compatibility; callers authoring new bodies should not need to set either — use isNested/parentId nodes instead.",

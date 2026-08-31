@@ -658,6 +658,85 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
         }
 
+        /// <summary>
+        /// A JSON object is addressed into with dots ([[@Response.iss_position.latitude]]), and the
+        /// DataList resolves that path at run time. SplitReference matched the whole dotted string
+        /// against envelope.inputs/outputs, so every such reference was reported undeclared and
+        /// there was no way to declare it either — dots are not legal in an XML element name. That
+        /// left kind:"object" variables assignable but unreadable, which is most of the point of
+        /// Assign Object.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectPathReference_AgainstDeclaredObject_ValidatesClean()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "Response", kind = "object", fields = new string[0] } },
+                outputs = new[] { new { name = "Latitude", kind = "scalar", fields = new string[0] } }
+            });
+            var fields = new JArray(new JObject
+            {
+                ["FieldName"] = "[[Latitude]]",
+                ["FieldValue"] = "[[@Response.iss_position.latitude]]",
+                ["IndexNumber"] = 1
+            });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign", ["fields"] = fields });
+            var body = BodyOf("ObjectPath", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectPathReference_UndeclaredRoot_ReturnsError_NamingRootOnly()
+        {
+            var fields = new JArray(new JObject
+            {
+                ["FieldName"] = "[[Latitude]]",
+                ["FieldValue"] = "[[@Missing.iss_position.latitude]]",
+                ["IndexNumber"] = 1
+            });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign", ["fields"] = fields });
+            var body = BodyOf("ObjectPathUndeclared", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e =>
+                e.Severity == "error" &&
+                e.Message.Contains("'Missing' is not declared")),
+                "The error must name the root object, not the whole dotted path — the path is not declarable. " +
+                string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        /// <summary>
+        /// The '@' sigil belongs on the reference, never on the declaration. Saying only that the
+        /// name is not legal XML left the caller guessing which character was rejected.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_EnvelopeDeclaresNameWithObjectSigil_ErrorExplainsTheSigil()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new object[0],
+                outputs = new[] { new { name = "@Response", kind = "object", fields = new string[0] } }
+            });
+            var body = BodyOf("SigilInEnvelope", MakeStartNode());
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsFalse(result.Valid);
+            Assert.IsTrue(result.Errors.Any(e =>
+                e.Severity == "error" && e.Message.Contains("Declare it as 'Response'")),
+                string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
         [TestMethod]
         [TestCategory("UnitTest")]
         public void Handle_ObjectSigilReference_AgainstDeclaredScalar_ReturnsError_NamingKindMismatch()
