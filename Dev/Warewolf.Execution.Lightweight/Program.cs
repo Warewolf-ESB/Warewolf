@@ -4,6 +4,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
 
@@ -14,6 +15,13 @@ try
     // ── Step 1: Load configuration ───────────────────────────────────────────
     var config = HostEnvironmentConfig.Load();
     var loggingConfig = LoggingConfiguration.FromEnvironment();
+
+    // WOLF-8512: raised as early in cold start as possible (before host build / DI
+    // resolution) rather than lazily on first trigger invocation — see
+    // ThreadPoolStartupConfigurator's own doc comment for why. ServiceBusTriggerOptions.
+    // FromEnvironment() is cheap/pure (env-var parsing only), so calling it here in
+    // addition to its existing DI registration (ServiceCollectionExtensions) is harmless.
+    ThreadPoolStartupConfigurator.Configure(ServiceBusTriggerOptions.FromEnvironment().MaxConcurrentExecutions);
 
     // ── Step 2: Bootstrap logging (FIRST — no log is lost) ───────────────────
     using var bootstrapFactory = LoggerFactory.Create(b =>
@@ -85,6 +93,11 @@ try
                  // Elasticsearch, and Audit sinks are unaffected.
                  services.Configure<LoggerFilterOptions>(options =>
                      ApplicationInsightsLogFilter.Apply(options, loggingConfig.MelMinimumLevel));
+
+                 // WOLF-8512: without an explicit flush on shutdown, a Consumption-plan
+                 // instance recycled mid-burst discards its buffered telemetry silently — see
+                 // TelemetryFlushHostedService's own doc comment for the live incident this closes.
+                 services.AddHostedService<TelemetryFlushHostedService>();
              }
          })
         .Build();

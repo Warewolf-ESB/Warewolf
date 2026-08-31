@@ -1313,6 +1313,139 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     but not yet committed, deployed to `WarewolfServer-UAT`, or proven against another
     `ShovelBridgeLoadTest_ExternalServiceBus` run.
 
+- **2026-08-31 — build 30585 (`8512-ProcessingReliabilityTests`, commit `3585b68b98`, the fix above
+  now committed and deployed) recurred at the SAME rate: 984/1000 succeeded, 0 recorded failures,
+  16 never got a result — and the fix above is confirmed NOT the cause, because its own premise
+  about the live source's auth mode was wrong.**
+  - **Confirmed both previously-fixed regressions did NOT recur**: read straight off the running
+    app via Kudu VFS — `host.json`'s `extensions.serviceBus.maxAutoLockRenewalDuration` is
+    `"00:11:00"` (the 2026-08-30 lock-renewal fix, still live) and `Settings/persistencesettings.json`
+    has `"Enable": true` (persistence still on). `Deploy_UAT`'s `-EnablePersistence:$true` staging
+    is confirmed working as intended.
+  - **Confirmed via direct SQL against `wwexecution-uat-hangfire`'s `HangFire.Hash` table** (Entra
+    access token via `az account get-access-token --resource https://database.windows.net`, no
+    temporary Service Bus SAS rule needed this time): all 1000 correlation ids have a
+    `sbtrigger:claim:*` row (every execution started); exactly 984 have a matching
+    `sbtrigger:result:*` row. The 16 without one are the same "execution started, `SaveResult` never
+    reached" signature as the 12-stuck build 30583 investigation above — not a new symptom.
+  - **New evidence: all 16 claims were written within a 0.36s window** (`22:28:28.7340861Z` –
+    `22:28:29.0983084Z`), i.e. they are simultaneous with the very start of the ~1000-way concurrent
+    delivery burst, not scattered across the run. `az servicebus queue show` on
+    `wwexecution-secure-trigger-queue-e2e` at run end showed `activeMessageCount: 0` and
+    `deadLetterMessageCount: 19459` — **the identical count already on file from the 30578
+    investigation**, i.e. unchanged across both the 30583 and this 30585 run. Neither run's
+    stuck messages were ever dead-lettered.
+  - **Application Insights (`warewolfserver-uat-ai`) had ZERO telemetry of any kind — not just
+    exceptions, but `traces`/`requests` too — for the entire run window (22:00-23:00Z), despite
+    `EXECUTIONLOGLEVEL=INFO` and `APPLICATIONINSIGHTS_CONNECTION_STRING` both confirmed correctly
+    set** (matching the app id queried directly). This means even the new WOLF-8512 diagnostic
+    `Dev2Logger.Info` lines added earlier this same day (which would show exactly which of the
+    three SQL calls each stuck execution was in) never reached telemetry. This instrumentation gap
+    is itself a standing blocker to root-causing any future recurrence live rather than by
+    after-the-fact archaeology — worth fixing before the next investigation, not deferred again.
+  - **The 30583 entry's root cause theory is DISPROVEN for this live source, by direct evidence, not
+    inference.** That entry assumed `NewSqlServerSource.bite` uses
+    `Authentication=Active Directory Managed Identity` (stated in multiple earlier entries in this
+    log) — which is the ONLY auth string `DbSource._isEntraManagedIdentityConnectionString` matches
+    (`DbSource.cs` lines 296-299: exact-equals `"Active Directory Managed Identity"` /
+    `"ActiveDirectoryManagedIdentity"`, nothing else). Decrypted the LIVE deployed
+    `Resources/rabbit/NewSqlServerSource.bite` directly (fetched via Kudu VFS, decrypted client-side
+    with the same AES-256-GCM key read from Key Vault `WWExecutionEngine` /
+    `WWExecutionEngineTestSecret` that the app itself uses — not guessed, not assumed):
+    ```
+    Data Source=warewolf-dev2-mcgeaj.database.windows.net;Initial Catalog=WarewolfDevOpsTestDb;
+    User ID=devops_warewolf;Password=***;Connection Timeout=30;Authentication=Active Directory Password
+    ```
+    This is `Authentication=Active Directory Password`, NOT Managed Identity — so
+    `_isEntraManagedIdentityConnectionString` evaluates `false` for this exact source, and today's
+    fix (`GetConnectionStringWithTimeout`'s Entra-raw-string branch) never executes for it; it took
+    the ordinary non-Entra path (`ConnectionTimeout` property + `ConnectionString` re-read) all
+    along. **The connection string also already carries an explicit `Connection Timeout=30`** — it
+    was never `0`/unbounded for this source, before or after today's fix. Both premises of the
+    30583 root-cause chain (Entra-Managed-Identity classification, and a `Connection Timeout=0`
+    hang) are contradicted by the actual live value. Whether the source's `Authentication` value
+    changed between the 30583 investigation and now, or was always `Active Directory Password` and
+    misidentified, could not be determined from this session alone (no `.bite` file history for
+    this specific setting was checked).
+  - **Working theory (not yet proven live — needs the telemetry gap above closed to confirm)**:
+    `Authentication=Active Directory Password` requires a live MSAL/Entra token acquisition inside
+    `SqlConnection.Open()` on every fresh physical connection. `Microsoft.Data.SqlClient` has a
+    documented history of not always bounding that specific phase by `Connect Timeout` (the AAD
+    token round-trip, as opposed to the TCP/TDS handshake, isn't reliably covered by the same client-
+    side clock in every driver version) — a burst of ~1000 near-simultaneous connection opens
+    against Entra ID could throttle a small fraction of token requests into a hang that never
+    resolves and never throws, which exactly matches: a tight cluster at burst start, a small
+    consistent fraction (12-16 of 1000across three consecutive runs), and no trace in either the
+    active queue or the DLQ (a genuinely-hung native/MSAL call is not something
+    `IWorkflowExecutor.Execute()`'s absent cancellation seam — already documented above — can
+    interrupt either). Not yet confirmed by a captured exception or stack, because of the telemetry
+    gap above.
+  - **Recommendation for whoever picks this up next**: (1) fix the App Insights telemetry gap first
+    — without it, every future run is another blind archaeology pass; (2) either switch this
+    source's `Authentication` to the Managed Identity mode the fixes so far assumed (making today's
+    `DbSource` fix actually apply, and sidestepping password-based Entra auth's token-acquisition
+    profile entirely), or capture a thread/connection dump the next time this recurs to directly
+    confirm the MSAL-hang theory before writing a fix against it; (3) do not re-attribute this to
+    `Connection Timeout=0` again without re-checking the live connection string — it has not been
+    `0` on this source for at least these last three runs.
+
+- **2026-08-31 — fixed the App Insights telemetry gap (recommendation (1) above), and found
+  stronger evidence against the 30585 entry's own MSAL-hang theory that points at ThreadPool
+  starvation instead.**
+  - **Telemetry fix**: confirmed via `Program.cs:59-88` that `ENABLEAPPLICATIONINSIGHTS=true` and
+    `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` were both already correctly set live — the SDK
+    registration itself was never the problem. The actual gap: **no code anywhere in this project
+    ever calls `TelemetryClient.Flush()`** (confirmed by a project-wide grep — zero matches). The
+    AI SDK's default channel batches telemetry on its own ~30s schedule; a Consumption-plan instance
+    recycled mid-burst (exactly what a 1000-message burst causes — rapid scale-out then scale-in)
+    can be torn down well inside that window, discarding every buffered trace/exception/dependency
+    with no error. This is consistent with the observed symptom: not just tail-loss but **zero**
+    telemetry for the entire ~30-minute run window, recovering only once load subsided. **Fix**:
+    added `Logging/TelemetryFlushHostedService.cs` (an `IHostedService` registered alongside the AI
+    SDK in `Program.cs`, gated by the same `RegisterApplicationInsightsSdk` flag) that calls
+    `TelemetryClient.Flush()` on `StopAsync` and waits a bounded 5s to give the transmission a
+    chance to leave the process before shutdown continues. 6 new tests
+    (`Logging/TelemetryFlushHostedServiceTests.cs`, using a fake `ITelemetryChannel` since there is
+    no mocking framework in this test project) verify the flush call, the wait, that an
+    already-cancelled shutdown token does not shorten the wait, and that a channel-level exception
+    doesn't propagate. Not yet deployed/re-verified against a live pipeline run.
+  - **New evidence against the MSAL-hang theory, from re-reading `ServiceBusWorkflowTriggerFunction.cs`
+    and `ServiceBusReplayAndResultStore.cs` against the 30585 claim-timestamp data already
+    gathered**: `ReleaseClaim` (lines 274-293) does a full `RemoveHash` — a genuine release-then-
+    reclaim cycle would show a **new** `claimedAtUtc` on the next attempt. `TryClaim` also has a
+    20-minute stale-claim steal (`ClaimStaleAfter`, line 77) for exactly the case of an abandoned
+    claim. The harness kept polling until `22:58:17` — **10 minutes past** the 20-minute mark
+    (claims made `22:28:28-29`, stale threshold `22:48:28-29`) — yet all 16 claim timestamps stayed
+    frozen at their original value. Neither the 5-minute `ExecutionTimeout` race
+    (`ServiceBusWorkflowTriggerFunction.cs:356-365`) nor the 20-minute steal ever fired for these
+    16, which means Service Bus never redelivered them in the full 30 minutes — the original
+    delivery's lock kept renewing (up to the `00:11:00` ceiling) the entire time, which only
+    happens if the invocation was still considered alive by the SDK.
+  - **Working theory (supersedes the MSAL-hang theory above, not yet proven live — same
+    telemetry-gap caveat, now fixed for the next run): CLR ThreadPool starvation, not a hung SQL/MSAL
+    call specifically.** `Task.Run(() => _executor.Execute(...))` (line 343) only starts after
+    acquiring one of the `MaxConcurrentExecutions` semaphore slots (live value: **4**, already
+    tuned down from the code default of 8 — `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS`),
+    so at most 4 real blocking work items run per instance at once — but if those 4 are CPU-heavy
+    (cold-start Roslyn VB-expression compilation, synchronous ADO.NET calls) on a small
+    Consumption-plan instance, they can starve the pool badly enough that even the *lightweight*
+    continuation needed to notice `Task.Delay(ExecutionTimeout)` completed never gets scheduled —
+    the safety net's own enforcement code becomes a casualty of the load it exists to guard
+    against. This would explain every observed fact simultaneously: no redelivery, no dead-letter,
+    no released claim, frozen timestamps, and all 16 claimed within the same 0.36s burst-start
+    window (i.e. co-resident on one or a few instances at the moment of starvation). Nothing in
+    this project calls `ThreadPool.SetMinThreads` (confirmed by grep) — the standard mitigation for
+    this exact failure mode.
+  - **Recommendation (not yet actioned)**: (1) lower `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS`
+    further (4 → 2) to reduce per-instance concurrent CPU/memory pressure during a burst; (2) add an
+    explicit `ThreadPool.SetMinThreads()` floor at startup so a burst doesn't have to wait on the
+    pool's default slow thread-injection rate; (3) `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS`
+    is NOT expected to help this specific symptom — shortening it doesn't matter if the code that
+    checks the timer can't get scheduled either; leave it at its default 5 minutes, which is already
+    proven to work correctly for the *other* failure mode (a genuinely slow-but-alive execution,
+    where `ReleaseClaim` demonstrably does fire). (4) Re-run the load test with telemetry now fixed
+    so a future recurrence can be root-caused from captured exceptions/traces instead of archaeology.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a
