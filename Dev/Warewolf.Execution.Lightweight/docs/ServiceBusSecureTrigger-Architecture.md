@@ -189,12 +189,99 @@ follow-up could add a scheduled cleanup job if this becomes an operational conce
 | `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS` | Hard time budget for a single workflow execution before it is treated as failed and left for Service Bus's own retry/backoff (default: 300 = 5 minutes). See flow step 9. |
 | `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 8. |
 | `WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS` | Hard bound on how long a delivery waits for a free execution slot before it is treated as failed (default: same as `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS`). See flow step 8. |
+| `WAREWOLF_SERVICEBUS_TRIGGER_SETTLEMENT_TIMEOUT_SECONDS` | WOLF-8512: hard time budget for a single settlement call (`CompleteMessageAsync`/`DeadLetterMessageAsync`), using an independent timeout over `CancellationToken.None` rather than the host invocation's own token (default: 30). See "Failure classification" below. |
+| `WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES` | WOLF-8512: operator escape hatch overriding `ClaimStaleAfter` directly, bypassing its runtime-resolved default entirely. Normally left unset — see "Failure classification" below for how the default is inferred automatically. |
 | `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. |
 
 `host.json` requires `extensions.serviceBus.autoCompleteMessages: false` so the trigger's
 explicit `CompleteMessageAsync` / `DeadLetterMessageAsync` calls (via the injected
 `ServiceBusMessageActions`) take effect instead of the host auto-completing the message on
 successful return.
+
+## Failure classification (WOLF-8512)
+
+The 1000-message ShovelBridge load test surfaced three distinct root causes for lost/misclassified
+results, each fixed independently:
+
+**A — transient failure misclassified as a terminal token failure.** A cancellation or
+network-shaped failure during `EntraBearerTokenValidator.ValidateAsync` was treated identically to
+a genuinely bad token: a permanent `InvalidToken` result saved AND the message dead-lettered on the
+very first attempt, zero retry. The token-validation `try`/`catch` now has three tiers, evaluated in
+order:
+
+| # | Condition | Action | Effect |
+|---|---|---|---|
+| 1 | `IsOwnInvocationCancellation` — the exception is an `OperationCanceledException` and the trigger's own invocation `cancellationToken` is cancelled (host-level drain/scale-in/`functionTimeout`, or a cold OIDC-metadata fetch racing it) | transient | release claim, rethrow — no result saved |
+| 2 | `TokenValidationFailureClassifier.IsTransient` — `HttpRequestException`/`IOException`/`SocketException` (the metadata/JWKS fetch itself failed), `SecurityTokenSignatureKeyNotFoundException` (JWKS cache doesn't yet have the key), or an `IDX20803`/`IDX20804` IdentityModel metadata-failure code anywhere in the exception chain | transient | release claim, rethrow — no result saved |
+| 3 | Anything else — a positively-decided bad token (bad signature against a resolved key, wrong audience/issuer, expired, malformed) | terminal | `InvalidToken` result saved, dead-lettered with a sub-reason (see below) |
+
+The `!_tokenValidator.IsEnabled` branch (engine misconfiguration — missing tenant/audience) is
+**also transient**, for the same reason: a config fix followed by redelivery should succeed, so a
+saved terminal result would wrongly poison every correlation id received while the engine happened
+to be misconfigured.
+
+**B — the claim-staleness window can outlive the delivery budget.** `ClaimStaleAfter` (how long
+`IServiceBusReplayAndResultStore.TryClaim` honours a claim before treating it as abandoned by a
+dead/hung attempt) used to be a hard-coded 20-minute constant, sized against an assumed 10-minute
+`functionTimeout`. If the queue's own `MaxDeliveryCount × LockDuration` delivery budget is smaller
+than `ClaimStaleAfter`, a redelivery can never actually take the claim over — the queue exhausts
+`MaxDeliveryCount` and dead-letters the message first, with **no result ever recorded**. Fixed two
+ways:
+
+- `ServiceBusTriggerOptions.ClaimStaleAfter` now defaults to the host's *actual* resolved
+  `functionTimeout` + 1 minute of margin — see `ResolveHostFunctionTimeout`'s five-tier strategy
+  (explicit override → `AzureFunctionsJobHost__functionTimeout` app setting → `host.json` on disk →
+  `WEBSITE_SKU` plan-default fallback → 10-minute hard fallback), so it tracks a Consumption ↔ Flex
+  Consumption move or a `functionTimeout` change automatically, with zero code change. The resolved
+  value and which tier produced it are logged at startup (auditable in App Insights).
+- `Enable-ServiceBusSecureTrigger.ps1` now takes `-LockDuration` alongside its existing
+  `-MaxDeliveryCount`, and asserts `MaxDeliveryCount × LockDuration > ClaimStaleAfter` before
+  provisioning anything — failing the deploy loudly rather than silently creating a queue that can
+  never self-heal a dead/hung attempt.
+
+**C — settlement bound to the host's own cancellation token.** Every `CompleteMessageAsync`/
+`DeadLetterMessageAsync` call used the trigger's own `cancellationToken`. During a shutdown/drain
+that token is already cancelled, so the settlement call throws immediately and the message is left
+unsettled even though its outcome was already decided. Fixed by routing every settlement call
+through `SettleAsync`, which builds an independent `CancellationTokenSource` (sized by
+`ServiceBusTriggerOptions.SettlementTimeout`, default 30s) over `CancellationToken.None`. This is
+safe because the result is **always** persisted before settlement is attempted — if settlement
+times out, the message is simply left unsettled, the lock expires, the message redelivers, and the
+idempotency dedupe check (see flow step 2) finds the already-saved result and completes it then:
+self-healing at the cost of one extra delivery, never a lost or duplicated outcome.
+
+### The three Service Bus signals
+
+| Intent | Action in code | Effect |
+|---|---|---|
+| Retry (transient) | throw; settle nothing; save no result; release the claim | extension abandons → `DeliveryCount++` → queue auto-DLQs at `MaxDeliveryCount` |
+| Give up (poison/business) | save result, then dead-letter (timeout-bounded settlement) | straight to DLQ, no retry |
+| Done | save result, then complete (timeout-bounded settlement) | removed from queue |
+
+**Non-negotiable invariants:**
+
+1. A transient failure must **never** call `SaveResult` — a persisted result satisfies the
+   idempotency dedupe check on redelivery and permanently prevents re-execution.
+2. A terminal failure must **always** call `SaveResult` **before** settling, so a settlement
+   timeout is self-healing.
+3. Settlement must never use the host `cancellationToken`.
+
+### Dead-letter triage sub-reasons
+
+Every terminal path's `deadLetterReason` is now `"{Status}:{SubReason}"` (e.g.
+`InvalidToken:JtiReplay`) instead of the bare status, so DLQ entries sharing a status are
+distinguishable without parsing `deadLetterErrorDescription`. Existing filters matching on the bare
+status still match, since it remains the string's prefix.
+
+| Terminal path | `deadLetterReason` |
+|---|---|
+| Message body is not valid JSON | `Malformed:BodyNotJson` |
+| Missing `workflow` field | `Malformed:MissingWorkflowField` |
+| Missing `Authorization` application property | `InvalidToken:MissingAuthorizationProperty` |
+| `jti` replay | `InvalidToken:JtiReplay` |
+| Bad signature / wrong audience / wrong issuer / expired / unparseable token | `InvalidToken:SignatureInvalid` / `:AudienceInvalid` / `:IssuerInvalid` / `:Expired` / `:Malformed` |
+| Policy denial | `Denied:PolicyForbidden` / `Denied:ConfigMissingDeny` |
+| Business/activity failure | `Failed:ExecutionFailed` |
 
 ## Threat model coverage (see spec for full detail)
 

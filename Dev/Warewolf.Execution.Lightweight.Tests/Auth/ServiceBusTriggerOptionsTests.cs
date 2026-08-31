@@ -24,11 +24,13 @@ public class ServiceBusTriggerOptionsTests
     private const string ExecutionTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS";
     private const string MaxConcurrentExecutionsVar = "WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS";
     private const string SlotWaitTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS";
+    private const string SettlementTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_SETTLEMENT_TIMEOUT_SECONDS";
 
     private string? _previousJtiWindow;
     private string? _previousExecutionTimeout;
     private string? _previousMaxConcurrentExecutions;
     private string? _previousSlotWaitTimeout;
+    private string? _previousSettlementTimeout;
 
     [TestInitialize]
     public void SaveEnvironment()
@@ -37,6 +39,7 @@ public class ServiceBusTriggerOptionsTests
         _previousExecutionTimeout = Environment.GetEnvironmentVariable(ExecutionTimeoutVar);
         _previousMaxConcurrentExecutions = Environment.GetEnvironmentVariable(MaxConcurrentExecutionsVar);
         _previousSlotWaitTimeout = Environment.GetEnvironmentVariable(SlotWaitTimeoutVar);
+        _previousSettlementTimeout = Environment.GetEnvironmentVariable(SettlementTimeoutVar);
     }
 
     [TestCleanup]
@@ -46,6 +49,7 @@ public class ServiceBusTriggerOptionsTests
         Environment.SetEnvironmentVariable(ExecutionTimeoutVar, _previousExecutionTimeout);
         Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, _previousMaxConcurrentExecutions);
         Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, _previousSlotWaitTimeout);
+        Environment.SetEnvironmentVariable(SettlementTimeoutVar, _previousSettlementTimeout);
     }
 
     // ── Property defaults (no environment involved) ─────────────────────────────
@@ -84,6 +88,15 @@ public class ServiceBusTriggerOptionsTests
         var options = new ServiceBusTriggerOptions();
 
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.SlotWaitTimeout);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void Defaults_SettlementTimeoutIs30Seconds()
+    {
+        var options = new ServiceBusTriggerOptions();
+
+        Assert.AreEqual(TimeSpan.FromSeconds(30), options.SettlementTimeout);
     }
 
     // ── FromEnvironment() — no variables set ─────────────────────────────────────
@@ -235,6 +248,34 @@ public class ServiceBusTriggerOptionsTests
         Assert.AreEqual(TimeSpan.FromSeconds(45), options.SlotWaitTimeout);
     }
 
+    // ── FromEnvironment() — SettlementTimeout ────────────────────────────────────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void FromEnvironment_ValidSettlementTimeoutSeconds_IsParsed()
+    {
+        Environment.SetEnvironmentVariable(SettlementTimeoutVar, "15");
+
+        var options = ServiceBusTriggerOptions.FromEnvironment();
+
+        Assert.AreEqual(TimeSpan.FromSeconds(15), options.SettlementTimeout);
+    }
+
+    [DataTestMethod]
+    [DataRow("not-a-number")]
+    [DataRow("0")]
+    [DataRow("-5")]
+    [DataRow("")]
+    [TestCategory("UnitTest")]
+    public void FromEnvironment_UnparseableOrNonPositiveSettlementTimeoutSeconds_FallsBackToDefault(string value)
+    {
+        Environment.SetEnvironmentVariable(SettlementTimeoutVar, value);
+
+        var options = ServiceBusTriggerOptions.FromEnvironment();
+
+        Assert.AreEqual(TimeSpan.FromSeconds(30), options.SettlementTimeout);
+    }
+
     // ── FromEnvironment() — all four set independently ───────────────────────────
 
     [TestMethod]
@@ -252,5 +293,190 @@ public class ServiceBusTriggerOptionsTests
         Assert.AreEqual(TimeSpan.FromSeconds(90), options.ExecutionTimeout);
         Assert.AreEqual(4, options.MaxConcurrentExecutions);
         Assert.AreEqual(TimeSpan.FromSeconds(30), options.SlotWaitTimeout);
+    }
+
+    // ── ResolveHostFunctionTimeout(env, readFile) — WOLF-8512 five-tier resolution ──
+    //    Pure-function tests: no real environment variables mutated, no disk touched.
+    //    See ServiceBusTriggerOptions.ResolveHostFunctionTimeout's own doc comment for
+    //    the exact tier order this is asserting.
+
+    private static Func<string, string?> EnvFrom(params (string Key, string Value)[] pairs)
+    {
+        var map = new Dictionary<string, string?>(StringComparer.Ordinal);
+        foreach (var (key, value) in pairs)
+        {
+            map[key] = value;
+        }
+        return key => map.TryGetValue(key, out var value) ? value : null;
+    }
+
+    private static Func<string, string?> FileTextOf(string? content) => _ => content;
+
+    private const string HostJsonTenMinutes = /*lang=json,strict*/ "{ \"functionTimeout\": \"00:10:00\" }";
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_AppSettingWinsOverHostJsonAndSku()
+    {
+        var env = EnvFrom(
+            ("AzureFunctionsJobHost__functionTimeout", "00:07:00"),
+            ("WEBSITE_SKU", "Dynamic"));
+
+        var (timeout, tier) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf(HostJsonTenMinutes));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(7), timeout);
+        Assert.AreEqual("AzureFunctionsJobHost__functionTimeout", tier);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_HostJsonUsedWhenAppSettingAbsent()
+    {
+        var env = EnvFrom(("WEBSITE_SKU", "Dynamic"));
+
+        var (timeout, tier) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf(HostJsonTenMinutes));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(10), timeout);
+        Assert.AreEqual("host.json", tier);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_CorruptHostJson_FallsThroughWithoutThrowing()
+    {
+        var env = EnvFrom(("WEBSITE_SKU", "Dynamic"));
+
+        var (timeout, tier) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf("{ not valid json"));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(5), timeout);
+        Assert.AreEqual("WEBSITE_SKU=Dynamic", tier);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_HostJsonWithoutFunctionTimeoutProperty_FallsThroughToSku()
+    {
+        var env = EnvFrom(("WEBSITE_SKU", "Dynamic"));
+
+        var (timeout, tier) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf("{ \"version\": \"2.0\" }"));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(5), timeout);
+        Assert.AreEqual("WEBSITE_SKU=Dynamic", tier);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_HostJsonMissingEntirely_FallsThroughToSku()
+    {
+        var env = EnvFrom(("WEBSITE_SKU", "FlexConsumption"));
+
+        var (timeout, tier) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf(null));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(30), timeout);
+        Assert.AreEqual("WEBSITE_SKU=FlexConsumption", tier);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_SkuDynamic_ReturnsFiveMinutes()
+    {
+        var env = EnvFrom(("WEBSITE_SKU", "Dynamic"));
+
+        var (timeout, _) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf(null));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(5), timeout);
+    }
+
+    [DataTestMethod]
+    [DataRow("FlexConsumption")]
+    [DataRow("ElasticPremium")]
+    [DataRow("Dedicated")]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_NonDynamicSku_ReturnsThirtyMinutes(string sku)
+    {
+        var env = EnvFrom(("WEBSITE_SKU", sku));
+
+        var (timeout, _) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf(null));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(30), timeout);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveHostFunctionTimeout_NothingResolvable_FallsBackToTenMinutes()
+    {
+        var env = EnvFrom();
+
+        var (timeout, tier) = ServiceBusTriggerOptions.ResolveHostFunctionTimeout(env, FileTextOf(null));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(10), timeout);
+        Assert.AreEqual("hard fallback", tier);
+    }
+
+    // ── ResolveClaimStaleAfter(env, readFile) — override + tier composition ─────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveClaimStaleAfter_ExplicitOverride_WinsOverEverythingElse()
+    {
+        var env = EnvFrom(
+            ("WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES", "42"),
+            ("AzureFunctionsJobHost__functionTimeout", "00:07:00"));
+
+        var claimStaleAfter = ServiceBusTriggerOptions.ResolveClaimStaleAfter(env, FileTextOf(HostJsonTenMinutes));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(42), claimStaleAfter);
+    }
+
+    [DataTestMethod]
+    [DataRow("not-a-number")]
+    [DataRow("0")]
+    [DataRow("-5")]
+    [TestCategory("UnitTest")]
+    public void ResolveClaimStaleAfter_UnparseableOrNonPositiveOverride_FallsBackToTierResolution(string value)
+    {
+        var env = EnvFrom(("WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES", value));
+
+        var claimStaleAfter = ServiceBusTriggerOptions.ResolveClaimStaleAfter(env, FileTextOf(HostJsonTenMinutes));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(11), claimStaleAfter);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveClaimStaleAfter_NoOverride_HostJsonTenMinutes_ReturnsElevenMinutes()
+    {
+        var claimStaleAfter = ServiceBusTriggerOptions.ResolveClaimStaleAfter(EnvFrom(), FileTextOf(HostJsonTenMinutes));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(11), claimStaleAfter);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveClaimStaleAfter_NoOverride_SkuDynamicNoHostJson_ReturnsSixMinutes()
+    {
+        var claimStaleAfter = ServiceBusTriggerOptions.ResolveClaimStaleAfter(
+            EnvFrom(("WEBSITE_SKU", "Dynamic")), FileTextOf(null));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(6), claimStaleAfter);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveClaimStaleAfter_NoOverride_SkuFlexConsumptionNoHostJson_ReturnsThirtyOneMinutes()
+    {
+        var claimStaleAfter = ServiceBusTriggerOptions.ResolveClaimStaleAfter(
+            EnvFrom(("WEBSITE_SKU", "FlexConsumption")), FileTextOf(null));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(31), claimStaleAfter);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveClaimStaleAfter_NothingSet_ReturnsElevenMinutes_HardFallbackPlusMargin()
+    {
+        var claimStaleAfter = ServiceBusTriggerOptions.ResolveClaimStaleAfter(EnvFrom(), FileTextOf(null));
+
+        Assert.AreEqual(TimeSpan.FromMinutes(11), claimStaleAfter);
     }
 }

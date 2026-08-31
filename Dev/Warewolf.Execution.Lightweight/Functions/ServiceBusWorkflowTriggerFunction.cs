@@ -4,6 +4,8 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.ExceptionServices;
 using System.Security.Claims;
 using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
@@ -38,7 +40,15 @@ namespace Warewolf.Execution.Lightweight.Functions;
 ///   <item>Parse the JSON body into <see cref="ServiceBusWorkflowMessage"/>; malformed → dead-letter, no retry.</item>
 ///   <item>Idempotency: a correlation id with an existing recorded result is a duplicate delivery/republish — complete without re-executing.</item>
 ///   <item>Validate the caller's Entra token from the <c>Authorization</c> message application property via <see cref="EntraBearerTokenValidator"/>
-///         bound to the DEDICATED <see cref="ServiceBusEntraAuthOptions"/> audience (never the general HTTP audience — confused-deputy prevention).</item>
+///         bound to the DEDICATED <see cref="ServiceBusEntraAuthOptions"/> audience (never the general HTTP audience — confused-deputy prevention).
+///         WOLF-8512: a failure here splits three ways — <see cref="IsOwnInvocationCancellation"/> (the trigger's own invocation was cancelled
+///         mid-validation) and <see cref="Auth.Parsers.TokenValidationFailureClassifier.IsTransient"/> (every other shape of "the token could not
+///         be evaluated at all" — a metadata/JWKS fetch failure, an unresolved signing key, or an IdentityModel metadata-retrieval error) are both
+///         transient: <see cref="FailTransient"/> releases the claim and rethrows so Service Bus's own retry/backoff applies, with NO result
+///         persisted. Everything else is a positively-decided bad token (bad signature against a resolved key, wrong audience/issuer, expired,
+///         malformed) — terminal: dead-lettered with a triage sub-reason (see <c>docs/ServiceBusSecureTrigger-Architecture.md</c>'s "Failure
+///         classification" section). An engine misconfiguration (<see cref="EntraBearerTokenValidator.IsEnabled"/> false) is also transient, for
+///         the same reason — a config fix followed by redelivery should succeed.</item>
 ///   <item>Replay protection: register the token's <c>jti</c> (mirrored application property preferred, falls back to the token claim) — a repeat is dead-lettered, never retried.</item>
 ///   <item>Authorize via <see cref="IWorkflowPolicyMatcher.Evaluate"/> — denial is dead-lettered, never retried.</item>
 ///   <item>Wait for a free execution slot (<see cref="Auth.Models.ServiceBusTriggerOptions.MaxConcurrentExecutions"/>), itself bounded by
@@ -51,7 +61,10 @@ namespace Warewolf.Execution.Lightweight.Functions;
 ///         cold-start memory pressure) is neither persisted nor dead-lettered — it is thrown instead, same as an unexpected exception below.
 ///         An unexpected exception (thrown, not returned) is rethrown so the Service Bus extension applies its normal retry/backoff and eventual max-delivery-count dead-letter.</item>
 ///   <item>Persist the terminal outcome (success, failure, or denial) via <see cref="IServiceBusReplayAndResultStore"/> for
-///         <see cref="ServiceBusResultFunction"/>'s polling endpoint, and emit a structured audit event via <see cref="AuditLogger.LogServiceBusOutcome"/>.</item>
+///         <see cref="ServiceBusResultFunction"/>'s polling endpoint, and emit a structured audit event via <see cref="AuditLogger.LogServiceBusOutcome"/>.
+///         WOLF-8512: every settlement call (complete or dead-letter) goes through <see cref="SettleAsync"/>, which uses an independent,
+///         timeout-bounded token over <see cref="CancellationToken.None"/> rather than the host invocation's own — see that method's doc comment
+///         for why a settlement timeout is safe (the result is always persisted first).</item>
 /// </list>
 ///
 /// <para>
@@ -126,7 +139,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             await RecordTerminalOutcomeAsync(
                 messageActions, message, correlationId, workflow: string.Empty, caller: "(unknown)",
                 status: ServiceBusTriggerStatus.Malformed, reason: $"Message body is not valid JSON: {ex.Message}",
-                receivedAt, cancellationToken);
+                receivedAt, subReason: "BodyNotJson");
             return;
         }
 
@@ -135,7 +148,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             await RecordTerminalOutcomeAsync(
                 messageActions, message, correlationId, workflow: payload?.Workflow ?? string.Empty, caller: "(unknown)",
                 status: ServiceBusTriggerStatus.Malformed, reason: "Message is missing the required 'workflow' field.",
-                receivedAt, cancellationToken);
+                receivedAt, subReason: "MissingWorkflowField");
             return;
         }
 
@@ -157,7 +170,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
                 _logger.LogInformation(
                     "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Duplicate message — result already recorded (Status={Status}); completing without re-execution.",
                     correlationId, existing.Status);
-                await messageActions.CompleteMessageAsync(message, cancellationToken).ConfigureAwait(false);
+                await SettleAsync(ct => messageActions.CompleteMessageAsync(message, ct), correlationId, "CompleteMessageAsync (duplicate)").ConfigureAwait(false);
                 return;
             }
 
@@ -195,18 +208,29 @@ public sealed class ServiceBusWorkflowTriggerFunction
             await RecordTerminalOutcomeAsync(
                 messageActions, message, correlationId, payload.Workflow, caller: "(unknown)",
                 status: ServiceBusTriggerStatus.InvalidToken, reason: "Missing 'Authorization' message application property.",
-                receivedAt, cancellationToken);
+                receivedAt, subReason: "MissingAuthorizationProperty");
             return;
         }
 
         if (!_tokenValidator.IsEnabled)
         {
-            await RecordTerminalOutcomeAsync(
-                messageActions, message, correlationId, payload.Workflow, caller: "(unknown)",
-                status: ServiceBusTriggerStatus.InvalidToken,
-                reason: "Service Bus token validation is not configured on this engine (missing WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE).",
-                receivedAt, cancellationToken);
-            return;
+            // WOLF-8512: engine misconfiguration (missing WAREWOLF_ENTRA_TENANT_ID /
+            // WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE), NOT a bad message — a config fix followed by
+            // redelivery would succeed, so treat this as transient rather than the terminal
+            // InvalidToken it used to be. A saved terminal result here would permanently poison
+            // every correlation id received while the engine happened to be misconfigured, even
+            // after an operator fixes the configuration and redelivers. Note the interaction with
+            // EntraBearerTokenValidator.ValidateAsync (Auth/Parsers/EntraBearerTokenValidator.cs):
+            // it independently throws InvalidOperationException when IsEnabled is false, which
+            // TokenValidationFailureClassifier.IsTransient also classifies as transient (fail-open
+            // default) - this branch and that one agree without needing special-case handling of
+            // InvalidOperationException.
+            FailTransient(
+                correlationId,
+                new InvalidOperationException(
+                    "Service Bus token validation is not configured on this engine (missing WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE)."),
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Service Bus token validation is not configured on this engine — engine misconfiguration, not a bad message; leaving message for standard Service Bus retry instead of permanently poisoning the correlation id.",
+                correlationId);
         }
 
         const string bearerScheme = "Bearer ";
@@ -235,18 +259,41 @@ public sealed class ServiceBusWorkflowTriggerFunction
             // the claim and rethrow instead, so Service Bus's own retry/backoff applies - a retry
             // moments later almost always succeeds, since the cache is then warm regardless of which
             // attempt populated it.
-            _store.ReleaseClaim(correlationId);
-            _logger.LogWarning(
+            FailTransient(
+                correlationId,
+                ex,
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Token validation was cancelled (the trigger's own invocation cancellation fired mid-validation - most likely a cold OIDC-metadata fetch under host-level load, not an invalid token) — leaving message for standard Service Bus retry instead of a permanent InvalidToken dead-letter.",
                 correlationId);
-            throw;
+            return; // unreachable at runtime (FailTransient always throws) - satisfies definite-assignment analysis for 'identity' below.
+        }
+        catch (Exception ex) when (TokenValidationFailureClassifier.IsTransient(ex))
+        {
+            // WOLF-8512: broadens the transient set beyond "our own invocation was cancelled"
+            // (the clause above) to every other shape of "the token could not be evaluated at
+            // all" — HttpRequestException/IOException/SocketException from the OIDC metadata/
+            // JWKS fetch itself failing (e.g. an internal HttpClient timeout that is NOT tied to
+            // this invocation's own cancellationToken, so IsOwnInvocationCancellation above does
+            // not catch it), SecurityTokenSignatureKeyNotFoundException (JWKS cache doesn't yet
+            // have the signing key - a redelivery after the next refresh can succeed), and
+            // IDX20803/IDX20804 (IdentityModel's own "could not retrieve/reload metadata"
+            // codes). See TokenValidationFailureClassifier's doc comment for the full
+            // transient/terminal split.
+            FailTransient(
+                correlationId,
+                ex,
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Token validation failed with a transient cause ({ErrorMessage}) — leaving message for standard Service Bus retry instead of a permanent InvalidToken dead-letter.",
+                correlationId, ex.Message);
+            return; // unreachable at runtime (FailTransient always throws) - satisfies definite-assignment analysis for 'identity' below.
         }
         catch (Exception ex)
         {
+            // Everything else is a positively-decided bad token (bad signature against a
+            // resolved key, wrong audience/issuer, expired, malformed) — terminal, per
+            // TokenValidationFailureClassifier.IsTransient having already returned false.
             await RecordTerminalOutcomeAsync(
                 messageActions, message, correlationId, payload.Workflow, caller: "(unknown)",
                 status: ServiceBusTriggerStatus.InvalidToken, reason: $"Token validation failed: {ex.Message}",
-                receivedAt, cancellationToken);
+                receivedAt, subReason: TokenValidationFailureClassifier.ResolveSubReason(ex));
             return;
         }
 
@@ -289,7 +336,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             await RecordTerminalOutcomeAsync(
                 messageActions, message, correlationId, payload.Workflow!, principal.CallerIdentity,
                 status: ServiceBusTriggerStatus.InvalidToken, reason: "Token 'jti' has already been used — replay rejected.",
-                receivedAt, cancellationToken);
+                receivedAt, subReason: "JtiReplay");
             return;
         }
 
@@ -301,7 +348,8 @@ public sealed class ServiceBusWorkflowTriggerFunction
                 messageActions, message, correlationId, payload.Workflow!, principal.CallerIdentity,
                 status: ServiceBusTriggerStatus.Denied,
                 reason: policyResult.DenialReason ?? "Denied by workflow authorization policy.",
-                receivedAt, cancellationToken);
+                receivedAt,
+                subReason: policyResult.Outcome == PolicyMatchOutcome.ConfigMissingDeny ? "ConfigMissingDeny" : "PolicyForbidden");
             return;
         }
 
@@ -444,7 +492,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             _logger.LogInformation(
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Caller={Caller} | Succeeded | DurationMs={DurationMs}",
                 correlationId, payload.Workflow, principal.CallerIdentity, result.Duration.TotalMilliseconds);
-            await messageActions.CompleteMessageAsync(message, cancellationToken).ConfigureAwait(false);
+            await SettleAsync(ct => messageActions.CompleteMessageAsync(message, ct), correlationId, "CompleteMessageAsync (success)").ConfigureAwait(false);
         }
         else
         {
@@ -452,11 +500,19 @@ public sealed class ServiceBusWorkflowTriggerFunction
             // A workflow/activity failure is a business outcome, not a transient transport
             // failure — dead-letter rather than let Service Bus retry an execution that will
             // fail identically every time.
-            await messageActions.DeadLetterMessageAsync(
-                message,
-                deadLetterReason: "execution_failed",
-                deadLetterErrorDescription: TruncateDeadLetterDescription(outcome.Error ?? "Workflow execution failed."),
-                cancellationToken: cancellationToken).ConfigureAwait(false);
+            await SettleAsync(
+                ct => messageActions.DeadLetterMessageAsync(
+                    message,
+                    // WOLF-8512: "Failed:ExecutionFailed" — Status:SubReason, consistent with
+                    // RecordTerminalOutcomeAsync's terminal paths (see its subReason parameter).
+                    // This path builds its own ServiceBusTriggerResult/DeadLetterMessageAsync call
+                    // rather than going through RecordTerminalOutcomeAsync because it always has
+                    // exactly one sub-reason - there is no classification to share.
+                    deadLetterReason: "Failed:ExecutionFailed",
+                    deadLetterErrorDescription: TruncateDeadLetterDescription(outcome.Error ?? "Workflow execution failed."),
+                    cancellationToken: ct),
+                correlationId,
+                "DeadLetterMessageAsync (execution failed)").ConfigureAwait(false);
         }
     }
 
@@ -465,6 +521,14 @@ public sealed class ServiceBusWorkflowTriggerFunction
     /// dead-letters the message (no retry) — the shared tail for every deny/invalid/malformed
     /// path above.
     /// </summary>
+    /// <param name="subReason">
+    /// WOLF-8512: optional dead-letter triage sub-reason (see the class doc's "Failure
+    /// classification" section / <c>docs/ServiceBusSecureTrigger-Architecture.md</c>).
+    /// When supplied, <c>deadLetterReason</c> becomes <c>"{status}:{subReason}"</c> (e.g.
+    /// <c>InvalidToken:JtiReplay</c>) instead of the bare status, so DLQ entries sharing a
+    /// status are distinguishable without parsing <c>deadLetterErrorDescription</c>. Existing
+    /// filters matching on the bare status still match, since it remains the string's prefix.
+    /// </param>
     private async Task RecordTerminalOutcomeAsync(
         ServiceBusMessageActions messageActions,
         ServiceBusReceivedMessage message,
@@ -474,7 +538,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
         ServiceBusTriggerStatus status,
         string reason,
         DateTimeOffset receivedAt,
-        CancellationToken cancellationToken)
+        string? subReason = null)
     {
         _store.SaveResult(new ServiceBusTriggerResult
         {
@@ -489,11 +553,76 @@ public sealed class ServiceBusWorkflowTriggerFunction
 
         _audit.LogServiceBusOutcome(status.ToString(), caller, workflow, reason, correlationId);
 
-        await messageActions.DeadLetterMessageAsync(
-            message,
-            deadLetterReason: status.ToString(),
-            deadLetterErrorDescription: TruncateDeadLetterDescription(reason),
-            cancellationToken: cancellationToken).ConfigureAwait(false);
+        var deadLetterReason = subReason is null ? status.ToString() : $"{status}:{subReason}";
+        await SettleAsync(
+            ct => messageActions.DeadLetterMessageAsync(
+                message,
+                deadLetterReason: deadLetterReason,
+                deadLetterErrorDescription: TruncateDeadLetterDescription(reason),
+                cancellationToken: ct),
+            correlationId,
+            $"DeadLetterMessageAsync ({deadLetterReason})").ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// WOLF-8512: settles a message (complete or dead-letter) with a short, independent
+    /// timeout over <see cref="CancellationToken.None"/> — never the host invocation's own
+    /// <c>cancellationToken</c> (§1.3's root cause: during shutdown/drain that token is
+    /// already cancelled, so a settlement call using it throws immediately and leaves the
+    /// message unsettled even though its outcome was already decided).
+    ///
+    /// <para>
+    /// <b>Why a timeout here is safe.</b> Every caller of this method has already called
+    /// <c>SaveResult</c> (or is settling a duplicate whose result was already found) before
+    /// settling. If settlement itself times out, the message is simply left unsettled: the
+    /// Service Bus lock expires, the message redelivers, and the idempotency dedupe check
+    /// (see the top of <c>Run</c>) finds the already-saved result and completes it then —
+    /// self-healing at the cost of one extra delivery, never a lost or duplicated outcome.
+    /// </para>
+    /// </summary>
+    private async Task SettleAsync(Func<CancellationToken, Task> settle, string correlationId, string operation)
+    {
+        using var settlementCts = new CancellationTokenSource(_triggerOptions.SettlementTimeout);
+        try
+        {
+            await settle(settlementCts.Token).ConfigureAwait(false);
+        }
+        catch (OperationCanceledException) when (settlementCts.IsCancellationRequested)
+        {
+            _logger.LogWarning(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Settlement operation '{Operation}' did not complete within {SettlementTimeout} — leaving the message unsettled. The already-persisted result will be found by the idempotency dedupe check on the next redelivery once the lock expires (self-healing at the cost of one extra delivery).",
+                correlationId, operation, _triggerOptions.SettlementTimeout);
+        }
+    }
+
+    /// <summary>
+    /// WOLF-8512: the shared "transient — retry via Service Bus redelivery" tail (§2.1's
+    /// "Retry" row): release the claim taken by <see cref="IServiceBusReplayAndResultStore.TryClaim"/>
+    /// (so a redelivery is not permanently blocked by this failed attempt's own claim — see
+    /// <c>TryClaim</c>'s doc comment), log a warning, then rethrow <paramref name="ex"/> so the
+    /// Service Bus extension applies its standard retry/backoff and eventual
+    /// <c>maxDeliveryCount</c> dead-letter.
+    ///
+    /// <para>
+    /// Deliberately does NOT call <c>SaveResult</c> and does NOT settle the message — the two
+    /// non-negotiable invariants for a transient outcome (a persisted result would satisfy the
+    /// idempotency dedupe check on redelivery and permanently prevent re-execution; see this
+    /// class's own flow doc and <c>RecordTerminalOutcomeAsync</c>'s terminal-path counterpart).
+    /// </para>
+    ///
+    /// <para>
+    /// Rethrows via <see cref="ExceptionDispatchInfo"/> rather than <c>throw ex;</c> so the
+    /// original stack trace is preserved even when called from a location other than the
+    /// original <c>catch</c> block (e.g. the <c>!_tokenValidator.IsEnabled</c> branch, which
+    /// constructs a fresh exception rather than re-throwing a caught one).
+    /// </para>
+    /// </summary>
+    [DoesNotReturn]
+    internal void FailTransient(string correlationId, Exception ex, string logMessageTemplate, params object?[] logArgs)
+    {
+        _store.ReleaseClaim(correlationId);
+        _logger.LogWarning(logMessageTemplate, logArgs);
+        ExceptionDispatchInfo.Capture(ex).Throw();
     }
 
     /// <summary>

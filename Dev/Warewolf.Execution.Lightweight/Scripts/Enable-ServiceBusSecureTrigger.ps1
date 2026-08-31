@@ -62,6 +62,17 @@
     -DestinationQueueName/-ServiceBusQueueName when using -VerifyWorkflowExecution.
 .PARAMETER MaxDeliveryCount
     Max delivery attempts before the broker dead-letters a message. Default: 10.
+.PARAMETER LockDuration
+    ISO 8601 duration a delivery's lock is held before Service Bus considers it abandoned and
+    redelivers. Default: PT5M (5 minutes). WOLF-8512: this, together with -MaxDeliveryCount, is
+    the delivery budget that must exceed ServiceBusTriggerOptions.ClaimStaleAfter (see
+    docs/ServiceBusSecureTrigger-Architecture.md's "Failure classification" section) - otherwise
+    a redelivery can never actually take over a stale claim left by a dead/hung attempt before
+    the queue exhausts -MaxDeliveryCount and dead-letters the message with no result ever
+    recorded. This script asserts that invariant below and fails loudly if it does not hold,
+    using host.json's own functionTimeout (+ 1 minute margin) as its estimate of
+    ClaimStaleAfter's runtime-resolved default. Applied via `az servicebus queue update` (not
+    only at creation) so it converges on an already-provisioned queue too.
 .PARAMETER EntraTenantId
     REQUIRED. Entra tenant id — sets WAREWOLF_ENTRA_TENANT_ID. Must match the tenant that
     issues tokens for -EntraServiceBusAudience.
@@ -90,6 +101,7 @@ param(
 
     [string] $TriggerQueueName = 'wwexecution-secure-trigger-queue-e2e',
     [int]    $MaxDeliveryCount = 10,
+    [string] $LockDuration = 'PT5M',
 
     [Parameter(Mandatory)] [string] $EntraTenantId,
     [Parameter(Mandatory)] [string] $EntraServiceBusAudience,
@@ -128,9 +140,60 @@ function Invoke-Az {
     return $output
 }
 
+function Get-EstimatedClaimStaleAfter {
+    <#
+        WOLF-8512: mirrors (approximately - this is a deploy-time sanity check, not the runtime
+        source of truth) ServiceBusTriggerOptions.ResolveClaimStaleAfter's tier-3-plus-margin
+        behaviour: read host.json's own functionTimeout and add one minute of lock-renewal
+        margin. Deliberately does NOT replicate the full five-tier resolution (explicit env
+        override / AzureFunctionsJobHost__functionTimeout app setting / WEBSITE_SKU fallback) -
+        this script cannot see the target Function App's own environment at author-time, and
+        every environment this repo deploys to sets functionTimeout explicitly in host.json
+        (see that property's own doc comment, R6), so tier 3 always wins in practice today. If
+        that ever stops being true, this estimate and the real runtime value can diverge -
+        which is exactly why this is a fail-loud sanity check, not a substitute for verifying
+        the live ClaimStaleAfter value the deployed app actually resolves.
+    #>
+    $hostJsonPath = Join-Path $PSScriptRoot '..' 'host.json'
+    $hostJsonPath = [System.IO.Path]::GetFullPath($hostJsonPath)
+    if (-not (Test-Path -LiteralPath $hostJsonPath)) {
+        throw "Cannot verify the MaxDeliveryCount/LockDuration invariant - host.json not found at '$hostJsonPath'."
+    }
+    $hostJson = Get-Content -LiteralPath $hostJsonPath -Raw | ConvertFrom-Json
+    $functionTimeoutRaw = $hostJson.functionTimeout
+    if ([string]::IsNullOrWhiteSpace($functionTimeoutRaw)) {
+        throw "Cannot verify the MaxDeliveryCount/LockDuration invariant - host.json has no functionTimeout set at '$hostJsonPath'."
+    }
+    return [TimeSpan]::Parse($functionTimeoutRaw) + [TimeSpan]::FromMinutes(1)
+}
+
+function Assert-DeliveryBudgetExceedsClaimStaleAfter {
+    <#
+        WOLF-8512 root cause B: MaxDeliveryCount x LockDuration is the delivery budget Service
+        Bus gives a message before dead-lettering it. If that budget is <= ClaimStaleAfter, a
+        redelivery can NEVER actually take over a stale claim left by a dead/hung attempt - the
+        queue exhausts MaxDeliveryCount and dead-letters the message first, with no result ever
+        recorded (see docs/ServiceBusSecureTrigger-Architecture.md's "Failure classification").
+        Fails the deploy loudly rather than silently provisioning a queue that cannot self-heal.
+    #>
+    param(
+        [Parameter(Mandatory)][int]      $MaxDeliveryCount,
+        [Parameter(Mandatory)][string]   $LockDuration,
+        [Parameter(Mandatory)][TimeSpan] $ClaimStaleAfter
+    )
+    $lockDurationSpan = [System.Xml.XmlConvert]::ToTimeSpan($LockDuration)
+    $deliveryBudget = [TimeSpan]::FromTicks($lockDurationSpan.Ticks * $MaxDeliveryCount)
+    if ($deliveryBudget -le $ClaimStaleAfter) {
+        throw "Invariant violated: MaxDeliveryCount ($MaxDeliveryCount) x LockDuration ($LockDuration = $lockDurationSpan) = $deliveryBudget, which is NOT greater than the estimated ClaimStaleAfter ($ClaimStaleAfter). A redelivery could never take over a stale claim before the queue dead-letters the message with no result ever recorded (WOLF-8512 root cause B). Raise -MaxDeliveryCount and/or -LockDuration, or lower the engine's functionTimeout in host.json."
+    }
+    Write-Ok "Delivery budget check: MaxDeliveryCount ($MaxDeliveryCount) x LockDuration ($lockDurationSpan) = $deliveryBudget > estimated ClaimStaleAfter ($ClaimStaleAfter)."
+}
+
 Write-Phase 'Enable-ServiceBusSecureTrigger — Phase 0  Pre-flight'
 
 if ($DryRun) { Write-Note 'DRY RUN: no mutating az command below will actually be executed.' }
+
+Assert-DeliveryBudgetExceedsClaimStaleAfter -MaxDeliveryCount $MaxDeliveryCount -LockDuration $LockDuration -ClaimStaleAfter (Get-EstimatedClaimStaleAfter)
 
 $acct = az account show 2>$null | ConvertFrom-Json
 if (-not $acct) { throw "Not logged in to Azure CLI. Run 'az login' (and 'az account set --subscription <id>') first." }
@@ -153,7 +216,7 @@ Write-Ok "Service Bus namespace '$ServiceBusNamespace' found."
 
 Write-Host ''
 Write-Host '  This run will (idempotently):' -ForegroundColor White
-Write-Host "    1. Create queue '$TriggerQueueName' on '$ServiceBusNamespace' (dead-lettering on, max delivery $MaxDeliveryCount) if missing." -ForegroundColor White
+Write-Host "    1. Create (or converge) queue '$TriggerQueueName' on '$ServiceBusNamespace' (dead-lettering on, max delivery $MaxDeliveryCount, lock duration $LockDuration)." -ForegroundColor White
 Write-Host "    2. Grant principal '$principalId' the 'Azure Service Bus Data Receiver' role on '$ServiceBusNamespace' if not already granted." -ForegroundColor White
 Write-Host "    3. Set app settings on '$FunctionAppName': ServiceBusConnection__fullyQualifiedNamespace, WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName, WAREWOLF_ENTRA_TENANT_ID, WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE=$EntraServiceBusAudience." -ForegroundColor White
 Write-Host ''
@@ -175,7 +238,21 @@ function Test-AzExists([string[]] $CliArgs) {
 }
 
 if (Test-AzExists @('servicebus', 'queue', 'show', '--name', $TriggerQueueName, '--namespace-name', $ServiceBusNamespace, '--resource-group', $ServiceBusNamespaceResourceGroup)) {
-    Write-Ok "Queue '$TriggerQueueName' already exists."
+    # WOLF-8512 (R3): converge an ALREADY-provisioned queue's MaxDeliveryCount/LockDuration
+    # onto the values this run was invoked with, via `update` rather than `create` (`create`
+    # against an existing queue fails). Without this, a queue provisioned by an earlier run of
+    # this script (or manually) before -LockDuration existed could silently keep the Service
+    # Bus service default lock duration - far tighter than the delivery budget this script now
+    # asserts, defeating the whole point of the invariant check above.
+    Invoke-Az -Mutating @(
+        'servicebus', 'queue', 'update',
+        '--name', $TriggerQueueName,
+        '--namespace-name', $ServiceBusNamespace,
+        '--resource-group', $ServiceBusNamespaceResourceGroup,
+        '--max-delivery-count', $MaxDeliveryCount,
+        '--lock-duration', $LockDuration
+    ) | Out-Null
+    if ($DryRun) { Write-Note "Queue '$TriggerQueueName' already exists — max-delivery-count/lock-duration would be converged to $MaxDeliveryCount/$LockDuration (not applied — DryRun)." } else { Write-Ok "Queue '$TriggerQueueName' already exists — converged max-delivery-count/lock-duration to $MaxDeliveryCount/$LockDuration." }
 } else {
     Invoke-Az -Mutating @(
         'servicebus', 'queue', 'create',
@@ -183,7 +260,8 @@ if (Test-AzExists @('servicebus', 'queue', 'show', '--name', $TriggerQueueName, 
         '--namespace-name', $ServiceBusNamespace,
         '--resource-group', $ServiceBusNamespaceResourceGroup,
         '--enable-dead-lettering-on-message-expiration', 'true',
-        '--max-delivery-count', $MaxDeliveryCount
+        '--max-delivery-count', $MaxDeliveryCount,
+        '--lock-duration', $LockDuration
     ) | Out-Null
     if ($DryRun) { Write-Note "Queue '$TriggerQueueName' would be created (not applied — DryRun)." } else { Write-Ok "Queue '$TriggerQueueName' created." }
 }

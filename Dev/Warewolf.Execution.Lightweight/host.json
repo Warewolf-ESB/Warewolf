@@ -7,7 +7,14 @@
         },
         "serviceBus": {
             "autoCompleteMessages": false,
-            "maxAutoLockRenewalDuration": "00:11:00"
+            "maxAutoLockRenewalDuration": "00:11:00",
+            "clientRetryOptions": {
+                "mode": "exponential",
+                "tryTimeout": "00:01:00",
+                "delay": "00:00:02",
+                "maxDelay": "00:00:30",
+                "maxRetries": 3
+            }
         }
     },
     "logging": {

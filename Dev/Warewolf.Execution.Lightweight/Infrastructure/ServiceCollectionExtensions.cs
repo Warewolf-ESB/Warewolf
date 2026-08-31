@@ -75,6 +75,17 @@ internal static class ServiceCollectionExtensions
             services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
             services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment());
 
+            // WOLF-8512: ClaimStaleAfter is resolved automatically from the host's actual
+            // functionTimeout (never a fixed constant - see ServiceBusTriggerOptions.
+            // ResolveHostFunctionTimeout's five-tier strategy), so log which tier won and what
+            // value resulted. Without this, a silent fall-through to a lower tier (e.g. a future
+            // publish profile that stops copying host.json next to the assembly) would be
+            // invisible instead of auditable in App Insights.
+            var (claimStaleAfter, claimStaleAfterTier) = ServiceBusTriggerOptions.DescribeClaimStaleAfterResolution();
+            Dev2Logger.Info(
+                $"ServiceBusTriggerOptions.ClaimStaleAfter resolved to {claimStaleAfter} via tier '{claimStaleAfterTier}'",
+                executionId);
+
             // Caps how many workflow executions ServiceBusWorkflowTriggerFunction runs
             // concurrently on this instance (ServiceBusTriggerOptions.MaxConcurrentExecutions).
             // MUST be a DI singleton, not an instance field on the Function class itself:
@@ -216,7 +227,13 @@ internal static class ServiceCollectionExtensions
         // ServiceBusWorkflowTriggerFunction and the ServiceBusResultFunction polling
         // endpoint. Hangfire-hash-backed when Config.Persistence is enabled, in-memory
         // fallback otherwise (single-instance-only caveat — see the class docs).
-        services.AddSingleton<IServiceBusReplayAndResultStore, ServiceBusReplayAndResultStore>();
+        // WOLF-8512: ClaimStaleAfter is passed explicitly from the resolved
+        // ServiceBusTriggerOptions (see its ResolveHostFunctionTimeout five-tier strategy)
+        // rather than relying on ServiceBusReplayAndResultStore's own DefaultClaimStaleAfter
+        // fallback, so the claim-staleness window always tracks the host's actual
+        // functionTimeout instead of a fixed constant.
+        services.AddSingleton<IServiceBusReplayAndResultStore>(sp =>
+            new ServiceBusReplayAndResultStore(sp.GetRequiredService<ServiceBusTriggerOptions>().ClaimStaleAfter));
 
         // (POL-08) Hot-reload secure.config + policy loader at runtime.
         services.AddHostedService<SecureConfigWatcher>();

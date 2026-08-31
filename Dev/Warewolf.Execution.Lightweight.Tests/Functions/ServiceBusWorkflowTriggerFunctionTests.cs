@@ -62,10 +62,22 @@ public class ServiceBusWorkflowTriggerFunctionTests
         public string? LastDeadLetterReason { get; private set; }
         public string? LastDeadLetterDescription { get; private set; }
 
-        public override Task CompleteMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken = default)
+        /// <summary>
+        /// WOLF-8512: when set, CompleteMessageAsync awaits a delay honouring the passed
+        /// CancellationToken before completing - used to simulate a settlement call that
+        /// outlives ServiceBusTriggerOptions.SettlementTimeout so SettleAsync's own
+        /// CancellationTokenSource cancels it (Task.Delay throws TaskCanceledException, an
+        /// OperationCanceledException, exactly like a real slow settlement call would).
+        /// </summary>
+        public TimeSpan? CompleteMessageDelay { get; set; }
+
+        public override async Task CompleteMessageAsync(ServiceBusReceivedMessage message, CancellationToken cancellationToken = default)
         {
+            if (CompleteMessageDelay is { } delay)
+            {
+                await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
+            }
             CompleteCalls++;
-            return Task.CompletedTask;
         }
 
         public override Task AbandonMessageAsync(
@@ -192,7 +204,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.AreEqual(0, executor.CallCount);
         Assert.AreEqual(1, actions.DeadLetterCalls);
         Assert.AreEqual(0, actions.CompleteCalls);
-        Assert.AreEqual("Malformed", actions.LastDeadLetterReason);
+        Assert.AreEqual("Malformed:BodyNotJson", actions.LastDeadLetterReason);
         store.TryGetResult(message.MessageId, out var result);
         Assert.AreEqual(ServiceBusTriggerStatus.Malformed, result!.Status);
     }
@@ -208,7 +220,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         await sut.Run(message, actions, CancellationToken.None);
 
         Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("Malformed", actions.LastDeadLetterReason);
+        Assert.AreEqual("Malformed:MissingWorkflowField", actions.LastDeadLetterReason);
     }
 
     [TestMethod]
@@ -274,24 +286,35 @@ public class ServiceBusWorkflowTriggerFunctionTests
         await sut.Run(message, actions, CancellationToken.None);
 
         Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("InvalidToken", actions.LastDeadLetterReason);
+        Assert.AreEqual("InvalidToken:MissingAuthorizationProperty", actions.LastDeadLetterReason);
     }
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task Run_ServiceBusAuthNotConfigured_DeadLettersAsInvalidToken_WithoutNetworkCall()
+    public async Task Run_ServiceBusAuthNotConfigured_TreatedAsTransient_NoResultSaved_WithoutNetworkCall()
     {
-        // Default ServiceBusEntraAuthOptions() has no TenantId/Audience → IsEnabled == false,
-        // so this must fail closed BEFORE any live OIDC metadata call is attempted.
-        var sut = NewSut(authOptions: new ServiceBusEntraAuthOptions());
+        // WOLF-8512: engine misconfiguration (missing WAREWOLF_ENTRA_TENANT_ID /
+        // WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE) must NOT permanently poison the correlation id -
+        // a config fix followed by redelivery should succeed, so this is now transient rather
+        // than the terminal InvalidToken it used to be (see ServiceBusWorkflowTriggerFunction's
+        // "!_tokenValidator.IsEnabled" branch). Default ServiceBusEntraAuthOptions() has no
+        // TenantId/Audience → IsEnabled == false, so this must still fail BEFORE any live OIDC
+        // metadata call is attempted - only the classification of the failure has changed.
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(authOptions: new ServiceBusEntraAuthOptions(), store: store);
         var actions = new FakeServiceBusMessageActions();
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
 
-        await sut.Run(message, actions, CancellationToken.None);
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.Run(message, actions, CancellationToken.None));
 
-        Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("InvalidToken", actions.LastDeadLetterReason);
-        StringAssert.Contains(actions.LastDeadLetterDescription, "not configured");
+        Assert.AreEqual(0, actions.DeadLetterCalls,
+            "Engine misconfiguration must not dead-letter on first delivery - it must retry via standard Service Bus redelivery instead.");
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.IsFalse(store.TryGetResult(message.MessageId, out _),
+            "A transient failure must never persist a result - a saved result would satisfy the idempotency dedupe check and permanently prevent re-execution once the engine is fixed.");
+        Assert.IsTrue(store.TryClaim(message.MessageId),
+            "The claim taken by TryClaim must be released so a redelivery (after an operator fixes the configuration) is not blocked by this failed attempt's own claim.");
     }
 
     // ── IsOwnInvocationCancellation(...) — pure classification helper (WOLF-8512) ──
@@ -349,6 +372,32 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.IsFalse(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
     }
 
+    // ── FailTransient(...) — shared transient-tail helper (WOLF-8512, step 5a) ──
+    //    Both the shipped IsOwnInvocationCancellation catch clause and the newer
+    //    TokenValidationFailureClassifier.IsTransient clause (and the !IsEnabled branch)
+    //    now route through this one helper - tested directly here so its release/no-save/
+    //    rethrow contract is verified independently of which caller reaches it.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void FailTransient_ReleasesClaim_SavesNoResult_Rethrows()
+    {
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        Assert.IsTrue(store.TryClaim("corr-fail-transient"), "Pre-claim to simulate an in-flight attempt.");
+        var sut = NewSut(store: store);
+        var originalException = new InvalidOperationException("boom");
+
+        var thrown = Assert.ThrowsException<InvalidOperationException>(
+            () => sut.FailTransient("corr-fail-transient", originalException, "template {CorrelationId}", "corr-fail-transient"));
+
+        Assert.AreSame(originalException, thrown,
+            "The original exception instance must be rethrown via ExceptionDispatchInfo, not wrapped or replaced.");
+        Assert.IsFalse(store.TryGetResult("corr-fail-transient", out _),
+            "FailTransient must never call SaveResult - a persisted result would satisfy the idempotency dedupe check and permanently prevent re-execution.");
+        Assert.IsTrue(store.TryClaim("corr-fail-transient"),
+            "The claim must be released so a new delivery is not permanently blocked by this failed attempt's own claim.");
+    }
+
     // ── ProcessAuthenticatedMessageAsync(...) — post-authentication branches ────
 
     [TestMethod]
@@ -368,7 +417,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
         Assert.AreEqual(0, executor.CallCount);
         Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("InvalidToken", actions.LastDeadLetterReason);
+        Assert.AreEqual("InvalidToken:JtiReplay", actions.LastDeadLetterReason);
     }
 
     [TestMethod]
@@ -388,7 +437,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
         Assert.AreEqual(0, executor.CallCount);
         Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("Denied", actions.LastDeadLetterReason);
+        Assert.AreEqual("Denied:PolicyForbidden", actions.LastDeadLetterReason);
         store.TryGetResult("corr-denied", out var result);
         Assert.AreEqual(ServiceBusTriggerStatus.Denied, result!.Status);
         Assert.AreEqual("Caller is not a member of any allowed group.", result.Error);
@@ -408,7 +457,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-config-missing", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
         Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("Denied", actions.LastDeadLetterReason);
+        Assert.AreEqual("Denied:ConfigMissingDeny", actions.LastDeadLetterReason);
     }
 
     [TestMethod]
@@ -454,6 +503,34 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_SettlementTimesOut_ResultStillPersisted_NoThrow()
+    {
+        // WOLF-8512 (§2.2's safety argument): a settlement call that never completes within
+        // SettlementTimeout must not throw or lose the outcome - the result is always saved
+        // BEFORE settlement is attempted, so a timed-out settlement just leaves the message
+        // unsettled; the lock expires, it redelivers, and the idempotency dedupe check finds
+        // the already-saved result and completes it then.
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var triggerOptions = new ServiceBusTriggerOptions { SettlementTimeout = TimeSpan.FromMilliseconds(50) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
+        var actions = new FakeServiceBusMessageActions { CompleteMessageDelay = TimeSpan.FromSeconds(5) };
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-settlement-timeout");
+
+        // Must complete normally (no exception) despite CompleteMessageAsync never actually
+        // finishing within SettlementTimeout.
+        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-settlement-timeout", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+
+        Assert.AreEqual(0, actions.CompleteCalls, "CompleteMessageAsync must have been abandoned by the settlement timeout, never actually finishing.");
+        store.TryGetResult("corr-settlement-timeout", out var result);
+        Assert.AreEqual(ServiceBusTriggerStatus.Succeeded, result!.Status,
+            "The result must already be persisted before settlement is attempted, so a settlement timeout never loses it.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
     public async Task ProcessAuthenticated_ExecutionBusinessFailure_DeadLettersAsFailed_NotThrown()
     {
         var executor = new FakeWorkflowExecutor(_ => WorkflowExecutionResult.Failure("Activity 'Divide' failed: divide by zero."));
@@ -468,7 +545,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
         Assert.AreEqual(0, actions.CompleteCalls);
         Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("execution_failed", actions.LastDeadLetterReason);
+        Assert.AreEqual("Failed:ExecutionFailed", actions.LastDeadLetterReason);
         store.TryGetResult("corr-failure", out var result);
         Assert.AreEqual(ServiceBusTriggerStatus.Failed, result!.Status);
         StringAssert.Contains(result.Error, "divide by zero");

@@ -1596,6 +1596,55 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     way for the OOM fix; `_tokenValidator` is a sealed concrete class needing a live OIDC call,
     deliberately left to integration tests by this file's own existing convention. Not yet
     deployed/re-verified against a live pipeline run.
+  - **2026-08-31, follow-on (root causes B and C, plus broader transient classification)**:
+    the `IsOwnInvocationCancellation` fix above closed the specific case reproduced by
+    `-000151`/`-000152` (the trigger's own `cancellationToken` firing mid-validation), but a
+    plan review against the original incident report found two further root causes it did
+    **not** touch, plus a real gap in the classification's coverage:
+    - **Root cause B (the `NO RESULT` correlation ids)**: `ServiceBusReplayAndResultStore`'s
+      `ClaimStaleAfter` was a hard-coded 20-minute constant, sized against an assumed
+      10-minute `functionTimeout`. If the queue's own `MaxDeliveryCount × LockDuration`
+      delivery budget is smaller than `ClaimStaleAfter`, a redelivery can never actually take
+      over a claim left by a dead/hung attempt — the queue dead-letters first, with no result
+      ever recorded. **Fix**: `ServiceBusTriggerOptions.ClaimStaleAfter` now resolves the
+      host's actual `functionTimeout` automatically (five-tier strategy — explicit override →
+      `AzureFunctionsJobHost__functionTimeout` → `host.json` on disk → `WEBSITE_SKU` fallback →
+      10-minute hard fallback) plus a 1-minute margin, cached in a `static Lazy<TimeSpan>` so a
+      bare `new ServiceBusTriggerOptions()` (used throughout the test suite) never hits disk
+      per construction. `Enable-ServiceBusSecureTrigger.ps1` gained `-LockDuration` and now
+      asserts `MaxDeliveryCount × LockDuration > ClaimStaleAfter` before provisioning anything.
+    - **Root cause C (settlement bound to the host token)**: every `CompleteMessageAsync`/
+      `DeadLetterMessageAsync` call used the trigger's own `cancellationToken` — during a
+      shutdown/drain that token is already cancelled, so settlement throws immediately and the
+      message is left unsettled even though its outcome was already decided. **Fix**: a new
+      `SettleAsync` helper wraps every settlement call in an independent, timeout-bounded
+      `CancellationTokenSource` (`ServiceBusTriggerOptions.SettlementTimeout`, default 30s)
+      over `CancellationToken.None`. Safe because the result is always persisted first — a
+      settlement timeout just leaves the message unsettled for the next redelivery's dedupe
+      check to complete.
+    - **Classification gap**: `IsOwnInvocationCancellation` only catches a cancellation tied to
+      the trigger's OWN `cancellationToken`. Its own test
+      (`IsOwnInvocationCancellation_TokenNotCancelled_ReturnsFalse`) proves a `TaskCanceledException`
+      from an internal `HttpClient` timeout — unrelated to that token — still fell through to
+      the terminal `InvalidToken` path. **Fix**: a new `TokenValidationFailureClassifier`
+      (`Auth/Parsers/`) adds a second, broader transient tier —
+      `HttpRequestException`/`IOException`/`SocketException`, `SecurityTokenSignatureKeyNotFoundException`,
+      and `IDX20803`/`IDX20804` IdentityModel codes — inserted as a second `catch when` clause
+      between the shipped cancellation clause and the terminal catch-all. Deliberately did
+      **not** extract an `IEntraBearerTokenValidator` interface (as an earlier plan draft
+      proposed) — the shipped fix's own pure-exception-plus-token classification approach
+      already sidesteps needing a live/faked validator, so the classifier is tested the same
+      way, with zero interface surface added.
+    - Also added, same pass: dead-letter triage sub-reasons (`"{Status}:{SubReason}"`, e.g.
+      `InvalidToken:JtiReplay`) via an optional `subReason` parameter on
+      `RecordTerminalOutcomeAsync`, and `host.json`'s `extensions.serviceBus.clientRetryOptions`
+      (exponential backoff, 3 retries).
+    - Full local build + the entire `Warewolf.Execution.Lightweight.Tests` assembly (869 tests)
+      green; the two riskiest new tests (`FailTransient_ReleasesClaim_SavesNoResult_Rethrows`
+      and `ProcessAuthenticated_SettlementTimesOut_ResultStillPersisted_NoThrow`) were verified
+      to actually fail when their respective fix was temporarily reverted, then restored.
+      **Not yet deployed/re-verified against a live pipeline run** — the 1000-message E2E
+      acceptance run from the original plan is still outstanding.
 
 ## Promotion status
 

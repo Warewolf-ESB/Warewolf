@@ -54,7 +54,10 @@ namespace Warewolf.Execution.Lightweight.Security;
 /// would otherwise block every future redelivery of that correlation id forever, with no
 /// result ever recorded (see the 1000-message ShovelBridge load test incident of
 /// 2026-08-24: 21 correlation ids stuck exactly this way). <see cref="TryClaim"/>
-/// therefore treats a claim older than <see cref="ClaimStaleAfter"/> as abandoned and
+/// therefore treats a claim older than the configured claim-staleness window (see
+/// <see cref="DefaultClaimStaleAfter"/> and each constructor's optional
+/// <c>claimStaleAfter</c> parameter — normally
+/// <see cref="Auth.Models.ServiceBusTriggerOptions.ClaimStaleAfter"/>) as abandoned and
 /// lets a new delivery take it over.
 /// </para>
 /// </summary>
@@ -68,30 +71,34 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(10);
 
     /// <summary>
-    /// How long a claim is honoured before <see cref="TryClaim"/> treats it as abandoned
-    /// by a dead/hung attempt and allows a new delivery to take it over. Set well above
-    /// host.json's <c>functionTimeout</c> (10 minutes) plus a lock-renewal margin, since
-    /// the workflow-execution hot path has no cancellation seam of its own (see the class
-    /// doc comment's "Claim staleness" note).
+    /// Fallback used when no <c>claimStaleAfter</c> is supplied to a constructor — i.e. only
+    /// when the caller opted out of <see cref="Auth.Models.ServiceBusTriggerOptions.ClaimStaleAfter"/>'s
+    /// own runtime-resolved default (see that property's doc comment). Kept as a fixed 20
+    /// minutes purely as a last-resort safety net matching this class's historical behaviour;
+    /// production wiring (<c>Infrastructure.ServiceCollectionExtensions</c>) always passes the
+    /// resolved value explicitly.
     /// </summary>
-    internal static readonly TimeSpan ClaimStaleAfter = TimeSpan.FromMinutes(20);
+    internal static readonly TimeSpan DefaultClaimStaleAfter = TimeSpan.FromMinutes(20);
 
     private readonly bool _usePersistence;
     private readonly Lazy<JobStorage>? _jobStorage;
     private readonly Func<DateTimeOffset> _clock;
+    private readonly TimeSpan _claimStaleAfter;
 
     private readonly ConcurrentDictionary<string, byte> _inMemoryJti = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, string> _inMemoryResults = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, DateTimeOffset> _inMemoryClaims = new(StringComparer.Ordinal);
 
-    public ServiceBusReplayAndResultStore() : this(() => DateTimeOffset.UtcNow)
+    public ServiceBusReplayAndResultStore(TimeSpan? claimStaleAfter = null)
+        : this(() => DateTimeOffset.UtcNow, claimStaleAfter)
     {
     }
 
     /// <summary>Test seam — injects a controllable clock so claim-staleness tests don't need to sleep for the real TTL. Persistence mode is still resolved from <c>Config.Persistence</c>, same as the public constructor.</summary>
-    internal ServiceBusReplayAndResultStore(Func<DateTimeOffset> clock)
+    internal ServiceBusReplayAndResultStore(Func<DateTimeOffset> clock, TimeSpan? claimStaleAfter = null)
     {
         _clock = clock;
+        _claimStaleAfter = claimStaleAfter ?? DefaultClaimStaleAfter;
         _usePersistence = Config.Persistence?.Enable ?? false;
         if (_usePersistence)
         {
@@ -102,16 +109,18 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     }
 
     /// <summary>Test seam — injects a pre-built <see cref="JobStorage"/> (e.g. Hangfire's <c>MemoryStorage</c>) instead of resolving persistence config.</summary>
-    internal ServiceBusReplayAndResultStore(JobStorage jobStorage) : this(jobStorage, () => DateTimeOffset.UtcNow)
+    internal ServiceBusReplayAndResultStore(JobStorage jobStorage, TimeSpan? claimStaleAfter = null)
+        : this(jobStorage, () => DateTimeOffset.UtcNow, claimStaleAfter)
     {
     }
 
     /// <summary>Test seam — as above, plus a controllable clock for deterministic stale-claim tests against the Hangfire-backed path.</summary>
-    internal ServiceBusReplayAndResultStore(JobStorage jobStorage, Func<DateTimeOffset> clock)
+    internal ServiceBusReplayAndResultStore(JobStorage jobStorage, Func<DateTimeOffset> clock, TimeSpan? claimStaleAfter = null)
     {
         _usePersistence = true;
         _jobStorage = new Lazy<JobStorage>(() => jobStorage);
         _clock = clock;
+        _claimStaleAfter = claimStaleAfter ?? DefaultClaimStaleAfter;
     }
 
     /// <inheritdoc/>
@@ -228,7 +237,7 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
             // current one, so concurrent stale-claim attempts still yield exactly one
             // winner.
             if (_inMemoryClaims.TryGetValue(correlationId, out var claimedAt)
-                && now - claimedAt > ClaimStaleAfter
+                && now - claimedAt > _claimStaleAfter
                 && _inMemoryClaims.TryUpdate(correlationId, now, claimedAt))
             {
                 return true;
@@ -251,7 +260,7 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
             if (claimHash != null && claimHash.TryGetValue(ClaimFieldName, out var claimedAtRaw))
             {
                 var claimedAt = DateTimeOffset.Parse(claimedAtRaw, null, System.Globalization.DateTimeStyles.RoundtripKind);
-                if (now - claimedAt <= ClaimStaleAfter)
+                if (now - claimedAt <= _claimStaleAfter)
                 {
                     // Another delivery already holds the claim and hasn't finished (or
                     // failed without releasing it) yet, and not long enough ago to treat

@@ -31,6 +31,9 @@ public class ServiceBusReplayAndResultStoreTests
     private static ServiceBusReplayAndResultStore NewHangfireBackedStore(Func<DateTimeOffset> clock) =>
         new(new MemoryStorage(), clock);
 
+    private static ServiceBusReplayAndResultStore NewHangfireBackedStore(Func<DateTimeOffset> clock, TimeSpan claimStaleAfter) =>
+        new(new MemoryStorage(), clock, claimStaleAfter);
+
     private static ServiceBusTriggerResult SampleResult(string correlationId, ServiceBusTriggerStatus status = ServiceBusTriggerStatus.Succeeded) =>
         new()
         {
@@ -261,7 +264,7 @@ public class ServiceBusReplayAndResultStoreTests
         Assert.IsTrue(store.TryClaim("claim-fresh"));
 
         // Advance right up to (but not past) the staleness threshold.
-        clock = now + ServiceBusReplayAndResultStore.ClaimStaleAfter;
+        clock = now + ServiceBusReplayAndResultStore.DefaultClaimStaleAfter;
 
         Assert.IsFalse(store.TryClaim("claim-fresh"),
             "A claim exactly at the staleness threshold has not yet been exceeded and must still block a second claim.");
@@ -277,7 +280,7 @@ public class ServiceBusReplayAndResultStoreTests
         Assert.IsTrue(store.TryClaim("claim-stale"));
 
         // Advance past the staleness threshold - the original attempt is presumed dead/hung.
-        clock = now + ServiceBusReplayAndResultStore.ClaimStaleAfter + TimeSpan.FromSeconds(1);
+        clock = now + ServiceBusReplayAndResultStore.DefaultClaimStaleAfter + TimeSpan.FromSeconds(1);
 
         Assert.IsTrue(store.TryClaim("claim-stale"),
             "A claim older than the staleness threshold must be treated as abandoned and taken over by a new delivery.");
@@ -292,13 +295,42 @@ public class ServiceBusReplayAndResultStoreTests
         var store = NewHangfireBackedStore(() => clock);
         Assert.IsTrue(store.TryClaim("claim-reset"));
 
-        clock = now + ServiceBusReplayAndResultStore.ClaimStaleAfter + TimeSpan.FromSeconds(1);
+        clock = now + ServiceBusReplayAndResultStore.DefaultClaimStaleAfter + TimeSpan.FromSeconds(1);
         Assert.IsTrue(store.TryClaim("claim-reset"), "The stale claim must be taken over.");
 
         // A third attempt immediately afterwards must see the NEW claim as fresh, not stale.
         clock += TimeSpan.FromSeconds(1);
         Assert.IsFalse(store.TryClaim("claim-reset"),
             "After a stale claim is taken over, the new claim's timestamp must reset - an immediate third attempt must be rejected as in-flight, not treated as stale again.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_NonDefaultClaimStaleAfter_StalenessIsMeasuredAgainstTheInjectedValue_NotTheDefaultConstant()
+    {
+        // WOLF-8512: ClaimStaleAfter is now resolved from ServiceBusTriggerOptions (see its
+        // ResolveHostFunctionTimeout five-tier strategy) rather than fixed at 20 minutes -
+        // confirm the constructor's optional override actually drives TryClaim's staleness
+        // check, using a window well below DefaultClaimStaleAfter so a regression back to the
+        // static constant would make this test fail (staleness would never trigger within it).
+        var customClaimStaleAfter = TimeSpan.FromMinutes(2);
+        Assert.IsTrue(customClaimStaleAfter < ServiceBusReplayAndResultStore.DefaultClaimStaleAfter,
+            "Test setup invariant: the injected window must be shorter than the default so this test can't pass for the wrong reason.");
+
+        var now = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var clock = now;
+        var store = NewHangfireBackedStore(() => clock, customClaimStaleAfter);
+        Assert.IsTrue(store.TryClaim("claim-custom-window"));
+
+        // Still within the injected 2-minute window - must remain blocked.
+        clock = now + TimeSpan.FromMinutes(1);
+        Assert.IsFalse(store.TryClaim("claim-custom-window"),
+            "A claim younger than the injected ClaimStaleAfter must still block a second claim.");
+
+        // Past the injected window (but nowhere near the 20-minute default) - must be taken over.
+        clock = now + customClaimStaleAfter + TimeSpan.FromSeconds(1);
+        Assert.IsTrue(store.TryClaim("claim-custom-window"),
+            "A claim older than the INJECTED ClaimStaleAfter must be taken over, even though it is nowhere near DefaultClaimStaleAfter.");
     }
 
     [TestMethod]
@@ -314,7 +346,7 @@ public class ServiceBusReplayAndResultStoreTests
         Assert.IsTrue(store.TryClaim("claim-then-completed"));
         store.SaveResult(SampleResult("claim-then-completed"));
 
-        clock = now + ServiceBusReplayAndResultStore.ClaimStaleAfter + TimeSpan.FromDays(1);
+        clock = now + ServiceBusReplayAndResultStore.DefaultClaimStaleAfter + TimeSpan.FromDays(1);
 
         Assert.IsFalse(store.TryClaim("claim-then-completed"),
             "A saved terminal result must block re-claiming regardless of how old the original claim is.");
@@ -382,7 +414,7 @@ public class ServiceBusReplayAndResultStoreTests
         var store = new ServiceBusReplayAndResultStore(() => clock);
         Assert.IsTrue(store.TryClaim("fallback-claim-fresh"));
 
-        clock = now + ServiceBusReplayAndResultStore.ClaimStaleAfter;
+        clock = now + ServiceBusReplayAndResultStore.DefaultClaimStaleAfter;
 
         Assert.IsFalse(store.TryClaim("fallback-claim-fresh"),
             "A claim exactly at the staleness threshold has not yet been exceeded and must still block a second claim in the fallback path too.");
@@ -399,7 +431,7 @@ public class ServiceBusReplayAndResultStoreTests
         var store = new ServiceBusReplayAndResultStore(() => clock);
         Assert.IsTrue(store.TryClaim("fallback-claim-stale"));
 
-        clock = now + ServiceBusReplayAndResultStore.ClaimStaleAfter + TimeSpan.FromSeconds(1);
+        clock = now + ServiceBusReplayAndResultStore.DefaultClaimStaleAfter + TimeSpan.FromSeconds(1);
 
         Assert.IsTrue(store.TryClaim("fallback-claim-stale"),
             "A claim older than the staleness threshold must be taken over by a new delivery in the fallback path too - this is the exact mechanism that recovers correlation ids stuck by a hung execution (see the 2026-08-24 ShovelBridge load test incident).");
@@ -415,7 +447,7 @@ public class ServiceBusReplayAndResultStoreTests
         var clock = now;
         var store = new ServiceBusReplayAndResultStore(() => clock);
         Assert.IsTrue(store.TryClaim("fallback-claim-concurrent-stale"));
-        clock = now + ServiceBusReplayAndResultStore.ClaimStaleAfter + TimeSpan.FromSeconds(1);
+        clock = now + ServiceBusReplayAndResultStore.DefaultClaimStaleAfter + TimeSpan.FromSeconds(1);
 
         const int attempts = 8;
         var barrier = new Barrier(attempts);
