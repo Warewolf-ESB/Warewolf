@@ -1480,6 +1480,103 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     concurrency drop + durable `maxConcurrentCalls` cap + ThreadPool floor + telemetry flush) is the
     next concrete step to confirm whether the starvation theory is now fully closed.
 
+- **2026-08-31 — New: opt-in `dbo.jobs1` reconciliation (`Test-ShovelBridgeE2E.ps1` Phase 4c,
+  `-JobsDbConnectionString`).** Every prior entry in this log that reconciled per-message delivery
+  did so by hand-crafting SQL against `dbo.jobs1`/the Service Bus DLQ during a live investigation —
+  this promotes that technique into the harness itself so it runs every time, not just when someone
+  is already root-causing a failure.
+  - **What it checks, beyond `usp_jobs1_Summary`'s own buckets**: a message that's
+    lost/denied/dead-lettered before `RabbitProcess`'s own DB activity ever ran (before
+    `usp_jobs1_LogStart` is even called) leaves **zero** rows in `dbo.jobs1` — invisible to
+    `usp_jobs1_Summary`'s aggregation, which only groups over rows that already exist. Phase 4c
+    separately computes, for each of the `N` expected `'<prefix><CorrelationId>-NNNNNN'` messages
+    (`-JobsDbMessageContentPrefix`, default `'loadtest-'`), whether it has *any* `dbo.jobs1` row at
+    all — a tally-table anti-join against the extracted numeric suffix, 0-based (`-000000` ..
+    `-{N-1}`, matching `Test-ShovelBridgeE2E.ps1`'s own documented `-CorrelationId` numbering — NOT
+    1-based, which an earlier hand-written version of this exact query got wrong).
+  - **Scoped to the run's own start time** (`usp_jobs1_Summary @FromUtc=<captured right before
+    Phase 4 starts publishing>`), never the whole table — `dbo.jobs1` is shared and never purged
+    across every historical run (including concurrent CI activity), so an unscoped query would mix
+    in unrelated runs' rows, exactly the trap `Provision-ShovelBridgeSchema.sql`'s own header
+    comment warns about.
+  - **Independent of the harness's own result-poll path**: this reads `RabbitProcess`'s own
+    business-level rows, not `ServiceBusReplayAndResultStore`'s `sbtrigger:result:*` Hangfire hash —
+    so it isn't affected by any of the `GET /secure/servicebus-result/{correlationId}` read-path
+    bugs recorded earlier in this log (the 24 unexplained `HttpError` 500s, the load-balanced-
+    instance persistent-404 case).
+  - **Auth**: `devops_warewolf` via `Authentication=Active Directory Password` (confirmed from the
+    live, decrypted `NewSqlServerSource.bite` connection string — this is Entra ID password auth,
+    not classic SQL Server auth, despite the login-looking name), password sourced from a new
+    secret pipeline variable (`DBPassword`) and never inlined into the script body, same convention
+    as `ExternalRabbitMqPassword`/`ShovelE2EDaemonClientSecret`.
+  - **Opt-in, graceful skip**: omitting `-JobsDbConnectionString` skips Phase 4c with a note, same
+    as every other opt-in switch added to this script — it does not turn a missing secret into a
+    pipeline failure.
+  - **Tested**: `Get-WwJobsDbVerdict` (the pure bucket-evaluation function — no DB access) has new
+    Pester coverage in `Tests/Integration/Test-ShovelBridgeE2E.Tests.ps1` (this script's first ever
+    Pester file); the live SQL calls themselves are proven by actually running the pipeline, same as
+    the rest of this integration-only script.
+
+- **2026-08-31 — CORRECTION: `devops_warewolf` is plain SQL authentication, NOT Entra ID.** The
+  entry above (and every earlier entry quoting the decrypted `NewSqlServerSource.bite` connection
+  string) took `Authentication=Active Directory Password` at face value. Attempting Phase 4c's
+  first live corroboration run failed at the connection step with `AdalException: Could not
+  discover a user realm` (identical failure via both legacy `System.Data.SqlClient` and `sqlcmd
+  -G`), and `devops_warewolf` could not be found as an Entra user anywhere in tenant
+  `ca0cc53b-...` by UPN, `mailNickname`, or `mail`. **Confirmed directly**, not inferred: `SELECT
+  name, type_desc, authentication_type_desc FROM sys.database_principals WHERE name =
+  'devops_warewolf'` returned `SQL_USER` / `INSTANCE` — a genuine SQL Server login, the
+  `Authentication=Active Directory Password` keyword in every prior transcription was simply
+  wrong (a documentation error, not a live config drift — nothing about the login itself changed).
+  Fixed the connection string in `pipeline-LOADTEST.yml` to plain SQL auth (`User
+  ID=devops_warewolf;Password=...`, no `Authentication` keyword) — `Test-ShovelBridgeE2E.ps1`'s
+  own `-JobsDbConnectionString` doc comment was already auth-mode-agnostic and needed no change.
+  **First successful corroboration, once the auth mode was fixed** (local run, correlationId
+  prefix `e135cd6825044c6b8946dbc3c0658ef9`, same session): `dbo.jobs1` shows **996/1000** rows,
+  all `FINISHED` with zero errors (no duplicate-success bug) — **4 sequence numbers (`127`, `131`,
+  `151`, `152`) never got a `dbo.jobs1` row at all**, i.e. never reached
+  `RabbitProcess`'s own DB activity. This is a tighter, DB-confirmed number than the harness's own
+  in-flight report of "998/1000 resolved, 2 still pending" (that run's process was killed by a
+  10-minute tool timeout before it printed its own final verdict) — the 2-message gap between
+  "998 resolved" and "996 finished" is consistent with 2 of the 4 missing messages having reached
+  a terminal status via a path that never touches `dbo.jobs1` at all (a denial/malformed-message
+  outcome, recorded by `RecordTerminalOutcomeAsync` before `_executor.Execute()` is ever called),
+  while the other 2 remain genuinely stuck — the exact "claimed, no result, no dead-letter" pattern
+  documented repeatedly elsewhere in this log. This is Phase 4c doing exactly what it was built
+  for: surfacing a discrepancy the harness's own result-poll path couldn't see on its own.
+  - **Follow-up, same session — the 4 missing sequence numbers resolve to TWO distinct root
+    causes, confirmed by direct evidence, not inference**:
+    - **`-000151` / `-000152`: engine-side, and now proven.** `GET
+      /secure/servicebus-result/{correlationId}` for both returned `200` with `status:
+      "InvalidToken"`, `error: "Token validation failed: A task was canceled."`, at the
+      **identical** `completedAtUtc` (`2026-08-31T15:25:21.9641...Z`) — this is exactly the
+      `EntraBearerTokenValidator.ValidateAsync`-cancelled-by-the-invocation's-own-token theory
+      flagged as a *working theory, not yet proven by a direct correlationId-to-exception join*
+      in the 2026-08-16 entry above. **Now proven**: two messages failing token validation at
+      the exact same instant is consistent with a shared invocation-level cancellation (host
+      self-throttling / lock-expiry-triggered abandonment), not two independent token problems.
+    - **`-000127` / `-000131`: a genuine bridge-side loss, not an engine problem at all.** `GET
+      /secure/servicebus-result` returned `404` for both (no result ever recorded — consistent
+      with "still pending"). A temporary `Listen`-rights SAS rule (created and torn down the
+      same run, same technique as every prior peek in this log) was used to scan the
+      **entire** active queue (0 messages — fully drained) and the **entire** dead-letter
+      subqueue (19,459 messages — unchanged from the pre-run baseline, i.e. this run added
+      **zero** new dead-letters) for either correlationId. **Zero matches in either.** The
+      harness's own publish phase reported `Published 1000 message(s)` with no publish errors
+      (a publish failure would have thrown per `PublishToRabbitMqAsync` — see the Phase 4b
+      header comment), so these two were successfully published to RabbitMQ but never arrived
+      at Service Bus at all — lost specifically in the RabbitMQ→Shovel bridge itself. This is
+      the first time in this log a "missing" message has been proven absent from BOTH Service
+      Bus sub-queues rather than merely "not found by the correlationId prefix filter" — ruling
+      out an engine-side execution/dead-letter bug for these two as conclusively as the evidence
+      allows without SSH/Prometheus access to `rabbitmq.warewolf.online` (still not available —
+      see the 2026-08-15 correction entry above on why that avenue was abandoned before).
+    - **Net**: of this run's 4 "missing" messages, 2 are an engine capacity/cancellation issue
+      (worth investigating alongside the `MAX_CONCURRENT_EXECUTIONS`/`maxConcurrentCalls` work
+      earlier in this log) and 2 are a genuine, still-open Shovel bridge-delivery gap at a very
+      low rate (0.2%) — a materially smaller and better-characterised problem than any prior
+      entry in this log, but not yet fully closed.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

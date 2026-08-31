@@ -209,6 +209,30 @@
     so the engine is warm well before Phase 4 starts its clock. Default: 120. A failed/timed-out
     pre-warm is logged as a warning, not a hard failure - Phase 4 still runs and may recover on
     its own retries.
+
+.PARAMETER JobsDbConnectionString
+    OPT-IN. Only meaningful with -VerifyWorkflowExecution. A SQL-auth connection string (e.g.
+    the 'devops_warewolf' login already granted db_datareader/EXECUTE on schema dbo - see
+    Resources/rabbit/Provision-ShovelBridgeSchema.sql's Grants section) for the database
+    RabbitProcess.bite itself writes to via usp_jobs1_LogStart/_LogProcessing/_LogFinished[
+    WithError]. When supplied, a new Phase 4c reconciles dbo.jobs1 directly against
+    -MessageCount: usp_jobs1_Summary (scoped to this run's own start time, never the whole
+    table - see the 2026-08-13 "shared, reused source queue" caveat elsewhere in this repo for
+    why an unscoped query across every historical run would be misleading) for the headline
+    succeeded/duplicate/stuck buckets, plus a missing-sequence-number check (which of the N
+    expected '<prefix><CorrelationId>-NNNNNN' messages never got so much as a STARTED row at
+    all - a message lost/denied/dead-lettered before RabbitProcess's own DB activity ever ran,
+    which usp_jobs1_Summary's own aggregation cannot see since it only groups rows that already
+    exist). Skipped with a note (not a hard failure) when omitted, same as every other opt-in
+    switch in this script.
+.PARAMETER JobsDbMessageContentPrefix
+    Only used when -JobsDbConnectionString is supplied. The literal prefix RabbitProcess's
+    MessageContent carries ahead of the '-{correlationId}' suffix - see -WorkflowInputsJson's
+    own '{"message":"loadtest-{correlationId}"}' convention. Default: 'loadtest-'.
+.PARAMETER JobsDbStuckThresholdMinutes
+    Only used when -JobsDbConnectionString is supplied. Passed straight through to
+    usp_jobs1_Summary's own @StuckThresholdMinutes. Default: '15' (that procedure's own
+    default).
 #>
 [CmdletBinding()]
 param(
@@ -282,7 +306,16 @@ param(
     [string] $EngineBaseUrl,
     [securestring] $ResultPollAuthToken,
     [int]    $ResultTimeoutSeconds = 90,
-    [int]    $EnginePrewarmTimeoutSeconds = 120
+    [int]    $EnginePrewarmTimeoutSeconds = 120,
+
+    # ── Database verification (opt-in) ──────────────────────────────────────
+    [securestring] $JobsDbConnectionString,
+    [string] $JobsDbMessageContentPrefix = 'loadtest-',
+    [string] $JobsDbStuckThresholdMinutes = '15',
+
+    # Test hook: dot-source the pure helpers for unit testing (matches the same
+    # convention already used by Configure-RabbitMqShovel.ps1 / Invoke-WwQueueLoadTest.ps1).
+    [switch] $LoadFunctionsOnly
 )
 
 Set-StrictMode -Version Latest
@@ -436,6 +469,44 @@ function Test-ServiceBusQueueExists {
         return $null
     }
 }
+
+function Get-WwJobsDbVerdict {
+    <#
+        Evaluates a usp_jobs1_Summary result row (plus an optional list of sequence numbers
+        that never got so much as a STARTED row in dbo.jobs1 at all) against the expected
+        -MessageCount and returns a verdict object. Pure function - no DB access - so it is
+        unit-testable with fabricated rows (see Test-ShovelBridgeE2E.Tests.ps1).
+
+        "Missing" (a sequence number with zero jobs1 rows) is deliberately tracked SEPARATELY
+        from usp_jobs1_Summary's own buckets: that procedure aggregates over rows that already
+        exist, so a message dead-lettered/denied/lost before RabbitProcess's own DB activity
+        ever ran is invisible to it - it never appears in ANY of Summary's counts, not even
+        FailedAllAttempts or StillInProcess_Incomplete.
+    #>
+    param(
+        [Parameter(Mandatory)] $SummaryRow,
+        [Parameter(Mandatory)][int] $ExpectedMessageCount,
+        [int[]] $MissingSeqNums = @()
+    )
+    $succeeded          = [int]$SummaryRow.SucceededTotal
+    $duplicates         = [int]$SummaryRow.DuplicateSuccess_ReliabilityBug
+    $stuckIncomplete    = [int]$SummaryRow.StillInProcess_Incomplete
+    $stuckPastThreshold = [int]$SummaryRow.StillInProcess_StuckPastThreshold
+    $missingCount       = @($MissingSeqNums).Count
+
+    [pscustomobject]@{
+        Expected              = $ExpectedMessageCount
+        Succeeded             = $succeeded
+        MissingCount          = $missingCount
+        MissingSeqNums        = @($MissingSeqNums)
+        DuplicateSuccessCount = $duplicates
+        StillIncomplete       = $stuckIncomplete
+        StuckPastThreshold    = $stuckPastThreshold
+        IsClean               = ($succeeded -eq $ExpectedMessageCount) -and ($duplicates -eq 0) -and ($missingCount -eq 0)
+    }
+}
+
+if ($LoadFunctionsOnly) { return }
 
 # ════════════════════════════════════════════════════════════════════════════
 # Phase 0 — Pre-flight
@@ -932,6 +1003,12 @@ try {
     # ════════════════════════════════════════════════════════════════════════
     Write-Phase 'Phase 4  Publish + verify via E2EHarness'
 
+    # Captured before publishing starts so Phase 4c's own dbo.jobs1 query can scope itself to
+    # THIS run's own rows (usp_jobs1_Summary @FromUtc=...) rather than the whole, shared,
+    # never-purged table (see the 2026-08-13 "correlation looks across the ENTIRE table
+    # history" caveat in Resources/rabbit/Provision-ShovelBridgeSchema.sql).
+    $runStartUtc = (Get-Date).ToUniversalTime()
+
     if ($VerifyWorkflowExecution) {
         $resultTokenSecure = if ($ResultPollAuthToken) { $ResultPollAuthToken } else { $MessageAuthToken }
         $harnessArgs = @(
@@ -1027,6 +1104,103 @@ try {
         }
     } catch {
         Write-Note "Post-run diagnostics query itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"
+    }
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 4c — Database verification (dbo.jobs1, opt-in via -JobsDbConnectionString)
+    # ════════════════════════════════════════════════════════════════════════
+    # RabbitProcess.bite writes its own start/finish rows here via usp_jobs1_LogStart/
+    # _LogProcessing/_LogFinished[WithError] — see Resources/rabbit/Provision-ShovelBridgeSchema.sql.
+    # This is independent evidence from the harness's own /secure/servicebus-result poll: it
+    # proves the WORKFLOW BODY actually ran, not just that the trigger recorded a result, and it
+    # survives whatever bugs the result-poll path itself has had historically (see
+    # docs/ShovelBridge-Architecture.md's 24-unexplained-HttpError and load-balanced-instance-404
+    # entries). Always attempted when supplied (pass or fail), same as Phase 4b above.
+    if ($JobsDbConnectionString) {
+        Write-Phase 'Phase 4c  Database verification (dbo.jobs1)'
+        try {
+            $loadTestScript = Join-Path $PSScriptRoot '..\..\Invoke-WwQueueLoadTest.ps1'
+            if (-not (Test-Path -LiteralPath $loadTestScript)) {
+                throw "Invoke-WwQueueLoadTest.ps1 not found at $loadTestScript (needed for its Invoke-WwSqlQuery helper)."
+            }
+            # Dot-sourcing shares scope, but LoadFunctionsOnly returns before any of THAT
+            # script's own params are used for anything — safe even though none are passed here.
+            . $loadTestScript -LoadFunctionsOnly
+
+            $jobsDbConnStringPlain = ConvertFrom-SecureStringPlain $JobsDbConnectionString
+            $fromUtcSql            = $runStartUtc.ToString('yyyy-MM-ddTHH:mm:ss.fffZ')
+            $escapedPrefix         = $JobsDbMessageContentPrefix.Replace("'", "''")
+
+            Write-Step "EXEC dbo.usp_jobs1_Summary (scoped to this run, FromUtc=$fromUtcSql)"
+            $summaryRows = Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query @"
+EXEC dbo.usp_jobs1_Summary @FromUtc = '$fromUtcSql', @StuckThresholdMinutes = '$JobsDbStuckThresholdMinutes';
+"@
+            if (-not $summaryRows -or @($summaryRows).Count -eq 0) {
+                throw 'usp_jobs1_Summary returned no rows.'
+            }
+            $summaryRow = @($summaryRows)[0]
+
+            Write-Step "Checking for sequence numbers with zero dbo.jobs1 rows (prefix '$JobsDbMessageContentPrefix')"
+            $missingRows = Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query @"
+;WITH Nums AS (
+    SELECT TOP ($MessageCount) ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS SeqNum
+    FROM sys.all_objects a CROSS JOIN sys.all_objects b
+),
+Logged AS (
+    SELECT DISTINCT TRY_CAST(RIGHT(MessageContent, CHARINDEX('-', REVERSE(MessageContent)) - 1) AS INT) AS SeqNum
+    FROM dbo.jobs1
+    WHERE MessageContent LIKE '$escapedPrefix%'
+      AND TRY_CONVERT(DATETIME2(3), CreatedAtUtc, 127) >= '$fromUtcSql'
+)
+SELECT Nums.SeqNum AS MissingSeqNum
+FROM Nums
+WHERE NOT EXISTS (SELECT 1 FROM Logged l WHERE l.SeqNum = Nums.SeqNum)
+ORDER BY Nums.SeqNum;
+"@
+            $missingSeqNums = @($missingRows | ForEach-Object { [int]$_.MissingSeqNum })
+
+            $verdict = Get-WwJobsDbVerdict -SummaryRow $summaryRow -ExpectedMessageCount $MessageCount -MissingSeqNums $missingSeqNums
+
+            Write-Host "  dbo.jobs1 reconciliation (expected $($verdict.Expected)):" -ForegroundColor White
+            Write-Host "    Succeeded (>=1 FINISHED)        : $($verdict.Succeeded)" -ForegroundColor White
+            Write-Host "    Missing (zero jobs1 rows at all): $($verdict.MissingCount)" -ForegroundColor White
+            Write-Host "    Duplicate successes (bug)       : $($verdict.DuplicateSuccessCount)" -ForegroundColor White
+            Write-Host "    Still incomplete                : $($verdict.StillIncomplete)" -ForegroundColor White
+            Write-Host "    Stuck past threshold            : $($verdict.StuckPastThreshold)" -ForegroundColor White
+
+            if ($verdict.IsClean) {
+                Write-Ok "dbo.jobs1 confirms all $($verdict.Expected) messages were delivered and succeeded exactly once."
+            } else {
+                if ($verdict.MissingCount -gt 0) {
+                    $shown = ($verdict.MissingSeqNums | Select-Object -First 20) -join ', '
+                    $more  = if ($verdict.MissingSeqNums.Count -gt 20) { " (+$($verdict.MissingSeqNums.Count - 20) more)" } else { '' }
+                    Write-Note "Missing sequence numbers (never reached RabbitProcess's own DB activity at all): $shown$more"
+                }
+                if ($verdict.DuplicateSuccessCount -gt 0) {
+                    Write-Note "Fetching duplicate-success detail (usp_jobs1_GetDuplicateSuccesses)..."
+                    $dupRows = Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query @"
+EXEC dbo.usp_jobs1_GetDuplicateSuccesses @FromUtc = '$fromUtcSql';
+"@
+                    $dupRows | Format-Table -AutoSize | Out-String -Width 160 | Write-Host
+                }
+                if (($verdict.StillIncomplete -gt 0) -or ($verdict.StuckPastThreshold -gt 0)) {
+                    Write-Note 'Fetching non-FINISHED row detail...'
+                    $notFinishedRows = Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query @"
+SELECT TRY_CAST(RIGHT(MessageContent, CHARINDEX('-', REVERSE(MessageContent)) - 1) AS INT) AS SeqNum,
+       Status, AttemptNumber, StartedAtUtc, FinishedAtUtc, ErrorCode, ErrorMessage
+FROM dbo.jobs1
+WHERE MessageContent LIKE '$escapedPrefix%'
+  AND TRY_CONVERT(DATETIME2(3), CreatedAtUtc, 127) >= '$fromUtcSql'
+  AND Status <> 'FINISHED'
+ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
+"@
+                    $notFinishedRows | Format-Table -AutoSize | Out-String -Width 160 | Write-Host
+                }
+                Write-Note "dbo.jobs1 did NOT confirm clean delivery of all $($verdict.Expected) messages — see detail above."
+            }
+        } catch {
+            Write-Note "Phase 4c database verification itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"
+        }
     }
 
     if ($harnessExitCode -ne 0) {
