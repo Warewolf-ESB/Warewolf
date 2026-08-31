@@ -419,6 +419,7 @@ looks like a missing app role rather than a config gap.
 | `-LicenseCheckEnabled` | bool (nullable) | engine default `true` | `WAREWOLF_LICENSE_CHECK_ENABLED`. |
 | `-StructuredLogs` | bool (nullable) | `true` | `STRUCTURED_LOGS` — JSON console output. |
 | `-AlignHostJsonLogLevel` | switch | off | **Opt-in.** Also rewrite the published `host.json` logLevel to the mapped level. Tunes only the Functions **host** process verbosity — not needed for the engine's own logging. |
+| `-ServiceBusMaxConcurrentCalls` | int (nullable) | off (SDK default) | **Opt-in.** Sets `host.json`'s `extensions.serviceBus.maxConcurrentCalls` — bounds how many Service Bus messages the Functions host *dispatches* to the trigger concurrently, upstream of and independent from `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS`'s own semaphore gate inside the trigger's code. See WOLF-8512, `docs/ShovelBridge-Architecture.md`. |
 
 ### Logging output / control
 

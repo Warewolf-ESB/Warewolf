@@ -247,6 +247,38 @@ Describe 'Deploy-WwExecutionEngine — helper functions' {
             } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
         }
     }
+
+    Context 'service-bus concurrency helper' {
+        It 'Update-HostJsonServiceBusConcurrency sets maxConcurrentCalls and preserves sibling properties' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "extensions": { "serviceBus": { "autoCompleteMessages": false, "maxAutoLockRenewalDuration": "00:11:00" } } }' |
+                Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonServiceBusConcurrency -HostJsonPath $hj -MaxConcurrentCalls 2 | Should -BeTrue
+                $j = Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json
+                $j.extensions.serviceBus.maxConcurrentCalls | Should -Be 2
+                $j.extensions.serviceBus.autoCompleteMessages | Should -BeFalse
+                $j.extensions.serviceBus.maxAutoLockRenewalDuration | Should -Be '00:11:00'
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+        It 'Update-HostJsonServiceBusConcurrency overwrites an already-set value (idempotent)' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "extensions": { "serviceBus": { "maxConcurrentCalls": 8 } } }' |
+                Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonServiceBusConcurrency -HostJsonPath $hj -MaxConcurrentCalls 2 | Should -BeTrue
+                (Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json).extensions.serviceBus.maxConcurrentCalls | Should -Be 2
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+        It 'Update-HostJsonServiceBusConcurrency no-ops (returns $false) when extensions.serviceBus is absent' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "logging": { "logLevel": { "default": "Information" } } }' | Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonServiceBusConcurrency -HostJsonPath $hj -MaxConcurrentCalls 2 | Should -BeFalse
+                (Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json).PSObject.Properties['extensions'] | Should -BeNullOrEmpty
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+    }
 }
 
 Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
@@ -378,6 +410,30 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $callArgs = $script:commonArgs.Clone(); $callArgs.ExecutionLogLevel = 'DEBUG'; $callArgs.AlignHostJsonLogLevel = $true
         $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
         $out | Should -Match "Aligning host.json logLevel \(default \+ Warewolf\.\*\) -> 'Debug'"
+    }
+
+    It 'skips host.json serviceBus maxConcurrentCalls override by default (opt-in only)' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Not -Match 'Setting host.json extensions.serviceBus.maxConcurrentCalls'
+    }
+
+    It 'sets host.json serviceBus maxConcurrentCalls with -ServiceBusMaxConcurrentCalls' {
+        # The baseline fixture host.json (BeforeEach above) has no extensions.serviceBus
+        # section, so this test writes one matching the real, checked-in host.json shape
+        # (autoCompleteMessages + maxAutoLockRenewalDuration) before invoking the deploy.
+        '{ "extensions": { "serviceBus": { "autoCompleteMessages": false, "maxAutoLockRenewalDuration": "00:11:00" } } }' |
+            Set-Content (Join-Path $global:pubDir 'host.json')
+        $callArgs = $script:commonArgs.Clone(); $callArgs.ServiceBusMaxConcurrentCalls = 2
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Setting host.json extensions.serviceBus.maxConcurrentCalls -> 2'
+        $out | Should -Match 'host.json serviceBus maxConcurrentCalls set.'
+    }
+
+    It 'notes when -ServiceBusMaxConcurrentCalls is set but host.json has no extensions.serviceBus section' {
+        # Baseline fixture host.json (BeforeEach above) has no extensions.serviceBus section.
+        $callArgs = $script:commonArgs.Clone(); $callArgs.ServiceBusMaxConcurrentCalls = 2
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'host.json has no extensions.serviceBus section; skipping maxConcurrentCalls override.'
     }
 
     It 'uses the WAREWOLF_ App Insights variable (not the standard name) when AI enabled' {

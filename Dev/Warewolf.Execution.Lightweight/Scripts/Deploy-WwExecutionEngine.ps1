@@ -136,6 +136,14 @@
     the EXECUTIONLOGLEVEL-mapped MEL level.  NOT required for the engine's own
     logging — it only tunes the Functions HOST process verbosity.  Default: off.
 
+.PARAMETER ServiceBusMaxConcurrentCalls
+    OPT-IN.  Sets host.json's extensions.serviceBus.maxConcurrentCalls — bounds how many
+    Service Bus messages the Functions host DISPATCHES to the trigger concurrently, upstream
+    of and independent from ServiceBusTriggerOptions.MaxConcurrentExecutions' own semaphore
+    gate inside the trigger's own code (WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS).
+    Left at the SDK default (unset) unless explicitly supplied.  See WOLF-8512,
+    docs/ShovelBridge-Architecture.md.
+
 .PARAMETER LicenseCheckEnabled
     WAREWOLF_LICENSE_CHECK_ENABLED (engine default: true).
 
@@ -286,6 +294,7 @@ param(
     [nullable[bool]] $LicenseCheckEnabled,
     [nullable[bool]] $StructuredLogs,
     [switch] $AlignHostJsonLogLevel,      # opt-in: also rewrite host.json logLevel (host-process only)
+    [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
 
     # ── Logging output ───────────────────────────────────────────────────────
     [string] $LogDir,
@@ -644,6 +653,30 @@ function Update-HostJsonLogLevel {
     }
     $json | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $HostJsonPath -Encoding UTF8
     return $mel
+}
+
+function Update-HostJsonServiceBusConcurrency {
+    <#
+        Set/overwrite host.json's extensions.serviceBus.maxConcurrentCalls — bounds how many
+        Service Bus messages the Functions host dispatches to the trigger concurrently, ahead
+        of and independent from ServiceBusTriggerOptions.MaxConcurrentExecutions' own semaphore
+        gate inside the trigger's own code (see WOLF-8512, docs/ShovelBridge-Architecture.md).
+        No-op (returns $false) when host.json has no extensions.serviceBus section. Preserves
+        every other property already under extensions.serviceBus (autoCompleteMessages,
+        maxAutoLockRenewalDuration, ...).
+    #>
+    param([Parameter(Mandatory)][string] $HostJsonPath, [Parameter(Mandatory)][int] $MaxConcurrentCalls)
+    $json = Get-Content -LiteralPath $HostJsonPath -Raw | ConvertFrom-Json
+    $extensions = $json.PSObject.Properties['extensions']
+    if (-not $extensions -or -not $extensions.Value.PSObject.Properties['serviceBus']) { return $false }
+    $sb = $extensions.Value.serviceBus
+    if ($sb.PSObject.Properties['maxConcurrentCalls']) {
+        $sb.maxConcurrentCalls = $MaxConcurrentCalls
+    } else {
+        $sb | Add-Member -NotePropertyName 'maxConcurrentCalls' -NotePropertyValue $MaxConcurrentCalls
+    }
+    $json | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $HostJsonPath -Encoding UTF8
+    return $true
 }
 
 function Save-DeploySummary {
@@ -1384,6 +1417,27 @@ try {
         }
     } else {
         Write-Note 'host.json logLevel alignment skipped (worker logging is code-driven; pass -AlignHostJsonLogLevel to also tune the host process).'
+    }
+
+    # 3.0c OPTIONAL host.json Service Bus maxConcurrentCalls override
+    # (-ServiceBusMaxConcurrentCalls). Bounds how many Service Bus messages the Functions
+    # host DISPATCHES to the trigger at once — upstream of, and independent from,
+    # ServiceBusTriggerOptions.MaxConcurrentExecutions' own semaphore gate inside the
+    # trigger's own code (WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS). Left at
+    # the SDK default (unset) unless explicitly requested — see WOLF-8512,
+    # docs/ShovelBridge-Architecture.md.
+    if ($ServiceBusMaxConcurrentCalls) {
+        $hostJsonPath = Join-Path $StagingDir 'host.json'
+        if (Test-Path -LiteralPath $hostJsonPath) {
+            Write-Step "Setting host.json extensions.serviceBus.maxConcurrentCalls -> $ServiceBusMaxConcurrentCalls"
+            if (Update-HostJsonServiceBusConcurrency -HostJsonPath $hostJsonPath -MaxConcurrentCalls $ServiceBusMaxConcurrentCalls) {
+                Write-Ok 'host.json serviceBus maxConcurrentCalls set.'
+            } else {
+                Write-Note 'host.json has no extensions.serviceBus section; skipping maxConcurrentCalls override.'
+            }
+        } else {
+            Write-Note 'host.json not found in staging dir; skipping maxConcurrentCalls override.'
+        }
     }
 
     # 3.1 secure.config — encrypted: stage as-is; plaintext: AES-encrypt automatically.

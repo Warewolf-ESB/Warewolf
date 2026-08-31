@@ -1446,6 +1446,40 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     where `ReleaseClaim` demonstrably does fire). (4) Re-run the load test with telemetry now fixed
     so a future recurrence can be root-caused from captured exceptions/traces instead of archaeology.
 
+- **2026-08-31 — recommendation (1) actioned, both live and in the pipeline.** A colleague's
+  1000-message `-VerifyWorkflowExecution` run (~13:20-13:32 UTC) reproduced the same starvation
+  signature independently: App Insights (`warewolfserver-uat-ai`) showed 467 exceptions in that
+  window — `OperationCanceledException` ×302 and `TimeoutException` ×88 at
+  `ServiceBusWorkflowTriggerFunction.ProcessAuthenticatedMessageAsync`, plus `OutOfMemoryException`
+  ×14 at `ActivityParser.Parse` — while the RabbitMQ Shovel and source queue stayed healthy
+  throughout (`state: running`, `messages: 0` post-run), confirming the loss is downstream of the
+  bridge, in the engine's own capacity, same as every prior entry in this section.
+  - **Live mitigation**: `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS` set to `2` directly
+    on `WarewolfServer-UAT` (`az functionapp config appsettings set`) — confirmed applied (Activity
+    Log: `Update web sites config` succeeded) and the app healthy post-change (`GET /apis.json` →
+    `200`). **Not durable**: this is a Kudu-only app setting, not staged by any deploy script — the
+    exact same "silently reverts on redeploy" trap already hit once by the persistence-flag
+    regression (see the 2026-08-15 entry above). Revisit whether this should become a checked-in
+    `Deploy-WwExecutionEngine.ps1` app-setting default rather than a live-only override.
+  - **Durable, complementary fix**: `Deploy-WwExecutionEngine.ps1` gained a new opt-in
+    `-ServiceBusMaxConcurrentCalls <int>` parameter (mirrors the existing `-AlignHostJsonLogLevel`
+    pattern — `Update-HostJsonServiceBusConcurrency`, staged in Phase 3 alongside the log-level
+    alignment) that sets `host.json`'s `extensions.serviceBus.maxConcurrentCalls`. This is a
+    **different** concurrency gate from `MAX_CONCURRENT_EXECUTIONS`: it bounds how many messages the
+    Functions host *dispatches* to the trigger at all, upstream of and independent from the
+    trigger's own semaphore — addressing the "many invocations in flight waiting on the semaphore,
+    each still holding a lock and cold-start memory pressure, even though only N execute at once"
+    half of the starvation theory. `pipeline-LOADTEST.yml`'s `Deploy_UAT` job now passes
+    `-ServiceBusMaxConcurrentCalls 2` (matching the live app-setting value above), so a future
+    pipeline redeploy of `WarewolfServer-UAT` no longer silently drops this mitigation the way the
+    persistence flag did — it's baked into the deploy call itself, not left as a manual follow-up.
+  - **Not yet actioned**: recommendation (2) (`ThreadPool.SetMinThreads()` floor) is implemented in
+    `ThreadPoolStartupConfigurator`/`Program.cs` (this same branch, commit `78aa65fe71`) but its own
+    deployment/verification status against a live pipeline run is still open — see that commit's own
+    notes. Re-running the full 1000-message load test with all of the above in place (live
+    concurrency drop + durable `maxConcurrentCalls` cap + ThreadPool floor + telemetry flush) is the
+    next concrete step to confirm whether the starvation theory is now fully closed.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a
