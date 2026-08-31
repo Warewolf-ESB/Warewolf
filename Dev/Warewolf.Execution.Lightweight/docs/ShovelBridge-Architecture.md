@@ -1576,6 +1576,26 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
       earlier in this log) and 2 are a genuine, still-open Shovel bridge-delivery gap at a very
       low rate (0.2%) — a materially smaller and better-characterised problem than any prior
       entry in this log, but not yet fully closed.
+  - **Fix for the `-000151`/`-000152` half (engine-side)**: `ServiceBusWorkflowTriggerFunction
+    .Run`'s `catch (Exception ex)` around `_tokenValidator.ValidateAsync` was a blanket catch —
+    a `TaskCanceledException` from the invocation's own `cancellationToken` firing mid-validation
+    (most likely `EntraBearerTokenValidator`'s cold OIDC-metadata fetch, which despite the
+    validator being a DI singleton still has to complete once per app lifetime, racing
+    host-level burst/cold-start pressure) was treated identically to a genuinely bad token: a
+    permanent `InvalidToken` result saved AND the message dead-lettered on the very first
+    attempt, zero retry. Exactly the same misclassification bug already fixed for
+    `WorkflowExecutor.Execute`'s `OutOfMemoryException` via `WorkflowExecutionResult
+    .IsTransientFailure` on 2026-08-14 — just never applied to this earlier validation step.
+    **Fix**: a new `catch (Exception ex) when (IsOwnInvocationCancellation(ex, cancellationToken))`
+    clause, ahead of the existing catch-all, releases the claim and rethrows instead — Service
+    Bus's own retry/backoff applies, and a retry moments later should succeed since the cache is
+    then warm regardless of which attempt populated it. `IsOwnInvocationCancellation` is a pure
+    classification helper (no I/O), unit-tested directly (4 new tests in
+    `ServiceBusWorkflowTriggerFunctionTests.cs`) rather than driving the whole `Run(...)` call —
+    same reason `WorkflowExecutor.BuildTransientFailureResult` was extracted and tested the same
+    way for the OOM fix; `_tokenValidator` is a sealed concrete class needing a live OIDC call,
+    deliberately left to integration tests by this file's own existing convention. Not yet
+    deployed/re-verified against a live pipeline run.
 
 ## Promotion status
 

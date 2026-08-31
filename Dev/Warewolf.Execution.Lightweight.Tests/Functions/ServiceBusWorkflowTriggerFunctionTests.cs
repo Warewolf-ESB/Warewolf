@@ -294,6 +294,61 @@ public class ServiceBusWorkflowTriggerFunctionTests
         StringAssert.Contains(actions.LastDeadLetterDescription, "not configured");
     }
 
+    // ── IsOwnInvocationCancellation(...) — pure classification helper (WOLF-8512) ──
+    //    No I/O, no need to fake the sealed EntraBearerTokenValidator - same reason
+    //    WorkflowExecutorTransientFailureTests tests BuildTransientFailureResult directly
+    //    rather than driving the whole Execute(...) call for the analogous OOM fix.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void IsOwnInvocationCancellation_OwnTokenCancelled_ReturnsTrue()
+    {
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+        var ex = new TaskCanceledException();
+
+        Assert.IsTrue(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void IsOwnInvocationCancellation_OperationCanceledException_OwnTokenCancelled_ReturnsTrue()
+    {
+        // TaskCanceledException is the concrete type actually observed live ("A task was
+        // canceled."), but the classification must hold for the base type too - anything
+        // awaited that respects the token can surface either.
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+        var ex = new OperationCanceledException();
+
+        Assert.IsTrue(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void IsOwnInvocationCancellation_TokenNotCancelled_ReturnsFalse()
+    {
+        // A cancellation-shaped exception surfacing while OUR token is still live cannot be
+        // our own invocation being cancelled - do not misclassify it as transient.
+        using var cts = new CancellationTokenSource();
+        var ex = new TaskCanceledException();
+
+        Assert.IsFalse(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void IsOwnInvocationCancellation_GenuineValidationFailure_ReturnsFalse()
+    {
+        using var cts = new CancellationTokenSource();
+        cts.Cancel(); // even with our own token already cancelled for an unrelated reason...
+        var ex = new Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException("token expired");
+
+        // ...a genuinely bad token must never be reclassified as transient just because the
+        // invocation also happened to be cancelling around the same time.
+        Assert.IsFalse(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
+    }
+
     // ── ProcessAuthenticatedMessageAsync(...) — post-authentication branches ────
 
     [TestMethod]

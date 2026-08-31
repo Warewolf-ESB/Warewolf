@@ -219,6 +219,28 @@ public sealed class ServiceBusWorkflowTriggerFunction
         {
             identity = await _tokenValidator.ValidateAsync(rawToken, cancellationToken).ConfigureAwait(false);
         }
+        catch (Exception ex) when (IsOwnInvocationCancellation(ex, cancellationToken))
+        {
+            // WOLF-8512: transient, NOT an invalid token. EntraBearerTokenValidator.ValidateAsync
+            // awaits _configManager.GetConfigurationAsync(cancellationToken) - a cold OIDC-metadata
+            // fetch the FIRST time any invocation needs it after this app starts (the validator is
+            // a DI singleton so this only happens once per app lifetime, not once per message - see
+            // this class's own constructor comment - but that one cold fetch still has to complete
+            // somewhere, and under host-level burst/cold-start pressure the invocation's own
+            // cancellationToken can fire before it does). The pre-fix behaviour below treated this
+            // identically to a genuinely bad token: a permanent InvalidToken result saved AND the
+            // message dead-lettered on the very first attempt, with zero retry - exactly the same
+            // misclassification bug already fixed for WorkflowExecutor.Execute's OutOfMemoryException
+            // via WorkflowExecutionResult.IsTransientFailure (see that fix's own doc comment). Release
+            // the claim and rethrow instead, so Service Bus's own retry/backoff applies - a retry
+            // moments later almost always succeeds, since the cache is then warm regardless of which
+            // attempt populated it.
+            _store.ReleaseClaim(correlationId);
+            _logger.LogWarning(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Token validation was cancelled (the trigger's own invocation cancellation fired mid-validation - most likely a cold OIDC-metadata fetch under host-level load, not an invalid token) — leaving message for standard Service Bus retry instead of a permanent InvalidToken dead-letter.",
+                correlationId);
+            throw;
+        }
         catch (Exception ex)
         {
             await RecordTerminalOutcomeAsync(
@@ -473,6 +495,25 @@ public sealed class ServiceBusWorkflowTriggerFunction
             deadLetterErrorDescription: TruncateDeadLetterDescription(reason),
             cancellationToken: cancellationToken).ConfigureAwait(false);
     }
+
+    /// <summary>
+    /// WOLF-8512: distinguishes "the trigger's own invocation was cancelled while
+    /// <c>EntraBearerTokenValidator.ValidateAsync</c> was awaiting something" (transient — should be
+    /// retried) from every other validation failure (genuinely bad token — should not be retried).
+    /// Pure classification, no I/O, so it is directly unit-testable without needing a live OIDC call
+    /// or a fake for the sealed <see cref="EntraBearerTokenValidator"/> — same reason
+    /// <c>WorkflowExecutor.BuildTransientFailureResult</c> was extracted as its own testable helper
+    /// for the analogous <see cref="OutOfMemoryException"/> fix.
+    ///
+    /// <para>
+    /// Checking <paramref name="cancellationToken"/>.<see
+    /// cref="CancellationToken.IsCancellationRequested"/> (rather than only the exception's own type)
+    /// guards against misclassifying an <see cref="OperationCanceledException"/> thrown for an
+    /// unrelated reason as this invocation's own cancellation.
+    /// </para>
+    /// </summary>
+    internal static bool IsOwnInvocationCancellation(Exception ex, CancellationToken cancellationToken) =>
+        ex is OperationCanceledException && cancellationToken.IsCancellationRequested;
 
     /// <summary>
     /// Azure Service Bus rejects a <c>deadLetterErrorDescription</c> longer than 4096 characters
