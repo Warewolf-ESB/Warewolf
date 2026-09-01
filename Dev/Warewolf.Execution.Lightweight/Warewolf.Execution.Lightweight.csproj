@@ -131,6 +131,12 @@
          at startup with TypeLoadException: 'Could not load type ... ITelemetryInitializer'. -->
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
 
+    <!-- Provides PerformanceCollectorModule (ENABLEPERFORMANCECOUNTERS). Already pulled in
+         transitively by the Functions AI package above (see its comment on the 2.x pin),
+         but referenced explicitly here so the dependency can't silently drift off that pin.
+         MUST stay on 2.23.0, same v2-core constraint as WorkerService above. -->
+    <PackageReference Include="Microsoft.ApplicationInsights.PerfCounterCollector" Version="2.23.0" />
+
     <!-- Pin to the version already required by Dev2.Activities → Dev2.Runtime.Services -->
     <PackageReference Include="Elastic.Clients.Elasticsearch" Version="8.15.6" />
 

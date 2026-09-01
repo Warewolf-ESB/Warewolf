@@ -16,6 +16,7 @@ namespace Warewolf.Execution.Lightweight.Logging
     ///   <item><term>EXECUTIONLOGLEVEL</term><description>Minimum log level (default: Info)</description></item>
     ///   <item><term>ENABLEAPPLICATIONINSIGHTS</term><description>Add AzureExecutionLogger to composite (default: false)</description></item>
     ///   <item><term>ENABLEELASTICSEARCHLOGGING</term><description>Add ElasticsearchExecutionLogger to composite (default: false)</description></item>
+    ///   <item><term>ENABLEPERFORMANCECOUNTERS</term><description>Register the AI PerformanceCollectorModule; only meaningful when ENABLEAPPLICATIONINSIGHTS is also true (default: false)</description></item>
     ///   <item><term>STRUCTURED_LOGS</term><description>Console output as JSON (default: true in Azure, false locally)</description></item>
     ///   <item><term>ELASTIC_DEBUG_MODE</term><description>Enable Elastic HTTP debug tracing (default: false)</description></item>
     ///   <item><term>ASPNETCORE_ENVIRONMENT</term><description>Selects logging profile (Development vs Production)</description></item>
@@ -40,6 +41,15 @@ namespace Warewolf.Execution.Lightweight.Logging
         /// <summary>Whether the Elasticsearch sink is enabled.</summary>
         public bool EnableElasticsearch { get; init; }
         public bool EnableConsoleLogging { get; init; }
+
+        /// <summary>
+        /// Whether the AI <c>PerformanceCollectorModule</c> (process memory/CPU counters, feeding
+        /// App Insights' <c>performanceCounters</c> table) is registered. Only takes effect when
+        /// <see cref="RegisterApplicationInsightsSdk"/> is also <c>true</c>. Opt-in and off by
+        /// default — deliberately not enabled on every deployment (extra collection overhead);
+        /// see <c>pipeline-LOADTEST.yml</c>'s UAT deploy for the current opt-in caller.
+        /// </summary>
+        public bool EnablePerformanceCounters { get; init; }
 
         /// <summary>Minimum log level gate shared by all sinks.</summary>
         public Dev2LogLevel MinimumLevel { get; init; }
@@ -90,6 +100,7 @@ namespace Warewolf.Execution.Lightweight.Logging
                 EnableConsoleLogging = IsEnabled("ENABLECONSOLELOGGING"),
                 RegisterApplicationInsightsSdk = IsEnabled("ENABLEAPPLICATIONINSIGHTS"), // SDK + telemetry: explicit opt-in only
                 EnableElasticsearch = IsEnabled("ENABLEELASTICSEARCHLOGGING"),
+                EnablePerformanceCounters = IsEnabled("ENABLEPERFORMANCECOUNTERS"),
                 MinimumLevel = ExecutionLogLevel.Read(),
                 StructuredJson = IsEnabled("STRUCTURED_LOGS") || !isDev,
                 ElasticDebugMode = IsEnabled("ELASTIC_DEBUG_MODE") && isDev,

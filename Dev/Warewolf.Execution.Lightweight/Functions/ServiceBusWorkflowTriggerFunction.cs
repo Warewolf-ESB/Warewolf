@@ -200,6 +200,15 @@ public sealed class ServiceBusWorkflowTriggerFunction
             return;
         }
 
+        // 1000-message ShovelBridge load test, 2026-09-01: 2 claimed correlation ids left
+        // ZERO telemetry (no jobs1 row, no exception, no timeout warning) — the process
+        // died before reaching any of this function's existing failure-path logging. This
+        // marker (and the two below, bracketing the call into IWorkflowExecutor.Execute)
+        // exist purely so a future silent death leaves a last-known-state trail.
+        _logger.LogInformation(
+            "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Claim acquired — proceeding to token validation. ElapsedSinceReceivedMs={ElapsedMs}",
+            correlationId, payload.Workflow, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+
         // ── Token extraction ────────────────────────────────────────────────────
         if (!message.ApplicationProperties.TryGetValue("Authorization", out var authObj)
             || authObj is not string authHeader
@@ -410,6 +419,9 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // dead-lettering once maxDeliveryCount is exhausted) rather than waiting forever
         // with no result ever recorded (see the 1000-message ShovelBridge load test
         // incidents of 2026-08-24/25).
+        _logger.LogInformation(
+            "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | About to call IWorkflowExecutor.Execute — last log point before the no-cancellation-seam call. ElapsedSinceReceivedMs={ElapsedMs} GcTotalMemoryBytes={GcTotalMemoryBytes} ProcessWorkingSetBytes={ProcessWorkingSetBytes}",
+            correlationId, payload.Workflow, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds, GC.GetTotalMemory(false), Environment.WorkingSet);
         var executionTask = Task.Run(() => _executor.Execute(executionRequest));
 
         // The concurrency slot is released only once execution actually finishes (success,
@@ -454,6 +466,10 @@ public sealed class ServiceBusWorkflowTriggerFunction
                 correlationId, payload.Workflow);
             throw;
         }
+
+        _logger.LogInformation(
+            "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution task returned. IsSuccess={IsSuccess} ElapsedSinceReceivedMs={ElapsedMs}",
+            correlationId, payload.Workflow, result.IsSuccess, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
 
         if (!result.IsSuccess && result.IsTransientFailure)
         {

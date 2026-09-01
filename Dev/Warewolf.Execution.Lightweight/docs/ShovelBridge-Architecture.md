@@ -1646,6 +1646,63 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
       **Not yet deployed/re-verified against a live pipeline run** — the 1000-message E2E
       acceptance run from the original plan is still outstanding.
 
+- **2026-09-01 — Local reproduction of the 1000-message load test (correlationId prefix
+  `bebfb24eea914ed1aa6ed4f1e7f743f0`), run to corroborate a clean CI result (build 30599,
+  `ShovelBridgeLoadTest_ExternalServiceBus`, 1000/1000 in 73.1s). Result: 998/1000** — 2
+  correlation ids (`-000858`, `-000859`) never resolved, the same "claimed, no result, no
+  dead-letter" signature documented repeatedly above. This confirms the 2026-08-31 fixes
+  (`ClaimStaleAfter` auto-resolution, `SettleAsync`, `TokenValidationFailureClassifier`) — which
+  that entry left "not yet deployed/re-verified" — do **not** fully close this bug class on their
+  own; `ClaimStaleAfter` resolution is confirmed present in the current code, so this is a
+  residual gap, not a regression of that fix.
+  - **Full evidence chain, all independently confirmed**:
+    - `dbo.jobs1`: exactly 998 rows for this run's prefix; `-000858`/`-000859` have **zero** rows
+      at all (never reached `RabbitProcess`'s own `usp_jobs1_LogStart`), even though their
+      immediate neighbors (`-000856`, `-000857`, `-000860`, `-000861`) all finished within the
+      same ~250ms burst window.
+    - App Insights (`warewolfserver-uat-ai`): **exactly one** trace line per correlation id, both
+      at `07:01:55Z` — `"Another delivery is already in flight for this correlation id"` (the
+      `ServiceBusWorkflowTriggerFunction.Run` dedupe branch at `TryClaim` failing). Nothing else,
+      ever, for either id: no exception, no `SlotWaitTimeout`/`ExecutionTimeout` warning (both DO
+      log when they fire), no `performanceCounters` rows (that table was completely empty for
+      this app before the fix below).
+    - RabbitMQ (`rabbitmq.warewolf.online`): source queue empty, `messages_unacknowledged=0`,
+      `redeliver (lifetime)=0` — rules out a Shovel/broker-side loss; both messages left RabbitMQ
+      cleanly.
+    - Service Bus dead-letter queue (`wwexecution-secure-trigger-queue-e2e`): exhaustively peeked
+      via the namespace `RootManageSharedAccessKey` (non-destructive `PeekMessagesAsync`, all
+      19,459 entries scanned) — **zero** matches for this run's correlation prefix; not
+      dead-lettered by `MaxDeliveryCountExceeded` or by the app.
+    - `activeMessageCount` on the same queue: `0`, checked repeatedly over 20+ minutes.
+  - **Conclusion**: a first delivery claimed both correlation ids and then produced literally no
+    further telemetry of any kind — consistent with the process dying outright (most likely OOM
+    under Consumption-plan burst pressure, the same class flagged throughout this log, though not
+    provable from the telemetry actually available — see the fix below) before reaching *any* of
+    this function's existing catch/timeout paths, all of which log when they fire. Neither active
+    nor dead-lettered nor executed 20+ minutes later, well past `ClaimStaleAfter`'s ~11-minute
+    window. **Open question for a future investigation**: why no further Service Bus redelivery
+    (expected roughly every `lockDuration=1min`) was ever observed for either id in that window.
+  - **Two remediations shipped this session, neither yet deployed/re-verified against a live
+    pipeline run**:
+    1. Three new `Information`-level log markers in `ServiceBusWorkflowTriggerFunction.cs`
+       bracketing the claimed-but-not-yet-settled span (claim acquired → about to call
+       `IWorkflowExecutor.Execute`, with an inline `GC.GetTotalMemory`/`Environment.WorkingSet`
+       snapshot at that highest-risk instant → execution task returned), so a future silent death
+       leaves a last-known-state trail even if the process dies before a full telemetry flush.
+    2. `PerformanceCollectorModule` (from `Microsoft.ApplicationInsights.PerfCounterCollector`,
+       previously pulled in transitively but never registered) is now wired up behind a new
+       opt-in `EnablePerformanceCounters`/`ENABLEPERFORMANCECOUNTERS` toggle
+       (`LoggingConfiguration.cs` → `Program.cs` → `Deploy-WwExecutionEngine.ps1
+       -EnablePerformanceCounters` → `pipeline-LOADTEST.yml`'s `Deploy_UAT` job), so App
+       Insights' `performanceCounters` table starts collecting process memory/CPU samples on the
+       next `Deploy_UAT` run.
+  - **Separate, lower-priority finding**: `Test-ShovelBridgeE2E.ps1`'s Phase 4c (`dbo.jobs1`
+    reconciliation) failed on this same run with a garbled `"Incorrect syntax near ')'."` SQL
+    error. Reproduced the identical query through the identical `Invoke-WwSqlQuery` helper 6/6
+    times afterward with no failure — points to a fragile child-`powershell.exe`-process/
+    stdout-parsing issue in that helper under resource contention, not a real query bug. Filed
+    separately; not yet actioned.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

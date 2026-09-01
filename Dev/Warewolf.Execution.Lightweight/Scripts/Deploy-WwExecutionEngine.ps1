@@ -119,6 +119,11 @@
     Enable Elasticsearch logging.  Requires -ElasticsearchSourcePath and Key Vault
     (the source's ConnectionString is WFAES-encrypted before deploy).
 
+.PARAMETER EnablePerformanceCounters
+    Register the Application Insights PerformanceCollectorModule (process memory/CPU
+    counters, feeding App Insights' performanceCounters table). Only meaningful when
+    -EnableAppInsights is also true. Off by default — opt-in per deployment.
+
 .PARAMETER ElasticsearchSourcePath
     Path to the user-supplied Elasticsearch source.  The file MUST be named
     exactly 'ElasticsearchLoggingSource.bite' (the engine reads that exact path).
@@ -221,6 +226,9 @@ param(
     # ── Elasticsearch logging ────────────────────────────────────────────────
     [nullable[bool]] $EnableElasticsearch,
     [string] $ElasticsearchSourcePath,
+
+    # ── Application Insights performance counters ─────────────────────────────
+    [nullable[bool]] $EnablePerformanceCounters,
 
     # ── Suspend/resume persistence (Hangfire) ─────────────────────────────────
     # The resume route reads Config.Persistence; the DbSource ConnectionString is
@@ -741,6 +749,7 @@ function Save-DeploySummary {
         encryptResources = $doEncryptResources
         verifyDecryption = [bool]$VerifyDecryption
         elasticsearch   = $enableEs
+        performanceCounters = $enablePerfCounters
         persistence     = $enablePersistence
         persistenceSettings = ($enablePersistence ? $PersistenceSettingsPath : $null)
         persistenceDbSource = ($enablePersistence ? $PersistenceDbSourcePath : $null)
@@ -854,6 +863,7 @@ if (-not $LogDir) { $LogDir = Join-Path (Split-Path $PublishDir -Parent) 'deploy
 $enableAppInsights   = Resolve-Toggle -Name 'EnableAppInsights'   -Current $EnableAppInsights   -Default $true  -Prompt 'Provision + enable Application Insights?'
 $enableConsole       = Resolve-Toggle -Name 'EnableConsoleLogging' -Current $EnableConsoleLogging -Default $true  -Prompt 'Enable console logging?'
 $enableEs            = Resolve-Toggle -Name 'EnableElasticsearch' -Current $EnableElasticsearch -Default $false -Prompt 'Enable Elasticsearch logging?'
+$enablePerfCounters  = Resolve-Toggle -Name 'EnablePerformanceCounters' -Current $EnablePerformanceCounters -Default $false -Prompt 'Register the Application Insights PerformanceCollectorModule (process memory/CPU counters)?'
 $enablePersistence   = Resolve-Toggle -Name 'EnablePersistence'   -Current $EnablePersistence   -Default $false -Prompt 'Enable suspend/resume persistence (Hangfire) — stage the persistence settings pair?'
 $doEncryptResources  = Resolve-Toggle -Name 'EncryptResources'    -Current $EncryptResources    -Default $false -Prompt 'Encrypt ALL sources (workflows + Elasticsearch + others) now? (encrypt once; leave off if already encrypted)'
 $licenseCheck        = Resolve-Toggle -Name 'LicenseCheckEnabled' -Current $LicenseCheckEnabled  -Default $true  -Prompt 'Enable license/subscription check?'
@@ -1094,6 +1104,7 @@ $appSettings['ENABLECONSOLELOGGING']          = ($enableConsole ? 'true' : 'fals
 $appSettings['STRUCTURED_LOGS']               = ($structuredLogs ? 'true' : 'false')
 $appSettings['ENABLEAPPLICATIONINSIGHTS']     = ($enableAppInsights ? 'true' : 'false')
 $appSettings['ENABLEELASTICSEARCHLOGGING']    = ($enableEs ? 'true' : 'false')
+$appSettings['ENABLEPERFORMANCECOUNTERS']     = ($enablePerfCounters ? 'true' : 'false')
 $appSettings['WAREWOLF_LICENSE_CHECK_ENABLED'] = ($licenseCheck ? 'true' : 'false')
 # NOTE: BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
 # SkipFailureToRetrieveSecret are deliberately NOT set here (not shown in logs/
@@ -1126,6 +1137,7 @@ Write-Host ("    {0,-28}: {1}" -f 'Workflows source', ($WorkflowsSourcePath ? $W
 Write-Host ("    {0,-28}: {1}" -f 'Encrypt sources (this run)', ($doEncryptResources ? 'YES (workflows + ES + others)' : 'no (staged as-is; assumed already encrypted)'))
 Write-Host ("    {0,-28}: {1}" -f 'Verify decryption', ($doEncryptResources ? ($VerifyDecryption ? 'yes (in-memory)' : 'no') : 'n/a'))
 Write-Host ("    {0,-28}: {1}" -f 'Elasticsearch logging', ($enableEs ? "enabled ($ElasticsearchSourcePath)" : 'disabled'))
+Write-Host ("    {0,-28}: {1}" -f 'AI performance counters', ($enablePerfCounters ? 'enabled' : 'disabled'))
 Write-Host ("    {0,-28}: {1}" -f 'Persistence (Hangfire)', ($enablePersistence ? "enabled ($PersistenceDbSourcePath)" : 'disabled'))
 Write-Host ("    {0,-28}: {1}" -f 'Deploy JobProcessor', ($DeployJobProcessor ? "yes -> Deploy-WwJobProcessor.ps1$($JobProcessorAppName ? " ($JobProcessorAppName)" : '')" : 'no'))
 if ($DeployJobProcessor) {

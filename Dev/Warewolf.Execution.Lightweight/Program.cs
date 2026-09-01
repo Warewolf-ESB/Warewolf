@@ -1,5 +1,6 @@
 using Dev2.Common;
 using Dev2.Runtime.Subscription;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -87,6 +88,17 @@ try
                  services.AddApplicationInsightsTelemetryWorkerService(options =>
                      options.ConnectionString = aiConnectionString);
                  services.ConfigureFunctionsApplicationInsights();
+
+                 // Opt-in only (ENABLEPERFORMANCECOUNTERS) — the AI SDK never registers this on
+                 // its own, so App Insights' performanceCounters table stays empty otherwise.
+                 // Auto-detects Azure Web App/Functions hosting (WEBSITE_SITE_NAME) and reads
+                 // from the sandboxed %WEBSITE_COUNTERS_APP% source instead of raw Windows perf
+                 // counters, which is what makes this safe to run under a Consumption-plan
+                 // Functions worker.
+                 if (loggingConfig.EnablePerformanceCounters)
+                 {
+                     services.ConfigureTelemetryModule<PerformanceCollectorModule>((module, _) => { });
+                 }
 
                  // Replace the AI SDK's built-in Warning gate with a targeted rule at the
                  // configured EXECUTIONLOGLEVEL — scoped to the AI provider only, so Console,
