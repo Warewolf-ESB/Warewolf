@@ -171,12 +171,33 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# Enable Application Insights logging in AzureExecutionLogger
-Write-Host "   → Setting ENABLEAPPLICATIONINSIGHTS=true..." -ForegroundColor Gray
+# Enable Application Insights logging in AzureExecutionLogger.
+# WOLF-8516: ENABLEAPPLICATIONINSIGHTS was merged into the WAREWOLF_LOGGING_CONFIG JSON
+# app setting alongside console/elasticsearch/performanceCounters/structuredLogs. An app
+# setting is a whole-value overwrite, so read-merge-write: fetch whatever
+# Deploy-WwExecutionEngine.ps1 already wrote, flip appInsights to true, preserve the rest.
+Write-Host "   → Setting WAREWOLF_LOGGING_CONFIG.appInsights=true..." -ForegroundColor Gray
+$existingLoggingConfigRaw = az functionapp config appsettings list `
+    --name $FunctionAppName `
+    --resource-group $ResourceGroup `
+    --query "[?name=='WAREWOLF_LOGGING_CONFIG'].value | [0]" `
+    --output tsv
+
+$loggingConfigValue = [ordered]@{}
+if ($existingLoggingConfigRaw -and $existingLoggingConfigRaw -ne 'None') {
+    try {
+        ($existingLoggingConfigRaw | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $loggingConfigValue[$_.Name] = $_.Value }
+    }
+    catch {
+        Write-Host "   ⚠️  Existing WAREWOLF_LOGGING_CONFIG is not valid JSON — it will be replaced." -ForegroundColor Yellow
+    }
+}
+$loggingConfigValue['appInsights'] = $true
+
 az functionapp config appsettings set `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --settings "ENABLEAPPLICATIONINSIGHTS=true" `
+    --settings "WAREWOLF_LOGGING_CONFIG=$($loggingConfigValue | ConvertTo-Json -Compress)" `
     --output none
 
 if ($LASTEXITCODE -ne 0) {
@@ -196,13 +217,17 @@ Write-Host "[Step 6/6] Verifying configuration..." -ForegroundColor Yellow
 $settings = az functionapp config appsettings list `
     --name $FunctionAppName `
     --resource-group $ResourceGroup `
-    --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS']" `
+    --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='WAREWOLF_LOGGING_CONFIG']" `
     --output json | ConvertFrom-Json
 
 $aiConnectionSet = $settings | Where-Object { $_.name -eq "WAREWOLF_APPINSIGHTS_CONNECTION_STRING" }
-$aiEnabledSet = $settings | Where-Object { $_.name -eq "ENABLEAPPLICATIONINSIGHTS" }
+$loggingConfigSet = $settings | Where-Object { $_.name -eq "WAREWOLF_LOGGING_CONFIG" }
+$aiEnabled = $false
+if ($loggingConfigSet) {
+    try { $aiEnabled = ($loggingConfigSet.value | ConvertFrom-Json).appInsights -eq $true } catch { $aiEnabled = $false }
+}
 
-if ($aiConnectionSet -and $aiEnabledSet.value -eq "true") {
+if ($aiConnectionSet -and $aiEnabled) {
     Write-Host "✅ Configuration verified successfully" -ForegroundColor Green
 }
 else {

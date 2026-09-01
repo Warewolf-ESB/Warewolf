@@ -65,7 +65,7 @@ audience — see below).
 
 ```
 Delegated caller (user or app with its own Entra identity)
-   │  acquires its own Entra access token (audience = WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE)
+   │  acquires its own Entra access token (audience = WAREWOLF_ENTRA_CONFIG.serviceBusAudience)
    │  publishes ServiceBusWorkflowMessage as the message body
    │  sets the token as the "Authorization" application property: "Bearer <token>"
    ▼
@@ -179,19 +179,31 @@ follow-up could add a scheduled cleanup job if this becomes an operational conce
 
 ## Configuration reference
 
+WOLF-8516: the tenant/audience and the 5 simple tunables below are no longer individual env
+vars — see the two sub-tables. `WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES` is the
+one exception, deliberately left as a standalone env var (its own incident-scarred,
+`host.json`-derived resolution chain — see "Failure classification" below).
+
 | App setting | Purpose |
 |---|---|
 | `ServiceBusConnection__fullyQualifiedNamespace` | Identity-based Service Bus connection (Managed Identity in Azure, developer credentials locally). No connection string / SAS key is used. |
 | `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | Queue name the trigger listens on. Resolved via the Azure Functions `%AppSetting%` attribute-indirection syntax (default convention: `wwexecution-secure-trigger-queue`). |
-| `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE` | Expected `aud` claim for tokens carried in Service-Bus-triggered messages. Deliberately **separate** from `WAREWOLF_ENTRA_AUDIENCE` (the HTTP audience) so the two trust boundaries can use different app registrations/scopes if desired. |
-| `WAREWOLF_ENTRA_TENANT_ID` | Reused from the existing HTTP Entra config (same tenant). |
-| `WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS` | How long a `jti` is remembered for replay-prevention purposes (default: 24). |
-| `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS` | Hard time budget for a single workflow execution before it is treated as failed and left for Service Bus's own retry/backoff (default: 300 = 5 minutes). See flow step 9. |
-| `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 8. |
-| `WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS` | Hard bound on how long a delivery waits for a free execution slot before it is treated as failed (default: same as `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS`). See flow step 8. |
-| `WAREWOLF_SERVICEBUS_TRIGGER_SETTLEMENT_TIMEOUT_SECONDS` | WOLF-8512: hard time budget for a single settlement call (`CompleteMessageAsync`/`DeadLetterMessageAsync`), using an independent timeout over `CancellationToken.None` rather than the host invocation's own token (default: 30). See "Failure classification" below. |
+| `WAREWOLF_ENTRA_CONFIG` | JSON app setting also used by the HTTP path — its `serviceBusAudience` field is the expected `aud` claim for tokens carried in Service-Bus-triggered messages, deliberately **separate** from `audience` (the HTTP audience) so the two trust boundaries can use different app registrations/scopes if desired; its `tenantId` field is reused from the existing HTTP Entra config (same tenant). Set/merged by `Enable-ServiceBusSecureTrigger.ps1` (read-merge-write, since it shares the setting with `Configure-WwExecutionAuth.ps1`). |
 | `WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES` | WOLF-8512: operator escape hatch overriding `ClaimStaleAfter` directly, bypassing its runtime-resolved default entirely. Normally left unset — see "Failure classification" below for how the default is inferred automatically. |
 | `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. |
+
+The remaining 5 tunables are sourced SOLELY from `Settings/executionengine.settings.json`'s
+`serviceBusTrigger` section (deploy-bundled JSON file — see `HostEnvironmentConfig.cs` and
+`ServiceBusTriggerOptions.FromEnvironment`) — **no env-var fallback**, they are not App
+Settings any more:
+
+| `serviceBusTrigger` field | Purpose |
+|---|---|
+| `jtiWindowHours` | How long a `jti` is remembered for replay-prevention purposes (default: 24). |
+| `executionTimeoutSeconds` | Hard time budget for a single workflow execution before it is treated as failed and left for Service Bus's own retry/backoff (default: 300 = 5 minutes). See flow step 9. |
+| `maxConcurrentExecutions` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 8. |
+| `slotWaitTimeoutSeconds` | Hard bound on how long a delivery waits for a free execution slot before it is treated as failed (default: same as `executionTimeoutSeconds`). See flow step 8. |
+| `settlementTimeoutSeconds` | WOLF-8512: hard time budget for a single settlement call (`CompleteMessageAsync`/`DeadLetterMessageAsync`), using an independent timeout over `CancellationToken.None` rather than the host invocation's own token (default: 30). See "Failure classification" below. |
 
 `host.json` requires `extensions.serviceBus.autoCompleteMessages: false` so the trigger's
 explicit `CompleteMessageAsync` / `DeadLetterMessageAsync` calls (via the injected
@@ -594,5 +606,5 @@ caller and the message is dead-lettered as `Forbidden`, not executed. See
 - Automatic/CI-driven provisioning of the trigger queue and RBAC role —
   `Enable-ServiceBusSecureTrigger.ps1` (see above) exists for this but is a deliberately
   separate, human-reviewed step, not run by any script or pipeline automatically.
-- Creating or managing the Entra App Registration behind `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE`,
+- Creating or managing the Entra App Registration behind `WAREWOLF_ENTRA_CONFIG.serviceBusAudience`,
   or minting caller tokens — assumed to already exist / be an operator's own concern.

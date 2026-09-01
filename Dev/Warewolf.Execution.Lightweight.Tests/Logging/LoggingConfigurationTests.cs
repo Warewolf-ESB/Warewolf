@@ -26,11 +26,15 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
     ///   </item>
     ///   <item>
     ///     <see cref="LoggingConfiguration.RegisterApplicationInsightsSdk"/> must be
-    ///     driven by <c>ENABLEAPPLICATIONINSIGHTS</c> ONLY — never by the legacy
-    ///     <c>ENABLECONSOLELOGGING</c> alias — so console logging cannot silently
-    ///     register the AI SDK and incur telemetry/billing (defect DEF-A).
+    ///     driven by <c>WAREWOLF_LOGGING_CONFIG</c>'s <c>appInsights</c> field ONLY —
+    ///     never by the legacy <c>console</c> field alias — so console logging cannot
+    ///     silently register the AI SDK and incur telemetry/billing (defect DEF-A).
     ///   </item>
     /// </list>
+    ///
+    /// WOLF-8516: <c>ENABLEAPPLICATIONINSIGHTS</c>/<c>ENABLECONSOLELOGGING</c>/etc. were merged
+    /// into the single <c>WAREWOLF_LOGGING_CONFIG</c> JSON app setting — see
+    /// <c>Logging.LoggingConfiguration.RawFlags</c>.
     /// </summary>
     [TestClass]
     [DoNotParallelize]
@@ -38,8 +42,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
     {
         private static readonly string[] AllVars =
         {
-            "ENABLEAPPLICATIONINSIGHTS", "ENABLECONSOLELOGGING", "ENABLEELASTICSEARCHLOGGING",
-            "EXECUTIONLOGLEVEL", "STRUCTURED_LOGS", "ELASTIC_DEBUG_MODE", "ASPNETCORE_ENVIRONMENT"
+            "WAREWOLF_LOGGING_CONFIG", "EXECUTIONLOGLEVEL", "ASPNETCORE_ENVIRONMENT"
         };
 
         private Dictionary<string, string?> _snapshot = null!;
@@ -133,7 +136,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
         [TestCategory("UnitTest")]
         public void FromEnvironment_EnableApplicationInsights_RegistersAiSdk()
         {
-            Environment.SetEnvironmentVariable("ENABLEAPPLICATIONINSIGHTS", "true");
+            Environment.SetEnvironmentVariable("WAREWOLF_LOGGING_CONFIG", /*lang=json,strict*/ "{\"appInsights\":true}");
 
             var config = LoggingConfiguration.FromEnvironment();
 
@@ -146,25 +149,23 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
         public void FromEnvironment_EnableConsoleLoggingOnly_DoesNotRegisterAiSdk()
         {
             // DEF-A regression guard: console logging must NOT trigger AI SDK registration
-            // (telemetry ingestion / billing). ENABLEAPPLICATIONINSIGHTS is the single
-            // authoritative App Insights switch; ENABLECONSOLELOGGING only selects the
-            // stdout-bound ConsoleExecutionLogger sink.
-            Environment.SetEnvironmentVariable("ENABLECONSOLELOGGING", "true");
+            // (telemetry ingestion / billing). appInsights is the single authoritative App
+            // Insights switch; console only selects the stdout-bound ConsoleExecutionLogger sink.
+            Environment.SetEnvironmentVariable("WAREWOLF_LOGGING_CONFIG", /*lang=json,strict*/ "{\"console\":true}");
 
             var config = LoggingConfiguration.FromEnvironment();
 
             Assert.IsTrue(config.EnableConsoleLogging,
-                "ENABLECONSOLELOGGING selects the ConsoleExecutionLogger sink.");
+                "WAREWOLF_LOGGING_CONFIG.console selects the ConsoleExecutionLogger sink.");
             Assert.IsFalse(config.RegisterApplicationInsightsSdk,
-                "DEF-A: ENABLECONSOLELOGGING must NOT register the AI SDK.");
+                "DEF-A: WAREWOLF_LOGGING_CONFIG.console must NOT register the AI SDK.");
         }
 
         [TestMethod]
         [TestCategory("UnitTest")]
         public void FromEnvironment_BothAiVars_RegistersSdk()
         {
-            Environment.SetEnvironmentVariable("ENABLEAPPLICATIONINSIGHTS", "true");
-            Environment.SetEnvironmentVariable("ENABLECONSOLELOGGING", "true");
+            Environment.SetEnvironmentVariable("WAREWOLF_LOGGING_CONFIG", /*lang=json,strict*/ "{\"appInsights\":true,\"console\":true}");
 
             var config = LoggingConfiguration.FromEnvironment();
 
@@ -175,7 +176,10 @@ namespace Warewolf.Execution.Lightweight.Tests.Logging
         [TestCategory("UnitTest")]
         public void FromEnvironment_AiVarCaseInsensitive_IsHonoured()
         {
-            Environment.SetEnvironmentVariable("ENABLEAPPLICATIONINSIGHTS", "TRUE");
+            // WOLF-8516: JSON boolean *values* are not case-variable (true/false are fixed
+            // lowercase literals per the JSON spec), but the deserializer is configured with
+            // PropertyNameCaseInsensitive — a differently-cased property NAME must still bind.
+            Environment.SetEnvironmentVariable("WAREWOLF_LOGGING_CONFIG", /*lang=json,strict*/ "{\"APPINSIGHTS\":true}");
 
             var config = LoggingConfiguration.FromEnvironment();
 

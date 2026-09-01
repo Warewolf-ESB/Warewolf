@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Models;
 
@@ -98,8 +99,24 @@ namespace Warewolf.Execution.Lightweight
         }
 
         public WorkflowExecutor(IExecutionLogger executionLogger)
+            : this(executionLogger, null)
+        {
+        }
+
+        /// <summary>
+        /// WOLF-8516: <paramref name="config"/> is optional (defaulted by DI, omittable by the
+        /// many existing single-arg test call sites) rather than required, so the pool cap can
+        /// be sourced from <see cref="HostEnvironmentConfig.WorkflowPoolMax"/> (deploy-bundled
+        /// settings file only — no env var) in production without a breaking constructor-signature
+        /// change across every test that constructs a bare <c>new WorkflowExecutor(logger)</c>.
+        /// </summary>
+        public WorkflowExecutor(IExecutionLogger executionLogger, HostEnvironmentConfig config)
         {
             _executionLogger = executionLogger ?? throw new ArgumentNullException(nameof(executionLogger));
+            if (config is not null)
+            {
+                MaxPooledPerWorkflow = config.WorkflowPoolMax;
+            }
         }
 
         /// <summary>
@@ -636,22 +653,20 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <summary>
-        /// Maximum prepared workflows RETAINED per workflow path. Override with
-        /// <c>WAREWOLF_WORKFLOW_POOL_MAX</c>; values below 1 are ignored in favour of the default.
+        /// Maximum prepared workflows RETAINED per workflow path. Production (DI-constructed)
+        /// instances source this from <see cref="HostEnvironmentConfig.WorkflowPoolMax"/> (deploy
+        /// file only — no env var, WOLF-8516) via the constructor; without a config (e.g. the many
+        /// <c>new WorkflowExecutor(logger)</c> test call sites) the hardcoded default below is used
+        /// instead. Values below 1 are ignored in favour of the default either way.
         /// </summary>
         /// <remarks>
         /// 8 by default: comfortably above the per-replica concurrency the queue path generates
         /// (<c>WORKER__MAXCONCURRENCY</c> is 1, so one replica issues one request at a time), while
         /// bounding retained memory to roughly 8 x the compiled tree size per distinct workflow.
         /// </remarks>
-        internal static int MaxPooledPerWorkflow { get; } = ResolvePoolCap();
+        internal static int MaxPooledPerWorkflow { get; private set; } = DefaultPoolCap;
 
-        static int ResolvePoolCap()
-        {
-            const int fallback = 8;
-            var raw = Environment.GetEnvironmentVariable("WAREWOLF_WORKFLOW_POOL_MAX");
-            return int.TryParse(raw, out var parsed) && parsed >= 1 ? parsed : fallback;
-        }
+        const int DefaultPoolCap = 8;
 
         /// <summary>
         /// Discards every pooled workflow. Test hook only - lets a test observe compilation

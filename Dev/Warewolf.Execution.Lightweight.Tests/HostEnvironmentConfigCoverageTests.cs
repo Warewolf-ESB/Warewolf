@@ -24,12 +24,13 @@ namespace Warewolf.Execution.Lightweight.Tests
         private static readonly string[] AllVars =
         {
             "WorkflowsDirectory", "AZURE_KEYVAULT_NAME", "KEYVAULT_SECRET_NAME",
-            "WEBSITE_INSTANCE_ID", "SkipFailureToRetrieveSecret",
-            "AZURE_TENANT_ID", "AZURE_CLIENT_ID", "DEBUG_AZURE_KEYVAULT_SECRET",
+            "WEBSITE_INSTANCE_ID", SecurityFlags.EnvVar,
+            "AZURE_TENANT_ID", "AZURE_CLIENT_ID", DebugConfig.EnvVar,
             "AZURE_FUNCTIONS_ENVIRONMENT", "ASPNETCORE_ENVIRONMENT"
         };
 
         private System.Collections.Generic.Dictionary<string, string?> _snapshot = null!;
+        private string? _tempSettingsDirectory;
 
         [TestInitialize]
         public void Setup()
@@ -47,6 +48,25 @@ namespace Warewolf.Execution.Lightweight.Tests
         {
             foreach (var (k, v) in _snapshot)
                 Environment.SetEnvironmentVariable(k, v);
+
+            if (_tempSettingsDirectory is not null && Directory.Exists(_tempSettingsDirectory))
+            {
+                try { Directory.Delete(_tempSettingsDirectory, recursive: true); } catch { /* best effort */ }
+            }
+        }
+
+        /// <summary>
+        /// WOLF-8516: <c>keyVaultName</c>/<c>keyVaultSecretName</c>/<c>workflowsDirectory</c>/
+        /// <c>workflowPoolMax</c> have no env-var fallback any more — they come SOLELY from
+        /// <c>Settings/executionengine.settings.json</c>. Writes <paramref name="json"/> to a
+        /// temp directory and returns it for use with <see cref="HostEnvironmentConfig.Load"/>.
+        /// </summary>
+        private string WriteSettingsFile(string json)
+        {
+            _tempSettingsDirectory = Path.Combine(Path.GetTempPath(), "wolf8516-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(_tempSettingsDirectory);
+            File.WriteAllText(Path.Combine(_tempSettingsDirectory, HostEnvironmentConfig.SettingsFileName), json);
+            return _tempSettingsDirectory;
         }
 
         // ── Defaults ─────────────────────────────────────────────────────────
@@ -73,20 +93,24 @@ namespace Warewolf.Execution.Lightweight.Tests
 
         // ── Overrides ────────────────────────────────────────────────────────
 
+        // WOLF-8516: WorkflowsDirectory/VaultName/SecretName/WorkflowPoolMax come SOLELY from
+        // Settings/executionengine.settings.json now — no env-var fallback — so these are
+        // driven via WriteSettingsFile + Load(tempDir) instead of the removed env vars.
+
         [TestMethod]
         [TestCategory("HostEnvironmentConfig_Coverage")]
         public void Load_WorkflowsDirectoryOverride_IsUsed()
         {
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", @"C:\custom\path");
-            Assert.AreEqual(@"C:\custom\path", HostEnvironmentConfig.Load().WorkflowsDirectory);
+            var dir = WriteSettingsFile(/*lang=json,strict*/ "{\"workflowsDirectory\":\"C:\\\\custom\\\\path\"}");
+            Assert.AreEqual(@"C:\custom\path", HostEnvironmentConfig.Load(dir).WorkflowsDirectory);
         }
 
         [TestMethod]
         [TestCategory("HostEnvironmentConfig_Coverage")]
         public void Load_VaultNameSet_EnablesEncryptionAndBuildsUri()
         {
-            Environment.SetEnvironmentVariable("AZURE_KEYVAULT_NAME", "my-vault");
-            var cfg = HostEnvironmentConfig.Load();
+            var dir = WriteSettingsFile(/*lang=json,strict*/ "{\"keyVaultName\":\"my-vault\"}");
+            var cfg = HostEnvironmentConfig.Load(dir);
             Assert.AreEqual("my-vault", cfg.VaultName);
             Assert.IsTrue(cfg.EncryptionEnabled);
             Assert.AreEqual("https://my-vault.vault.azure.net/", cfg.VaultUri);
@@ -96,8 +120,8 @@ namespace Warewolf.Execution.Lightweight.Tests
         [TestCategory("HostEnvironmentConfig_Coverage")]
         public void Load_VaultNameWhitespace_KeepsEncryptionDisabled()
         {
-            Environment.SetEnvironmentVariable("AZURE_KEYVAULT_NAME", "   ");
-            var cfg = HostEnvironmentConfig.Load();
+            var dir = WriteSettingsFile(/*lang=json,strict*/ "{\"keyVaultName\":\"   \"}");
+            var cfg = HostEnvironmentConfig.Load(dir);
             Assert.IsFalse(cfg.EncryptionEnabled);
         }
 
@@ -105,8 +129,26 @@ namespace Warewolf.Execution.Lightweight.Tests
         [TestCategory("HostEnvironmentConfig_Coverage")]
         public void Load_SecretNameOverride_IsUsed()
         {
-            Environment.SetEnvironmentVariable("KEYVAULT_SECRET_NAME", "custom-secret");
-            Assert.AreEqual("custom-secret", HostEnvironmentConfig.Load().SecretName);
+            var dir = WriteSettingsFile(/*lang=json,strict*/ "{\"keyVaultSecretName\":\"custom-secret\"}");
+            Assert.AreEqual("custom-secret", HostEnvironmentConfig.Load(dir).SecretName);
+        }
+
+        [TestMethod]
+        [TestCategory("HostEnvironmentConfig_Coverage")]
+        public void Load_WorkflowPoolMaxOverride_IsUsed()
+        {
+            var dir = WriteSettingsFile(/*lang=json,strict*/ "{\"workflowPoolMax\":16}");
+            Assert.AreEqual(16, HostEnvironmentConfig.Load(dir).WorkflowPoolMax);
+        }
+
+        [TestMethod]
+        [TestCategory("HostEnvironmentConfig_Coverage")]
+        public void Load_NoSettingsFile_WorkflowPoolMaxDefaultsToEight()
+        {
+            var dir = Path.Combine(Path.GetTempPath(), "wolf8516-empty-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(dir);
+            _tempSettingsDirectory = dir;
+            Assert.AreEqual(8, HostEnvironmentConfig.Load(dir).WorkflowPoolMax);
         }
 
         [TestMethod]
@@ -117,25 +159,30 @@ namespace Warewolf.Execution.Lightweight.Tests
             Assert.AreEqual("instance-42", HostEnvironmentConfig.Load().InstanceId);
         }
 
+        // WOLF-8516: SkipFailureToRetrieveSecret moved into the WAREWOLF_SECURITY_FLAGS
+        // JSON app setting — see SecurityFlags.
+
         [TestMethod]
         [TestCategory("HostEnvironmentConfig_Coverage")]
-        public void Load_SkipFailureToRetrieveSecret_AcceptsTrueCaseInsensitive()
+        public void Load_SecurityFlags_SkipFailureToRetrieveSecretTrue_IsRespected()
         {
-            Environment.SetEnvironmentVariable("SkipFailureToRetrieveSecret", "TRUE");
-            Assert.IsTrue(HostEnvironmentConfig.Load().SkipFailureToRetrieveSecret);
-
-            Environment.SetEnvironmentVariable("SkipFailureToRetrieveSecret", "True");
+            Environment.SetEnvironmentVariable(SecurityFlags.EnvVar, /*lang=json,strict*/ "{\"skipFailureToRetrieveSecret\":true}");
             Assert.IsTrue(HostEnvironmentConfig.Load().SkipFailureToRetrieveSecret);
         }
 
         [TestMethod]
         [TestCategory("HostEnvironmentConfig_Coverage")]
-        public void Load_SkipFailureToRetrieveSecret_OtherValuesAreFalse()
+        public void Load_SecurityFlags_SkipFailureToRetrieveSecretFalse_IsRespected()
         {
-            Environment.SetEnvironmentVariable("SkipFailureToRetrieveSecret", "false");
+            Environment.SetEnvironmentVariable(SecurityFlags.EnvVar, /*lang=json,strict*/ "{\"skipFailureToRetrieveSecret\":false}");
             Assert.IsFalse(HostEnvironmentConfig.Load().SkipFailureToRetrieveSecret);
+        }
 
-            Environment.SetEnvironmentVariable("SkipFailureToRetrieveSecret", "yes");
+        [TestMethod]
+        [TestCategory("HostEnvironmentConfig_Coverage")]
+        public void Load_SecurityFlags_MalformedJson_SkipFailureToRetrieveSecretIsFalse()
+        {
+            Environment.SetEnvironmentVariable(SecurityFlags.EnvVar, "not-json");
             Assert.IsFalse(HostEnvironmentConfig.Load().SkipFailureToRetrieveSecret);
         }
 
@@ -179,12 +226,15 @@ namespace Warewolf.Execution.Lightweight.Tests
 
         // ── DebugKeyVaultSecret ─────────────────────────────────────────────
 
+        // WOLF-8516: DEBUG_AZURE_KEYVAULT_SECRET moved into the WAREWOLF_DEBUG_CONFIG
+        // JSON app setting — see DebugConfig.
+
         [TestMethod]
         [TestCategory("HostEnvironmentConfig_Coverage")]
         public void DebugKeyVaultSecret_OnlyReadInDevelopment()
         {
             // Production: never read, regardless of var value.
-            Environment.SetEnvironmentVariable("DEBUG_AZURE_KEYVAULT_SECRET", "secret-value");
+            Environment.SetEnvironmentVariable(DebugConfig.EnvVar, /*lang=json,strict*/ "{\"keyVaultSecret\":\"secret-value\"}");
             Assert.IsNull(HostEnvironmentConfig.Load().DebugKeyVaultSecret);
 
             // Development + set: returned.
@@ -198,10 +248,10 @@ namespace Warewolf.Execution.Lightweight.Tests
         {
             Environment.SetEnvironmentVariable("ASPNETCORE_ENVIRONMENT", "Development");
 
-            Environment.SetEnvironmentVariable("DEBUG_AZURE_KEYVAULT_SECRET", "");
+            Environment.SetEnvironmentVariable(DebugConfig.EnvVar, /*lang=json,strict*/ "{\"keyVaultSecret\":\"\"}");
             Assert.IsNull(HostEnvironmentConfig.Load().DebugKeyVaultSecret);
 
-            Environment.SetEnvironmentVariable("DEBUG_AZURE_KEYVAULT_SECRET", "   ");
+            Environment.SetEnvironmentVariable(DebugConfig.EnvVar, /*lang=json,strict*/ "{\"keyVaultSecret\":\"   \"}");
             Assert.IsNull(HostEnvironmentConfig.Load().DebugKeyVaultSecret);
         }
 

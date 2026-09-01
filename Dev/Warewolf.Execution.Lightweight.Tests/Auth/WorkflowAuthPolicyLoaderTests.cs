@@ -22,28 +22,26 @@ namespace Warewolf.Execution.Lightweight.Tests.Auth;
 public class WorkflowAuthPolicyLoaderTests
 {
     private const string ConfigPathEnvVar = "WAREWOLF_SECURE_CONFIG";
-    private const string BypassEnvVar     = "BYPASS_SECURE_CONFIG";
-    private const string SuperAdminEnvVar = "WAREWOLF_SUPER_ADMIN_ENABLED";
+    // WOLF-8516: BYPASS_SECURE_CONFIG / WAREWOLF_SUPER_ADMIN_ENABLED were merged into the
+    // WAREWOLF_SECURITY_FLAGS JSON app setting — see Infrastructure.SecurityFlags.
+    private const string SecurityFlagsEnvVar = Warewolf.Execution.Lightweight.Infrastructure.SecurityFlags.EnvVar;
 
     private string? _originalEnv;
-    private string? _originalBypass;
-    private string? _originalSuperAdmin;
+    private string? _originalSecurityFlags;
     private string? _tempPath;
 
     [TestInitialize]
     public void Init()
     {
-        _originalEnv        = Environment.GetEnvironmentVariable(ConfigPathEnvVar);
-        _originalBypass     = Environment.GetEnvironmentVariable(BypassEnvVar);
-        _originalSuperAdmin = Environment.GetEnvironmentVariable(SuperAdminEnvVar);
+        _originalEnv           = Environment.GetEnvironmentVariable(ConfigPathEnvVar);
+        _originalSecurityFlags = Environment.GetEnvironmentVariable(SecurityFlagsEnvVar);
     }
 
     [TestCleanup]
     public void Cleanup()
     {
-        Environment.SetEnvironmentVariable(ConfigPathEnvVar,  _originalEnv);
-        Environment.SetEnvironmentVariable(BypassEnvVar,      _originalBypass);
-        Environment.SetEnvironmentVariable(SuperAdminEnvVar,  _originalSuperAdmin);
+        Environment.SetEnvironmentVariable(ConfigPathEnvVar,     _originalEnv);
+        Environment.SetEnvironmentVariable(SecurityFlagsEnvVar,  _originalSecurityFlags);
 
         if (_tempPath is not null && File.Exists(_tempPath))
             try { File.Delete(_tempPath); } catch { /* best effort */ }
@@ -182,7 +180,7 @@ public class WorkflowAuthPolicyLoaderTests
     [TestMethod]
     public void TST_ConfigMissing_ReturnsConfigMissing_WhenBypassNotSet()
     {
-        Environment.SetEnvironmentVariable(BypassEnvVar, null);
+        Environment.SetEnvironmentVariable(SecurityFlagsEnvVar, null);
         var loader = BuildLoaderNoConfig();
 
         Assert.IsFalse(loader.IsConfigEffective);
@@ -194,7 +192,7 @@ public class WorkflowAuthPolicyLoaderTests
     [TestMethod]
     public void TST_ConfigMissing_ReturnsBypass_WhenBypassTrue()
     {
-        Environment.SetEnvironmentVariable(BypassEnvVar, "true");
+        Environment.SetEnvironmentVariable(SecurityFlagsEnvVar, /*lang=json,strict*/ "{\"bypassSecureConfig\":true}");
         var loader = BuildLoaderNoConfig();
 
         Assert.IsFalse(loader.IsConfigEffective);
@@ -209,7 +207,7 @@ public class WorkflowAuthPolicyLoaderTests
         // Blank config = file present but zero permission entries
         var settings = new SecuritySettingsTO { SecretKey = SecureConfigBuilder.NewSecretKey() };
         // No permissions added → Permissions.Count == 0
-        Environment.SetEnvironmentVariable(BypassEnvVar, null);
+        Environment.SetEnvironmentVariable(SecurityFlagsEnvVar, null);
         var loader = BuildLoader(settings);
 
         Assert.IsFalse(loader.IsConfigEffective);
@@ -367,7 +365,7 @@ public class WorkflowAuthPolicyLoaderTests
     [TestMethod]
     public void TST_SuperAdmin_Bypass_WhenEnvVarEnabled()
     {
-        Environment.SetEnvironmentVariable(SuperAdminEnvVar, "true");
+        Environment.SetEnvironmentVariable(SecurityFlagsEnvVar, /*lang=json,strict*/ "{\"superAdminEnabled\":true}");
 
         var settings = SecureConfigBuilder.Build(
             SecureConfigBuilder.NewSecretKey(),
@@ -384,7 +382,7 @@ public class WorkflowAuthPolicyLoaderTests
     [TestMethod]
     public void TST_SuperAdmin_NoBypass_WhenEnvVarFalse()
     {
-        Environment.SetEnvironmentVariable(SuperAdminEnvVar, "false");
+        Environment.SetEnvironmentVariable(SecurityFlagsEnvVar, /*lang=json,strict*/ "{\"superAdminEnabled\":false}");
 
         var settings = SecureConfigBuilder.Build(
             SecureConfigBuilder.NewSecretKey(),
@@ -405,7 +403,7 @@ public class WorkflowAuthPolicyLoaderTests
     [TestMethod]
     public void TST_SuperAdmin_OnlyTriggered_ByAdministratorFlagInGlobalMap()
     {
-        Environment.SetEnvironmentVariable(SuperAdminEnvVar, "true");
+        Environment.SetEnvironmentVariable(SecurityFlagsEnvVar, /*lang=json,strict*/ "{\"superAdminEnabled\":true}");
 
         // Administrators role exists in global map but WITHOUT Administrator flag
         var settings = SecureConfigBuilder.Build(

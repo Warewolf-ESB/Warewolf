@@ -70,18 +70,6 @@ namespace Warewolf.Execution.Lightweight.Security
         /// </summary>
         internal const string ConfigPathEnvVar    = "WAREWOLF_SECURE_CONFIG";
 
-        /// <summary>
-        /// Optional Microsoft Entra tenant ID.  When set, Entra tokens from other
-        /// tenants are rejected.  Maps to the <c>tid</c> claim in the token payload.
-        /// </summary>
-        internal const string EntraTenantIdEnvVar = "WAREWOLF_ENTRA_TENANT_ID";
-
-        /// <summary>
-        /// Optional Entra application audience (client ID or <c>api://…</c> URI).
-        /// When set, the token's <c>aud</c> claim must match exactly.
-        /// </summary>
-        internal const string EntraAudienceEnvVar  = "WAREWOLF_ENTRA_AUDIENCE";
-
         static SecureConfigData Load()
         {
             // 1. Explicit override via App Setting / environment variable.
@@ -97,8 +85,12 @@ namespace Warewolf.Execution.Lightweight.Security
 
         static SecureConfigData ReadConfig(string configPath)
         {
-            var entraTenantId = Environment.GetEnvironmentVariable(EntraTenantIdEnvVar) ?? string.Empty;
-            var entraAudience = Environment.GetEnvironmentVariable(EntraAudienceEnvVar)  ?? string.Empty;
+            // WOLF-8516: sourced from the shared EntraIdentityOptions parse (WAREWOLF_ENTRA_CONFIG)
+            // instead of independently reading WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_AUDIENCE —
+            // the same values EntraAuthOptions/ServiceBusEntraAuthOptions now read.
+            var entra = Auth.Models.EntraIdentityOptions.FromEnvironment();
+            var entraTenantId = entra.TenantId ?? string.Empty;
+            var entraAudience = entra.Audience ?? string.Empty;
 
             if (!File.Exists(configPath))
                 return SecureConfigData.AllowAll;

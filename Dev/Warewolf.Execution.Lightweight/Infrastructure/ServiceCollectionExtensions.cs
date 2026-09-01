@@ -73,7 +73,7 @@ internal static class ServiceCollectionExtensions
             // §4.2 step 2). Registered as its own singleton type rather than a second
             // keyed EntraAuthOptions instance (no keyed-service DI pattern in this project).
             services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
-            services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment());
+            services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment(config));
 
             // WOLF-8512: ClaimStaleAfter is resolved automatically from the host's actual
             // functionTimeout (never a fixed constant - see ServiceBusTriggerOptions.
@@ -138,8 +138,8 @@ internal static class ServiceCollectionExtensions
     /// <para>Sink composition:</para>
     /// <list type="bullet">
     ///   <item><see cref="ConsoleExecutionLogger"/> — ALWAYS present (ensures no log is lost; feeds Azure Log Stream)</item>
-    ///   <item><see cref="AzureExecutionLogger"/> — opt-in via <c>ENABLEAPPLICATIONINSIGHTS=true</c> (rich App Insights telemetry)</item>
-    ///   <item><see cref="ElasticsearchExecutionLogger"/> — opt-in via <c>ENABLEELASTICSEARCHLOGGING=true</c></item>
+    ///   <item><see cref="AzureExecutionLogger"/> — opt-in via <c>WAREWOLF_LOGGING_CONFIG</c>'s <c>appInsights</c> field (rich App Insights telemetry)</item>
+    ///   <item><see cref="ElasticsearchExecutionLogger"/> — opt-in via <c>WAREWOLF_LOGGING_CONFIG</c>'s <c>elasticsearch</c> field</item>
     ///   <item><see cref="AuditExecutionLogger"/> — ALWAYS present (security audit events only)</item>
     /// </list>
     ///

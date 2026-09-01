@@ -142,7 +142,9 @@ internal sealed class SecureConfigWatcher : IHostedService, IDisposable
 
     private static string? ResolveExpectedConfigPath()
     {
-        var env = Environment.GetEnvironmentVariable("WAREWOLF_SECURE_CONFIG");
+        // WOLF-8516: sourced from SecureConfigLoader's own constant rather than an independent
+        // "WAREWOLF_SECURE_CONFIG" literal, so the two can never drift on the variable name.
+        var env = Environment.GetEnvironmentVariable(SecureConfigLoader.ConfigPathEnvVar);
         if (!string.IsNullOrWhiteSpace(env))
             return env;
 

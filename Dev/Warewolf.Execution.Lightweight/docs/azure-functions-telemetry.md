@@ -71,26 +71,31 @@ az extension add --name application-insights --allow-preview True --upgrade
 
 ### Required App Settings on the Function App
 
-> `ENABLEAPPLICATIONINSIGHTS=true` is the single authoritative switch — without it the App Insights SDK never registers and zero telemetry is sent, regardless of whether the connection string is present.
+> WOLF-8516: `ENABLEAPPLICATIONINSIGHTS`/`ENABLECONSOLELOGGING`/`ENABLEELASTICSEARCHLOGGING` were
+> merged into one `WAREWOLF_LOGGING_CONFIG` JSON app setting. `WAREWOLF_LOGGING_CONFIG.appInsights=true`
+> is the single authoritative switch — without it the App Insights SDK never registers and zero
+> telemetry is sent, regardless of whether the connection string is present.
 > The project uses `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` instead of the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` to keep the Azure Functions host's own AI pipeline dormant.
 
 ```powershell
 # Verify all required logging flags are set
-az functionapp config appsettings list --name $FUNC_APP -g $RG --query "[?name=='ENABLEAPPLICATIONINSIGHTS' || name=='ENABLECONSOLELOGGING' || name=='ENABLEELASTICSEARCHLOGGING' || name=='EXECUTIONLOGLEVEL' || name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING'].{Key:name,Value:value}" --output table
+az functionapp config appsettings list --name $FUNC_APP -g $RG --query "[?name=='WAREWOLF_LOGGING_CONFIG' || name=='EXECUTIONLOGLEVEL' || name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING'].{Key:name,Value:value}" --output table
 ```
 
 | Setting | Required Value | Purpose |
 |---|---|---|
-| `ENABLEAPPLICATIONINSIGHTS` | `true` | **Must be true** — gates the entire AI SDK registration |
+| `WAREWOLF_LOGGING_CONFIG` | JSON, e.g. `{"appInsights":true,"console":true,"elasticsearch":false}` | **`appInsights:true` required** — gates the entire AI SDK registration; `console`/`elasticsearch` toggle those sinks (WOLF-8516) |
 | `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | `InstrumentationKey=...` | Connection string to App Insights |
 | `EXECUTIONLOGLEVEL` | `TRACE` / `INFO` / `WARN` | Min log level (use `INFO` in production) |
-| `ENABLECONSOLELOGGING` | `true` / `false` | stdout → filesystem / live log stream |
-| `ENABLEELASTICSEARCHLOGGING` | `true` / `false` | Elasticsearch sink |
 
 ```powershell
-# Set if missing
+# Set if missing (read-merge-write — a bare `set` would wipe any other WAREWOLF_LOGGING_CONFIG fields)
 $AI_CONN_STR = az monitor app-insights component show --app $AI_NAME -g $RG --query "connectionString" -o tsv
-az functionapp config appsettings set --name $FUNC_APP -g $RG --settings "ENABLEAPPLICATIONINSIGHTS=true" "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$AI_CONN_STR" "EXECUTIONLOGLEVEL=INFO"
+$existingLoggingConfigRaw = az functionapp config appsettings list --name $FUNC_APP -g $RG --query "[?name=='WAREWOLF_LOGGING_CONFIG'].value | [0]" -o tsv
+$loggingConfig = if ($existingLoggingConfigRaw -and $existingLoggingConfigRaw -ne 'None') { $existingLoggingConfigRaw | ConvertFrom-Json } else { @{} }
+$loggingConfig = $loggingConfig | Select-Object -Property * # copy to a mutable object
+$loggingConfig | Add-Member -NotePropertyName appInsights -NotePropertyValue $true -Force
+az functionapp config appsettings set --name $FUNC_APP -g $RG --settings "WAREWOLF_LOGGING_CONFIG=$($loggingConfig | ConvertTo-Json -Compress)" "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$AI_CONN_STR" "EXECUTIONLOGLEVEL=INFO"
 ```
 
 ### Look Up Variable Values
@@ -173,8 +178,8 @@ az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "requests 
 # Check App Insights sampling config and retention
 az monitor app-insights component show --app $AI_NAME -g $RG --query "{SamplingPercentage:samplingPercentage, RetentionDays:retentionInDays}" -o json
 
-# Confirm WAREWOLF_APPINSIGHTS_CONNECTION_STRING and ENABLEAPPLICATIONINSIGHTS are set
-az functionapp config appsettings list --name $FUNC_APP -g $RG --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='ENABLEAPPLICATIONINSIGHTS'].{Key:name,Value:value}" --output table
+# Confirm WAREWOLF_APPINSIGHTS_CONNECTION_STRING and WAREWOLF_LOGGING_CONFIG.appInsights are set (WOLF-8516)
+az functionapp config appsettings list --name $FUNC_APP -g $RG --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='WAREWOLF_LOGGING_CONFIG'].{Key:name,Value:value}" --output table
 ```
 
 ---

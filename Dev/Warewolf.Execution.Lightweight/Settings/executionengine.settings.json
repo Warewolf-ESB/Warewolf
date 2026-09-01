@@ -1,0 +1,47 @@
+{
+  // Warewolf Execution Engine — deploy-time-static topology/tunables (WOLF-8516).
+  //
+  // Loaded once at cold start by HostEnvironmentConfig.Load() and hydrated IN MEMORY —
+  // this file is never written to at runtime, so it is safe for read-only deployments
+  // (zip-deploy / run-from-package). A missing file, a missing field, or a null value all
+  // fall back to the corresponding legacy environment variable, then to the hardcoded
+  // default — see HostEnvironmentConfig.cs.
+  //
+  // These are values that are fixed once per environment during provisioning and never
+  // touched again outside a full deploy — NOT operational toggles. Operational
+  // toggles/secrets stay as Azure Function App Settings (env vars) so they remain
+  // flippable in an incident without a package redeploy — see WAREWOLF_SECURITY_FLAGS,
+  // WAREWOLF_ENTRA_CONFIG, WAREWOLF_LOGGING_CONFIG.
+
+  // Azure Key Vault name holding the AES-256-GCM key ring. null = encryption disabled.
+  "keyVaultName": null,
+
+  // Key Vault secret name that holds the key ring. Defaults to "dp-keyring-v1" when absent.
+  "keyVaultSecretName": null,
+
+  // Root directory for workflow .bite files. Per the WOLF-8510 incident (a stale
+  // WorkflowsDirectory app setting silently made a redeploy a no-op), leave this null
+  // in normal operation — it defaults to {AppContext.BaseDirectory}/Resources, i.e.
+  // wherever the current deploy actually placed the workflows.
+  "workflowsDirectory": null,
+
+  // Maximum prepared/compiled workflow instances retained per workflow path
+  // (WorkflowExecutor's pool). Defaults to 8 when absent.
+  "workflowPoolMax": null,
+
+  // Secure Service Bus workflow trigger tunables. Each field defaults independently
+  // when absent/null — see ServiceBusTriggerOptions.cs. NOTE: claimStaleAfter is
+  // deliberately NOT included here — it has its own incident-scarred (WOLF-8512),
+  // Lazy-cached resolution chain (env override -> host.json functionTimeout ->
+  // WEBSITE_SKU -> hard fallback) that stays env-var-only; folding it into this file
+  // would require restructuring that caching architecture for no real benefit, since
+  // WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES is itself already documented
+  // as an explicit operator override, not a deploy-time-static value.
+  "serviceBusTrigger": {
+    "jtiWindowHours": null,
+    "executionTimeoutSeconds": null,
+    "maxConcurrentExecutions": null,
+    "slotWaitTimeoutSeconds": null,
+    "settlementTimeoutSeconds": null
+  }
+}

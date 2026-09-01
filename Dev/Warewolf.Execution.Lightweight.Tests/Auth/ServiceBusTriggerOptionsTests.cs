@@ -13,6 +13,7 @@
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Tests.Auth;
 
@@ -20,36 +21,31 @@ namespace Warewolf.Execution.Lightweight.Tests.Auth;
 [DoNotParallelize] // reads/writes process-global environment variables
 public class ServiceBusTriggerOptionsTests
 {
-    private const string JtiWindowVar = "WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS";
-    private const string ExecutionTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS";
-    private const string MaxConcurrentExecutionsVar = "WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS";
-    private const string SlotWaitTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS";
-    private const string SettlementTimeoutVar = "WAREWOLF_SERVICEBUS_TRIGGER_SETTLEMENT_TIMEOUT_SECONDS";
-
-    private string? _previousJtiWindow;
-    private string? _previousExecutionTimeout;
-    private string? _previousMaxConcurrentExecutions;
-    private string? _previousSlotWaitTimeout;
-    private string? _previousSettlementTimeout;
-
-    [TestInitialize]
-    public void SaveEnvironment()
-    {
-        _previousJtiWindow = Environment.GetEnvironmentVariable(JtiWindowVar);
-        _previousExecutionTimeout = Environment.GetEnvironmentVariable(ExecutionTimeoutVar);
-        _previousMaxConcurrentExecutions = Environment.GetEnvironmentVariable(MaxConcurrentExecutionsVar);
-        _previousSlotWaitTimeout = Environment.GetEnvironmentVariable(SlotWaitTimeoutVar);
-        _previousSettlementTimeout = Environment.GetEnvironmentVariable(SettlementTimeoutVar);
-    }
+    private string? _tempSettingsDirectory;
 
     [TestCleanup]
     public void RestoreEnvironment()
     {
-        Environment.SetEnvironmentVariable(JtiWindowVar, _previousJtiWindow);
-        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, _previousExecutionTimeout);
-        Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, _previousMaxConcurrentExecutions);
-        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, _previousSlotWaitTimeout);
-        Environment.SetEnvironmentVariable(SettlementTimeoutVar, _previousSettlementTimeout);
+        if (_tempSettingsDirectory is not null && Directory.Exists(_tempSettingsDirectory))
+        {
+            try { Directory.Delete(_tempSettingsDirectory, recursive: true); } catch { /* best effort */ }
+        }
+    }
+
+    /// <summary>
+    /// WOLF-8516: the 5 tunables below no longer have a standalone env var — they come SOLELY
+    /// from <c>Settings/executionengine.settings.json</c>'s <c>serviceBusTrigger</c> block, via
+    /// <see cref="HostEnvironmentConfig.ServiceBusTrigger"/>. Writes a temp settings file with
+    /// the given <c>serviceBusTrigger</c> JSON body and loads a <see cref="HostEnvironmentConfig"/>
+    /// from it, for use with <see cref="ServiceBusTriggerOptions.FromEnvironment(HostEnvironmentConfig)"/>.
+    /// </summary>
+    private HostEnvironmentConfig BuildHostConfig(string serviceBusTriggerJson)
+    {
+        _tempSettingsDirectory = Path.Combine(Path.GetTempPath(), "wolf8516-sbt-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(_tempSettingsDirectory);
+        var json = $"{{\"serviceBusTrigger\":{serviceBusTriggerJson}}}";
+        File.WriteAllText(Path.Combine(_tempSettingsDirectory, HostEnvironmentConfig.SettingsFileName), json);
+        return HostEnvironmentConfig.Load(_tempSettingsDirectory);
     }
 
     // ── Property defaults (no environment involved) ─────────────────────────────
@@ -99,134 +95,121 @@ public class ServiceBusTriggerOptionsTests
         Assert.AreEqual(TimeSpan.FromSeconds(30), options.SettlementTimeout);
     }
 
-    // ── FromEnvironment() — no variables set ─────────────────────────────────────
+    // ── FromEnvironment() — no settings file ─────────────────────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_NoVariablesSet_UsesAllDefaults()
+    public void FromEnvironment_NoHostConfig_UsesAllDefaults()
     {
-        Environment.SetEnvironmentVariable(JtiWindowVar, null);
-        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, null);
-        Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, null);
-        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, null);
-
         var options = ServiceBusTriggerOptions.FromEnvironment();
 
         Assert.AreEqual(TimeSpan.FromHours(24), options.JtiReplayWindow);
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.ExecutionTimeout);
         Assert.AreEqual(8, options.MaxConcurrentExecutions);
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.SlotWaitTimeout);
+        Assert.AreEqual(TimeSpan.FromSeconds(30), options.SettlementTimeout);
     }
 
-    // ── FromEnvironment() — JtiReplayWindow ──────────────────────────────────────
+    // ── FromEnvironment(hostConfig) — JtiReplayWindow ────────────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_ValidJtiWindowHours_IsParsed()
+    public void FromEnvironment_ValidJtiWindowHours_IsUsed()
     {
-        Environment.SetEnvironmentVariable(JtiWindowVar, "48");
+        var hostConfig = BuildHostConfig(/*lang=json,strict*/ "{\"jtiWindowHours\":48}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromHours(48), options.JtiReplayWindow);
     }
 
     [DataTestMethod]
-    [DataRow("not-a-number")]
-    [DataRow("0")]
-    [DataRow("-5")]
-    [DataRow("")]
+    [DataRow(0.0)]
+    [DataRow(-5.0)]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_UnparseableOrNonPositiveJtiWindowHours_FallsBackToDefault(string value)
+    public void FromEnvironment_NonPositiveJtiWindowHours_FallsBackToDefault(double value)
     {
-        Environment.SetEnvironmentVariable(JtiWindowVar, value);
+        var hostConfig = BuildHostConfig($"{{\"jtiWindowHours\":{value}}}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromHours(24), options.JtiReplayWindow);
     }
 
-    // ── FromEnvironment() — ExecutionTimeout ─────────────────────────────────────
+    // ── FromEnvironment(hostConfig) — ExecutionTimeout ───────────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_ValidExecutionTimeoutSeconds_IsParsed()
+    public void FromEnvironment_ValidExecutionTimeoutSeconds_IsUsed()
     {
-        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, "120");
+        var hostConfig = BuildHostConfig(/*lang=json,strict*/ "{\"executionTimeoutSeconds\":120}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromSeconds(120), options.ExecutionTimeout);
     }
 
     [DataTestMethod]
-    [DataRow("not-a-number")]
-    [DataRow("0")]
-    [DataRow("-30")]
-    [DataRow("")]
+    [DataRow(0.0)]
+    [DataRow(-30.0)]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_UnparseableOrNonPositiveExecutionTimeoutSeconds_FallsBackToDefault(string value)
+    public void FromEnvironment_NonPositiveExecutionTimeoutSeconds_FallsBackToDefault(double value)
     {
-        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, value);
+        var hostConfig = BuildHostConfig($"{{\"executionTimeoutSeconds\":{value}}}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.ExecutionTimeout);
     }
 
-    // ── FromEnvironment() — MaxConcurrentExecutions ──────────────────────────────
+    // ── FromEnvironment(hostConfig) — MaxConcurrentExecutions ────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_ValidMaxConcurrentExecutions_IsParsed()
+    public void FromEnvironment_ValidMaxConcurrentExecutions_IsUsed()
     {
-        Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, "16");
+        var hostConfig = BuildHostConfig(/*lang=json,strict*/ "{\"maxConcurrentExecutions\":16}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(16, options.MaxConcurrentExecutions);
     }
 
     [DataTestMethod]
-    [DataRow("not-a-number")]
-    [DataRow("0")]
-    [DataRow("-3")]
-    [DataRow("")]
+    [DataRow(0)]
+    [DataRow(-3)]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_UnparseableOrNonPositiveMaxConcurrentExecutions_FallsBackToDefault(string value)
+    public void FromEnvironment_NonPositiveMaxConcurrentExecutions_FallsBackToDefault(int value)
     {
-        Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, value);
+        var hostConfig = BuildHostConfig($"{{\"maxConcurrentExecutions\":{value}}}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(8, options.MaxConcurrentExecutions);
     }
 
-    // ── FromEnvironment() — SlotWaitTimeout ──────────────────────────────────────
+    // ── FromEnvironment(hostConfig) — SlotWaitTimeout ────────────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_ValidSlotWaitTimeoutSeconds_IsParsed()
+    public void FromEnvironment_ValidSlotWaitTimeoutSeconds_IsUsed()
     {
-        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, "60");
+        var hostConfig = BuildHostConfig(/*lang=json,strict*/ "{\"slotWaitTimeoutSeconds\":60}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromSeconds(60), options.SlotWaitTimeout);
     }
 
     [DataTestMethod]
-    [DataRow("not-a-number")]
-    [DataRow("0")]
-    [DataRow("-10")]
-    [DataRow("")]
+    [DataRow(0.0)]
+    [DataRow(-10.0)]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_UnparseableOrNonPositiveSlotWaitTimeoutSeconds_FallsBackToExecutionTimeoutDefault(string value)
+    public void FromEnvironment_NonPositiveSlotWaitTimeoutSeconds_FallsBackToExecutionTimeoutDefault(double value)
     {
-        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, null);
-        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, value);
+        var hostConfig = BuildHostConfig($"{{\"slotWaitTimeoutSeconds\":{value}}}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.SlotWaitTimeout);
     }
@@ -239,55 +222,50 @@ public class ServiceBusTriggerOptionsTests
         // duration - a message legitimately queued behind a slow-but-healthy execution
         // must be able to wait at least one full execution's worth of time for a slot,
         // whatever that configured execution budget is.
-        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, "45");
-        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, null);
+        var hostConfig = BuildHostConfig(/*lang=json,strict*/ "{\"executionTimeoutSeconds\":45}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromSeconds(45), options.ExecutionTimeout);
         Assert.AreEqual(TimeSpan.FromSeconds(45), options.SlotWaitTimeout);
     }
 
-    // ── FromEnvironment() — SettlementTimeout ────────────────────────────────────
+    // ── FromEnvironment(hostConfig) — SettlementTimeout ──────────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_ValidSettlementTimeoutSeconds_IsParsed()
+    public void FromEnvironment_ValidSettlementTimeoutSeconds_IsUsed()
     {
-        Environment.SetEnvironmentVariable(SettlementTimeoutVar, "15");
+        var hostConfig = BuildHostConfig(/*lang=json,strict*/ "{\"settlementTimeoutSeconds\":15}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromSeconds(15), options.SettlementTimeout);
     }
 
     [DataTestMethod]
-    [DataRow("not-a-number")]
-    [DataRow("0")]
-    [DataRow("-5")]
-    [DataRow("")]
+    [DataRow(0.0)]
+    [DataRow(-5.0)]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_UnparseableOrNonPositiveSettlementTimeoutSeconds_FallsBackToDefault(string value)
+    public void FromEnvironment_NonPositiveSettlementTimeoutSeconds_FallsBackToDefault(double value)
     {
-        Environment.SetEnvironmentVariable(SettlementTimeoutVar, value);
+        var hostConfig = BuildHostConfig($"{{\"settlementTimeoutSeconds\":{value}}}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromSeconds(30), options.SettlementTimeout);
     }
 
-    // ── FromEnvironment() — all four set independently ───────────────────────────
+    // ── FromEnvironment(hostConfig) — all fields set independently ──────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public void FromEnvironment_AllFourVariablesSet_EachParsedIndependently()
+    public void FromEnvironment_AllFieldsSet_EachUsedIndependently()
     {
-        Environment.SetEnvironmentVariable(JtiWindowVar, "12");
-        Environment.SetEnvironmentVariable(ExecutionTimeoutVar, "90");
-        Environment.SetEnvironmentVariable(MaxConcurrentExecutionsVar, "4");
-        Environment.SetEnvironmentVariable(SlotWaitTimeoutVar, "30");
+        var hostConfig = BuildHostConfig(
+            /*lang=json,strict*/ "{\"jtiWindowHours\":12,\"executionTimeoutSeconds\":90,\"maxConcurrentExecutions\":4,\"slotWaitTimeoutSeconds\":30}");
 
-        var options = ServiceBusTriggerOptions.FromEnvironment();
+        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
         Assert.AreEqual(TimeSpan.FromHours(12), options.JtiReplayWindow);
         Assert.AreEqual(TimeSpan.FromSeconds(90), options.ExecutionTimeout);

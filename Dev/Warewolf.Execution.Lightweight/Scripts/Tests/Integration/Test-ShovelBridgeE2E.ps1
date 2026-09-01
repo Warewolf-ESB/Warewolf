@@ -174,7 +174,7 @@
     '<CorrelationId>-000000' .. '<CorrelationId>-{N-1}' (fixed-width, zero-padded).
 .PARAMETER MessageAuthToken
     REQUIRED when -VerifyWorkflowExecution. A valid Entra bearer token (audience =
-    WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE on the target engine) for a caller authorized to run
+    WAREWOLF_ENTRA_CONFIG's serviceBusAudience field [WOLF-8516] on the target engine) for a caller authorized to run
     -WorkflowName. Embedded as the message's Authorization application property — this is
     the CALLER's own delegated identity, not a system/shared credential (see
     docs/ServiceBusSecureTrigger-Architecture.md "Two trust boundaries").

@@ -72,12 +72,14 @@ namespace Warewolf.Execution.Lightweight
         readonly Lazy<IBackgroundJobClient> _client;
         readonly string _workflowsDirectory;
 
-        public ResumptionExecutor(IExecutionLogger executionLogger)
+        public ResumptionExecutor(IExecutionLogger executionLogger, Infrastructure.HostEnvironmentConfig hostEnvironmentConfig = null)
         {
             _executionLogger = executionLogger ?? throw new ArgumentNullException(nameof(executionLogger));
             _jobStorage = new Lazy<JobStorage>(HangfireStorageFactory.BuildFromPersistenceConfig, LazyThreadSafetyMode.ExecutionAndPublication);
             _client = new Lazy<IBackgroundJobClient>(() => new BackgroundJobClient(_jobStorage.Value), LazyThreadSafetyMode.ExecutionAndPublication);
-            _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
+            // WOLF-8516: no env-var fallback — WorkflowsDirectory comes solely from
+            // HostEnvironmentConfig (deploy-bundled settings file), which DI always supplies.
+            _workflowsDirectory = hostEnvironmentConfig?.WorkflowsDirectory
                 ?? Path.Combine(AppContext.BaseDirectory, "Resources");
         }
 

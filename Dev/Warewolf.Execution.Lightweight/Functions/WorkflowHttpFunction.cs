@@ -101,12 +101,15 @@ namespace Warewolf.Execution.Lightweight
         public WorkflowHttpFunction(
             IWorkflowExecutor workflowExecutor,
             IApisJsonGenerator apisJsonGenerator,
-            IWorkflowPolicyMatcher policyMatcher)
+            IWorkflowPolicyMatcher policyMatcher,
+            Infrastructure.HostEnvironmentConfig hostEnvironmentConfig = null)
         {
             _workflowExecutor = workflowExecutor;
             _apisJsonGenerator = apisJsonGenerator;
             _policyMatcher = policyMatcher;
-            _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
+            // WOLF-8516: no env-var fallback — WorkflowsDirectory comes solely from
+            // HostEnvironmentConfig (deploy-bundled settings file), which DI always supplies.
+            _workflowsDirectory = hostEnvironmentConfig?.WorkflowsDirectory
                 ?? Path.Combine(AppContext.BaseDirectory, "Resources");
         }
 
