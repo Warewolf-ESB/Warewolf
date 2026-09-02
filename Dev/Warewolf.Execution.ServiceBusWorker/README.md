@@ -174,9 +174,34 @@ env vars). See [`local.settings.json`](local.settings.json) for the full set.
 | `WwExecution:ManagedIdentityClientId` | no | User-assigned MI client id |
 | `WwExecution:TokenRefreshSkewSeconds` | no | Refresh lead time (default 120) |
 | `ServiceBusConnection` | yes | SB connection string or `…__fullyQualifiedNamespace` for identity-based |
+| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | yes | Queue name `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to (default `wwexecution-queue`) — see below |
 
 > **`local.settings.json` must never be committed.** It is for local dev only; put real values in
 > the Function App's application settings (and secrets in Key Vault) when deployed.
+
+### Service Bus trigger binding options
+
+The queue name is **not** hard-coded — `WorkflowQueueTrigger`'s `[ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%", ...)]`
+binds via the standard Azure Functions `%AppSetting%` indirection (the same pattern
+`Warewolf.Execution.Lightweight/Functions/ServiceBusWorkflowTriggerFunction.cs` uses).
+`Deploy-WwExecutionServiceBusWorker.ps1`'s `-ServiceBusQueueName` sets both the app setting
+and the queue it provisions, so they can't drift apart.
+
+Four more binding options are otherwise fixed in [`host.json`](host.json)'s
+`extensions.serviceBus` block, but can be overridden per environment via the standard
+Azure Functions `AzureFunctionsJobHost__extensions__serviceBus__<setting>` app-setting
+convention — set as deploy parameters on `Deploy-WwExecutionServiceBusWorker.ps1`:
+
+| `host.json` setting | Deploy parameter | Default |
+|---|---|---|
+| `maxConcurrentCalls` | `-ServiceBusTriggerMaxConcurrentCalls` | `16` |
+| `prefetchCount` | `-ServiceBusTriggerPrefetchCount` | `0` |
+| `maxAutoLockRenewalDuration` | `-ServiceBusTriggerMaxAutoLockRenewalMinutes` (minutes) | `5` |
+| `autoCompleteMessages` | `-ServiceBusTriggerAutoCompleteMessages` | `true` |
+
+See `docs/ShovelBridge-Architecture.md` § "Trigger binding configuration" for the
+reliability caveat on this override mechanism — the committed `host.json` values are the
+source of truth if an override doesn't visibly take effect.
 
 ---
 
