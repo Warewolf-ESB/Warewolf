@@ -113,6 +113,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
                 throw new NotSupportedException("ExecuteWorkflowTool only calls the WorkflowExecutionRequest overload.");
 
             public WorkflowExecutionResult Execute(WorkflowExecutionRequest request) => _impl(request);
+
+            public TestExecutionResult ExecuteTest(TestExecutionRequest request) =>
+                throw new NotSupportedException("McpApiFunctionsTests does not exercise execute_test.");
         }
 
         private static WorkflowClaimsPrincipal Principal(params string[] roles) =>

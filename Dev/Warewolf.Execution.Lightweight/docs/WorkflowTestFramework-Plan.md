@@ -1,13 +1,56 @@
-# Workflow Test Framework in Lightweight — Plan (not started)
+# Workflow Test Framework in Lightweight — Plan (Phases 1 and 3 implemented)
 
-> **Status:** planning only. No code in this document has been written yet. This file exists so
-> the scope, phasing, and open decisions are recorded before implementation begins — per a
-> request to expose `create_test`/`edit_test` MCP tools for Warewolf's in-app workflow testing
-> framework ("Service Tests").
+> **Status:** Phase 1 (`create_test`/`edit_test`) and Phase 3 (`execute_test`) are implemented —
+> see "Implementation status" below for the concrete design decisions made when Phase 3's §6.1
+> design review happened and the files that resulted. Phase 2 (`list_tests`/`get_test`/
+> `delete_test`) and Phase 4 (the `warewolf-devops-mcp` wrappers) remain not started.
 >
 > **Companion document:** `docs/plans/create-edit-test-tools.md` in the `warewolf-devops-mcp`
 > repo covers the MCP-server-side tool wrappers (Phase 4 below), which are blocked on this plan's
-> Phase 1 shipping first.
+> Phase 1 shipping first — Phase 1 has now shipped.
+
+## 0. Implementation status (Phases 1 and 3)
+
+**Phase 1** shipped exactly per §7a below — `Mcp/TestCatalog.cs`, `Mcp/TestDefinitionModel.cs`,
+`Mcp/ToolHandlers/CreateTestTool.cs`, `Mcp/ToolHandlers/EditTestTool.cs`, plus the
+`create_test`/`edit_test` routes in `Functions/McpApiFunctions.cs`. Two deviations from the
+original design, both cosmetic: workflow resolution uses `WorkflowNameResolver.Resolve` (matching
+every other tool handler) rather than `WorkflowIndex.Instance.Resolve` directly; `TestCatalog`
+also gained a `Load` method ahead of Phase 2, needed by Phase 3.
+
+**Phase 3**'s §6.1 design review is resolved. The key finding: most of the *assertion* engine
+(AssertOp evaluation, Decision/Switch step matching) is already implemented in shared
+`Dev2.Activities` code (`DsfNativeActivity.UpdateWithAssertions`, `ServiceTestHelper`), gated on
+`IDSFDataObject.IsServiceTestExecution`/`TestName`/`ServiceTest` — fields that already existed on
+the interface, unused by Lightweight until now. Only mock **substitution** needed new
+Lightweight-side code, and the server's own mock-swap classes (`TestMockStep`,
+`TestMockDecisionStep`, `TestMockSwitchStep`) are `public` and directly reusable.
+
+The mock-injection safety question is resolved as: **`execute_test` never pools its
+`PreparedWorkflow`** — `WorkflowExecutor.BuildExclusivePreparedWorkflow` (factored out of
+`RentPreparedWorkflow`'s pool-miss branch) builds a fresh, execution-exclusive activity graph per
+test run, so the server's `DataFunc.Handler`-mutating recursive mock injection
+(`TestMockActivityResolver`, ported from `Evaluator.MockActivityIfNecessary`) can be reused
+verbatim — there is no pool to corrupt.
+
+New files: `Execution/TestMockActivityResolver.cs`, `Execution/TestOutputEvaluator.cs` (top-level
+`Outputs`/error-expectation, reusing `Dev2DecisionFactory`/`FindRecsetOptions`/
+`DecisionDisplayHelper` rather than reimplementing the 36 `AssertOp` operators),
+`Execution/TestDebugCapturer.cs` (forwards captured debug states into `TestDebugMessageRepo` so
+container-child assertions — which read that static repo from inside shared `Dev2.Activities`
+code — see anything at all under Lightweight's per-request debug dispatch; see that class's remarks
+for the known, inherited concurrency scope this carries over from `Dev2.Server`),
+`Mcp/Execution/TestDefinitionMapper.cs` (maps the persisted JSON onto concrete `Dev2.Data`
+service-test types), `Mcp/ToolHandlers/ExecuteTestTool.cs`, `Models/TestExecutionRequest.cs`,
+`Models/TestExecutionResult.cs`. `WorkflowExecutor.ExecuteTest`/`ExecuteTestActivityChain` are the
+test-execution counterparts of `Execute`/`ExecuteActivityChain`.
+
+Two behavioral inconsistencies found in the shared codebase itself were canonicalized rather than
+ported as-is (both affect only Phase 3's new top-level `Outputs` evaluator, not the per-step
+assertions the shared engine already performs): `Is Between`/`Not Between` uses `[actual, From,
+To]` operand order (`Evaluator.cs`'s order, not `ServiceTestHelper.cs`'s reversed one), and
+`ErrorContainsText` matching is case-insensitive (`Evaluator.ValidateError`'s rule). `execute_test`
+never writes back to the persisted `.test.json` — the verdict is reported in the tool response only.
 
 ## 1. Why this is a plan, not a small feature
 
@@ -159,8 +202,9 @@ shape, since Lightweight has no resource-ID concept to key by.
    avoid two executions racing on one activity's instance fields — a naive mock-injection design
    that mutates a pooled activity's state instead of the rented `DsfDataObject` would reintroduce
    exactly that bug. **Do not start Phase 3 without an explicit design review of how mocks are
-   injected without touching pooled activity instances.** *(still open — unaffected by the
-   Phase 1 decisions below.)*
+   injected without touching pooled activity instances.** *(RESOLVED — see §0 "Implementation
+   status": `execute_test` never pools its `PreparedWorkflow` at all, via
+   `WorkflowExecutor.BuildExclusivePreparedWorkflow`.)*
 2. **Secrets — RESOLVED for Phase 1.** Route through the existing `IMcpSecretResolver` +
    `DpapiWrapper.Encrypt` pipeline `AddSourceTool.cs` already uses for source passwords
    (`ResolveConfigAsync`/`ResolveSecretPlaceholdersAsync` at `AddSourceTool.cs:143,187-233,246+`,
@@ -195,10 +239,10 @@ shape, since Lightweight has no resource-ID concept to key by.
 
 | Phase | Scope | New engine-side artifacts |
 |---|---|---|
-| **1 (requested now)** | `create_test`, `edit_test` — write-only CRUD, full schema (§4) persisted per §5, validated against the workflow's current `body` (activity-id references must resolve; variable-name references are **not** cross-checked against the envelope, per §6.6) but **not executable** yet. | `Mcp/ToolHandlers/CreateTestTool.cs`, `Mcp/ToolHandlers/EditTestTool.cs`, `Mcp/TestCatalog.cs`, `McpApiFunctions.cs` routing + request records for `create_test`/`edit_test` — see §7a for the concrete design, now that Phase 1's open decisions (§6.2, §6.3, §6.5, §6.6) are resolved |
-| **2** | `list_tests`, `get_test`, `delete_test` — completes read/delete so a caller can discover a test's current shape before editing it, rather than needing to remember the full definition it last wrote. | matching `ToolHandlers/*Tool.cs` + `TestCatalog` read/delete methods |
-| **3** | `execute_test` — the real test runner: mock injection + `AssertOp` evaluation, pass/fail reporting. Needs the design review in §6.1 before starting. | `Mcp/LightweightServiceTestExecutor.cs` (name tentative), result-shape types |
-| **4** | `warewolf-devops-mcp` repo: `warewolf_create_test`/`warewolf_edit_test` wrappers (then list/get/delete/execute in lockstep with phases 2-3) — see `docs/plans/create-edit-test-tools.md` in that repo. | (other repo) |
+| **1 — DONE** | `create_test`, `edit_test` — write-only CRUD, full schema (§4) persisted per §5, validated against the workflow's current `body` (activity-id references must resolve; variable-name references are **not** cross-checked against the envelope, per §6.6) but **not executable** by itself (see Phase 3). | `Mcp/ToolHandlers/CreateTestTool.cs`, `Mcp/ToolHandlers/EditTestTool.cs`, `Mcp/TestCatalog.cs`, `Mcp/TestDefinitionModel.cs`, `McpApiFunctions.cs` routing + request records for `create_test`/`edit_test` — see §7a for the concrete design |
+| **2** | `list_tests`, `get_test`, `delete_test` — completes read/delete so a caller can discover a test's current shape before editing it, rather than needing to remember the full definition it last wrote. Not started. | matching `ToolHandlers/*Tool.cs` + `TestCatalog` read/delete methods |
+| **3 — DONE** | `execute_test` — the real test runner: mock injection + `AssertOp` evaluation, pass/fail reporting. See §0 "Implementation status" for the resolved design and file list. | `Mcp/ToolHandlers/ExecuteTestTool.cs`, `Execution/TestMockActivityResolver.cs`, `Execution/TestOutputEvaluator.cs`, `Execution/TestDebugCapturer.cs`, `Mcp/Execution/TestDefinitionMapper.cs`, `Models/TestExecutionRequest.cs`, `Models/TestExecutionResult.cs`, `WorkflowExecutor.ExecuteTest`/`ExecuteTestActivityChain`/`BuildExclusivePreparedWorkflow` |
+| **4** | `warewolf-devops-mcp` repo: `warewolf_create_test`/`warewolf_edit_test` wrappers (then list/get/delete/execute in lockstep with phases 2-3) — see `docs/plans/create-edit-test-tools.md` in that repo. Not started. | (other repo) |
 
 Each phase ships independently; Phase 2 is recommended before Phase 4 wraps only Phase 1's two
 tools, since an `edit_test` caller with no `list_tests`/`get_test` has to already know the exact
@@ -346,30 +390,58 @@ internal sealed record EditTestResult(
     [property: JsonPropertyName("updated")] bool Updated);
 ```
 
-### 7a.7 Confirming what's out of scope (per §7's table, unchanged)
+### 7a.7 Confirming what remains out of scope (per §7's table)
 
-- No `list_tests`/`get_test`/`delete_test` (Phase 2) — an `edit_test` caller must already know
-  the test's exact current shape; a Phase 1 test, once written, can only be inspected by reading
-  the `.tests/*.test.json` file directly off disk.
-- No execution (`execute_test`, Phase 3) — `testSteps`, mock outputs, and `AssertOp` are
-  persisted but never evaluated.
+- No `list_tests`/`get_test`/`delete_test` (Phase 2, not started) — an `edit_test` caller must
+  already know the test's exact current shape; a persisted test can only be inspected by reading
+  the `.tests/*.test.json` file directly off disk, or by running it via `execute_test` (Phase 3,
+  done — see §0).
+- `execute_test` (Phase 3) is now implemented — see §0 "Implementation status".
 
-## 8. Test strategy (Phase 1, when implementation starts)
+## 8. Test strategy — DONE (Phases 1 and 3)
 
 Per this repo's CLAUDE.md, unit tests are proposed and require explicit go-ahead before being
-written — not written automatically alongside this plan. When Phase 1 implementation begins, the
-proposed plan is:
+written — the user gave that go-ahead after Phase 3 shipped, and the suite below was written and
+is green (1320/1321 in the full `Warewolf.Execution.Lightweight.Tests` run; the one failure,
+`GetWorkflowDefinitionToolTests.Handle_RealWorkflow_UsesNonPassActivity_BodyEditableFalseWithReason`,
+is pre-existing and unrelated — an environment-dependent `FidelityAllowList` status assertion, not
+touched by this work).
 
-- `Warewolf.Execution.Lightweight.Tests/Mcp/ToolHandlers/CreateTestToolTests.cs` and
-  `EditTestToolTests.cs`, following `CreateWorkflowToolTests.cs`'s established conventions
-  (`Dev/Warewolf.Execution.Lightweight.Tests/Mcp/ToolHandlers/CreateWorkflowToolTests.cs:1-80`):
-  temp-directory `WorkflowsDirectory`, a `StubAuthPolicyLoader`, and a `WorkflowClaimsPrincipal`
-  builder helper.
-- Cases: required-parameter validation, activity-id/variable-name reference validation against
-  the target workflow's current `body`, Contribute-permission gating (reusing
-  `ListWorkflowsTool.HasPermission`), name-already-exists (`create_test`) / not-found
-  (`edit_test`) rejection, and the success path — a written `.test.json` file that round-trips
-  correctly through a subsequent `get_test`/`list_tests` call once Phase 2 exists (or, until then,
-  direct file-content assertions).
-- `Warewolf.Execution.Lightweight.Tests/Mcp/TestCatalogTests.cs` for the new persistence
-  component in isolation (save/overwrite behavior, filename-legality rejection per §7a.3).
+- `Warewolf.Execution.Lightweight.Tests/Mcp/ToolHandlers/CreateTestToolTests.cs` (13 tests) and
+  `EditTestToolTests.cs` (6 tests), following `CreateWorkflowToolTests.cs`'s established
+  conventions: temp-directory `WorkflowsDirectory`, a per-file `StubAuthPolicyLoader`, a
+  `WorkflowClaimsPrincipal` builder, and a real fixture workflow built via `CreateWorkflowTool.Handle`
+  (GUID-format node ids, matching real Studio output — a plain-string id like the older
+  `CreateWorkflowToolTests` fixtures use would silently fail `Guid.Parse` in `TestDefinitionMapper`).
+  Cases: required-parameter validation, workflow-not-found, activity-id/StepType validation against
+  the target workflow's current `body`, Contribute-permission gating, name-already-exists
+  (`create_test`) / not-found (`edit_test`) rejection, the `${secret}`-only password rule (literal
+  password rejected, placeholder resolved + DPAPI-encrypted, never plaintext on disk), and the
+  success path with direct `.test.json` content assertions.
+- `Warewolf.Execution.Lightweight.Tests/Mcp/TestCatalogTests.cs` (12 tests) for the persistence
+  component in isolation (save/overwrite/load round-trip, filename-legality rejection per §7a.3).
+- `Warewolf.Execution.Lightweight.Tests/Execution/TestOutputEvaluatorTests.cs` (10 tests): `=`,
+  `Contains`, `Is Between` (canonical `[actual, From, To]` order), and the
+  `NoErrorExpected`/`ErrorExpected`/`ErrorContainsText` (case-insensitive) cases, against a real
+  `DsfDataObject`/`ExecutionEnvironment` — no mocking of the comparison engine itself.
+- `Warewolf.Execution.Lightweight.Tests/Execution/TestMockActivityResolverTests.cs` (5 tests)
+  against a REAL compiled+parsed activity chain (`WorkflowExecutor.LoadDynamicActivity` +
+  `ActivityParser`, the same path `WorkflowExecutor` itself uses): no-match passthrough; a `Mock`
+  step on a regular activity returning a `TestMockStep` wrapper carrying its configured outputs;
+  a `Sequence` with two nested children (built via the generic `isNested`/`parentId`/`index` X6
+  cell markers `CellOrganizer.BuildHierarchy` groups by) where mocking the first child leaves the
+  second child's own `Activity` instance untouched (`sequence.Activities[1]` still reference-equal
+  to the original); and a `ForEach` with one nested child where mocking it swaps
+  `forEach.DataFunc.Handler` to the `TestMockStep` wrapper — the one mutation this design's safety
+  argument (never pooling the `PreparedWorkflow`) exists specifically to make safe.
+  `SelectAndApply` was not fixtured — structurally identical to the `ForEach` case in
+  `TestMockActivityResolver.cs` (same `MockActivityIfNecessary` call against
+  `selectAndApplyActivity.ApplyActivityFunc.Handler`), so the `ForEach` test already covers the
+  pattern.
+- `Warewolf.Execution.Lightweight.Tests/Mcp/ToolHandlers/ExecuteTestToolTests.cs` (9 tests),
+  end-to-end against a real compiled workflow and a real `WorkflowExecutor` (not a fake): Execute-
+  permission gating, missing-test rejection, a `Mock` step's substituted value actually flowing
+  into the final environment (proving the never-pooled `PreparedWorkflow` design works), a failing
+  top-level `Outputs` assertion, and — the key proof of this design's central claim — a regular
+  `Assert` step being evaluated correctly with **zero new per-step assertion code**, purely via the
+  shared `Dev2.Activities` engine reacting to `IDSFDataObject.IsServiceTestExecution`.

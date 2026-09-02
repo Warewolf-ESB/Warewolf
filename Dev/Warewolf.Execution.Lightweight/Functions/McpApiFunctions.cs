@@ -241,6 +241,36 @@ namespace Warewolf.Execution.Lightweight.Functions
                 return await EditSourceTool.Handle(_hostConfig, _authPolicyLoader, SecretResolver, principal, p.Name, p.SourceType, p.Config, ct);
             });
 
+        [Function("McpApiCreateTest")]
+        public Task<HttpResponseData> CreateTest(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/create_test")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<NamedTestRequest>(req, ct) ?? new NamedTestRequest();
+                return await CreateTestTool.Handle(_hostConfig, _authPolicyLoader, SecretResolver, principal, p.Name, p.Test, ct);
+            });
+
+        [Function("McpApiEditTest")]
+        public Task<HttpResponseData> EditTest(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/edit_test")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<NamedTestRequest>(req, ct) ?? new NamedTestRequest();
+                return await EditTestTool.Handle(_hostConfig, _authPolicyLoader, SecretResolver, principal, p.Name, p.Test, ct);
+            });
+
+        [Function("McpApiExecuteTest")]
+        public Task<HttpResponseData> ExecuteTest(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/execute_test")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<ExecuteTestRequest>(req, ct) ?? new ExecuteTestRequest();
+                return await ExecuteTestTool.Handle(_hostConfig, _authPolicyLoader, _workflowExecutor, principal, p.Name, p.TestName, ct);
+            });
+
         [Function("McpApiExecuteWorkflow")]
         public Task<HttpResponseData> ExecuteWorkflow(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/execute_workflow")] HttpRequestData req,
@@ -420,6 +450,10 @@ namespace Warewolf.Execution.Lightweight.Functions
     sealed record AddStepRequest(string Name = "", JsonElement Step = default, string? AfterStepId = null, string? Branch = null);
 
     sealed record SourceRequest(string Name = "", string SourceType = "", JsonElement Config = default);
+
+    sealed record NamedTestRequest(string Name = "", JsonElement Test = default);
+
+    sealed record ExecuteTestRequest(string Name = "", string TestName = "");
 
     sealed record ExecuteWorkflowRequest(string Name = "", JsonElement? Inputs = null);
 

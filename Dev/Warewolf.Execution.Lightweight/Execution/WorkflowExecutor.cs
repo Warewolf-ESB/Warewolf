@@ -192,24 +192,10 @@ namespace Warewolf.Execution.Lightweight
 
             // License/subscription gate — mirrors ExecutorBase.TryExecute subscription check.
             // Controlled via WAREWOLF_LICENSE_CHECK_ENABLED env var (default: enabled).
-            if (IsLicenseCheckEnabled())
+            var licenseError = CheckLicense();
+            if (licenseError != null)
             {
-                try
-                {
-                    var subscription = Dev2.Runtime.Subscription.SubscriptionProvider.Instance.GetSubscriptionData();
-                    if (subscription == null || !subscription.IsLicensed)
-                    {
-                        Dev2Logger.Warn("WorkflowExecutor Execute: License/subscription validation failed — execution blocked.", "WorkflowExecutor-License");
-                        return WorkflowExecutionResult.Failure("Execution blocked: a valid Warewolf license/subscription is required.");
-                    }
-                }
-                catch (Exception licEx)
-                {
-                    // Log only the exception type — a licensing/subscription failure can surface
-                    // provider detail (endpoints, tokens) in its message. Logged once.
-                    Dev2Logger.Error($"WorkflowExecutor Execute: License check threw an exception: {licEx.Message}", "WorkflowExecutor-License");
-                    return WorkflowExecutionResult.Failure("Execution blocked: unable to validate license/subscription.");
-                }
+                return WorkflowExecutionResult.Failure(licenseError);
             }
 
             var stopwatch = Stopwatch.StartNew();
@@ -331,7 +317,7 @@ namespace Warewolf.Execution.Lightweight
                     Duration = stopwatch.Elapsed
                 };
 
-                CollectErrors(dataObject, result, executionId);
+                result.Errors = CollectErrors(dataObject, executionId);
                 ExtractPayload(dataObject, dataList, request, result);
                 if (debugCapturer != null)
                 {
@@ -465,6 +451,236 @@ namespace Warewolf.Execution.Lightweight
                 // design relied on for every sequential execution.
                 ReturnPreparedWorkflow(request.WorkflowFilePath, prepared);
             }
+        }
+
+        /// <summary>
+        /// Runs a persisted workflow test (<c>execute_test</c>) — the test-execution counterpart of
+        /// <see cref="Execute(WorkflowExecutionRequest)"/>.
+        ///
+        /// <para>
+        /// <b>Never pools.</b> Unlike <see cref="Execute(WorkflowExecutionRequest)"/>, this method
+        /// builds its <see cref="PreparedWorkflow"/> via <see cref="BuildExclusivePreparedWorkflow"/>
+        /// directly — never <see cref="RentPreparedWorkflow"/>/<see cref="ReturnPreparedWorkflow"/> —
+        /// because <see cref="ExecuteTestActivityChain"/> may mutate the activity graph in place
+        /// (mock substitution, see <see cref="TestMockActivityResolver"/>'s remarks on why that is
+        /// only safe against an execution-exclusive, never-pooled instance).
+        /// </para>
+        ///
+        /// <para>
+        /// <b>Per-step assertion is NOT reimplemented here.</b> Setting
+        /// <c>dataObject.IsServiceTestExecution</c>/<c>TestName</c>/<c>ServiceTest</c> on the
+        /// per-execution (never-pooled) <see cref="DsfDataObject"/> is enough for shared
+        /// <c>Dev2.Activities</c> code (<c>DsfNativeActivity.UpdateWithAssertions</c>/
+        /// <c>ServiceTestHelper.UpdateDebugStateWithAssertions</c>) to evaluate every
+        /// <c>testSteps[]</c> entry automatically as each matching activity executes — the same code
+        /// path <c>Dev2.Server</c> relies on for this feature. Only mock <b>substitution</b>
+        /// (<see cref="ExecuteTestActivityChain"/>) and the test's top-level <c>Outputs</c>/error
+        /// expectation (<see cref="TestOutputEvaluator"/>, an orchestration-level concern no activity
+        /// hooks) are new code.
+        /// </para>
+        /// </summary>
+        public TestExecutionResult ExecuteTest(TestExecutionRequest request)
+        {
+            if (request is null || !request.IsValid)
+            {
+                return TestExecutionResult.Failure("A workflow file path and service test are required.");
+            }
+
+            var test = request.ServiceTest;
+
+            if (!File.Exists(request.WorkflowFilePath))
+            {
+                return TestExecutionResult.Failure("Workflow not found.");
+            }
+
+            var licenseError = CheckLicense();
+            if (licenseError != null)
+            {
+                return TestExecutionResult.Failure(licenseError);
+            }
+
+            var stopwatch = Stopwatch.StartNew();
+            var startTime = DateTime.UtcNow;
+            var executionId = Guid.NewGuid();
+            Guid resourceId = Guid.Empty;
+
+            try
+            {
+                var fileContents = ReadWorkflowFile(request.WorkflowFilePath);
+                var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
+
+                if (xamlDefinition is null || xamlDefinition.Length == 0)
+                {
+                    return TestExecutionResult.Failure("No XamlDefinition found in the workflow file.");
+                }
+
+                var resolvedName = request.WorkflowName
+                    ?? workflowName
+                    ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
+
+                var prepared = BuildExclusivePreparedWorkflow(xamlDefinition);
+                if (prepared?.Activity == null)
+                {
+                    return TestExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
+                }
+
+                var startActivity = prepared.StartActivity;
+                if (startActivity == null)
+                {
+                    return TestExecutionResult.Failure(GlobalConstants.NoStartNodeError);
+                }
+
+                int versionNumber;
+                (resourceId, versionNumber) = ExtractResourceIdentity(fileContents);
+
+                var wrapperRequest = new WorkflowExecutionRequest
+                {
+                    WorkflowFilePath = request.WorkflowFilePath,
+                    WorkflowsDirectory = request.WorkflowsDirectory,
+                    WorkflowName = resolvedName,
+                    ReturnType = Dev2.Web.EmitionTypes.JSON,
+                    IsDebug = true, // a test run always needs per-step debug/assert detail
+                    ExecutingPrincipal = request.ExecutingPrincipal,
+                    RawInputPayload = BuildTestInputsPayload(test),
+                };
+
+                var dataObject = BuildDataObject(wrapperRequest, executionId, resolvedName, dataList, resourceId, versionNumber);
+                dataObject.TestName = test.TestName;
+                dataObject.IsServiceTestExecution = true;
+                dataObject.ServiceTest = test;
+
+                var resourcesDir = request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath) ?? string.Empty;
+                LightweightSourceLoader.Instance.EnsureIndexed(resourcesDir);
+
+                var debugCapturer = new TestDebugCapturer();
+                try
+                {
+                    using (DebugDispatcher.UseContextDispatcher(debugCapturer))
+                    using (SuspendSnapshotContext.BeginScope(resolvedName, request.WorkflowFilePath, dataObject.ExecutionID ?? executionId))
+                    {
+                        ExecuteTestActivityChain(dataObject, startActivity, test);
+                    }
+
+                    var (outputsPassed, outputsMessage) = TestOutputEvaluator.Evaluate(dataObject, test);
+                    var stepsPassed = AllStepsPassed(test.TestSteps);
+                    var testPassed = outputsPassed && stepsPassed;
+
+                    stopwatch.Stop();
+
+                    var rawStates = debugCapturer.States.Where(s => s.StateType != StateType.Duration).ToArray();
+                    var tree = DebugStateTreeBuilder.BuildTree(rawStates);
+
+                    return new TestExecutionResult
+                    {
+                        IsSuccess = true,
+                        ExecutionId = executionId,
+                        TestName = test.TestName,
+                        TestPassed = testPassed,
+                        Result = testPassed ? RunResult.TestPassed : RunResult.TestFailed,
+                        Message = outputsMessage,
+                        ServiceTest = test,
+                        Errors = CollectErrors(dataObject, executionId),
+                        DebugStates = tree.Select(MapDebugState).ToList(),
+                        StartTime = startTime,
+                        EndTime = DateTime.UtcNow,
+                        Duration = stopwatch.Elapsed,
+                    };
+                }
+                finally
+                {
+                    // Narrows (but per TestDebugCapturer's remarks, cannot fully close) the window
+                    // in which a concurrent run of the SAME workflow + SAME test name could observe
+                    // this run's captured debug states via the static TestDebugMessageRepo.
+                    TestDebugMessageRepo.Instance.FetchDebugItems(resourceId, test.TestName);
+                }
+            }
+            catch (Exception ex)
+            {
+                stopwatch.Stop();
+                Dev2Logger.Error($"WorkflowExecutor ExecuteTest: Unexpected exception for workflow: {request.WorkflowFilePath}", ex, executionId.ToString());
+                _executionLogger.LogError(nameof(ExecuteTest), ex, executionId);
+                return new TestExecutionResult
+                {
+                    IsSuccess = false,
+                    ExecutionId = executionId,
+                    TestName = test?.TestName,
+                    Result = RunResult.TestInvalid,
+                    Message = $"Test execution failed: {ex.Message}",
+                    Errors = new List<string> { "Test execution failed due to an unexpected error." },
+                    StartTime = startTime,
+                    EndTime = DateTime.UtcNow,
+                    Duration = stopwatch.Elapsed,
+                };
+            }
+        }
+
+        /// <summary>
+        /// Recursively checks every <c>testSteps[]</c> entry (and their <c>Children</c>) for a
+        /// <c>TestFailed</c>/<c>TestInvalid</c> outcome. A step whose <c>Result</c> is still
+        /// <c>null</c> (never matched a node during execution, or a <c>Mock</c> step that is never
+        /// asserted) counts as passed — matching <c>GetTestStepsAndOutputs</c>'s own
+        /// <c>step.Type != StepType.Mock</c> filtering intent on the server.
+        /// </summary>
+        static bool AllStepsPassed(IEnumerable<IServiceTestStep> steps)
+        {
+            if (steps is null)
+            {
+                return true;
+            }
+
+            foreach (var step in steps)
+            {
+                var outcome = step.Result?.RunTestResult;
+                if (outcome is RunResult.TestFailed or RunResult.TestInvalid)
+                {
+                    return false;
+                }
+
+                if (!AllStepsPassed(step.Children))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Synthesizes a flat JSON object (<c>{ "var": "value", ... }</c>) from
+        /// <paramref name="test"/>'s <c>Inputs</c> so <see cref="BuildDataObject"/>'s existing
+        /// <c>ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload</c> call — the same one
+        /// <c>execute_workflow</c> already uses — applies them, rather than porting
+        /// <c>Evaluator.AddTestInputsToJsonOrRecordset</c>/<c>AddRecordsetsInputs</c> (private
+        /// <c>Dev2.Server</c>-only instance methods with no reuse surface). Deliberate Phase 3
+        /// simplification (per docs/WorkflowTestFramework-Plan.md decision 6): a recordset-field
+        /// reference (e.g. <c>[[Rows().Name]]</c>) does not match a top-level DataList variable name
+        /// and is silently not applied — only scalar test inputs are supported this way.
+        /// </summary>
+        static string BuildTestInputsPayload(IServiceTestModelTO test)
+        {
+            if (test.Inputs is not { Count: > 0 })
+            {
+                return null;
+            }
+
+            var payload = new JObject();
+            foreach (var input in test.Inputs)
+            {
+                if (string.IsNullOrEmpty(input.Variable))
+                {
+                    continue;
+                }
+
+                if (input.EmptyIsNull && string.IsNullOrEmpty(input.Value))
+                {
+                    continue;
+                }
+
+                var key = input.Variable.Trim('[', ']');
+                payload[key] = input.Value;
+            }
+
+            return payload.Count > 0 ? payload.ToString(Formatting.None) : null;
         }
 
         /// <summary>
@@ -693,6 +909,25 @@ namespace Warewolf.Execution.Lightweight
                 return reused;
             }
 
+            var prepared = BuildExclusivePreparedWorkflow(xamlDefinition);
+            if (prepared != null)
+            {
+                prepared.PoolKey = key;
+            }
+
+            return prepared;
+        }
+
+        /// <summary>
+        /// Compiles+parses a brand-new, execution-exclusive <see cref="PreparedWorkflow"/> that is
+        /// never inserted into <see cref="_workflowPool"/> — the same two calls
+        /// <see cref="RentPreparedWorkflow"/> makes on a pool miss, factored out so
+        /// <see cref="ExecuteTest"/> can get an instance it is free to mutate (mock substitution,
+        /// see <see cref="TestMockActivityResolver"/>) without ever touching the pool other
+        /// concurrent <see cref="Execute(WorkflowExecutionRequest)"/> calls share.
+        /// </summary>
+        internal static PreparedWorkflow BuildExclusivePreparedWorkflow(StringBuilder xamlDefinition)
+        {
             var activity = LoadDynamicActivity(xamlDefinition);
             if (activity == null)
             {
@@ -706,7 +941,6 @@ namespace Warewolf.Execution.Lightweight
             {
                 Activity      = activity,
                 StartActivity = new ActivityParser().Parse(activity),
-                PoolKey       = key
             };
         }
 
@@ -976,6 +1210,54 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <summary>
+        /// The <c>execute_test</c> counterpart of <see cref="ExecuteActivityChain"/> — identical
+        /// flat <c>next</c>-chain walk (reusing the same
+        /// <c>IDev2Activity.Execute(dataObject, update)</c>/returned-<c>next</c> contract the full
+        /// server's own <c>Evaluator.Evaluate</c> loop uses), with one inserted step: before
+        /// executing each node, resolve it through
+        /// <see cref="TestMockActivityResolver.MockActivityIfNecessary"/> so a <c>StepType.Mock</c>
+        /// step runs a substitute instead of the real activity. Per-step <b>assertion</b> needs no
+        /// equivalent hook here — see <see cref="ExecuteTest"/>'s remarks.
+        /// </summary>
+        internal static void ExecuteTestActivityChain(IDSFDataObject dataObject, IDev2Activity startActivity, IServiceTestModelTO serviceTest)
+        {
+            var next = startActivity;
+            var environment = dataObject.Environment;
+            var testSteps = serviceTest.TestSteps;
+
+            while (next != null)
+            {
+                var current = TestMockActivityResolver.MockActivityIfNecessary(next, testSteps);
+
+                // Same permissive sub-workflow authorization patch ExecuteActivityChain applies —
+                // see that method's remarks. A TestMock*Step wrapper is never a DsfActivity and has
+                // no children, so this is a no-op for a directly-mocked node; a recursively-mocked
+                // container (Sequence/ForEach/SelectAndApply) is still the real container instance
+                // (only some of ITS children were swapped), so patching it here is patching the
+                // actual graph that is about to run.
+                if (current is Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity dsfActivity)
+                {
+                    dsfActivity.AuthorizationService = Security.LightweightAuthorizationService.Instance;
+                }
+
+                PatchNestedAuthorizationServices(current, new HashSet<string>());
+
+                next = current.Execute(dataObject, 0);
+                environment.AllErrors.UnionWith(environment.Errors);
+
+                if (dataObject.StopExecution)
+                {
+                    var fetchedErrors = environment.FetchErrors();
+                    if (!string.IsNullOrEmpty(fetchedErrors))
+                    {
+                        dataObject.ExecutionException = new Exception(fetchedErrors);
+                    }
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Recursively walks <paramref name="node"/>'s <see cref="IDev2Activity.GetChildrenNodes"/>
         /// tree, patching every nested <c>DsfActivity</c> (sub-workflow invoke) onto the permissive
         /// <see cref="Security.LightweightAuthorizationService"/> — mirroring the flat top-level
@@ -1118,7 +1400,14 @@ namespace Warewolf.Execution.Lightweight
         /// Errors and the ExecutionException (if any) are also emitted via <see cref="IExecutionLogger"/>
         /// so they appear in Application Insights / Azure Monitor with the full stack trace.
         /// </summary>
-        void CollectErrors(IDSFDataObject dataObject, WorkflowExecutionResult result, Guid executionId)
+        /// <summary>
+        /// Returns <paramref name="dataObject"/>'s environment errors, or a generic fallback message
+        /// when it failed with no environment errors captured. Returns a plain <see cref="List{T}"/>
+        /// (not written onto a <see cref="WorkflowExecutionResult"/> directly) so
+        /// <see cref="Execute(WorkflowExecutionRequest)"/> and <see cref="ExecuteTest"/> share this
+        /// identically despite returning different result types.
+        /// </summary>
+        List<string> CollectErrors(IDSFDataObject dataObject, Guid executionId)
         {
             var errors = new ErrorResultTO();
             foreach (var err in dataObject.Environment.Errors.ToList())
@@ -1130,17 +1419,14 @@ namespace Warewolf.Execution.Lightweight
                 errors.AddError(err, true);
             }
 
-            if (errors.HasErrors())
-            {
-                // Not logged, matching the server: Executor.DefaultExecutionResponse folds the
-                // same Environment.Errors / AllErrors into the response and logs nothing —
-                // a workflow reporting errors is business output, not a server fault. The count
-                // is already on the "Execute completed" Info line, and the errors themselves
-                // reach the caller via result.Errors.
-                result.Errors = errors.FetchErrors().ToList();
-            }
+            // Not logged, matching the server: Executor.DefaultExecutionResponse folds the
+            // same Environment.Errors / AllErrors into the response and logs nothing —
+            // a workflow reporting errors is business output, not a server fault. The count
+            // is already on the "Execute completed" Info line, and the errors themselves
+            // reach the caller via result.Errors.
+            var result = errors.HasErrors() ? errors.FetchErrors().ToList() : new List<string>();
 
-            if (dataObject.ExecutionException != null && result.Errors.Count == 0)
+            if (dataObject.ExecutionException != null && result.Count == 0)
             {
                 // The message is NOT logged: ExecutionException is constructed from
                 // environment.FetchErrors() (see ExecuteActivityChain), so it IS the workflow's
@@ -1149,8 +1435,10 @@ namespace Warewolf.Execution.Lightweight
                 _executionLogger.LogError("ExecuteActivityChain failed.", executionId);
                 // Response body carries a generic message only — the activity exception's
                 // message and stack stay out of it (full detail is at Debug above).
-                result.Errors.Add("Workflow execution failed due to an unexpected error.");
+                result.Add("Workflow execution failed due to an unexpected error.");
             }
+
+            return result;
         }
 
         /// <summary>
@@ -1339,6 +1627,38 @@ namespace Warewolf.Execution.Lightweight
                 && !value.Equals("0", StringComparison.Ordinal);
         }
 
+        /// <summary>
+        /// Runs the license/subscription gate (mirrors <c>ExecutorBase.TryExecute</c>'s subscription
+        /// check) and returns a caller-facing error message when execution should be blocked, or
+        /// <c>null</c> when it may proceed. Extracted so <see cref="Execute(WorkflowExecutionRequest)"/>
+        /// and <see cref="ExecuteTest"/> share the identical gate.
+        /// </summary>
+        static string CheckLicense()
+        {
+            if (!IsLicenseCheckEnabled())
+            {
+                return null;
+            }
+
+            try
+            {
+                var subscription = Dev2.Runtime.Subscription.SubscriptionProvider.Instance.GetSubscriptionData();
+                if (subscription == null || !subscription.IsLicensed)
+                {
+                    Dev2Logger.Warn("WorkflowExecutor: License/subscription validation failed — execution blocked.", "WorkflowExecutor-License");
+                    return "Execution blocked: a valid Warewolf license/subscription is required.";
+                }
+
+                return null;
+            }
+            catch (Exception licEx)
+            {
+                // Log only the exception type — a licensing/subscription failure can surface
+                // provider detail (endpoints, tokens) in its message. Logged once.
+                Dev2Logger.Error($"WorkflowExecutor: License check threw an exception: {licEx.Message}", "WorkflowExecutor-License");
+                return "Execution blocked: unable to validate license/subscription.";
+            }
+        }
         }
 
     /// <summary>

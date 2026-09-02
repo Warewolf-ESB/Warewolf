@@ -363,4 +363,4 @@ in Path B; run §4 against the deployed engine to complete the Azure end-to-end.
 ## Related docs
 - [`Deploy-EndToEnd-Runbook.md`](Deploy-EndToEnd-Runbook.md) — generic engine deploy + daemon/JobProcessor authorization.
 - [`Deploy-RunGuide.md`](Deploy-RunGuide.md) — full deploy parameter reference.
-- [`HangFire-Migration-To-Azure-Plan-Step-By-Step.md`](HangFire-Migration-To-Azure-Plan-Step-By-Step.md) — migration plan, decisions log, Phase-8 coverage.
+- [`HangFire-Migration-To-Azure-Plan-Step-By-Step.md`](archive/HangFire-Migration-To-Azure-Plan-Step-By-Step.md) — migration plan, decisions log, Phase-8 coverage (archived: fully implemented).

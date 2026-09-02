@@ -86,6 +86,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 LastRequest = request;
                 return _impl(request);
             }
+
+            public TestExecutionResult ExecuteTest(TestExecutionRequest request) =>
+                throw new NotSupportedException("ExecuteWorkflowToolTests does not exercise execute_test.");
         }
 
         private static WorkflowClaimsPrincipal Principal(params string[] roles) =>

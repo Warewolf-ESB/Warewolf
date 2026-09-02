@@ -4,8 +4,8 @@ Target architecture for migrating Warewolf's suspend/resume (Hangfire) capabilit
 `WarewolfServer + hangfireserver.exe` to the **Execution Engine** (Azure Function App) plus a new
 dedicated **ExecutionEngineJobProcessor** Function App.
 
-Companion document: [HangFire-Migration-To-Azure-Plan-Step-By-Step.md](HangFire-Migration-To-Azure-Plan-Step-By-Step.md)
-(phased implementation plan, test matrix, decisions log).
+Companion document: [HangFire-Migration-To-Azure-Plan-Step-By-Step.md](archive/HangFire-Migration-To-Azure-Plan-Step-By-Step.md)
+(phased implementation plan, test matrix, decisions log — archived: Phases 0-8 are now fully implemented).
 
 ---
 

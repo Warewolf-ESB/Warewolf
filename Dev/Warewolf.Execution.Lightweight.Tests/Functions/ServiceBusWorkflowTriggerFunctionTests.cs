@@ -130,6 +130,9 @@ public class ServiceBusWorkflowTriggerFunctionTests
             LastRequest = request;
             return _impl(request);
         }
+
+        public TestExecutionResult ExecuteTest(TestExecutionRequest request) =>
+            throw new NotSupportedException("ServiceBusWorkflowTriggerFunctionTests does not exercise execute_test.");
     }
 
     // ── Fixture helpers ──────────────────────────────────────────────────────────

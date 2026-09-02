@@ -3,7 +3,7 @@
 Two scripts that deploy the Azure queue path into disposable resources, **prove** it works, and score
 18 acceptance criteria. Built from the manual runbook
 ([Deploy-E2E-Verification-Runbook.md](Deploy-E2E-Verification-Runbook.md)) plus everything the
-2026-08-06 live run found ([Deploy-E2E-Execution-Summary.md](Deploy-E2E-Execution-Summary.md)).
+2026-08-06 live run found ([Deploy-E2E-Execution-Summary.md](archive/Deploy-E2E-Execution-Summary.md), archived).
 
 | File | Role |
 |---|---|
@@ -312,7 +312,7 @@ so explicitly rather than leaving the column empty and silent.
 ## Teardown
 
 Each run's markdown summary carries its own commands. See
-[Deploy-E2E-Rollback-Commands.md](Deploy-E2E-Rollback-Commands.md) for the full procedure and the
+[Deploy-E2E-Rollback-Commands.md](archive/Deploy-E2E-Rollback-Commands.md) (archived) for the full procedure and the
 guard rails — in short:
 
 ⛔ **Never `az group delete`.** ⛔ Never delete the ACA environment, the registry, the workspace, or the
@@ -337,7 +337,7 @@ rollback at that one, or it will under-delete.
 - **Criterion 8 is weaker than it looks** here. The harness creates the queues itself, so it proves a
   trigger consumes a queue *whose durability it did not set*. It cannot prove the publisher created
   them, because `PublishRabbitMQActivity` **cannot** create a queue or exchange at all — see
-  [Deploy-E2E-Execution-Summary.md](Deploy-E2E-Execution-Summary.md) **S11**.
+  [Deploy-E2E-Execution-Summary.md](archive/Deploy-E2E-Execution-Summary.md) **S11**.
 - **`multipart/form-data` triggers are flagged, not verified.** Whether an `@`-prefixed
   `MapEntireMessage` input binds depends on the deployed **engine build**, and nothing detects a
   mismatch at runtime — a worker against an older engine dead-letters every such message while

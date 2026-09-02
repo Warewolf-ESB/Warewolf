@@ -11,7 +11,7 @@
     Phases: A preflight, B engine, C QueueProcessor, D scale rules, E proof, F opt-in teardown.
 
     Built-in corrections that a hand-run gets wrong (measured 2026-08-06; see
-    docs/Deploy-E2E-Execution-Summary.md):
+    docs/archive/Deploy-E2E-Execution-Summary.md):
 
       * Broker topology is PRE-CREATED, because PublishRabbitMQActivity cannot create it (S11): a
         failed passive declare closes the channel and the active declare is reissued on the dead one.

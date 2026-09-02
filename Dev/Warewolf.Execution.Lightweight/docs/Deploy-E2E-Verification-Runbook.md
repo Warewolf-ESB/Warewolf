@@ -20,7 +20,7 @@ delete at the end:
 > predates: broker topology must be **pre-created** (§S11), the documented
 > `az account get-access-token` step **cannot work** on a fresh app registration (§S9), and execution
 > evidence comes from **Log Analytics**, not App Insights `traces` (§S12). Details in
-> [Deploy-E2E-Execution-Summary.md](Deploy-E2E-Execution-Summary.md).
+> [Deploy-E2E-Execution-Summary.md](archive/Deploy-E2E-Execution-Summary.md) (archived).
 
 > ### Read before running
 > - **Everything in Phase A is billable** while it exists. Phase F removes all of it in one command
