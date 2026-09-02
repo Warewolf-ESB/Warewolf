@@ -15,6 +15,8 @@ control plane.
 | `Configure-RabbitMqShovel.ps1`                | **RabbitMQ → Service Bus shovel bridge configurator** — configures a dynamic RabbitMQ Shovel (via the RabbitMQ Management HTTP API, `PUT /api/parameters/shovel/{vhost}/{name}`) that forwards messages from an existing RabbitMQ source queue (AMQP 0.9.1) to the Service Bus queue provisioned by `Deploy-WwExecutionServiceBusWorker.ps1` (AMQP 1.0), per Microsoft's documented RabbitMQ-to-Service-Bus bridging pattern. Fetches the destination SAS key live via `az` (or accepts it directly as a SecureString) — never writes it to disk. Verifies the source queue exists and polls the shovel's running state after applying. Requires the `rabbitmq_shovel`/`rabbitmq_shovel_management` plugins to already be enabled on the broker (one-time, broker-host admin action — the script probes for this and gives the exact `rabbitmq-plugins enable` instruction if missing). Same conventions: params-first/prompt-if-missing, `-DryRun`, masked summary + transcript, `-LoadFunctionsOnly` test hook. Validated against a live `rabbitmq:3-management` Docker container (see docs/ShovelBridge-Architecture.md). |
 | `Monitor-RabbitMqShovel.ps1`                  | **Shovel health monitor** — a standalone script the customer/operator schedules (Task Scheduler, cron, Azure Automation runbook, etc.) since RabbitMQ is customer/on-prem infrastructure, not something a serverless Azure Function can reliably poll. Polls `GET /api/shovels/{vhost}` for the named shovel; `running` = healthy (exit 0), anything else or missing = unhealthy (throws, non-zero exit). Optionally emits a `ShovelHealthCheck` Application Insights custom event via the plain HTTP `/v2/track` ingestion API (no SDK) — a failure event on every unhealthy check, plus an optional heartbeat event on healthy checks via `-SendHeartbeatOnHealthy` — so an Azure Monitor alert rule can watch `customEvents` for `healthy == "false"` (or a heartbeat gap). Read-only against RabbitMQ (GET only); never mutates broker state. Same conventions: params-first/prompt-if-missing, `-DryRun`, masked summary + transcript, `-LoadFunctionsOnly` test hook. |
 | `Deploy-WwQueueProcessor.ps1`                 | **RabbitMQ QueueProcessor deployment** — Azure Container Apps, **one app per queue-trigger**, autoscaled 0→N by the KEDA `rabbitmq` scaler. Pointed at a trigger file, a folder of trigger files, or a manifest; derives `maxReplicas` from the trigger's `Concurrency` and the KEDA target from its `Prefetch`. Replaces `N × QueueWorker.exe` for the Azure path (on-prem unchanged). |
+| `Deploy-WwEngineAndQueueProcessor.ps1`        | **Combined engine + QueueProcessor deploy** — a thin manual wrapper that runs `Deploy-WwExecutionEngine.ps1`, reads back the two files that deploy produces (the run `*.summary.json` and `Configure-WwExecutionAuth.output.json`), asserts them, and wires `Deploy-WwQueueProcessor.ps1` from the result. Exists because the values passing between the two deploys — engine endpoint, Entra `ClientId`, App Insights connection string, broker secret uri — are **produced by the first and required by the second**; a worker deployed with an empty `-EngineResourceAppId` starts, consumes messages and fails every engine call. Asserts the summary is `status=completed` and not a dry run, and that the auth output (**one fixed file, overwritten by every engine deploy**) belongs to this app. Emits a consolidated `deploy-both-<stamp>.handover.json` that the app-role grant, the token scripts and `Rollback-WwExecutionEngine.ps1 -SummaryPath` all read. Placeholder variable block; `y/N` gate before each real deploy; `-SkipEngine` / `-SkipQueueProcessor` / `-DryRun` / `-NonInteractive`. Not to be combined with `Deploy-WwExecutionEngine.ps1 -DeployRabbitMqTriggers` — that is the same job done in one call, without the assertions. See [`docs/Deploy-Both-RunGuide.md`](../docs/Deploy-Both-RunGuide.md). |
+| `Tests/Deploy-WwEngineAndQueueProcessor.Tests.ps1` | Pester 5 suite (53 tests) for the combined wrapper via `-LoadFunctionsOnly` — placeholder guards, zip extraction and the stray-`.bite` package guard, both splat builders validated against the real orchestrator `param()` blocks, every capture assertion (`status` ≠ completed, dry-run summary, mismatched `appName`, **stale auth output from a previous deploy**, missing `ClientId`), and the handover file's shape plus the guarantee that it never records a secret value. Runs offline. |
 | `Invoke-WwEnginePreWarm.ps1`                  | **Consumption-plan engine warm-up**, serving two callers with two auth shapes: `pipeline-LOADTEST.yml`'s `ShovelBridgeLoadTest_ExternalServiceBus` job passes an already-minted `-EngineBaseUrl`/`-AccessToken`; `Invoke-WwQueueLoadTest.ps1` (queue-processor path) passes `-EngineAppName`/`-EngineAppId` (+ `-ResourceGroup`/`-TenantId`) and the script mints its own token via `WwE2E.Common.psm1`'s `Get-E2EEngineToken`. Calls a workflow's `Secure/{route}` endpoint sequentially until latency stabilizes (Phase A — proves one instance is warm), then **ramps** across `-ConcurrentRounds` rounds to `-TargetConcurrency` (Phase B — forces the Consumption plan to scale out to roughly the instance count a coming burst needs). The ladder is `ceil(Target / 2^(Rounds - i))` — `20` over 3 rounds is `5 → 10 → 20` — and the **last** round is always the full target, so the final-round verdict still means "clean at target concurrency". Opening straight at the target was itself a cold-start trigger: the 2026-08-24 `pipeline-LOADTEST` run recorded `OK=22/60` at a 41.7 s median. Exists to prevent the cold-start/scale-out failure signature root-caused in `docs/ShovelBridge-Architecture.md`'s 2026-08-16 entry (Service Bus `MessageLockLost`, Roslyn `OutOfMemoryException`, cascading token-validation cancellations). `-DryRun` prints the phase plan and the ramp ladder without any HTTP call. **Always exits 0 once parameters validate** — an incomplete warm-up only warns; a per-call `-TimeoutSec` expiry is a counted `TIMEOUT` result, not an error (before 2026-08-24 one such timeout killed the whole pipeline step, because `-SkipHttpErrorCheck` suppresses non-2xx *status codes* only). `-LoadFunctionsOnly` test hook for Pester. |
 | `Rollback-WwExecutionEngine.ps1`              | **Teardown companion** — deletes ONLY what a deploy run created (summary-/tag-driven), in dependency order, with a leak check. Existing resources are preserved. |
 | `New-WwE2EStaging.ps1`                        | **E2E harness — staging.** Builds a disposable staging tree (settings, generated triggers + broker source, optional `dotnet publish`) from repo templates, stamps a unique run suffix, validates readiness and emits `staging-manifest.json`. Only the Warewolf licence and broker credentials are hand-supplied; the generated source is **plaintext** so DPAPI never blocks the Linux worker. See [`docs/E2E-Harness-README.md`](../docs/E2E-Harness-README.md). |
@@ -116,7 +118,7 @@ Highlights:
 - **Publish source** — `-PublishPath` accepts a folder or a `.zip`. No `dotnet publish`
   is run by the script. The publish output is **never modified**: every run copies (or
   extracts) it into a **fresh staging dir under the OS temp path**
-  (`wwexecutionengine-stage-<AppName>-<stamp>`), prepares the package there, zips **that**,
+  (`wwexecutionengine-stage-<AppName>-<stamp>-<pid>-<token>`, unique per run), prepares the package there, zips **that**,
   uploads it, then removes the staging dir on a successful real run. This keeps each
   zip clean and lets the engine and the JobProcessor stage in **separate** directories.
 - **secure.config** — an already-AES-encrypted file is validated (must be engine-
@@ -146,7 +148,7 @@ Highlights:
   matrix in `docs/Deployment-Steps.txt`.
 - **Dry-run parity** — `-DryRun` produces the **same** outputs as a real run except
   it creates/uploads nothing in Azure: files are prepared into a temp staging dir
-  (`wwexecutionengine-stage-<AppName>-<stamp>-dryrun`, leaving your publish output
+  (`wwexecutionengine-stage-<AppName>-<stamp>-<pid>-<token>-dryrun`, leaving your publish output
   untouched) that is **kept** for inspection, and a transcript + `*.dryrun.summary.json`
   (with `"dryRun": true`) are written so the rollback can be exercised from a dry-run
   summary. Encryption runs only when the Key Vault key is reachable, else it's staged
@@ -390,6 +392,39 @@ To **prove** the whole Azure path (engine `/Public` + `/Secure`, one Container A
 ACA/KEDA scale rule, then a live scale-`0→N` test by publishing to the queue) in a disposable
 resource group you delete afterwards, follow
 [`docs/Deploy-E2E-Verification-Runbook.md`](../docs/Deploy-E2E-Verification-Runbook.md).
+
+---
+
+## Combined deploy (`Deploy-WwEngineAndQueueProcessor.ps1`)
+
+Deploys the engine and the workers in one pass, wiring the second from what the first produced.
+Edit the placeholder variable block at the top of the script, then:
+
+```powershell
+.\Deploy-WwEngineAndQueueProcessor.ps1 -DryRun -NonInteractive   # both plans, no changes
+.\Deploy-WwEngineAndQueueProcessor.ps1 -EncryptResources         # first deploy of a source set
+.\Deploy-WwEngineAndQueueProcessor.ps1                           # every deploy after that
+.\Deploy-WwEngineAndQueueProcessor.ps1 -SkipEngine               # workers only, engine already up
+```
+
+**Why this exists rather than `-DeployRabbitMqTriggers`.** The engine orchestrator can deploy the
+workers itself in one call. This wrapper makes the two calls separately so the handover between
+them is *asserted* first — the engine deploy writes two machine-readable outputs, and both are
+easy to misread:
+
+| Output | Trap |
+|---|---|
+| `<LogDir>\deploy-WwExecutionEngine-<stamp>.summary.json` | rewritten after **every phase** with `status` = `in-progress`\|`completed`\|`failed`, so "the newest summary" is often an aborted run |
+| `Configure-WwExecutionAuth.output.json` | **one fixed file in this folder, overwritten by every engine deploy** — not per-run, not in `LogDir`; it carries `ClientId` / `SpObjectId` / `AppRoles[].id` |
+
+The wrapper asserts both, then merges them into `<LogDir>\deploy-both-<stamp>.handover.json` —
+the file the `Warewolf_QueueProcessor` app-role grant, `Get-WwExecutionToken*.ps1` and
+`Rollback-WwExecutionEngine.ps1 -SummaryPath` all read, so no downstream step re-derives an
+Entra id by display-name lookup. Full usage, failure-mode table and post-deploy steps:
+[`docs/Deploy-Both-RunGuide.md`](../docs/Deploy-Both-RunGuide.md).
+
+> Do **not** set `-DeployRabbitMqTriggers` in the engine splat as well — you would get two sets
+> of Container Apps.
 
 ---
 
