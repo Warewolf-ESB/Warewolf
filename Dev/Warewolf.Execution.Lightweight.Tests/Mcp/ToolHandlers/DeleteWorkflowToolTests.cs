@@ -32,6 +32,7 @@ using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
+using Warewolf.Execution.Lightweight.Tests.TestSupport;
 
 namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 {
@@ -94,18 +95,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                     .Concat(roles.Select(r => new Claim(ClaimTypes.Role, r))),
                 "Bearer", ClaimTypes.Name, ClaimTypes.Role));
 
-        private HostEnvironmentConfig HostConfig()
-        {
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", _root);
-            try
-            {
-                return HostEnvironmentConfig.Load();
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("WorkflowsDirectory", null);
-            }
-        }
+        private HostEnvironmentConfig HostConfig() => McpToolTestHostConfig.ForWorkflowsDirectory(_root);
 
         private static StubAuthPolicyLoader OpenLoader() => new() { IsConfigEffective = false };
 

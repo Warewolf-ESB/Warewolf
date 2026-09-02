@@ -24,6 +24,7 @@ using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 using Warewolf.Execution.Lightweight.Models;
+using Warewolf.Execution.Lightweight.Tests.TestSupport;
 
 namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 {
@@ -130,18 +131,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         // ── Helpers ────────────────────────────────────────────────────────────
 
-        private HostEnvironmentConfig HostConfig()
-        {
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", _root);
-            try
-            {
-                return HostEnvironmentConfig.Load();
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("WorkflowsDirectory", null);
-            }
-        }
+        private HostEnvironmentConfig HostConfig() => McpToolTestHostConfig.ForWorkflowsDirectory(_root);
 
         private void WriteWorkflow(string relativePath, string name, string comment = "", string dataListXml = "<DataList />")
         {

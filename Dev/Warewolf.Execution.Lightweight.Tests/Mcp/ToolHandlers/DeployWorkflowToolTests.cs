@@ -28,6 +28,7 @@ using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
+using Warewolf.Execution.Lightweight.Tests.TestSupport;
 
 namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 {
@@ -72,18 +73,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                     .Concat(roles.Select(r => new Claim(ClaimTypes.Role, r))),
                 "Bearer", ClaimTypes.Name, ClaimTypes.Role));
 
-        private HostEnvironmentConfig HostConfig()
-        {
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", _root);
-            try
-            {
-                return HostEnvironmentConfig.Load();
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("WorkflowsDirectory", null);
-            }
-        }
+        private HostEnvironmentConfig HostConfig() => McpToolTestHostConfig.ForWorkflowsDirectory(_root);
 
         // ── Valid-biteContent fixture (built via CreateWorkflowTool.Handle into a throwaway
         // scratch directory, then read back off disk — proves the fixture is genuinely a
@@ -128,16 +118,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 Path.Combine(Path.GetTempPath(), "deploy-wf-fixture-" + Guid.NewGuid().ToString("N"))).FullName;
             try
             {
-                Environment.SetEnvironmentVariable("WorkflowsDirectory", scratchRoot);
-                HostEnvironmentConfig scratchConfig;
-                try
-                {
-                    scratchConfig = HostEnvironmentConfig.Load();
-                }
-                finally
-                {
-                    Environment.SetEnvironmentVariable("WorkflowsDirectory", null);
-                }
+                var scratchConfig = McpToolTestHostConfig.ForWorkflowsDirectory(scratchRoot);
 
                 var fields = new JArray(new JObject { ["FieldName"] = "[[Result]]", ["FieldValue"] = "hello", ["IndexNumber"] = 1 });
                 var body = BodyOf(resourceName, MakeStartNode(), MakeAssign("assign1", "Assign", fields), MakeEdge("e1", "start", "assign1"));

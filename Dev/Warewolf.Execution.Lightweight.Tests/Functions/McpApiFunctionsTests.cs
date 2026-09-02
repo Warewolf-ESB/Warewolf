@@ -40,6 +40,7 @@ using Warewolf.Execution.Lightweight.Mcp.Secrets;
 using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 using Warewolf.Execution.Lightweight.Models;
 using Warewolf.Execution.Lightweight.Tests.Auth;
+using Warewolf.Execution.Lightweight.Tests.TestSupport;
 using ModelContextProtocol;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
@@ -122,18 +123,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
 
         // ── Function/env builders ────────────────────────────────────────────
 
-        private HostEnvironmentConfig HostConfig()
-        {
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", _root);
-            try
-            {
-                return HostEnvironmentConfig.Load();
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("WorkflowsDirectory", null);
-            }
-        }
+        private HostEnvironmentConfig HostConfig() => McpToolTestHostConfig.ForWorkflowsDirectory(_root);
 
         private McpApiFunctions NewFunctions(
             IWorkflowAuthPolicyLoader? authPolicyLoader = null,
@@ -274,16 +264,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
                 Path.Combine(Path.GetTempPath(), "mcp-api-deploy-fixture-" + Guid.NewGuid().ToString("N"))).FullName;
             try
             {
-                Environment.SetEnvironmentVariable("WorkflowsDirectory", scratchRoot);
-                HostEnvironmentConfig scratchConfig;
-                try
-                {
-                    scratchConfig = HostEnvironmentConfig.Load();
-                }
-                finally
-                {
-                    Environment.SetEnvironmentVariable("WorkflowsDirectory", null);
-                }
+                var scratchConfig = McpToolTestHostConfig.ForWorkflowsDirectory(scratchRoot);
 
                 CreateWorkflowTool.Handle(scratchConfig, new StubAuthPolicyLoader { IsConfigEffective = false },
                     null, resourceName, ValidEnvelope(resourceName), ValidBody(resourceName));

@@ -44,6 +44,7 @@ using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Mcp;
 using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
+using Warewolf.Execution.Lightweight.Tests.TestSupport;
 
 namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 {
@@ -93,18 +94,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             public void LogFatal(string message, Exception exception, Guid executionId) { }
         }
 
-        private HostEnvironmentConfig HostConfig()
-        {
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", _root);
-            try
-            {
-                return HostEnvironmentConfig.Load();
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("WorkflowsDirectory", null);
-            }
-        }
+        private HostEnvironmentConfig HostConfig() => McpToolTestHostConfig.ForWorkflowsDirectory(_root);
 
         static JsonElement EmptyEnvelope() =>
             System.Text.Json.JsonSerializer.SerializeToElement(new { inputs = Array.Empty<object>(), outputs = Array.Empty<object>() });
