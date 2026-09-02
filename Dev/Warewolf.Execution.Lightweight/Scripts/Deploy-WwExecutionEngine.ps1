@@ -27,8 +27,9 @@
         Phase 3    Stage        - secure.config (validate / auto-encrypt plaintext),
                                   workflow resources (+ optional WFAES encryption),
                                   Elasticsearch source (+ WFAES encryption),
-                                  executionengine.settings.json (Key Vault topology —
-                                  WOLF-8516), environment variables
+                                  executionengine.settings.json (Key Vault topology +
+                                  ServiceBusTrigger tunables — WOLF-8516), environment
+                                  variables
         Phase 4    Deploy       - publish the package dir to the Function App
                                   (func, falling back to az zip-deploy)
         Phase 5    Verify       - endpoint banner + optional HTTP probe
@@ -155,6 +156,25 @@
     gate inside the trigger's own code (WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS).
     Left at the SDK default (unset) unless explicitly supplied.  See WOLF-8512,
     docs/ShovelBridge-Architecture.md.
+
+.PARAMETER ServiceBusTriggerJtiWindowHours
+.PARAMETER ServiceBusTriggerExecutionTimeoutSeconds
+.PARAMETER ServiceBusTriggerMaxConcurrentExecutions
+.PARAMETER ServiceBusTriggerSlotWaitTimeoutSeconds
+.PARAMETER ServiceBusTriggerSettlementTimeoutSeconds
+    OPT-IN, deploy-time-static tunables for the secure Service Bus workflow trigger
+    (ServiceBusTriggerOptions — jtiWindowHours/executionTimeoutSeconds/
+    maxConcurrentExecutions/slotWaitTimeoutSeconds/settlementTimeoutSeconds
+    respectively). WOLF-8516: these 5 no longer have ANY env-var fallback — they
+    are read SOLELY from the staged Settings/executionengine.settings.json file's
+    serviceBusTrigger section (see ServiceBusTriggerOptions.FromEnvironment). When
+    any one of these 5 params is supplied, this script stages that section
+    (independent of -KeyVaultName/-EncryptResources — the two concerns share the
+    same file but are otherwise unrelated); an unsupplied field is left null in the
+    staged JSON and the engine falls back to its own hardcoded default for that
+    field only. Note ServiceBusMaxConcurrentCalls above is a DIFFERENT, upstream
+    dispatch-level cap (host.json) — these 5 tune the trigger's OWN in-process
+    semaphore/timeouts, not the host's dispatch.
 
 .PARAMETER LicenseCheckEnabled
     WAREWOLF_LICENSE_CHECK_ENABLED (engine default: true).
@@ -325,6 +345,13 @@ param(
     [nullable[bool]] $StructuredLogs,
     [switch] $AlignHostJsonLogLevel,      # opt-in: also rewrite host.json logLevel (host-process only)
     [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
+
+    # ── ServiceBusTrigger tunables (WOLF-8516 — file-only, no env-var fallback) ──
+    [nullable[int]] $ServiceBusTriggerJtiWindowHours,
+    [nullable[int]] $ServiceBusTriggerExecutionTimeoutSeconds,
+    [nullable[int]] $ServiceBusTriggerMaxConcurrentExecutions,
+    [nullable[int]] $ServiceBusTriggerSlotWaitTimeoutSeconds,
+    [nullable[int]] $ServiceBusTriggerSettlementTimeoutSeconds,
 
     # ── Logging output ───────────────────────────────────────────────────────
     [string] $LogDir,
@@ -974,6 +1001,20 @@ if ($kvRequired) {
     $KeyVaultSecretName = Read-Required -Name 'KeyVaultSecretName' -Current $KeyVaultSecretName -Hint 'AES key secret name'
 }
 
+# ── ServiceBusTrigger tunables (decoupled from Key Vault — WOLF-8516) ───────────
+# Staged into the SAME executionengine.settings.json file as keyVaultName/
+# keyVaultSecretName (Phase 3.5c below) whenever ANY of these 5 is supplied, since
+# ServiceBusTriggerOptions now reads them SOLELY from that file (no env-var
+# fallback) — independent of whether this deploy also requires a Key Vault.
+$sbtOverrides = [ordered]@{
+    jtiWindowHours           = $ServiceBusTriggerJtiWindowHours
+    executionTimeoutSeconds  = $ServiceBusTriggerExecutionTimeoutSeconds
+    maxConcurrentExecutions  = $ServiceBusTriggerMaxConcurrentExecutions
+    slotWaitTimeoutSeconds   = $ServiceBusTriggerSlotWaitTimeoutSeconds
+    settlementTimeoutSeconds = $ServiceBusTriggerSettlementTimeoutSeconds
+}
+$sbtRequired = @($sbtOverrides.Values | Where-Object { $null -ne $_ }).Count -gt 0
+
 # ── Elasticsearch source (user-supplied, exact filename) ───────────────────────
 if ($enableEs) {
     $ElasticsearchSourcePath = Read-Required -Name 'ElasticsearchSourcePath' -Current $ElasticsearchSourcePath -Hint "path to $ElasticsearchBiteName"
@@ -1247,6 +1288,10 @@ if ($DeployRabbitMqTriggers) {
 if ($kvRequired) {
     $kvPurpose = $doEncryptResources ? 'encrypt now + runtime decrypt' : 'runtime decrypt of already-encrypted sources'
     Write-Host ("    {0,-28}: {1}" -f 'Key Vault', "$KeyVaultName / secret '$KeyVaultSecretName' ($kvPurpose) -> Settings/executionengine.settings.json")
+}
+if ($sbtRequired) {
+    $sbtSummary = ($sbtOverrides.GetEnumerator() | Where-Object { $null -ne $_.Value } | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join ', '
+    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger tunables', "$sbtSummary -> Settings/executionengine.settings.json")
 }
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)
 Write-Host ("    {0,-28}: {1}" -f 'Run tag', "wwx-test-run=$runId  (rollback targets this tag only)")
@@ -1723,23 +1768,35 @@ try {
     }
 
     # 3.5c executionengine.settings.json (WOLF-8516) — deploy-time-static topology
-    # (Key Vault name/secret). Plain JSON, staged AS-IS (no encryption; these are
-    # names, not secrets — same classification KEYVAULT_SECRET_NAME always had).
-    # Overwrites whatever dev-time placeholder shipped in the publish output
-    # (Warewolf.Execution.Lightweight/Settings/executionengine.settings.json, all
-    # fields null/absent) with the real values for this deployment. HostEnvironmentConfig
-    # has NO env-var fallback for these fields any more — a deployment without this
-    # step, or without -KeyVaultName/-KeyVaultSecretName when encryption is required,
-    # ships with encryption disabled.
-    if ($kvRequired) {
+    # (Key Vault name/secret, ServiceBusTrigger tunables). Plain JSON, staged AS-IS
+    # (no encryption; these are names/numbers, not secrets — same classification
+    # KEYVAULT_SECRET_NAME always had). Overwrites whatever dev-time placeholder
+    # shipped in the publish output (Warewolf.Execution.Lightweight/Settings/
+    # executionengine.settings.json, all fields null/absent) with the real values
+    # for this deployment. HostEnvironmentConfig / ServiceBusTriggerOptions have NO
+    # env-var fallback for these fields any more — a deployment without this step,
+    # or without -KeyVaultName/-KeyVaultSecretName when encryption is required,
+    # ships with encryption disabled; a deployment without any
+    # -ServiceBusTrigger* param ships with the trigger's own hardcoded defaults.
+    #
+    # $kvRequired and $sbtRequired are independent — either alone stages this file
+    # (with the other's fields left null), matching whichever concern this
+    # particular deployment actually needs to set.
+    if ($kvRequired -or $sbtRequired) {
         $settingsDir = Join-Path $StagingDir 'Settings'
         if (-not (Test-Path -LiteralPath $settingsDir)) { New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null }
         $engineSettingsDest = Join-Path $settingsDir 'executionengine.settings.json'
         Write-Step "Staging 'executionengine.settings.json' -> '$engineSettingsDest' (keyVaultName=$KeyVaultName, keyVaultSecretName=$KeyVaultSecretName)"
         $engineSettingsValue = [ordered]@{
-            keyVaultName       = $KeyVaultName
-            keyVaultSecretName = $KeyVaultSecretName
+            keyVaultName       = $kvRequired ? $KeyVaultName : $null
+            keyVaultSecretName = $kvRequired ? $KeyVaultSecretName : $null
         }
+        $logDetail = "keyVaultName=$($engineSettingsValue.keyVaultName), keyVaultSecretName=$($engineSettingsValue.keyVaultSecretName)"
+        if ($sbtRequired) {
+            $engineSettingsValue['serviceBusTrigger'] = $sbtOverrides
+            $logDetail += ", serviceBusTrigger=$($sbtOverrides | ConvertTo-Json -Compress)"
+        }
+        Write-Step "Staging 'executionengine.settings.json' -> '$engineSettingsDest' ($logDetail)"
         ($engineSettingsValue | ConvertTo-Json) | Set-Content -LiteralPath $engineSettingsDest -Encoding UTF8
         Write-Ok 'executionengine.settings.json staged.'
     }

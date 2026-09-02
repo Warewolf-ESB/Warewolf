@@ -716,6 +716,43 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         }
     }
 
+    Context 'ServiceBusTrigger tunables (executionengine.settings.json, WOLF-8516)' {
+        It 'stages serviceBusTrigger independent of Key Vault when a tunable is supplied (no -KeyVaultName)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerMaxConcurrentExecutions = 2
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=,\s*keyVaultSecretName=,\s*serviceBusTrigger=.*maxConcurrentExecutions.:2"
+        }
+
+        It 'leaves unsupplied ServiceBusTrigger fields null alongside a supplied one' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerMaxConcurrentExecutions = 2
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'serviceBusTrigger=.*"jtiWindowHours":null'
+            $out | Should -Match 'serviceBusTrigger=.*"executionTimeoutSeconds":null'
+        }
+
+        It 'regression: -KeyVaultName alone (no ServiceBusTrigger params) stages with NO serviceBusTrigger key' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.KeyVaultName       = 'kv-test'
+            $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1"
+            $out | Should -Not -Match 'serviceBusTrigger='
+        }
+
+        It 'stages BOTH Key Vault topology and ServiceBusTrigger tunables when both are supplied' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.KeyVaultName       = 'kv-test'
+            $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
+            $callArgs.ServiceBusTriggerMaxConcurrentExecutions = 2
+            $callArgs.ServiceBusTriggerSettlementTimeoutSeconds = 30
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1.*serviceBusTrigger="
+            $out | Should -Match 'serviceBusTrigger=.*"maxConcurrentExecutions":2'
+            $out | Should -Match 'serviceBusTrigger=.*"settlementTimeoutSeconds":30'
+        }
+    }
     Context 'breaking change — required params have no defaults' {
         It 'throws under -NonInteractive when <Param> is omitted' -ForEach @(
             @{ Param = 'ResourceGroup' }
