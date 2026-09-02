@@ -572,40 +572,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             Assert.IsFalse(opts.IsConfigured);
         }
 
-        [TestMethod]
-        public void FromEnvironment_ReadsElasticsearchVariables()
-        {
-            Environment.SetEnvironmentVariable("Elasticsearch__Uri",       "http://es.local:9200");
-            Environment.SetEnvironmentVariable("Elasticsearch__IndexName",  "my-index");
-            Environment.SetEnvironmentVariable("Elasticsearch__Username",   "admin");
-            Environment.SetEnvironmentVariable("Elasticsearch__Password",   "secret");
-            Environment.SetEnvironmentVariable("Elasticsearch__ApiKey",     "key123");
-            try
-            {
-                var opts = ElasticsearchLoggingOptions.FromEnvironment();
-                Assert.AreEqual("http://es.local:9200", opts.Uri);
-                Assert.AreEqual("my-index",            opts.IndexName);
-                Assert.AreEqual("admin",               opts.Username);
-                Assert.AreEqual("secret",              opts.Password);
-                Assert.AreEqual("key123",              opts.ApiKey);
-            }
-            finally
-            {
-                Environment.SetEnvironmentVariable("Elasticsearch__Uri",      null);
-                Environment.SetEnvironmentVariable("Elasticsearch__IndexName", null);
-                Environment.SetEnvironmentVariable("Elasticsearch__Username",  null);
-                Environment.SetEnvironmentVariable("Elasticsearch__Password",  null);
-                Environment.SetEnvironmentVariable("Elasticsearch__ApiKey",    null);
-            }
-        }
-
-        [TestMethod]
-        public void FromEnvironment_MissingIndexName_DefaultsToWarewolfLogs()
-        {
-            Environment.SetEnvironmentVariable("Elasticsearch__IndexName", null);
-            var opts = ElasticsearchLoggingOptions.FromEnvironment();
-            Assert.AreEqual("warewolf-execution-logs", opts.IndexName);
-        }
+        // WOLF-8516: the legacy Elasticsearch__* env-var fallback (ElasticsearchLoggingOptions.
+        // FromEnvironment()) was deleted — confirmed dead in production wiring (only FromBiteFile
+        // is ever called from ServiceCollectionExtensions). FromBiteFile_Password_ParsesUsernameAndPassword
+        // below already covers the sole remaining construction path.
 
         [TestMethod]
         public void FromBiteFile_Password_ParsesUsernameAndPassword()

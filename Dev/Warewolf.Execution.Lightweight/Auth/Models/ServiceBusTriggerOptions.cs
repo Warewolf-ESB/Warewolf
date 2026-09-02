@@ -5,6 +5,7 @@
  */
 
 using System.Text.Json;
+using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Auth.Models;
 
@@ -277,32 +278,40 @@ public sealed class ServiceBusTriggerOptions
         }
     }
 
-    /// <summary>Reads tunables from environment variables.</summary>
-    public static ServiceBusTriggerOptions FromEnvironment()
+    /// <summary>
+    /// Reads tunables SOLELY from <paramref name="hostConfig"/>'s
+    /// <see cref="HostEnvironmentConfig.ServiceBusTrigger"/> file-sourced overrides (WOLF-8516 —
+    /// the 5 standalone env vars these fields used to read directly were removed; no fallback).
+    /// <paramref name="hostConfig"/> defaults to <c>null</c> (no file consulted → every field
+    /// uses its hardcoded default), which is what the bare <c>new ServiceBusTriggerOptions()</c>
+    /// property initializers already produce anyway. <c>ClaimStaleAfter</c> is deliberately
+    /// untouched by <paramref name="hostConfig"/> — see its own property initializer's doc
+    /// comment; its env-var-based resolution chain is unaffected by this change.
+    /// </summary>
+    public static ServiceBusTriggerOptions FromEnvironment(HostEnvironmentConfig hostConfig = null)
     {
-        var windowRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS");
-        var window = double.TryParse(windowRaw, out var hours) && hours > 0
-            ? TimeSpan.FromHours(hours)
-            : TimeSpan.FromHours(24);
+        var fileOverrides = hostConfig?.ServiceBusTrigger;
 
-        var timeoutRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS");
-        var executionTimeout = double.TryParse(timeoutRaw, out var seconds) && seconds > 0
-            ? TimeSpan.FromSeconds(seconds)
+        var windowHours = fileOverrides?.JtiWindowHours;
+        var window = windowHours is > 0 ? TimeSpan.FromHours(windowHours.Value) : TimeSpan.FromHours(24);
+
+        var executionTimeoutSeconds = fileOverrides?.ExecutionTimeoutSeconds;
+        var executionTimeout = executionTimeoutSeconds is > 0
+            ? TimeSpan.FromSeconds(executionTimeoutSeconds.Value)
             : TimeSpan.FromMinutes(5);
 
-        var maxConcurrentRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS");
-        var maxConcurrentExecutions = int.TryParse(maxConcurrentRaw, out var maxConcurrent) && maxConcurrent > 0
-            ? maxConcurrent
+        var maxConcurrentExecutions = fileOverrides?.MaxConcurrentExecutions is > 0
+            ? fileOverrides.MaxConcurrentExecutions.Value
             : 8;
 
-        var slotWaitTimeoutRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_SLOT_WAIT_TIMEOUT_SECONDS");
-        var slotWaitTimeout = double.TryParse(slotWaitTimeoutRaw, out var slotWaitSeconds) && slotWaitSeconds > 0
-            ? TimeSpan.FromSeconds(slotWaitSeconds)
+        var slotWaitTimeoutSeconds = fileOverrides?.SlotWaitTimeoutSeconds;
+        var slotWaitTimeout = slotWaitTimeoutSeconds is > 0
+            ? TimeSpan.FromSeconds(slotWaitTimeoutSeconds.Value)
             : executionTimeout;
 
-        var settlementTimeoutRaw = Environment.GetEnvironmentVariable("WAREWOLF_SERVICEBUS_TRIGGER_SETTLEMENT_TIMEOUT_SECONDS");
-        var settlementTimeout = double.TryParse(settlementTimeoutRaw, out var settlementSeconds) && settlementSeconds > 0
-            ? TimeSpan.FromSeconds(settlementSeconds)
+        var settlementTimeoutSeconds = fileOverrides?.SettlementTimeoutSeconds;
+        var settlementTimeout = settlementTimeoutSeconds is > 0
+            ? TimeSpan.FromSeconds(settlementTimeoutSeconds.Value)
             : TimeSpan.FromSeconds(30);
 
         return new ServiceBusTriggerOptions

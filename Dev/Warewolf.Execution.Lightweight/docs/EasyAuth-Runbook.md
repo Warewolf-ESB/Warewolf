@@ -71,10 +71,11 @@ az monitor app-insights component create `
 $aiKey = az monitor app-insights component show `
     --app "$AppName-ai" --resource-group $Rg --query connectionString -o tsv
 # Deploy the connection string under the deliberately non-standard name so the Functions host's
-# auto-AI pipeline stays dormant, and turn AI on with ENABLEAPPLICATIONINSIGHTS (the authoritative switch).
+# auto-AI pipeline stays dormant, and turn AI on via WAREWOLF_LOGGING_CONFIG's "appInsights" field
+# (WOLF-8516 — the authoritative switch; formerly the standalone ENABLEAPPLICATIONINSIGHTS var).
 az functionapp config appsettings set `
     --name $AppName --resource-group $Rg `
-    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$aiKey" "ENABLEAPPLICATIONINSIGHTS=true"
+    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$aiKey" 'WAREWOLF_LOGGING_CONFIG={"appInsights":true}'
 ```
 
 Expected: `az functionapp show -n $AppName -g $Rg --query state` returns `Running`.
@@ -98,7 +99,7 @@ What happens, in order:
 5. **User assignments** — for each user in `$UserAssignments`, posts an `appRoleAssignment` for the group role plus every permission role mapped to that group.
 6. **Client secret** — generates a 1-year secret if no secret survives the next 30 days (or when called with `-RotateSecret`).
 7. **Easy Auth** — substitutes `<TENANT_ID>` / `<CLIENT_ID>` into `Scripts/authsettingsV2.json` and PUTs it to `Microsoft.Web/.../authsettingsV2`.
-8. **App settings** — sets `WAREWOLF_ENTRA_TENANT_ID`, `WAREWOLF_ENTRA_AUDIENCE`, `WAREWOLF_ENTRA_CLIENT_ID`, `WAREWOLF_SECURE_CONFIG`, and (when rotated) `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET`. `WAREWOLF_ENTRA_CLIENT_ID` carries the bare client GUID as an extra accepted `aud` value — Entra has been observed (2026-08-18) minting tokens whose `aud` is the bare GUID rather than the `api://<clientId>` URI form, and without this setting `EntraAuthOptions.ValidAudiences` only contains the URI form, so every caller is rejected with 401 regardless of role assignment.
+8. **App settings** — sets one `WAREWOLF_ENTRA_CONFIG` JSON app setting carrying `tenantId`, `audience`, and `clientId` (WOLF-8516 — previously 3 separate env vars), plus `WAREWOLF_SECURE_CONFIG`, and (when rotated) `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET`. `clientId` carries the bare client GUID as an extra accepted `aud` value — Entra has been observed (2026-08-18) minting tokens whose `aud` is the bare GUID rather than the `api://<clientId>` URI form, and without this field `EntraAuthOptions.ValidAudiences` only contains the URI form, so every caller is rejected with 401 regardless of role assignment.
 9. **Output** — writes `Scripts/Configure-WwExecutionAuth.output.json` containing `clientId`, `audience`, role IDs, and assignment summary.
 
 Expected output (excerpt):

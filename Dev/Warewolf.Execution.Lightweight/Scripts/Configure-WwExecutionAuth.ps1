@@ -1519,18 +1519,25 @@ if ($rotationReason) {
 Write-Host ""
 Write-Host "═══ Stage 8  Function App settings ════════════════════════════════" -ForegroundColor Cyan
 
-# WAREWOLF_ENTRA_CLIENT_ID is written alongside WAREWOLF_ENTRA_AUDIENCE (not merely as a
-# fallback) because Entra does not reliably issue the `api://{clientId}` App ID URI as the
-# `aud` claim for this app registration - observed live (2026-08-18) minting tokens with a
-# BARE `aud` of just the client GUID, which `api://$ClientId` alone does not match. Without
-# this second setting EntraAuthOptions.ValidAudiences contains only the api://-prefixed form
-# and every caller is rejected with 401 "Authentication required" regardless of role
-# assignment (see EntraAuthOptions.ClientId doc comment and the pipeline-CLOUD.yml diagnostic
-# probe for the full aud/WAREWOLF_ENTRA_AUDIENCE mismatch writeup).
+# WOLF-8516: WAREWOLF_ENTRA_TENANT_ID/AUDIENCE/CLIENT_ID were merged into one
+# WAREWOLF_ENTRA_CONFIG JSON app setting — see Auth/Models/EntraIdentityOptions.cs.
+# Rotation now writes all Entra identity fields atomically in one az call.
+#
+# 'clientId' is written alongside 'audience' (not merely as a fallback) because Entra
+# does not reliably issue the `api://{clientId}` App ID URI as the `aud` claim for this
+# app registration - observed live (2026-08-18) minting tokens with a BARE `aud` of just
+# the client GUID, which `api://$ClientId` alone does not match. Without this second
+# field EntraAuthOptions.ValidAudiences contains only the api://-prefixed form and every
+# caller is rejected with 401 "Authentication required" regardless of role assignment
+# (see EntraAuthOptions.ClientId doc comment and the pipeline-CLOUD.yml diagnostic probe
+# for the full aud/audience mismatch writeup).
+$entraConfigValue = [ordered]@{
+    tenantId = $TenantId
+    audience = "api://$ClientId"
+    clientId = $ClientId
+}
 $settings = @(
-    "WAREWOLF_ENTRA_TENANT_ID=$TenantId",
-    "WAREWOLF_ENTRA_AUDIENCE=api://$ClientId",
-    "WAREWOLF_ENTRA_CLIENT_ID=$ClientId",
+    "WAREWOLF_ENTRA_CONFIG=$($entraConfigValue | ConvertTo-Json -Compress)",
     "WAREWOLF_SECURE_CONFIG=$SecureConfigMountPath"
 )
 if ($ClientSecret) {
@@ -1816,16 +1823,32 @@ if (-not $hasUserImpersonationLive) {
 }
 
 # 10c. Required app settings present
+# WOLF-8516: WAREWOLF_ENTRA_TENANT_ID/AUDIENCE/CLIENT_ID were merged into
+# WAREWOLF_ENTRA_CONFIG — verify the JSON blob is present AND each merged field is
+# non-empty, preserving the original per-field verification.
 $requiredSettings = @(
-    'WAREWOLF_ENTRA_TENANT_ID',
-    'WAREWOLF_ENTRA_AUDIENCE',
-    'WAREWOLF_ENTRA_CLIENT_ID',
+    'WAREWOLF_ENTRA_CONFIG',
     'WAREWOLF_SECURE_CONFIG',
     $ClientSecretSettingName
 )
 foreach ($name in $requiredSettings) {
     $val = Get-FunctionAppSetting -Name $FunctionAppName -ResourceGroup $ResourceGroupName -SettingName $name
     if (-not $val) { $verifyErrors.Add("app setting '$name' is missing or empty") }
+}
+
+$liveEntraConfigRaw = Get-FunctionAppSetting -Name $FunctionAppName -ResourceGroup $ResourceGroupName -SettingName 'WAREWOLF_ENTRA_CONFIG'
+if ($liveEntraConfigRaw) {
+    try {
+        $liveEntraConfig = $liveEntraConfigRaw | ConvertFrom-Json
+        foreach ($field in @('tenantId', 'audience', 'clientId')) {
+            $fieldVal = $liveEntraConfig.$field
+            if ([string]::IsNullOrWhiteSpace($fieldVal)) {
+                $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field is missing or empty")
+            }
+        }
+    } catch {
+        $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG is not valid JSON: $($_.Exception.Message)")
+    }
 }
 
 # 10d. Redirect URI registered

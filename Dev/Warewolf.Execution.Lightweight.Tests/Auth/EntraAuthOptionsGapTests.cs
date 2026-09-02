@@ -18,26 +18,22 @@ namespace Warewolf.Execution.Lightweight.Tests.Auth;
 [DoNotParallelize] // reads / writes environment variables
 public class EntraAuthOptionsGapTests
 {
-    private const string TenantEnv   = "WAREWOLF_ENTRA_TENANT_ID";
-    private const string AudienceEnv = "WAREWOLF_ENTRA_AUDIENCE";
-    private const string ClientEnv   = "WAREWOLF_ENTRA_CLIENT_ID";
+    // WOLF-8516: WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_AUDIENCE / WAREWOLF_ENTRA_CLIENT_ID
+    // were merged into one JSON app setting — see EntraIdentityOptions.
+    private const string ConfigEnv = EntraIdentityOptions.EnvVar;
 
-    private string? _origTenant, _origAudience, _origClient;
+    private string? _origConfig;
 
     [TestInitialize]
     public void SaveEnv()
     {
-        _origTenant   = Environment.GetEnvironmentVariable(TenantEnv);
-        _origAudience = Environment.GetEnvironmentVariable(AudienceEnv);
-        _origClient   = Environment.GetEnvironmentVariable(ClientEnv);
+        _origConfig = Environment.GetEnvironmentVariable(ConfigEnv);
     }
 
     [TestCleanup]
     public void RestoreEnv()
     {
-        Environment.SetEnvironmentVariable(TenantEnv,   _origTenant);
-        Environment.SetEnvironmentVariable(AudienceEnv, _origAudience);
-        Environment.SetEnvironmentVariable(ClientEnv,   _origClient);
+        Environment.SetEnvironmentVariable(ConfigEnv, _origConfig);
     }
 
     // ── FromEnvironment ──────────────────────────────────────────────────────
@@ -45,9 +41,8 @@ public class EntraAuthOptionsGapTests
     [TestMethod]
     public void FromEnvironment_ReadsAllThreeVariables()
     {
-        Environment.SetEnvironmentVariable(TenantEnv,   "tenant-guid");
-        Environment.SetEnvironmentVariable(AudienceEnv, "api://my-app");
-        Environment.SetEnvironmentVariable(ClientEnv,   "client-guid");
+        Environment.SetEnvironmentVariable(ConfigEnv,
+            /*lang=json,strict*/ "{\"tenantId\":\"tenant-guid\",\"audience\":\"api://my-app\",\"clientId\":\"client-guid\"}");
 
         var opts = EntraAuthOptions.FromEnvironment();
 
@@ -59,9 +54,7 @@ public class EntraAuthOptionsGapTests
     [TestMethod]
     public void FromEnvironment_MissingVars_PropertiesAreNull()
     {
-        Environment.SetEnvironmentVariable(TenantEnv,   null);
-        Environment.SetEnvironmentVariable(AudienceEnv, null);
-        Environment.SetEnvironmentVariable(ClientEnv,   null);
+        Environment.SetEnvironmentVariable(ConfigEnv, null);
 
         var opts = EntraAuthOptions.FromEnvironment();
 
@@ -186,9 +179,8 @@ public class EntraAuthOptionsGapTests
     [TestMethod]
     public void FromEnvironment_BareGuidAudience_IsPrefixedWithApiScheme()
     {
-        Environment.SetEnvironmentVariable(TenantEnv,   "tenant-guid");
-        Environment.SetEnvironmentVariable(AudienceEnv, "05794411-b275-4801-97ac-8b078ed7196c");
-        Environment.SetEnvironmentVariable(ClientEnv,   null);
+        Environment.SetEnvironmentVariable(ConfigEnv,
+            /*lang=json,strict*/ "{\"tenantId\":\"tenant-guid\",\"audience\":\"05794411-b275-4801-97ac-8b078ed7196c\"}");
 
         var opts = EntraAuthOptions.FromEnvironment();
 

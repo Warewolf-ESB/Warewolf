@@ -31,8 +31,10 @@
          possibly-shared app is a separate, higher-risk decision left to the operator).
       4. Idempotently grants that identity the "Azure Service Bus Data Receiver" RBAC role,
          scoped to the namespace (checks for an existing assignment first).
-      5. Sets the four app settings the trigger needs: ServiceBusConnection__fullyQualifiedNamespace,
-         WAREWOLF_SERVICEBUS_TRIGGER_QUEUE, WAREWOLF_ENTRA_TENANT_ID, WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE.
+      5. Sets the app settings the trigger needs: ServiceBusConnection__fullyQualifiedNamespace,
+         WAREWOLF_SERVICEBUS_TRIGGER_QUEUE, and WAREWOLF_ENTRA_CONFIG's tenantId/serviceBusAudience
+         fields (WOLF-8516 — merged with any tenantId/audience/clientId Configure-WwExecutionAuth.ps1
+         already wrote via a read-merge-write, since an app setting is a whole-value overwrite).
 
     NOT done by this script (separate, out-of-scope operator steps):
       * Creating the Entra App Registration -EntraServiceBusAudience refers to, or minting any
@@ -74,13 +76,14 @@
     ClaimStaleAfter's runtime-resolved default. Applied via `az servicebus queue update` (not
     only at creation) so it converges on an already-provisioned queue too.
 .PARAMETER EntraTenantId
-    REQUIRED. Entra tenant id — sets WAREWOLF_ENTRA_TENANT_ID. Must match the tenant that
-    issues tokens for -EntraServiceBusAudience.
+    REQUIRED. Entra tenant id — sets the 'tenantId' field of the WAREWOLF_ENTRA_CONFIG JSON app
+    setting (WOLF-8516). Must match the tenant that issues tokens for -EntraServiceBusAudience.
 .PARAMETER EntraServiceBusAudience
     REQUIRED. Expected `aud` claim for tokens carried in Service-Bus-triggered messages — sets
-    WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE. Deliberately separate from the general HTTP audience
-    (see docs/ServiceBusSecureTrigger-Architecture.md "Configuration reference"). The Entra App
-    Registration this refers to must already exist — this script does not create one.
+    the 'serviceBusAudience' field of WAREWOLF_ENTRA_CONFIG (WOLF-8516). Deliberately separate
+    from the general HTTP audience (see docs/ServiceBusSecureTrigger-Architecture.md
+    "Configuration reference"). The Entra App Registration this refers to must already exist —
+    this script does not create one.
 .PARAMETER NonInteractive
     Skip the "does this look right?" confirmation prompt before applying mutating changes.
 .PARAMETER DryRun
@@ -218,7 +221,7 @@ Write-Host ''
 Write-Host '  This run will (idempotently):' -ForegroundColor White
 Write-Host "    1. Create (or converge) queue '$TriggerQueueName' on '$ServiceBusNamespace' (dead-lettering on, max delivery $MaxDeliveryCount, lock duration $LockDuration)." -ForegroundColor White
 Write-Host "    2. Grant principal '$principalId' the 'Azure Service Bus Data Receiver' role on '$ServiceBusNamespace' if not already granted." -ForegroundColor White
-Write-Host "    3. Set app settings on '$FunctionAppName': ServiceBusConnection__fullyQualifiedNamespace, WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName, WAREWOLF_ENTRA_TENANT_ID, WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE=$EntraServiceBusAudience." -ForegroundColor White
+Write-Host "    3. Set app settings on '$FunctionAppName': ServiceBusConnection__fullyQualifiedNamespace, WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName, and merge tenantId/serviceBusAudience=$EntraServiceBusAudience into WAREWOLF_ENTRA_CONFIG (WOLF-8516)." -ForegroundColor White
 Write-Host ''
 Write-Note "This does NOT create the Entra App Registration for '$EntraServiceBusAudience', mint any tokens, or grant secure.config permission to run any workflow — see this script's .DESCRIPTION."
 
@@ -287,6 +290,33 @@ if ($hasReceiverRole) {
 
 Write-Phase 'Phase 3  App settings'
 
+# WOLF-8516: WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE were merged into
+# the WAREWOLF_ENTRA_CONFIG JSON app setting also written by Configure-WwExecutionAuth.ps1
+# (tenantId/audience/clientId). Since an app setting is a whole-value overwrite (Azure has
+# no JSON-merge primitive), a bare `set` here would silently wipe out the audience/clientId
+# that script already wrote. Read-merge-write instead: fetch whatever is currently on the
+# Function App, layer tenantId/serviceBusAudience on top, preserving any other fields.
+$existingEntraConfigRaw = Invoke-Az -AllowFail @(
+    'functionapp', 'config', 'appsettings', 'list',
+    '--name', $FunctionAppName,
+    '--resource-group', $ResourceGroup,
+    '--query', "[?name=='WAREWOLF_ENTRA_CONFIG'].value | [0]",
+    '-o', 'tsv'
+) | Out-String
+$existingEntraConfigRaw = $existingEntraConfigRaw.Trim()
+
+$entraConfigValue = [ordered]@{}
+if ($existingEntraConfigRaw -and $existingEntraConfigRaw -ne 'None') {
+    try {
+        ($existingEntraConfigRaw | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $entraConfigValue[$_.Name] = $_.Value }
+        Write-Note "Existing WAREWOLF_ENTRA_CONFIG found on '$FunctionAppName' — merging tenantId/serviceBusAudience into it (audience/clientId preserved)."
+    } catch {
+        Write-Note "Existing WAREWOLF_ENTRA_CONFIG is not valid JSON — it will be replaced. ExceptionType=$($_.Exception.GetType().Name)"
+    }
+}
+$entraConfigValue['tenantId']           = $EntraTenantId
+$entraConfigValue['serviceBusAudience'] = $EntraServiceBusAudience
+
 $fullyQualifiedNamespace = "$ServiceBusNamespace.servicebus.windows.net"
 Invoke-Az -Mutating @(
     'functionapp', 'config', 'appsettings', 'set',
@@ -295,8 +325,7 @@ Invoke-Az -Mutating @(
     '--settings',
     "ServiceBusConnection__fullyQualifiedNamespace=$fullyQualifiedNamespace",
     "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName",
-    "WAREWOLF_ENTRA_TENANT_ID=$EntraTenantId",
-    "WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE=$EntraServiceBusAudience"
+    "WAREWOLF_ENTRA_CONFIG=$($entraConfigValue | ConvertTo-Json -Compress)"
 ) | Out-Null
 if ($DryRun) { Write-Note "App settings would be applied to '$FunctionAppName' (not applied — DryRun)." } else { Write-Ok "App settings applied to '$FunctionAppName'." }
 

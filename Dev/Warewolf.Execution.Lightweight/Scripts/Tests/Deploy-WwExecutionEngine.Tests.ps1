@@ -387,10 +387,12 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
     }
 
     It 'reflects explicit toggle values and the license default (on)' {
+        # WOLF-8516: ENABLEAPPLICATIONINSIGHTS/ENABLEELASTICSEARCHLOGGING etc. were merged
+        # into one WAREWOLF_LOGGING_CONFIG JSON app setting.
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Match 'WAREWOLF_LICENSE_CHECK_ENABLED\s*= true'   # default on
-        $out | Should -Match 'ENABLEAPPLICATIONINSIGHTS\s*= false'       # explicitly off in baseline
-        $out | Should -Match 'ENABLEELASTICSEARCHLOGGING\s*= false'      # explicitly off in baseline
+        $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"appInsights":false'   # explicitly off in baseline
+        $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"elasticsearch":false' # explicitly off in baseline
         $out | Should -Match 'Application Insights disabled'
     }
 
@@ -440,7 +442,7 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $callArgs = $script:commonArgs.Clone(); $callArgs.EnableAppInsights = $true
         $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
         $out | Should -Match 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING'
-        $out | Should -Match 'ENABLEAPPLICATIONINSIGHTS\s*= true'
+        $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"appInsights":true'   # WOLF-8516
         # The host-pipeline name must never be set by this deployment.
         $out | Should -Not -Match 'APPLICATIONINSIGHTS_CONNECTION_STRING='
     }
@@ -456,13 +458,15 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $out | Should -Match 'ASPNETCORE_ENVIRONMENT\s*= Production'
     }
 
-    It 'does NOT emit BYPASS_SECURE_CONFIG / WAREWOLF_SUPER_ADMIN_ENABLED (engine defaults apply)' {
+    It 'does NOT emit BYPASS_SECURE_CONFIG / WAREWOLF_SUPER_ADMIN_ENABLED / WAREWOLF_SECURITY_FLAGS (engine defaults apply)' {
+        # WOLF-8516: these were merged into WAREWOLF_SECURITY_FLAGS, still never set by this script.
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Not -Match 'BYPASS_SECURE_CONFIG'
         $out | Should -Not -Match 'WAREWOLF_SUPER_ADMIN_ENABLED'
+        $out | Should -Not -Match 'WAREWOLF_SECURITY_FLAGS'
     }
 
-    It 'does NOT emit SkipFailureToRetrieveSecret even when Key Vault is required' {
+    It 'does NOT emit SkipFailureToRetrieveSecret / WAREWOLF_SECURITY_FLAGS even when Key Vault is required' {
         $esFile  = Join-Path $global:pubDir 'ElasticsearchLoggingSource.bite'
         '<Source><ConnectionString>x</ConnectionString></Source>' | Set-Content $esFile
         $callArgs = $script:commonArgs.Clone()
@@ -472,6 +476,7 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $callArgs.KeyVaultSecretName      = 'dp-keyring-v1'
         $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
         $out | Should -Not -Match 'SkipFailureToRetrieveSecret'
+        $out | Should -Not -Match 'WAREWOLF_SECURITY_FLAGS'
         # ES source is staged AS-IS (encryption off by default).
         $out | Should -Match 'Elasticsearch source staged AS-IS'
     }
@@ -601,13 +606,15 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         }
 
         It 'defaults App Insights + console ON and Elasticsearch OFF when toggles omitted' {
+            # WOLF-8516: the 5 ENABLE*/STRUCTURED_LOGS toggles were merged into one
+            # WAREWOLF_LOGGING_CONFIG JSON app setting.
             $callArgs = $script:commonArgs.Clone()
             $callArgs.Remove('EnableAppInsights')      # let it default (-> ON)
             $callArgs.Remove('EnableElasticsearch')    # let it default (-> OFF; no ES source / KV needed)
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'ENABLEAPPLICATIONINSIGHTS\s*= true'
-            $out | Should -Match 'ENABLECONSOLELOGGING\s*= true'
-            $out | Should -Match 'ENABLEELASTICSEARCHLOGGING\s*= false'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"console":true'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"appInsights":true'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"elasticsearch":false'
         }
 
         It 'stages the ES source AS-IS when encryption is off (default)' {
@@ -617,18 +624,21 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $callArgs.KeyVaultName            = 'kv-test'
             $callArgs.KeyVaultSecretName      = 'dp-keyring-v1'
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'ENABLEELASTICSEARCHLOGGING\s*= true'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"elasticsearch":true'
             $out | Should -Match 'ElasticsearchLoggingSource.bite'
             $out | Should -Match 'Elasticsearch source staged AS-IS'
         }
 
         It 'enables Elasticsearch with NO Key Vault when not encrypting (no throw)' {
+            # WOLF-8516: Key Vault topology now goes into Settings/executionengine.settings.json,
+            # not an AZURE_KEYVAULT_NAME app setting — absence is asserted via the staging
+            # step's log line rather than the (now permanently absent) env-var name.
             $callArgs = $script:commonArgs.Clone()
             $callArgs.EnableElasticsearch     = $true
             $callArgs.ElasticsearchSourcePath = $global:esGood   # no KeyVaultName, encryption off
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
             $out | Should -Match 'Elasticsearch source staged AS-IS'
-            $out | Should -Not -Match 'AZURE_KEYVAULT_NAME'       # no KV wiring without a vault
+            $out | Should -Not -Match "Staging 'executionengine.settings.json'"   # no KV wiring without a vault
         }
 
         It 'wires Key Vault for runtime decrypt when -KeyVaultName is supplied without encryption' {
@@ -636,7 +646,9 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $callArgs.KeyVaultName       = 'kv-test'
             $callArgs.KeyVaultSecretName = 'dp-keyring-v1'        # encryption off (default)
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'AZURE_KEYVAULT_NAME\s*= kv-test'
+            # WOLF-8516: staged into executionengine.settings.json instead of an
+            # AZURE_KEYVAULT_NAME app setting.
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1"
             $out | Should -Match 'Key Vault Secrets User'         # MI gets read access
             $out | Should -Not -Match 'Secrets Officer'           # dev role only when encrypting
         }

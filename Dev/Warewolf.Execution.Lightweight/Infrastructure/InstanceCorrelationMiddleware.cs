@@ -40,6 +40,17 @@ namespace Warewolf.Execution.Lightweight.Infrastructure
         /// First 8 characters of <c>WEBSITE_INSTANCE_ID</c>.
         /// Stable for the entire lifetime of this container/instance.
         /// Falls back to <c>"local"</c> for local development.
+        ///
+        /// WOLF-8516: this reads <c>WEBSITE_INSTANCE_ID</c> independently of
+        /// <see cref="HostEnvironmentConfig.InstanceId"/> DELIBERATELY, not by oversight — the
+        /// two properties serve different purposes and have intentionally different local
+        /// fallbacks. This one's <c>"local-env"</c> fallback is documented, operator-facing log
+        /// output (see <c>docs/Warewolf-Lightweight-Logging-Guide.md</c>'s
+        /// <c>[Instance:local-env]</c> curl example, explicitly called out as "not a bug"),
+        /// whereas <see cref="HostEnvironmentConfig.InstanceId"/> falls back to
+        /// <see cref="Environment.MachineName"/> for audit-log identifiers. Unifying them would
+        /// silently change documented, operator-visible log output — see the equivalent
+        /// "explicitly NOT merging" note on the two dev/prod-detection algorithms.
         /// </summary>
         internal static readonly string InstanceId =
             (Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID") ?? "local-env");

@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Text.Json;
+using Dev2.Common;
 using Dev2.Data.Interfaces.Enums;
 using MelLogLevel = Microsoft.Extensions.Logging.LogLevel;
 using Dev2LogLevel = Dev2.Data.Interfaces.Enums.LogLevel;
@@ -11,14 +13,20 @@ namespace Warewolf.Execution.Lightweight.Logging
     /// logging-related settings. All loggers read from this record rather than
     /// calling <see cref="Environment.GetEnvironmentVariable"/> directly.
     ///
+    /// <para>
+    /// WOLF-8516: the 6 boolean/string toggles below are merged into one <c>WAREWOLF_LOGGING_CONFIG</c>
+    /// JSON app setting (previously 6 independent env vars) — see <see cref="RawFlags"/>. An
+    /// operator changes several logging knobs together with one atomic
+    /// <c>az functionapp config appsettings set</c> call instead of several. <c>EXECUTIONLOGLEVEL</c>
+    /// (<see cref="ExecutionLogLevel"/>) and <c>ASPNETCORE_ENVIRONMENT</c> are unaffected — the former
+    /// already has its own dedicated, differently-shaped resolution; the latter is the standard
+    /// ASP.NET Core environment-name variable, not Warewolf-specific.
+    /// </para>
+    ///
     /// <para><b>Environment variables:</b></para>
     /// <list type="table">
     ///   <item><term>EXECUTIONLOGLEVEL</term><description>Minimum log level (default: Info)</description></item>
-    ///   <item><term>ENABLEAPPLICATIONINSIGHTS</term><description>Add AzureExecutionLogger to composite (default: false)</description></item>
-    ///   <item><term>ENABLEELASTICSEARCHLOGGING</term><description>Add ElasticsearchExecutionLogger to composite (default: false)</description></item>
-    ///   <item><term>ENABLEPERFORMANCECOUNTERS</term><description>Register the AI PerformanceCollectorModule; only meaningful when ENABLEAPPLICATIONINSIGHTS is also true (default: false)</description></item>
-    ///   <item><term>STRUCTURED_LOGS</term><description>Console output as JSON (default: true in Azure, false locally)</description></item>
-    ///   <item><term>ELASTIC_DEBUG_MODE</term><description>Enable Elastic HTTP debug tracing (default: false)</description></item>
+    ///   <item><term>WAREWOLF_LOGGING_CONFIG</term><description>JSON: console/appInsights/elasticsearch/performanceCounters/structuredLogs/elasticDebugMode (all default false, structuredLogs/elasticDebugMode further gated — see <see cref="RawFlags"/>)</description></item>
     ///   <item><term>ASPNETCORE_ENVIRONMENT</term><description>Selects logging profile (Development vs Production)</description></item>
     /// </list>
     /// </summary>
@@ -87,7 +95,9 @@ namespace Warewolf.Execution.Lightweight.Logging
         public string ElasticsearchSettingsPath { get; init; } = string.Empty;
 
         /// <summary>
-        /// Reads all logging configuration from environment variables.
+        /// Reads all logging configuration from environment variables — the 6 toggles from
+        /// <c>WAREWOLF_LOGGING_CONFIG</c> (see <see cref="RawFlags"/>), the rest from their own
+        /// dedicated variables.
         /// </summary>
         public static LoggingConfiguration FromEnvironment()
         {
@@ -95,22 +105,68 @@ namespace Warewolf.Execution.Lightweight.Logging
                 Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT"),
                 "Development", StringComparison.OrdinalIgnoreCase);
 
+            var flags = RawFlags.FromEnvironment();
+
             return new LoggingConfiguration
             {
-                EnableConsoleLogging = IsEnabled("ENABLECONSOLELOGGING"),
-                RegisterApplicationInsightsSdk = IsEnabled("ENABLEAPPLICATIONINSIGHTS"), // SDK + telemetry: explicit opt-in only
-                EnableElasticsearch = IsEnabled("ENABLEELASTICSEARCHLOGGING"),
-                EnablePerformanceCounters = IsEnabled("ENABLEPERFORMANCECOUNTERS"),
+                EnableConsoleLogging = flags.Console,
+                RegisterApplicationInsightsSdk = flags.AppInsights, // SDK + telemetry: explicit opt-in only
+                EnableElasticsearch = flags.Elasticsearch,
+                EnablePerformanceCounters = flags.PerformanceCounters,
                 MinimumLevel = ExecutionLogLevel.Read(),
-                StructuredJson = IsEnabled("STRUCTURED_LOGS") || !isDev,
-                ElasticDebugMode = IsEnabled("ELASTIC_DEBUG_MODE") && isDev,
+                StructuredJson = flags.StructuredLogs || !isDev,
+                ElasticDebugMode = flags.ElasticDebugMode && isDev,
                 IsDevelopment = isDev,
                 ElasticsearchSettingsPath = Path.Combine(
                     AppContext.BaseDirectory, "Settings", "ElasticsearchLoggingSource.bite"),
             };
         }
 
-        static bool IsEnabled(string key) =>
-            string.Equals(Environment.GetEnvironmentVariable(key), "true", StringComparison.OrdinalIgnoreCase);
+        /// <summary>
+        /// WOLF-8516: single JSON app setting replacing 6 individual logging toggle env vars
+        /// (<c>ENABLECONSOLELOGGING</c>, <c>ENABLEAPPLICATIONINSIGHTS</c>,
+        /// <c>ENABLEELASTICSEARCHLOGGING</c>, <c>ENABLEPERFORMANCECOUNTERS</c>,
+        /// <c>STRUCTURED_LOGS</c>, <c>ELASTIC_DEBUG_MODE</c>). All fields default to <c>false</c>
+        /// when absent — identical to the previous "env var not set" behaviour.
+        /// <code>
+        ///   WAREWOLF_LOGGING_CONFIG = {"console":true,"appInsights":false,"elasticsearch":false,"performanceCounters":false,"structuredLogs":true,"elasticDebugMode":false}
+        /// </code>
+        /// </summary>
+        sealed class RawFlags
+        {
+            public const string EnvVar = "WAREWOLF_LOGGING_CONFIG";
+
+            public bool Console { get; init; }
+            public bool AppInsights { get; init; }
+            public bool Elasticsearch { get; init; }
+            public bool PerformanceCounters { get; init; }
+            public bool StructuredLogs { get; init; }
+            public bool ElasticDebugMode { get; init; }
+
+            static readonly RawFlags AllFalse = new();
+
+            public static RawFlags FromEnvironment()
+            {
+                var raw = Environment.GetEnvironmentVariable(EnvVar);
+                if (string.IsNullOrWhiteSpace(raw))
+                {
+                    return AllFalse;
+                }
+
+                try
+                {
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
+                    return JsonSerializer.Deserialize<RawFlags>(raw, options) ?? AllFalse;
+                }
+                catch (JsonException ex)
+                {
+                    Dev2Logger.Warn(
+                        $"LoggingConfiguration failed to parse {EnvVar} — treating all flags as false " +
+                        $"(safe default). ExceptionType={ex.GetType().Name}",
+                        "LoggingConfiguration-FromEnvironment");
+                    return AllFalse;
+                }
+            }
+        }
     }
 }
