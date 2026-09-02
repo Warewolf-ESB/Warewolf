@@ -6,30 +6,27 @@
 
     "APPLICATIONINSIGHTS_CONNECTION_STRING": "",
 
-    "AZURE_KEYVAULT_NAME": "WWExecutionEngine",
-    "KEYVAULT_SECRET_NAME": "WWExecutionEngineTestSecret",
-    "DEBUG_AZURE_KEYVAULT_SECRET": "",
-    "SkipFailureToRetrieveSecret": "false",
+    "_WOLF8516_KeyVaultHowTo": "AZURE_KEYVAULT_NAME/KEYVAULT_SECRET_NAME are no longer env vars — HostEnvironmentConfig reads them SOLELY from Settings/executionengine.settings.json (no env-var fallback). Edit that file locally for Key Vault testing; do NOT commit your edits.",
+    "SkipFailureToRetrieveSecret_HOWTO": "Moved into WAREWOLF_SECURITY_FLAGS.skipFailureToRetrieveSecret (WOLF-8516) — see below.",
 
     "AZURE_TENANT_ID": "ca0cc53b-9af4-4067-bcdf-be9c648450d1",
     "AZURE_CLIENT_ID": "<managed-identity-client-id>",
 
-    "ENABLEELASTICSEARCHLOGGING": "true",
-    "ENABLECONSOLELOGGING": "true",
+    "WAREWOLF_SECURITY_FLAGS": "{\"skipFailureToRetrieveSecret\":false}",
+
+    "WAREWOLF_LOGGING_CONFIG": "{\"elasticsearch\":true,\"console\":true}",
     "EXECUTIONLOGLEVEL": "6",
 
     "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET": "<your-entra-app-client-secret>",
 
-    "WAREWOLF_ENTRA_TENANT_ID": "ca0cc53b-9af4-4067-bcdf-be9c648450d1",
-    "WAREWOLF_ENTRA_AUDIENCE": "api://<your-entra-app-client-id>",
+    "WAREWOLF_ENTRA_CONFIG": "{\"tenantId\":\"ca0cc53b-9af4-4067-bcdf-be9c648450d1\",\"audience\":\"api://<your-entra-app-client-id>\",\"serviceBusAudience\":\"api://<your-entra-app-client-id>/.default\"}",
     "WAREWOLF_LICENSE_CHECK_ENABLED": "true",
 
     "ServiceBusConnection__fullyQualifiedNamespace": "<your-servicebus-namespace>.servicebus.windows.net",
     "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE": "wwexecution-secure-trigger-queue",
-    "WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE": "api://<your-entra-app-client-id>/.default",
-    "WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS": "24",
+    "_WOLF8516_ServiceBusTunablesHowTo": "WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS and the other 4 simple tunables are no longer env vars — set serviceBusTrigger.jtiWindowHours etc. in Settings/executionengine.settings.json instead (no env-var fallback).",
 
-    "DEBUG_PRINCIPAL_TOKEN_HOWTO": "",
-    "DEBUG_PRINCIPAL_TOKEN": ""
+    "WAREWOLF_DEBUG_CONFIG": "{\"keyVaultSecret\":\"\",\"principalToken\":\"\"}",
+    "_WOLF8516_DebugPrincipalTokenHowTo": "principalToken: obtain by calling https://<your-site>/.auth/me, taking the first element's clientPrincipal JSON object, base64-encoding it, and setting it as WAREWOLF_DEBUG_CONFIG.principalToken above. Never set in production."
   }
 }

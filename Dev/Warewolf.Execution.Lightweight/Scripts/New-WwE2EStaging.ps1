@@ -27,7 +27,8 @@
     like a clean run. This script checks for exactly that and reports it. Use -GenerateTriggers to work
     on isolated copies with suffixed queue names instead.
 
-    ELASTICSEARCH: the ENGINE supports it (ENABLEELASTICSEARCHLOGGING + Settings/
+    ELASTICSEARCH: the ENGINE supports it (WAREWOLF_LOGGING_CONFIG's "elasticsearch" field
+    [WOLF-8516; formerly ENABLEELASTICSEARCHLOGGING] + Settings/
     ElasticsearchLoggingSource.bite, which must carry that exact filename). The QUEUEPROCESSOR does
     NOT - there is no Elasticsearch logger in the worker and no parameter on
     Deploy-WwQueueProcessor.ps1; its source catalog deliberately SKIPS non-RabbitMQ sources. Wiring it

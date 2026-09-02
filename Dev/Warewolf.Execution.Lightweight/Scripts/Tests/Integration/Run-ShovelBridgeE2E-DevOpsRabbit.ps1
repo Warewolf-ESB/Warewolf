@@ -28,8 +28,8 @@
     polled back from the engine's own GET /secure/servicebus-result/{correlationId}
     endpoint. This REQUIRES the target engine (-EngineBaseUrl) to already have that trigger
     configured and enabled (ServiceBusConnection__fullyQualifiedNamespace,
-    WAREWOLF_SERVICEBUS_TRIGGER_QUEUE = -ServiceBusQueueName, WAREWOLF_ENTRA_TENANT_ID,
-    WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE, and a Service Bus Data Receiver role grant for the
+    WAREWOLF_SERVICEBUS_TRIGGER_QUEUE = -ServiceBusQueueName, and WAREWOLF_ENTRA_CONFIG's
+    tenantId/serviceBusAudience fields [WOLF-8516], and a Service Bus Data Receiver role grant for the
     engine's managed identity on the namespace) — this script does NOT provision that; it
     is a separate, reviewed operator step (see the provisioning script referenced in
     docs/ServiceBusSecureTrigger-Architecture.md) precisely because it mutates a live engine

@@ -23,14 +23,19 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 public sealed class ServiceBusEntraAuthOptions : EntraAuthOptions
 {
     /// <summary>
-    /// Reads <c>WAREWOLF_ENTRA_TENANT_ID</c> (shared tenant with the HTTP path) and the
-    /// dedicated <c>WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE</c> audience. When the dedicated
+    /// Reads <c>tenantId</c> (shared tenant with the HTTP path) and the dedicated
+    /// <c>serviceBusAudience</c> from the merged <see cref="EntraIdentityOptions.EnvVar"/> JSON
+    /// app setting (WOLF-8516 — previously 2 independent env-var reads). When the dedicated
     /// audience is not configured, <see cref="EntraAuthOptions.IsEnabled"/> is <c>false</c>
     /// and the Service Bus trigger dead-letters every message (fail closed).
     /// </summary>
-    public static ServiceBusEntraAuthOptions FromEnvironment() => new()
+    public static ServiceBusEntraAuthOptions FromEnvironment()
     {
-        TenantId = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_TENANT_ID"),
-        Audience = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE"),
-    };
+        var entra = EntraIdentityOptions.FromEnvironment();
+        return new()
+        {
+            TenantId = entra.TenantId,
+            Audience = entra.ServiceBusAudience,
+        };
+    }
 }

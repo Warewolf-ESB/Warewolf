@@ -435,6 +435,15 @@ client — with role **`Warewolf_QueueProcessor`** and **one important differenc
   engine's auth config + `secure.config` at [§2](#2-prepare-the-engines-auth--permission-config) before
   this step.
 
+> **Alternative to §8a–8c: the combined wrapper.** [`Deploy-WwEngineAndQueueProcessor.ps1`](../Scripts/Deploy-WwEngineAndQueueProcessor.ps1)
+> runs the engine deploy and the QueueProcessor deploy as two separate, asserted calls instead of the
+> `-DeployRabbitMqTriggers` fan-out below — it verifies the engine summary reached `status=completed`
+> and that `Configure-WwExecutionAuth.output.json` belongs to the app just deployed (that file is a
+> single fixed path, overwritten by every engine run) before wiring the worker. It writes
+> `<LogDir>\deploy-both-<stamp>.handover.json`, which already carries the `spObjectId` and the
+> `Warewolf_QueueProcessor` role id that §8d needs — see [`Deploy-Both-RunGuide.md`](Deploy-Both-RunGuide.md).
+> Use one path or the other, never both: each provisions its own set of Container Apps.
+
 > **Go-live gate.** Before the first **production** trigger is enabled, all five must hold: the broker
 > terminates TLS and the app runs `RABBITMQ__USESSL=true` against `amqps`; a DLX / delivery-limit policy
 > exists on the queue; `ENGINE__TIMEOUTSECONDS ≤ WORKER__SHUTDOWNGRACESECONDS < terminationGracePeriodSeconds
@@ -581,7 +590,11 @@ engine deploy without this switch gains no new prerequisite.
 
 ### 8d. Authorize each app (loop)
 
-One MI per app, so iterate the deployed apps — the summary JSON lists them:
+One MI per app, so iterate the deployed apps — the summary JSON lists them.
+
+> If you deployed via the combined wrapper, take the app list, the engine SP object id and the role
+> id straight from its handover file instead of re-querying Graph — the role-grant snippet in
+> [`Deploy-Both-RunGuide.md`](Deploy-Both-RunGuide.md) §5 does exactly that.
 
 ```powershell
 $qpSummary = (Get-ChildItem "$LogDir\deploy-WwQueueProcessor-*.summary.json" |
@@ -695,6 +708,13 @@ prompts for anything not passed):
   -ServiceBusWorkerPublishPath D:\ServiceBusWorker\Publish `
   -ServiceBusWorkerStorageAccount stwwsbworker
 ```
+
+`-ServiceBusQueueName` is live-wired to the trigger (not just queue provisioning), and four
+`-ServiceBusTrigger*` parameters tune the trigger's binding (concurrency/prefetch/lock-renewal/
+auto-complete) without editing `host.json` — both only available on the **standalone** worker
+invocation above, not the engine-companion form. See
+[`docs/ShovelBridge-Architecture.md`](ShovelBridge-Architecture.md) § "Trigger binding
+configuration" for the full list, defaults, and an override-reliability caveat.
 
 ### 8.5b Authorize the worker MI (role `Warewolf_ClientApps`)
 

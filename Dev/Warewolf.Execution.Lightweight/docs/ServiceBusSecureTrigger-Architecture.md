@@ -65,7 +65,7 @@ audience — see below).
 
 ```
 Delegated caller (user or app with its own Entra identity)
-   │  acquires its own Entra access token (audience = WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE)
+   │  acquires its own Entra access token (audience = WAREWOLF_ENTRA_CONFIG.serviceBusAudience)
    │  publishes ServiceBusWorkflowMessage as the message body
    │  sets the token as the "Authorization" application property: "Bearer <token>"
    ▼
@@ -82,7 +82,24 @@ ServiceBusWorkflowTriggerFunction  (Warewolf.Execution.Lightweight, in-process)
    7. IWorkflowPolicyMatcher.Evaluate(workflow, principal, permissions)  ← SAME matcher HTTP uses
       ├─ Forbidden / ConfigMissingDeny → dead-letter + record (Denied)
       └─ Allowed                        → continue
-   8. IWorkflowExecutor.Execute(...) in-process (ExecutingPrincipal = validated principal)
+   8. Wait for a free execution slot (SemaphoreSlim, ServiceBusTriggerOptions.MaxConcurrentExecutions,
+      default 8) → caps how many workflows this instance runs at once so a large burst is processed
+      at a sustainable rate instead of overwhelming a single (typically Consumption-plan) instance's
+      thread pool all at once; Service Bus's own durable queue absorbs the rest while they wait. The
+      wait itself is bounded too (ServiceBusTriggerOptions.SlotWaitTimeout, default = ExecutionTimeout)
+      → claim released, TimeoutException thrown, same outcome as step 9's timeout below — a slot held
+      by a genuinely deadlocked execution (step 9 cannot reclaim it either) would otherwise leave a
+      queued delivery waiting forever with no result, no error, and nothing ever reaching the DLQ
+      (observed directly in the 1000-message ShovelBridge load test incident of 2026-08-25, even with
+      step 9's timeout already in place).
+   9. IWorkflowExecutor.Execute(...) in-process (ExecutingPrincipal = validated principal), run on the
+      thread pool and bounded by ServiceBusTriggerOptions.ExecutionTimeout (default 5 min) — Execute
+      has no cancellation seam, so a timed-out execution is abandoned (left running in the background
+      until it finishes on its own), not cancelled; its concurrency slot from step 8 is only released
+      once it actually finishes, not merely once the timeout fires.
+      ├─ timeout                  → claim released, TimeoutException thrown — SB extension retry/backoff
+      │  applies, eventually dead-lettering once maxDeliveryCount is exhausted instead of the delivery
+      │  waiting forever with no result ever recorded
       ├─ transient failure (IsTransientFailure, e.g. OutOfMemoryException under Consumption-plan
       │  cold-start memory pressure) → thrown, NOT recorded, NOT dead-lettered — SB extension
       │  retry/backoff applies, same as an unexpected exception below
@@ -162,19 +179,121 @@ follow-up could add a scheduled cleanup job if this becomes an operational conce
 
 ## Configuration reference
 
+WOLF-8516: the tenant/audience and the 5 simple tunables below are no longer individual env
+vars — see the two sub-tables. `WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES` is the
+one exception, deliberately left as a standalone env var (its own incident-scarred,
+`host.json`-derived resolution chain — see "Failure classification" below).
+
 | App setting | Purpose |
 |---|---|
 | `ServiceBusConnection__fullyQualifiedNamespace` | Identity-based Service Bus connection (Managed Identity in Azure, developer credentials locally). No connection string / SAS key is used. |
 | `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | Queue name the trigger listens on. Resolved via the Azure Functions `%AppSetting%` attribute-indirection syntax (default convention: `wwexecution-secure-trigger-queue`). |
-| `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE` | Expected `aud` claim for tokens carried in Service-Bus-triggered messages. Deliberately **separate** from `WAREWOLF_ENTRA_AUDIENCE` (the HTTP audience) so the two trust boundaries can use different app registrations/scopes if desired. |
-| `WAREWOLF_ENTRA_TENANT_ID` | Reused from the existing HTTP Entra config (same tenant). |
-| `WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS` | How long a `jti` is remembered for replay-prevention purposes (default: 24). |
+| `WAREWOLF_ENTRA_CONFIG` | JSON app setting also used by the HTTP path — its `serviceBusAudience` field is the expected `aud` claim for tokens carried in Service-Bus-triggered messages, deliberately **separate** from `audience` (the HTTP audience) so the two trust boundaries can use different app registrations/scopes if desired; its `tenantId` field is reused from the existing HTTP Entra config (same tenant). Set/merged by `Enable-ServiceBusSecureTrigger.ps1` (read-merge-write, since it shares the setting with `Configure-WwExecutionAuth.ps1`). |
+| `WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES` | WOLF-8512: operator escape hatch overriding `ClaimStaleAfter` directly, bypassing its runtime-resolved default entirely. Normally left unset — see "Failure classification" below for how the default is inferred automatically. |
 | `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. |
+
+The remaining 5 tunables are sourced SOLELY from `Settings/executionengine.settings.json`'s
+`serviceBusTrigger` section (deploy-bundled JSON file — see `HostEnvironmentConfig.cs` and
+`ServiceBusTriggerOptions.FromEnvironment`) — **no env-var fallback**, they are not App
+Settings any more:
+
+| `serviceBusTrigger` field | Purpose |
+|---|---|
+| `jtiWindowHours` | How long a `jti` is remembered for replay-prevention purposes (default: 24). |
+| `executionTimeoutSeconds` | Hard time budget for a single workflow execution before it is treated as failed and left for Service Bus's own retry/backoff (default: 300 = 5 minutes). See flow step 9. |
+| `maxConcurrentExecutions` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 8. |
+| `slotWaitTimeoutSeconds` | Hard bound on how long a delivery waits for a free execution slot before it is treated as failed (default: same as `executionTimeoutSeconds`). See flow step 8. |
+| `settlementTimeoutSeconds` | WOLF-8512: hard time budget for a single settlement call (`CompleteMessageAsync`/`DeadLetterMessageAsync`), using an independent timeout over `CancellationToken.None` rather than the host invocation's own token (default: 30). See "Failure classification" below. |
 
 `host.json` requires `extensions.serviceBus.autoCompleteMessages: false` so the trigger's
 explicit `CompleteMessageAsync` / `DeadLetterMessageAsync` calls (via the injected
 `ServiceBusMessageActions`) take effect instead of the host auto-completing the message on
 successful return.
+
+## Failure classification (WOLF-8512)
+
+The 1000-message ShovelBridge load test surfaced three distinct root causes for lost/misclassified
+results, each fixed independently:
+
+**A — transient failure misclassified as a terminal token failure.** A cancellation or
+network-shaped failure during `EntraBearerTokenValidator.ValidateAsync` was treated identically to
+a genuinely bad token: a permanent `InvalidToken` result saved AND the message dead-lettered on the
+very first attempt, zero retry. The token-validation `try`/`catch` now has three tiers, evaluated in
+order:
+
+| # | Condition | Action | Effect |
+|---|---|---|---|
+| 1 | `IsOwnInvocationCancellation` — the exception is an `OperationCanceledException` and the trigger's own invocation `cancellationToken` is cancelled (host-level drain/scale-in/`functionTimeout`, or a cold OIDC-metadata fetch racing it) | transient | release claim, rethrow — no result saved |
+| 2 | `TokenValidationFailureClassifier.IsTransient` — `HttpRequestException`/`IOException`/`SocketException` (the metadata/JWKS fetch itself failed), `SecurityTokenSignatureKeyNotFoundException` (JWKS cache doesn't yet have the key), or an `IDX20803`/`IDX20804` IdentityModel metadata-failure code anywhere in the exception chain | transient | release claim, rethrow — no result saved |
+| 3 | Anything else — a positively-decided bad token (bad signature against a resolved key, wrong audience/issuer, expired, malformed) | terminal | `InvalidToken` result saved, dead-lettered with a sub-reason (see below) |
+
+The `!_tokenValidator.IsEnabled` branch (engine misconfiguration — missing tenant/audience) is
+**also transient**, for the same reason: a config fix followed by redelivery should succeed, so a
+saved terminal result would wrongly poison every correlation id received while the engine happened
+to be misconfigured.
+
+**B — the claim-staleness window can outlive the delivery budget.** `ClaimStaleAfter` (how long
+`IServiceBusReplayAndResultStore.TryClaim` honours a claim before treating it as abandoned by a
+dead/hung attempt) used to be a hard-coded 20-minute constant, sized against an assumed 10-minute
+`functionTimeout`. If the queue's own `MaxDeliveryCount × LockDuration` delivery budget is smaller
+than `ClaimStaleAfter`, a redelivery can never actually take the claim over — the queue exhausts
+`MaxDeliveryCount` and dead-letters the message first, with **no result ever recorded**. Fixed two
+ways:
+
+- `ServiceBusTriggerOptions.ClaimStaleAfter` now defaults to the host's *actual* resolved
+  `functionTimeout` + 1 minute of margin — see `ResolveHostFunctionTimeout`'s five-tier strategy
+  (explicit override → `AzureFunctionsJobHost__functionTimeout` app setting → `host.json` on disk →
+  `WEBSITE_SKU` plan-default fallback → 10-minute hard fallback), so it tracks a Consumption ↔ Flex
+  Consumption move or a `functionTimeout` change automatically, with zero code change. The resolved
+  value and which tier produced it are logged at startup (auditable in App Insights).
+- `Enable-ServiceBusSecureTrigger.ps1` now takes `-LockDuration` alongside its existing
+  `-MaxDeliveryCount`, and asserts `MaxDeliveryCount × LockDuration > ClaimStaleAfter` before
+  provisioning anything — failing the deploy loudly rather than silently creating a queue that can
+  never self-heal a dead/hung attempt.
+
+**C — settlement bound to the host's own cancellation token.** Every `CompleteMessageAsync`/
+`DeadLetterMessageAsync` call used the trigger's own `cancellationToken`. During a shutdown/drain
+that token is already cancelled, so the settlement call throws immediately and the message is left
+unsettled even though its outcome was already decided. Fixed by routing every settlement call
+through `SettleAsync`, which builds an independent `CancellationTokenSource` (sized by
+`ServiceBusTriggerOptions.SettlementTimeout`, default 30s) over `CancellationToken.None`. This is
+safe because the result is **always** persisted before settlement is attempted — if settlement
+times out, the message is simply left unsettled, the lock expires, the message redelivers, and the
+idempotency dedupe check (see flow step 2) finds the already-saved result and completes it then:
+self-healing at the cost of one extra delivery, never a lost or duplicated outcome.
+
+### The three Service Bus signals
+
+| Intent | Action in code | Effect |
+|---|---|---|
+| Retry (transient) | throw; settle nothing; save no result; release the claim | extension abandons → `DeliveryCount++` → queue auto-DLQs at `MaxDeliveryCount` |
+| Give up (poison/business) | save result, then dead-letter (timeout-bounded settlement) | straight to DLQ, no retry |
+| Done | save result, then complete (timeout-bounded settlement) | removed from queue |
+
+**Non-negotiable invariants:**
+
+1. A transient failure must **never** call `SaveResult` — a persisted result satisfies the
+   idempotency dedupe check on redelivery and permanently prevents re-execution.
+2. A terminal failure must **always** call `SaveResult` **before** settling, so a settlement
+   timeout is self-healing.
+3. Settlement must never use the host `cancellationToken`.
+
+### Dead-letter triage sub-reasons
+
+Every terminal path's `deadLetterReason` is now `"{Status}:{SubReason}"` (e.g.
+`InvalidToken:JtiReplay`) instead of the bare status, so DLQ entries sharing a status are
+distinguishable without parsing `deadLetterErrorDescription`. Existing filters matching on the bare
+status still match, since it remains the string's prefix.
+
+| Terminal path | `deadLetterReason` |
+|---|---|
+| Message body is not valid JSON | `Malformed:BodyNotJson` |
+| Missing `workflow` field | `Malformed:MissingWorkflowField` |
+| Missing `Authorization` application property | `InvalidToken:MissingAuthorizationProperty` |
+| `jti` replay | `InvalidToken:JtiReplay` |
+| Bad signature / wrong audience / wrong issuer / expired / unparseable token | `InvalidToken:SignatureInvalid` / `:AudienceInvalid` / `:IssuerInvalid` / `:Expired` / `:Malformed` |
+| Policy denial | `Denied:PolicyForbidden` / `Denied:ConfigMissingDeny` |
+| Business/activity failure | `Failed:ExecutionFailed` |
 
 ## Threat model coverage (see spec for full detail)
 
@@ -487,5 +606,5 @@ caller and the message is dead-lettered as `Forbidden`, not executed. See
 - Automatic/CI-driven provisioning of the trigger queue and RBAC role —
   `Enable-ServiceBusSecureTrigger.ps1` (see above) exists for this but is a deliberately
   separate, human-reviewed step, not run by any script or pipeline automatically.
-- Creating or managing the Entra App Registration behind `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE`,
+- Creating or managing the Entra App Registration behind `WAREWOLF_ENTRA_CONFIG.serviceBusAudience`,
   or minting caller tokens — assumed to already exist / be an operator's own concern.

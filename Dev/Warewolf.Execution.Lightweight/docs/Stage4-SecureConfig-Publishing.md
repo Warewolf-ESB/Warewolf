@@ -62,8 +62,13 @@ SecureConfigLoader.Config        // Lazy<T>, ExecutionAndPublication
             return SecureConfigData(IsLoaded=true,
                                     SecretKey=…,
                                     Permissions=…,
-                                    EntraTenantId=$env:WAREWOLF_ENTRA_TENANT_ID,
-                                    EntraAudience=$env:WAREWOLF_ENTRA_AUDIENCE,
+                                    // WOLF-8516: EntraTenantId/EntraAudience are read from the
+                                    // merged WAREWOLF_ENTRA_CONFIG JSON app setting (parsed once
+                                    // by Auth.Models.EntraIdentityOptions.FromEnvironment(), the
+                                    // same parse EntraAuthOptions/ServiceBusEntraAuthOptions use)
+                                    // instead of two independent env-var reads:
+                                    EntraTenantId=EntraIdentityOptions.FromEnvironment().TenantId,
+                                    EntraAudience=EntraIdentityOptions.FromEnvironment().Audience,
                                     LoginWorkflowName=…)
         catch
             return SecureConfigData.AllowAll                 ← any exception silenced

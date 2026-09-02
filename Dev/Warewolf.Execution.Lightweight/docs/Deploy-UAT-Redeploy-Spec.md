@@ -72,8 +72,23 @@ Load-test-critical values (non-secret):
 - `BYPASS_SECURE_CONFIG = true`, `WAREWOLF_LICENSE_CHECK_ENABLED = false`,
   `ASPNETCORE_ENVIRONMENT = Production`, `EXECUTIONLOGLEVEL = INFO`.
 
+  **2026-08-27 correction:** `WAREWOLF_LICENSE_CHECK_ENABLED` is now `true`.
+  `pipeline-LOADTEST.yml`'s `Deploy_UAT` job passes `-LicenseCheckEnabled:$true` with
+  `-LicenseConfigPath` staging a licensed `Warewolf License.secureconfig` downloaded from
+  the Azure DevOps Library (Secure files) — see that job's own comments. A redeploy that
+  omits `-LicenseConfigPath` will re-enable the gate with no license staged, and
+  `WorkflowExecutor`'s license/subscription check will fail every workflow execution.
+
 **Take a full backup of app settings before touching anything** (§5.1) — several are secrets and
 are not reconstructible from the repo.
+
+**2026-09-02 correction (WOLF-8516):** the list above is a historical snapshot (2026-08-13,
+pre-merge). `AZURE_KEYVAULT_NAME`, `KEYVAULT_SECRET_NAME`, `ENABLEAPPLICATIONINSIGHTS`,
+`ENABLECONSOLELOGGING`, `ENABLEELASTICSEARCHLOGGING`, `STRUCTURED_LOGS`,
+`WAREWOLF_ENTRA_TENANT_ID`, `WAREWOLF_ENTRA_AUDIENCE`, `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE`
+are all still present on the live app but are **no longer read by the current engine code at
+all** — see §15 for what replaced each one and what actually needs to be passed to
+`Deploy-WwExecutionEngine.ps1` now.
 
 ## 3. Scope
 
@@ -589,3 +604,40 @@ and `-PersistenceDbSourcePath`, consumed by `pipeline-LOADTEST.yml`'s `Deploy_UA
 `Settings/ElasticsearchLoggingSource.bite` — its connection string is only ever decryptable
 via this app's own Key Vault key at runtime, so it does not need Secure File/secret-variable
 treatment like a plaintext credential would.
+
+## 15. WOLF-8516 (environment-variable cleanup) reconciliation (2026-09-02)
+
+Same failure shape as §14: a redeploy that doesn't pass a param the merged engine code now
+needs silently reverts a working setting to disabled/default rather than failing loudly.
+
+`8516-EnvVarCleanup` (merged into this branch via `64766d029e`) changed what
+`Warewolf.Execution.Lightweight` reads at runtime — see `docs/ShovelBridge-Architecture.md`'s
+WOLF-8516 entries and `Auth/Models/EntraIdentityOptions.cs` / `Auth/Models/
+ServiceBusTriggerOptions.cs` / `Infrastructure/HostEnvironmentConfig.cs` doc comments — but
+`pipeline-LOADTEST.yml`'s `Deploy_UAT` stage was never updated to pass the new params, and
+`Deploy-WwExecutionEngine.ps1` had no way to set two of the three affected settings at all.
+Confirmed via `az functionapp config appsettings list --name WarewolfServer-UAT
+--resource-group DEV2` on 2026-09-02: the app still carries every pre-8516 setting below,
+none of which the current engine code reads any more.
+
+| Live (pre-8516) setting, still present | No longer read — now sourced from | Effect of a redeploy without the fix |
+|---|---|---|
+| `AZURE_KEYVAULT_NAME=WWExecutionEngine`, `KEYVAULT_SECRET_NAME=WWExecutionEngineTestSecret` | `Settings/executionengine.settings.json` (`keyVaultName`/`keyVaultSecretName`) | Key Vault decryption disabled app-wide — every WFAES-encrypted resource (including `NewSqlServerSource.bite`, which `RabbitProcess` itself depends on) fails to decrypt. |
+| `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS=2` | same file (`serviceBusTrigger.maxConcurrentExecutions`) | Silently reverts to the hardcoded default of 8, disagreeing with the `host.json` dispatch cap of 2 the WOLF-8512 fix deliberately kept in sync (§ ShovelBridge-Architecture.md WOLF-8512 entries). |
+| `WAREWOLF_ENTRA_TENANT_ID`, `WAREWOLF_ENTRA_AUDIENCE`, `WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE` (no `WAREWOLF_ENTRA_CLIENT_ID` was ever set) | merged `WAREWOLF_ENTRA_CONFIG` JSON App Setting | Entra Bearer-token validation fails closed (`EntraAuthOptions.IsEnabled` false — no fallback to the legacy vars) — breaks this pipeline's own ShovelBridge load test job (`-VerifyWorkflowExecution` authenticates with an Entra token) and the Service-Bus-triggered path. Unlike the two rows above, a plain redeploy **never** fixes this: `WAREWOLF_ENTRA_CONFIG` is an App Setting, not a bundled file, and the only script that writes it (`Configure-WwExecutionAuth.ps1`) is skipped by `-SkipAuthProvisioning` (§3, "out of scope"). |
+
+**Fix applied (2026-09-02):** `Deploy-WwExecutionEngine.ps1` gained the 5
+`-ServiceBusTrigger*` tunable params (staged into `executionengine.settings.json`
+independently of `-KeyVaultName`/`-EncryptResources`) and a `-SyncEntraConfig` switch
+(migrates the legacy Entra settings into `WAREWOLF_ENTRA_CONFIG` once, read-merge-write,
+no-op thereafter — see `Scripts/README.md`'s "WOLF-8516 — reconciling an already-provisioned
+app"). `pipeline-LOADTEST.yml`'s `Deploy_UAT` stage now passes `-KeyVaultName
+WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret
+-ServiceBusTriggerMaxConcurrentExecutions 2 -SyncEntraConfig` alongside its existing params.
+
+**Guardrail for future redeploys:** the same "params-not-carried-forward" risk applies to any
+OTHER app redeployed with `-SkipAuthProvisioning` from before this merge, or to a fresh
+`-KeyVaultName`/`-ServiceBusTrigger*` value that changes later — these three settings are not
+self-healing across a redeploy the way an App-Setting-only value would be for two of the
+three (see table). Add a Phase 0.5 plan-review check for "Key Vault" and "ServiceBusTrigger
+tunables" specifically for this app, the same way §6.3 / §14 already check other settings.

@@ -8,9 +8,11 @@
  *  (exceptions are never swallowed so the Functions runtime dead-letters the message).
  */
 
+using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.Reflection;
 using System.Text.Json;
 using Warewolf.Execution.ServiceBusWorker;
 using Warewolf.Execution.ServiceBusWorker.Functions;
@@ -169,5 +171,27 @@ public class WorkflowQueueTriggerTests
             () => NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None));
         Assert.AreEqual("engine unreachable", ex.Message,
             "The trigger must let client failures bubble up unmodified — the Functions runtime relies on this to abandon/dead-letter the message.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RunAsync_ServiceBusTriggerBinding_UsesConfigurableQueueNameAppSetting()
+    {
+        // Guards against regressing to a hard-coded queue name literal: the trigger must bind
+        // via the standard Azure Functions %AppSetting% indirection (WAREWOLF_SERVICEBUS_TRIGGER_QUEUE)
+        // — the same pattern ServiceBusWorkflowTriggerFunction.cs uses — so that
+        // Deploy-WwExecutionServiceBusWorker.ps1's -ServiceBusQueueName actually retargets the
+        // trigger instead of only provisioning a queue nothing listens on.
+        var parameter = typeof(WorkflowQueueTrigger)
+            .GetMethod(nameof(WorkflowQueueTrigger.RunAsync), BindingFlags.Public | BindingFlags.Instance)!
+            .GetParameters()
+            .Single(p => p.ParameterType == typeof(string));
+
+        var attribute = parameter.GetCustomAttribute<ServiceBusTriggerAttribute>();
+
+        Assert.IsNotNull(attribute, "The message-body parameter must carry a [ServiceBusTrigger] attribute.");
+        Assert.AreEqual("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%", attribute!.QueueName,
+            "The queue name must be the %AppSetting% indirection, not a hard-coded literal.");
+        Assert.AreEqual("ServiceBusConnection", attribute.Connection);
     }
 }

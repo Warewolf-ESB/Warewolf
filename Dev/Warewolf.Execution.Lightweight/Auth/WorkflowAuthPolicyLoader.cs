@@ -6,6 +6,7 @@
 
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Security;
 
 namespace Warewolf.Execution.Lightweight.Auth;
@@ -31,26 +32,25 @@ namespace Warewolf.Execution.Lightweight.Auth;
 ///
 /// <para>
 /// <b>secure.config is mandatory.</b>  When the config is absent or blank and
-/// <c>BYPASS_SECURE_CONFIG</c> is not <c>true</c>, <see cref="GetPolicy"/> returns
-/// <see cref="PolicyLookupResult.ConfigMissing"/> and every request is denied with
-/// 503 Service Unavailable.  Set <c>BYPASS_SECURE_CONFIG=true</c> to opt in to
-/// open-access mode explicitly (development only).
+/// <c>bypassSecureConfig</c> (in the <c>WAREWOLF_SECURITY_FLAGS</c> JSON app setting —
+/// see <see cref="Infrastructure.SecurityFlags"/>) is not <c>true</c>, <see cref="GetPolicy"/>
+/// returns <see cref="PolicyLookupResult.ConfigMissing"/> and every request is denied with
+/// 503 Service Unavailable.  Set <c>bypassSecureConfig=true</c> to opt in to open-access mode
+/// explicitly (development only).
 /// </para>
 ///
 /// <para>
-/// <b>Super-admin bypass.</b>  When <c>WAREWOLF_SUPER_ADMIN_ENABLED=true</c> and the
-/// caller has any role that holds the <see cref="WorkflowPermission.Administrator"/>
+/// <b>Super-admin bypass.</b>  When <c>superAdminEnabled=true</c> (same JSON app setting) and
+/// the caller has any role that holds the <see cref="WorkflowPermission.Administrator"/>
 /// flag in the <i>global</i> role map, <see cref="GetEffectivePermissions"/> returns
-/// <see cref="WorkflowPermission.All"/> regardless of the active scope.  The env-var
-/// is read on every call to support hot-toggle without restart.
+/// <see cref="WorkflowPermission.All"/> regardless of the active scope.  The setting is
+/// re-parsed on every call to support hot-toggle without restart.
 /// </para>
 /// </summary>
 internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
 {
-    // ── Environment variable names ─────────────────────────────────────────────
-
-    private const string BypassEnvVar      = "BYPASS_SECURE_CONFIG";
-    private const string SuperAdminEnvVar  = "WAREWOLF_SUPER_ADMIN_ENABLED";
+    // WOLF-8516: BYPASS_SECURE_CONFIG / WAREWOLF_SUPER_ADMIN_ENABLED were merged into the
+    // WAREWOLF_SECURITY_FLAGS JSON app setting — see SecurityFlags.
 
     // ── State (swapped atomically on Reload) ──────────────────────────────────
 
@@ -101,11 +101,7 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
     {
         if (!_isConfigEffective)
         {
-            var bypass = string.Equals(
-                Environment.GetEnvironmentVariable(BypassEnvVar),
-                "true", StringComparison.OrdinalIgnoreCase);
-
-            return bypass
+            return SecurityFlags.FromEnvironment().BypassSecureConfig
                 ? PolicyLookupResult.Bypass()
                 : PolicyLookupResult.ConfigMissing();
         }
@@ -143,12 +139,8 @@ internal sealed class WorkflowAuthPolicyLoader : IWorkflowAuthPolicyLoader
     {
         var roles = callerRoles.ToList();
 
-        // ── Super-admin pre-check (hot-read env-var) ──────────────────────────
-        var superAdminEnabled = string.Equals(
-            Environment.GetEnvironmentVariable(SuperAdminEnvVar),
-            "true", StringComparison.OrdinalIgnoreCase);
-
-        if (superAdminEnabled)
+        // ── Super-admin pre-check (hot-read, uncached — see SecurityFlags) ────
+        if (SecurityFlags.FromEnvironment().SuperAdminEnabled)
         {
             foreach (var role in roles)
             {

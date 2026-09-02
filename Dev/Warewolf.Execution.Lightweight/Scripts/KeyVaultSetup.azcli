@@ -12,7 +12,9 @@
 #   2. Enables System-Assigned Managed Identity on the Function App
 #   3. Grants "Key Vault Secrets User"    → Function's Managed Identity (read-only)
 #   4. Grants "Key Vault Secrets Officer" → Developer's Entra ID account (read+write)
-#   5. Sets AZURE_KEYVAULT_NAME and KEYVAULT_SECRET_NAME app settings on the Function
+#   5. Prints the Settings/executionengine.settings.json content to stage on the Function
+#      App's already-deployed package (WOLF-8516 — Key Vault name/secret are no longer
+#      app settings; not applied by this script, see Step 5 below)
 #   6. (Optional) Links Application Insights
 # =============================================================================
 
@@ -82,15 +84,18 @@ az role assignment create \
   --scope    "$VAULT_RESOURCE_ID"
 echo "      'Key Vault Secrets Officer' → Developer ($DEVELOPER_OBJECT_ID)"
 
-# ── Step 5: Configure Function App settings ────────────────────────────────────
-echo "[5/6] Setting Function App configuration..."
-az functionapp config appsettings set \
-  --name           "$FUNCTION_APP_NAME" \
-  --resource-group "$RESOURCE_GROUP" \
-  --settings \
-    "AZURE_KEYVAULT_NAME=$VAULT_NAME" \
-    "KEYVAULT_SECRET_NAME=$SECRET_NAME"
-echo "      App settings written."
+# ── Step 5: Key Vault topology (WOLF-8516: no longer app settings) ────────────
+# AZURE_KEYVAULT_NAME / KEYVAULT_SECRET_NAME are no longer read by the engine at all —
+# HostEnvironmentConfig sources Key Vault name/secret SOLELY from the deploy-bundled
+# Settings/executionengine.settings.json file (no env-var fallback). This script has no
+# local package directory to stage into, so it cannot write that file itself — either:
+#   (a) re-run Deploy-WwExecutionEngine.ps1 with -KeyVaultName/-KeyVaultSecretName (it
+#       stages the file into the deploy package automatically), or
+#   (b) hand-edit Settings/executionengine.settings.json on the already-deployed app via
+#       Kudu (https://$FUNCTION_APP_NAME.scm.azurewebsites.net) or an FTP/WebDeploy tool.
+echo "[5/6] Key Vault topology (stage this into Settings/executionengine.settings.json):"
+echo "{\"keyVaultName\":\"$VAULT_NAME\",\"keyVaultSecretName\":\"$SECRET_NAME\"}"
+echo "      Not applied by this script — see the comment above Step 5 for how to apply it."
 
 # ── Step 6: (Optional) Link Application Insights ──────────────────────────────
 if [ -n "$APPINSIGHTS_NAME" ]; then

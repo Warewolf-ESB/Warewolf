@@ -26,8 +26,8 @@ namespace Warewolf.Execution.Lightweight.Tests
         private static readonly string[] AllVars =
         {
             "WorkflowsDirectory", "AZURE_KEYVAULT_NAME", "KEYVAULT_SECRET_NAME",
-            "WEBSITE_INSTANCE_ID", "SkipFailureToRetrieveSecret",
-            "AZURE_TENANT_ID", "AZURE_CLIENT_ID", "DEBUG_AZURE_KEYVAULT_SECRET",
+            "WEBSITE_INSTANCE_ID", SecurityFlags.EnvVar,
+            "AZURE_TENANT_ID", "AZURE_CLIENT_ID", DebugConfig.EnvVar,
             "AZURE_FUNCTIONS_ENVIRONMENT", "ASPNETCORE_ENVIRONMENT"
         };
 
@@ -49,6 +49,11 @@ namespace Warewolf.Execution.Lightweight.Tests
         {
             foreach (var (k, v) in _snapshot)
                 Environment.SetEnvironmentVariable(k, v);
+
+            if (_tempSettingsDirectory is not null && Directory.Exists(_tempSettingsDirectory))
+            {
+                try { Directory.Delete(_tempSettingsDirectory, recursive: true); } catch { /* best effort */ }
+            }
         }
 
         // ── ClassifyKeyVaultException (private static) ───────────────────────
@@ -67,12 +72,26 @@ namespace Warewolf.Execution.Lightweight.Tests
             return (cat, guid);
         }
 
-        private static HostEnvironmentConfig MakeConfig(string vault = "test-vault",
-                                                        string secret = "my-secret")
+        private string? _tempSettingsDirectory;
+
+        /// <summary>
+        /// WOLF-8516: keyVaultName/keyVaultSecretName/workflowsDirectory have no env-var
+        /// fallback any more — sourced SOLELY from Settings/executionengine.settings.json.
+        /// </summary>
+        private string WriteSettingsFile(string json)
         {
-            Environment.SetEnvironmentVariable("AZURE_KEYVAULT_NAME", vault);
-            Environment.SetEnvironmentVariable("KEYVAULT_SECRET_NAME", secret);
-            return HostEnvironmentConfig.Load();
+            _tempSettingsDirectory = Path.Combine(Path.GetTempPath(), "wolf8516-so-" + Guid.NewGuid().ToString("N"));
+            Directory.CreateDirectory(_tempSettingsDirectory);
+            File.WriteAllText(Path.Combine(_tempSettingsDirectory, HostEnvironmentConfig.SettingsFileName), json);
+            return _tempSettingsDirectory;
+        }
+
+        private HostEnvironmentConfig MakeConfig(string vault = "test-vault",
+                                                  string secret = "my-secret")
+        {
+            var dir = WriteSettingsFile(
+                $"{{\"keyVaultName\":\"{vault}\",\"keyVaultSecretName\":\"{secret}\"}}");
+            return HostEnvironmentConfig.Load(dir);
         }
 
         [TestMethod]
@@ -177,11 +196,12 @@ namespace Warewolf.Execution.Lightweight.Tests
             File.WriteAllText(Path.Combine(dir, "a.bite"), "<x/>");
             File.WriteAllText(Path.Combine(dir, "b.bite"), "<x/>");
 
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", dir);
+            var settingsDir = WriteSettingsFile(
+                $"{{\"workflowsDirectory\":\"{dir.Replace("\\", "\\\\")}\"}}");
             try
             {
                 using var host = BuildMinimalHost();
-                var cfg = HostEnvironmentConfig.Load();
+                var cfg = HostEnvironmentConfig.Load(settingsDir);
                 Assert.IsFalse(cfg.EncryptionEnabled);
 
                 await StartupOrchestrator.RunStartupAsync(host, cfg);
@@ -201,10 +221,11 @@ namespace Warewolf.Execution.Lightweight.Tests
             // and warm-up swallows its own failure.
             var missing = Path.Combine(Path.GetTempPath(),
                 "so_missing_" + Guid.NewGuid().ToString("N"));
-            Environment.SetEnvironmentVariable("WorkflowsDirectory", missing);
+            var settingsDir = WriteSettingsFile(
+                $"{{\"workflowsDirectory\":\"{missing.Replace("\\", "\\\\")}\"}}");
 
             using var host = BuildMinimalHost();
-            var cfg = HostEnvironmentConfig.Load();
+            var cfg = HostEnvironmentConfig.Load(settingsDir);
 
             await StartupOrchestrator.RunStartupAsync(host, cfg);
         }

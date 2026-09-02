@@ -15,8 +15,9 @@ namespace Warewolf.Execution.Lightweight.Auth.Parsers;
 
 /// <summary>
 /// <b>Development-only</b> principal parser that injects a fixed, pre-authenticated
-/// <see cref="WorkflowClaimsPrincipal"/> sourced from the <c>DEBUG_PRINCIPAL_TOKEN</c>
-/// environment variable rather than from the inbound HTTP request.
+/// <see cref="WorkflowClaimsPrincipal"/> sourced from the <c>principalToken</c> field of the
+/// <c>WAREWOLF_DEBUG_CONFIG</c> JSON app setting (WOLF-8516; formerly the standalone
+/// <c>DEBUG_PRINCIPAL_TOKEN</c> env var) rather than from the inbound HTTP request.
 ///
 /// <para>
 /// <b>Purpose.</b>  When running the Azure Function locally (e.g. under
@@ -50,7 +51,7 @@ namespace Warewolf.Execution.Lightweight.Auth.Parsers;
 ///   </item>
 ///   <item>
 ///     Base64-encode that JSON string (UTF-8, no line breaks) and paste the
-///     result as the <c>DEBUG_PRINCIPAL_TOKEN</c> value in
+///     result as the <c>principalToken</c> field of <c>WAREWOLF_DEBUG_CONFIG</c> in
 ///     <c>local.settings.json</c>:
 ///     <code>
 ///     # PowerShell helper:
@@ -69,8 +70,10 @@ namespace Warewolf.Execution.Lightweight.Auth.Parsers;
 /// </summary>
 public sealed class DebugPrincipalParser : IPrincipalParser
 {
-    // Env-var name — must match AuthConstants and local.settings.json documentation.
-    internal const string EnvVarName = "DEBUG_PRINCIPAL_TOKEN";
+    // WOLF-8516: label used only in log messages below — the actual value now comes from the
+    // principalToken field of WAREWOLF_DEBUG_CONFIG (see Infrastructure.DebugConfig), not this
+    // name directly.
+    internal const string EnvVarName = "WAREWOLF_DEBUG_CONFIG.principalToken";
 
     private readonly string? _encodedToken;
     private readonly ILogger<DebugPrincipalParser> _logger;
@@ -85,8 +88,9 @@ public sealed class DebugPrincipalParser : IPrincipalParser
     /// <summary>
     /// Initialises the parser with the base64-encoded principal token and a logger.
     /// <paramref name="encodedToken"/> is sourced from
-    /// <see cref="Infrastructure.HostEnvironmentConfig.DebugPrincipalToken"/> which
-    /// reads <c>DEBUG_PRINCIPAL_TOKEN</c> only in development environments.
+    /// <see cref="Infrastructure.HostEnvironmentConfig.DebugPrincipalToken"/> which reads
+    /// <c>WAREWOLF_DEBUG_CONFIG</c>'s <c>principalToken</c> field only in development
+    /// environments.
     /// </summary>
     public DebugPrincipalParser(string? encodedToken, ILogger<DebugPrincipalParser> logger)
     {

@@ -69,8 +69,11 @@
 .PARAMETER ServiceBusNamespace
     REQUIRED (no default). Service Bus namespace name (3-50 chars, globally unique).
 .PARAMETER ServiceBusQueueName
-    Queue the worker's ServiceBusTrigger listens on. Default: wwexecution-queue
-    (matches WorkflowQueueTrigger.cs's [ServiceBusTrigger("wwexecution-queue", ...)]).
+    Queue the worker's ServiceBusTrigger listens on. Default: wwexecution-queue.
+    Applied as the WAREWOLF_SERVICEBUS_TRIGGER_QUEUE app setting, which
+    WorkflowQueueTrigger.cs's [ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%", ...)]
+    binds to via the standard Azure Functions %AppSetting% indirection — overriding this
+    param now actually retargets the trigger, not just queue provisioning.
 .PARAMETER ServiceBusSku
     Service Bus namespace SKU. Default: Standard (required for topics/RBAC parity;
     Basic also works for a single queue but cannot host authorization rules per-queue
@@ -80,6 +83,25 @@
 .PARAMETER ServiceBusLockDurationSeconds
     Peek-lock duration for the queue. Default: 300 (5 minutes — generous headroom for
     the worker's engine HTTP call + retry).
+.PARAMETER ServiceBusTriggerMaxConcurrentCalls
+    Max messages the worker processes concurrently. Default: 16 (matches host.json's
+    committed extensions.serviceBus.maxConcurrentCalls). Applied as the
+    AzureFunctionsJobHost__extensions__serviceBus__maxConcurrentCalls app setting — the
+    standard Azure Functions override convention for host.json values, so it takes effect
+    without editing/republishing host.json. NOTE: this override path is unconfirmed against
+    a live Function App for the serviceBus extension specifically in this codebase (other
+    host.json sections have confirmed prior art, see ShovelBridge-Architecture.md); the
+    committed host.json value remains the source of truth if it does not take effect.
+.PARAMETER ServiceBusTriggerPrefetchCount
+    Messages pre-fetched per replica ahead of maxConcurrentCalls. Default: 0 (matches
+    host.json). Same override mechanism/caveat as ServiceBusTriggerMaxConcurrentCalls.
+.PARAMETER ServiceBusTriggerMaxAutoLockRenewalMinutes
+    How long the worker keeps auto-renewing a message's peek-lock while processing it.
+    Default: 5 (matches host.json's 00:05:00). Same override mechanism/caveat.
+.PARAMETER ServiceBusTriggerAutoCompleteMessages
+    Whether the host auto-completes a message on successful return. Default: true
+    (matches host.json — WorkflowQueueTrigger relies on this rather than explicit
+    message-actions completion). Same override mechanism/caveat.
 .PARAMETER CreateShovelSendRule / ShovelSendRuleName
     When set (default: true), creates a Send-only queue-scoped SAS authorization rule
     for the RabbitMQ Shovel plugin's AMQP 1.0 destination credential. The connection
@@ -132,6 +154,11 @@ param(
     [ValidateSet('Basic','Standard','Premium')] [string] $ServiceBusSku = 'Standard',
     [nullable[int]] $ServiceBusMaxDeliveryCount,
     [nullable[int]] $ServiceBusLockDurationSeconds,
+    # Service Bus trigger binding options (host.json extensions.serviceBus overrides)
+    [nullable[int]] $ServiceBusTriggerMaxConcurrentCalls,
+    [nullable[int]] $ServiceBusTriggerPrefetchCount,
+    [nullable[int]] $ServiceBusTriggerMaxAutoLockRenewalMinutes,
+    [nullable[bool]] $ServiceBusTriggerAutoCompleteMessages,
     [nullable[bool]] $CreateShovelSendRule,
     [string] $ShovelSendRuleName = 'shovel-send',
     [nullable[bool]] $UseManagedIdentityForServiceBus,
@@ -344,6 +371,10 @@ function Save-DeploySummary {
         serviceBusSku             = $ServiceBusSku
         serviceBusMaxDeliveryCount = $maxDeliveryCount
         serviceBusLockDurationSeconds = $lockDurationSeconds
+        serviceBusTriggerMaxConcurrentCalls = $triggerMaxConcurrentCalls
+        serviceBusTriggerPrefetchCount = $triggerPrefetchCount
+        serviceBusTriggerMaxAutoLockRenewalDuration = $triggerMaxAutoLockRenewalIso
+        serviceBusTriggerAutoCompleteMessages = $triggerAutoCompleteMessages
         useManagedIdentityForServiceBus = $useMiForServiceBus
         shovelSendRuleCreated  = $doCreateShovelRule
         shovelSendRuleName     = ($doCreateShovelRule ? $ShovelSendRuleName : $null)
@@ -427,6 +458,15 @@ $ServiceBusNamespace = Read-Required -Name 'ServiceBusNamespace' -Current $Servi
 $maxDeliveryCount    = if ($null -ne $ServiceBusMaxDeliveryCount)    { [int]$ServiceBusMaxDeliveryCount }    else { 10 }
 $lockDurationSeconds = if ($null -ne $ServiceBusLockDurationSeconds) { [int]$ServiceBusLockDurationSeconds } else { 300 }
 
+# ── Service Bus trigger binding options (host.json extensions.serviceBus overrides) ────
+# Defaults match host.json's committed values exactly, so a deploy with no overrides
+# behaves identically to today.
+$triggerMaxConcurrentCalls   = if ($null -ne $ServiceBusTriggerMaxConcurrentCalls)   { [int]$ServiceBusTriggerMaxConcurrentCalls }   else { 16 }
+$triggerPrefetchCount        = if ($null -ne $ServiceBusTriggerPrefetchCount)        { [int]$ServiceBusTriggerPrefetchCount }        else { 0 }
+$triggerMaxAutoLockRenewalMinutes = if ($null -ne $ServiceBusTriggerMaxAutoLockRenewalMinutes) { [int]$ServiceBusTriggerMaxAutoLockRenewalMinutes } else { 5 }
+$triggerMaxAutoLockRenewalIso = [TimeSpan]::FromMinutes($triggerMaxAutoLockRenewalMinutes).ToString('hh\:mm\:ss')
+$triggerAutoCompleteMessages  = if ($null -ne $ServiceBusTriggerAutoCompleteMessages) { [bool]$ServiceBusTriggerAutoCompleteMessages } else { $true }
+
 # ── WwExecution (engine caller) settings ────────────────────────────────────────
 $WwExecutionBaseUrl      = Read-Required -Name 'WwExecutionBaseUrl'      -Current $WwExecutionBaseUrl      -Hint 'Execution Engine base URL, e.g. https://<engine>.azurewebsites.net'
 $WwExecutionTenantId     = if (-not [string]::IsNullOrWhiteSpace($WwExecutionTenantId))     { $WwExecutionTenantId }     else { $TenantId }
@@ -459,6 +499,20 @@ if (-not [string]::IsNullOrWhiteSpace($WwExecutionManagedIdentityClientId)) {
 # a deployed worker. Local dev's local.settings.json is where the secret fallback lives.
 $appSettings['WwExecution__UseClientSecretFallback'] = 'false'
 
+# WAREWOLF_SERVICEBUS_TRIGGER_QUEUE — the %AppSetting% indirection WorkflowQueueTrigger.cs's
+# [ServiceBusTrigger] attribute binds to (mirrors ServiceBusWorkflowTriggerFunction.cs's
+# in-engine "Model A" trigger). Overriding -ServiceBusQueueName now actually retargets the
+# trigger, not just queue provisioning.
+$appSettings['WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'] = $ServiceBusQueueName
+
+# Service Bus trigger binding options — the standard Azure Functions host.json override
+# convention (AzureFunctionsJobHost__extensions__<section>__<setting>). Defaults match
+# host.json's committed values, so an unoverridden deploy behaves identically to today.
+$appSettings['AzureFunctionsJobHost__extensions__serviceBus__maxConcurrentCalls']       = "$triggerMaxConcurrentCalls"
+$appSettings['AzureFunctionsJobHost__extensions__serviceBus__prefetchCount']            = "$triggerPrefetchCount"
+$appSettings['AzureFunctionsJobHost__extensions__serviceBus__maxAutoLockRenewalDuration'] = $triggerMaxAutoLockRenewalIso
+$appSettings['AzureFunctionsJobHost__extensions__serviceBus__autoCompleteMessages']     = ($triggerAutoCompleteMessages ? 'true' : 'false')
+
 # ── Settings summary + single confirmation ─────────────────────────────────────
 Write-Host ''
 Write-Host '  ── Resolved deployment settings ──────────────────────────────────────' -ForegroundColor White
@@ -474,6 +528,7 @@ Write-Host ("    {0,-28}: {1}" -f 'PublishMethod', $PublishMethod)
 Write-Host ("    {0,-28}: {1}" -f 'App Insights', ($enableAppInsights ? "enabled ($AppInsightsName)" : 'disabled'))
 Write-Host ("    {0,-28}: {1}" -f 'Service Bus namespace', "$ServiceBusNamespace ($ServiceBusSku)")
 Write-Host ("    {0,-28}: {1}" -f 'Service Bus queue', "$ServiceBusQueueName (maxDelivery=$maxDeliveryCount, lock=${lockDurationSeconds}s, DLQ on)")
+Write-Host ("    {0,-28}: {1}" -f 'Trigger binding', "maxConcurrentCalls=$triggerMaxConcurrentCalls, prefetchCount=$triggerPrefetchCount, maxAutoLockRenewal=$triggerMaxAutoLockRenewalIso, autoComplete=$triggerAutoCompleteMessages")
 Write-Host ("    {0,-28}: {1}" -f 'Worker listen auth', ($useMiForServiceBus ? 'Managed Identity (recommended)' : 'SAS connection string (dev only)'))
 Write-Host ("    {0,-28}: {1}" -f 'Shovel Send SAS rule', ($doCreateShovelRule ? "$ShovelSendRuleName (for the RabbitMQ Shovel bridge)" : 'not created'))
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)

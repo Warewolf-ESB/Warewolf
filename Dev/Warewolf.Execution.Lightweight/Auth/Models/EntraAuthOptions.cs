@@ -8,15 +8,16 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 
 /// <summary>
 /// Immutable configuration snapshot used by the Bearer token validation pipeline.
-/// Sourced from the standard Warewolf environment variables documented in
-/// <c>EasyAuth-Runbook.md</c>:
+/// Sourced from the merged <see cref="EntraIdentityOptions"/> JSON app setting (WOLF-8516;
+/// previously 3 independent env vars — still described in the historical form in
+/// <c>EasyAuth-Runbook.md</c>):
 /// <list type="bullet">
-///   <item><c>WAREWOLF_ENTRA_TENANT_ID</c> – Entra tenant GUID.</item>
-///   <item><c>WAREWOLF_ENTRA_AUDIENCE</c>  – Expected <c>aud</c> claim (e.g. <c>api://{clientId}</c>).
+///   <item><c>tenantId</c> – Entra tenant GUID.</item>
+///   <item><c>audience</c>  – Expected <c>aud</c> claim (e.g. <c>api://{clientId}</c>).
 ///   A bare identifier with no URI scheme (e.g. just the client GUID) is auto-prefixed with
 ///   <c>api://</c> — see <see cref="Audience"/> — since that is the <c>aud</c> value Entra
 ///   actually issues for an <c>api://{clientId}/.default</c> scope request.</item>
-///   <item><c>WAREWOLF_ENTRA_CLIENT_ID</c> – Optional alternative audience.</item>
+///   <item><c>clientId</c> – Optional alternative audience.</item>
 /// </list>
 /// </summary>
 public class EntraAuthOptions
@@ -77,11 +78,18 @@ public class EntraAuthOptions
             .Select(v => v!)
             .ToArray();
 
-    /// <summary>Reads the configuration from environment variables.</summary>
-    public static EntraAuthOptions FromEnvironment() => new()
+    /// <summary>
+    /// Reads the configuration from the merged <see cref="EntraIdentityOptions.EnvVar"/> JSON
+    /// app setting (WOLF-8516 — previously 3 independent env-var reads).
+    /// </summary>
+    public static EntraAuthOptions FromEnvironment()
     {
-        TenantId = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_TENANT_ID"),
-        Audience = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_AUDIENCE"),
-        ClientId = Environment.GetEnvironmentVariable("WAREWOLF_ENTRA_CLIENT_ID"),
-    };
+        var entra = EntraIdentityOptions.FromEnvironment();
+        return new()
+        {
+            TenantId = entra.TenantId,
+            Audience = entra.Audience,
+            ClientId = entra.ClientId,
+        };
+    }
 }

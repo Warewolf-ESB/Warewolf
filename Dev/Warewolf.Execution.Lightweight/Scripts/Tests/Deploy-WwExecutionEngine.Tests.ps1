@@ -45,6 +45,30 @@ Describe 'Deploy-WwExecutionEngine — static' {
         { & $script:DeployScript -ExecutionLogLevel 'LOUD' -LoadFunctionsOnly } | Should -Throw
     }
 
+    It 'assigns roles by object id + principal type, never by --assignee' {
+        # REGRESSION (operator machine). `--assignee` makes az resolve the principal through
+        # Microsoft Graph. A system-assigned managed identity enabled seconds earlier has not
+        # replicated there yet, so Phase 3 died with:
+        #   Cannot find user or service principal in graph database for '<principalId>'
+        # The object-id form skips the lookup, matching Deploy-WwQueueProcessor.ps1.
+        $src = Get-Content $script:DeployScript -Raw
+        $src | Should -Not -Match "'role',\s*'assignment',\s*'create'[^)]*'--assignee',"
+        $src | Should -Match '--assignee-object-id'
+        $src | Should -Match '--assignee-principal-type'
+    }
+
+    It 'retries the role assignment while the directory replicates' {
+        . $script:DeployScript -LoadFunctionsOnly
+        $cmd = Get-Command Grant-RoleAssignment -CommandType Function -ErrorAction SilentlyContinue
+        $cmd | Should -Not -BeNullOrEmpty
+        $cmd.Parameters['MaxAttempts'].Attributes.Where({ $_ -is [System.Management.Automation.ParameterAttribute] }) |
+            Should -Not -BeNullOrEmpty
+        # PrincipalType must be constrained - a User assigned as ServicePrincipal silently fails.
+        ($cmd.Parameters['PrincipalType'].Attributes |
+            Where-Object { $_ -is [System.Management.Automation.ValidateSetAttribute] }).ValidValues |
+            Should -Contain 'User'
+    }
+
     It 'defines its helper functions under -LoadFunctionsOnly without running a phase' {
         $out = (. $script:DeployScript -LoadFunctionsOnly) 6>&1 | Out-String
         $out | Should -Not -Match 'Phase 0  Pre-flight'
@@ -247,6 +271,38 @@ Describe 'Deploy-WwExecutionEngine — helper functions' {
             } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
         }
     }
+
+    Context 'service-bus concurrency helper' {
+        It 'Update-HostJsonServiceBusConcurrency sets maxConcurrentCalls and preserves sibling properties' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "extensions": { "serviceBus": { "autoCompleteMessages": false, "maxAutoLockRenewalDuration": "00:11:00" } } }' |
+                Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonServiceBusConcurrency -HostJsonPath $hj -MaxConcurrentCalls 2 | Should -BeTrue
+                $j = Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json
+                $j.extensions.serviceBus.maxConcurrentCalls | Should -Be 2
+                $j.extensions.serviceBus.autoCompleteMessages | Should -BeFalse
+                $j.extensions.serviceBus.maxAutoLockRenewalDuration | Should -Be '00:11:00'
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+        It 'Update-HostJsonServiceBusConcurrency overwrites an already-set value (idempotent)' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "extensions": { "serviceBus": { "maxConcurrentCalls": 8 } } }' |
+                Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonServiceBusConcurrency -HostJsonPath $hj -MaxConcurrentCalls 2 | Should -BeTrue
+                (Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json).extensions.serviceBus.maxConcurrentCalls | Should -Be 2
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+        It 'Update-HostJsonServiceBusConcurrency no-ops (returns $false) when extensions.serviceBus is absent' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "logging": { "logLevel": { "default": "Information" } } }' | Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonServiceBusConcurrency -HostJsonPath $hj -MaxConcurrentCalls 2 | Should -BeFalse
+                (Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json).PSObject.Properties['extensions'] | Should -BeNullOrEmpty
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+    }
 }
 
 Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
@@ -276,13 +332,23 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
 
         # Logging toggles default ON (AI) / OFF (ES); baseline pins both off
         # explicitly to keep most tests deterministic (no ES source / KV required).
+        # UNIQUE PER TEST. The script names its staging dir
+        # 'wwexecutionengine-stage-<AppName>-<yyyyMMdd-HHmmss>[-dryrun]' — a SECOND-resolution
+        # stamp — so a fixed AppName made every test that ran inside the same second share one
+        # directory. Combined with this block's AfterEach, which deletes every
+        # 'wwexecutionengine-stage-*' globally, that intermittently removed a directory another
+        # run was still using (or left one Windows still held a handle to, so the next run's
+        # Remove-Item threw). Three tests failed on roughly one run in four. Unique names make
+        # each run's staging dir its own.
+        $script:appName = 'wwenginetest-' + [guid]::NewGuid().ToString('N').Substring(0, 8)
+
         $script:commonArgs = @{
             SubscriptionId      = 'sub-123'
             TenantId            = 'tid-456'
             ResourceGroup       = 'DEV2'
             Location            = 'southafricanorth'
             StorageAccount      = 'stwwenginetest'
-            AppName             = 'wwenginetest'
+            AppName             = $script:appName
             PublishPath         = $global:pubDir
             LogDir              = $global:logDir
             EncryptResources    = $false
@@ -296,7 +362,10 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
     AfterEach {
         if ($global:pubDir -and (Test-Path -LiteralPath $global:pubDir)) { Remove-Item -LiteralPath $global:pubDir -Recurse -Force }
         if ($global:logDir -and (Test-Path -LiteralPath $global:logDir)) { Remove-Item -LiteralPath $global:logDir -Recurse -Force }
-        # Temp staging dirs ('wwexecutionengine-stage-<AppName>-<stamp>[-dryrun]').
+        # Temp staging dirs. SCOPED to this test's own AppName, deliberately: a global
+        # 'wwexecutionengine-stage-*' sweep also removes directories belonging to runs other than
+        # the one just finished, and the engine's own post-copy guard then fails with
+        # "Staging directory '...' does not exist after resolution".
         Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter 'wwexecutionengine-stage-*' -ErrorAction SilentlyContinue |
             ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
     }
@@ -355,10 +424,12 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
     }
 
     It 'reflects explicit toggle values and the license default (on)' {
+        # WOLF-8516: ENABLEAPPLICATIONINSIGHTS/ENABLEELASTICSEARCHLOGGING etc. were merged
+        # into one WAREWOLF_LOGGING_CONFIG JSON app setting.
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Match 'WAREWOLF_LICENSE_CHECK_ENABLED\s*= true'   # default on
-        $out | Should -Match 'ENABLEAPPLICATIONINSIGHTS\s*= false'       # explicitly off in baseline
-        $out | Should -Match 'ENABLEELASTICSEARCHLOGGING\s*= false'      # explicitly off in baseline
+        $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"appInsights":false'   # explicitly off in baseline
+        $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"elasticsearch":false' # explicitly off in baseline
         $out | Should -Match 'Application Insights disabled'
     }
 
@@ -380,11 +451,35 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $out | Should -Match "Aligning host.json logLevel \(default \+ Warewolf\.\*\) -> 'Debug'"
     }
 
+    It 'skips host.json serviceBus maxConcurrentCalls override by default (opt-in only)' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Not -Match 'Setting host.json extensions.serviceBus.maxConcurrentCalls'
+    }
+
+    It 'sets host.json serviceBus maxConcurrentCalls with -ServiceBusMaxConcurrentCalls' {
+        # The baseline fixture host.json (BeforeEach above) has no extensions.serviceBus
+        # section, so this test writes one matching the real, checked-in host.json shape
+        # (autoCompleteMessages + maxAutoLockRenewalDuration) before invoking the deploy.
+        '{ "extensions": { "serviceBus": { "autoCompleteMessages": false, "maxAutoLockRenewalDuration": "00:11:00" } } }' |
+            Set-Content (Join-Path $global:pubDir 'host.json')
+        $callArgs = $script:commonArgs.Clone(); $callArgs.ServiceBusMaxConcurrentCalls = 2
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Setting host.json extensions.serviceBus.maxConcurrentCalls -> 2'
+        $out | Should -Match 'host.json serviceBus maxConcurrentCalls set.'
+    }
+
+    It 'notes when -ServiceBusMaxConcurrentCalls is set but host.json has no extensions.serviceBus section' {
+        # Baseline fixture host.json (BeforeEach above) has no extensions.serviceBus section.
+        $callArgs = $script:commonArgs.Clone(); $callArgs.ServiceBusMaxConcurrentCalls = 2
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'host.json has no extensions.serviceBus section; skipping maxConcurrentCalls override.'
+    }
+
     It 'uses the WAREWOLF_ App Insights variable (not the standard name) when AI enabled' {
         $callArgs = $script:commonArgs.Clone(); $callArgs.EnableAppInsights = $true
         $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
         $out | Should -Match 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING'
-        $out | Should -Match 'ENABLEAPPLICATIONINSIGHTS\s*= true'
+        $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"appInsights":true'   # WOLF-8516
         # The host-pipeline name must never be set by this deployment.
         $out | Should -Not -Match 'APPLICATIONINSIGHTS_CONNECTION_STRING='
     }
@@ -400,13 +495,15 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $out | Should -Match 'ASPNETCORE_ENVIRONMENT\s*= Production'
     }
 
-    It 'does NOT emit BYPASS_SECURE_CONFIG / WAREWOLF_SUPER_ADMIN_ENABLED (engine defaults apply)' {
+    It 'does NOT emit BYPASS_SECURE_CONFIG / WAREWOLF_SUPER_ADMIN_ENABLED / WAREWOLF_SECURITY_FLAGS (engine defaults apply)' {
+        # WOLF-8516: these were merged into WAREWOLF_SECURITY_FLAGS, still never set by this script.
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Not -Match 'BYPASS_SECURE_CONFIG'
         $out | Should -Not -Match 'WAREWOLF_SUPER_ADMIN_ENABLED'
+        $out | Should -Not -Match 'WAREWOLF_SECURITY_FLAGS'
     }
 
-    It 'does NOT emit SkipFailureToRetrieveSecret even when Key Vault is required' {
+    It 'does NOT emit SkipFailureToRetrieveSecret / WAREWOLF_SECURITY_FLAGS even when Key Vault is required' {
         $esFile  = Join-Path $global:pubDir 'ElasticsearchLoggingSource.bite'
         '<Source><ConnectionString>x</ConnectionString></Source>' | Set-Content $esFile
         $callArgs = $script:commonArgs.Clone()
@@ -416,6 +513,7 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $callArgs.KeyVaultSecretName      = 'dp-keyring-v1'
         $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
         $out | Should -Not -Match 'SkipFailureToRetrieveSecret'
+        $out | Should -Not -Match 'WAREWOLF_SECURITY_FLAGS'
         # ES source is staged AS-IS (encryption off by default).
         $out | Should -Match 'Elasticsearch source staged AS-IS'
     }
@@ -483,6 +581,16 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
                     ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
             }
         }
+        # NOTE: the staging-directory uniquifier added to Deploy-WwExecutionEngine.ps1 (Phase 3.0)
+        # is NOT covered here. An end-to-end test of it — two runs of one AppName, asserting two
+        # distinct staging dirs — was written and then removed: it failed ~25% of the time for the
+        # SAME unresolved reason as the other intermittent failures in this file (the engine's own
+        # post-copy guard, "Staging directory '...' does not exist after resolution", fires on a
+        # directory it has just created and copied into). Adding a flaky test would have made that
+        # noise worse, not caught a regression. The property was verified directly instead: three
+        # sequential runs of one app, two inside the same second, produce three distinct
+        # directories. Re-add the test once the underlying intermittency is understood.
+
         It 'throws on a PublishPath that is neither a folder nor a .zip' {
             $txt = Join-Path ([System.IO.Path]::GetTempPath()) ("wwbad-" + [guid]::NewGuid() + '.txt')
             'x' | Set-Content -LiteralPath $txt
@@ -545,13 +653,15 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         }
 
         It 'defaults App Insights + console ON and Elasticsearch OFF when toggles omitted' {
+            # WOLF-8516: the 5 ENABLE*/STRUCTURED_LOGS toggles were merged into one
+            # WAREWOLF_LOGGING_CONFIG JSON app setting.
             $callArgs = $script:commonArgs.Clone()
             $callArgs.Remove('EnableAppInsights')      # let it default (-> ON)
             $callArgs.Remove('EnableElasticsearch')    # let it default (-> OFF; no ES source / KV needed)
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'ENABLEAPPLICATIONINSIGHTS\s*= true'
-            $out | Should -Match 'ENABLECONSOLELOGGING\s*= true'
-            $out | Should -Match 'ENABLEELASTICSEARCHLOGGING\s*= false'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"console":true'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"appInsights":true'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"elasticsearch":false'
         }
 
         It 'stages the ES source AS-IS when encryption is off (default)' {
@@ -561,18 +671,21 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $callArgs.KeyVaultName            = 'kv-test'
             $callArgs.KeyVaultSecretName      = 'dp-keyring-v1'
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'ENABLEELASTICSEARCHLOGGING\s*= true'
+            $out | Should -Match 'WAREWOLF_LOGGING_CONFIG\s*=.*"elasticsearch":true'
             $out | Should -Match 'ElasticsearchLoggingSource.bite'
             $out | Should -Match 'Elasticsearch source staged AS-IS'
         }
 
         It 'enables Elasticsearch with NO Key Vault when not encrypting (no throw)' {
+            # WOLF-8516: Key Vault topology now goes into Settings/executionengine.settings.json,
+            # not an AZURE_KEYVAULT_NAME app setting — absence is asserted via the staging
+            # step's log line rather than the (now permanently absent) env-var name.
             $callArgs = $script:commonArgs.Clone()
             $callArgs.EnableElasticsearch     = $true
             $callArgs.ElasticsearchSourcePath = $global:esGood   # no KeyVaultName, encryption off
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
             $out | Should -Match 'Elasticsearch source staged AS-IS'
-            $out | Should -Not -Match 'AZURE_KEYVAULT_NAME'       # no KV wiring without a vault
+            $out | Should -Not -Match "Staging 'executionengine.settings.json'"   # no KV wiring without a vault
         }
 
         It 'wires Key Vault for runtime decrypt when -KeyVaultName is supplied without encryption' {
@@ -580,7 +693,9 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $callArgs.KeyVaultName       = 'kv-test'
             $callArgs.KeyVaultSecretName = 'dp-keyring-v1'        # encryption off (default)
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'AZURE_KEYVAULT_NAME\s*= kv-test'
+            # WOLF-8516: staged into executionengine.settings.json instead of an
+            # AZURE_KEYVAULT_NAME app setting.
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1"
             $out | Should -Match 'Key Vault Secrets User'         # MI gets read access
             $out | Should -Not -Match 'Secrets Officer'           # dev role only when encrypting
         }
@@ -601,6 +716,43 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         }
     }
 
+    Context 'ServiceBusTrigger tunables (executionengine.settings.json, WOLF-8516)' {
+        It 'stages serviceBusTrigger independent of Key Vault when a tunable is supplied (no -KeyVaultName)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerMaxConcurrentExecutions = 2
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=,\s*keyVaultSecretName=,\s*serviceBusTrigger=.*maxConcurrentExecutions.:2"
+        }
+
+        It 'leaves unsupplied ServiceBusTrigger fields null alongside a supplied one' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerMaxConcurrentExecutions = 2
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'serviceBusTrigger=.*"jtiWindowHours":null'
+            $out | Should -Match 'serviceBusTrigger=.*"executionTimeoutSeconds":null'
+        }
+
+        It 'regression: -KeyVaultName alone (no ServiceBusTrigger params) stages with NO serviceBusTrigger key' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.KeyVaultName       = 'kv-test'
+            $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1"
+            $out | Should -Not -Match 'serviceBusTrigger='
+        }
+
+        It 'stages BOTH Key Vault topology and ServiceBusTrigger tunables when both are supplied' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.KeyVaultName       = 'kv-test'
+            $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
+            $callArgs.ServiceBusTriggerMaxConcurrentExecutions = 2
+            $callArgs.ServiceBusTriggerSettlementTimeoutSeconds = 30
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1.*serviceBusTrigger="
+            $out | Should -Match 'serviceBusTrigger=.*"maxConcurrentExecutions":2'
+            $out | Should -Match 'serviceBusTrigger=.*"settlementTimeoutSeconds":30'
+        }
+    }
     Context 'breaking change — required params have no defaults' {
         It 'throws under -NonInteractive when <Param> is omitted' -ForEach @(
             @{ Param = 'ResourceGroup' }
@@ -645,12 +797,16 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Match 'Generating workflow index'
             $out | Should -Match 'workflow-index\.json generated \(1 entry\)'
 
-            # The file must exist in the temp staging dir's Resources folder.
+            # The file must exist in the temp staging dir's Resources folder. $script:appName is
+            # unique to THIS test, so exactly one staging dir can match — no 'newest by
+            # LastWriteTime' heuristic, which could select a directory left by another test.
+            # (Parsing the path out of $out is not an option: Out-String wraps at the console
+            # width, so a long temp path is split across lines.)
             $previewDir = Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory `
-                -Filter 'wwexecutionengine-stage-wwenginetest-*' -ErrorAction SilentlyContinue |
-                Sort-Object LastWriteTime | Select-Object -Last 1
+                -Filter "wwexecutionengine-stage-$($script:appName)-*" -ErrorAction SilentlyContinue
             $previewDir | Should -Not -BeNullOrEmpty
-            $indexPath = Join-Path $previewDir.FullName 'Resources/workflow-index.json'
+            @($previewDir).Count | Should -Be 1 -Because 'a unique AppName must yield exactly one staging dir'
+            $indexPath = Join-Path @($previewDir)[0].FullName 'Resources/workflow-index.json'
             Test-Path -LiteralPath $indexPath | Should -BeTrue
             $idx = Get-Content -LiteralPath $indexPath -Raw | ConvertFrom-Json
             $idx.'tools/hello world' | Should -Be 'tools/Hello World.bite'

@@ -13,7 +13,9 @@
       4. Retrieves the Key Vault resource ID
       5. Grants "Key Vault Secrets User"    → Function's Managed Identity (read-only)
       6. Grants "Key Vault Secrets Officer" → Developer's Entra ID account (read+write)
-      7. Sets AZURE_KEYVAULT_NAME and KEYVAULT_SECRET_NAME app settings on the Function
+      7. Prints the Settings/executionengine.settings.json content to stage on the Function
+         App's already-deployed package (WOLF-8516 — Key Vault name/secret are no longer
+         app settings; see Step 5 below for how to actually apply it)
       8. (Optional) Links Application Insights
 
 .PARAMETER WhatIf
@@ -103,20 +105,19 @@ if ($PSCmdlet.ShouldProcess(
 }
 Write-Host "      'Key Vault Secrets Officer' → Developer ($DeveloperObjectId)" -ForegroundColor Green
 
-# ── Step 5: Configure Function App settings ────────────────────────────────────
-Write-Host "`n[5/6] Setting Function App configuration..." -ForegroundColor Cyan
-if ($PSCmdlet.ShouldProcess(
-        "Function App '$FunctionAppName'",
-        'Set AZURE_KEYVAULT_NAME + KEYVAULT_SECRET_NAME app settings')) {
-    az functionapp config appsettings set `
-        --name           $FunctionAppName `
-        --resource-group $ResourceGroup `
-        --settings `
-            "AZURE_KEYVAULT_NAME=$VaultName" `
-            "KEYVAULT_SECRET_NAME=$SecretName" `
-        --output none
-}
-Write-Host '      App settings written.' -ForegroundColor Green
+# ── Step 5: Key Vault topology (WOLF-8516: no longer app settings) ────────────
+# AZURE_KEYVAULT_NAME / KEYVAULT_SECRET_NAME are no longer read by the engine at all —
+# HostEnvironmentConfig sources Key Vault name/secret SOLELY from the deploy-bundled
+# Settings/executionengine.settings.json file (no env-var fallback). This script has no
+# local package directory to stage into, so it cannot write that file itself — either:
+#   (a) re-run Deploy-WwExecutionEngine.ps1 with -KeyVaultName/-KeyVaultSecretName (it
+#       stages the file into the deploy package automatically), or
+#   (b) hand-edit Settings/executionengine.settings.json on the already-deployed app via
+#       Kudu (https://$FunctionAppName.scm.azurewebsites.net) or an FTP/WebDeploy tool.
+Write-Host "`n[5/6] Key Vault topology (stage this into Settings/executionengine.settings.json)" -ForegroundColor Cyan
+$engineSettingsPreview = (@{ keyVaultName = $VaultName; keyVaultSecretName = $SecretName } | ConvertTo-Json)
+Write-Host $engineSettingsPreview -ForegroundColor DarkGray
+Write-Host '      Not applied by this script — see the comment above Step 5 for how to apply it.' -ForegroundColor Yellow
 
 # ── Step 6: (Optional) Link Application Insights ──────────────────────────────
 if ($AppInsightsName) {

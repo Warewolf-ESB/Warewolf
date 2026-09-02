@@ -6,7 +6,15 @@
             "routePrefix": ""
         },
         "serviceBus": {
-            "autoCompleteMessages": false
+            "autoCompleteMessages": false,
+            "maxAutoLockRenewalDuration": "00:11:00",
+            "clientRetryOptions": {
+                "mode": "exponential",
+                "tryTimeout": "00:01:00",
+                "delay": "00:00:02",
+                "maxDelay": "00:00:30",
+                "maxRetries": 3
+            }
         }
     },
     "logging": {
@@ -14,9 +22,9 @@
         "applicationInsights": {
             "samplingSettings": {
                 "isEnabled": true,
-                "maxTelemetryItemsPerSecond": 20,
-                "excludedTypes": "Request;Exception;Trace",
-                "includedTypes": "Dependency;Event;PageView"
+                "maxTelemetryItemsPerSecond": 200,
+                "excludedTypes": "",
+                "includedTypes": "Request;Exception;Trace;Dependency;Event;PageView"
             },
             "enableLiveMetricsFilters": true,
             "enableDependencyTracking": true,

@@ -73,7 +73,33 @@ internal static class ServiceCollectionExtensions
             // §4.2 step 2). Registered as its own singleton type rather than a second
             // keyed EntraAuthOptions instance (no keyed-service DI pattern in this project).
             services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
-            services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment());
+            services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment(config));
+
+            // WOLF-8512: ClaimStaleAfter is resolved automatically from the host's actual
+            // functionTimeout (never a fixed constant - see ServiceBusTriggerOptions.
+            // ResolveHostFunctionTimeout's five-tier strategy), so log which tier won and what
+            // value resulted. Without this, a silent fall-through to a lower tier (e.g. a future
+            // publish profile that stops copying host.json next to the assembly) would be
+            // invisible instead of auditable in App Insights.
+            var (claimStaleAfter, claimStaleAfterTier) = ServiceBusTriggerOptions.DescribeClaimStaleAfterResolution();
+            Dev2Logger.Info(
+                $"ServiceBusTriggerOptions.ClaimStaleAfter resolved to {claimStaleAfter} via tier '{claimStaleAfterTier}'",
+                executionId);
+
+            // Caps how many workflow executions ServiceBusWorkflowTriggerFunction runs
+            // concurrently on this instance (ServiceBusTriggerOptions.MaxConcurrentExecutions).
+            // MUST be a DI singleton, not an instance field on the Function class itself:
+            // the trigger function is not registered here (see the EntraBearerTokenValidator
+            // comment just below) and is resolved fresh per invocation, so an instance field
+            // would not actually be shared across concurrent invocations and would cap
+            // nothing. Sized once at startup — nothing else in this project currently needs
+            // a SemaphoreSlim, so this registration is unambiguous; if that changes, this one
+            // should move behind its own named wrapper type instead of a bare SemaphoreSlim.
+            services.AddSingleton(sp =>
+            {
+                var capacity = sp.GetRequiredService<ServiceBusTriggerOptions>().MaxConcurrentExecutions;
+                return new SemaphoreSlim(capacity, capacity);
+            });
 
             // The Service Bus secure trigger's token validator MUST be a DI singleton, not
             // constructed per-invocation: EntraBearerTokenValidator caches Entra's OIDC
@@ -119,8 +145,8 @@ internal static class ServiceCollectionExtensions
     /// <para>Sink composition:</para>
     /// <list type="bullet">
     ///   <item><see cref="ConsoleExecutionLogger"/> — ALWAYS present (ensures no log is lost; feeds Azure Log Stream)</item>
-    ///   <item><see cref="AzureExecutionLogger"/> — opt-in via <c>ENABLEAPPLICATIONINSIGHTS=true</c> (rich App Insights telemetry)</item>
-    ///   <item><see cref="ElasticsearchExecutionLogger"/> — opt-in via <c>ENABLEELASTICSEARCHLOGGING=true</c></item>
+    ///   <item><see cref="AzureExecutionLogger"/> — opt-in via <c>WAREWOLF_LOGGING_CONFIG</c>'s <c>appInsights</c> field (rich App Insights telemetry)</item>
+    ///   <item><see cref="ElasticsearchExecutionLogger"/> — opt-in via <c>WAREWOLF_LOGGING_CONFIG</c>'s <c>elasticsearch</c> field</item>
     ///   <item><see cref="AuditExecutionLogger"/> — ALWAYS present (security audit events only)</item>
     /// </list>
     ///
@@ -208,7 +234,13 @@ internal static class ServiceCollectionExtensions
         // ServiceBusWorkflowTriggerFunction and the ServiceBusResultFunction polling
         // endpoint. Hangfire-hash-backed when Config.Persistence is enabled, in-memory
         // fallback otherwise (single-instance-only caveat — see the class docs).
-        services.AddSingleton<IServiceBusReplayAndResultStore, ServiceBusReplayAndResultStore>();
+        // WOLF-8512: ClaimStaleAfter is passed explicitly from the resolved
+        // ServiceBusTriggerOptions (see its ResolveHostFunctionTimeout five-tier strategy)
+        // rather than relying on ServiceBusReplayAndResultStore's own DefaultClaimStaleAfter
+        // fallback, so the claim-staleness window always tracks the host's actual
+        // functionTimeout instead of a fixed constant.
+        services.AddSingleton<IServiceBusReplayAndResultStore>(sp =>
+            new ServiceBusReplayAndResultStore(sp.GetRequiredService<ServiceBusTriggerOptions>().ClaimStaleAfter));
 
         // (POL-08) Hot-reload secure.config + policy loader at runtime.
         services.AddHostedService<SecureConfigWatcher>();
