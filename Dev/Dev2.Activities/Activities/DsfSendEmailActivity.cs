@@ -244,6 +244,12 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
+                if (SelectedEmailSource == null)
+                {
+                    dataObject.Environment.Errors.Add(ErrorResource.InvalidEmailSource);
+                    return;
+                }
+
                 var runtimeSource = ResourceCatalog.GetResource<EmailSource>(dataObject.WorkspaceID, SelectedEmailSource.ResourceID);
 
                 if (runtimeSource == null

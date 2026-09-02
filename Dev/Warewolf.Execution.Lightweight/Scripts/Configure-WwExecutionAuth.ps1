@@ -666,7 +666,7 @@ function Read-AppRoleConflictAction {
     #>
     param(
         [array]  $ExistingRoles = @(),
-        [Parameter(Mandatory)][array]  $DesiredRoles
+        [Parameter(Mandatory)][AllowEmptyCollection()][array]  $DesiredRoles
     )
 
     $existing = @($ExistingRoles | Where-Object { $_.isEnabled -eq $true })
@@ -721,7 +721,7 @@ function Invoke-AppRolePatch {
     param(
         [Parameter(Mandatory)][string] $AppObjectId,
         [array]                        $ExistingRoles = @(),
-        [Parameter(Mandatory)][array]  $DesiredRoles,
+        [Parameter(Mandatory)][AllowEmptyCollection()][array]  $DesiredRoles,
         [Parameter(Mandatory)][string] $Mode   # 'keep' | 'replace'
     )
 
