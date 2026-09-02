@@ -1,12 +1,13 @@
 ﻿{
-  "generatedAtUtc": "2026-08-22T18:07:37.5128536Z",
+  "generatedAtUtc": "2026-09-02T15:42:50.4364406Z",
   "harness": {
     "harnessVersion": 1,
     "maxSamplesPerType": 8,
     "corpusRoots": [
       "Resources - Release",
       "Resources - ServerTests",
-      "Resources - Load"
+      "Resources - Load",
+      "Warewolf.Execution.Lightweight\\Resources"
     ]
   },
   "results": [
@@ -14,9 +15,9 @@
       "StudioName": "Assign",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Hello World.bite",
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
       "Status": "Pass",
-      "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Assign Object",
@@ -38,9 +39,9 @@
       "StudioName": "Decision (legacy)",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfDecision. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\decision legacy\\Fidelity_DecisionLegacy.bite",
+      "Status": "Pass",
+      "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Switch",
@@ -70,9 +71,9 @@
       "StudioName": "Select and apply",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Loop Constructs - Select and Apply.bite",
-      "Status": "TranslationFailed",
-      "Detail": "Best of 4 corpus samples. UnsupportedActivityTypeException: Activity type 'Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignObjectActivity, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' is not supported by the X6 workflow converter."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\SelectAndApplyExample.xml",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 9 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: The given key was not present in the dictionary."
     },
     {
       "StudioName": "Gate",
@@ -86,17 +87,17 @@
       "StudioName": "Suspend Execution",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing SuspendExecutionActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\suspend execution\\Fidelity_SuspendExecution.bite",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Hangfire SqlServerStorage could not connect. Please check connection and try again."
     },
     {
       "StudioName": "Manual Resumption",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfManualResumptionActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\hangfiredemo\\Manual Resumption Tool Example.bite",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: SuspensionID must not be null or empty."
     },
     {
       "StudioName": "Service (sub-workflow)",
@@ -104,7 +105,7 @@
       "RequiresSource": true,
       "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Resources - Service.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\VssAdministrator\\AppData\\Local\\Temp\\wf-fidelity-27c674646d81493fb2100ad36a9f0d59'."
+      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\VssAdministrator\\AppData\\Local\\Temp\\wf-fidelity-32e819bcbbc3433f9b976f7d8ec7f668'."
     },
     {
       "StudioName": "Comment",
@@ -118,9 +119,9 @@
       "StudioName": "Calculate",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfDotNetCalculateActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - Calculate.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Aggregate Calculate",
@@ -224,7 +225,7 @@
       "RequiresSource": false,
       "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Backup Example\\Get Backup Items List.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 10 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Variable is null; recordset does not exist"
+      "Detail": "Best of 14 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Variable is null; recordset does not exist"
     },
     {
       "StudioName": "Sort Records",
@@ -246,9 +247,9 @@
       "StudioName": "Length",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfRecordsetNullhandlerLengthActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\Error WF.xml",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Recordset is null [[rec()]]"
     },
     {
       "StudioName": "Unique Records",
@@ -278,9 +279,9 @@
       "StudioName": "Write File",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing FileWriteWithBase64. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Read File.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Folder Read",
@@ -350,7 +351,7 @@
       "StudioName": "GET Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Get.bite",
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\http get\\TC014_Get_MultipleHeaders_Mapped.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -358,7 +359,7 @@
       "StudioName": "POST Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Post.bite",
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\http post\\TC005_PostJsonBody_MapsName_Returns_Alice.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -392,7 +393,7 @@
       "RequiresSource": true,
       "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\ForXmlWithMultipleRows.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 4 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: SQL Error: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'startIndex')\r\n   at System.String.LastIndexOf(Char value, Int32 startIndex, Int32 count)\r\n   at Microsoft.Data.Common.ADP.IsEndpoint(String dataSource, String prefix)\r\n   at Microsoft.Data.Common.ADP.IsAzureSynapseOnDemandEndpoint(String dataSource)\r\n   at Microsoft.Data.SqlClient.SqlConnection.CacheConnectionStringProperties()\r\n   at Microsoft.Data.SqlClient.SqlConnection.set_ConnectionString(String value)\r\n   at Microsoft.Data.SqlClient.SqlConnection..ctor(String connectionString)\r\n   at Dev2.Services.Sql.SqlConnectionWrapper.CreateConnection() in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\SqlConnectionWrapper.cs:line 89\r\n   at Dev2.Services.Sql.SqlConnectionWrapper..ctor(String connString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\SqlConnectionWrapper.cs:line 84\r\n   at Dev2.Services.Sql.ConnectionBuilder.GetSqlConnectionWrapper(String connectionString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\ConnectionBuilder.cs:line 34\r\n   at Dev2.Services.Sql.ConnectionBuilder.ConnectionString(String connectionString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\ConnectionBuilder.cs:line 17\r\n   at Dev2.Services.Execution.DatabaseServiceExecution.MssqlSqlExecution(Int32 connectionTimeout, Nullable`1 commandTimeout, ErrorResultTO errors, Int32 update) in D:\\a\\1\\s\\Dev\\Dev2.Services.Execution\\DatabaseServiceExecution.cs:line 423\r\n   at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in D:\\a\\1\\s\\Dev\\Dev2.Services.Execution\\DatabaseServiceExecution.cs:line 153"
+      "Detail": "Best of 9 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: SQL Error: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'startIndex')\r\n   at System.String.LastIndexOf(Char value, Int32 startIndex, Int32 count)\r\n   at Microsoft.Data.Common.ADP.IsEndpoint(String dataSource, String prefix)\r\n   at Microsoft.Data.Common.ADP.IsAzureSynapseOnDemandEndpoint(String dataSource)\r\n   at Microsoft.Data.SqlClient.SqlConnection.CacheConnectionStringProperties()\r\n   at Microsoft.Data.SqlClient.SqlConnection.set_ConnectionString(String value)\r\n   at Microsoft.Data.SqlClient.SqlConnection..ctor(String connectionString)\r\n   at Dev2.Services.Sql.SqlConnectionWrapper.CreateConnection() in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\SqlConnectionWrapper.cs:line 89\r\n   at Dev2.Services.Sql.SqlConnectionWrapper..ctor(String connString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\SqlConnectionWrapper.cs:line 84\r\n   at Dev2.Services.Sql.ConnectionBuilder.GetSqlConnectionWrapper(String connectionString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\ConnectionBuilder.cs:line 34\r\n   at Dev2.Services.Sql.ConnectionBuilder.ConnectionString(String connectionString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\ConnectionBuilder.cs:line 17\r\n   at Dev2.Services.Execution.DatabaseServiceExecution.MssqlSqlExecution(Int32 connectionTimeout, Nullable`1 commandTimeout, ErrorResultTO errors, Int32 update) in D:\\a\\1\\s\\Dev\\Dev2.Services.Execution\\DatabaseServiceExecution.cs:line 452\r\n   at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in D:\\a\\1\\s\\Dev\\Dev2.Services.Execution\\DatabaseServiceExecution.cs:line 153"
     },
     {
       "StudioName": "PostgreSQL Database",
@@ -400,7 +401,7 @@
       "RequiresSource": true,
       "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\TestPostgresReturningXml.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { getemployeesxml } not found"
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { getemployeesxml } not found"
     },
     {
       "StudioName": "MySQL Database",
@@ -408,7 +409,7 @@
       "RequiresSource": true,
       "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\StopExecutionOnMySQLTimeoutError.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured."
+      "Detail": "Best of 5 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Database source is not configured."
     },
     {
       "StudioName": "Oracle Database",
@@ -416,63 +417,63 @@
       "RequiresSource": true,
       "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\TestOracleReturningXml.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { RESULT } not found"
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { RESULT } not found"
     },
     {
       "StudioName": "ODBC Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfOdbcDatabaseActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\odbc database\\Fidelity_OdbcDatabase.bite",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Value cannot be null. (Parameter 'source')"
     },
     {
       "StudioName": "SQL Bulk Insert",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfSqlBulkInsertActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\sql bulk insert\\Fidelity_SqlBulkInsert.bite",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Object reference not set to an instance of an object."
     },
     {
       "StudioName": "Redis Cache",
       "Category": "Cache",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing RedisCacheActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Redis Remove",
       "Category": "Cache",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing RedisRemoveActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis remove\\Fidelity_RedisRemove.bite",
+      "Status": "Pass",
+      "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "RabbitMQ Publish",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - RabbitMQ Publish.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: <InnerError>Variable is null</InnerError>"
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "RabbitMQ Consume",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - RabbitMQ Consume.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: <InnerError>None of the specified endpoints were reachable\r\nOne or more errors occurred. (Connection failed)\r\nConnection failed\r\nNo such host is known.</InnerError>"
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Send Email (SMTP)",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\Examples\\Utility - Email.bite",
-      "Status": "ExecutionMismatch",
-      "Detail": "[as authored] Both executions failed but with DIFFERENT errors — a genuine fidelity gap. Original: Object reference not set to an instance of an object. | RoundTripped: Invalid Email Source"
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Email - SMTP Send.bite",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 11 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Invalid URI: The hostname could not be parsed."
     },
     {
       "StudioName": "Exchange Email",
@@ -480,7 +481,7 @@
       "RequiresSource": true,
       "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Load\\Resources\\Simple Exchange Test.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Invalid Email Source"
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: A valid SMTP address must be specified."
     },
     {
       "StudioName": "JavaScript",
@@ -534,7 +535,7 @@
       "StudioName": "Gather System Information",
       "Category": "Utility",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - System Information.bite",
+      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\system info\\TestGettingComputerName.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     }

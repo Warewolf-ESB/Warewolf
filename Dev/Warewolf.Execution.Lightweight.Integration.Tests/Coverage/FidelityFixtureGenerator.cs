@@ -57,6 +57,7 @@ using Dev2.Activities;
 using Dev2.Activities.RedisCache;
 using Dev2.Activities.RedisRemove;
 using Dev2.Common.Interfaces.DB;
+using Dev2.Data.Interfaces.Enums;
 using Dev2.Utilities;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
@@ -132,6 +133,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 WriteWorkflow("sql bulk insert", "Fidelity_SqlBulkInsert", BuildSqlBulkInsertStep(), SimpleDataList("result")),
                 WriteMssqlSource(),
                 WriteWorkflow("sql server database", "Fidelity_SqlServerDatabase", BuildSqlServerStep(), SimpleDataList("result")),
+                WriteWorkflow("suspend execution", "Fidelity_SuspendExecution", BuildSuspendExecutionStep(), SuspendExecutionDataList()),
             };
 
             foreach (var path in written)
@@ -139,6 +141,48 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 Console.WriteLine("wrote " + path);
                 Assert.IsTrue(File.Exists(path), "generator reported writing " + path + " but it is not there");
             }
+        }
+
+        /// <summary>
+        /// Guards the specific gap the committed <c>Fidelity_SuspendExecution.bite</c> fixture
+        /// exists to avoid (see <see cref="BuildSuspendExecutionStep"/>'s remarks): the only real
+        /// corpus sample for Suspend Execution also embeds a legacy
+        /// <c>Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity</c> step, which
+        /// <c>X6ToWorkflowConverter</c> does not support and which aborts conversion of the whole
+        /// workflow — reported as <c>TranslationFailed</c> for a reason unrelated to Suspend
+        /// Execution's own fidelity. This composes the same fixture the generator commits and
+        /// proves, without touching disk or the real corpus, that the composed XAML contains
+        /// SuspendExecutionActivity, contains no legacy DsfActivity step, and survives a full
+        /// XAML → X6 JSON → XAML round trip — the exact pipeline
+        /// <see cref="RoundTripFidelityTests"/> exercises — without throwing.
+        /// </summary>
+        [TestMethod]
+        public void BuildSuspendExecutionStep_ComposesFixtureWithoutLegacyDsfActivity_AndRoundTripsCleanly()
+        {
+            var xaml = BuildXaml(BuildSuspendExecutionStep(), "Fidelity_SuspendExecution");
+            var xamlText = xaml.ToString();
+
+            StringAssert.Contains(xamlText, "SuspendExecutionActivity",
+                "the fixture must actually exercise SuspendExecutionActivity");
+            Assert.IsFalse(xamlText.Contains(":DsfActivity "),
+                "the fixture must not contain the legacy DsfActivity sub-workflow invocation step " +
+                "that makes the real hangfiredemo sample TranslationFailed");
+
+            string roundTripped;
+            try
+            {
+                roundTripped = X6RoundTripBridge.RoundTripXaml(xaml);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Round-tripping the Suspend Execution fixture through the X6 converters " +
+                            "threw " + ex.GetType().Name + ": " + ex.Message +
+                            " — this is exactly the TranslationFailed regression this fixture exists to prevent.");
+                return;
+            }
+
+            StringAssert.Contains(roundTripped, "SuspendExecutionActivity",
+                "SuspendExecutionActivity must survive the round trip, not be dropped or replaced");
         }
 
         // ── Activity composition ──────────────────────────────────────────────
@@ -250,6 +294,54 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             },
         };
 
+        /// <summary>
+        /// The only real corpus sample containing <c>SuspendExecutionActivity</c> —
+        /// <c>Resources\hangfiredemo\Suspend Execution Example.bite</c> — also embeds a legacy
+        /// <c>Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity</c> "Hello World"
+        /// sub-workflow invocation step, which <c>X6ToWorkflowConverter</c> does not support at
+        /// all. That aborts conversion of the WHOLE workflow, so the row reports
+        /// TranslationFailed for a reason that has nothing to do with Suspend Execution's own
+        /// round-trip fidelity — the same class of gap Redis Cache's remarks above describe for
+        /// the legacy DsfMultiAssignActivity handler. That sample is left untouched (it is a real
+        /// demo workflow also exercised by ResumeEndToEndTests/WorkflowPoolConcurrencyTests and
+        /// referenced by the HangFire demo runbooks, so hand-editing it to drop a step risks
+        /// changing behaviour those other consumers rely on); this fixture gives the row a clean
+        /// sample instead, mirroring the same "generated fixture wins the corpus classifier's
+        /// first shot" mechanism (see RoundTripFidelityCorpus.ClassifyCorpus's remarks).
+        ///
+        /// Chains SuspendExecutionActivity into a following Assign step (SuspendExecutionActivity
+        /// throws NextNodeRequiredForSuspendExecution — see its Execute — when NextNodes is empty)
+        /// rather than the single-FlowStep shape every other fixture in this file uses.
+        /// AllowManualResumption is left false so no SaveDataFunc handler is needed.
+        /// </summary>
+        static FlowStep BuildSuspendExecutionStep()
+        {
+            var assignStep = new FlowStep
+            {
+                Action = new DsfDotNetMultiAssignActivity
+                {
+                    DisplayName = "Assign after resume",
+                    FieldsCollection = new List<ActivityDTO>
+                    {
+                        new("[[message]]", "resumed", 1),
+                    },
+                },
+            };
+
+            return new FlowStep
+            {
+                Action = new SuspendExecutionActivity
+                {
+                    DisplayName = "Suspend Execution",
+                    SuspendOption = enSuspendOption.SuspendForSeconds,
+                    PersistValue = "5",
+                    AllowManualResumption = false,
+                    Result = "[[suspensionId]]",
+                },
+                Next = assignStep,
+            };
+        }
+
         // ── DataLists ─────────────────────────────────────────────────────────
 
         static XElement RedisDataList() => new("DataList",
@@ -259,6 +351,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
         static XElement DecisionDataList() => new("DataList",
             Scalar("a", "Input"));
+
+        static XElement SuspendExecutionDataList() => new("DataList",
+            Scalar("suspensionId", "Output"),
+            Scalar("message", "Output"));
 
         static XElement SimpleDataList(string name) => new("DataList",
             Scalar(name, "Output"));
@@ -270,10 +366,21 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
         // ── Emission ──────────────────────────────────────────────────────────
 
-        static string WriteWorkflow(string folder, string name, FlowStep step, XElement dataList)
+        /// <summary>
+        /// Composes <paramref name="step"/> (and every node reachable from it via
+        /// FlowStep.Next/FlowDecision.True|False — not just the start node, needed once a fixture
+        /// chains more than one step, e.g. Suspend Execution; a no-op for every single-FlowStep
+        /// fixture in this file) into a Flowchart and serialises it exactly as Studio itself would
+        /// via WorkflowHelper.GetXamlDefinition. Shared by WriteWorkflow (which wraps and commits
+        /// the result) and by tests that need the raw XAML without writing a fixture file.
+        /// </summary>
+        static StringBuilder BuildXaml(FlowStep step, string name)
         {
             var chart = new Flowchart { StartNode = step };
-            chart.Nodes.Add(step);
+            foreach (var node in WorkflowHelper.CollectAllNodes(chart))
+            {
+                chart.Nodes.Add(node);
+            }
 
             var builder = new ActivityBuilder { Name = name, Implementation = chart };
             var helper = new WorkflowHelper();
@@ -282,6 +389,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             var xaml = helper.GetXamlDefinition(builder);
             Assert.IsTrue(xaml is { Length: > 0 },
                 "WorkflowHelper produced no XAML for " + name + " — the composed graph is not serialisable.");
+            return xaml;
+        }
+
+        static string WriteWorkflow(string folder, string name, FlowStep step, XElement dataList)
+        {
+            var xaml = BuildXaml(step, name);
 
             var contents = EnvelopeBiteWriter.BuildBiteFileContents(
                 serviceId: DeterministicId(name).ToString(),
