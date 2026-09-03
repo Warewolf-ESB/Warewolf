@@ -289,6 +289,58 @@ function Invoke-AzCli {
     }
 }
 
+function Get-BalancedJsonSpan {
+    <#
+        $Text must start with '{' or '['. Returns the substring spanning exactly that
+        one balanced JSON value, tracking brace/bracket depth and respecting quoted
+        strings (so a '}' or '{' inside a string value doesn't affect the count) - and
+        discarding anything after the value closes.
+
+        WHY: az CLI can print extension/deprecation notices (e.g. "WARNING: The
+        behavior of this command has been altered by the following extension: authV2")
+        to stderr, which Invoke-AzCli merges into the same buffer via `2>&1`. When that
+        notice lands AFTER the JSON in the merged stream (buffering order between
+        stdout/stderr isn't guaranteed - observed live once authV2 is enabled on an
+        app), ConvertFrom-Json throws "Additional text encountered after finished
+        reading JSON content" even though the JSON itself is perfectly valid.
+        ConvertFrom-AzJson already strips a LEADING preamble the same way for the
+        symmetric case (notice before the JSON); this closes the trailing case.
+
+        Returns the whole (unbalanced) $Text if the value never closes, so the
+        caller's ConvertFrom-Json reports the real parse error instead of this
+        function silently returning a truncated/wrong span.
+    #>
+    param([Parameter(Mandatory)][string] $Text)
+
+    $open  = $Text[0]
+    $close = if ($open -eq '{') { '}' } else { ']' }
+    $depth = 0
+    $inString = $false
+    $escaped = $false
+
+    for ($i = 0; $i -lt $Text.Length; $i++) {
+        $ch = $Text[$i]
+
+        if ($inString) {
+            if ($escaped)        { $escaped = $false }
+            elseif ($ch -eq '\') { $escaped = $true }
+            elseif ($ch -eq '"') { $inString = $false }
+            continue
+        }
+
+        if ($ch -eq '"') {
+            $inString = $true
+        } elseif ($ch -eq $open) {
+            $depth++
+        } elseif ($ch -eq $close) {
+            $depth--
+            if ($depth -eq 0) { return $Text.Substring(0, $i + 1) }
+        }
+    }
+
+    return $Text
+}
+
 function ConvertFrom-AzJson {
     <#
         Aggregates every line emitted by az CLI in a StringBuilder, strips any
@@ -341,6 +393,10 @@ function ConvertFrom-AzJson {
             Write-Verbose "ConvertFrom-AzJson: no JSON document in input. Buffer was: $text"
             return $null
         }
+
+        # Discard any TRAILING preamble too (e.g. a stderr notice that landed after
+        # the JSON in the merged buffer) - see Get-BalancedJsonSpan.
+        $text = Get-BalancedJsonSpan -Text $text
 
         return $text | ConvertFrom-Json -Depth 50
     }
@@ -666,7 +722,11 @@ function Read-AppRoleConflictAction {
     #>
     param(
         [array]  $ExistingRoles = @(),
-        [Parameter(Mandatory)][array]  $DesiredRoles
+        # NOT [Parameter(Mandatory)]: PowerShell's binder treats an empty array bound
+        # to a Mandatory parameter as "no value supplied" and throws "Cannot bind
+        # argument... because it is an empty collection" - but an empty desired-roles
+        # set (no -GroupPermissions configured yet) is a legitimate call here.
+        [array]  $DesiredRoles = @()
     )
 
     $existing = @($ExistingRoles | Where-Object { $_.isEnabled -eq $true })
@@ -721,7 +781,11 @@ function Invoke-AppRolePatch {
     param(
         [Parameter(Mandatory)][string] $AppObjectId,
         [array]                        $ExistingRoles = @(),
-        [Parameter(Mandatory)][array]  $DesiredRoles,
+        # NOT [Parameter(Mandatory)]: see Read-AppRoleConflictAction's $DesiredRoles
+        # for why - an empty desired-roles set (no -GroupPermissions configured yet)
+        # is a legitimate call here and the logic below already handles it (writes an
+        # empty appRoles array).
+        [array]                        $DesiredRoles = @(),
         [Parameter(Mandatory)][string] $Mode   # 'keep' | 'replace'
     )
 
@@ -875,6 +939,63 @@ function Write-TempJson {
     )
     $utf8NoBom = New-Object System.Text.UTF8Encoding $false
     [System.IO.File]::WriteAllText($Path, $Json, $utf8NoBom)
+}
+
+function Set-FunctionAppSettings {
+    <#
+        Writes app settings via `az functionapp config appsettings set --settings @<file>`
+        instead of passing "KEY=VALUE" pairs as raw command-line arguments - ONE temp file
+        and ONE `@<path>` argument PER setting, not one shared file for the whole list.
+
+        WHY (bug #1 - quotes): Invoke-AzCli invokes az via `& az @Arguments` - PowerShell's
+        call operator splatting against az.cmd (a batch-file wrapper on Windows). Any
+        argument containing embedded double quotes (e.g. a JSON-valued setting like
+        WAREWOLF_ENTRA_CONFIG) gets silently stripped of its quotes when PowerShell/cmd.exe
+        re-serialize the array for the child process, corrupting the value written to Azure
+        with no error - the az call itself still reports success. A single quote-free
+        `@<path>` argument sidesteps the re-serialization entirely; every other JSON-bearing
+        az call in this script already uses the equivalent `--body @<file>` pattern via
+        Write-TempJson (Stage 2 fallback, Stage 3b, Stage 4, Stage 9).
+
+        WHY (bug #2 - one file per setting, not one shared file): `az`'s `@file`
+        substitution replaces a SINGLE argument occurrence with the file's raw content as
+        ONE token - it does not re-split multi-line file content back into separate
+        `--settings` list entries. A shared file holding multiple "KEY=VALUE" lines gets
+        read as one token, split only on the FIRST `=`, and every setting after the first
+        collapses into the first setting's value. Live incident this fixes: a shared file
+        with WAREWOLF_ENTRA_CONFIG on line 1 and WAREWOLF_SECURE_CONFIG on line 2 wrote
+        WAREWOLF_ENTRA_CONFIG's stored value as `{...}` + a literal newline + the entire
+        `WAREWOLF_SECURE_CONFIG=...` line, so EntraIdentityOptions again failed to parse it
+        (this time with "Additional text encountered after finished reading JSON content"
+        instead of stripped quotes - a different-looking symptom of a different bug, not a
+        recurrence of bug #1). One file per setting keeps each `--settings` list entry
+        exactly one token, matching what az actually does with `@file` substitution.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $Name,
+        [Parameter(Mandatory)][string] $ResourceGroup,
+        [Parameter(Mandatory)][string[]] $Settings
+    )
+
+    $tempFiles = [System.Collections.Generic.List[string]]::new()
+    try {
+        $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+        $fileArgs = foreach ($setting in $Settings) {
+            $tempFile = [System.IO.Path]::GetTempFileName()
+            $tempFiles.Add($tempFile)
+            [System.IO.File]::WriteAllText($tempFile, $setting, $utf8NoBom)
+            "@$tempFile"
+        }
+
+        Invoke-AzCli (@(
+            'functionapp','config','appsettings','set',
+            '--name',$Name,
+            '--resource-group',$ResourceGroup,
+            '--settings'
+        ) + $fileArgs) | Out-Null
+    } finally {
+        foreach ($f in $tempFiles) { Remove-Item $f -Force -ErrorAction SilentlyContinue }
+    }
 }
 
 function Get-EasyAuthConfig {
@@ -1544,12 +1665,7 @@ if ($ClientSecret) {
     $settings += "$ClientSecretSettingName=$ClientSecret"
 }
 
-Invoke-AzCli (@(
-    'functionapp','config','appsettings','set',
-    '--name',$FunctionAppName,
-    '--resource-group',$ResourceGroupName,
-    '--settings'
-) + $settings) | Out-Null
+Set-FunctionAppSettings -Name $FunctionAppName -ResourceGroup $ResourceGroupName -Settings $settings
 Write-Host "    wrote $($settings.Count) app setting(s)" -ForegroundColor Green
 
 # ──────────────────────────────────────────────────────────────────────────────
