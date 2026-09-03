@@ -72,44 +72,13 @@ try
     // ── Options ─────────────────────────────────────────────────────────────────
     // Flat + sectioned binding: QUEUE__*, ENGINE__*, WORKER__*, RABBITMQ__*, KEYVAULT__*
     // all land on one options object, so operators keep the plan's documented names.
+    // The mapping itself lives in QueueProcessorOptionsBinder so it can be unit tested - top-level
+    // statements cannot. That is not cosmetic: while this was a lambda here, WORKER__MAXDELIVERYATTEMPTS
+    // and WORKER__RETRYENGINEINTERNALERRORS were emitted by Deploy-WwQueueProcessor.ps1, set on the
+    // live Container App, and never assigned by it.
     builder.Services.AddOptions<QueueProcessorOptions>()
-        .Configure(o =>
-        {
-            var cfg = builder.Configuration;
-            // ReadString (not ??) so an empty placeholder cannot beat the default - see its
-            // remarks. AppContext.BaseDirectory, never Environment.CurrentDirectory: the
-            // settings tree is deployed ALONGSIDE the assembly (Settings\<source>.bite +
-            // Settings\triggers\<id>.bite), and cwd differs between `dotnet run`, the
-            // container (WORKDIR /app) and a debugger launch.
-            o.SettingsPath = ReadString(cfg["QUEUE:SETTINGSPATH"],
-                                        Path.Combine(AppContext.BaseDirectory, "Settings"));
-            o.TriggersSubPath = ReadString(cfg["QUEUE:TRIGGERSSUBPATH"], "triggers");
-            o.SourcesSubPath = ReadString(cfg["QUEUE:SOURCESSUBPATH"], "sources");
-            o.TriggerFilter = ReadString(cfg["QUEUE:TRIGGERFILTER"], "*.bite");
-            o.TriggerId = cfg["QUEUE:TRIGGERID"];
-
-            o.BaseUrl = cfg["ENGINE:BASEURL"] ?? string.Empty;
-            o.ResourceAppId = cfg["ENGINE:RESOURCEAPPID"] ?? string.Empty;
-            o.TenantId = cfg["ENGINE:TENANTID"];
-            o.Scope = cfg["ENGINE:SCOPE"];
-            o.ManagedIdentityClientId = cfg["ENGINE:MANAGEDIDENTITYCLIENTID"];
-            o.UseClientSecretFallback = ReadBool(cfg["ENGINE:USECLIENTSECRETFALLBACK"]);
-            o.ClientId = cfg["ENGINE:CLIENTID"];
-            o.ClientSecret = cfg["ENGINE:CLIENTSECRET"];
-            o.EngineTimeoutSeconds = ReadInt(cfg["ENGINE:TIMEOUTSECONDS"], 45);
-            o.TokenRefreshSkewSeconds = ReadInt(cfg["ENGINE:TOKENREFRESHSKEWSECONDS"], 300);
-
-            o.MaxConcurrency = ReadInt(cfg["WORKER:MAXCONCURRENCY"], 1);
-            o.ShutdownGraceSeconds = ReadInt(cfg["WORKER:SHUTDOWNGRACESECONDS"], 60);
-
-            var useSsl = cfg["RABBITMQ:USESSL"];
-            o.UseSsl = string.IsNullOrWhiteSpace(useSsl) ? null : ReadBool(useSsl);
-
-            o.KeyVaultName = cfg["KEYVAULT:NAME"];
-            o.KeyVaultSecretName = cfg["KEYVAULT:SECRETNAME"];
-            o.DebugKeyVaultSecret = cfg["DEBUG_AZURE_KEYVAULT_SECRET"];
-            o.IsDevelopment = loggingConfig.IsDevelopment;
-        })
+        .Configure(o => QueueProcessorOptionsBinder.Apply(
+            builder.Configuration, o, loggingConfig.IsDevelopment))
         .ValidateDataAnnotations()
         .ValidateOnStart();
 
@@ -283,11 +252,7 @@ catch (Exception ex)
     return 1;
 }
 
-// Thin forwarders to ConfigurationValues, which carries the "empty means unset" rule and its
-// regression tests. Top-level statements are not unit testable, so the rule lives there.
-static string ReadString(string? value, string @default) =>
-    ConfigurationValues.ReadString(value, @default);
-
-static bool ReadBool(string? value) => ConfigurationValues.ReadBool(value);
-
+// Thin forwarder to ConfigurationValues, which carries the "empty means unset" rule and its
+// regression tests. Top-level statements are not unit testable, so the rule lives there - as does
+// the whole options mapping, in QueueProcessorOptionsBinder.
 static int ReadInt(string? value, int @default) => ConfigurationValues.ReadInt(value, @default);

@@ -38,7 +38,10 @@ BeforeAll {
             [string] $KedaQueue = 'order-success-queue',
             [string] $QueueName = 'order-success-queue',
             [bool]   $QueueExists = $true,
-            [object[]] $Competing = @()
+            [object[]] $Competing = @(),
+            # -1 means "same as MaxReplicas", i.e. deployed and requested agree, which is the state
+            # every pre-existing test in this suite assumes.
+            [int]    $RequestedMaxReplicas = -1
         )
         [pscustomobject]@{
             QueueName = $QueueName
@@ -47,6 +50,8 @@ BeforeAll {
             Keda      = [pscustomobject]@{ HasRabbitRule = $HasRabbitRule; QueueName = $KedaQueue }
             Broker    = [pscustomobject]@{ QueueExists = $QueueExists }
             CompetingConsumers = $Competing
+            RequestedMaxReplicas = $(if ($RequestedMaxReplicas -lt 0) { $MaxReplicas } else { $RequestedMaxReplicas })
+            ResourceGroup        = 'DEV2'
         }
     }
 }
@@ -271,9 +276,26 @@ Describe 'Initialize-WwAzNonInteractive' {
             $n.GetCommandName() -in @('Initialize-WwAzNonInteractive', 'Get-E2EAzContext', 'Invoke-E2EAzJson')
         }, $true)
 
+        # Calls inside a FUNCTION BODY are excluded: they execute when the function is invoked, not
+        # where it is defined, and every helper in this script is defined above the Run section. What
+        # matters is that no az call at SCRIPT level runs before initialisation. Set-WwWorkerScale
+        # made this distinction load-bearing - it holds Invoke-E2EAzJson calls and is defined among
+        # the helpers, so a pure text-offset comparison flagged it even though it is only ever called
+        # from the worker pre-flight, well after Initialize-WwAzNonInteractive.
+        $inFunction = {
+            param($node)
+            $p = $node.Parent
+            while ($p) {
+                if ($p -is [System.Management.Automation.Language.FunctionDefinitionAst]) { return $true }
+                $p = $p.Parent
+            }
+            return $false
+        }
+
         $init    = @($calls | Where-Object { $_.GetCommandName() -eq 'Initialize-WwAzNonInteractive' } |
                         Select-Object -First 1)
-        $firstAz = @($calls | Where-Object { $_.GetCommandName() -ne 'Initialize-WwAzNonInteractive' } |
+        $firstAz = @($calls | Where-Object { $_.GetCommandName() -ne 'Initialize-WwAzNonInteractive' -and
+                                             -not (& $inFunction $_) } |
                         Sort-Object { $_.Extent.StartOffset } | Select-Object -First 1)
 
         $init.Count    | Should -Be 1
@@ -860,5 +882,298 @@ Describe 'Get-WwPreflightBlockers' {
         $p = New-Preflight
         $p.Engine = $null
         (Get-WwPreflightBlockers -Preflight $p)[0] | Should -Match 'could not be resolved'
+    }
+}
+
+Describe 'Replica ceiling: -ApplyScale and the mismatch guard' {
+
+    # REGRESSION for 2026-08-20. A run was invoked with -MaxReplicas 10 against a worker deployed at
+    # 20. In Mode Existing -MaxReplicas only feeds the plan arithmetic, so the run executed at 20
+    # while its plan, its summary and every derived measurement said 10 - a 20-replica result filed
+    # as a 10-replica one. The script warned about this only in the DeployWorker branch, which that
+    # invocation never reaches.
+
+    BeforeAll {
+        # Set-WwWorkerScale calls Invoke-E2EAzJson, which lives in WwE2E.Common.psm1 and is imported
+        # AFTER the -LoadFunctionsOnly early return, so it does not exist in this session. Define a
+        # recording stub rather than mocking: functions win over module exports, and this also proves
+        # the exact az argument vector instead of merely that "some az call happened".
+        $script:AzCalls    = [System.Collections.Generic.List[object]]::new()
+        $script:ShowScript = @()   # queue of what `containerapp show` returns, one entry per poll
+
+        function Invoke-E2EAzJson {
+            param([string[]] $AzArgs, [switch] $AllowFail)
+            $script:AzCalls.Add($AzArgs)
+            if ($AzArgs -contains 'show') {
+                $next = if ($script:ShowScript.Count) { $script:ShowScript[0] } else { $null }
+                if ($script:ShowScript.Count -gt 1) { $script:ShowScript = $script:ShowScript[1..($script:ShowScript.Count - 1)] }
+                if ($null -eq $next) { return $null }   # a transient az failure returns $null
+                return [pscustomobject]@{ properties = [pscustomobject]@{
+                    provisioningState = $next.State
+                    template          = [pscustomobject]@{ scale = [pscustomobject]@{ maxReplicas = $next.Max } } } }
+            }
+            return $null
+        }
+    }
+
+    BeforeEach { $script:AzCalls.Clear() }
+
+    Context 'Set-WwWorkerScale' {
+
+        It 'issues containerapp update with the requested ceiling, and never --query' {
+            # Invoke-E2EAzJson refuses --query outright: on Windows az is a .cmd shim and cmd.exe
+            # mangles JMESPath. Passing one would fail at runtime, not in review.
+            $script:ShowScript = @(@{ Max = 3; State = 'Succeeded' })
+            Set-WwWorkerScale -ResourceGroup 'DEV2' -AppName 'wwqp3-ordersuccessqueue' -MaxReplicas 3 -PollSeconds 0 | Should -Be 3
+
+            $update = @($script:AzCalls | Where-Object { $_ -contains 'update' })
+            $update.Count | Should -Be 1
+            $update[0]    | Should -Contain '--max-replicas'
+            $update[0]    | Should -Contain '3'
+            $update[0]    | Should -Contain 'wwqp3-ordersuccessqueue'
+            foreach ($call in $script:AzCalls) { $call | Should -Not -Contain '--query' }
+        }
+
+        It 'keeps polling until the revision reports Succeeded, then returns the re-read ceiling' {
+            # `az containerapp update` returns before the new revision is active, so the update call
+            # succeeding says nothing about the ceiling actually being in force.
+            $script:ShowScript = @(
+                @{ Max = 20; State = 'InProgress' },   # old ceiling still in force
+                @{ Max = 10; State = 'InProgress' },   # new value visible, revision not ready
+                @{ Max = 10; State = 'Succeeded'  })
+            Set-WwWorkerScale -ResourceGroup 'DEV2' -AppName 'wwqp3-ordersuccessqueue' -MaxReplicas 10 -PollSeconds 0 | Should -Be 10
+            @($script:AzCalls | Where-Object { $_ -contains 'show' }).Count | Should -Be 3
+        }
+
+        It 'throws rather than running against a ceiling that never became the requested one' {
+            $script:ShowScript = @(@{ Max = 20; State = 'Succeeded' })
+            { Set-WwWorkerScale -ResourceGroup 'DEV2' -AppName 'wwqp3-ordersuccessqueue' -MaxReplicas 10 `
+                                -PollSeconds 0 -TimeoutSeconds 1 } |
+                Should -Throw -ExpectedMessage '*still reports maxReplicas*'
+        }
+
+        It 'survives a transient az failure mid-poll instead of dereferencing null' {
+            # Invoke-E2EAzJson -AllowFail returns $null when az fails, and reaching through it under
+            # StrictMode throws. Get-E2EContainerApps had exactly that defect.
+            $script:ShowScript = @($null, @{ Max = 2; State = 'Succeeded' })
+            Set-WwWorkerScale -ResourceGroup 'DEV2' -AppName 'wwqp3-ordersuccessqueue' -MaxReplicas 2 -PollSeconds 0 | Should -Be 2
+        }
+
+        It 'refuses a ceiling outside the range core az accepts' {
+            # core az 2.87 rejects --max-replicas 0 with "must be in the range [1,1000]", which is why
+            # the harness docs advice to park a competing app at 0 is unusable. Parking is `stop`.
+            { Set-WwWorkerScale -ResourceGroup 'DEV2' -AppName 'x' -MaxReplicas 0 -PollSeconds 0 } | Should -Throw
+        }
+    }
+
+    Context 'Get-WwPreflightBlockers' {
+
+        It 'blocks when the deployed ceiling differs from the requested one' {
+            $b = Get-WwPreflightBlockers -Preflight (New-Preflight -MaxReplicas 20 -RequestedMaxReplicas 10)
+            $b.Count | Should -Be 1
+            $b[0] | Should -Match 'Replica ceiling mismatch'
+            $b[0] | Should -Match '20'                      # what is deployed
+            $b[0] | Should -Match '10'                      # what was asked for
+            $b[0] | Should -Match '-ApplyScale'             # how to fix it inside the tool
+            $b[0] | Should -Match 'az containerapp update'  # how to fix it by hand
+        }
+
+        It 'does not block when deployed and requested agree' {
+            (Get-WwPreflightBlockers -Preflight (New-Preflight -MaxReplicas 10 -RequestedMaxReplicas 10)).Count | Should -Be 0
+        }
+
+        It 'does not block once -ApplyScale has reconciled them' {
+            # -ApplyScale writes the applied value back onto the preflight object before the blocker
+            # check runs, so the whole run proceeds on one consistent number.
+            $p = New-Preflight -MaxReplicas 20 -RequestedMaxReplicas 10
+            $p.Worker.MaxReplicas = 10          # what Set-WwWorkerScale returned
+            (Get-WwPreflightBlockers -Preflight $p).Count | Should -Be 0
+        }
+
+        It 'still reports the parked-at-zero blocker ahead of any mismatch' {
+            # maxReplicas 0 means the worker never consumes at all; that is the more useful message.
+            $b = Get-WwPreflightBlockers -Preflight (New-Preflight -MaxReplicas 0 -RequestedMaxReplicas 6)
+            $b[0] | Should -Match 'never consume'
+        }
+
+        It 'does not throw when the worker was never resolved' {
+            # RequestedMaxReplicas/ResourceGroup are only set once the worker has been read, and
+            # touching an absent property on a pscustomobject THROWS under StrictMode.
+            $p = [pscustomobject]@{
+                QueueName = 'q'
+                Engine    = [pscustomobject]@{ Name = 'e'; State = 'Running' }
+                Worker    = [pscustomobject]@{ Name = 'w'; Exists = $true; MaxReplicas = 6 }
+                Keda      = [pscustomobject]@{ HasRabbitRule = $true; QueueName = 'q' }
+                Broker    = [pscustomobject]@{ QueueExists = $true }
+                CompetingConsumers = @()
+            }
+            { Get-WwPreflightBlockers -Preflight $p } | Should -Not -Throw
+        }
+    }
+
+    Context 'Concurrency is derived from the DEPLOYED ceiling' {
+
+        It 'multiplies the deployed ceiling by MaxConcurrency, not the requested one' {
+            # This is the arithmetic that mislabelled the 2026-08-20 run: 10 x 1 was reported while
+            # 20 x 1 was executed.
+            Resolve-WwEngineConcurrency -MaxReplicas 20 -MaxConcurrency 1 | Should -Be 20
+            Resolve-WwEngineConcurrency -MaxReplicas 10 -MaxConcurrency 1 | Should -Be 10
+        }
+    }
+
+    Context 'Summary records what the run actually did' {
+
+        It 'writes scale provenance into the summary object' {
+            # Asserted against the source: building the real summary needs a live run. These fields
+            # matter because loadtest-summary.json is the only place a later reader can tell whether
+            # a run changed the deployment - and it is overwritten by the next run.
+            $src = Get-Content -LiteralPath $script:LoadTestScript -Raw
+            $src | Should -Match 'scale\s*=\s*\[pscustomobject\]@\{'
+            foreach ($field in 'requested', 'deployed', 'before', 'appliedScale', 'restoreHint') {
+                $src | Should -Match "$field\s*="
+            }
+        }
+
+        It 'does not silently restore the ceiling it changed' {
+            # A load test that reverts infrastructure on its way out is surprising, and a failed run
+            # would revert half-way. It reports the change and hands over the command instead.
+            $src = Get-Content -LiteralPath $script:LoadTestScript -Raw
+            $src | Should -Match 'has NOT been restored'
+        }
+    }
+}
+
+Describe 'Get-WwDeadLetterTxnId' {
+    # Headers MUST be built as Dictionary[string,object] - the type RabbitMQ actually hands us via
+    # BasicProperties.Headers (IDictionary[string,object]). An earlier version of these tests used a
+    # PowerShell hashtable @{}, which has Contains(object) while the generic interface does NOT. The
+    # tests passed and the production path threw, silently, inside the caller's try/catch.
+    BeforeAll {
+        function script:NewHeaders {
+            param([hashtable] $Pairs)
+            $d = [System.Collections.Generic.Dictionary[string, object]]::new()
+            foreach ($k in $Pairs.Keys) { $d[$k] = $Pairs[$k] }
+            return [System.Collections.Generic.IDictionary[string, object]] $d
+        }
+    }
+    # Tests 4 of the 8520 dead-letter attribution fix.
+    #
+    # WHY THIS FUNCTION EXISTS: reconciliation used to read $got.BasicProperties.CorrelationId
+    # directly. RabbitMqDeadLetterPublisher wrote the transaction id into Headers only and never set
+    # CorrelationId, so CorrelationId was ALWAYS null on a dead-lettered message. $dlqTxns came back
+    # empty, DlqOnly always computed as 0, and every real dead-letter fell into "Neither (LOST)".
+    # Measured on the 2026-09-03 10 000-message run: 10 correctly-dead-lettered, fully recoverable
+    # messages were reported as silent data loss.
+
+    It 'prefers the Warewolf header over CorrelationId' {
+        # The header is preferred because it is what the worker has ALWAYS written, so it is present
+        # on dead-letters already sitting in a queue from before the publisher change.
+        $props = [pscustomobject]@{
+            Headers       = NewHeaders @{ 'x-warewolf-custom-transaction-id' = 'from-header' }
+            CorrelationId = 'from-correlationid'
+        }
+        Get-WwDeadLetterTxnId -Properties $props | Should -Be 'from-header'
+    }
+
+    It 'decodes a byte[] header value instead of stringifying it' {
+        # The publisher UTF8-encodes header strings, so the value arrives as byte[]. A naive
+        # [string]$raw or .ToString() yields "System.Byte[]", which is TRUTHY and would sail through
+        # into the reconciliation buckets as a bogus transaction id - poisoning every bucket rather
+        # than just failing to match.
+        $props = [pscustomobject]@{
+            Headers       = NewHeaders @{ 'x-warewolf-custom-transaction-id' = [System.Text.Encoding]::UTF8.GetBytes('orders-S-5583-88023f') }
+            CorrelationId = $null
+        }
+        Get-WwDeadLetterTxnId -Properties $props | Should -Be 'orders-S-5583-88023f'
+    }
+
+    It 'falls back to CorrelationId when no header is present' {
+        # Keeps working for a message republished by a generic AMQP tool that preserves
+        # CorrelationId but not the Warewolf header.
+        $props = [pscustomobject]@{ Headers = (NewHeaders @{}); CorrelationId = 'only-correlationid' }
+        Get-WwDeadLetterTxnId -Properties $props | Should -Be 'only-correlationid'
+    }
+
+    It 'falls through a blank header to CorrelationId' {
+        $props = [pscustomobject]@{
+            Headers       = NewHeaders @{ 'x-warewolf-custom-transaction-id' = '   ' }
+            CorrelationId = 'fallback'
+        }
+        Get-WwDeadLetterTxnId -Properties $props | Should -Be 'fallback'
+    }
+
+    It 'returns nothing when neither field carries an id' {
+        $props = [pscustomobject]@{ Headers = (NewHeaders @{}); CorrelationId = '' }
+        Get-WwDeadLetterTxnId -Properties $props | Should -BeNullOrEmpty
+    }
+
+    It 'returns nothing for a null properties object' {
+        Get-WwDeadLetterTxnId -Properties $null | Should -BeNullOrEmpty
+    }
+}
+
+Describe 'Get-WwReconciliationBuckets dead-letter attribution' {
+    # Test 5 of the 8520 fix. These are INVARIANT tests, not the regression test - a distinction
+    # established by actually reintroducing the defect: with the header read disabled, extraction
+    # returns nothing, so this function is simply called with an empty -DlqTxns and correctly
+    # answers "Neither". The bucket logic was never broken; the defect was entirely upstream in
+    # Get-WwDeadLetterTxnId, and its header cases are the real regression tests (they fail 2/2 with
+    # the defect restored, these 4 pass). Kept because the mapping itself is load-bearing and
+    # nothing else pins it.
+    #
+    # A dead-lettered message with no database row is DlqOnly - the
+    # workflow never committed, the body is preserved, it is safe to replay. Reporting it as
+    # "Neither (LOST)" inverts the meaning entirely: Neither is documented in the script header as
+    # "Silently lost. The worst outcome and the one a drained queue hides."
+
+    It 'classifies a dead-lettered message with no DB row as DlqOnly, NOT Neither' {
+        $manifest = @([pscustomobject]@{ txn = 'orders-S-5583-88023f'; kind = 'success' })
+
+        $b = Get-WwReconciliationBuckets -Manifest $manifest `
+                                         -DbTxns @() `
+                                         -DlqTxns @('orders-S-5583-88023f')
+
+        @($b.DlqOnly).Count | Should -Be 1
+        @($b.Neither).Count | Should -Be 0
+    }
+
+    It 'still reports Neither when the message reached neither the DB nor the dead-letter queue' {
+        # The genuine-loss case must NOT be softened by the fix - that would hide real data loss.
+        $manifest = @([pscustomobject]@{ txn = 'genuinely-lost'; kind = 'success' })
+
+        $b = Get-WwReconciliationBuckets -Manifest $manifest -DbTxns @() -DlqTxns @()
+
+        @($b.Neither).Count | Should -Be 1
+        @($b.DlqOnly).Count | Should -Be 0
+    }
+
+    It 'reports Both when a row AND a dead-letter exist, because replay would duplicate committed work' {
+        $manifest = @([pscustomobject]@{ txn = 'committed-and-dlq'; kind = 'success' })
+
+        $b = Get-WwReconciliationBuckets -Manifest $manifest `
+                                         -DbTxns @('committed-and-dlq') `
+                                         -DlqTxns @('committed-and-dlq')
+
+        @($b.Both).Count | Should -Be 1
+    }
+
+    It 'buckets sum to the published count so no message is silently unclassified' {
+        $manifest = @(
+            [pscustomobject]@{ txn = 'a'; kind = 'success' }
+            [pscustomobject]@{ txn = 'b'; kind = 'success' }
+            [pscustomobject]@{ txn = 'c'; kind = 'success' }
+            [pscustomobject]@{ txn = 'd'; kind = 'success' }
+        )
+
+        $b = Get-WwReconciliationBuckets -Manifest $manifest `
+                                         -DbTxns  @('a', 'c') `
+                                         -DlqTxns @('b', 'c')
+
+        $total = @($b.Clean).Count + @($b.DlqOnly).Count + @($b.Both).Count + @($b.Neither).Count
+        $total | Should -Be 4
+        @($b.Clean).Count   | Should -Be 1   # a
+        @($b.DlqOnly).Count | Should -Be 1   # b
+        @($b.Both).Count    | Should -Be 1   # c
+        @($b.Neither).Count | Should -Be 1   # d
     }
 }

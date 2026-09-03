@@ -141,6 +141,19 @@ param(
     [int]    $MaxReplicas,
     [int]    $MinReplicas = -1,
     [int]    $TargetQueueLength,
+
+    # KEDA poll cadence (properties.template.scale.pollingInterval). 8520 item 6.
+    #
+    # Previously unreachable from this script: it is a Container App TEMPLATE property, so
+    # --set-env-vars cannot carry it and there is no `az containerapp update` flag for it - it has to
+    # be patched through `az resource update`. That is the same shape of trap as
+    # -TerminationGracePeriodSeconds, which was validated and printed but never actually sent to
+    # Azure until 2026-08-11, so every earlier deployment silently ran on ACA's 30s default.
+    #
+    # 0 = leave whatever is deployed alone. ACA's own default is 30s, which quantises every scale
+    # decision to half a minute; 10s was applied live on 2026-09-03.
+    [ValidateRange(0, 300)]
+    [int]    $PollingInterval,
     [int]    $MaxConcurrency = 1,
     [string] $Cpu = '0.5',
     [string] $Memory = '1.0Gi',
@@ -1057,6 +1070,27 @@ foreach ($planned in $plannedApps) {
     # messages only) and are nacked back to the queue on a drain, causing redelivery. The KEDA
     # target is no longer inflated by Prefetch, so this is purely a parked-message warning.
     # Advisory, not fatal: the trigger stays the single source of truth.
+    # 8520 item 7: the OPPOSITE mismatch is worse and used to pass in silence.
+    #
+    # MaxConcurrency ABOVE Prefetch is not merely sub-optimal, it is INERT. RabbitMqMessagePump
+    # calls BasicQosAsync(prefetchCount: <trigger Prefetch>, global: false), a per-consumer broker
+    # cap on unacknowledged deliveries, so the semaphore may hold 24 permits while the broker never
+    # hands over more than Prefetch. A run configured "at concurrency 24" then executes at Prefetch
+    # and files its measurements under the wrong number - which is exactly how a prefetch-6 app was
+    # nearly measured as a concurrency-12 run on 2026-09-03.
+    #
+    # Fail rather than warn: the deployment is self-inconsistent, and unlike the case below there is
+    # no reading under which the operator gets what they asked for.
+    if ([int]$scale.MaxConcurrency -gt [int]$t.Prefetch -and $scale.MaxReplicas -gt 0) {
+        throw (
+            "Trigger '$($t.Name)' sets Prefetch=$($t.Prefetch) but -MaxConcurrency is " +
+            "$($scale.MaxConcurrency). Anything above Prefetch is INERT - the broker caps " +
+            'unacknowledged deliveries per consumer at Prefetch, so in-flight work would stay at ' +
+            "$($t.Prefetch) while the run was recorded as $($scale.MaxConcurrency). Raise Prefetch " +
+            'in the trigger .bite to match (the image bakes it in, so this needs a rebuild), or ' +
+            "pass -MaxConcurrency $($t.Prefetch).")
+    }
+
     if ([int]$t.Prefetch -gt [int]$scale.MaxConcurrency -and $scale.MaxReplicas -gt 0) {
         $parked = [int]$t.Prefetch - [int]$scale.MaxConcurrency
         Write-Note ("Trigger '$($t.Name)': Prefetch=$($t.Prefetch) exceeds MaxConcurrency=$($scale.MaxConcurrency), " +
@@ -1423,6 +1457,20 @@ foreach ($planned in $plannedApps) {
                             '--termination-grace-period', "$TerminationGracePeriodSeconds",
                             '-o', 'none') -Mutating | Out-Null
         Write-Ok "Termination grace period set to ${TerminationGracePeriodSeconds}s (drain budget ${ShutdownGraceSeconds}s)."
+
+        # 8520 item 6: KEDA poll cadence. Also a TEMPLATE property, and unlike
+        # --termination-grace-period there is no `az containerapp update` flag for it at all, so it
+        # goes through `az resource update` on the ARM resource. 0 = leave the deployed value alone.
+        if ($PollingInterval -gt 0) {
+            # Invoke-Az is the value-returning helper (it splits stderr so `az`'s extension WARNING
+            # cannot contaminate the value - see its own comment). There is no Invoke-AzText.
+            $caId = Invoke-Az -AzArgs @('containerapp', 'show', '--name', $appName,
+                                        '--resource-group', $ResourceGroup, '--query', 'id', '-o', 'tsv')
+            Invoke-Az -AzArgs @('resource', 'update', '--ids', $caId,
+                                '--set', "properties.template.scale.pollingInterval=$PollingInterval",
+                                '-o', 'none') -Mutating | Out-Null
+            Write-Ok "KEDA pollingInterval set to ${PollingInterval}s (ACA default is 30s)."
+        }
 
         if ($scale.MaxReplicas -gt 0 -and $RabbitMqSecretUri) {
             $scaleArgs = @(

@@ -213,6 +213,14 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                 var headers = new Headers();
                 headers["Warewolf-Custom-Transaction-Id"] = new[] { correlationId };
 
+                // The AMQP redelivered flag is the ONLY signal that this message has been seen
+                // before. The pump already uses it for attempt counting (HandleTransportFailureAsync);
+                // forwarding it lets the engine skip its de-duplication lookup on the first attempt,
+                // which is the overwhelming majority of deliveries. Boolean by protocol, so it can
+                // only ever express 1 or 2 - the same ceiling documented on MaxDeliveryAttempts.
+                headers["Warewolf-Delivery-Attempt"] =
+                    new[] { eventArgs.Redelivered ? "2" : "1" };
+
                 var result = await _consumer.Consume(body, headers).ConfigureAwait(false);
 
                 if (result == ConsumerResult.Success)
@@ -395,6 +403,26 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                         ["x-warewolf-redelivered"]     = eventArgs.Redelivered,
                         ["x-warewolf-dead-lettered-utc"] = DateTime.UtcNow.ToString("O"),
                     };
+
+                    // The transaction id was MISSING from this path entirely until 2026-09-03.
+                    //
+                    // EngineForwarder's business-failure dead-letter has always carried it, but a
+                    // TRANSPORT-failure dead-letter published here carried only the five diagnostic
+                    // fields above - no transaction id in any form. Such a message is therefore
+                    // impossible to tie back to what was published: not by header, and (before
+                    // RabbitMqDeadLetterPublisher promoted it) not by CorrelationId either. It is the
+                    // harder case to lose, too, because a transport failure means the engine never
+                    // confirmed anything, so the dead-letter is the ONLY record that the delivery
+                    // happened at all.
+                    //
+                    // Written only when the publisher actually set a CorrelationId: an empty value
+                    // would be promoted onto BasicProperties.CorrelationId as an empty string and
+                    // defeat the header-then-CorrelationId fallback every reader uses.
+                    var correlationId = eventArgs.BasicProperties?.CorrelationId;
+                    if (!string.IsNullOrWhiteSpace(correlationId))
+                    {
+                        diagnostics[RabbitMqDeadLetterPublisher.TransactionIdHeader] = correlationId;
+                    }
 
                     await _deadLetter.PublishAsync(body, diagnostics, CancellationToken.None)
                                      .ConfigureAwait(false);
