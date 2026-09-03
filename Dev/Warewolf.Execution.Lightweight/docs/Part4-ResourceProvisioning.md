@@ -272,16 +272,17 @@ az functionapp config appsettings set `
   --name <FunctionAppName> `
   --resource-group <ResourceGroupName> `
   --settings `
-    "WAREWOLF_ENTRA_TENANT_ID=<tenantId>" `
-    "WAREWOLF_ENTRA_AUDIENCE=api://<ClientId>" `
+    'WAREWOLF_ENTRA_CONFIG={"tenantId":"<tenantId>","audience":"api://<ClientId>"}' `
     "WAREWOLF_SECURE_CONFIG=D:\home\site\wwwroot\secure.config" `
     "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET=<clientSecret>"
 ```
 
+WOLF-8516: `WAREWOLF_ENTRA_TENANT_ID`/`WAREWOLF_ENTRA_AUDIENCE`/`WAREWOLF_ENTRA_CLIENT_ID` were
+merged into one `WAREWOLF_ENTRA_CONFIG` JSON app setting.
+
 | Setting | Description |
 |---|---|
-| `WAREWOLF_ENTRA_TENANT_ID` | Tenant GUID — used by `EntraAuthOptions` for bearer validation |
-| `WAREWOLF_ENTRA_AUDIENCE` | `api://<clientId>` — expected `aud` claim |
+| `WAREWOLF_ENTRA_CONFIG` | JSON — `tenantId` (Tenant GUID, used by `EntraAuthOptions` for bearer validation), `audience` (`api://<clientId>` — expected `aud` claim), optionally `clientId`/`serviceBusAudience` |
 | `WAREWOLF_SECURE_CONFIG` | Full path to the encrypted `secure.config` file on the host |
 | `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET` | Easy Auth client secret reference |
 
@@ -358,7 +359,7 @@ The script verifies every critical property and throws if any fails:
 | `login.tokenStore.enabled` | `true` |
 | `web.implicitGrantSettings.enableIdTokenIssuance` | `true` |
 | `api.oauth2PermissionScopes` contains `user_impersonation` (enabled) | `true` |
-| App settings `WAREWOLF_ENTRA_TENANT_ID`, `WAREWOLF_ENTRA_AUDIENCE`, `WAREWOLF_SECURE_CONFIG`, `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET` | non-empty |
+| App settings `WAREWOLF_ENTRA_CONFIG` (tenantId/audience non-empty — WOLF-8516), `WAREWOLF_SECURE_CONFIG`, `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET` | non-empty |
 | Redirect URI `https://<app>.azurewebsites.net/.auth/login/aad/callback` | registered |
 
 ---
@@ -501,7 +502,7 @@ az ad app create --display-name "my-api-tier"
 | `AADSTS700054` | `enableIdTokenIssuance = false` | Run Stage 2 |
 | `AADSTS650057: Invalid resource` | No `oauth2PermissionScopes` | Run Stage 3b |
 | `AADSTS50011: Reply URL mismatch` | Redirect URI not registered | Run Stage 1 (re-assert URI) |
-| `401` on `/Secure/*` with valid token | `WAREWOLF_ENTRA_AUDIENCE` mismatch | Check app setting vs token `aud` claim |
+| `401` on `/Secure/*` with valid token | `WAREWOLF_ENTRA_CONFIG.audience` mismatch (WOLF-8516) | Check app setting vs token `aud` claim |
 | `403` for known-good user | User not assigned to role | Run Stage 6 |
 | `403` — no policy found (but warning, not error) | Workflow not in `secure.config` | Add `WindowsGroupPermissions` entry |
 | Easy Auth V1 blocked V2 command | Legacy auth settings present | Run `az webapp auth config-version upgrade` |

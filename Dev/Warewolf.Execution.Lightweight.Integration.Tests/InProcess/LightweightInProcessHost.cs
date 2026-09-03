@@ -282,6 +282,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.InProcess
                 null,          // debugKeyVaultSecret
                 isDevelopment, // isDevelopment
                 null,          // debugPrincipalToken
+                8,             // workflowPoolMax (WOLF-8516)
+                ServiceBusTriggerFileOverrides.None, // serviceBusTrigger (WOLF-8516)
             });
         }
 

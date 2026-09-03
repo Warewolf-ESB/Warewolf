@@ -138,12 +138,14 @@ az functionapp config appsettings set `
     --settings       "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET=$CLIENT_SECRET"
 
 # These settings feed EntraTokenValidator / SecureConfigLoader in the C# middleware.
+# WOLF-8516: WAREWOLF_ENTRA_TENANT_ID/AUDIENCE merged into one WAREWOLF_ENTRA_CONFIG
+# JSON app setting — see Auth/Models/EntraIdentityOptions.cs.
+$entraConfigJson = (@{ tenantId = $TENANT_ID; audience = "api://$CLIENT_ID" } | ConvertTo-Json -Compress)
 az functionapp config appsettings set `
     --name           $FUNCTION_APP `
     --resource-group $RESOURCE_GROUP `
     --settings `
-        "WAREWOLF_ENTRA_TENANT_ID=$TENANT_ID" `
-        "WAREWOLF_ENTRA_AUDIENCE=api://$CLIENT_ID" `
+        "WAREWOLF_ENTRA_CONFIG=$entraConfigJson" `
         "AZURE_TENANT_ID=$TENANT_ID"
 
 # Apply authsettingsV2:
@@ -209,8 +211,7 @@ Next steps
 
 4. Update local.settings.json for local development:
      AZURE_TENANT_ID               = $TENANT_ID
-     WAREWOLF_ENTRA_TENANT_ID      = $TENANT_ID
-     WAREWOLF_ENTRA_AUDIENCE       = api://$CLIENT_ID
+     WAREWOLF_ENTRA_CONFIG         = {"tenantId":"$TENANT_ID","audience":"api://$CLIENT_ID"}
      MICROSOFT_PROVIDER_AUTHENTICATION_SECRET = <value from step 5>
 
 5. Deploy the function app:

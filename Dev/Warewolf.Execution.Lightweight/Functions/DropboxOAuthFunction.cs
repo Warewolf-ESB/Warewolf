@@ -117,7 +117,9 @@ namespace Warewolf.Execution.Lightweight.Functions
             // source Resources\ folder so that token updates persist across
             // dotnet builds.  The SourceLoader's indexed path always takes
             // precedence — see UpdateBiteFile.
-            _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
+            // WOLF-8516: no env-var fallback — WorkflowsDirectory comes solely from
+            // HostEnvironmentConfig (deploy-bundled settings file), which DI always supplies.
+            _workflowsDirectory = serviceProvider.GetService<Infrastructure.HostEnvironmentConfig>()?.WorkflowsDirectory
                 ?? Path.Combine(AppContext.BaseDirectory, "Resources");
 
             _logger.LogWarning("[OAuth] WorkflowsDirectory='{Dir}' (encryption={EncryptionEnabled})",

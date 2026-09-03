@@ -27,7 +27,9 @@
         Phase 3    Stage        - secure.config (validate / auto-encrypt plaintext),
                                   workflow resources (+ optional WFAES encryption),
                                   Elasticsearch source (+ WFAES encryption),
-                                  environment variables
+                                  executionengine.settings.json (Key Vault topology +
+                                  ServiceBusTrigger tunables — WOLF-8516), environment
+                                  variables
         Phase 4    Deploy       - publish the package dir to the Function App
                                   (func, falling back to az zip-deploy)
         Phase 5    Verify       - endpoint banner + optional HTTP probe
@@ -72,8 +74,9 @@
     Application Insights resource name.  Default: <AppName>-ai.
 
 .PARAMETER EnableAppInsights
-    Provision Application Insights and enable worker telemetry
-    (ENABLEAPPLICATIONINSIGHTS=true + WAREWOLF_APPINSIGHTS_CONNECTION_STRING).
+    Provision Application Insights and enable worker telemetry (WOLF-8516: sets
+    "appInsights":true in the WAREWOLF_LOGGING_CONFIG JSON app setting, plus
+    WAREWOLF_APPINSIGHTS_CONNECTION_STRING).
 
 .PARAMETER SkipAuthProvisioning
     Skip Entra ID + Easy Auth provisioning.
@@ -106,11 +109,15 @@
 .PARAMETER KeyVaultName
     Key Vault the engine uses to decrypt WFAES sources at runtime.  REQUIRED when
     -EncryptResources is set, and also whenever your deployed sources are already
-    WFAES-encrypted (so the runtime app settings + managed-identity role are wired).
+    WFAES-encrypted (so the runtime managed-identity role is wired).  WOLF-8516:
+    written into the staged Settings/executionengine.settings.json file, NOT an
+    App Setting any more — HostEnvironmentConfig has no env-var fallback for it.
 
 .PARAMETER KeyVaultSecretName
     Key Vault secret holding the AES key material.  REQUIRED whenever -KeyVaultName
-    is in play (no default — you must name the secret explicitly).
+    is in play (no default — you must name the secret explicitly).  WOLF-8516:
+    written into Settings/executionengine.settings.json alongside -KeyVaultName —
+    see that parameter's note.
 
 .PARAMETER GenerateNewKey
     Generate a fresh AES key (Encrypt-Config -GenerateKeys); implied for a new vault.
@@ -119,12 +126,18 @@
     Enable Elasticsearch logging.  Requires -ElasticsearchSourcePath and Key Vault
     (the source's ConnectionString is WFAES-encrypted before deploy).
 
+.PARAMETER EnablePerformanceCounters
+    Register the Application Insights PerformanceCollectorModule (process memory/CPU
+    counters, feeding App Insights' performanceCounters table). Only meaningful when
+    -EnableAppInsights is also true. Off by default — opt-in per deployment.
+
 .PARAMETER ElasticsearchSourcePath
     Path to the user-supplied Elasticsearch source.  The file MUST be named
     exactly 'ElasticsearchLoggingSource.bite' (the engine reads that exact path).
 
 .PARAMETER EnableConsoleLogging
-    Set ENABLECONSOLELOGGING=true.
+    Sets "console":true in the WAREWOLF_LOGGING_CONFIG JSON app setting (WOLF-8516;
+    formerly the standalone ENABLECONSOLELOGGING env var).
 
 .PARAMETER ExecutionLogLevel
     EXECUTIONLOGLEVEL value (TRACE|DEBUG|INFO|WARN|ERROR|FATAL|OFF).  Default INFO.
@@ -135,6 +148,33 @@
     OPT-IN.  Also rewrite the published host.json logLevel (default + Warewolf.*) to
     the EXECUTIONLOGLEVEL-mapped MEL level.  NOT required for the engine's own
     logging — it only tunes the Functions HOST process verbosity.  Default: off.
+
+.PARAMETER ServiceBusMaxConcurrentCalls
+    OPT-IN.  Sets host.json's extensions.serviceBus.maxConcurrentCalls — bounds how many
+    Service Bus messages the Functions host DISPATCHES to the trigger concurrently, upstream
+    of and independent from ServiceBusTriggerOptions.MaxConcurrentExecutions' own semaphore
+    gate inside the trigger's own code (WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS).
+    Left at the SDK default (unset) unless explicitly supplied.  See WOLF-8512,
+    docs/ShovelBridge-Architecture.md.
+
+.PARAMETER ServiceBusTriggerJtiWindowHours
+.PARAMETER ServiceBusTriggerExecutionTimeoutSeconds
+.PARAMETER ServiceBusTriggerMaxConcurrentExecutions
+.PARAMETER ServiceBusTriggerSlotWaitTimeoutSeconds
+.PARAMETER ServiceBusTriggerSettlementTimeoutSeconds
+    OPT-IN, deploy-time-static tunables for the secure Service Bus workflow trigger
+    (ServiceBusTriggerOptions — jtiWindowHours/executionTimeoutSeconds/
+    maxConcurrentExecutions/slotWaitTimeoutSeconds/settlementTimeoutSeconds
+    respectively). WOLF-8516: these 5 no longer have ANY env-var fallback — they
+    are read SOLELY from the staged Settings/executionengine.settings.json file's
+    serviceBusTrigger section (see ServiceBusTriggerOptions.FromEnvironment). When
+    any one of these 5 params is supplied, this script stages that section
+    (independent of -KeyVaultName/-EncryptResources — the two concerns share the
+    same file but are otherwise unrelated); an unsupplied field is left null in the
+    staged JSON and the engine falls back to its own hardcoded default for that
+    field only. Note ServiceBusMaxConcurrentCalls above is a DIFFERENT, upstream
+    dispatch-level cap (host.json) — these 5 tune the trigger's OWN in-process
+    semaphore/timeouts, not the host's dispatch.
 
 .PARAMETER LicenseCheckEnabled
     WAREWOLF_LICENSE_CHECK_ENABLED (engine default: true).
@@ -147,7 +187,9 @@
     https://warewolf.io/knowledge-base/articles/security-encryption/.
 
 .PARAMETER StructuredLogs
-    STRUCTURED_LOGS — JSON console output (default true).
+    JSON console output (default true) — sets "structuredLogs" in the
+    WAREWOLF_LOGGING_CONFIG JSON app setting (WOLF-8516; formerly the standalone
+    STRUCTURED_LOGS env var).
 
 .PARAMETER LogDir
     Directory for the transcript + summary.  Default: <PublishDir>\..\deploy-logs.
@@ -165,10 +207,23 @@
     Non-interactive callers MUST pass them explicitly.
 
     FIXED / NON-CONFIGURABLE env vars: ASPNETCORE_ENVIRONMENT is always
-    'Production'; BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
-    SkipFailureToRetrieveSecret are always 'false' and are no longer exposed as
-    parameters.  The development-only DEBUG_* settings have also been removed, and
-    WEBSITE_INSTANCE_ID / AZURE_FUNCTIONS_ENVIRONMENT remain platform-managed.
+    'Production'; the three security kill-switches now merged into the
+    WAREWOLF_SECURITY_FLAGS JSON app setting (bypassSecureConfig, superAdminEnabled,
+    skipFailureToRetrieveSecret) are always left unset (all default 'false') and are
+    not exposed as parameters.  The development-only DEBUG_* settings (now merged
+    into WAREWOLF_DEBUG_CONFIG) have also been removed, and WEBSITE_INSTANCE_ID /
+    AZURE_FUNCTIONS_ENVIRONMENT remain platform-managed.
+
+    WOLF-8516: AZURE_KEYVAULT_NAME, KEYVAULT_SECRET_NAME are no longer App Settings —
+    they're written into the staged Settings/executionengine.settings.json file
+    (Phase 3). EXECUTIONLOGLEVEL stays a standalone App Setting; the other 5 logging
+    toggles (console/appInsights/elasticsearch/performanceCounters/structuredLogs)
+    are merged into one WAREWOLF_LOGGING_CONFIG JSON App Setting. Entra identity
+    (tenantId/audience/clientId/serviceBusAudience) is written by
+    Configure-WwExecutionAuth.ps1 / Enable-ServiceBusSecureTrigger.ps1 as one
+    WAREWOLF_ENTRA_CONFIG JSON App Setting instead of 3-4 separate ones. See
+    Infrastructure/HostEnvironmentConfig.cs, Logging/LoggingConfiguration.cs,
+    Auth/Models/EntraIdentityOptions.cs, and Infrastructure/SecurityFlags.cs.
 
     Prerequisites: PowerShell 7+, Azure CLI (az, logged in), and — only when
     publishing via func — Azure Functions Core Tools.  DPAPI-encrypted .bite
@@ -213,6 +268,9 @@ param(
     # ── Elasticsearch logging ────────────────────────────────────────────────
     [nullable[bool]] $EnableElasticsearch,
     [string] $ElasticsearchSourcePath,
+
+    # ── Application Insights performance counters ─────────────────────────────
+    [nullable[bool]] $EnablePerformanceCounters,
 
     # ── Suspend/resume persistence (Hangfire) ─────────────────────────────────
     # The resume route reads Config.Persistence; the DbSource ConnectionString is
@@ -286,6 +344,14 @@ param(
     [nullable[bool]] $LicenseCheckEnabled,
     [nullable[bool]] $StructuredLogs,
     [switch] $AlignHostJsonLogLevel,      # opt-in: also rewrite host.json logLevel (host-process only)
+    [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
+
+    # ── ServiceBusTrigger tunables (WOLF-8516 — file-only, no env-var fallback) ──
+    [nullable[int]] $ServiceBusTriggerJtiWindowHours,
+    [nullable[int]] $ServiceBusTriggerExecutionTimeoutSeconds,
+    [nullable[int]] $ServiceBusTriggerMaxConcurrentExecutions,
+    [nullable[int]] $ServiceBusTriggerSlotWaitTimeoutSeconds,
+    [nullable[int]] $ServiceBusTriggerSettlementTimeoutSeconds,
 
     # ── Logging output ───────────────────────────────────────────────────────
     [string] $LogDir,
@@ -646,6 +712,30 @@ function Update-HostJsonLogLevel {
     return $mel
 }
 
+function Update-HostJsonServiceBusConcurrency {
+    <#
+        Set/overwrite host.json's extensions.serviceBus.maxConcurrentCalls — bounds how many
+        Service Bus messages the Functions host dispatches to the trigger concurrently, ahead
+        of and independent from ServiceBusTriggerOptions.MaxConcurrentExecutions' own semaphore
+        gate inside the trigger's own code (see WOLF-8512, docs/ShovelBridge-Architecture.md).
+        No-op (returns $false) when host.json has no extensions.serviceBus section. Preserves
+        every other property already under extensions.serviceBus (autoCompleteMessages,
+        maxAutoLockRenewalDuration, ...).
+    #>
+    param([Parameter(Mandatory)][string] $HostJsonPath, [Parameter(Mandatory)][int] $MaxConcurrentCalls)
+    $json = Get-Content -LiteralPath $HostJsonPath -Raw | ConvertFrom-Json
+    $extensions = $json.PSObject.Properties['extensions']
+    if (-not $extensions -or -not $extensions.Value.PSObject.Properties['serviceBus']) { return $false }
+    $sb = $extensions.Value.serviceBus
+    if ($sb.PSObject.Properties['maxConcurrentCalls']) {
+        $sb.maxConcurrentCalls = $MaxConcurrentCalls
+    } else {
+        $sb | Add-Member -NotePropertyName 'maxConcurrentCalls' -NotePropertyValue $MaxConcurrentCalls
+    }
+    $json | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $HostJsonPath -Encoding UTF8
+    return $true
+}
+
 function Save-DeploySummary {
     <#
         Write the run summary to $summaryPath — CRASH-SAFELY and INCREMENTALLY.
@@ -708,6 +798,7 @@ function Save-DeploySummary {
         encryptResources = $doEncryptResources
         verifyDecryption = [bool]$VerifyDecryption
         elasticsearch   = $enableEs
+        performanceCounters = $enablePerfCounters
         persistence     = $enablePersistence
         persistenceSettings = ($enablePersistence ? $PersistenceSettingsPath : $null)
         persistenceDbSource = ($enablePersistence ? $PersistenceDbSourcePath : $null)
@@ -881,6 +972,7 @@ if (-not $LogDir) { $LogDir = Join-Path (Split-Path $PublishDir -Parent) 'deploy
 $enableAppInsights   = Resolve-Toggle -Name 'EnableAppInsights'   -Current $EnableAppInsights   -Default $true  -Prompt 'Provision + enable Application Insights?'
 $enableConsole       = Resolve-Toggle -Name 'EnableConsoleLogging' -Current $EnableConsoleLogging -Default $true  -Prompt 'Enable console logging?'
 $enableEs            = Resolve-Toggle -Name 'EnableElasticsearch' -Current $EnableElasticsearch -Default $false -Prompt 'Enable Elasticsearch logging?'
+$enablePerfCounters  = Resolve-Toggle -Name 'EnablePerformanceCounters' -Current $EnablePerformanceCounters -Default $false -Prompt 'Register the Application Insights PerformanceCollectorModule (process memory/CPU counters)?'
 $enablePersistence   = Resolve-Toggle -Name 'EnablePersistence'   -Current $EnablePersistence   -Default $false -Prompt 'Enable suspend/resume persistence (Hangfire) — stage the persistence settings pair?'
 $doEncryptResources  = Resolve-Toggle -Name 'EncryptResources'    -Current $EncryptResources    -Default $false -Prompt 'Encrypt ALL sources (workflows + Elasticsearch + others) now? (encrypt once; leave off if already encrypted)'
 $licenseCheck        = Resolve-Toggle -Name 'LicenseCheckEnabled' -Current $LicenseCheckEnabled  -Default $true  -Prompt 'Enable license/subscription check?'
@@ -908,6 +1000,20 @@ if ($kvRequired) {
     $KeyVaultName       = Read-Required -Name 'KeyVaultName'       -Current $KeyVaultName       -Hint 'Key Vault the engine decrypts WFAES sources with (3-24 chars)'
     $KeyVaultSecretName = Read-Required -Name 'KeyVaultSecretName' -Current $KeyVaultSecretName -Hint 'AES key secret name'
 }
+
+# ── ServiceBusTrigger tunables (decoupled from Key Vault — WOLF-8516) ───────────
+# Staged into the SAME executionengine.settings.json file as keyVaultName/
+# keyVaultSecretName (Phase 3.5c below) whenever ANY of these 5 is supplied, since
+# ServiceBusTriggerOptions now reads them SOLELY from that file (no env-var
+# fallback) — independent of whether this deploy also requires a Key Vault.
+$sbtOverrides = [ordered]@{
+    jtiWindowHours           = $ServiceBusTriggerJtiWindowHours
+    executionTimeoutSeconds  = $ServiceBusTriggerExecutionTimeoutSeconds
+    maxConcurrentExecutions  = $ServiceBusTriggerMaxConcurrentExecutions
+    slotWaitTimeoutSeconds   = $ServiceBusTriggerSlotWaitTimeoutSeconds
+    settlementTimeoutSeconds = $ServiceBusTriggerSettlementTimeoutSeconds
+}
+$sbtRequired = @($sbtOverrides.Values | Where-Object { $null -ne $_ }).Count -gt 0
 
 # ── Elasticsearch source (user-supplied, exact filename) ───────────────────────
 if ($enableEs) {
@@ -1117,21 +1223,31 @@ $secretSettingNames = New-Object System.Collections.Generic.HashSet[string]
 # ASPNETCORE_ENVIRONMENT is FIXED to Production (never user-configurable).
 $appSettings['ASPNETCORE_ENVIRONMENT']        = 'Production'
 $appSettings['EXECUTIONLOGLEVEL']             = $ExecutionLogLevel
-$appSettings['ENABLECONSOLELOGGING']          = ($enableConsole ? 'true' : 'false')
-$appSettings['STRUCTURED_LOGS']               = ($structuredLogs ? 'true' : 'false')
-$appSettings['ENABLEAPPLICATIONINSIGHTS']     = ($enableAppInsights ? 'true' : 'false')
-$appSettings['ENABLEELASTICSEARCHLOGGING']    = ($enableEs ? 'true' : 'false')
+# WOLF-8516: ENABLECONSOLELOGGING/STRUCTURED_LOGS/ENABLEAPPLICATIONINSIGHTS/
+# ENABLEELASTICSEARCHLOGGING/ENABLEPERFORMANCECOUNTERS merged into one JSON app
+# setting (WAREWOLF_LOGGING_CONFIG) — see Logging/LoggingConfiguration.cs. Rotating
+# several logging knobs together is now one atomic `az functionapp config
+# appsettings set` call instead of five.
+$loggingConfigValue = [ordered]@{
+    console             = [bool]$enableConsole
+    appInsights         = [bool]$enableAppInsights
+    elasticsearch       = [bool]$enableEs
+    performanceCounters = [bool]$enablePerfCounters
+    structuredLogs      = [bool]$structuredLogs
+}
+$appSettings['WAREWOLF_LOGGING_CONFIG']       = ($loggingConfigValue | ConvertTo-Json -Compress)
 $appSettings['WAREWOLF_LICENSE_CHECK_ENABLED'] = ($licenseCheck ? 'true' : 'false')
 # NOTE: BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
-# SkipFailureToRetrieveSecret are deliberately NOT set here (not shown in logs/
-# summary, not created on the Function App). The engine defaults them to
-# disabled/false when absent; an admin can add them manually in the Function App
-# only if a specific override is ever required.
+# SkipFailureToRetrieveSecret (merged into WAREWOLF_SECURITY_FLAGS — WOLF-8516) are
+# deliberately NOT set here (not shown in logs/summary, not created on the Function
+# App). The engine defaults them to disabled/false when absent; an admin can add
+# WAREWOLF_SECURITY_FLAGS manually in the Function App only if a specific override
+# is ever required.
 
-if ($kvRequired) {
-    $appSettings['AZURE_KEYVAULT_NAME']           = $KeyVaultName
-    $appSettings['KEYVAULT_SECRET_NAME']          = $KeyVaultSecretName
-}
+# WOLF-8516: AZURE_KEYVAULT_NAME/KEYVAULT_SECRET_NAME are no longer set as App
+# Settings — they're written into the staged Settings/executionengine.settings.json
+# file instead (see Phase 3, "3.5c" below). HostEnvironmentConfig no longer reads
+# these env vars at all.
 
 # ── Settings summary + single confirmation (item 8) ────────────────────────────
 Write-Host ''
@@ -1153,6 +1269,7 @@ Write-Host ("    {0,-28}: {1}" -f 'Workflows source', ($WorkflowsSourcePath ? $W
 Write-Host ("    {0,-28}: {1}" -f 'Encrypt sources (this run)', ($doEncryptResources ? 'YES (workflows + ES + others)' : 'no (staged as-is; assumed already encrypted)'))
 Write-Host ("    {0,-28}: {1}" -f 'Verify decryption', ($doEncryptResources ? ($VerifyDecryption ? 'yes (in-memory)' : 'no') : 'n/a'))
 Write-Host ("    {0,-28}: {1}" -f 'Elasticsearch logging', ($enableEs ? "enabled ($ElasticsearchSourcePath)" : 'disabled'))
+Write-Host ("    {0,-28}: {1}" -f 'AI performance counters', ($enablePerfCounters ? 'enabled' : 'disabled'))
 Write-Host ("    {0,-28}: {1}" -f 'Persistence (Hangfire)', ($enablePersistence ? "enabled ($PersistenceDbSourcePath)" : 'disabled'))
 Write-Host ("    {0,-28}: {1}" -f 'Deploy JobProcessor', ($DeployJobProcessor ? "yes -> Deploy-WwJobProcessor.ps1$($JobProcessorAppName ? " ($JobProcessorAppName)" : '')" : 'no'))
 if ($DeployJobProcessor) {
@@ -1170,7 +1287,11 @@ if ($DeployRabbitMqTriggers) {
 }
 if ($kvRequired) {
     $kvPurpose = $doEncryptResources ? 'encrypt now + runtime decrypt' : 'runtime decrypt of already-encrypted sources'
-    Write-Host ("    {0,-28}: {1}" -f 'Key Vault', "$KeyVaultName / secret '$KeyVaultSecretName' ($kvPurpose)")
+    Write-Host ("    {0,-28}: {1}" -f 'Key Vault', "$KeyVaultName / secret '$KeyVaultSecretName' ($kvPurpose) -> Settings/executionengine.settings.json")
+}
+if ($sbtRequired) {
+    $sbtSummary = ($sbtOverrides.GetEnumerator() | Where-Object { $null -ne $_.Value } | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join ', '
+    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger tunables', "$sbtSummary -> Settings/executionengine.settings.json")
 }
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)
 Write-Host ("    {0,-28}: {1}" -f 'Run tag', "wwx-test-run=$runId  (rollback targets this tag only)")
@@ -1185,7 +1306,7 @@ if ($enableAppInsights) {
     Write-Host ("    {0,-32}= {1}" -f 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING', '(auto-read from the App Insights resource)')
 }
 if (-not $SkipAuthProvisioning) {
-    Write-Host '    WAREWOLF_ENTRA_TENANT_ID/AUDIENCE/CLIENT_ID = (set by Configure-WwExecutionAuth.ps1)'
+    Write-Host '    WAREWOLF_ENTRA_CONFIG (tenantId/audience/clientId) = (set by Configure-WwExecutionAuth.ps1 — WOLF-8516)'
 }
 Write-Host ''
 
@@ -1453,6 +1574,27 @@ try {
         Write-Note 'host.json logLevel alignment skipped (worker logging is code-driven; pass -AlignHostJsonLogLevel to also tune the host process).'
     }
 
+    # 3.0c OPTIONAL host.json Service Bus maxConcurrentCalls override
+    # (-ServiceBusMaxConcurrentCalls). Bounds how many Service Bus messages the Functions
+    # host DISPATCHES to the trigger at once — upstream of, and independent from,
+    # ServiceBusTriggerOptions.MaxConcurrentExecutions' own semaphore gate inside the
+    # trigger's own code (WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS). Left at
+    # the SDK default (unset) unless explicitly requested — see WOLF-8512,
+    # docs/ShovelBridge-Architecture.md.
+    if ($ServiceBusMaxConcurrentCalls) {
+        $hostJsonPath = Join-Path $StagingDir 'host.json'
+        if (Test-Path -LiteralPath $hostJsonPath) {
+            Write-Step "Setting host.json extensions.serviceBus.maxConcurrentCalls -> $ServiceBusMaxConcurrentCalls"
+            if (Update-HostJsonServiceBusConcurrency -HostJsonPath $hostJsonPath -MaxConcurrentCalls $ServiceBusMaxConcurrentCalls) {
+                Write-Ok 'host.json serviceBus maxConcurrentCalls set.'
+            } else {
+                Write-Note 'host.json has no extensions.serviceBus section; skipping maxConcurrentCalls override.'
+            }
+        } else {
+            Write-Note 'host.json not found in staging dir; skipping maxConcurrentCalls override.'
+        }
+    }
+
     # 3.1 secure.config — encrypted: stage as-is; plaintext: AES-encrypt automatically.
     # (Staging is a local file op — performed in BOTH dry-run and real, into $StagingDir.)
     if ($SecureConfigPath) {
@@ -1623,6 +1765,40 @@ try {
             Invoke-EncryptAndVerify -TargetPath $dbDest -Label 'persistence DbSource'
             Write-Ok 'Persistence DbSource encrypted.'
         }
+    }
+
+    # 3.5c executionengine.settings.json (WOLF-8516) — deploy-time-static topology
+    # (Key Vault name/secret, ServiceBusTrigger tunables). Plain JSON, staged AS-IS
+    # (no encryption; these are names/numbers, not secrets — same classification
+    # KEYVAULT_SECRET_NAME always had). Overwrites whatever dev-time placeholder
+    # shipped in the publish output (Warewolf.Execution.Lightweight/Settings/
+    # executionengine.settings.json, all fields null/absent) with the real values
+    # for this deployment. HostEnvironmentConfig / ServiceBusTriggerOptions have NO
+    # env-var fallback for these fields any more — a deployment without this step,
+    # or without -KeyVaultName/-KeyVaultSecretName when encryption is required,
+    # ships with encryption disabled; a deployment without any
+    # -ServiceBusTrigger* param ships with the trigger's own hardcoded defaults.
+    #
+    # $kvRequired and $sbtRequired are independent — either alone stages this file
+    # (with the other's fields left null), matching whichever concern this
+    # particular deployment actually needs to set.
+    if ($kvRequired -or $sbtRequired) {
+        $settingsDir = Join-Path $StagingDir 'Settings'
+        if (-not (Test-Path -LiteralPath $settingsDir)) { New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null }
+        $engineSettingsDest = Join-Path $settingsDir 'executionengine.settings.json'
+        Write-Step "Staging 'executionengine.settings.json' -> '$engineSettingsDest' (keyVaultName=$KeyVaultName, keyVaultSecretName=$KeyVaultSecretName)"
+        $engineSettingsValue = [ordered]@{
+            keyVaultName       = $kvRequired ? $KeyVaultName : $null
+            keyVaultSecretName = $kvRequired ? $KeyVaultSecretName : $null
+        }
+        $logDetail = "keyVaultName=$($engineSettingsValue.keyVaultName), keyVaultSecretName=$($engineSettingsValue.keyVaultSecretName)"
+        if ($sbtRequired) {
+            $engineSettingsValue['serviceBusTrigger'] = $sbtOverrides
+            $logDetail += ", serviceBusTrigger=$($sbtOverrides | ConvertTo-Json -Compress)"
+        }
+        Write-Step "Staging 'executionengine.settings.json' -> '$engineSettingsDest' ($logDetail)"
+        ($engineSettingsValue | ConvertTo-Json) | Set-Content -LiteralPath $engineSettingsDest -Encoding UTF8
+        Write-Ok 'executionengine.settings.json staged.'
     }
 
     # 3.6 Workflow index — generate workflow-index.json over the STAGED Resources so

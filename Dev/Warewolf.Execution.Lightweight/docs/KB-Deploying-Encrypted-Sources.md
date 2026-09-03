@@ -26,7 +26,7 @@ The lightweight engine instead uses **AES‑256‑GCM** (`WFAES::…`) backed by
 |------|-------|
 | Key Vault | `WWExecutionEngine` |
 | Secret | `WWExecutionEngineTestSecret` |
-| App settings on the Function App | `AZURE_KEYVAULT_NAME=WWExecutionEngine`, `KEYVAULT_SECRET_NAME=WWExecutionEngineTestSecret` |
+| Config file on the Function App | `Settings/executionengine.settings.json`: `{"keyVaultName":"WWExecutionEngine","keyVaultSecretName":"WWExecutionEngineTestSecret"}` (WOLF-8516 — no longer app settings, see §6.2) |
 | Encrypt script | `Dev/Warewolf.Execution.Lightweight/Scripts/Encrypt-Config.ps1` |
 | Prereqs | PowerShell 7+, Azure CLI logged in (`az login`) |
 
@@ -144,7 +144,8 @@ is trusted by default, so **no `WAREWOLF_SQL_TRUST_SERVER_CERT` flag is required
   **not available**; the encrypted source must instead be staged into a full `Deploy-WwExecutionEngine.ps1`
   redeploy's `-WorkflowsSourcePath` folder (see `Scripts/README.md` and the deploy skill's phased-flow
   description).
-- Decryption at runtime requires `AZURE_KEYVAULT_NAME` + `KEYVAULT_SECRET_NAME` app settings and the Function
+- Decryption at runtime requires `keyVaultName` + `keyVaultSecretName` in `Settings/executionengine.settings.json`
+  (WOLF-8516 — formerly `AZURE_KEYVAULT_NAME`/`KEYVAULT_SECRET_NAME` app settings; see §6.2) and the Function
   App's managed identity holding `Key Vault Secrets User` on that vault — provision both once per engine
   (`Encrypt-Config.ps1` only writes the `WFAES::…` payload; it does not wire up the runtime decrypt path).
 
@@ -189,35 +190,71 @@ az functionapp start --name wwenginetestv1 --resource-group dev2
 | `Could not load file or assembly 'Dev2.Services.Sql, Version=3.0.2.85'` | Hot‑swapped a `0.0.0.0` local DLL | Rebuild stamped `3.0.2.85`, redeploy (Section 5) |
 | `FROM address is not in the valid format:` (Email) | DPAPI EmailSource → empty UserName (From falls back to it) | Deploy WFAES EmailSource |
 | Secret `dp-keyring-v1` not found / Forbidden | Wrong vault/secret | Use `WWExecutionEngine` / `WWExecutionEngineTestSecret` |
-| Deployed the right file, redeployed repeatedly, correct source **still** never takes effect (2026-08-19, `WarewolfServer-UAT`, WOLF-8510) | A `WorkflowsDirectory` app setting points at a **persistent** path (e.g. `D:\home\data\Warewolf\...`) instead of the default `<wwwroot>\Resources` — every zip-deploy stages into the package, which is no longer where the engine reads from | `az functionapp config appsettings list ... --query "[?name=='WorkflowsDirectory']"` first, on **any** app that "won't pick up" a redeployed source; if set, either sync the same files into that persistent path via Kudu VFS, or (preferred) remove the setting so the package's own `Resources` folder — the thing your deploy actually updates — is used again. See `docs/Deploy-UAT-Redeploy-Spec.md` §5.4 and `docs/ShovelBridge-Architecture.md`'s 2026-08-19 correction entry for the full incident. |
+| Deployed the right file, redeployed repeatedly, correct source **still** never takes effect (2026-08-19, `WarewolfServer-UAT`, WOLF-8510 — pre-WOLF-8516 behaviour, see §6.2) | A `WorkflowsDirectory` app setting pointed at a **persistent** path (e.g. `D:\home\data\Warewolf\...`) instead of the default `<wwwroot>\Resources` — every zip-deploy stages into the package, which was no longer where the engine read from | Historical remediation: `az functionapp config appsettings list ... --query "[?name=='WorkflowsDirectory']"`; if set, either sync the same files into that persistent path via Kudu VFS, or (preferred) remove the setting so the package's own `Resources` folder is used again. As of WOLF-8516 this class of incident is closed structurally — `workflowsDirectory` is sourced solely from `Settings/executionengine.settings.json` inside the package (§6.2); check that file's `workflowsDirectory` field (should normally be absent/null) instead of an app setting. See `docs/Deploy-UAT-Redeploy-Spec.md` §5.4 and `docs/ShovelBridge-Architecture.md`'s 2026-08-19 correction entry for the full incident. |
 
 ---
 
 ## 6.1 If a redeployed source "never takes effect": check `WorkflowsDirectory` first
 
+**(Historical — describes pre-WOLF-8516 behaviour; see §6.2 for the current mechanism, which
+structurally prevents this specific incident.)**
+
 Before assuming a warm-worker cache (Step 3 above) or re-checking your ciphertext, rule out the
 simplest explanation: **the app might not be reading from the package you just deployed at all.**
-`Infrastructure/HostEnvironmentConfig.cs` resolves the engine's workflow/source root from the
+`Infrastructure/HostEnvironmentConfig.cs` used to resolve the engine's workflow/source root from the
 `WorkflowsDirectory` environment variable, defaulting to `<wwwroot>\Resources` (i.e. inside
-whatever you just deployed) only when that variable is **unset**:
+whatever you just deployed) only when that variable was **unset**:
 
 ```bash
 az functionapp config appsettings list --name <app> --resource-group <rg> \
   --query "[?name=='WorkflowsDirectory']" -o json
 ```
 
-If it's set to anything outside the package (a `D:\home\...` persistent-storage path is the
-classic case), every zip-deploy — pipeline or manual, Kudu VFS single-file or full package — is
-silently a no-op for workflow/source content: the engine keeps serving whatever was last placed
+If it was set to anything outside the package (a `D:\home\...` persistent-storage path was the
+classic case), every zip-deploy — pipeline or manual, Kudu VFS single-file or full package — was
+silently a no-op for workflow/source content: the engine kept serving whatever was last placed
 at that persistent path, by whatever means, however long ago. Worse, because
 `Infrastructure/LightweightSourceLoader.BuildFileIndex` indexes `.bite` files by `ResourceID`
 **recursively across the whole tree** and lets the last file found win on an ID collision, a
 stray old copy left anywhere under that persistent path with the same `SourceId` as your correct
-one can silently keep "winning" no matter how many times you redeploy the right file elsewhere.
-Fix by either keeping the persistent path in sync by hand (Kudu VFS `PUT`/`DELETE`, same as Step
-2 above but against the persistent path instead of `site/wwwroot`), or — better — removing the
-`WorkflowsDirectory` override so the app goes back to reading the package it was actually just
-deployed with.
+one could silently keep "winning" no matter how many times you redeployed the right file elsewhere.
+
+## 6.2 WOLF-8516: `WorkflowsDirectory` (and Key Vault topology) moved into `executionengine.settings.json`
+
+The App Setting described in §6.1 (`WorkflowsDirectory`, along with `AZURE_KEYVAULT_NAME` /
+`KEYVAULT_SECRET_NAME`) is **no longer read at all** — there is deliberately no env-var fallback.
+These are deploy-time-static values (fixed once per environment, never flipped independently of a
+full redeploy), so they now live in `Settings/executionengine.settings.json`, a plain JSON file
+bundled inside the deploy package itself (same convention as the existing
+`Settings/persistencesettings.json`) and read once at cold start by
+`Infrastructure/HostEnvironmentConfig.Load()`:
+
+```json
+{
+  "keyVaultName": "WWExecutionEngine",
+  "keyVaultSecretName": "WWExecutionEngineTestSecret",
+  "workflowsDirectory": null,
+  "workflowPoolMax": null,
+  "serviceBusTrigger": { }
+}
+```
+
+This structurally closes the WOLF-8510 incident class described in §6.1: an App Setting is a
+piece of Azure resource state that **persists independently of the deploy package** and can
+silently outlive many redeploys. A file bundled inside the package cannot — every zip-deploy
+ships (or omits) it fresh, so there is no longer a hidden, out-of-band override that can point the
+engine at stale content. Per that same incident's lesson, `workflowsDirectory` should almost
+always be **omitted** (`null`) from the file in normal operation, so the engine falls back to its
+hardcoded default (`<wwwroot>\Resources`, i.e. wherever the current deploy actually placed the
+workflows) rather than pinning a path.
+
+**Operational implication:** because there is no env-var fallback, `Deploy-WwExecutionEngine.ps1`
+**must** write `Settings/executionengine.settings.json` into the publish package for every
+deployment that needs encryption (`keyVaultName`/`keyVaultSecretName`) or a non-default
+`workflowPoolMax`/Service Bus trigger tunable — omitting the file silently disables encryption
+(falls back to `null` vault name → `EncryptionEnabled = false`) rather than erroring. Verify the
+file is present in the deployed package (Kudu VFS or `az functionapp deployment source config-zip`
+output) whenever troubleshooting a "Key Vault not configured" symptom after a WOLF-8516-era deploy.
 
 ---
 

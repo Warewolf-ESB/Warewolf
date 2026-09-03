@@ -6,20 +6,13 @@ using Warewolf.Security.Encryption;
 namespace Warewolf.Execution.Lightweight.Logging
 {
     /// <summary>
-    /// Configuration for the Elasticsearch execution logger.
+    /// Configuration for the Elasticsearch execution logger, read via <see cref="FromBiteFile"/>
+    /// from a Warewolf <c>ElasticsearchSource.bite</c> file whose <c>ConnectionString</c> contains
+    /// <c>HostName;Port;SearchIndex;AuthenticationType[;Username;Password]</c>.
     ///
-    /// Two factory methods are provided:
-    /// <list type="bullet">
-    ///   <item>
-    ///     <see cref="FromBiteFile"/> — reads a Warewolf <c>ElasticsearchSource.bite</c>
-    ///     file whose <c>ConnectionString</c> contains
-    ///     <c>HostName;Port;SearchIndex;AuthenticationType[;Username;Password]</c>.
-    ///   </item>
-    ///   <item>
-    ///     <see cref="FromEnvironment"/> — legacy fallback via <c>Elasticsearch__*</c>
-    ///     environment variables.
-    ///   </item>
-    /// </list>
+    /// WOLF-8516: the legacy <c>Elasticsearch__*</c> environment-variable fallback
+    /// (<c>FromEnvironment</c>) was removed â€” confirmed dead: <c>ServiceCollectionExtensions</c>
+    /// only ever called <see cref="FromBiteFile"/>, and no test exercised the env-var path.
     /// </summary>
     public sealed class ElasticsearchLoggingOptions
     {
@@ -37,7 +30,7 @@ namespace Warewolf.Execution.Lightweight.Logging
 
         /// <summary>
         /// Optional API key, base-64 encoded <c>id:api_key</c>
-        /// (<c>AuthenticationType=API_Key</c> — stored in the <c>Password</c> field of the
+        /// (<c>AuthenticationType=API_Key</c> ï¿½ stored in the <c>Password</c> field of the
         /// connection string).
         /// </summary>
         public string? ApiKey { get; set; }
@@ -49,14 +42,15 @@ namespace Warewolf.Execution.Lightweight.Logging
 
         /// <summary>
         /// When <c>true</c>, enables Elasticsearch HTTP debug mode which captures full
-        /// request/response bodies. <b>Never enable in production</b> — causes large
+        /// request/response bodies. <b>Never enable in production</b> ï¿½ causes large
         /// memory allocations per index call. Default: <c>false</c>.
-        /// Set via <c>ELASTIC_DEBUG_MODE=true</c> environment variable (development only).
+        /// Set via <c>WAREWOLF_LOGGING_CONFIG</c>'s <c>elasticDebugMode</c> field (WOLF-8516;
+        /// formerly the standalone <c>ELASTIC_DEBUG_MODE</c> env var; development only).
         /// </summary>
         public bool EnableDebugMode { get; set; }
 
         // -------------------------------------------------------------------------
-        // Factory — .bite file
+        // Factory ï¿½ .bite file
         // -------------------------------------------------------------------------
 
         /// <summary>
@@ -122,20 +116,5 @@ namespace Warewolf.Execution.Lightweight.Logging
 
             return options;
         }
-
-        // -------------------------------------------------------------------------
-        // Factory — environment variables (legacy / fallback)
-        // -------------------------------------------------------------------------
-
-        /// <summary>Reads config from the <c>Elasticsearch__*</c> environment variables.</summary>
-        public static ElasticsearchLoggingOptions FromEnvironment() => new()
-        {
-            Uri       = Environment.GetEnvironmentVariable("Elasticsearch__Uri"),
-            IndexName = Environment.GetEnvironmentVariable("Elasticsearch__IndexName")
-                        ?? "warewolf-execution-logs",
-            Username  = Environment.GetEnvironmentVariable("Elasticsearch__Username"),
-            Password  = Environment.GetEnvironmentVariable("Elasticsearch__Password"),
-            ApiKey    = Environment.GetEnvironmentVariable("Elasticsearch__ApiKey"),
-        };
     }
 }

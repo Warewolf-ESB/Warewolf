@@ -14,8 +14,8 @@
     Stage 1   Discovery       - locate the function app and Entra app by name
     Stage 2   Plan + confirm  - print the action list, ask for confirmation
     Stage 3   Disable Easy Auth on the function app  (`enabled = false`)
-    Stage 4   Remove the four function-app settings the configure script
-              wrote (WAREWOLF_ENTRA_TENANT_ID, WAREWOLF_ENTRA_AUDIENCE,
+    Stage 4   Remove the three function-app settings the configure script
+              wrote (WAREWOLF_ENTRA_CONFIG [WOLF-8516 — tenantId/audience/clientId],
               WAREWOLF_SECURE_CONFIG, MICROSOFT_PROVIDER_AUTHENTICATION_SECRET)
     Stage 5   Delete the Entra app registration.  This single delete
               CASCADES the following automatically (no separate steps
@@ -101,10 +101,11 @@ if (-not $PSBoundParameters.ContainsKey('EntraAppDisplayName'))   { $EntraAppDis
 
 # These app-setting names must match what Configure-WwExecutionAuth.ps1 writes
 # in its Stage 8.  Keep them in sync.
+# WOLF-8516: WAREWOLF_ENTRA_TENANT_ID/AUDIENCE/CLIENT_ID were merged into one
+# WAREWOLF_ENTRA_CONFIG JSON app setting.
 $ClientSecretSettingName = 'MICROSOFT_PROVIDER_AUTHENTICATION_SECRET'
 $AppSettingsToRemove = @(
-    'WAREWOLF_ENTRA_TENANT_ID',
-    'WAREWOLF_ENTRA_AUDIENCE',
+    'WAREWOLF_ENTRA_CONFIG',
     'WAREWOLF_SECURE_CONFIG',
     $ClientSecretSettingName
 )

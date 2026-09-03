@@ -414,17 +414,58 @@ namespace Dev2.Services.Execution
             return IsForXmlProcedureScript(procSqlScript);
         }
 
+        /// <summary>
+        /// WOLF-8512: no DB activity ever sets <see cref="ConnectionTimeout"/> (always the C# default
+        /// of 0), so only defer to it when it is a genuine positive override; otherwise use the
+        /// source's own already-correct timeout instead of clobbering it with 0. The source's own
+        /// timeout can ALSO be an explicit/unset zero (e.g. a hand-authored Entra Managed Identity
+        /// connection string with "Connection Timeout=0" - see the 2026-08-30 ShovelBridge load-test
+        /// incident), so a final positive floor is required regardless of what the source itself is
+        /// configured with, or SqlConnection.Open() waits indefinitely with no client-side bound.
+        /// </summary>
+        const int DefaultConnectionTimeoutSeconds = 30;
+
+        static int ResolveEffectiveConnectionTimeout(int connectionTimeout, int sourceConnectionTimeout) =>
+            connectionTimeout > 0 ? connectionTimeout
+            : sourceConnectionTimeout > 0 ? sourceConnectionTimeout
+            : DefaultConnectionTimeoutSeconds;
+
         void MssqlSqlExecution(int connectionTimeout, int? commandTimeout, ErrorResultTO errors, int update)
         {
 
 
             var connectionBuilder = new ConnectionBuilder();
-            var connectionStringWithTimeout = Source.GetConnectionStringWithTimeout(connectionTimeout);
+
+            // WOLF-8512: no DB activity (Sql/Oracle/MySql/Postgres/ODBC) ever sets this
+            // ConnectionTimeout property - it is always the C# default of 0. Passed straight
+            // through, that clobbers Source's own already-correct ConnectionTimeout (parsed from
+            // the source's connection string, or 30s by default - see DbSource.ConnectionString
+            // setter) with a literal "Connection Timeout=0", which is SqlClient's convention for
+            // "no client-side bound - SqlConnection.Open() below waits INDEFINITELY". Under load
+            // this left a small but persistent set of executions permanently blocked in
+            // connection.Open() with no timeout, no exception, and no dead-letter possible - the
+            // trigger's own execution-timeout and concurrency-slot-wait bounds can stop WAITING on
+            // this call but cannot cancel it once inside it. Only override the source's timeout
+            // when a caller has actually supplied a positive one; otherwise defer to the source.
+            var effectiveConnectionTimeout = ResolveEffectiveConnectionTimeout(connectionTimeout, Source.ConnectionTimeout);
+            var connectionStringWithTimeout = Source.GetConnectionStringWithTimeout(effectiveConnectionTimeout);
             var connection = new SqlConnection(connectionBuilder.ConnectionString(connectionStringWithTimeout));
             var entraFallbackConnectionString = connectionBuilder.FallbackConnectionString(connectionStringWithTimeout);
             var startTime = Stopwatch.StartNew();
+
+            // WOLF-8512 diagnostics: kept as Info (not Debug) deliberately, same level as the
+            // existing per-step timing lines below, so it survives whatever log level this host
+            // runs at without needing a redeploy to re-enable it.
+            Dev2Logger.Info(
+                $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | ConnectionTimeout={effectiveConnectionTimeout}{(effectiveConnectionTimeout == 0 ? " (0 = SqlClient default: SqlConnection.Open() below waits INDEFINITELY, no client-side bound)" : "s")} | CommandTimeout={(commandTimeout?.ToString() ?? "null (SqlCommand default: 30s)")} | ExecutionID={DataObj.ExecutionID}",
+                DataObj.ExecutionID.ToString());
+
             try
             {
+                Dev2Logger.Info(
+                    $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | connection.Open() starting | ElapsedSoFar={startTime.Elapsed.TotalMilliseconds}ms | ExecutionID={DataObj.ExecutionID}",
+                    DataObj.ExecutionID.ToString());
+
                 if (string.IsNullOrEmpty(entraFallbackConnectionString))
                 {
                     connection.Open();
@@ -457,12 +498,22 @@ namespace Dev2.Services.Execution
                         connection.Open();
                     }
                 }
+
+                Dev2Logger.Info(
+                    $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | connection.Open() completed | ElapsedSoFar={startTime.Elapsed.TotalMilliseconds}ms | ExecutionID={DataObj.ExecutionID}",
+                    DataObj.ExecutionID.ToString());
+
                 // No retry around this metadata lookup: the failure it used to guard against
                 // (15197) is a permanent VIEW DEFINITION/encryption condition, not a transient
                 // one, and MssqlIsStoredProcForXmlResult now degrades gracefully instead.
                 // Retrying it only held a pooled connection open for the full backoff budget,
                 // exhausting the pool once enough executions ran concurrently.
                 var isStoredProcForXmlResult = MssqlIsStoredProcForXmlResult(connection, ProcedureName);
+
+                Dev2Logger.Info(
+                    $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | MssqlIsStoredProcForXmlResult() completed (Result={isStoredProcForXmlResult}) | ElapsedSoFar={startTime.Elapsed.TotalMilliseconds}ms | ExecutionID={DataObj.ExecutionID}",
+                    DataObj.ExecutionID.ToString());
+
                 if (isStoredProcForXmlResult)
                 {
                     MssqlReadDataForXml(update, startTime, connection, commandTimeout);
@@ -501,8 +552,14 @@ namespace Dev2.Services.Execution
                 using (var cmd = MssqlCreateCommand(connection, commandTimeout, GetSqlParameters()))
                 {
                     cmd.Transaction = dbTransaction;
+                    Dev2Logger.Info(
+                        $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | cmd.ExecuteReader() starting | ElapsedSoFar={startTime.Elapsed.TotalMilliseconds}ms | ExecutionID={DataObj.ExecutionID}",
+                        DataObj.ExecutionID.ToString());
                     using (var reader = cmd.ExecuteReader())
                     {
+                        Dev2Logger.Info(
+                            $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | cmd.ExecuteReader() completed | ElapsedSoFar={startTime.Elapsed.TotalMilliseconds}ms | ExecutionID={DataObj.ExecutionID}",
+                            DataObj.ExecutionID.ToString());
                         var table = new DataTable();
                         table.Load(reader);
                         reader.Close();
@@ -543,8 +600,14 @@ namespace Dev2.Services.Execution
                 using (var cmd = MssqlCreateCommand(connection, commandTimeout, GetSqlParameters()))
                 {
                     cmd.Transaction = dbTransaction;
+                    Dev2Logger.Info(
+                        $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | cmd.ExecuteXmlReader() starting | ElapsedSoFar={startTime.Elapsed.TotalMilliseconds}ms | ExecutionID={DataObj.ExecutionID}",
+                        DataObj.ExecutionID.ToString());
                     using (var reader = cmd.ExecuteXmlReader())
                     {
+                        Dev2Logger.Info(
+                            $"WOLF-8512 DB diagnostics | Proc={ProcedureName} | cmd.ExecuteXmlReader() completed | ElapsedSoFar={startTime.Elapsed.TotalMilliseconds}ms | ExecutionID={DataObj.ExecutionID}",
+                            DataObj.ExecutionID.ToString());
                         var hasXmlElement = reader.Read();
                         var table = new DataTable("x");
                         table.Columns.Add("ReadForXml");

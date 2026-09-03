@@ -69,6 +69,7 @@
     <Compile Include="..\Warewolf.Execution.Lightweight\Security\FileDecryptionHelper.cs" Link="Shared\FileDecryptionHelper.cs" />
     <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultCredentialFactory.cs" Link="Shared\KeyVaultCredentialFactory.cs" />
     <Compile Include="..\Warewolf.Execution.Lightweight\Security\KeyVaultCredentialOptions.cs" Link="Shared\KeyVaultCredentialOptions.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs" Link="Properties\AssemblyCommonInfo.cs" />
   </ItemGroup>
 
   <ItemGroup>

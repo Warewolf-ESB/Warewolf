@@ -355,6 +355,17 @@ The engine's other first-class trigger path alongside HTTPS — see
 > see `docs/KB-ClientApps-Configuration.md` §2.6. `Deploy-WwExecutionServiceBusWorker.ps1`
 > can also be run **standalone** (see its `-?` help and the `Scripts/README.md` section).
 
+> The worker's own `-ServiceBusQueueName` (live-wired to the `[ServiceBusTrigger]` binding
+> via the `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` app setting) and its four
+> `-ServiceBusTrigger*` binding-tuning parameters (`MaxConcurrentCalls`/`PrefetchCount`/
+> `MaxAutoLockRenewalMinutes`/`AutoCompleteMessages`) are **not** forwarded by the engine
+> orchestrator — `-DeployServiceBusWorker` only passes shared targeting/auth context, so a
+> companion run always deploys with the worker's own defaults. To customize the queue name
+> or trigger tuning, run `Deploy-WwExecutionServiceBusWorker.ps1` standalone with those
+> parameters (before or after the engine deploy — it's idempotent). See
+> `docs/ShovelBridge-Architecture.md` § "Trigger binding configuration" for the full list
+> and the app-setting override mechanism's reliability caveat.
+
 ### RabbitMQ QueueProcessor (optional companion)
 
 Fans out **one Azure Container App per queue-trigger**, autoscaled 0 → N by the KEDA `rabbitmq`
@@ -419,6 +430,7 @@ looks like a missing app role rather than a config gap.
 | `-LicenseCheckEnabled` | bool (nullable) | engine default `true` | `WAREWOLF_LICENSE_CHECK_ENABLED`. |
 | `-StructuredLogs` | bool (nullable) | `true` | `STRUCTURED_LOGS` — JSON console output. |
 | `-AlignHostJsonLogLevel` | switch | off | **Opt-in.** Also rewrite the published `host.json` logLevel to the mapped level. Tunes only the Functions **host** process verbosity — not needed for the engine's own logging. |
+| `-ServiceBusMaxConcurrentCalls` | int (nullable) | off (SDK default) | **Opt-in.** Sets `host.json`'s `extensions.serviceBus.maxConcurrentCalls` — bounds how many Service Bus messages the Functions host *dispatches* to the trigger concurrently, upstream of and independent from `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS`'s own semaphore gate inside the trigger's code. See WOLF-8512, `docs/ShovelBridge-Architecture.md`. |
 
 ### Logging output / control
 

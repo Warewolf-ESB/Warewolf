@@ -19,36 +19,29 @@ namespace Warewolf.Execution.Lightweight.Tests.Auth;
 [DoNotParallelize] // reads/writes process-global environment variables
 public class ServiceBusEntraAuthOptionsTests
 {
-    private const string TenantVar = "WAREWOLF_ENTRA_TENANT_ID";
-    private const string ServiceBusAudienceVar = "WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE";
-    private const string HttpAudienceVar = "WAREWOLF_ENTRA_AUDIENCE";
+    // WOLF-8516: WAREWOLF_ENTRA_TENANT_ID / _AUDIENCE / _SERVICEBUS_AUDIENCE were merged into
+    // one JSON app setting — see EntraIdentityOptions.
+    private const string ConfigEnv = EntraIdentityOptions.EnvVar;
 
-    private string? _previousTenant;
-    private string? _previousServiceBusAudience;
-    private string? _previousHttpAudience;
+    private string? _previousConfig;
 
     [TestInitialize]
     public void SaveEnvironment()
     {
-        _previousTenant = Environment.GetEnvironmentVariable(TenantVar);
-        _previousServiceBusAudience = Environment.GetEnvironmentVariable(ServiceBusAudienceVar);
-        _previousHttpAudience = Environment.GetEnvironmentVariable(HttpAudienceVar);
+        _previousConfig = Environment.GetEnvironmentVariable(ConfigEnv);
     }
 
     [TestCleanup]
     public void RestoreEnvironment()
     {
-        Environment.SetEnvironmentVariable(TenantVar, _previousTenant);
-        Environment.SetEnvironmentVariable(ServiceBusAudienceVar, _previousServiceBusAudience);
-        Environment.SetEnvironmentVariable(HttpAudienceVar, _previousHttpAudience);
+        Environment.SetEnvironmentVariable(ConfigEnv, _previousConfig);
     }
 
     [TestMethod]
     public void FromEnvironment_ReadsDedicatedServiceBusAudience_AndSharedTenant()
     {
-        Environment.SetEnvironmentVariable(TenantVar, "11111111-1111-1111-1111-111111111111");
-        Environment.SetEnvironmentVariable(ServiceBusAudienceVar, "api://servicebus-trigger-app");
-        Environment.SetEnvironmentVariable(HttpAudienceVar, "api://http-app");
+        Environment.SetEnvironmentVariable(ConfigEnv,
+            /*lang=json,strict*/ "{\"tenantId\":\"11111111-1111-1111-1111-111111111111\",\"audience\":\"api://http-app\",\"serviceBusAudience\":\"api://servicebus-trigger-app\"}");
 
         var options = ServiceBusEntraAuthOptions.FromEnvironment();
 
@@ -60,9 +53,8 @@ public class ServiceBusEntraAuthOptionsTests
     [TestMethod]
     public void FromEnvironment_NeverFallsBackToHttpAudience()
     {
-        Environment.SetEnvironmentVariable(TenantVar, "11111111-1111-1111-1111-111111111111");
-        Environment.SetEnvironmentVariable(ServiceBusAudienceVar, null);
-        Environment.SetEnvironmentVariable(HttpAudienceVar, "api://http-app");
+        Environment.SetEnvironmentVariable(ConfigEnv,
+            /*lang=json,strict*/ "{\"tenantId\":\"11111111-1111-1111-1111-111111111111\",\"audience\":\"api://http-app\"}");
 
         var options = ServiceBusEntraAuthOptions.FromEnvironment();
 
@@ -73,8 +65,8 @@ public class ServiceBusEntraAuthOptionsTests
     [TestMethod]
     public void FromEnvironment_MissingServiceBusAudience_NotEnabled_FailsClosed()
     {
-        Environment.SetEnvironmentVariable(TenantVar, "11111111-1111-1111-1111-111111111111");
-        Environment.SetEnvironmentVariable(ServiceBusAudienceVar, null);
+        Environment.SetEnvironmentVariable(ConfigEnv,
+            /*lang=json,strict*/ "{\"tenantId\":\"11111111-1111-1111-1111-111111111111\"}");
 
         var options = ServiceBusEntraAuthOptions.FromEnvironment();
 
@@ -85,8 +77,8 @@ public class ServiceBusEntraAuthOptionsTests
     [TestMethod]
     public void FromEnvironment_MissingTenant_NotEnabled_FailsClosed()
     {
-        Environment.SetEnvironmentVariable(TenantVar, null);
-        Environment.SetEnvironmentVariable(ServiceBusAudienceVar, "api://servicebus-trigger-app");
+        Environment.SetEnvironmentVariable(ConfigEnv,
+            /*lang=json,strict*/ "{\"serviceBusAudience\":\"api://servicebus-trigger-app\"}");
 
         var options = ServiceBusEntraAuthOptions.FromEnvironment();
 

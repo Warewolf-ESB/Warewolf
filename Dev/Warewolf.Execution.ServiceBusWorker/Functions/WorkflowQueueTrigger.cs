@@ -6,10 +6,13 @@ using System.Text.Json.Serialization;
 namespace Warewolf.Execution.ServiceBusWorker.Functions;
 
 /// <summary>
-/// Triggered by a message on the <c>wwexecution-queue</c> Service Bus queue. Each message names
-/// a Warewolf workflow, an optional target route, and its inputs; this worker authenticates to
-/// Entra (Managed Identity) and calls the engine's <c>/secure</c> or <c>/public</c> route on the
-/// message's behalf (mirroring the AzureFunction sample's <c>run</c> / <c>runpublic</c> proxies).
+/// Triggered by a message on the Service Bus queue named by the <c>WAREWOLF_SERVICEBUS_TRIGGER_QUEUE</c>
+/// app setting (default <c>wwexecution-queue</c> — see <c>local.settings.json</c> for local dev and
+/// <c>Deploy-WwExecutionServiceBusWorker.ps1</c>'s <c>-ServiceBusQueueName</c> param in Azure). Each
+/// message names a Warewolf workflow, an optional target route, and its inputs; this worker
+/// authenticates to Entra (Managed Identity) and calls the engine's <c>/secure</c> or <c>/public</c>
+/// route on the message's behalf (mirroring the AzureFunction sample's <c>run</c> / <c>runpublic</c>
+/// proxies).
 ///
 /// Why an SB-triggered worker (and not "Service Bus calls the engine")? Service Bus is a message
 /// broker — it cannot hold an OAuth token or make an outbound HTTP call. The realistic pattern is
@@ -40,7 +43,7 @@ public sealed class WorkflowQueueTrigger
     /// </summary>
     [Function(nameof(WorkflowQueueTrigger))]
     public async Task RunAsync(
-        [ServiceBusTrigger("wwexecution-queue", Connection = "ServiceBusConnection")]
+        [ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%", Connection = "ServiceBusConnection")]
         string messageBody,
         FunctionContext context,
         CancellationToken cancellationToken)

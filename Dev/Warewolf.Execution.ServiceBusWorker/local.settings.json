@@ -8,6 +8,9 @@
     "//ServiceBusConnection": "Connection string OR (preferred) '<namespace>.servicebus.windows.net' to use identity-based connection. For the latter add ServiceBusConnection__fullyQualifiedNamespace below instead.",
     "ServiceBusConnection": "Endpoint=sb://<namespace>.servicebus.windows.net/;SharedAccessKeyName=<policy>;SharedAccessKey=<key>",
 
+    "//WAREWOLF_SERVICEBUS_TRIGGER_QUEUE": "Queue name WorkflowQueueTrigger binds to via %AppSetting% indirection. Must match Deploy-WwExecutionServiceBusWorker.ps1's -ServiceBusQueueName in Azure.",
+    "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE": "wwexecution-queue",
+
     "//WwExecution settings": "Bound to WwExecutionOptions. Double-underscore maps to nested config keys.",
     "WwExecution__BaseUrl": "https://WWExecutionEngine.azurewebsites.net",
     "WwExecution__TenantId": "00000000-0000-0000-0000-000000000000",

@@ -49,10 +49,12 @@ namespace Warewolf.Execution.Lightweight.Functions
         readonly IWorkflowExecutor _workflowExecutor;
         readonly string            _workflowsDirectory;
 
-        public LoginFunction(IWorkflowExecutor workflowExecutor)
+        public LoginFunction(IWorkflowExecutor workflowExecutor, Infrastructure.HostEnvironmentConfig hostEnvironmentConfig = null)
         {
             _workflowExecutor   = workflowExecutor;
-            _workflowsDirectory = Environment.GetEnvironmentVariable("WorkflowsDirectory")
+            // WOLF-8516: no env-var fallback — WorkflowsDirectory comes solely from
+            // HostEnvironmentConfig (deploy-bundled settings file), which DI always supplies.
+            _workflowsDirectory = hostEnvironmentConfig?.WorkflowsDirectory
                 ?? Path.Combine(AppContext.BaseDirectory, "Resources");
         }
 

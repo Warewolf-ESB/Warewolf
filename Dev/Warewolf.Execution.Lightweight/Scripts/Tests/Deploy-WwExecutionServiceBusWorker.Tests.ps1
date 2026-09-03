@@ -58,6 +58,17 @@ Describe 'Deploy-WwExecutionServiceBusWorker — static' {
         $queue.DefaultValue.Value | Should -Be 'wwexecution-queue'
         $rule.DefaultValue.Value  | Should -Be 'shovel-send'
     }
+
+    It 'defines the four Service Bus trigger binding-option parameters with no compiled-in default (resolved at runtime)' {
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile($script:DeployScript, [ref]$null, [ref]$null)
+        $params = $ast.ParamBlock.Parameters
+        foreach ($name in @(
+            'ServiceBusTriggerMaxConcurrentCalls', 'ServiceBusTriggerPrefetchCount',
+            'ServiceBusTriggerMaxAutoLockRenewalMinutes', 'ServiceBusTriggerAutoCompleteMessages'
+        )) {
+            ($params | Where-Object { $_.Name.VariablePath.UserPath -eq $name }) | Should -Not -BeNullOrEmpty -Because "-$name must be a declared parameter"
+        }
+    }
 }
 
 Describe 'Deploy-WwExecutionServiceBusWorker — helper functions' {
@@ -245,6 +256,39 @@ Describe 'Deploy-WwExecutionServiceBusWorker — end-to-end (DryRun, no side eff
         $out | Should -Match '\[DRYRUN\] az functionapp config appsettings set'
     }
 
+    It 'applies WAREWOLF_SERVICEBUS_TRIGGER_QUEUE matching the default -ServiceBusQueueName' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE\s*= wwexecution-queue'
+    }
+
+    It 'retargets WAREWOLF_SERVICEBUS_TRIGGER_QUEUE when a custom -ServiceBusQueueName is supplied' {
+        $a = $script:commonArgs.Clone(); $a.ServiceBusQueueName = 'custom-queue'
+        $out = (& $script:DeployScript @a) 6>&1 | Out-String
+        $out | Should -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE\s*= custom-queue'
+    }
+
+    It 'applies Service Bus trigger binding-option app settings with host.json-matching defaults' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__maxConcurrentCalls\s*= 16'
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__prefetchCount\s*= 0'
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__maxAutoLockRenewalDuration\s*= 00:05:00'
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__autoCompleteMessages\s*= true'
+        $out | Should -Match 'Trigger binding\s*: maxConcurrentCalls=16, prefetchCount=0, maxAutoLockRenewal=00:05:00, autoComplete=True'
+    }
+
+    It 'honours custom Service Bus trigger binding-option overrides' {
+        $a = $script:commonArgs.Clone()
+        $a.ServiceBusTriggerMaxConcurrentCalls = 4
+        $a.ServiceBusTriggerPrefetchCount = 20
+        $a.ServiceBusTriggerMaxAutoLockRenewalMinutes = 2
+        $a.ServiceBusTriggerAutoCompleteMessages = $false
+        $out = (& $script:DeployScript @a) 6>&1 | Out-String
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__maxConcurrentCalls\s*= 4'
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__prefetchCount\s*= 20'
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__maxAutoLockRenewalDuration\s*= 00:02:00'
+        $out | Should -Match 'AzureFunctionsJobHost__extensions__serviceBus__autoCompleteMessages\s*= false'
+    }
+
     It 'always enables the system-assigned managed identity on the Function App' {
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Match '\[DRYRUN\] az functionapp identity assign'
@@ -274,6 +318,10 @@ Describe 'Deploy-WwExecutionServiceBusWorker — end-to-end (DryRun, no side eff
         $summary.dryRun | Should -BeTrue
         $summary.status | Should -Be 'completed'
         $summary.serviceBusNamespace | Should -Be 'ns-wwsb-test'
+        $summary.serviceBusTriggerMaxConcurrentCalls | Should -Be 16
+        $summary.serviceBusTriggerPrefetchCount | Should -Be 0
+        $summary.serviceBusTriggerMaxAutoLockRenewalDuration | Should -Be '00:05:00'
+        $summary.serviceBusTriggerAutoCompleteMessages | Should -BeTrue
         $summary.shovelSendRuleCreated | Should -BeTrue
         $summary.shovelSendRuleName | Should -Be 'shovel-send'
         # Connection strings/settings must never appear in plaintext in the summary.

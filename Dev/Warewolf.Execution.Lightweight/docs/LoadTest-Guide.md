@@ -255,7 +255,7 @@ is unproven:
 | 2 | Targets | One prompt per value, RUN 2 default pre-filled | no |
 | 3 | Pre-flight | Engine, ACA, KEDA, broker, database — then blockers and a gate | no |
 | 4 | Baseline | Optional purge; always a `MAX(JobLogId)` watermark | purge only |
-| 5 | Pre-warm | Sequential until latency settles, then at target concurrency | executes workflows |
+| 5 | Pre-warm | Sequential until latency settles, then **ramping** to target concurrency | executes workflows |
 | 6 | Publish | N unique messages + manifest | **yes** |
 | 7 | Drain | Polls until **rows** stop rising | no |
 | 8 | Report | Worker logs, engine logs, database, DLQ | no |
@@ -362,6 +362,36 @@ burst arriving into that window fails because the request never reaches the work
 Measured cold start: **64,757 ms**, settling to ~3,100 ms by the fifth call.
 
 Fewer replicas processed everything *and* finished faster. The RUN 1 failures were pure waste.
+
+#### Phase B ramps — it does not open at full concurrency
+
+Phase B runs `-ConcurrentRounds` rounds along a ladder that reaches `-TargetConcurrency` on the
+**last** round: `ceil(Target / 2^(Rounds - i))`, so `-TargetConcurrency 20` over 3 rounds is
+**5 → 10 → 20**, and the queue path's 6 is **2 → 3 → 6**.
+
+Opening straight at the target defeats the point of warming: it slams a still-single-instance app
+with `Target × 3` simultaneous executions, which is the same load the pre-warm exists to protect
+the burst from. `pipeline-LOADTEST.yml`'s 2026-08-24 run opened at 20 and recorded `OK=22/60`,
+median **41.7 s**, max **159.9 s** (`500×16 502×20 503×2`).
+
+Because the final round is always the full target, `[+] WARM — the final round was clean at
+concurrency N` still means *clean at target concurrency* and nothing weaker. The ramp also costs
+fewer calls — 105 rather than 180 for a target of 20 — so it writes fewer warm-up rows.
+
+#### An unwarmable engine warns; it never fails the caller
+
+`Invoke-WwEnginePreWarm.ps1` **always exits 0** once its parameters validate. A cold engine is the
+condition the script exists to detect and the caller is already equipped to retry or measure — it
+is not a reason to abort the stage. Only parameter validation throws.
+
+A per-call `-TimeoutSec` expiry is therefore reported as a `TIMEOUT` result and counted in the
+round, not raised as an error. This is load-bearing: `-SkipHttpErrorCheck` suppresses non-2xx
+*status codes* only, and before 2026-08-24 a single timeout inside Phase B terminated the whole
+pipeline step. See `docs/ShovelBridge-Architecture.md`'s 2026-08-24 entry.
+
+Read the verdict alongside the load-test result: the run proceeds even when warming failed, so a
+poor load-test outcome that follows `[!] the final round still had failures` is likely an engine
+capacity problem rather than a product defect.
 
 ### How warm-up traffic is kept out of the result
 

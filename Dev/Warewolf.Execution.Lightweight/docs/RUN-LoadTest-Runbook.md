@@ -155,6 +155,15 @@ Expected: `ENGINE__TIMEOUTSECONDS=180`, `WORKER__SHUTDOWNGRACESECONDS=210`,
 RUN 2 observed: first call **64,757 ms**, settling to ~3,100 ms by the fifth; then 18/18 clean at
 concurrency 6. Every 502/503/504 in RUN 1 came from that cold window.
 
+Phase B **ramps** to `-TargetConcurrency` rather than opening at it — for 6 that is `2 → 3 → 6`.
+The last round is always the full target, so `[+] WARM — the final round was clean at concurrency
+6` still means clean at 6.
+
+The script **always exits 0**: an engine that will not warm is reported, not fatal. Read the
+verdict rather than the exit code — if it prints `[!] the final round still had failures`, do not
+publish. Re-run it, or lower `-TargetConcurrency`. A `TIMEOUT` in the codes summary is a counted
+failed call, not a crash.
+
 Do not publish until the final round is clean. **The warm-up executes the real workflow and writes
 rows** — that is what the watermark in step 5 is for.
 

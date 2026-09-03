@@ -1,5 +1,52 @@
 # Shovel Bridge Architecture — RabbitMQ → Azure Service Bus → Lightweight Execution Engine
 
+> **2026-08-24 — the load test never started: the pre-warm step killed the job, and its own
+> Phase B was part of what it was meant to prevent.** `pipeline-LOADTEST.yml`'s
+> `ShovelBridgeLoadTest_ExternalServiceBus` job failed in *Warm up UAT engine before the
+> load-test burst*, so the 1000-message run below it never executed. Two independent defects,
+> both fixed in `Scripts/Invoke-WwEnginePreWarm.ps1` and regression-tested in
+> `Scripts/Tests/Invoke-WwEnginePreWarm.Tests.ps1`.
+>
+> **1 — a per-call timeout failed the whole step, contradicting the documented contract.**
+> `-SkipHttpErrorCheck` suppresses non-2xx **status codes** only. An `Invoke-WebRequest
+> -TimeoutSec` expiry is a `TaskCanceledException` — an exception, not a response — so it
+> bypassed that switch entirely. Inside `ForEach-Object -Parallel` the child runspace runs at
+> `$ErrorActionPreference = 'Continue'` (child runspaces do **not** inherit the preference,
+> verified directly), so it was written non-terminating, relayed into the caller's error
+> stream, and there converted to a terminating error by the script's own script-level
+> `'Stop'`. The script died inside Phase B and never reached its own `[!] the final round
+> still had failures` verdict — the branch whose comment reads "Not fatal by design" was
+> **unreachable** for any transport-level failure. `Scripts/README.md` and the pipeline
+> comment both documented a non-fatal contract that had never held for timeouts.
+>
+> Fixed by normalising both outcomes through `ConvertTo-WarmupResult`: a failed call becomes a
+> counted result with the `Code 0` sentinel (rendered `TIMEOUT`/`ERROR`, never a misleading
+> `0x3`), so `Test-WarmupRoundClean` correctly marks the round dirty. `-ErrorAction Stop` on
+> every `Invoke-WebRequest` is load-bearing — without it the parallel runspace's `Continue`
+> makes the exception non-terminating and it skips the `try/catch`. The script now **always
+> exits 0** once its parameters validate; only parameter validation throws.
+>
+> **2 — Phase B opened at full concurrency, which is itself a cold-start trigger.** The
+> observed round 1 at `-TargetConcurrency 20` against `warewolfserver-uat`: `OK=22/60`, median
+> **41,725 ms**, max **159,896 ms**, `200x22 500x16 502x20 503x2` — a 63% failure rate, and
+> the exact cold-start/scale-out signature the 2026-08-16 entry below describes. Phase A had
+> already settled (42,694 ms cold → ~900 ms by call 5), so this was scale-out, not cold start:
+> 60 simultaneous executions arriving at a still-single-instance app is the same load the
+> pre-warm exists to protect the burst *from*.
+>
+> Phase B now ramps — `ceil(Target / 2^(Rounds - i))`, so 20 over 3 rounds is **5 → 10 → 20**
+> and the queue path's 6 is **2 → 3 → 6**. The last round is always the full target, so
+> `[+] WARM — the final round was clean at concurrency N` still means clean at the target and
+> nothing weaker. Costs fewer calls too (105 vs 180 at target 20), so fewer warm-up rows.
+>
+> **Still open — UAT capacity.** The ramp reduces how often the burst meets a cold app; it does
+> not raise `warewolfserver-uat`'s Consumption (Y1) ceiling. Whether that app should move to a
+> Premium/EP plan for load testing is an unresolved cost decision, deliberately not bundled
+> into this fix. Until it is resolved, **read the warm-up verdict alongside the load-test
+> result**: the burst is now published even when warming failed, so a poor result following
+> `[!] the final round still had failures` is an engine capacity problem and not necessarily a
+> product defect.
+
 > **2026-08-19 update — database migrated.** `WarewolfEntraTestDb` (referenced throughout
 > the history below) permanently exhausted Azure SQL's monthly free-limit allowance and was
 > deleted. `Resources/rabbit/NewSqlServerSource.bite` (`SourceId=b9184f70-…`) now points at
@@ -152,6 +199,46 @@ producer must publish exactly the JSON `WorkflowQueueTrigger` expects:
 If an existing RabbitMQ producer uses a different schema, it must be changed to emit
 this contract, or an adapter service must sit between the producer and the source
 queue — Shovel itself cannot transform messages.
+
+## Trigger binding configuration
+
+`WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to the queue named by the
+`WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` app setting (`%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%`
+indirection — the standard Azure Functions mechanism for a configurable binding without
+recompiling, mirroring the in-engine "Model A" trigger,
+`Functions/ServiceBusWorkflowTriggerFunction.cs`). `Deploy-WwExecutionServiceBusWorker.ps1`
+sets this app setting from `-ServiceBusQueueName` (default `wwexecution-queue`) — the same
+parameter that provisions the destination queue in Phase 2 — so the queue name only needs
+to be set in one place. Local dev supplies the matching default via `local.settings.json`.
+
+Four additional trigger tunables, otherwise fixed in the worker's `host.json`
+(`extensions.serviceBus`), are exposed as deploy parameters and applied via the standard
+Azure Functions `AzureFunctionsJobHost__extensions__serviceBus__<setting>` app-setting
+override convention — so they can be tuned per environment without editing/republishing
+`host.json`:
+
+| Parameter | app setting | `host.json` default |
+|---|---|---|
+| `-ServiceBusTriggerMaxConcurrentCalls` | `AzureFunctionsJobHost__extensions__serviceBus__maxConcurrentCalls` | `16` |
+| `-ServiceBusTriggerPrefetchCount` | `AzureFunctionsJobHost__extensions__serviceBus__prefetchCount` | `0` |
+| `-ServiceBusTriggerMaxAutoLockRenewalMinutes` | `AzureFunctionsJobHost__extensions__serviceBus__maxAutoLockRenewalDuration` | `00:05:00` |
+| `-ServiceBusTriggerAutoCompleteMessages` | `AzureFunctionsJobHost__extensions__serviceBus__autoCompleteMessages` | `true` |
+
+**Reliability caveat.** This override path has confirmed prior art in this repo for
+*other* `host.json` sections — `Logging__*` in `TestRun.ps1` and the engine's Dockerfile —
+but no prior art specifically for the `serviceBus` extension, and one archived note
+(`docs/archive/Warewolf-Lightweight-Logger-Guide.md`) records that the analogous
+`concurrency`/`healthMonitor` overrides did **not** reliably take effect in this host
+version. Treat the app-setting override as best-effort: the committed `host.json` values
+remain the source of truth if a setting doesn't visibly take effect, and — if precise
+tuning matters operationally — verify post-deploy with
+`az functionapp config appsettings list --name <app> --resource-group <rg>` plus observed
+trigger throughput/lock-renewal behaviour, rather than assuming the override applied.
+
+There is deliberately no per-queue/manifest fan-out for the Service Bus trigger analogous
+to the RabbitMQ QueueProcessor's `-DeployRabbitMqTriggers`/`-QueueTriggerPath` pattern
+(one Container App per trigger file) — `WorkflowQueueTrigger` is a single Function bound to
+a single queue by design, so one worker deploy covers the whole shovel-bridge destination.
 
 ## Provisioning
 
@@ -1171,6 +1258,490 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   - **Not yet re-verified against a live pipeline run** — the change has been parse-checked and the
     pre-warm probe manually confirmed to succeed against the (currently warm) live engine, but the
     `ShovelBridgeE2ETest_ExternalServiceBus` job itself has not been re-run post-fix.
+
+- **2026-08-30 — Fix: `host.json` now sets `extensions.serviceBus.maxAutoLockRenewalDuration`,
+  closing the gap flagged as "not yet actioned" in the 2026-08-16 entry above.** `ShovelBridgeLoadTest_ExternalServiceBus`
+  build 30578 (`8512-ProcessingReliabilityTests`, commit `c9f5ecfa99`) ran with the Aug 24/25
+  `ServiceBusTriggerOptions` mitigations (`MaxConcurrentExecutions`, `ExecutionTimeout`,
+  `SlotWaitTimeout`, stale-claim takeover) already in place: 984/1000 resolved within 47s, but
+  16 correlation ids (a contiguous block, `...-000721` through `...-000736`) never got a result
+  and the count never moved again across the remaining ~29 minutes of polling. RabbitMQ
+  diagnostics confirmed all 1000 messages left the source queue via the shovel cleanly — the
+  loss was downstream, in Service Bus → engine trigger processing.
+  - **Root cause**: the same lock-renewal race first identified in the 2026-08-16 entry, not yet
+    closed. The load test's queue (`Test-ShovelBridgeE2E.ps1`) has `LockDuration=PT1M` and
+    `maxDeliveryCount=10`; `ServiceBusTriggerOptions` gives a delivery up to `SlotWaitTimeout`
+    (5 min) + `ExecutionTimeout` (5 min) = 10 min worst case, but the Functions SDK's default
+    `maxAutoLockRenewalDuration` is only 5 min and `host.json` never overrode it. A delivery
+    that genuinely needs close to the full budget loses its lock at the 5-minute mark; a
+    duplicate delivery then races it, hits `ServiceBusWorkflowTriggerFunction.cs`'s
+    "leave unsettled" branch (added for exactly this case), and the pair burn through
+    `maxDeliveryCount` in rapid short cycles until Service Bus auto-dead-letters the message
+    **inside the SDK, without the trigger's own code ever running again** — the one path that
+    produces "no result, ever" instead of a recorded failure. Confirmed live that this happens
+    at volume in this environment: `wwexecution-secure-trigger-queue-e2e`'s dead-letter queue
+    held 19,459 unpurged messages at the time of this investigation. (Could not pin the exact
+    dead-letter reason for these specific 16: `warewolfserver-uat`'s Application Insights had
+    zero telemetry for the Aug 28 run window, and the Service Bus namespace has no diagnostic
+    settings configured — a full 19k-message DLQ scan was judged not worth the effort for this
+    pass.)
+  - **Fix**: `host.json`'s `extensions.serviceBus.maxAutoLockRenewalDuration` set to `00:11:00`
+    (a 1-minute margin over the current 10-minute worst case, matching the margin style already
+    used for `ServiceBusReplayAndResultStore.ClaimStaleAfter` vs `functionTimeout`). New test
+    `HostJsonConfigurationTests` asserts the value is set and is `>=` `ServiceBusTriggerOptions`'
+    own `SlotWaitTimeout + ExecutionTimeout` defaults (not a hardcoded duration), so widening
+    either timeout without widening this renewal window fails the build instead of silently
+    reopening this gap.
+  - **Not yet re-verified against a live pipeline run** — same caveat as the 2026-08-17 entry.
+
+- **2026-08-30 — Fix: `DbSource.GetConnectionStringWithTimeout` now honours the timeout override
+  for Entra Managed Identity sources too, and `ResolveEffectiveConnectionTimeout` gets a final
+  positive floor.** `ShovelBridgeLoadTest_ExternalServiceBus` build 30583 (`8512-ProcessingReliabilityTests`,
+  commit `6eeeaaa5ab`, run after the `maxAutoLockRenewalDuration` fix above) improved from 16 to
+  **12** correlation ids stuck forever, still never resolving across the full 30-minute poll
+  window: `987/1000` succeeded, `1` recorded failure (`-000601`, "Workflow not found" — a distinct,
+  already-understood issue), `12` never got a result. Confirmed via `az devops invoke` against the
+  build's own logs (not a partial paste) that these 12 clustered tightly (`...-000582`,
+  `...-000588` through `...-000599`), the same contiguous-block shape as the 16-id incident above.
+  - **Diagnosis, this time backed by direct SQL ground truth against the Hangfire persistence
+    store** (`wwexecution-uat-hangfire`, confirmed live and enabled — `Deploy_UAT`'s
+    `-EnablePersistence:$true` per `Deploy-UAT-Redeploy-Spec.md` §14 was in effect for this build,
+    ruling out the in-memory-fallback theory this investigation initially suspected): all 1000
+    correlation ids had a claim row; exactly 988 had a matching result row. The control case
+    (`-000601`) had both, proving the store and `/secure/servicebus-result/{id}` polling path work
+    correctly for any execution that returns. For the 12: a claim row exists (execution started)
+    but no result row was ever written — `SaveResult` was never reached by success, business
+    failure, malformed message, denial, or invalid-token path, and the claim's timestamp was never
+    updated by a later stale-claim steal (`ClaimStaleAfter` = 20 min), even hours after the run.
+    Peeking the live queue (0 active messages) and the entire accumulated 19,459-message
+    dead-letter queue (0 matches for this run's correlation prefix, non-destructively, via
+    `PeekMessagesAsync`) ruled out both an in-flight lock and a dead-letter outcome as the visible
+    end state.
+  - **Root cause**: `IWorkflowExecutor.Execute()` (`WorkflowExecutor.cs`) has no internal timeout or
+    cancellation seam anywhere in its call chain — the trigger's `Task.WhenAny(executionTask,
+    Task.Delay(ExecutionTimeout))` race in `ServiceBusWorkflowTriggerFunction.cs` can only stop
+    *waiting* on a hung call, never cancel it. `rabbit/RabbitProcess` makes three real SQL Server
+    calls (`DsfSqlServerDatabaseActivity` → `dbo.usp_jobs1_LogStart/LogProcessing/LogFinished`).
+    `DatabaseServiceExecution.MssqlSqlExecution` already had a WOLF-8512 guard
+    (`ResolveEffectiveConnectionTimeout`, added earlier this same investigation) specifically for
+    "no DB activity ever sets `ConnectionTimeout` → SqlClient's `Connection Timeout=0` → `
+    connection.Open()` waits indefinitely" — but that guard applied its resolved value via
+    `DbSource.GetConnectionStringWithTimeout`, which rebuilds the connection string from properties
+    for every server type **except** Entra Managed Identity, where `ConnectionString`'s getter
+    returns `_entraRawConnectionString` verbatim (deliberately, so the embedded fallback
+    credentials survive intact — see `DbSource_ConnectionString_SqlDatabase_EntraManagedIdentity_
+    RoundTripsVerbatim`). This UAT deployment's DB source (`NewSqlServerSource.bite` →
+    `WarewolfDevOpsTestDb`) uses `Authentication=Active Directory Managed Identity` (per the
+    2026-08-13 entry above), so the WOLF-8512 fix's override was silently discarded for exactly
+    the source this workflow uses — whatever timeout (or lack thereof) was originally baked into
+    that raw connection string is what actually governed `connection.Open()`, regardless of the
+    guard.
+  - **Fix** (`Dev2.Services.Execution/DatabaseServiceExecution.cs`,
+    `Dev2.Runtime.Services/ServiceModel/Data/DbSource.cs`): `ResolveEffectiveConnectionTimeout` now
+    falls back to a 30s floor when the source's own configured timeout is *also* non-positive, not
+    just the caller-supplied one. `GetConnectionStringWithTimeout` gained an Entra-aware branch
+    that surgically patches (or appends) just the `Connect`/`Connection Timeout` token in the raw
+    connection string, leaving every other part — including the fallback credentials — untouched;
+    the plain `ConnectionString` getter/setter and the non-Entra path are unchanged. New tests:
+    `ResolveEffectiveConnectionTimeout_GivenVariousInputs_ShouldReturnExpectedTimeout`'s two new
+    `DataRow`s (`DatabaseServiceExecutionTests.cs`) and three new `DbSource_
+    GetConnectionStringWithTimeout_*` tests (`DbSourceTests.cs`), all confirmed to fail against the
+    pre-fix code and pass after it; the existing `RoundTripsVerbatim` test remains green, confirming
+    the plain-getter contract for direct reads is untouched.
+  - **Not yet re-verified against a live pipeline run** — the fix is implemented and unit-tested
+    locally (`Dev2.Services.Execution.Tests`: 30/30; `Dev2.Runtime.Tests`'s `DbSourceTests`: 21/21)
+    but not yet committed, deployed to `WarewolfServer-UAT`, or proven against another
+    `ShovelBridgeLoadTest_ExternalServiceBus` run.
+
+- **2026-08-31 — build 30585 (`8512-ProcessingReliabilityTests`, commit `3585b68b98`, the fix above
+  now committed and deployed) recurred at the SAME rate: 984/1000 succeeded, 0 recorded failures,
+  16 never got a result — and the fix above is confirmed NOT the cause, because its own premise
+  about the live source's auth mode was wrong.**
+  - **Confirmed both previously-fixed regressions did NOT recur**: read straight off the running
+    app via Kudu VFS — `host.json`'s `extensions.serviceBus.maxAutoLockRenewalDuration` is
+    `"00:11:00"` (the 2026-08-30 lock-renewal fix, still live) and `Settings/persistencesettings.json`
+    has `"Enable": true` (persistence still on). `Deploy_UAT`'s `-EnablePersistence:$true` staging
+    is confirmed working as intended.
+  - **Confirmed via direct SQL against `wwexecution-uat-hangfire`'s `HangFire.Hash` table** (Entra
+    access token via `az account get-access-token --resource https://database.windows.net`, no
+    temporary Service Bus SAS rule needed this time): all 1000 correlation ids have a
+    `sbtrigger:claim:*` row (every execution started); exactly 984 have a matching
+    `sbtrigger:result:*` row. The 16 without one are the same "execution started, `SaveResult` never
+    reached" signature as the 12-stuck build 30583 investigation above — not a new symptom.
+  - **New evidence: all 16 claims were written within a 0.36s window** (`22:28:28.7340861Z` –
+    `22:28:29.0983084Z`), i.e. they are simultaneous with the very start of the ~1000-way concurrent
+    delivery burst, not scattered across the run. `az servicebus queue show` on
+    `wwexecution-secure-trigger-queue-e2e` at run end showed `activeMessageCount: 0` and
+    `deadLetterMessageCount: 19459` — **the identical count already on file from the 30578
+    investigation**, i.e. unchanged across both the 30583 and this 30585 run. Neither run's
+    stuck messages were ever dead-lettered.
+  - **Application Insights (`warewolfserver-uat-ai`) had ZERO telemetry of any kind — not just
+    exceptions, but `traces`/`requests` too — for the entire run window (22:00-23:00Z), despite
+    `EXECUTIONLOGLEVEL=INFO` and `APPLICATIONINSIGHTS_CONNECTION_STRING` both confirmed correctly
+    set** (matching the app id queried directly). This means even the new WOLF-8512 diagnostic
+    `Dev2Logger.Info` lines added earlier this same day (which would show exactly which of the
+    three SQL calls each stuck execution was in) never reached telemetry. This instrumentation gap
+    is itself a standing blocker to root-causing any future recurrence live rather than by
+    after-the-fact archaeology — worth fixing before the next investigation, not deferred again.
+  - **The 30583 entry's root cause theory is DISPROVEN for this live source, by direct evidence, not
+    inference.** That entry assumed `NewSqlServerSource.bite` uses
+    `Authentication=Active Directory Managed Identity` (stated in multiple earlier entries in this
+    log) — which is the ONLY auth string `DbSource._isEntraManagedIdentityConnectionString` matches
+    (`DbSource.cs` lines 296-299: exact-equals `"Active Directory Managed Identity"` /
+    `"ActiveDirectoryManagedIdentity"`, nothing else). Decrypted the LIVE deployed
+    `Resources/rabbit/NewSqlServerSource.bite` directly (fetched via Kudu VFS, decrypted client-side
+    with the same AES-256-GCM key read from Key Vault `WWExecutionEngine` /
+    `WWExecutionEngineTestSecret` that the app itself uses — not guessed, not assumed):
+    ```
+    Data Source=warewolf-dev2-mcgeaj.database.windows.net;Initial Catalog=WarewolfDevOpsTestDb;
+    User ID=devops_warewolf;Password=***;Connection Timeout=30;Authentication=Active Directory Password
+    ```
+    This is `Authentication=Active Directory Password`, NOT Managed Identity — so
+    `_isEntraManagedIdentityConnectionString` evaluates `false` for this exact source, and today's
+    fix (`GetConnectionStringWithTimeout`'s Entra-raw-string branch) never executes for it; it took
+    the ordinary non-Entra path (`ConnectionTimeout` property + `ConnectionString` re-read) all
+    along. **The connection string also already carries an explicit `Connection Timeout=30`** — it
+    was never `0`/unbounded for this source, before or after today's fix. Both premises of the
+    30583 root-cause chain (Entra-Managed-Identity classification, and a `Connection Timeout=0`
+    hang) are contradicted by the actual live value. Whether the source's `Authentication` value
+    changed between the 30583 investigation and now, or was always `Active Directory Password` and
+    misidentified, could not be determined from this session alone (no `.bite` file history for
+    this specific setting was checked).
+  - **Working theory (not yet proven live — needs the telemetry gap above closed to confirm)**:
+    `Authentication=Active Directory Password` requires a live MSAL/Entra token acquisition inside
+    `SqlConnection.Open()` on every fresh physical connection. `Microsoft.Data.SqlClient` has a
+    documented history of not always bounding that specific phase by `Connect Timeout` (the AAD
+    token round-trip, as opposed to the TCP/TDS handshake, isn't reliably covered by the same client-
+    side clock in every driver version) — a burst of ~1000 near-simultaneous connection opens
+    against Entra ID could throttle a small fraction of token requests into a hang that never
+    resolves and never throws, which exactly matches: a tight cluster at burst start, a small
+    consistent fraction (12-16 of 1000across three consecutive runs), and no trace in either the
+    active queue or the DLQ (a genuinely-hung native/MSAL call is not something
+    `IWorkflowExecutor.Execute()`'s absent cancellation seam — already documented above — can
+    interrupt either). Not yet confirmed by a captured exception or stack, because of the telemetry
+    gap above.
+  - **Recommendation for whoever picks this up next**: (1) fix the App Insights telemetry gap first
+    — without it, every future run is another blind archaeology pass; (2) either switch this
+    source's `Authentication` to the Managed Identity mode the fixes so far assumed (making today's
+    `DbSource` fix actually apply, and sidestepping password-based Entra auth's token-acquisition
+    profile entirely), or capture a thread/connection dump the next time this recurs to directly
+    confirm the MSAL-hang theory before writing a fix against it; (3) do not re-attribute this to
+    `Connection Timeout=0` again without re-checking the live connection string — it has not been
+    `0` on this source for at least these last three runs.
+
+- **2026-08-31 — fixed the App Insights telemetry gap (recommendation (1) above), and found
+  stronger evidence against the 30585 entry's own MSAL-hang theory that points at ThreadPool
+  starvation instead.**
+  - **Telemetry fix**: confirmed via `Program.cs:59-88` that `ENABLEAPPLICATIONINSIGHTS=true` and
+    `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` were both already correctly set live — the SDK
+    registration itself was never the problem. The actual gap: **no code anywhere in this project
+    ever calls `TelemetryClient.Flush()`** (confirmed by a project-wide grep — zero matches). The
+    AI SDK's default channel batches telemetry on its own ~30s schedule; a Consumption-plan instance
+    recycled mid-burst (exactly what a 1000-message burst causes — rapid scale-out then scale-in)
+    can be torn down well inside that window, discarding every buffered trace/exception/dependency
+    with no error. This is consistent with the observed symptom: not just tail-loss but **zero**
+    telemetry for the entire ~30-minute run window, recovering only once load subsided. **Fix**:
+    added `Logging/TelemetryFlushHostedService.cs` (an `IHostedService` registered alongside the AI
+    SDK in `Program.cs`, gated by the same `RegisterApplicationInsightsSdk` flag) that calls
+    `TelemetryClient.Flush()` on `StopAsync` and waits a bounded 5s to give the transmission a
+    chance to leave the process before shutdown continues. 6 new tests
+    (`Logging/TelemetryFlushHostedServiceTests.cs`, using a fake `ITelemetryChannel` since there is
+    no mocking framework in this test project) verify the flush call, the wait, that an
+    already-cancelled shutdown token does not shorten the wait, and that a channel-level exception
+    doesn't propagate. Not yet deployed/re-verified against a live pipeline run.
+  - **New evidence against the MSAL-hang theory, from re-reading `ServiceBusWorkflowTriggerFunction.cs`
+    and `ServiceBusReplayAndResultStore.cs` against the 30585 claim-timestamp data already
+    gathered**: `ReleaseClaim` (lines 274-293) does a full `RemoveHash` — a genuine release-then-
+    reclaim cycle would show a **new** `claimedAtUtc` on the next attempt. `TryClaim` also has a
+    20-minute stale-claim steal (`ClaimStaleAfter`, line 77) for exactly the case of an abandoned
+    claim. The harness kept polling until `22:58:17` — **10 minutes past** the 20-minute mark
+    (claims made `22:28:28-29`, stale threshold `22:48:28-29`) — yet all 16 claim timestamps stayed
+    frozen at their original value. Neither the 5-minute `ExecutionTimeout` race
+    (`ServiceBusWorkflowTriggerFunction.cs:356-365`) nor the 20-minute steal ever fired for these
+    16, which means Service Bus never redelivered them in the full 30 minutes — the original
+    delivery's lock kept renewing (up to the `00:11:00` ceiling) the entire time, which only
+    happens if the invocation was still considered alive by the SDK.
+  - **Working theory (supersedes the MSAL-hang theory above, not yet proven live — same
+    telemetry-gap caveat, now fixed for the next run): CLR ThreadPool starvation, not a hung SQL/MSAL
+    call specifically.** `Task.Run(() => _executor.Execute(...))` (line 343) only starts after
+    acquiring one of the `MaxConcurrentExecutions` semaphore slots (live value: **4**, already
+    tuned down from the code default of 8 — `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS`),
+    so at most 4 real blocking work items run per instance at once — but if those 4 are CPU-heavy
+    (cold-start Roslyn VB-expression compilation, synchronous ADO.NET calls) on a small
+    Consumption-plan instance, they can starve the pool badly enough that even the *lightweight*
+    continuation needed to notice `Task.Delay(ExecutionTimeout)` completed never gets scheduled —
+    the safety net's own enforcement code becomes a casualty of the load it exists to guard
+    against. This would explain every observed fact simultaneously: no redelivery, no dead-letter,
+    no released claim, frozen timestamps, and all 16 claimed within the same 0.36s burst-start
+    window (i.e. co-resident on one or a few instances at the moment of starvation). Nothing in
+    this project calls `ThreadPool.SetMinThreads` (confirmed by grep) — the standard mitigation for
+    this exact failure mode.
+  - **Recommendation (not yet actioned)**: (1) lower `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS`
+    further (4 → 2) to reduce per-instance concurrent CPU/memory pressure during a burst; (2) add an
+    explicit `ThreadPool.SetMinThreads()` floor at startup so a burst doesn't have to wait on the
+    pool's default slow thread-injection rate; (3) `WAREWOLF_SERVICEBUS_TRIGGER_EXECUTION_TIMEOUT_SECONDS`
+    is NOT expected to help this specific symptom — shortening it doesn't matter if the code that
+    checks the timer can't get scheduled either; leave it at its default 5 minutes, which is already
+    proven to work correctly for the *other* failure mode (a genuinely slow-but-alive execution,
+    where `ReleaseClaim` demonstrably does fire). (4) Re-run the load test with telemetry now fixed
+    so a future recurrence can be root-caused from captured exceptions/traces instead of archaeology.
+
+- **2026-08-31 — recommendation (1) actioned, both live and in the pipeline.** A colleague's
+  1000-message `-VerifyWorkflowExecution` run (~13:20-13:32 UTC) reproduced the same starvation
+  signature independently: App Insights (`warewolfserver-uat-ai`) showed 467 exceptions in that
+  window — `OperationCanceledException` ×302 and `TimeoutException` ×88 at
+  `ServiceBusWorkflowTriggerFunction.ProcessAuthenticatedMessageAsync`, plus `OutOfMemoryException`
+  ×14 at `ActivityParser.Parse` — while the RabbitMQ Shovel and source queue stayed healthy
+  throughout (`state: running`, `messages: 0` post-run), confirming the loss is downstream of the
+  bridge, in the engine's own capacity, same as every prior entry in this section.
+  - **Live mitigation**: `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS` set to `2` directly
+    on `WarewolfServer-UAT` (`az functionapp config appsettings set`) — confirmed applied (Activity
+    Log: `Update web sites config` succeeded) and the app healthy post-change (`GET /apis.json` →
+    `200`). **Not durable**: this is a Kudu-only app setting, not staged by any deploy script — the
+    exact same "silently reverts on redeploy" trap already hit once by the persistence-flag
+    regression (see the 2026-08-15 entry above). Revisit whether this should become a checked-in
+    `Deploy-WwExecutionEngine.ps1` app-setting default rather than a live-only override.
+  - **Durable, complementary fix**: `Deploy-WwExecutionEngine.ps1` gained a new opt-in
+    `-ServiceBusMaxConcurrentCalls <int>` parameter (mirrors the existing `-AlignHostJsonLogLevel`
+    pattern — `Update-HostJsonServiceBusConcurrency`, staged in Phase 3 alongside the log-level
+    alignment) that sets `host.json`'s `extensions.serviceBus.maxConcurrentCalls`. This is a
+    **different** concurrency gate from `MAX_CONCURRENT_EXECUTIONS`: it bounds how many messages the
+    Functions host *dispatches* to the trigger at all, upstream of and independent from the
+    trigger's own semaphore — addressing the "many invocations in flight waiting on the semaphore,
+    each still holding a lock and cold-start memory pressure, even though only N execute at once"
+    half of the starvation theory. `pipeline-LOADTEST.yml`'s `Deploy_UAT` job now passes
+    `-ServiceBusMaxConcurrentCalls 2` (matching the live app-setting value above), so a future
+    pipeline redeploy of `WarewolfServer-UAT` no longer silently drops this mitigation the way the
+    persistence flag did — it's baked into the deploy call itself, not left as a manual follow-up.
+  - **Not yet actioned**: recommendation (2) (`ThreadPool.SetMinThreads()` floor) is implemented in
+    `ThreadPoolStartupConfigurator`/`Program.cs` (this same branch, commit `78aa65fe71`) but its own
+    deployment/verification status against a live pipeline run is still open — see that commit's own
+    notes. Re-running the full 1000-message load test with all of the above in place (live
+    concurrency drop + durable `maxConcurrentCalls` cap + ThreadPool floor + telemetry flush) is the
+    next concrete step to confirm whether the starvation theory is now fully closed.
+
+- **2026-08-31 — New: opt-in `dbo.jobs1` reconciliation (`Test-ShovelBridgeE2E.ps1` Phase 4c,
+  `-JobsDbConnectionString`).** Every prior entry in this log that reconciled per-message delivery
+  did so by hand-crafting SQL against `dbo.jobs1`/the Service Bus DLQ during a live investigation —
+  this promotes that technique into the harness itself so it runs every time, not just when someone
+  is already root-causing a failure.
+  - **What it checks, beyond `usp_jobs1_Summary`'s own buckets**: a message that's
+    lost/denied/dead-lettered before `RabbitProcess`'s own DB activity ever ran (before
+    `usp_jobs1_LogStart` is even called) leaves **zero** rows in `dbo.jobs1` — invisible to
+    `usp_jobs1_Summary`'s aggregation, which only groups over rows that already exist. Phase 4c
+    separately computes, for each of the `N` expected `'<prefix><CorrelationId>-NNNNNN'` messages
+    (`-JobsDbMessageContentPrefix`, default `'loadtest-'`), whether it has *any* `dbo.jobs1` row at
+    all — a tally-table anti-join against the extracted numeric suffix, 0-based (`-000000` ..
+    `-{N-1}`, matching `Test-ShovelBridgeE2E.ps1`'s own documented `-CorrelationId` numbering — NOT
+    1-based, which an earlier hand-written version of this exact query got wrong).
+  - **Scoped to the run's own start time** (`usp_jobs1_Summary @FromUtc=<captured right before
+    Phase 4 starts publishing>`), never the whole table — `dbo.jobs1` is shared and never purged
+    across every historical run (including concurrent CI activity), so an unscoped query would mix
+    in unrelated runs' rows, exactly the trap `Provision-ShovelBridgeSchema.sql`'s own header
+    comment warns about.
+  - **Independent of the harness's own result-poll path**: this reads `RabbitProcess`'s own
+    business-level rows, not `ServiceBusReplayAndResultStore`'s `sbtrigger:result:*` Hangfire hash —
+    so it isn't affected by any of the `GET /secure/servicebus-result/{correlationId}` read-path
+    bugs recorded earlier in this log (the 24 unexplained `HttpError` 500s, the load-balanced-
+    instance persistent-404 case).
+  - **Auth**: `devops_warewolf` via `Authentication=Active Directory Password` (confirmed from the
+    live, decrypted `NewSqlServerSource.bite` connection string — this is Entra ID password auth,
+    not classic SQL Server auth, despite the login-looking name), password sourced from a new
+    secret pipeline variable (`DBPassword`) and never inlined into the script body, same convention
+    as `ExternalRabbitMqPassword`/`ShovelE2EDaemonClientSecret`.
+  - **Opt-in, graceful skip**: omitting `-JobsDbConnectionString` skips Phase 4c with a note, same
+    as every other opt-in switch added to this script — it does not turn a missing secret into a
+    pipeline failure.
+  - **Tested**: `Get-WwJobsDbVerdict` (the pure bucket-evaluation function — no DB access) has new
+    Pester coverage in `Tests/Integration/Test-ShovelBridgeE2E.Tests.ps1` (this script's first ever
+    Pester file); the live SQL calls themselves are proven by actually running the pipeline, same as
+    the rest of this integration-only script.
+
+- **2026-08-31 — CORRECTION: `devops_warewolf` is plain SQL authentication, NOT Entra ID.** The
+  entry above (and every earlier entry quoting the decrypted `NewSqlServerSource.bite` connection
+  string) took `Authentication=Active Directory Password` at face value. Attempting Phase 4c's
+  first live corroboration run failed at the connection step with `AdalException: Could not
+  discover a user realm` (identical failure via both legacy `System.Data.SqlClient` and `sqlcmd
+  -G`), and `devops_warewolf` could not be found as an Entra user anywhere in tenant
+  `ca0cc53b-...` by UPN, `mailNickname`, or `mail`. **Confirmed directly**, not inferred: `SELECT
+  name, type_desc, authentication_type_desc FROM sys.database_principals WHERE name =
+  'devops_warewolf'` returned `SQL_USER` / `INSTANCE` — a genuine SQL Server login, the
+  `Authentication=Active Directory Password` keyword in every prior transcription was simply
+  wrong (a documentation error, not a live config drift — nothing about the login itself changed).
+  Fixed the connection string in `pipeline-LOADTEST.yml` to plain SQL auth (`User
+  ID=devops_warewolf;Password=...`, no `Authentication` keyword) — `Test-ShovelBridgeE2E.ps1`'s
+  own `-JobsDbConnectionString` doc comment was already auth-mode-agnostic and needed no change.
+  **First successful corroboration, once the auth mode was fixed** (local run, correlationId
+  prefix `e135cd6825044c6b8946dbc3c0658ef9`, same session): `dbo.jobs1` shows **996/1000** rows,
+  all `FINISHED` with zero errors (no duplicate-success bug) — **4 sequence numbers (`127`, `131`,
+  `151`, `152`) never got a `dbo.jobs1` row at all**, i.e. never reached
+  `RabbitProcess`'s own DB activity. This is a tighter, DB-confirmed number than the harness's own
+  in-flight report of "998/1000 resolved, 2 still pending" (that run's process was killed by a
+  10-minute tool timeout before it printed its own final verdict) — the 2-message gap between
+  "998 resolved" and "996 finished" is consistent with 2 of the 4 missing messages having reached
+  a terminal status via a path that never touches `dbo.jobs1` at all (a denial/malformed-message
+  outcome, recorded by `RecordTerminalOutcomeAsync` before `_executor.Execute()` is ever called),
+  while the other 2 remain genuinely stuck — the exact "claimed, no result, no dead-letter" pattern
+  documented repeatedly elsewhere in this log. This is Phase 4c doing exactly what it was built
+  for: surfacing a discrepancy the harness's own result-poll path couldn't see on its own.
+  - **Follow-up, same session — the 4 missing sequence numbers resolve to TWO distinct root
+    causes, confirmed by direct evidence, not inference**:
+    - **`-000151` / `-000152`: engine-side, and now proven.** `GET
+      /secure/servicebus-result/{correlationId}` for both returned `200` with `status:
+      "InvalidToken"`, `error: "Token validation failed: A task was canceled."`, at the
+      **identical** `completedAtUtc` (`2026-08-31T15:25:21.9641...Z`) — this is exactly the
+      `EntraBearerTokenValidator.ValidateAsync`-cancelled-by-the-invocation's-own-token theory
+      flagged as a *working theory, not yet proven by a direct correlationId-to-exception join*
+      in the 2026-08-16 entry above. **Now proven**: two messages failing token validation at
+      the exact same instant is consistent with a shared invocation-level cancellation (host
+      self-throttling / lock-expiry-triggered abandonment), not two independent token problems.
+    - **`-000127` / `-000131`: a genuine bridge-side loss, not an engine problem at all.** `GET
+      /secure/servicebus-result` returned `404` for both (no result ever recorded — consistent
+      with "still pending"). A temporary `Listen`-rights SAS rule (created and torn down the
+      same run, same technique as every prior peek in this log) was used to scan the
+      **entire** active queue (0 messages — fully drained) and the **entire** dead-letter
+      subqueue (19,459 messages — unchanged from the pre-run baseline, i.e. this run added
+      **zero** new dead-letters) for either correlationId. **Zero matches in either.** The
+      harness's own publish phase reported `Published 1000 message(s)` with no publish errors
+      (a publish failure would have thrown per `PublishToRabbitMqAsync` — see the Phase 4b
+      header comment), so these two were successfully published to RabbitMQ but never arrived
+      at Service Bus at all — lost specifically in the RabbitMQ→Shovel bridge itself. This is
+      the first time in this log a "missing" message has been proven absent from BOTH Service
+      Bus sub-queues rather than merely "not found by the correlationId prefix filter" — ruling
+      out an engine-side execution/dead-letter bug for these two as conclusively as the evidence
+      allows without SSH/Prometheus access to `rabbitmq.warewolf.online` (still not available —
+      see the 2026-08-15 correction entry above on why that avenue was abandoned before).
+    - **Net**: of this run's 4 "missing" messages, 2 are an engine capacity/cancellation issue
+      (worth investigating alongside the `MAX_CONCURRENT_EXECUTIONS`/`maxConcurrentCalls` work
+      earlier in this log) and 2 are a genuine, still-open Shovel bridge-delivery gap at a very
+      low rate (0.2%) — a materially smaller and better-characterised problem than any prior
+      entry in this log, but not yet fully closed.
+  - **Fix for the `-000151`/`-000152` half (engine-side)**: `ServiceBusWorkflowTriggerFunction
+    .Run`'s `catch (Exception ex)` around `_tokenValidator.ValidateAsync` was a blanket catch —
+    a `TaskCanceledException` from the invocation's own `cancellationToken` firing mid-validation
+    (most likely `EntraBearerTokenValidator`'s cold OIDC-metadata fetch, which despite the
+    validator being a DI singleton still has to complete once per app lifetime, racing
+    host-level burst/cold-start pressure) was treated identically to a genuinely bad token: a
+    permanent `InvalidToken` result saved AND the message dead-lettered on the very first
+    attempt, zero retry. Exactly the same misclassification bug already fixed for
+    `WorkflowExecutor.Execute`'s `OutOfMemoryException` via `WorkflowExecutionResult
+    .IsTransientFailure` on 2026-08-14 — just never applied to this earlier validation step.
+    **Fix**: a new `catch (Exception ex) when (IsOwnInvocationCancellation(ex, cancellationToken))`
+    clause, ahead of the existing catch-all, releases the claim and rethrows instead — Service
+    Bus's own retry/backoff applies, and a retry moments later should succeed since the cache is
+    then warm regardless of which attempt populated it. `IsOwnInvocationCancellation` is a pure
+    classification helper (no I/O), unit-tested directly (4 new tests in
+    `ServiceBusWorkflowTriggerFunctionTests.cs`) rather than driving the whole `Run(...)` call —
+    same reason `WorkflowExecutor.BuildTransientFailureResult` was extracted and tested the same
+    way for the OOM fix; `_tokenValidator` is a sealed concrete class needing a live OIDC call,
+    deliberately left to integration tests by this file's own existing convention. Not yet
+    deployed/re-verified against a live pipeline run.
+  - **2026-08-31, follow-on (root causes B and C, plus broader transient classification)**:
+    the `IsOwnInvocationCancellation` fix above closed the specific case reproduced by
+    `-000151`/`-000152` (the trigger's own `cancellationToken` firing mid-validation), but a
+    plan review against the original incident report found two further root causes it did
+    **not** touch, plus a real gap in the classification's coverage:
+    - **Root cause B (the `NO RESULT` correlation ids)**: `ServiceBusReplayAndResultStore`'s
+      `ClaimStaleAfter` was a hard-coded 20-minute constant, sized against an assumed
+      10-minute `functionTimeout`. If the queue's own `MaxDeliveryCount × LockDuration`
+      delivery budget is smaller than `ClaimStaleAfter`, a redelivery can never actually take
+      over a claim left by a dead/hung attempt — the queue dead-letters first, with no result
+      ever recorded. **Fix**: `ServiceBusTriggerOptions.ClaimStaleAfter` now resolves the
+      host's actual `functionTimeout` automatically (five-tier strategy — explicit override →
+      `AzureFunctionsJobHost__functionTimeout` → `host.json` on disk → `WEBSITE_SKU` fallback →
+      10-minute hard fallback) plus a 1-minute margin, cached in a `static Lazy<TimeSpan>` so a
+      bare `new ServiceBusTriggerOptions()` (used throughout the test suite) never hits disk
+      per construction. `Enable-ServiceBusSecureTrigger.ps1` gained `-LockDuration` and now
+      asserts `MaxDeliveryCount × LockDuration > ClaimStaleAfter` before provisioning anything.
+    - **Root cause C (settlement bound to the host token)**: every `CompleteMessageAsync`/
+      `DeadLetterMessageAsync` call used the trigger's own `cancellationToken` — during a
+      shutdown/drain that token is already cancelled, so settlement throws immediately and the
+      message is left unsettled even though its outcome was already decided. **Fix**: a new
+      `SettleAsync` helper wraps every settlement call in an independent, timeout-bounded
+      `CancellationTokenSource` (`ServiceBusTriggerOptions.SettlementTimeout`, default 30s)
+      over `CancellationToken.None`. Safe because the result is always persisted first — a
+      settlement timeout just leaves the message unsettled for the next redelivery's dedupe
+      check to complete.
+    - **Classification gap**: `IsOwnInvocationCancellation` only catches a cancellation tied to
+      the trigger's OWN `cancellationToken`. Its own test
+      (`IsOwnInvocationCancellation_TokenNotCancelled_ReturnsFalse`) proves a `TaskCanceledException`
+      from an internal `HttpClient` timeout — unrelated to that token — still fell through to
+      the terminal `InvalidToken` path. **Fix**: a new `TokenValidationFailureClassifier`
+      (`Auth/Parsers/`) adds a second, broader transient tier —
+      `HttpRequestException`/`IOException`/`SocketException`, `SecurityTokenSignatureKeyNotFoundException`,
+      and `IDX20803`/`IDX20804` IdentityModel codes — inserted as a second `catch when` clause
+      between the shipped cancellation clause and the terminal catch-all. Deliberately did
+      **not** extract an `IEntraBearerTokenValidator` interface (as an earlier plan draft
+      proposed) — the shipped fix's own pure-exception-plus-token classification approach
+      already sidesteps needing a live/faked validator, so the classifier is tested the same
+      way, with zero interface surface added.
+    - Also added, same pass: dead-letter triage sub-reasons (`"{Status}:{SubReason}"`, e.g.
+      `InvalidToken:JtiReplay`) via an optional `subReason` parameter on
+      `RecordTerminalOutcomeAsync`, and `host.json`'s `extensions.serviceBus.clientRetryOptions`
+      (exponential backoff, 3 retries).
+    - Full local build + the entire `Warewolf.Execution.Lightweight.Tests` assembly (869 tests)
+      green; the two riskiest new tests (`FailTransient_ReleasesClaim_SavesNoResult_Rethrows`
+      and `ProcessAuthenticated_SettlementTimesOut_ResultStillPersisted_NoThrow`) were verified
+      to actually fail when their respective fix was temporarily reverted, then restored.
+      **Not yet deployed/re-verified against a live pipeline run** — the 1000-message E2E
+      acceptance run from the original plan is still outstanding.
+
+- **2026-09-01 — Local reproduction of the 1000-message load test (correlationId prefix
+  `bebfb24eea914ed1aa6ed4f1e7f743f0`), run to corroborate a clean CI result (build 30599,
+  `ShovelBridgeLoadTest_ExternalServiceBus`, 1000/1000 in 73.1s). Result: 998/1000** — 2
+  correlation ids (`-000858`, `-000859`) never resolved, the same "claimed, no result, no
+  dead-letter" signature documented repeatedly above. This confirms the 2026-08-31 fixes
+  (`ClaimStaleAfter` auto-resolution, `SettleAsync`, `TokenValidationFailureClassifier`) — which
+  that entry left "not yet deployed/re-verified" — do **not** fully close this bug class on their
+  own; `ClaimStaleAfter` resolution is confirmed present in the current code, so this is a
+  residual gap, not a regression of that fix.
+  - **Full evidence chain, all independently confirmed**:
+    - `dbo.jobs1`: exactly 998 rows for this run's prefix; `-000858`/`-000859` have **zero** rows
+      at all (never reached `RabbitProcess`'s own `usp_jobs1_LogStart`), even though their
+      immediate neighbors (`-000856`, `-000857`, `-000860`, `-000861`) all finished within the
+      same ~250ms burst window.
+    - App Insights (`warewolfserver-uat-ai`): **exactly one** trace line per correlation id, both
+      at `07:01:55Z` — `"Another delivery is already in flight for this correlation id"` (the
+      `ServiceBusWorkflowTriggerFunction.Run` dedupe branch at `TryClaim` failing). Nothing else,
+      ever, for either id: no exception, no `SlotWaitTimeout`/`ExecutionTimeout` warning (both DO
+      log when they fire), no `performanceCounters` rows (that table was completely empty for
+      this app before the fix below).
+    - RabbitMQ (`rabbitmq.warewolf.online`): source queue empty, `messages_unacknowledged=0`,
+      `redeliver (lifetime)=0` — rules out a Shovel/broker-side loss; both messages left RabbitMQ
+      cleanly.
+    - Service Bus dead-letter queue (`wwexecution-secure-trigger-queue-e2e`): exhaustively peeked
+      via the namespace `RootManageSharedAccessKey` (non-destructive `PeekMessagesAsync`, all
+      19,459 entries scanned) — **zero** matches for this run's correlation prefix; not
+      dead-lettered by `MaxDeliveryCountExceeded` or by the app.
+    - `activeMessageCount` on the same queue: `0`, checked repeatedly over 20+ minutes.
+  - **Conclusion**: a first delivery claimed both correlation ids and then produced literally no
+    further telemetry of any kind — consistent with the process dying outright (most likely OOM
+    under Consumption-plan burst pressure, the same class flagged throughout this log, though not
+    provable from the telemetry actually available — see the fix below) before reaching *any* of
+    this function's existing catch/timeout paths, all of which log when they fire. Neither active
+    nor dead-lettered nor executed 20+ minutes later, well past `ClaimStaleAfter`'s ~11-minute
+    window. **Open question for a future investigation**: why no further Service Bus redelivery
+    (expected roughly every `lockDuration=1min`) was ever observed for either id in that window.
+  - **Two remediations shipped this session, neither yet deployed/re-verified against a live
+    pipeline run**:
+    1. Three new `Information`-level log markers in `ServiceBusWorkflowTriggerFunction.cs`
+       bracketing the claimed-but-not-yet-settled span (claim acquired → about to call
+       `IWorkflowExecutor.Execute`, with an inline `GC.GetTotalMemory`/`Environment.WorkingSet`
+       snapshot at that highest-risk instant → execution task returned), so a future silent death
+       leaves a last-known-state trail even if the process dies before a full telemetry flush.
+    2. `PerformanceCollectorModule` (from `Microsoft.ApplicationInsights.PerfCounterCollector`,
+       previously pulled in transitively but never registered) is now wired up behind a new
+       opt-in `EnablePerformanceCounters`/`ENABLEPERFORMANCECOUNTERS` toggle
+       (`LoggingConfiguration.cs` → `Program.cs` → `Deploy-WwExecutionEngine.ps1
+       -EnablePerformanceCounters` → `pipeline-LOADTEST.yml`'s `Deploy_UAT` job), so App
+       Insights' `performanceCounters` table starts collecting process memory/CPU samples on the
+       next `Deploy_UAT` run.
+  - **Separate, lower-priority finding**: `Test-ShovelBridgeE2E.ps1`'s Phase 4c (`dbo.jobs1`
+    reconciliation) failed on this same run with a garbled `"Incorrect syntax near ')'."` SQL
+    error. Reproduced the identical query through the identical `Invoke-WwSqlQuery` helper 6/6
+    times afterward with no failure — points to a fragile child-`powershell.exe`-process/
+    stdout-parsing issue in that helper under resource contention, not a real query bug. Filed
+    separately; not yet actioned.
 
 ## Promotion status
 
