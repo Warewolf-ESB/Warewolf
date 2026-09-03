@@ -130,11 +130,12 @@ namespace Warewolf.Execution.QueueProcessor.Tests
                 maxDeliveryAttempts: maxDeliveryAttempts,
                 deadLetter: withDeadLetter ? _deadLetter : null);
 
-        async Task DeliverAsync(ulong deliveryTag, bool redelivered = false, string body = "hello")
+        async Task DeliverAsync(ulong deliveryTag, bool redelivered = false, string body = "hello",
+                                string? correlationId = "txn-1")
         {
             await _registered.HandleBasicDeliverAsync(
                 ConsumerTag, deliveryTag, redelivered, exchange: string.Empty,
-                routingKey: "pump-queue", properties: new BasicProperties { CorrelationId = "txn-1" },
+                routingKey: "pump-queue", properties: new BasicProperties { CorrelationId = correlationId },
                 body: new ReadOnlyMemory<byte>(System.Text.Encoding.UTF8.GetBytes(body)));
         }
 
@@ -253,6 +254,61 @@ namespace Warewolf.Execution.QueueProcessor.Tests
             Assert.AreEqual(true, diag["x-warewolf-redelivered"]);
             StringAssert.Contains(diag["x-warewolf-failure-reason"]?.ToString() ?? string.Empty, "Failed",
                 "an operator must be able to tell a transport failure from a business failure");
+        }
+
+
+        // ── Transaction-id attribution on a TRANSPORT-failure dead-letter (2026-09-03) ──
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task TransportFailureDeadLetter_CarriesTheTransactionId()
+        {
+            // Until 2026-09-03 this path wrote FIVE diagnostic fields - queue, workflow,
+            // failure-reason, redelivered, dead-lettered-utc - and no transaction id in any form.
+            //
+            // That makes a transport-failure dead-letter impossible to tie back to what was
+            // published, and it is the harder case to lose: a transport failure means the engine
+            // never confirmed anything, so the dead-letter is the ONLY record that the delivery
+            // happened at all. (EngineForwarder's BUSINESS-failure dead-letter has always carried
+            // the id, which is why the 10 000-message run's ten dead-letters were still
+            // identifiable from the worker log.)
+            ConsumerFails();
+            var pump = CreatePump();
+            await pump.StartAsync(CancellationToken.None);
+
+            await DeliverAsync(21, redelivered: true, correlationId: "orders-S-5583-88023f");
+
+            var diag = _deadLetter.Diagnostics.Single();
+            Assert.IsTrue(diag.ContainsKey(RabbitMqDeadLetterPublisher.TransactionIdHeader),
+                "a transport-failure dead-letter must carry the transaction id, or it cannot be " +
+                "reconciled against what was published");
+            Assert.AreEqual("orders-S-5583-88023f",
+                diag[RabbitMqDeadLetterPublisher.TransactionIdHeader],
+                "the id must be the publisher-assigned CorrelationId from the original delivery");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task TransportFailureDeadLetter_NoCorrelationId_OmitsTheKeyEntirely()
+        {
+            // Omitted, never written as blank. RabbitMqDeadLetterPublisher promotes this key onto
+            // BasicProperties.CorrelationId; an empty value would be promoted as an empty string and
+            // defeat the header-then-CorrelationId fallback in every reader, which stops at a
+            // present-but-useless value rather than falling through.
+            ConsumerFails();
+            var pump = CreatePump();
+            await pump.StartAsync(CancellationToken.None);
+
+            await DeliverAsync(22, redelivered: true, correlationId: null);
+
+            var diag = _deadLetter.Diagnostics.Single();
+            Assert.IsFalse(diag.ContainsKey(RabbitMqDeadLetterPublisher.TransactionIdHeader),
+                "an absent CorrelationId must leave the key out, not write an empty string");
+
+            // The rest of the diagnostics must still be intact - omitting the id must not
+            // accidentally short-circuit the other five fields an operator triages from.
+            Assert.AreEqual("pump-queue", diag["x-warewolf-queue"]);
+            Assert.AreEqual(true, diag["x-warewolf-redelivered"]);
         }
 
         // ── Failure of the failure path ──────────────────────────────────────

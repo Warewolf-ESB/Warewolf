@@ -129,7 +129,7 @@ namespace Warewolf.Execution.QueueProcessor.Consumers
                 var diagnostics = new Dictionary<string, object?>
                 {
                     ["x-warewolf-execution-id"] = executionId,
-                    ["x-warewolf-custom-transaction-id"] = customTransactionId,
+                    [RabbitMqDeadLetterPublisher.TransactionIdHeader] = customTransactionId,
                     ["x-warewolf-queue"] = _config.QueueName,
                     ["x-warewolf-workflow"] = _config.WorkflowPath,
                     ["x-warewolf-engine-status"] = result.StatusCode.HasValue

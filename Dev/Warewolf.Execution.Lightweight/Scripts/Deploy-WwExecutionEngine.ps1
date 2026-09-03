@@ -1598,6 +1598,34 @@ try {
     # 3.1 secure.config — encrypted: stage as-is; plaintext: AES-encrypt automatically.
     # (Staging is a local file op — performed in BOTH dry-run and real, into $StagingDir.)
     if ($SecureConfigPath) {
+        # ── GUARD (8520 item 5): encrypted secure.config with no Key Vault is ALWAYS broken ──
+        #
+        # WOLF-8516 moved keyVaultName out of App Settings and into the staged
+        # Settings/executionengine.settings.json, and HostEnvironmentConfig no longer reads
+        # AZURE_KEYVAULT_NAME at all. So omitting -KeyVaultName now leaves keyVaultName NULL in that
+        # file, encryption is disabled at runtime, and the engine cannot decrypt the secure.config
+        # this very block is about to encrypt.
+        #
+        # The failure is silent and total, which is why it needs a hard stop rather than a warning:
+        # unreadable secure.config -> every /secure/* request denied -> the engine reports the denial
+        # as HTTP 500 (WOLF-8418 wraps denials as 500, not 403) -> EngineForwarder classifies 500 as
+        # a BusinessFailure -> the message is dead-lettered AND acked. The queue therefore drains,
+        # the app scales back to zero, and the run looks clean while discarding every message.
+        #
+        # Nearly shipped on 2026-09-03 against wwengine-e2e-ldi413: the pre-merge deploy command
+        # omitted both parameters and was fine only because the pre-merge engine still read the env
+        # vars. Re-running it against merged code would have broken authorization outright.
+        if (-not $KeyVaultName -or -not $KeyVaultSecretName) {
+            throw (
+                "secure.config is being staged from '$SecureConfigPath' but -KeyVaultName / " +
+                "-KeyVaultSecretName were not supplied. Since WOLF-8516 the engine reads Key Vault " +
+                'topology SOLELY from Settings/executionengine.settings.json, so it would deploy ' +
+                'with encryption DISABLED and be unable to decrypt secure.config. Every /secure/* ' +
+                'request would then be denied as HTTP 500 and the QueueProcessor would dead-letter ' +
+                'and ack every message while the queue drained clean. Pass both parameters, or ' +
+                'deploy without -SecureConfigPath.')
+        }
+
         $secureDest = Join-Path $StagingDir 'secure.config'
         if ($secureConfigKind -eq 'Encrypted') {
             Write-Step 'Staging already-encrypted secure.config (validated decryptable; not re-encrypted)'

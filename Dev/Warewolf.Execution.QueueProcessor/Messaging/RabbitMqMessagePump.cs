@@ -404,6 +404,26 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                         ["x-warewolf-dead-lettered-utc"] = DateTime.UtcNow.ToString("O"),
                     };
 
+                    // The transaction id was MISSING from this path entirely until 2026-09-03.
+                    //
+                    // EngineForwarder's business-failure dead-letter has always carried it, but a
+                    // TRANSPORT-failure dead-letter published here carried only the five diagnostic
+                    // fields above - no transaction id in any form. Such a message is therefore
+                    // impossible to tie back to what was published: not by header, and (before
+                    // RabbitMqDeadLetterPublisher promoted it) not by CorrelationId either. It is the
+                    // harder case to lose, too, because a transport failure means the engine never
+                    // confirmed anything, so the dead-letter is the ONLY record that the delivery
+                    // happened at all.
+                    //
+                    // Written only when the publisher actually set a CorrelationId: an empty value
+                    // would be promoted onto BasicProperties.CorrelationId as an empty string and
+                    // defeat the header-then-CorrelationId fallback every reader uses.
+                    var correlationId = eventArgs.BasicProperties?.CorrelationId;
+                    if (!string.IsNullOrWhiteSpace(correlationId))
+                    {
+                        diagnostics[RabbitMqDeadLetterPublisher.TransactionIdHeader] = correlationId;
+                    }
+
                     await _deadLetter.PublishAsync(body, diagnostics, CancellationToken.None)
                                      .ConfigureAwait(false);
 

@@ -81,6 +81,12 @@
     .\Invoke-WwQueueLoadTest.ps1 -Mode DeployWorker -MaxReplicas 8 -MessageCount 100
 
 .EXAMPLE
+    # Vary the replica ceiling on an ALREADY-DEPLOYED worker (scaling comparison runs).
+    # In Mode Existing, -MaxReplicas alone is planning-only: the ceiling comes from the Container App,
+    # so a mismatch is a BLOCKER. -ApplyScale makes the script set it before the run.
+    .\Invoke-WwQueueLoadTest.ps1 -MessageCount 1000 -MaxReplicas 10 -ApplyScale -Yes
+
+.EXAMPLE
     # CI / unattended: every value from the defaults file, no prompts, exit code carries the verdict.
     .\Invoke-WwQueueLoadTest.ps1 -MessageCount 100 -NonInteractive
 #>
@@ -119,6 +125,11 @@ param(
     [switch] $SkipDatabase,
 
     # ── Behaviour ──────────────────────────────────────────────────────────────
+    # -MaxReplicas is an ASSERTION about the deployed ceiling, not a command: in Mode Existing the
+    # real ceiling comes from the Container App. Without -ApplyScale a mismatch is a BLOCKER, because
+    # a run that plans for N and executes at M files its measurements under the wrong number - which
+    # is exactly how a 20-replica run was recorded as a 10-replica one on 2026-08-20.
+    [switch] $ApplyScale,
     [switch] $PurgeQueues,
     [switch] $SkipPreWarm,
     [switch] $Yes,
@@ -182,6 +193,48 @@ function Resolve-WwEngineConcurrency {
         throw "Invalid scale: MaxReplicas=$MaxReplicas MaxConcurrency=$MaxConcurrency."
     }
     return $MaxReplicas * $MaxConcurrency
+}
+
+function Set-WwWorkerScale {
+    <#
+        Sets the Container App's maxReplicas and returns the value RE-READ from Azure.
+
+        Only called with -ApplyScale. Two things this must not do:
+          * trust the update's own exit code - `az containerapp update` reports success before the new
+            revision is active, so the ceiling is re-read from `containerapp show` and compared;
+          * pass --max-replicas 0 - core az rejects it (range [1,1000]), which is why the harness docs'
+            old "park at --max-replicas 0" advice is unusable. Parking is `az containerapp stop`.
+
+        Each update mints a NEW REVISION. That is inherent to ACA, not a fault, but it means a run
+        with -ApplyScale leaves revision churn behind - hence scaleBefore/scaleAfter in the summary.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string] $ResourceGroup,
+        [Parameter(Mandatory)][string] $AppName,
+        [Parameter(Mandatory)][ValidateRange(1, 1000)][int] $MaxReplicas,
+        [int] $PollSeconds  = 5,
+        [int] $TimeoutSeconds = 180
+    )
+
+    Invoke-E2EAzJson -AzArgs @('containerapp', 'update', '-g', $ResourceGroup, '-n', $AppName,
+                               '--max-replicas', "$MaxReplicas") -AllowFail | Out-Null
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $observed = $null
+    while ((Get-Date) -lt $deadline) {
+        $app = Invoke-E2EAzJson -AzArgs @('containerapp', 'show', '-g', $ResourceGroup, '-n', $AppName) -AllowFail
+        # Null-safe: a transient `az` failure returns $null, and reaching through it under StrictMode throws.
+        if ($app -and $app.PSObject.Properties['properties']) {
+            $state    = $app.properties.provisioningState
+            $observed = $app.properties.template.scale.maxReplicas
+            if ($observed -eq $MaxReplicas -and $state -eq 'Succeeded') { return [int]$observed }
+        }
+        Start-Sleep -Seconds $PollSeconds
+    }
+
+    throw ("Set-WwWorkerScale: '$AppName' still reports maxReplicas '$observed' after ${TimeoutSeconds}s; " +
+           "asked for $MaxReplicas. Refusing to run against a ceiling that is not the one requested.")
 }
 
 function Read-WwSetting {
@@ -534,6 +587,74 @@ function Get-WwPercentile {
     return $v[[int]$rank - 1]
 }
 
+function Get-WwDeadLetterTxnId {
+    <#
+        Extracts the publisher-assigned transaction id from a dead-lettered message.
+
+        HEADER FIRST, CorrelationId SECOND, and the order matters.
+
+        This function exists because reading CorrelationId alone silently broke reconciliation.
+        RabbitMqDeadLetterPublisher maps its diagnostics dictionary onto BasicProperties.Headers and
+        (until 2026-09-03) never set CorrelationId, so CorrelationId was ALWAYS null on a
+        dead-lettered message. $dlqTxns therefore came back empty, DlqOnly always computed as 0, and
+        every real dead-letter fell through into the "Neither (LOST)" bucket - the one this script's
+        own header calls "the worst outcome and the one a drained queue hides".
+
+        Measured on the 2026-09-03 10 000-message run: 10 messages that the worker log shows were
+        correctly dead-lettered ("Dead-lettered 161 byte(s) to 'order-success-queue-errors'"), with
+        dlq=10 confirmed by this script's own depth probe, were reported as silent data loss.
+
+        The header is preferred because it is the field the worker has always written and is
+        therefore present on OLD dead-letters too - messages sitting in the DLQ from before the
+        publisher started setting CorrelationId. CorrelationId is the fallback so the function keeps
+        working for anything republished by a generic AMQP tool that preserves it but not the
+        Warewolf header.
+    #>
+    [CmdletBinding()]
+    param($Properties)
+
+    if (-not $Properties) { return $null }
+
+    # Header values arrive as byte[] (the publisher UTF8-encodes strings), so decode rather than
+    # ToString() - ToString() on a byte[] yields "System.Byte[]", which would sail through the
+    # truthiness check below and poison every bucket with a bogus id.
+    $headers = $Properties.Headers
+    if ($headers) {
+        foreach ($key in @('x-warewolf-custom-transaction-id')) {
+            # ContainsKey - unconditionally. Two wrong versions preceded this one:
+            #   1. $headers.Contains($key)  - IDictionary[string,object]'s only Contains is
+            #      ICollection<KeyValuePair>.Contains(KeyValuePair), so a string THROWS
+            #      "Cannot find an overload for Contains and the argument count: 1".
+            #   2. A "-is [System.Collections.IDictionary] ? Contains : ContainsKey" conditional -
+            #      Dictionary[string,object] DOES implement the non-generic IDictionary, so the test
+            #      passed and it took the Contains branch and threw all over again.
+            # ContainsKey exists on Hashtable, Dictionary[K,V] AND IDictionary[K,V], so no
+            # type-sniffing is needed or wanted.
+            #
+            # BasicProperties.Headers is IDictionary[string,object],
+            # whose only Contains is ICollection<KeyValuePair>.Contains(KeyValuePair) - passing a
+            # string THROWS "Cannot find an overload for Contains and the argument count: 1".
+            # The caller's try/catch swallowed that, so extraction silently returned nothing and the
+            # 2026-09-03 dlqfix run still reported "Neither (LOST) 1" for a message sitting in the
+            # dead-letter queue. A PowerShell hashtable DOES have Contains(object), which is why the
+            # first version of the unit test passed - it used @{} instead of the real type.
+            $hasKey = $headers.ContainsKey($key)
+            if ($hasKey) {
+                $raw = $headers[$key]
+                $val = if ($raw -is [byte[]]) { [System.Text.Encoding]::UTF8.GetString($raw) }
+                       else { [string]$raw }
+                if (-not [string]::IsNullOrWhiteSpace($val)) { return $val }
+            }
+        }
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($Properties.CorrelationId)) {
+        return [string]$Properties.CorrelationId
+    }
+
+    return $null
+}
+
 function Get-WwReconciliationBuckets {
     <#
         Classifies every PUBLISHED message into exactly one of four buckets, and separately reports
@@ -687,6 +808,23 @@ function Get-WwPreflightBlockers {
         elseif ($Preflight.Worker.MaxReplicas -eq 0) {
             $blockers.Add("Container App '$($Preflight.Worker.Name)' is parked at maxReplicas 0 and will never consume.")
         }
+        # The DEPLOYED ceiling decides the run; -MaxReplicas only decides the arithmetic printed in the
+        # plan. Letting them differ silently means every artefact records a concurrency the run never
+        # used, so this is a blocker rather than a warning - unless -ApplyScale already reconciled them.
+        else {
+            # Null-safe property reads: under StrictMode, touching an absent property on a pscustomobject
+            # THROWS, and these two are only set once the worker has been resolved.
+            $requested = $(if ($Preflight.PSObject.Properties['RequestedMaxReplicas']) { $Preflight.RequestedMaxReplicas })
+            $rg        = $(if ($Preflight.PSObject.Properties['ResourceGroup'])        { $Preflight.ResourceGroup } else { '<rg>' })
+            if ($null -ne $requested -and [int]$Preflight.Worker.MaxReplicas -ne [int]$requested) {
+                $blockers.Add(("Replica ceiling mismatch: '$($Preflight.Worker.Name)' is DEPLOYED with maxReplicas " +
+                               "$($Preflight.Worker.MaxReplicas) but this run was asked for $requested. " +
+                               'In Mode Existing -MaxReplicas is planning-only, so the run would execute at ' +
+                               "$($Preflight.Worker.MaxReplicas) while every artefact recorded $requested. " +
+                               'Re-run with -ApplyScale to have the script set it, or set it yourself: ' +
+                               "az containerapp update -g $rg -n $($Preflight.Worker.Name) --max-replicas $requested"))
+            }
+        }
     }
     else { $blockers.Add('Worker Container App could not be resolved.') }
 
@@ -788,6 +926,12 @@ if ($LoadFunctionsOnly) { return }
 # ═════════════════════════════════════════════════════════════════════════════
 
 Import-Module (Join-Path $ScriptDir 'WwE2E.Common.psm1') -Force
+
+# Replica-ceiling provenance, so the summary can always say whether this run changed the deployment.
+# Initialised here because the worker preflight block is skipped entirely when the app cannot be read.
+$script:ScaleApplied = $false
+$script:ScaleBefore  = $null
+$script:ScaleAfter   = $null
 
 function Write-Head { param([string] $T)
     Write-Host ''
@@ -1050,10 +1194,39 @@ else {
         RetryFives  = Get-Env 'WORKER__RETRYENGINEINTERNALERRORS'
         EngineUrl   = Get-Env 'ENGINE__BASEURL'
     }
+    # -ApplyScale reconciles the deployed ceiling with what was asked for, BEFORE the plan is printed
+    # and before the blocker check, so the whole run sees one consistent number.
+    $scaleBefore = [int]$preflight.Worker.MaxReplicas
+    if ($ApplyScale -and [int]$cfg.MaxReplicas -ne $scaleBefore) {
+        if ([int]$cfg.MaxReplicas -lt 1) {
+            throw ("-ApplyScale cannot set maxReplicas to $($cfg.MaxReplicas): core az enforces [1,1000]. " +
+                   'To stop the worker consuming, use: az containerapp stop.')
+        }
+        Write-Step "Applying replica ceiling $scaleBefore -> $($cfg.MaxReplicas) on '$($cfg.WorkerAppName)' (-ApplyScale)"
+        $applied = Set-WwWorkerScale -ResourceGroup $cfg.ResourceGroup -AppName $cfg.WorkerAppName -MaxReplicas ([int]$cfg.MaxReplicas)
+        $preflight.Worker.MaxReplicas = $applied
+        $script:ScaleApplied = $true
+        Write-Ok "Replica ceiling now $applied (a new revision was minted; previous ceiling was $scaleBefore)."
+    }
+    $script:ScaleBefore = $scaleBefore
+    $script:ScaleAfter  = [int]$preflight.Worker.MaxReplicas
+
+    # Recorded on the preflight object so Get-WwPreflightBlockers can compare them without reaching
+    # for script scope, which also makes that function unit-testable in isolation.
+    $preflight.RequestedMaxReplicas = [int]$cfg.MaxReplicas
+    $preflight.ResourceGroup        = $cfg.ResourceGroup
+
     Write-Kv 'Container App'    $preflight.Worker.Name
     Write-Kv 'Image'            $preflight.Worker.Image
     Write-Kv 'Active revision'  $preflight.Worker.Revision
-    Write-Kv 'Replicas min/max' "$($preflight.Worker.MinReplicas) / $($preflight.Worker.MaxReplicas)"
+    Write-Kv 'Replicas min/max' "$($preflight.Worker.MinReplicas) / $($preflight.Worker.MaxReplicas)   (DEPLOYED, read from Azure)"
+    if ([int]$cfg.MaxReplicas -ne [int]$preflight.Worker.MaxReplicas) {
+        Write-Kv 'Max replicas requested' ("$($cfg.MaxReplicas)   <-- MISMATCH: this run would execute at " +
+                                           "$($preflight.Worker.MaxReplicas), not $($cfg.MaxReplicas)") 'Red'
+    }
+    elseif ($script:ScaleApplied) {
+        Write-Kv 'Max replicas requested' "$($cfg.MaxReplicas)   (applied by -ApplyScale)" 'Green'
+    }
     Write-Kv 'Engine base URL'  ($preflight.Worker.EngineUrl ?? '(not set)')
     Write-Kv 'ENGINE__TIMEOUTSECONDS'          ($preflight.Worker.Timeout     ?? '(not set)')
     Write-Kv 'WORKER__SHUTDOWNGRACESECONDS'    ($preflight.Worker.Shutdown    ?? '(not set)')
@@ -1150,11 +1323,20 @@ else {
 }
 
 # ── Blockers + gate ──────────────────────────────────────────────────────────
+# Concurrency was first computed in Phase 2 from the REQUESTED ceiling, before Azure had been read.
+# Recompute it from the DEPLOYED ceiling now that preflight knows it, so the plan, the summary and the
+# expectation the results are judged against all describe the run that will actually happen.
+if ($preflight.Worker -and $preflight.Worker.Exists) {
+    $concurrency = Resolve-WwEngineConcurrency -MaxReplicas ([int]$preflight.Worker.MaxReplicas) `
+                                               -MaxConcurrency $cfg.MaxConcurrency
+}
+
 Write-Sub 'Planned run'
 Write-Kv 'Messages'              "$($cfg.MessageCount) valid + $($cfg.FailureCount) deliberate failure(s)"
-Write-Kv 'Max replicas'          $cfg.MaxReplicas
+$effectiveMaxReplicas = $(if ($preflight.Worker -and $preflight.Worker.Exists) { [int]$preflight.Worker.MaxReplicas } else { [int]$cfg.MaxReplicas })
+Write-Kv 'Max replicas'          "$effectiveMaxReplicas   (deployed$(if ($script:ScaleApplied) { ', applied by -ApplyScale' }))"
 Write-Kv 'Worker MaxConcurrency' $cfg.MaxConcurrency
-Write-Kv 'Concurrent engine requests' "$concurrency   (= $($cfg.MaxReplicas) x $($cfg.MaxConcurrency))" 'White'
+Write-Kv 'Concurrent engine requests' "$concurrency   (= $effectiveMaxReplicas x $($cfg.MaxConcurrency))" 'White'
 Write-Kv 'Purge queues first'    $(if ($PurgeQueues) { 'YES' } else { 'no (watermark isolates the run)' })
 Write-Kv 'Pre-warm'              $(if ($SkipPreWarm) { 'SKIPPED' } else { "yes, at concurrency $concurrency" })
 Write-Kv 'Artefacts'             $OutputDir
@@ -1492,7 +1674,7 @@ try {
         $got = $ch.BasicGetAsync($cfg.DeadLetterQueue, $false, $session.Ct).GetAwaiter().GetResult()
         if (-not $got) { break }
         $held.Add($got.DeliveryTag)
-        $txn = $got.BasicProperties.CorrelationId
+        $txn = Get-WwDeadLetterTxnId -Properties $got.BasicProperties
         if ($txn) { $dlqTxns += [string]$txn }
         if ($held.Count -ge ($expectedTotal * 2 + 50)) { Write-Note 'Dead-letter read cap reached.'; break }
     }
@@ -1501,7 +1683,17 @@ catch { Write-Note "Could not read the dead-letter queue: $($_.Exception.Message
 finally { Close-E2EBrokerSession -Session $session }   # closing requeues everything held unacked
 
 $dlqTxns = @($dlqTxns | Select-Object -Unique)
-Write-Kv 'Dead-lettered (distinct txns)' $dlqTxns.Count $(if ($dlqTxns.Count -eq $cfg.FailureCount) { 'Green' } else { 'Red' })
+# Green when it matches the DELIBERATE failure count, amber - not red - otherwise. An unplanned
+# dead-letter is a legitimate and important outcome (the engine returned non-2xx and the body was
+# preserved), not a counting error; colouring it red framed a correct, recoverable result as a
+# failure of the harness itself.
+Write-Kv 'Dead-lettered (distinct txns)' $dlqTxns.Count $(if ($dlqTxns.Count -eq $cfg.FailureCount) { 'Green' } else { 'DarkYellow' })
+if ($dlqTxns.Count -gt $cfg.FailureCount) {
+    Write-Note ("$($dlqTxns.Count - $cfg.FailureCount) UNPLANNED dead-letter(s) beyond the " +
+                "$($cfg.FailureCount) deliberate one(s). Their bodies are preserved in " +
+                "'$($cfg.DeadLetterQueue)' and are safe to replay - the workflow did not commit. " +
+                'Triage via the x-warewolf-failure-reason header.')
+}
 
 # ── Phase 9: reconciliation and verdict ──────────────────────────────────────
 Write-Head 'Phase 9 - Reconciliation'
@@ -1549,6 +1741,17 @@ $summary = [pscustomobject]@{
     azure         = [pscustomobject]@{ subscription = $az.Subscription; subscriptionId = $az.SubscriptionId; tenant = $az.TenantId; user = $az.User }
     targets       = [pscustomobject]$cfg
     concurrency   = $concurrency
+    # Provenance of the replica ceiling. `concurrency` above is derived from scaleAfter (the DEPLOYED
+    # value), never from targets.MaxReplicas, so a reader can tell what the run actually did.
+    scale         = [pscustomobject]@{
+        requested    = $cfg.MaxReplicas
+        deployed     = $script:ScaleAfter
+        before       = $script:ScaleBefore
+        appliedScale = $script:ScaleApplied
+        restoreHint  = $(if ($script:ScaleApplied -and $null -ne $script:ScaleBefore) {
+                            "az containerapp update -g $($cfg.ResourceGroup) -n $($cfg.WorkerAppName) --max-replicas $($script:ScaleBefore)"
+                        })
+    }
     preflight     = [pscustomobject]$preflight
     database      = [pscustomobject]@{
         skipped           = [bool]$SkipDatabase
@@ -1586,6 +1789,14 @@ Write-Ok "Manifest : $manifestPath"
 Write-Ok "Drain    : $(Join-Path $OutputDir 'drain-samples.json')"
 if ($reportJson)   { Write-Ok "Report   : $($reportJson.FullName)" }
 if ($transcriptOn) { Write-Ok "Log      : $LogFile" }
+
+# -ApplyScale leaves the deployment changed on purpose - reverting automatically would surprise the
+# next reader and a failed run would revert half-way. Say so, and hand over the exact command.
+if ($script:ScaleApplied) {
+    Write-Note ("This run CHANGED the deployed replica ceiling: $($script:ScaleBefore) -> $($script:ScaleAfter) " +
+                "on '$($cfg.WorkerAppName)'. It has NOT been restored. To put it back:")
+    Write-Host "      az containerapp update -g $($cfg.ResourceGroup) -n $($cfg.WorkerAppName) --max-replicas $($script:ScaleBefore)" -ForegroundColor Yellow
+}
 
 if ($transcriptOn) { try { Stop-Transcript | Out-Null } catch { } }
 

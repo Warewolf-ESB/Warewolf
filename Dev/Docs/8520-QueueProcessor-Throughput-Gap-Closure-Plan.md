@@ -483,3 +483,225 @@ The 2 that passed either way are #3 (`ENGINE:TIMEOUTSECONDS` was always read) an
 3. **Is the engine's OOM ceiling still ~8?** Now a gate, not a question — W4.0. §3.2 b′ explains why the old figure is probably an underestimate.
 4. **Does the 2.5-minute Service Bus figure survive W5?** If the honest, successful-execution baseline is (say) 4 minutes, the gap is already smaller than it looks and W3 may be unnecessary.
 5. **Should the QueueProcessor keep owning the backlog at all?** The structural alternative to W4 is to stop hand-feeding the engine over HTTP and let the engine's own trigger see the depth — i.e. shovel RabbitMQ → Service Bus and adopt the path that already works. That trades the HTTP hop and the worker's scaling responsibility for a second broker. Out of scope here, but it is the honest long-run comparison and §2.4 is the argument for putting it on the table.
+
+---
+
+## 11. The 10 000-message run (2026-09-03) — result and two defects it exposed
+
+**Why this run mattered.** Five consecutive 1000-message runs were clean. At 10x the volume the same
+configuration produced 20 redeliveries and 10 dead-letters. The expected dead-letter count at 1000
+messages was ~1 — below the noise floor — so **the clean 1000-message runs never demonstrated
+correctness; they were simply too small to show the failure.** Any future acceptance of this path
+should be measured at 10 000, not 1000.
+
+### 11.1 Result
+
+| | Value |
+|---|---|
+| Published / accounted for | 10 000 / 10 000 |
+| Executed successfully | 9 990 |
+| Dead-lettered (recoverable, bodies intact in `order-success-queue-errors`) | 10 |
+| Genuinely lost | **0** |
+| Redeliveries | 20 (`MaxDeliveryAttempts=2` working as designed) |
+| Worker-side median | **96 ms** (1000-message run: 98 ms — no degradation at 10x) |
+| Worker-side max | 120 913 ms |
+| Drain span | 492.7 s (~20 msg/s, vs ~120 msg/s at 1000) |
+| Engine HTTP 500s | 8 |
+
+**The usage-API fix (§2.3) holds at scale.** A 96 ms median at 10 000 messages, against the 30 s wall
+it replaced, is the headline. The whole throughput deficit between median and span is now the *tail*:
+a handful of 30–121 s calls each occupying one of 12 concurrency slots.
+
+### 11.2 DEFECT (HIGH) — the harness cannot attribute dead-lettered messages
+
+**It reported `Neither (LOST) 10` for messages that were correctly dead-lettered.** This is the worst
+possible mislabelling: `Neither` is documented in the script's own header as *"Silently lost. The
+worst outcome and the one a drained queue hides."* It caused a false data-loss report during this
+investigation.
+
+**Root cause — a field mismatch across three files:**
+
+| Component | Field |
+|---|---|
+| `EngineForwarder.cs:132` | writes the txn id into `diagnostics["x-warewolf-custom-transaction-id"]` |
+| `RabbitMqDeadLetterPublisher.cs:94-98` | maps `diagnostics` onto `BasicProperties.**Headers**` — and never sets `CorrelationId` |
+| `Invoke-WwQueueLoadTest.ps1:1609` | reads `$got.BasicProperties.**CorrelationId**` |
+
+`CorrelationId` is therefore always null on a dead-lettered message, `$dlqTxns` is always empty,
+`DlqOnly` always computes as 0, and every real dead-letter falls through into `Neither`.
+
+**Proof it is attribution and not loss.** The worker log for `merged10k-orders-S-5583-88023f`:
+
+```
+13:35:55.730  Queue execution starting          [Txn:merged10k-orders-S-5583-88023f]
+13:36:49.106  fail: Engine returned <non-2xx>    (~54 s later)
+13:36:49.696  Dead-lettered 161 byte(s) to 'order-success-queue-errors'
+13:36:49.696  Queue execution succeeded           (forwarder acks after dead-lettering, by design)
+```
+
+and every drain sample from 19:09:52 onward read `dlq=10` — the harness's own depth probe.
+
+**Secondary defect in the same block:** `Invoke-WwQueueLoadTest.ps1:1618` colours the dead-letter
+count green only when it equals `$cfg.FailureCount`, i.e. it assumes dead-letters arise **only** from
+deliberately-malformed messages. An unplanned dead-letter is a legitimate and important outcome and
+must not be treated as a counting error.
+
+**Proposed fix — two parts, and part (b) is the one that matters operationally:**
+
+- **(a) Harness** — read the txn id from the `x-warewolf-custom-transaction-id` header, falling back
+  to `CorrelationId`. Test-only; no production code touched.
+- **(b) `RabbitMqDeadLetterPublisher`** — also set `BasicProperties.CorrelationId` from the
+  transaction id. This is the real improvement: a dead-lettered message currently carries **no
+  AMQP-standard correlation**, so *any* operator or tool trying to trace or replay it must know to
+  look in a custom header. Preserving `CorrelationId` across a dead-letter republish is the AMQP
+  convention and is what makes the DLQ self-describing.
+
+Doing only (a) fixes the report while leaving real dead-lettered messages hard to trace in production.
+
+**(c) A third gap, found while implementing (b): `RabbitMqMessagePump`'s TRANSPORT-failure
+dead-letter carried no transaction id at all.** It wrote five diagnostic fields — queue, workflow,
+failure-reason, redelivered, dead-lettered-utc — and nothing identifying the message. So even after
+(a) and (b), a transport-failure dead-letter would have stayed unattributable. It is also the harder
+case to lose: a transport failure means the engine never confirmed anything, so the dead-letter is
+the ONLY record the delivery happened. Now populated from the original delivery's `CorrelationId`,
+omitted (never blank) when absent. This was not what caused the 10 000-message mislabelling — those
+ten were business failures through `EngineForwarder`, which has always carried the id — it is what
+would have failed next, and silently.
+
+**Proposed tests — NOT yet written, awaiting go-ahead per `CLAUDE.md`:**
+
+1. `RabbitMqDeadLetterPublisher` sets `CorrelationId` from the transaction id (assert against the
+   mocked `IChannel` the publisher already exposes).
+2. It still populates the `x-warewolf-custom-transaction-id` header — the new behaviour must be
+   additive, so nothing already reading the header breaks.
+3. A blank/absent transaction id leaves `CorrelationId` unset rather than writing an empty string.
+4. `Scripts/Tests/Invoke-WwQueueLoadTest.Tests.ps1` — the txn extractor prefers the header, falls
+   back to `CorrelationId`, and yields nothing when both are absent.
+5. Reconciliation: a message with a dead-letter and no DB row classifies as `DlqOnly`, **not**
+   `Neither`; genuine loss still reports `Neither`; `Both` still flags a row-plus-dead-letter; and
+   the buckets sum to the published count.
+
+**Correction, established by actually reintroducing the defect:** test 5 is **not** the regression
+test, despite being described as such when these were proposed. With the header read disabled,
+extraction returns nothing, so `Get-WwReconciliationBuckets` is simply called with an empty
+`-DlqTxns` and *correctly* answers `Neither` — the bucket logic was never broken. The defect was
+entirely upstream in extraction, and **test 4's two header cases are the real regression tests**
+(measured: 2 failed / 8 passed with the defect restored, 10/10 with it fixed). Test 5 is retained as
+an invariant test because the bucket mapping is load-bearing and nothing else pins it.
+
+### 11.3 DEFECT (MEDIUM-HIGH) — engine latency excursions under sustained load
+
+Independent of §2.3's fix and the thing now worth chasing.
+
+**Evidence.** One bad window around 13:36:49: eight requests returned HTTP 500 after ~54 s, and the
+10 dead-lettered transaction ids cluster tightly (`S-5583` … `S-5970` out of 10 000) rather than
+scattering — so this was a single episode, not a steady error rate. Pre-warm the same run showed
+`round 2: conc=6 med=19205ms max=89294ms` with every request succeeding, then `round 3: conc=12
+med=795ms` clean: the engine degrades and self-recovers.
+
+**Ruled out by measurement:** the usage-API call (median is now 96 ms); host restarts
+(`Restarting host` 0x across 23 instance logs); Azure Files content-share contention (1 transaction
+per minute at 5–7 ms); memory (441–548 MB of 1536 MB); and the ServiceBus indexing gap — a clean
+1000-message pre-warm occurred with that gap unchanged, and the merged run's 500s carry no linked
+exception.
+
+**Not yet explained.** The three earlier HTTP 500s had **no linked exception at all** on an
+`operation_Id` join, which points at host-level rejection before worker dispatch rather than a
+workflow fault. That remains the open thread.
+
+**Blocked on telemetry.** Only **2** engine execution ids were recoverable from App Insights for
+10 000 messages: `host.json`'s `samplingSettings.maxTelemetryItemsPerSecond: 20` discards nearly
+everything at this volume. **Raising or disabling that cap for the next large run is a prerequisite**
+— without engine-side traces this defect cannot be attributed, and that single setting is what made
+today's root cause findable in the first place.
+
+---
+
+## 12. Live-instance changes that must move into the deployment scripts
+
+Everything below was applied by hand to `wwengine-e2e-ldi413` / `wwqp5-runb-ordersuccessqueu-3879`
+during this investigation. Each one is currently **only** on those two resources: a fresh deployment
+reproduces none of it, and in several cases the omission fails **silently**.
+
+**Disposition (2026-09-03, after attempting all nine).** Three of the nine items below were wrong,
+and the error was systematic rather than incidental: they were derived by *diffing the live instance
+against a fresh deployment* and assuming every divergence was an omission. Two of the divergences
+were **deliberate design decisions** with the reasoning written down in the scripts, and one setting
+the scripts never emit at all. Items are now marked **APPLIED**, **NO CHANGE NEEDED** or
+**WITHDRAWN**; a live/deployed divergence is not by itself evidence of a defect.
+
+| Outcome | Items |
+|---|---|
+| Applied to the deployment scripts | 5, 6, 7 |
+| Already delivered by the branch merge | 9 |
+| No change needed — scripts never emit it | 3 |
+| Withdrawn — contradicts a deliberate decision | 1, 4 |
+| Deliberately not carried forward (measured harmful / optional) | 2, 8 |
+
+### 12.0 Attribution first — what actually made the run faster
+
+**No environment variable made the 1000-message run faster.** Stated explicitly because the settings
+list below invites the opposite conclusion, and shipping the settings without the code buys nothing.
+
+| Change | Type | Measured effect |
+|---|---|---|
+| `UsageEventEmitter` queued emission (§2.3) | **code** | 22 m 35 s → **58.4 s** (23x) |
+| trigger `Prefetch` 6→12 **+** `WORKER__MAXCONCURRENCY` 6→12 | **image + env var** | 58.4 s → **32.7 s** |
+| Dead-letter attribution (§11.2) | code + harness | reliability *reporting*, not throughput |
+
+Every other env-var change had no measurable effect, and one
+(`dynamicConcurrencyEnabled=false`) made the stall rate **worse** by scaling the engine to 72
+instances instead of ~24, raising concurrent load on the failing usage API.
+
+### 12.1 RESOLVED during this work — the trigger was the highest risk
+
+`Prefetch: 12` existed **only in a session temp directory**; the canonical
+`G:\Deployment\triggers-runB\b6d1e4a2-….bite` still read `6`. The next deploy from the canonical
+location would have silently reverted prefetch to 6 — which also makes `WORKER__MAXCONCURRENCY=12`
+**inert**, because `BasicQosAsync` caps unacknowledged deliveries per consumer at the `.bite` value.
+Throughput would have halved with no error anywhere.
+
+Now written back, with `TriggerId` and `Name` deliberately **unchanged** (the Container App name is
+derived from them, so editing either would target a different app) and the original preserved as
+`.prefetch6.bak`.
+
+**Known wart, deliberately not fixed:** the trigger is still named `RunB-OrderSuccessQueue-Conc6`
+while running concurrency 12. Renaming it changes the derived app name and would spin up a second
+Container App, so it can only be corrected alongside a deliberate app migration.
+
+### 12.2 `Deploy-WwExecutionEngine.ps1`
+
+| # | Change | Why, and how it fails today |
+|---|---|---|
+| 1 | ~~Emit `APPLICATIONINSIGHTS_CONNECTION_STRING` by default~~ **WITHDRAWN as written** | The *problem* is real — a fresh engine ships with no host telemetry, which is what hid the usage-API root cause: with it set, one `dependencies` query named the culprit in seconds; without it, three hypotheses were pursued and discarded on inference. But the *fix* was wrong. `Setup-ApplicationInsights.ps1:156-161` omits this setting **on purpose**: "the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` auto-enables the Functions HOST's own AI pipeline (a separate process the worker cannot switch off), so it is intentionally NOT set here — `ENABLEAPPLICATIONINSIGHTS` remains the single authoritative switch." The worker deliberately reads the non-standard `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` instead. Making it the default would silently take the host's telemetry out of `ENABLEAPPLICATIONINSIGHTS`'s control for **every** engine. **Proposed instead:** an opt-in `-EnableHostTelemetry` switch that sets it and says in one line that it bypasses the authoritative switch — diagnosis stays one flag away without changing the default contract. Needs a decision before implementing. |
+| 2 | Emit `AzureFunctionsJobHost__concurrency__dynamicConcurrencyEnabled=false`, `…__snapshotPersistenceEnabled=false`, `…__healthMonitor__enabled=false` | Parity with `WarewolfServer-UAT`. **Risk reduction only — not a fix:** 23 instance logs showed `Restarting host` 0 times, and enabling the first of these measurably *increased* instance count. Ship for consistency, not for speed. |
+| 3 | **NO CHANGE NEEDED** — never emit `AzureWebJobsDashboard` | Verified: **0 occurrences** anywhere under `Warewolf.Execution.Lightweight/` except `Apply-Ww8520GateAConfig.ps1`, which *deletes* it. The deploy scripts already never set it; the live value was residue from an older deployment and has been removed. Listing it as a script change was an error — I inferred it from the live setting without checking whether the current script emits it. |
+| 4 | ~~Set Easy Auth `login.tokenStore.enabled=false`~~ **WITHDRAWN** | Directly contradicts the auth script. `Configure-WwExecutionAuth.ps1:1710` re-asserts `tokenStore.enabled=true` as a deliberate "belt-and-braces" GET-modify-PUT, and stage 10 (`:1793`) **fails the whole run** if the live value is not `True`. So the live change is reverted by the next auth run *by design*, and implementing item 4 would mean defeating a guard someone added on purpose. It was hygiene with no measured benefit, so it is dropped rather than argued. |
+| 5 | **APPLIED** — hard-fail when `secure.config` is AES-encrypted but `keyVaultName` would land `null`** | Always broken, currently accepted in silence. Post-merge, Key Vault comes solely from `Settings/executionengine.settings.json`; omitting `-KeyVaultName` leaves it `null`, the engine cannot decrypt `secure.config`, every `/secure/*` request is denied as **HTTP 500** (WOLF-8418), and the forwarder dead-letters **and acks** every message — so the queue drains, scales to zero, and the run looks clean while discarding everything. Nearly hit during this work; avoided only by checking the published file by hand. |
+
+### 12.3 `Deploy-WwQueueProcessor.ps1`
+
+| # | Change | Why |
+|---|---|---|
+| 6 | **APPLIED** — add `-PollingInterval` | `properties.template.scale.pollingInterval` is a template property with no CLI flag and no script parameter — currently reachable only by patching ARM directly. Same class of trap as `-TerminationGracePeriodSeconds`, which was inert until 2026-08-11 for exactly this reason. Applied live as 30→10 s. |
+| 7 | **APPLIED** — validate `MaxConcurrency <= Prefetch` and fail on mismatch | The loader only *warns* when `Prefetch > MaxConcurrency`, and says nothing in the more damaging direction. `MaxConcurrency` above `Prefetch` is silently inert (§5.0.1), so a run "at concurrency 24" can really be executing at 6 and its measurements are filed under the wrong number. |
+| 8 | Consider a `WORKER__PREFETCH` env override | Prefetch is baked into the image (`Dockerfile:51`), so every concurrency experiment needs a full rebuild + new revision. An override makes the whole W4 ramp a control-plane change. **Optional** — §11.1's 96 ms median suggests little headroom is actually needed. |
+
+### 12.4 `host.json`
+
+| # | Change | Why |
+|---|---|---|
+| 9 | **ALREADY DELIVERED** by the branch merge (`e75a2defb5`), which committed **200** | **Blocks §11.3.** Only **2** engine execution ids survived from 10 000 messages — sampling discards nearly everything at volume, so the one remaining defect cannot be attributed. Raise it, or disable sampling for large runs. |
+
+Note this is the **source-controlled** `host.json`, shared by every engine deployment, so items here
+have wider blast radius than the per-app `AzureFunctionsJobHost__*` overrides in 12.2.
+
+### 12.5 Applied live and deliberately NOT carried forward
+
+| Setting | Disposition |
+|---|---|
+| `WAREWOLF_WORKFLOW_POOL_MAX=8` | **Deleted.** Post-merge it is read solely from `executionengine.settings.json` (`workflowPoolMax`), so as an app setting it is dead code that misleads. |
+| `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled=true` | **Deleted.** Proven ineffective — disabling a function does not stop the host indexing it, and the `Error indexing method` exception kept firing after a full restart. The KB prescribes this for teardown; that guidance is optimistic. |
+| `maxReplicas 2` | **Reverted to 1.** It doubled offered concurrency to 12 (prefetch is per *consumer*, so a second replica adds its own 6) and made the stall rate worse: 16.6 % → 25.3 %. |
+| `EXECUTIONLOGLEVEL=WARN` | **Reverted to `INFO`** by the engine deploy, and left there. No speed impact — the log-volume hypothesis was disproved — and `INFO` gives better evidence. |
+| `WAREWOLF_USAGE_TRACKING_ENABLED` | **Deliberately unset** (defaults enabled). The fix is proven with usage tracking **on**; disabling it would prove nothing about whether emission is non-blocking. |
