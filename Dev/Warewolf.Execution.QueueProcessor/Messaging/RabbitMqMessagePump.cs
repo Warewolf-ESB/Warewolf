@@ -213,6 +213,14 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                 var headers = new Headers();
                 headers["Warewolf-Custom-Transaction-Id"] = new[] { correlationId };
 
+                // The AMQP redelivered flag is the ONLY signal that this message has been seen
+                // before. The pump already uses it for attempt counting (HandleTransportFailureAsync);
+                // forwarding it lets the engine skip its de-duplication lookup on the first attempt,
+                // which is the overwhelming majority of deliveries. Boolean by protocol, so it can
+                // only ever express 1 or 2 - the same ceiling documented on MaxDeliveryAttempts.
+                headers["Warewolf-Delivery-Attempt"] =
+                    new[] { eventArgs.Redelivered ? "2" : "1" };
+
                 var result = await _consumer.Consume(body, headers).ConfigureAwait(false);
 
                 if (result == ConsumerResult.Success)
