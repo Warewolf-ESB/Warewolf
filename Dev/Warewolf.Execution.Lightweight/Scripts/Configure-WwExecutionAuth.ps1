@@ -138,6 +138,11 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+# WAREWOLF_ENTRA_CONFIG fields Stage 8 carried over from the value already stored on the
+# Function App (see Merge-EntraConfigJson). Initialised here so Stage 10c's verification can
+# read it under StrictMode even on a path where Stage 8 did not run.
+$script:PreservedEntraFields = @()
+
 # ── PRV-15 / PRV-18 normalisation ─────────────────────────────────────────────
 if ($DryRun) { $WhatIfOnly = $true }
 if ($PSBoundParameters.ContainsKey('SecretLifetimeYears')) {
@@ -487,6 +492,57 @@ function Get-FunctionAppSetting {
     if (-not $hit) { return $null }
     if ([string]::IsNullOrWhiteSpace($hit.value)) { return $null }
     return [string]$hit.value
+}
+
+function Merge-EntraConfigJson {
+    <#
+        Layers THIS script's authoritative Entra identity fields on top of whatever
+        WAREWOLF_ENTRA_CONFIG already holds, preserving every other field.
+
+        WHY: WOLF-8516 merged the individual env vars into one JSON app setting that is
+        written by TWO scripts - this one (tenantId/audience/clientId) and
+        Enable-ServiceBusSecureTrigger.ps1 (tenantId/serviceBusAudience). An app setting
+        write is a whole-value overwrite; Azure has no JSON-merge primitive. Building the
+        value from scratch here therefore DELETED serviceBusAudience on every engine
+        deploy, which makes ServiceBusEntraAuthOptions.IsEnabled false so the Service Bus
+        trigger fails closed and dead-letters every message it receives - with no startup
+        error and no telemetry, the only symptom being a rising dead-letter count
+        (see Auth/Models/ServiceBusEntraAuthOptions.cs and
+        docs/ServiceBusSecureTrigger-Architecture.md "Security"). Read-merge-write is the
+        mirror image of Enable-ServiceBusSecureTrigger.ps1's own Phase 3 merge, which
+        already preserves audience/clientId for exactly the same reason.
+
+        Unparseable stored JSON is replaced (with a warning) rather than aborting the
+        stage: a corrupt value is already broken for every consumer, and refusing to
+        rewrite it would leave the app permanently unfixable by this script.
+
+        Returns an ordered hashtable ready for `ConvertTo-Json -Compress`.
+    #>
+    param(
+        [string] $ExistingJson,
+        [Parameter(Mandatory)][string] $TenantId,
+        [Parameter(Mandatory)][string] $Audience,
+        [Parameter(Mandatory)][string] $ClientId
+    )
+
+    $merged = [ordered]@{}
+
+    # 'None' is az's tsv rendering of a missing value - treat it as absent, not as JSON.
+    if (-not [string]::IsNullOrWhiteSpace($ExistingJson) -and $ExistingJson.Trim() -ne 'None') {
+        try {
+            ($ExistingJson | ConvertFrom-Json).PSObject.Properties |
+                ForEach-Object { $merged[$_.Name] = $_.Value }
+        } catch {
+            Write-Warning ("WAREWOLF_ENTRA_CONFIG currently stored on the Function App is not valid JSON - " +
+                           "it will be REPLACED, and any serviceBusAudience it held is lost (re-run " +
+                           "Enable-ServiceBusSecureTrigger.ps1 afterwards). ExceptionType=$($_.Exception.GetType().Name)")
+        }
+    }
+
+    $merged['tenantId'] = $TenantId
+    $merged['audience'] = $Audience
+    $merged['clientId'] = $ClientId
+    return $merged
 }
 
 function Get-DeepValue {
@@ -1652,11 +1708,31 @@ Write-Host "═══ Stage 8  Function App settings ═════════
 # caller is rejected with 401 "Authentication required" regardless of role assignment
 # (see EntraAuthOptions.ClientId doc comment and the pipeline-CLOUD.yml diagnostic probe
 # for the full aud/audience mismatch writeup).
-$entraConfigValue = [ordered]@{
-    tenantId = $TenantId
-    audience = "api://$ClientId"
-    clientId = $ClientId
+#
+# The value is READ-MERGE-WRITTEN, not rebuilt: Enable-ServiceBusSecureTrigger.ps1 stores
+# 'serviceBusAudience' in this same setting, and rebuilding from scratch here deleted it on
+# every deploy - failing the Service Bus trigger closed with no error and no telemetry.
+# See Merge-EntraConfigJson's comment for the full writeup.
+$existingEntraConfigRaw = Get-FunctionAppSetting `
+    -Name $FunctionAppName -ResourceGroup $ResourceGroupName -SettingName 'WAREWOLF_ENTRA_CONFIG'
+
+$entraConfigValue = Merge-EntraConfigJson `
+    -ExistingJson $existingEntraConfigRaw `
+    -TenantId     $TenantId `
+    -Audience     "api://$ClientId" `
+    -ClientId     $ClientId
+
+# Report (and later verify, Stage 10c) whatever we carried over from the stored value, so a
+# silent regression to overwrite-from-scratch is visible in the run output.
+$script:PreservedEntraFields = @(
+    $entraConfigValue.Keys | Where-Object { $_ -notin @('tenantId', 'audience', 'clientId') }
+)
+if ($script:PreservedEntraFields.Count -gt 0) {
+    Write-Host "    preserved existing WAREWOLF_ENTRA_CONFIG field(s): $($script:PreservedEntraFields -join ', ')" -ForegroundColor Green
+} else {
+    Write-Host "    no extra WAREWOLF_ENTRA_CONFIG fields to preserve (none stored)" -ForegroundColor DarkGray
 }
+
 $settings = @(
     "WAREWOLF_ENTRA_CONFIG=$($entraConfigValue | ConvertTo-Json -Compress)",
     "WAREWOLF_SECURE_CONFIG=$SecureConfigMountPath"
@@ -1960,6 +2036,15 @@ if ($liveEntraConfigRaw) {
             $fieldVal = $liveEntraConfig.$field
             if ([string]::IsNullOrWhiteSpace($fieldVal)) {
                 $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field is missing or empty")
+            }
+        }
+        # Fields this run carried over from the previously-stored value (e.g.
+        # serviceBusAudience, written by Enable-ServiceBusSecureTrigger.ps1) must still be
+        # there after the write - a rebuilt-from-scratch value silently breaks the Service
+        # Bus trigger, so assert rather than assume the merge held.
+        foreach ($field in @($script:PreservedEntraFields)) {
+            if ([string]::IsNullOrWhiteSpace($liveEntraConfig.$field)) {
+                $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field was present before this run but is missing or empty after it (read-merge-write regression)")
             }
         }
     } catch {

@@ -282,7 +282,7 @@ merged into one `WAREWOLF_ENTRA_CONFIG` JSON app setting.
 
 | Setting | Description |
 |---|---|
-| `WAREWOLF_ENTRA_CONFIG` | JSON — `tenantId` (Tenant GUID, used by `EntraAuthOptions` for bearer validation), `audience` (`api://<clientId>` — expected `aud` claim), optionally `clientId`/`serviceBusAudience` |
+| `WAREWOLF_ENTRA_CONFIG` | JSON — `tenantId` (Tenant GUID, used by `EntraAuthOptions` for bearer validation), `audience` (`api://<clientId>` — expected `aud` claim), optionally `clientId`/`serviceBusAudience`. **Shared setting:** written by both `Configure-WwExecutionAuth.ps1` (Stage 8) and `Enable-ServiceBusSecureTrigger.ps1`, so each read-merge-writes it rather than rebuilding the value — see `docs/ServiceBusSecureTrigger-Architecture.md` §"App settings" for the fail-closed regression this prevents. |
 | `WAREWOLF_SECURE_CONFIG` | Full path to the encrypted `secure.config` file on the host |
 | `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET` | Easy Auth client secret reference |
 
