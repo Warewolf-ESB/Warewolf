@@ -110,7 +110,12 @@ param(
     [Parameter(Mandatory)] [string] $EntraServiceBusAudience,
 
     [switch] $NonInteractive,
-    [switch] $DryRun
+    [switch] $DryRun,
+
+    # Testing hook: define this script's helper functions and return without contacting
+    # Azure, so Tests/Enable-ServiceBusSecureTrigger.Tests.ps1 can dot-source and unit-test
+    # them. The mandatory parameters above must still be supplied (any placeholder will do).
+    [switch] $LoadFunctionsOnly
 )
 
 Set-StrictMode -Version Latest
@@ -141,6 +146,67 @@ function Invoke-Az {
         throw "az $rendered failed (exit $LASTEXITCODE): $($output -join [Environment]::NewLine)"
     }
     return $output
+}
+
+function Set-FunctionAppSettingsViaFile {
+    <#
+        Writes app settings as `--settings @<file>` - ONE temp file and ONE `@<path>`
+        argument PER setting - instead of passing "KEY=VALUE" pairs as raw arguments.
+
+        WHY: Invoke-Az calls az via `& az @CliArgs` (PowerShell's call operator splatting
+        against az.cmd, a batch wrapper on Windows). Any argument containing embedded
+        double quotes - e.g. the JSON-valued WAREWOLF_ENTRA_CONFIG - is silently stripped
+        of those quotes when PowerShell/cmd.exe re-serialise the array for the child
+        process. The az call still reports success while the value stored in Azure is
+        unparseable JSON ({tenantId:...} with no quotes), so EntraIdentityOptions falls
+        back to all-null and the Service Bus trigger fails closed. Observed live
+        2026-09-03 writing this exact setting by hand.
+
+        ONE FILE PER SETTING matters: az's `@file` substitution replaces a single argument
+        with the file's raw content as ONE token; a shared file holding several KEY=VALUE
+        lines is read as one token and split only on the FIRST '=', collapsing every later
+        setting into the first one's value.
+
+        This mirrors Configure-WwExecutionAuth.ps1's Set-FunctionAppSettings, which
+        documents both failure modes in full - the two scripts write the same
+        WAREWOLF_ENTRA_CONFIG setting and must be equally quote-safe.
+    #>
+    param(
+        [Parameter(Mandatory)][string]   $FunctionAppName,
+        [Parameter(Mandatory)][string]   $ResourceGroup,
+        [Parameter(Mandatory)][string[]] $Settings
+    )
+
+    $azArgs = @(
+        'functionapp', 'config', 'appsettings', 'set',
+        '--name', $FunctionAppName,
+        '--resource-group', $ResourceGroup,
+        '--settings'
+    )
+
+    # A dry run only ever PRINTS the command, so pass the literal KEY=VALUE pairs: the
+    # operator needs to eyeball the values, and opaque @<tempfile> paths (deleted straight
+    # afterwards) would tell them nothing. The quote-stripping hazard only matters when az
+    # actually runs.
+    if ($DryRun) {
+        Invoke-Az -Mutating ($azArgs + $Settings) | Out-Null
+        return
+    }
+
+    $tempFiles = [System.Collections.Generic.List[string]]::new()
+    try {
+        $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+        $fileArgs = foreach ($setting in $Settings) {
+            $tempFile = [System.IO.Path]::GetTempFileName()
+            $tempFiles.Add($tempFile)
+            [System.IO.File]::WriteAllText($tempFile, $setting, $utf8NoBom)
+            "@$tempFile"
+        }
+
+        Invoke-Az -Mutating ($azArgs + $fileArgs) | Out-Null
+    } finally {
+        foreach ($f in $tempFiles) { Remove-Item $f -Force -ErrorAction SilentlyContinue }
+    }
 }
 
 function Get-EstimatedClaimStaleAfter {
@@ -191,6 +257,11 @@ function Assert-DeliveryBudgetExceedsClaimStaleAfter {
     }
     Write-Ok "Delivery budget check: MaxDeliveryCount ($MaxDeliveryCount) x LockDuration ($lockDurationSpan) = $deliveryBudget > estimated ClaimStaleAfter ($ClaimStaleAfter)."
 }
+
+# Dot-source hook for the Pester suite: define the helper functions above and stop, without
+# touching Azure or emitting a phase banner. Mirrors Configure-WwExecutionAuth.ps1's and
+# Deploy-WwExecutionEngine.ps1's -LoadFunctionsOnly.
+if ($LoadFunctionsOnly) { return }
 
 Write-Phase 'Enable-ServiceBusSecureTrigger — Phase 0  Pre-flight'
 
@@ -318,15 +389,11 @@ $entraConfigValue['tenantId']           = $EntraTenantId
 $entraConfigValue['serviceBusAudience'] = $EntraServiceBusAudience
 
 $fullyQualifiedNamespace = "$ServiceBusNamespace.servicebus.windows.net"
-Invoke-Az -Mutating @(
-    'functionapp', 'config', 'appsettings', 'set',
-    '--name', $FunctionAppName,
-    '--resource-group', $ResourceGroup,
-    '--settings',
+Set-FunctionAppSettingsViaFile -FunctionAppName $FunctionAppName -ResourceGroup $ResourceGroup -Settings @(
     "ServiceBusConnection__fullyQualifiedNamespace=$fullyQualifiedNamespace",
     "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName",
     "WAREWOLF_ENTRA_CONFIG=$($entraConfigValue | ConvertTo-Json -Compress)"
-) | Out-Null
+)
 if ($DryRun) { Write-Note "App settings would be applied to '$FunctionAppName' (not applied — DryRun)." } else { Write-Ok "App settings applied to '$FunctionAppName'." }
 
 Write-Phase 'Done'

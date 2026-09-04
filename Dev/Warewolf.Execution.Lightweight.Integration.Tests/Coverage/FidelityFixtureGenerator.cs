@@ -104,7 +104,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// Written here as a fresh, portable, PLAINTEXT source for the same reason RedisSource is
         /// plaintext below — see WriteRedisSource's remarks.
         /// </summary>
-        const string MssqlConnectionString =
+        internal const string MssqlConnectionString =
             "Data Source=localhost,1433;Initial Catalog=Dev2TestingDB;User ID=testUser;Password=Ex@mple!23Secure#PWD;Encrypt=False;";
 
         static readonly Guid MssqlSourceId = new("8a3f1c2d-5e6b-4a90-9c1f-7b2d4e8a6f30");
@@ -352,8 +352,22 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         static XElement DecisionDataList() => new("DataList",
             Scalar("a", "Input"));
 
+        /// <summary>
+        /// <c>suspensionId</c> is deliberately NOT an "Output" column here, even though
+        /// <see cref="BuildSuspendExecutionStep"/> assigns it via <c>Result="[[suspensionId]]"</c>.
+        /// A real Hangfire-backed scheduler (see <see cref="SuspendExecutionPersistenceSupport"/>)
+        /// mints a fresh job id every execution — that id is a live-scheduler artifact, not a
+        /// behavioural property of the round-trip, exactly like the per-run temp directory paths
+        /// <see cref="RoundTripFidelityTests"/> already strips from error messages before comparing
+        /// them. Including it in the compared JSON payload would report a real "Pass" as
+        /// NonDeterministic forever, for a reason that has nothing to do with X6 conversion
+        /// fidelity. "None" keeps the assignment itself exercised (proving Result resolves and the
+        /// activity actually ran) without exposing the ephemeral value to the harness's payload
+        /// comparison — <c>message</c> alone (which stays "" here, since nothing resumes the
+        /// suspended job in this harness) is what proves the round-trip preserved behaviour.
+        /// </summary>
         static XElement SuspendExecutionDataList() => new("DataList",
-            Scalar("suspensionId", "Output"),
+            Scalar("suspensionId", "None"),
             Scalar("message", "Output"));
 
         static XElement SimpleDataList(string name) => new("DataList",

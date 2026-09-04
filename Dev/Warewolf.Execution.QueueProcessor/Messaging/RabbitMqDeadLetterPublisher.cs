@@ -35,6 +35,16 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
     {
         const string ExecutionId = "QueueProcessor-DeadLetter";
 
+        /// <summary>
+        /// The diagnostics key carrying the publisher-assigned transaction id, written by
+        /// <c>EngineForwarder.DeadLetterAsync</c> and by the pump's transport-failure path.
+        /// <para>Named here as a constant rather than repeated as a literal because it is now read
+        /// as well as written: <see cref="PublishAsync"/> promotes it onto the AMQP
+        /// <c>CorrelationId</c>, so a typo on either side would silently reinstate the
+        /// null-CorrelationId defect this constant exists to prevent.</para>
+        /// </summary>
+        internal const string TransactionIdHeader = "x-warewolf-custom-transaction-id";
+
         readonly ResolvedQueueConfiguration _config;
         readonly SemaphoreSlim _gate = new(1, 1);
         readonly Func<CancellationToken, Task<IConnection>> _connectionFactory;
@@ -99,6 +109,33 @@ namespace Warewolf.Execution.QueueProcessor.Messaging
                     kvp => kvp.Key,
                     kvp => kvp.Value is string s ? (object?)Encoding.UTF8.GetBytes(s) : kvp.Value),
             };
+
+            // Carry the transaction id on the AMQP-STANDARD CorrelationId as well as in the
+            // x-warewolf-custom-transaction-id header above.
+            //
+            // WHY: until this was added, a dead-lettered message had NO standard correlation at all.
+            // The id existed only in a Warewolf-specific header, so anything trying to trace or
+            // replay a dead-letter - an operator with a management UI, a generic AMQP tool, another
+            // consumer - had to know to look there. Preserving CorrelationId across a
+            // dead-letter republish is the AMQP convention and is what makes this queue
+            // self-describing.
+            //
+            // Measured cost of NOT doing it (2026-09-03, 10 000-message run): the load-test harness
+            // reads BasicProperties.CorrelationId, found null on all 10 dead-letters, and therefore
+            // classified 10 correctly-dead-lettered messages as "Neither (LOST)" - the bucket its own
+            // documentation calls "the worst outcome and the one a drained queue hides". Ten
+            // recoverable messages were reported as silent data loss.
+            //
+            // ADDITIVE, never a replacement: the header stays exactly as it was, so any existing
+            // reader keeps working. Blank/absent ids leave CorrelationId unset rather than writing an
+            // empty string, because an empty CorrelationId is indistinguishable from a real one that
+            // happens to be empty and would defeat the fallback logic in every reader.
+            if (diagnostics.TryGetValue(TransactionIdHeader, out var txnRaw)
+                && txnRaw is string txn
+                && !string.IsNullOrWhiteSpace(txn))
+            {
+                properties.CorrelationId = txn;
+            }
 
             await channel.BasicPublishAsync(
                 exchange: string.Empty,

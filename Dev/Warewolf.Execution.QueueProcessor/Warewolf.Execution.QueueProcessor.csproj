@@ -149,6 +149,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
+	<None Update="Dockerfile">
+		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		<CopyToPublishDirectory>Always</CopyToPublishDirectory>
+	</None>
   </ItemGroup>
 
   <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">

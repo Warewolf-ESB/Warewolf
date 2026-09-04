@@ -51,6 +51,19 @@ namespace Warewolf.Execution.QueueProcessor.Configuration
         /// <summary>Parses a boolean, treating anything unparseable (including blank) as false.</summary>
         public static bool ReadBool(string? value) => bool.TryParse(value, out var b) && b;
 
+        /// <summary>
+        /// Parses a boolean, falling back to <paramref name="default"/> when unparseable.
+        ///
+        /// <para>The overload above collapses "unset" onto <c>false</c>, which is only correct while
+        /// every boolean setting happens to default to <c>false</c>. This one keeps "unset" meaning
+        /// <i>keep the declared default</i> — the same contract <see cref="ReadInt"/> and
+        /// <see cref="ReadString"/> already honour — so a setting whose default is later changed to
+        /// <c>true</c> cannot be silently forced back to <c>false</c> by a blank environment
+        /// variable.</para>
+        /// </summary>
+        public static bool ReadBool(string? value, bool @default) =>
+            bool.TryParse(value, out var b) ? b : @default;
+
         /// <summary>Parses an int, falling back to <paramref name="default"/> when unparseable.</summary>
         public static int ReadInt(string? value, int @default) =>
             int.TryParse(value, out var i) ? i : @default;

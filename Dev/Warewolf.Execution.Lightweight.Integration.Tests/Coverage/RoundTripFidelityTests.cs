@@ -262,6 +262,18 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 // (most commonly it also contains some *other*, legacy activity the X6 converter does
                 // not support, which aborts the whole conversion). See SelectRepresentative for how
                 // the per-sample verdicts are reduced to one result.
+                //
+                // Suspend Execution's own logic (SuspendExecutionActivity.Execute) needs a real,
+                // reachable Hangfire SqlServerStorage connection to get past scheduling and actually
+                // prove its round-trip fidelity — without one, both the original and round-tripped
+                // executions fail identically before the activity's own logic ever runs. Scoped to
+                // just this entry so no other toolbox type's execution semantics change; see
+                // SuspendExecutionPersistenceSupport's remarks for why this is safe without a live
+                // Hangfire worker.
+                using var persistence = entry.StudioName == "Suspend Execution"
+                    ? SuspendExecutionPersistenceSupport.SwapToRealHangfireSqlServer()
+                    : null;
+
                 var attempts = new List<FidelityResult>();
                 foreach (var sample in samples)
                 {

@@ -11,6 +11,7 @@ using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 using Warewolf.Execution.QueueProcessor.Configuration;
 using Warewolf.Execution.QueueProcessor.Messaging;
+using System.Text;
 
 namespace Warewolf.Execution.QueueProcessor.Tests
 {
@@ -57,6 +58,91 @@ namespace Warewolf.Execution.QueueProcessor.Tests
         /// "dead-letter queue does not exist". Tracks how many channels were opened, so a test can
         /// prove the channel — and only the channel — was replaced.
         /// </summary>
+
+        // ── Transaction-id attribution on a dead-lettered message (2026-09-03) ───────
+        //
+        // These exist because reconciliation of a 10 000-message run reported
+        // "Neither (LOST) 10" for TEN messages the worker log proves were correctly
+        // dead-lettered. The publisher wrote the transaction id into Headers only and never set
+        // BasicProperties.CorrelationId, while the load-test harness read CorrelationId - so the
+        // id was invisible to every standard AMQP reader and ten recoverable messages were
+        // reported as silent data loss.
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Publish_TransactionIdInDiagnostics_IsPromotedToAmqpCorrelationId()
+        {
+            var broker = new FakeBroker();
+            await using var sut = new RabbitMqDeadLetterPublisher(BuildConfig(), broker.ConnectAsync);
+
+            var diagnostics = new Dictionary<string, object?>
+            {
+                [RabbitMqDeadLetterPublisher.TransactionIdHeader] = "orders-S-5583-88023f",
+                ["x-warewolf-failure-reason"] = "engine returned 500",
+            };
+
+            await sut.PublishAsync(new byte[] { 1, 2, 3 }, diagnostics, CancellationToken.None);
+
+            Assert.AreEqual(1, broker.PublishedProperties.Count, "exactly one dead-letter publish");
+            Assert.AreEqual("orders-S-5583-88023f", broker.PublishedProperties[0].CorrelationId,
+                "the transaction id must reach the AMQP-standard CorrelationId, or a dead-lettered " +
+                "message cannot be traced or replayed by any generic AMQP tool");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Publish_PromotingCorrelationId_StillWritesTheHeader_Additive()
+        {
+            // The change must be ADDITIVE. Anything already reading the Warewolf header - including
+            // dead-letters already sitting in a queue from before this change - must keep working.
+            var broker = new FakeBroker();
+            await using var sut = new RabbitMqDeadLetterPublisher(BuildConfig(), broker.ConnectAsync);
+
+            var diagnostics = new Dictionary<string, object?>
+            {
+                [RabbitMqDeadLetterPublisher.TransactionIdHeader] = "txn-42",
+            };
+
+            await sut.PublishAsync(new byte[] { 9 }, diagnostics, CancellationToken.None);
+
+            var props = broker.PublishedProperties[0];
+            Assert.IsNotNull(props.Headers, "diagnostics must still be published as headers");
+            Assert.IsTrue(props.Headers!.ContainsKey(RabbitMqDeadLetterPublisher.TransactionIdHeader),
+                "promoting to CorrelationId must not remove the header");
+
+            // Strings are UTF8-encoded into headers by the publisher, so decode rather than cast.
+            var raw = props.Headers[RabbitMqDeadLetterPublisher.TransactionIdHeader];
+            var headerValue = raw is byte[] bytes ? Encoding.UTF8.GetString(bytes) : raw as string;
+            Assert.AreEqual("txn-42", headerValue);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Publish_BlankOrMissingTransactionId_LeavesCorrelationIdUnset()
+        {
+            // An EMPTY CorrelationId is worse than none: it is indistinguishable from a real id that
+            // happens to be empty, and it defeats the header-then-CorrelationId fallback every
+            // reader uses - the fallback would stop at a present-but-useless value.
+            var broker = new FakeBroker();
+            await using var sut = new RabbitMqDeadLetterPublisher(BuildConfig(), broker.ConnectAsync);
+
+            await sut.PublishAsync(
+                new byte[] { 1 },
+                new Dictionary<string, object?> { [RabbitMqDeadLetterPublisher.TransactionIdHeader] = "   " },
+                CancellationToken.None);
+
+            await sut.PublishAsync(
+                new byte[] { 2 },
+                new Dictionary<string, object?> { ["x-warewolf-queue"] = "q" },
+                CancellationToken.None);
+
+            Assert.AreEqual(2, broker.PublishedProperties.Count);
+            Assert.IsTrue(string.IsNullOrEmpty(broker.PublishedProperties[0].CorrelationId),
+                "a whitespace transaction id must NOT be promoted");
+            Assert.IsTrue(string.IsNullOrEmpty(broker.PublishedProperties[1].CorrelationId),
+                "an absent transaction id must NOT be promoted");
+        }
+
         sealed class FakeBroker
         {
             public int ChannelsOpened { get; private set; }
@@ -66,6 +152,13 @@ namespace Warewolf.Execution.QueueProcessor.Tests
             public List<bool> DeclaredDurable { get; } = new();
             public int PassiveDeclares { get; private set; }
             public int Publishes { get; private set; }
+
+            /// <summary>
+            /// Every BasicProperties handed to BasicPublishAsync, in order. Needed because the
+            /// dead-letter contract is not just "a publish happened" - it is WHICH fields carry the
+            /// transaction id. Counting publishes cannot catch a null CorrelationId.
+            /// </summary>
+            public List<BasicProperties> PublishedProperties { get; } = new();
 
             /// <summary>Passive declare throws 404 until the queue has been actively declared.</summary>
             public bool QueueExists { get; set; }
@@ -124,7 +217,12 @@ namespace Warewolf.Execution.QueueProcessor.Tests
                         It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>(),
                         It.IsAny<BasicProperties>(), It.IsAny<ReadOnlyMemory<byte>>(),
                         It.IsAny<CancellationToken>()))
-                  .Callback(() => Publishes++)
+                  .Callback((string _, string __, bool ___, BasicProperties props,
+                             ReadOnlyMemory<byte> ____, CancellationToken _____) =>
+                  {
+                      Publishes++;
+                      PublishedProperties.Add(props);
+                  })
                   .Returns(ValueTask.CompletedTask);
 
                 return ch.Object;

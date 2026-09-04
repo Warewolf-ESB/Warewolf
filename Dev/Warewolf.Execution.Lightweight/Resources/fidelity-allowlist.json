@@ -1,5 +1,5 @@
 ﻿{
-  "generatedAtUtc": "2026-09-02T15:42:50.4364406Z",
+  "generatedAtUtc": "2026-09-03T08:18:43.3654724Z",
   "harness": {
     "harnessVersion": 1,
     "maxSamplesPerType": 8,
@@ -15,7 +15,7 @@
       "StudioName": "Assign",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -23,7 +23,7 @@
       "StudioName": "Assign Object",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\Merge Acceptance Tests\\WorkFlowWithOneObject.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\Merge Acceptance Tests\\WorkFlowWithOneObject.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -31,7 +31,7 @@
       "StudioName": "Decision",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Hello World.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Hello World.bite",
       "Status": "Pass",
       "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
@@ -39,7 +39,7 @@
       "StudioName": "Decision (legacy)",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\decision legacy\\Fidelity_DecisionLegacy.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\decision legacy\\Fidelity_DecisionLegacy.bite",
       "Status": "Pass",
       "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
@@ -47,7 +47,7 @@
       "StudioName": "Switch",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Switch.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Switch.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -55,7 +55,7 @@
       "StudioName": "Sequence",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -63,7 +63,7 @@
       "StudioName": "For Each",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -71,7 +71,7 @@
       "StudioName": "Select and apply",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\SelectAndApplyExample.xml",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\SelectAndApplyExample.xml",
       "Status": "PassBothFailedIdentically",
       "Detail": "Best of 9 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: The given key was not present in the dictionary."
     },
@@ -79,7 +79,7 @@
       "StudioName": "Gate",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Gate.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Gate.bite",
       "Status": "PassBothFailedIdentically",
       "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: gate conditions failed; execution stopped"
     },
@@ -87,15 +87,15 @@
       "StudioName": "Suspend Execution",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\suspend execution\\Fidelity_SuspendExecution.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Hangfire SqlServerStorage could not connect. Please check connection and try again."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\suspend execution\\Fidelity_SuspendExecution.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Manual Resumption",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\hangfiredemo\\Manual Resumption Tool Example.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\hangfiredemo\\Manual Resumption Tool Example.bite",
       "Status": "PassBothFailedIdentically",
       "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: SuspensionID must not be null or empty."
     },
@@ -103,15 +103,15 @@
       "StudioName": "Service (sub-workflow)",
       "Category": "Control Flow",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Resources - Service.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Resources - Service.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\VssAdministrator\\AppData\\Local\\Temp\\wf-fidelity-32e819bcbbc3433f9b976f7d8ec7f668'."
+      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\ultra\\AppData\\Local\\Temp\\wf-fidelity-793e02df962f41aebeb801483b3a9f2a'."
     },
     {
       "StudioName": "Comment",
       "Category": "Utility",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Hello World.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Hello World.bite",
       "Status": "Pass",
       "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
@@ -119,7 +119,7 @@
       "StudioName": "Calculate",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - Calculate.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Calculate.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -127,7 +127,7 @@
       "StudioName": "Aggregate Calculate",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - Calculate.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Calculate.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -135,7 +135,7 @@
       "StudioName": "Create JSON",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Data - Create JSON.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Create JSON.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -143,7 +143,7 @@
       "StudioName": "Data Merge",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -151,7 +151,7 @@
       "StudioName": "Data Split",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -159,7 +159,7 @@
       "StudioName": "Base Conversion",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Data - Base Conversion.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Base Conversion.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -167,7 +167,7 @@
       "StudioName": "Case Conversion",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -175,7 +175,7 @@
       "StudioName": "Replace",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Data - Replace.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Replace.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -183,7 +183,7 @@
       "StudioName": "Find Index",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Data - Find Index.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Find Index.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -191,7 +191,7 @@
       "StudioName": "Format Number",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - Format Number.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Format Number.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -199,7 +199,7 @@
       "StudioName": "Random",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Loop Constructs - For Each.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Loop Constructs - For Each.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -207,7 +207,7 @@
       "StudioName": "XPath",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - XPath.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - XPath.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -215,7 +215,7 @@
       "StudioName": "Find Records",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Recordset - Find Records.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Recordset - Find Records.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -223,7 +223,7 @@
       "StudioName": "Delete Records",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Backup Example\\Get Backup Items List.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Backup Example\\Get Backup Items List.bite",
       "Status": "PassBothFailedIdentically",
       "Detail": "Best of 14 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Variable is null; recordset does not exist"
     },
@@ -231,7 +231,7 @@
       "StudioName": "Sort Records",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -239,7 +239,7 @@
       "StudioName": "Count Records",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\AdvancedRecordsetAcceptanceTest.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\AdvancedRecordsetAcceptanceTest.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -247,7 +247,7 @@
       "StudioName": "Length",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\Error WF.xml",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\Error WF.xml",
       "Status": "PassBothFailedIdentically",
       "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Recordset is null [[rec()]]"
     },
@@ -255,7 +255,7 @@
       "StudioName": "Unique Records",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -263,7 +263,7 @@
       "StudioName": "Advanced Recordset",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Advanced Recordset - Update.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Advanced Recordset - Update.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -271,7 +271,7 @@
       "StudioName": "Read File",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Read File.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Read File.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -279,7 +279,7 @@
       "StudioName": "Write File",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Read File.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Read File.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -287,7 +287,7 @@
       "StudioName": "Folder Read",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Read Folder.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Read Folder.bite",
       "Status": "PassBothFailedIdentically",
       "Detail": "Best of 6 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Directory not found c:\\Users\\Default User"
     },
@@ -295,7 +295,7 @@
       "StudioName": "Create (path)",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Copy.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Copy.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -303,7 +303,7 @@
       "StudioName": "Copy",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Copy.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Copy.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -311,7 +311,7 @@
       "StudioName": "Move",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Move.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Move.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -319,7 +319,7 @@
       "StudioName": "Rename",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Rename.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Rename.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -327,7 +327,7 @@
       "StudioName": "Delete (path)",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Delete.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Delete.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -335,7 +335,7 @@
       "StudioName": "Zip",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Unzip.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Unzip.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -343,7 +343,7 @@
       "StudioName": "UnZip",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\File and Folder - Unzip.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Unzip.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -351,7 +351,7 @@
       "StudioName": "GET Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\http get\\TC014_Get_MultipleHeaders_Mapped.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\http get\\TC013_Get_CustomHeader_Echoed.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -359,7 +359,7 @@
       "StudioName": "POST Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\http post\\TC005_PostJsonBody_MapsName_Returns_Alice.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\http post\\TC005_PostJsonBody_MapsName_Returns_Alice.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -367,7 +367,7 @@
       "StudioName": "PUT Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Put.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Put.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -375,7 +375,7 @@
       "StudioName": "DELETE Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Delete.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Delete.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -383,7 +383,7 @@
       "StudioName": "Web Request",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - Web Request.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Web Request.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -391,55 +391,55 @@
       "StudioName": "SQL Server Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\ForXmlWithMultipleRows.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 9 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: SQL Error: Index was out of range. Must be non-negative and less than the size of the collection. (Parameter 'startIndex')\r\n   at System.String.LastIndexOf(Char value, Int32 startIndex, Int32 count)\r\n   at Microsoft.Data.Common.ADP.IsEndpoint(String dataSource, String prefix)\r\n   at Microsoft.Data.Common.ADP.IsAzureSynapseOnDemandEndpoint(String dataSource)\r\n   at Microsoft.Data.SqlClient.SqlConnection.CacheConnectionStringProperties()\r\n   at Microsoft.Data.SqlClient.SqlConnection.set_ConnectionString(String value)\r\n   at Microsoft.Data.SqlClient.SqlConnection..ctor(String connectionString)\r\n   at Dev2.Services.Sql.SqlConnectionWrapper.CreateConnection() in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\SqlConnectionWrapper.cs:line 89\r\n   at Dev2.Services.Sql.SqlConnectionWrapper..ctor(String connString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\SqlConnectionWrapper.cs:line 84\r\n   at Dev2.Services.Sql.ConnectionBuilder.GetSqlConnectionWrapper(String connectionString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\ConnectionBuilder.cs:line 34\r\n   at Dev2.Services.Sql.ConnectionBuilder.ConnectionString(String connectionString) in D:\\a\\1\\s\\Dev\\Dev2.Services.Sql\\ConnectionBuilder.cs:line 17\r\n   at Dev2.Services.Execution.DatabaseServiceExecution.MssqlSqlExecution(Int32 connectionTimeout, Nullable`1 commandTimeout, ErrorResultTO errors, Int32 update) in D:\\a\\1\\s\\Dev\\Dev2.Services.Execution\\DatabaseServiceExecution.cs:line 452\r\n   at Dev2.Services.Execution.DatabaseServiceExecution.ExecuteService(Int32 update, ErrorResultTO& errors, IOutputFormatter formater) in D:\\a\\1\\s\\Dev\\Dev2.Services.Execution\\DatabaseServiceExecution.cs:line 153"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\sql server database\\Fidelity_SqlServerDatabase.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "PostgreSQL Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\TestPostgresReturningXml.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\TestPostgresReturningXml.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { getemployeesxml } not found"
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { getemployeesxml } not found"
     },
     {
       "StudioName": "MySQL Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\StopExecutionOnMySQLTimeoutError.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\StopExecutionOnMySQLTimeoutError.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 5 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Database source is not configured."
+      "Detail": "Best of 5 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured."
     },
     {
       "StudioName": "Oracle Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\TestOracleReturningXml.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\TestOracleReturningXml.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { RESULT } not found"
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { RESULT } not found"
     },
     {
       "StudioName": "ODBC Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\odbc database\\Fidelity_OdbcDatabase.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\odbc database\\Fidelity_OdbcDatabase.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Value cannot be null. (Parameter 'source')"
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Value cannot be null. (Parameter 'source')"
     },
     {
       "StudioName": "SQL Bulk Insert",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\sql bulk insert\\Fidelity_SqlBulkInsert.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\sql bulk insert\\Fidelity_SqlBulkInsert.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Object reference not set to an instance of an object."
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Object reference not set to an instance of an object."
     },
     {
       "StudioName": "Redis Cache",
       "Category": "Cache",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -447,7 +447,7 @@
       "StudioName": "Redis Remove",
       "Category": "Cache",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis remove\\Fidelity_RedisRemove.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis remove\\Fidelity_RedisRemove.bite",
       "Status": "Pass",
       "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
@@ -455,7 +455,7 @@
       "StudioName": "RabbitMQ Publish",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -463,7 +463,7 @@
       "StudioName": "RabbitMQ Consume",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -471,23 +471,23 @@
       "StudioName": "Send Email (SMTP)",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Email - SMTP Send.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Email - SMTP Send.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 11 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: Invalid URI: The hostname could not be parsed."
+      "Detail": "Best of 11 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Invalid URI: The hostname could not be parsed."
     },
     {
       "StudioName": "Exchange Email",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Load\\Resources\\Simple Exchange Test.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Load\\Resources\\Simple Exchange Test.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected \u2014 this activity needs a live source not present in this sandbox). Error: A valid SMTP address must be specified."
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: A valid SMTP address must be specified."
     },
     {
       "StudioName": "JavaScript",
       "Category": "Scripting",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Scripting - JavaScript.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - JavaScript.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -495,7 +495,7 @@
       "StudioName": "Ruby",
       "Category": "Scripting",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Scripting - Ruby.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - Ruby.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -503,7 +503,7 @@
       "StudioName": "Python",
       "Category": "Scripting",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Scripting - Python.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - Python.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -511,7 +511,7 @@
       "StudioName": "Execute Command Line",
       "Category": "Scripting",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Scripting - CMD Script.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - CMD Script.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -519,7 +519,7 @@
       "StudioName": "Date and Time",
       "Category": "Date & Time",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - Date and Time Difference.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Date and Time Difference.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -527,7 +527,7 @@
       "StudioName": "Date and Time Difference",
       "Category": "Date & Time",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Resources - Release\\Resources\\Examples\\Utility - Date and Time Difference.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Date and Time Difference.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -535,7 +535,7 @@
       "StudioName": "Gather System Information",
       "Category": "Utility",
       "RequiresSource": false,
-      "SamplePath": "D:\\a\\1\\WindowsTests\\Warewolf.Execution.Lightweight\\Resources\\tools\\system info\\TestGettingComputerName.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\system info\\TestGettingComputerName.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     }

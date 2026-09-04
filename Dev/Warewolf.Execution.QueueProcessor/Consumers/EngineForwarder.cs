@@ -4,6 +4,7 @@
 *  Licensed under GNU Affero General Public License 3.0 or later.
 */
 
+using System.Security.Cryptography;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
@@ -74,6 +75,10 @@ namespace Warewolf.Execution.QueueProcessor.Consumers
                 headers["Warewolf-Custom-Transaction-Id", Array.Empty<string>()]?.FirstOrDefault()
                 ?? string.Empty;
 
+            var idempotencyKey = BuildIdempotencyKey(body, customTransactionId);
+            var deliveryAttempt =
+                headers["Warewolf-Delivery-Attempt", Array.Empty<string>()]?.FirstOrDefault() ?? "1";
+
             var postBody = BuildPostBody(body, out var formFieldName);
 
             using var cts = new CancellationTokenSource(
@@ -83,6 +88,12 @@ namespace Warewolf.Execution.QueueProcessor.Consumers
             {
                 ["Warewolf-Execution-Id"] = executionId,
                 ["Warewolf-Custom-Transaction-Id"] = customTransactionId,
+                // STABLE across redeliveries, unlike Warewolf-Execution-Id above. This is the only
+                // header the engine can safely key a de-duplication store on.
+                ["Warewolf-Idempotency-Key"] = idempotencyKey,
+                // "1" = first delivery, "2" = the broker has delivered this before. Lets the engine
+                // skip the dedup lookup entirely on the common first-attempt path.
+                ["Warewolf-Delivery-Attempt"] = deliveryAttempt,
             };
 
             var result = await _engine.PostSecureAsync(
@@ -118,7 +129,7 @@ namespace Warewolf.Execution.QueueProcessor.Consumers
                 var diagnostics = new Dictionary<string, object?>
                 {
                     ["x-warewolf-execution-id"] = executionId,
-                    ["x-warewolf-custom-transaction-id"] = customTransactionId,
+                    [RabbitMqDeadLetterPublisher.TransactionIdHeader] = customTransactionId,
                     ["x-warewolf-queue"] = _config.QueueName,
                     ["x-warewolf-workflow"] = _config.WorkflowPath,
                     ["x-warewolf-engine-status"] = result.StatusCode.HasValue
@@ -140,6 +151,45 @@ namespace Warewolf.Execution.QueueProcessor.Consumers
                     "message is redelivered rather than lost.", ex, ExecutionId);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Derives the key the engine uses to recognise a REDELIVERED message as a repeat of one it
+        /// may already have executed.
+        ///
+        /// <para>This cannot be <c>Warewolf-Execution-Id</c>: that is minted with
+        /// <c>Guid.NewGuid()</c> on every <see cref="Consume"/> call, so the second delivery of the
+        /// same message reaches the engine with a different id and is indistinguishable from a first
+        /// execution. The key must be a property of the MESSAGE, not of the attempt.</para>
+        ///
+        /// <para>Preference order:</para>
+        /// <list type="number">
+        ///   <item><b>The AMQP <c>CorrelationId</c></b> (surfaced as
+        ///   <c>Warewolf-Custom-Transaction-Id</c> by <c>RabbitMqMessagePump.cs:214</c>). The broker
+        ///   preserves it verbatim across a requeue, and it is publisher-assigned, so it survives a
+        ///   dead-letter/republish that a body hash would not.</item>
+        ///   <item><b>SHA-256 of the raw body</b> when no CorrelationId was set. Deterministic, so
+        ///   redelivery of identical bytes yields an identical key.</item>
+        /// </list>
+        ///
+        /// <para><b>Known limitation of the fallback:</b> two DISTINCT messages with byte-identical
+        /// bodies hash to the same key, and an engine keyed on it would treat the second as a
+        /// duplicate and suppress a legitimate execution. That is a real risk for queues carrying
+        /// repeated commands ("run the nightly job") with no publisher correlation. The fallback is
+        /// therefore prefixed <c>sha256:</c> so the engine can see which derivation was used and
+        /// apply a weaker policy (for example, dedup only when the delivery-attempt header says the
+        /// broker actually redelivered). Setting a CorrelationId on the publisher removes the
+        /// ambiguity entirely and is the recommended configuration.</para>
+        /// </summary>
+        internal static string BuildIdempotencyKey(byte[] body, string customTransactionId)
+        {
+            if (!string.IsNullOrWhiteSpace(customTransactionId))
+            {
+                return "cid:" + customTransactionId;
+            }
+
+            var hash = SHA256.HashData(body ?? Array.Empty<byte>());
+            return "sha256:" + Convert.ToHexStringLower(hash);
         }
 
         /// <summary>

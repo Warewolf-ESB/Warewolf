@@ -138,6 +138,11 @@ param(
 $ErrorActionPreference = 'Stop'
 Set-StrictMode -Version Latest
 
+# WAREWOLF_ENTRA_CONFIG fields Stage 8 carried over from the value already stored on the
+# Function App (see Merge-EntraConfigJson). Initialised here so Stage 10c's verification can
+# read it under StrictMode even on a path where Stage 8 did not run.
+$script:PreservedEntraFields = @()
+
 # ── PRV-15 / PRV-18 normalisation ─────────────────────────────────────────────
 if ($DryRun) { $WhatIfOnly = $true }
 if ($PSBoundParameters.ContainsKey('SecretLifetimeYears')) {
@@ -289,6 +294,58 @@ function Invoke-AzCli {
     }
 }
 
+function Get-BalancedJsonSpan {
+    <#
+        $Text must start with '{' or '['. Returns the substring spanning exactly that
+        one balanced JSON value, tracking brace/bracket depth and respecting quoted
+        strings (so a '}' or '{' inside a string value doesn't affect the count) - and
+        discarding anything after the value closes.
+
+        WHY: az CLI can print extension/deprecation notices (e.g. "WARNING: The
+        behavior of this command has been altered by the following extension: authV2")
+        to stderr, which Invoke-AzCli merges into the same buffer via `2>&1`. When that
+        notice lands AFTER the JSON in the merged stream (buffering order between
+        stdout/stderr isn't guaranteed - observed live once authV2 is enabled on an
+        app), ConvertFrom-Json throws "Additional text encountered after finished
+        reading JSON content" even though the JSON itself is perfectly valid.
+        ConvertFrom-AzJson already strips a LEADING preamble the same way for the
+        symmetric case (notice before the JSON); this closes the trailing case.
+
+        Returns the whole (unbalanced) $Text if the value never closes, so the
+        caller's ConvertFrom-Json reports the real parse error instead of this
+        function silently returning a truncated/wrong span.
+    #>
+    param([Parameter(Mandatory)][string] $Text)
+
+    $open  = $Text[0]
+    $close = if ($open -eq '{') { '}' } else { ']' }
+    $depth = 0
+    $inString = $false
+    $escaped = $false
+
+    for ($i = 0; $i -lt $Text.Length; $i++) {
+        $ch = $Text[$i]
+
+        if ($inString) {
+            if ($escaped)        { $escaped = $false }
+            elseif ($ch -eq '\') { $escaped = $true }
+            elseif ($ch -eq '"') { $inString = $false }
+            continue
+        }
+
+        if ($ch -eq '"') {
+            $inString = $true
+        } elseif ($ch -eq $open) {
+            $depth++
+        } elseif ($ch -eq $close) {
+            $depth--
+            if ($depth -eq 0) { return $Text.Substring(0, $i + 1) }
+        }
+    }
+
+    return $Text
+}
+
 function ConvertFrom-AzJson {
     <#
         Aggregates every line emitted by az CLI in a StringBuilder, strips any
@@ -341,6 +398,10 @@ function ConvertFrom-AzJson {
             Write-Verbose "ConvertFrom-AzJson: no JSON document in input. Buffer was: $text"
             return $null
         }
+
+        # Discard any TRAILING preamble too (e.g. a stderr notice that landed after
+        # the JSON in the merged buffer) - see Get-BalancedJsonSpan.
+        $text = Get-BalancedJsonSpan -Text $text
 
         return $text | ConvertFrom-Json -Depth 50
     }
@@ -431,6 +492,57 @@ function Get-FunctionAppSetting {
     if (-not $hit) { return $null }
     if ([string]::IsNullOrWhiteSpace($hit.value)) { return $null }
     return [string]$hit.value
+}
+
+function Merge-EntraConfigJson {
+    <#
+        Layers THIS script's authoritative Entra identity fields on top of whatever
+        WAREWOLF_ENTRA_CONFIG already holds, preserving every other field.
+
+        WHY: WOLF-8516 merged the individual env vars into one JSON app setting that is
+        written by TWO scripts - this one (tenantId/audience/clientId) and
+        Enable-ServiceBusSecureTrigger.ps1 (tenantId/serviceBusAudience). An app setting
+        write is a whole-value overwrite; Azure has no JSON-merge primitive. Building the
+        value from scratch here therefore DELETED serviceBusAudience on every engine
+        deploy, which makes ServiceBusEntraAuthOptions.IsEnabled false so the Service Bus
+        trigger fails closed and dead-letters every message it receives - with no startup
+        error and no telemetry, the only symptom being a rising dead-letter count
+        (see Auth/Models/ServiceBusEntraAuthOptions.cs and
+        docs/ServiceBusSecureTrigger-Architecture.md "Security"). Read-merge-write is the
+        mirror image of Enable-ServiceBusSecureTrigger.ps1's own Phase 3 merge, which
+        already preserves audience/clientId for exactly the same reason.
+
+        Unparseable stored JSON is replaced (with a warning) rather than aborting the
+        stage: a corrupt value is already broken for every consumer, and refusing to
+        rewrite it would leave the app permanently unfixable by this script.
+
+        Returns an ordered hashtable ready for `ConvertTo-Json -Compress`.
+    #>
+    param(
+        [string] $ExistingJson,
+        [Parameter(Mandatory)][string] $TenantId,
+        [Parameter(Mandatory)][string] $Audience,
+        [Parameter(Mandatory)][string] $ClientId
+    )
+
+    $merged = [ordered]@{}
+
+    # 'None' is az's tsv rendering of a missing value - treat it as absent, not as JSON.
+    if (-not [string]::IsNullOrWhiteSpace($ExistingJson) -and $ExistingJson.Trim() -ne 'None') {
+        try {
+            ($ExistingJson | ConvertFrom-Json).PSObject.Properties |
+                ForEach-Object { $merged[$_.Name] = $_.Value }
+        } catch {
+            Write-Warning ("WAREWOLF_ENTRA_CONFIG currently stored on the Function App is not valid JSON - " +
+                           "it will be REPLACED, and any serviceBusAudience it held is lost (re-run " +
+                           "Enable-ServiceBusSecureTrigger.ps1 afterwards). ExceptionType=$($_.Exception.GetType().Name)")
+        }
+    }
+
+    $merged['tenantId'] = $TenantId
+    $merged['audience'] = $Audience
+    $merged['clientId'] = $ClientId
+    return $merged
 }
 
 function Get-DeepValue {
@@ -666,7 +778,11 @@ function Read-AppRoleConflictAction {
     #>
     param(
         [array]  $ExistingRoles = @(),
-        [Parameter(Mandatory)][AllowEmptyCollection()][array]  $DesiredRoles
+        # NOT [Parameter(Mandatory)]: PowerShell's binder treats an empty array bound
+        # to a Mandatory parameter as "no value supplied" and throws "Cannot bind
+        # argument... because it is an empty collection" - but an empty desired-roles
+        # set (no -GroupPermissions configured yet) is a legitimate call here.
+        [array]  $DesiredRoles = @()
     )
 
     $existing = @($ExistingRoles | Where-Object { $_.isEnabled -eq $true })
@@ -721,7 +837,11 @@ function Invoke-AppRolePatch {
     param(
         [Parameter(Mandatory)][string] $AppObjectId,
         [array]                        $ExistingRoles = @(),
-        [Parameter(Mandatory)][AllowEmptyCollection()][array]  $DesiredRoles,
+        # NOT [Parameter(Mandatory)]: see Read-AppRoleConflictAction's $DesiredRoles
+        # for why - an empty desired-roles set (no -GroupPermissions configured yet)
+        # is a legitimate call here and the logic below already handles it (writes an
+        # empty appRoles array).
+        [array]                        $DesiredRoles = @(),
         [Parameter(Mandatory)][string] $Mode   # 'keep' | 'replace'
     )
 
@@ -875,6 +995,63 @@ function Write-TempJson {
     )
     $utf8NoBom = New-Object System.Text.UTF8Encoding $false
     [System.IO.File]::WriteAllText($Path, $Json, $utf8NoBom)
+}
+
+function Set-FunctionAppSettings {
+    <#
+        Writes app settings via `az functionapp config appsettings set --settings @<file>`
+        instead of passing "KEY=VALUE" pairs as raw command-line arguments - ONE temp file
+        and ONE `@<path>` argument PER setting, not one shared file for the whole list.
+
+        WHY (bug #1 - quotes): Invoke-AzCli invokes az via `& az @Arguments` - PowerShell's
+        call operator splatting against az.cmd (a batch-file wrapper on Windows). Any
+        argument containing embedded double quotes (e.g. a JSON-valued setting like
+        WAREWOLF_ENTRA_CONFIG) gets silently stripped of its quotes when PowerShell/cmd.exe
+        re-serialize the array for the child process, corrupting the value written to Azure
+        with no error - the az call itself still reports success. A single quote-free
+        `@<path>` argument sidesteps the re-serialization entirely; every other JSON-bearing
+        az call in this script already uses the equivalent `--body @<file>` pattern via
+        Write-TempJson (Stage 2 fallback, Stage 3b, Stage 4, Stage 9).
+
+        WHY (bug #2 - one file per setting, not one shared file): `az`'s `@file`
+        substitution replaces a SINGLE argument occurrence with the file's raw content as
+        ONE token - it does not re-split multi-line file content back into separate
+        `--settings` list entries. A shared file holding multiple "KEY=VALUE" lines gets
+        read as one token, split only on the FIRST `=`, and every setting after the first
+        collapses into the first setting's value. Live incident this fixes: a shared file
+        with WAREWOLF_ENTRA_CONFIG on line 1 and WAREWOLF_SECURE_CONFIG on line 2 wrote
+        WAREWOLF_ENTRA_CONFIG's stored value as `{...}` + a literal newline + the entire
+        `WAREWOLF_SECURE_CONFIG=...` line, so EntraIdentityOptions again failed to parse it
+        (this time with "Additional text encountered after finished reading JSON content"
+        instead of stripped quotes - a different-looking symptom of a different bug, not a
+        recurrence of bug #1). One file per setting keeps each `--settings` list entry
+        exactly one token, matching what az actually does with `@file` substitution.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $Name,
+        [Parameter(Mandatory)][string] $ResourceGroup,
+        [Parameter(Mandatory)][string[]] $Settings
+    )
+
+    $tempFiles = [System.Collections.Generic.List[string]]::new()
+    try {
+        $utf8NoBom = New-Object System.Text.UTF8Encoding $false
+        $fileArgs = foreach ($setting in $Settings) {
+            $tempFile = [System.IO.Path]::GetTempFileName()
+            $tempFiles.Add($tempFile)
+            [System.IO.File]::WriteAllText($tempFile, $setting, $utf8NoBom)
+            "@$tempFile"
+        }
+
+        Invoke-AzCli (@(
+            'functionapp','config','appsettings','set',
+            '--name',$Name,
+            '--resource-group',$ResourceGroup,
+            '--settings'
+        ) + $fileArgs) | Out-Null
+    } finally {
+        foreach ($f in $tempFiles) { Remove-Item $f -Force -ErrorAction SilentlyContinue }
+    }
 }
 
 function Get-EasyAuthConfig {
@@ -1531,11 +1708,31 @@ Write-Host "═══ Stage 8  Function App settings ═════════
 # caller is rejected with 401 "Authentication required" regardless of role assignment
 # (see EntraAuthOptions.ClientId doc comment and the pipeline-CLOUD.yml diagnostic probe
 # for the full aud/audience mismatch writeup).
-$entraConfigValue = [ordered]@{
-    tenantId = $TenantId
-    audience = "api://$ClientId"
-    clientId = $ClientId
+#
+# The value is READ-MERGE-WRITTEN, not rebuilt: Enable-ServiceBusSecureTrigger.ps1 stores
+# 'serviceBusAudience' in this same setting, and rebuilding from scratch here deleted it on
+# every deploy - failing the Service Bus trigger closed with no error and no telemetry.
+# See Merge-EntraConfigJson's comment for the full writeup.
+$existingEntraConfigRaw = Get-FunctionAppSetting `
+    -Name $FunctionAppName -ResourceGroup $ResourceGroupName -SettingName 'WAREWOLF_ENTRA_CONFIG'
+
+$entraConfigValue = Merge-EntraConfigJson `
+    -ExistingJson $existingEntraConfigRaw `
+    -TenantId     $TenantId `
+    -Audience     "api://$ClientId" `
+    -ClientId     $ClientId
+
+# Report (and later verify, Stage 10c) whatever we carried over from the stored value, so a
+# silent regression to overwrite-from-scratch is visible in the run output.
+$script:PreservedEntraFields = @(
+    $entraConfigValue.Keys | Where-Object { $_ -notin @('tenantId', 'audience', 'clientId') }
+)
+if ($script:PreservedEntraFields.Count -gt 0) {
+    Write-Host "    preserved existing WAREWOLF_ENTRA_CONFIG field(s): $($script:PreservedEntraFields -join ', ')" -ForegroundColor Green
+} else {
+    Write-Host "    no extra WAREWOLF_ENTRA_CONFIG fields to preserve (none stored)" -ForegroundColor DarkGray
 }
+
 $settings = @(
     "WAREWOLF_ENTRA_CONFIG=$($entraConfigValue | ConvertTo-Json -Compress)",
     "WAREWOLF_SECURE_CONFIG=$SecureConfigMountPath"
@@ -1544,12 +1741,7 @@ if ($ClientSecret) {
     $settings += "$ClientSecretSettingName=$ClientSecret"
 }
 
-Invoke-AzCli (@(
-    'functionapp','config','appsettings','set',
-    '--name',$FunctionAppName,
-    '--resource-group',$ResourceGroupName,
-    '--settings'
-) + $settings) | Out-Null
+Set-FunctionAppSettings -Name $FunctionAppName -ResourceGroup $ResourceGroupName -Settings $settings
 Write-Host "    wrote $($settings.Count) app setting(s)" -ForegroundColor Green
 
 # ──────────────────────────────────────────────────────────────────────────────
@@ -1844,6 +2036,15 @@ if ($liveEntraConfigRaw) {
             $fieldVal = $liveEntraConfig.$field
             if ([string]::IsNullOrWhiteSpace($fieldVal)) {
                 $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field is missing or empty")
+            }
+        }
+        # Fields this run carried over from the previously-stored value (e.g.
+        # serviceBusAudience, written by Enable-ServiceBusSecureTrigger.ps1) must still be
+        # there after the write - a rebuilt-from-scratch value silently breaks the Service
+        # Bus trigger, so assert rather than assume the merge held.
+        foreach ($field in @($script:PreservedEntraFields)) {
+            if ([string]::IsNullOrWhiteSpace($liveEntraConfig.$field)) {
+                $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field was present before this run but is missing or empty after it (read-merge-write regression)")
             }
         }
     } catch {

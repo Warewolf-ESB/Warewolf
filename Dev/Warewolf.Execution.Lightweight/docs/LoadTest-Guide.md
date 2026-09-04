@@ -286,6 +286,32 @@ Measured directly against a Consumption-plan engine:
 Memory rose **396 MB → 712 MB** across 10 concurrent executions (~32 MB per execution) against the
 ~1.5 GB a Consumption instance gets. 6 leaves clear margin; the script warns above 8.
 
+**Re-measured 2026-08-20 against `wwengine3` (also `Y1/Dynamic`), 1000 messages per run.** The failure
+mode reproduces, but the threshold sits higher than the table above — treat those numbers as
+deployment-specific, not universal:
+
+| Ceiling | Drain (publish → all accounted) | Throughput | Succeeded | Dead-lettered | Duplicates |
+|---|---|---|---|---|---|
+| 1 | 43.4 min | 0.38 msg/s | 1000 | 0 | 0 |
+| 2 | 23.6 min | 0.71 msg/s | 1000 | 0 | 0 |
+| 6 | 19.0 min | 0.88 msg/s | 997 | 3 | 0 |
+| 10 | 14.3 min | 1.17 msg/s | **1000** | **0** | **0** |
+| 20 | **5.6 min** | 2.96 msg/s | 992 | 8 | **2** |
+
+Two corrections to the older guidance. **10 replicas did not OOM** here — that run was 1000/1000
+clean and the second-fastest of the set. **20 did**, with the same `Insufficient memory` signature,
+and the stack shows it failing during *assembly loading* (`PEReader`, `StreamMemoryBlockProvider`) —
+i.e. **before** `usp_jobs1_LogStart`, so those messages leave **no database row at all** and
+`usp_jobs1_Summary` cannot see them. Always reconcile against the publisher manifest.
+
+Throughput keeps improving to 20 but sub-linearly: **7.7× for 20× the compute**, per-replica
+efficiency falling 100% → 92% → 38% → 30% → 39%. 10 was the best all-round setting measured — 3× the
+single-replica throughput with zero losses; 2 was the most efficient.
+
+A 500 from an OOM is classified `BUSINESS` and **dead-lettered permanently**, while a 502 from the
+same event is classified `TRANSPORT` and retried successfully. Valid messages are lost or kept
+depending only on which status the dying host happened to return.
+
 > **`maxReplicas` is not a deploy flag.** `Deploy-WwQueueProcessor.ps1` derives it from the trigger's
 > `Concurrency` field. To change it, edit a **copy** of the trigger `.bite` — never the staged
 > original — and redeploy:
@@ -294,6 +320,33 @@ Memory rose **396 MB → 712 MB** across 10 concurrent executions (~32 MB per ex
 > $f = "$run\triggers\03fb9052-7fe4-4e8b-ac18-53779b0ebcba.bite"
 > (Get-Content $f -Raw) -replace '"Concurrency":\s*\d+','"Concurrency": 6' | Set-Content $f -NoNewline
 > ```
+
+### Varying the ceiling in `Mode Existing` — use `-ApplyScale`
+
+`-MaxReplicas` on its own is **planning-only** in `Mode Existing`: the run's real ceiling is read from
+the deployed Container App, and the flag only feeds the `maxReplicas × MaxConcurrency` arithmetic in
+the plan. Passing a value that disagrees with the deployment is now a **pre-flight blocker**, because
+the alternative is worse than stopping — on 2026-08-20 a run invoked with `-MaxReplicas 10` against a
+worker deployed at 20 executed at 20 while its plan, its summary and every derived measurement said
+10, and a 20-replica result was filed as a 10-replica one.
+
+Two ways to set it deliberately:
+
+```powershell
+# let the script do it (mints a new revision, records scaleBefore/scaleAfter in the summary)
+.\Invoke-WwQueueLoadTest.ps1 -MessageCount 1000 -MaxReplicas 10 -ApplyScale -Yes
+
+# or set it yourself first, then run with a matching -MaxReplicas
+az containerapp update -g DEV2 -n wwqp3-ordersuccessqueue --max-replicas 10
+```
+
+`-ApplyScale` does **not** restore the previous ceiling when the run ends — reverting infrastructure
+on the way out is surprising, and a failed run would revert half-way. The run prints the restore
+command and records it as `scale.restoreHint` in `loadtest-summary.json`.
+
+Two things the summary now makes explicit, both worth checking before you trust a measurement:
+`scale.deployed` (what the run used) and `concurrency`, which is derived from `scale.deployed` and
+never from `targets.MaxReplicas`.
 
 ### Pre-warming is not optional
 
@@ -389,8 +442,14 @@ publishing a single message.
 **The competing consumer is the most damaging false pass there is.** A second Container App bound to
 the same queue takes its share of the messages. If it forwards to a stopped or older engine, it
 dead-letters **and acks** them — so the queue still drains, the app still scales to zero, and the run
-looks clean while half the messages never executed. Stop the other app, or park it at
-`--max-replicas 0`.
+looks clean while half the messages never executed. **Stop the other app** — `az containerapp stop -g
+<rg> -n <app>` — or repoint its `rabbitmq` scale rule at another queue.
+
+> ⚠ Earlier revisions of this guide said to park the competing app at `--max-replicas 0`. **Core az
+> rejects that** — `--max-replicas must be in the range [1,1000]` (confirmed on az 2.87). Use
+> `az containerapp stop`, or `az containerapp revision deactivate` for a single revision. Note that a
+> *stopped* app is still reported as a competing consumer by the contention check, which reads the
+> KEDA rule and not the app's `runningStatus`; repointing the rule is the only change that clears it.
 
 The timeout chain is also checked: **`EngineTimeout ≤ ShutdownGrace < TerminationGracePeriod`**
 (RUN 2: 180 / 210 / 240). KEDA counts only *ready* messages, so in-flight work is invisible to the

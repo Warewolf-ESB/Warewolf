@@ -48,7 +48,30 @@ internal static class ServiceCollectionExtensions
             // Per-execution usage telemetry (8438) — singleton emitter is injected
             // into WorkflowExecutor so each successful (or failed) workflow run
             // produces a row in the legacy UsageData SQL table via Warewolf.Usage.
-            services.AddSingleton<IUsageEventEmitter, UsageEventEmitter>();
+            //
+            // OPERATIONAL KILL-SWITCH (8520): WAREWOLF_USAGE_TRACKING_ENABLED=false swaps in the
+            // no-op emitter. This exists because the usage backend is an EXTERNAL service
+            // (warewolfusageapi.azurewebsites.net) that we can neither scale nor warm, and on
+            // 2026-09-02 it returned HTTP 400 after ~30 s for 21.6 % of calls under load. The
+            // emitter no longer blocks executions (see UsageEventEmitter), so this switch is not
+            // needed to protect throughput any more — it is here so that a total backend outage
+            // can be taken off the board from the control plane, with no redeploy, instead of
+            // accumulating dropped-event warnings.
+            //
+            // Default is ENABLED: usage data is commercial metering, so it is never silently
+            // disabled. Only an explicit "false"/"0" turns it off, and the choice is logged.
+            if (IsUsageTrackingEnabled())
+            {
+                services.AddSingleton<IUsageEventEmitter, UsageEventEmitter>();
+            }
+            else
+            {
+                Dev2Logger.Warn(
+                    "WAREWOLF_USAGE_TRACKING_ENABLED is false - per-execution usage telemetry is " +
+                    "DISABLED and no UsageData rows will be written by this engine.",
+                    nameof(ServiceCollectionExtensions));
+                services.AddSingleton<IUsageEventEmitter>(_ => NoOpUsageEventEmitter.Instance);
+            }
 
             services.AddSingleton<IWorkflowExecutor, WorkflowExecutor>();
             services.AddSingleton<IApisJsonGenerator>(_ => new ApisJsonGenerator(config.WorkflowsDirectory));
@@ -294,5 +317,22 @@ internal static class ServiceCollectionExtensions
         // no per-encryption registration needed here.
 
         return services;
+    }
+
+    /// <summary>
+    /// Returns <c>true</c> when per-execution usage telemetry should be emitted.
+    /// Controlled by <c>WAREWOLF_USAGE_TRACKING_ENABLED</c>.
+    /// <para>Defaults to <c>true</c> when absent or not explicitly "false"/"0" — the same
+    /// convention as <c>WAREWOLF_LICENSE_CHECK_ENABLED</c> in
+    /// <see cref="Execution.WorkflowExecutor"/>, deliberately mirrored so operators do not have to
+    /// remember two different truthiness rules. Metering defaults ON.</para>
+    /// </summary>
+    internal static bool IsUsageTrackingEnabled()
+    {
+        var value = Environment.GetEnvironmentVariable("WAREWOLF_USAGE_TRACKING_ENABLED");
+        if (string.IsNullOrWhiteSpace(value))
+            return true;
+        return !value.Equals("false", StringComparison.OrdinalIgnoreCase)
+            && !value.Equals("0", StringComparison.Ordinal);
     }
 }
