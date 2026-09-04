@@ -251,7 +251,14 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// </summary>
         static readonly string GeneratedFixturesMarker = Path.Combine("Warewolf.Execution.Lightweight", "Resources", "tools");
 
-        static bool IsGeneratedFixture(string path) =>
+        /// <summary>
+        /// True when <paramref name="path"/> is one of FidelityFixtureGenerator's committed
+        /// fixtures rather than a real corpus workflow. Public because
+        /// <see cref="RoundTripFidelityTests"/> needs the same question answered - a generated
+        /// fixture's folder holds only that fixture and its companions, which a real corpus folder
+        /// emphatically does not.
+        /// </summary>
+        public static bool IsGeneratedFixture(string path) =>
             path.Replace('/', '\\').IndexOf(GeneratedFixturesMarker, StringComparison.OrdinalIgnoreCase) >= 0;
 
         /// <summary>

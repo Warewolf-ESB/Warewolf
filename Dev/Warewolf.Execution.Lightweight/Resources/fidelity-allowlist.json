@@ -1,5 +1,5 @@
 ﻿{
-  "generatedAtUtc": "2026-09-04T10:40:25.3786929Z",
+  "generatedAtUtc": "2026-09-04T13:11:04.9405528Z",
   "harness": {
     "harnessVersion": 1,
     "maxSamplesPerType": 8,
@@ -15,7 +15,7 @@
       "StudioName": "Assign",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\delete records\\Fidelity_DeleteRecords.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
@@ -103,9 +103,9 @@
       "StudioName": "Service (sub-workflow)",
       "Category": "Control Flow",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Resources - Service.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\ultra\\AppData\\Local\\Temp\\wf-fidelity-dda6b28cee734658b8fc8788f7d85727'."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\service\\Fidelity_Service.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Comment",
@@ -223,9 +223,9 @@
       "StudioName": "Delete Records",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Backup Example\\Get Backup Items List.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 14 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Variable is null; recordset does not exist"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\delete records\\Fidelity_DeleteRecords.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Sort Records",
@@ -247,9 +247,9 @@
       "StudioName": "Length",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\Error WF.xml",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Recordset is null [[rec()]]"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\length\\Fidelity_Length.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Unique Records",
@@ -288,8 +288,8 @@
       "Category": "Files & Folders",
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Read Folder.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 6 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: Directory not found c:\\Users\\Default User"
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Create (path)",
@@ -432,8 +432,8 @@
       "Category": "Database",
       "RequiresSource": true,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\sql bulk insert\\Fidelity_SqlBulkInsert.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Object reference not set to an instance of an object."
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Redis Cache",

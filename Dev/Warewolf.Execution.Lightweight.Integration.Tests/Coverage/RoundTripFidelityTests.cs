@@ -570,6 +570,35 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             var originalPath = CopyToTemp(originalFileText, Path.GetFileName(samplePath));
             var roundTrippedPath = CopyToTemp(roundTrippedBiteText, Path.GetFileName(samplePath));
 
+            // Sub-workflow resolution, and ONLY sub-workflow resolution, needs a second resource
+            // reachable from the workflow under test. LightweightEsbChannel.ExecuteSubRequest looks
+            // the callee up through WorkflowResourceCache.Resolve(_workflowBaseDirectory, ...), and
+            // _workflowBaseDirectory falls back to the directory of the file being executed - which
+            // is a fresh temp directory holding exactly one file, so the callee is never there and
+            // the row could only ever report PassBothFailedIdentically on "Sub-workflow ... not
+            // found".
+            //
+            // Staging the callee INTO each temp directory is deliberately not the same thing as
+            // setting request.WorkflowsDirectory, which the comment above rejects: that property is
+            // also handed to LightweightEsbChannel's constructor, whose WarmUp would give the
+            // original and round-tripped copies a SHARED cache scope over the real corpus folder.
+            // Here each copy keeps its own private directory and its own private callee, and
+            // WorkflowResourceCache indexes per full directory path, so the two remain as isolated
+            // as they were before.
+            //
+            // Scoped twice over. To the one row that needs it, following the same per-entry pattern
+            // SuspendExecutionPersistenceSupport uses above; and to generated fixtures, whose folder
+            // holds only the fixture and its companions. The real corpus sample for this row sits in
+            // 'Resources - Release\Resources\Examples' beside several hundred unrelated workflows,
+            // and copying those into a temp directory per execution would be both slow and exactly
+            // the broad shared cache scope this is avoiding.
+            if (entry.StudioName == "Service (sub-workflow)" &&
+                RoundTripFidelityCorpus.IsGeneratedFixture(samplePath))
+            {
+                CopyCompanionResources(samplePath, originalPath);
+                CopyCompanionResources(samplePath, roundTrippedPath);
+            }
+
             // Each temp copy sits alone in a fresh directory, so WorkflowExecutor's
             // `request.WorkflowsDirectory ?? Path.GetDirectoryName(request.WorkflowFilePath)`
             // fallback hands LightweightSourceLoader.EnsureIndexed an empty folder and no SourceId
@@ -740,6 +769,34 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             }
             xamlElement.Value = newXaml;
             return doc.ToString(SaveOptions.DisableFormatting);
+        }
+
+        /// <summary>
+        /// Copies every OTHER <c>.bite</c> in <paramref name="samplePath"/>'s directory next to
+        /// <paramref name="tempCopyPath"/>, so a workflow that calls another resource can find it.
+        /// The sample itself is skipped - the temp copy already holds it, and it is the copy under
+        /// test (round-tripped, in one of the two calls), so overwriting it with the pristine
+        /// original would quietly measure nothing at all.
+        /// </summary>
+        static void CopyCompanionResources(string samplePath, string tempCopyPath)
+        {
+            var sourceDir = Path.GetDirectoryName(samplePath);
+            var destinationDir = Path.GetDirectoryName(tempCopyPath);
+            if (sourceDir == null || destinationDir == null)
+            {
+                return;
+            }
+
+            var sampleFileName = Path.GetFileName(samplePath);
+            foreach (var companion in Directory.EnumerateFiles(sourceDir, "*.bite"))
+            {
+                var companionFileName = Path.GetFileName(companion);
+                if (string.Equals(companionFileName, sampleFileName, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+                File.Copy(companion, Path.Combine(destinationDir, companionFileName), overwrite: true);
+            }
         }
 
         static string CopyToTemp(string fileText, string fileName)

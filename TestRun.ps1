@@ -1360,12 +1360,25 @@ function Start-HostMSSQLServer([string]$BakFile) {
             "IF SCHEMA_ID('Warewolf') IS NULL EXEC('CREATE SCHEMA Warewolf'); " +
             "IF OBJECT_ID('dbo.City') IS NULL CREATE TABLE dbo.City (CityID int NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL); " +
             "IF OBJECT_ID('Warewolf.City') IS NULL CREATE TABLE Warewolf.City (CityID int IDENTITY(1,1) NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL, TestCol nchar(10) NULL); " +
-            "IF OBJECT_ID('dbo.Country') IS NULL CREATE TABLE dbo.Country (CountryID int NOT NULL, Description varchar(50) NOT NULL);"
+            "IF OBJECT_ID('dbo.Country') IS NULL CREATE TABLE dbo.Country (CountryID int NOT NULL, Description varchar(50) NOT NULL); " +
+            "IF OBJECT_ID('dbo.FidelityBulkTarget') IS NULL CREATE TABLE dbo.FidelityBulkTarget (Id varchar(20) NOT NULL, Description varchar(50) NOT NULL);"
         sqlcmd -S "localhost" -E -Q $seedSql
         # dbo.FidelityPing: a parameterless stored procedure for RoundTripFidelityTests' "SQL
         # Server Database" fixture (FidelityFixtureGenerator.WriteMssqlSource) to call. Needs its
         # own batch — CREATE/ALTER PROCEDURE must be the only statement in a sqlcmd -Q batch.
         sqlcmd -S "localhost" -E -d Dev2TestingDB -Q "CREATE OR ALTER PROCEDURE dbo.FidelityPing AS BEGIN SET NOCOUNT ON; SELECT 1 AS Result; END"
+        # dbo.FidelityBulkTarget (created in the seed batch above) is the destination for
+        # RoundTripFidelityTests' "SQL Bulk Insert" fixture
+        # (FidelityFixtureGenerator.BuildSqlBulkInsertStep). Deliberately all-varchar, NOT NULL and
+        # non-identity so the fixture exercises the activity's round trip rather than
+        # DsfSqlBulkInsertActivity's identity/nullable throw-branches.
+        #
+        # Emptied on every seed because that fixture INSERTs on each sweep - it is the only .bite
+        # fixture that writes outside its temp sandbox - so an unbounded table would make repeat runs
+        # on the same agent progressively slower. Nothing else reads it, so this is free. Its own
+        # batch for the same reason FidelityPing needs one: the table does not exist at compile time
+        # of the batch that creates it.
+        sqlcmd -S "localhost" -E -d Dev2TestingDB -Q "TRUNCATE TABLE dbo.FidelityBulkTarget"
 
         Write-Host "Verifying testUser can connect to Dev2TestingDB over TCP..."
         sqlcmd -S "localhost,1433" -U testUser -P $sqlPwd -d Dev2TestingDB -Q "SET NOCOUNT ON; SELECT TABLE_SCHEMA + '.' + TABLE_NAME FROM INFORMATION_SCHEMA.TABLES"
