@@ -1,4 +1,4 @@
-/*
+﻿/*
  *  Warewolf - Once bitten, there's no going back
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -55,6 +55,7 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Activities;
 using Dev2.Activities.RedisCache;
+using Dev2.Activities.SelectAndApply;
 using Dev2.Activities.RedisRemove;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Interfaces.Enums;
@@ -136,6 +137,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 WriteWorkflow("sql server database", "Fidelity_SqlServerDatabase", BuildSqlServerStep(), SimpleDataList("result")),
                 WriteWorkflow("suspend execution", "Fidelity_SuspendExecution", BuildSuspendExecutionStep(), SuspendExecutionDataList()),
                 WriteWorkflow("gate", "Fidelity_Gate", BuildGateStep(), EmptyDataList()),
+                WriteWorkflow("select and apply", "Fidelity_SelectAndApply", BuildSelectAndApplyStep(), SelectAndApplyDataList()),
             };
 
             foreach (var path in written)
@@ -220,6 +222,50 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
             StringAssert.Contains(roundTripped, "GateActivity",
                 "GateActivity must survive the round trip, not be dropped or replaced");
+        }
+
+        /// <summary>
+        /// Guards the specific gap the committed <c>Fidelity_SelectAndApply.bite</c> fixture exists
+        /// to avoid (see <see cref="BuildSelectAndApplyStep"/>'s remarks), and one no other fixture
+        /// test covers: this is the only toolbox row whose round trip has to survive being taken
+        /// APART. <c>WorkflowToX6Converter.ProcessSelectAndApplyNestedActivities</c> flattens
+        /// <c>ApplyActivityFunc.Handler</c> into a separate X6 cell tagged isNested/parentId, and
+        /// <c>X6ToWorkflowConverter.EmbedNestedActivitiesIntoSelectAndApplyActivities</c> rebuilds
+        /// the ActivityFunc from that cell hierarchy on the way back. Proves the composed fixture
+        /// carries a nested handler, that the full XAML → X6 JSON → XAML pipeline
+        /// <see cref="RoundTripFidelityTests"/> exercises does not throw, and that the handler is
+        /// still there afterwards — a drop would otherwise surface in the sweep only indirectly, as
+        /// an empty <c>[[applied]]</c> output.
+        /// </summary>
+        [TestMethod]
+        public void BuildSelectAndApplyStep_ComposesNestedFixture_AndRoundTripsCleanly()
+        {
+            var xaml = BuildXaml(BuildSelectAndApplyStep(), "Fidelity_SelectAndApply");
+            var xamlText = xaml.ToString();
+
+            StringAssert.Contains(xamlText, "DsfSelectAndApplyActivity",
+                "the fixture must actually exercise DsfSelectAndApplyActivity");
+            StringAssert.Contains(xamlText, "Assign applied item",
+                "the nested ApplyActivityFunc handler must be serialised, not dropped at compose time");
+
+            string roundTripped;
+            try
+            {
+                roundTripped = X6RoundTripBridge.RoundTripXaml(xaml);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Round-tripping the Select and apply fixture through the X6 converters threw " +
+                            ex.GetType().Name + ": " + ex.Message +
+                            " — this is exactly the TranslationFailed regression this fixture exists to prevent.");
+                return;
+            }
+
+            StringAssert.Contains(roundTripped, "DsfSelectAndApplyActivity",
+                "DsfSelectAndApplyActivity must survive the round trip, not be dropped or replaced");
+            StringAssert.Contains(roundTripped, "Assign applied item",
+                "the nested handler must be rebuilt by EmbedNestedActivitiesIntoSelectAndApplyActivities — " +
+                "losing it is the fidelity gap this row exists to catch");
         }
 
         // ── Activity composition ──────────────────────────────────────────────
@@ -403,6 +449,81 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             },
         };
 
+        /// <summary>
+        /// All 9 real corpus samples containing <c>DsfSelectAndApplyActivity</c> fail the activity's
+        /// OWN preconditions under this harness before its round trip is ever exercised — the
+        /// representative one (<c>Resources - ServerTests\Resources\SelectAndApplyExample.xml</c>)
+        /// reports "The given key was not present in the dictionary", which
+        /// <c>DsfSelectAndApplyActivity.ExecuteTool</c> catches and folds into the error list — so
+        /// the row could only ever report PassBothFailedIdentically, the same class of gap Gate and
+        /// Suspend Execution's remarks above describe.
+        ///
+        /// <para>
+        /// This fixture brings its own data source so nothing outside the workflow is needed: an
+        /// Assign seeds <c>[[rows().val]]</c> with two rows, then Select and apply iterates
+        /// <c>[[rows(*).val]]</c> under the alias <c>[[item]]</c> and its nested handler copies the
+        /// current item into <c>[[applied]]</c> — the one Output the sweep's payload comparison
+        /// reads, and therefore the thing that proves the handler survived and ran.
+        /// </para>
+        ///
+        /// <para>
+        /// The handler is the .NET Assign, NOT the legacy <c>DsfMultiAssignActivity</c>, for the
+        /// reason <see cref="BuildRedisCacheStep"/>'s remarks give: X6ToWorkflowConverter supports
+        /// only the DotNet variant, and a legacy one makes the whole workflow unconvertible — which
+        /// is exactly how this row used to report TranslationFailed via
+        /// DsfMultiAssignObjectActivity.
+        /// </para>
+        ///
+        /// <para>
+        /// <c>ApplyActivityFunc.Argument</c> is named explicitly rather than left to
+        /// <c>DsfSelectAndApplyActivity</c>'s constructor, which mints
+        /// <c>explicitData_{DateTime.Now:yyyyMMddhhmmss}</c> — a value that would differ on every
+        /// regeneration and defeat FixedTimestamp/DeterministicId's diff-free intent. The name is
+        /// not used at execution (ExecuteTool binds the alias through ScopedEnvironment, never
+        /// through the DelegateInArgument) and the converter mints its own on the way back, so
+        /// pinning it here costs nothing.
+        /// </para>
+        /// </summary>
+        static FlowStep BuildSelectAndApplyStep()
+        {
+            var selectAndApplyStep = new FlowStep
+            {
+                Action = new DsfSelectAndApplyActivity
+                {
+                    DisplayName = "Select and apply",
+                    DataSource = "[[rows(*).val]]",
+                    Alias = "[[item]]",
+                    ApplyActivityFunc = new ActivityFunc<string, bool>
+                    {
+                        DisplayName = "Data Action",
+                        Argument = new DelegateInArgument<string>("explicitData"),
+                        Handler = new DsfDotNetMultiAssignActivity
+                        {
+                            DisplayName = "Assign applied item",
+                            FieldsCollection = new List<ActivityDTO>
+                            {
+                                new("[[applied]]", "[[item]]", 1),
+                            },
+                        },
+                    },
+                },
+            };
+
+            return new FlowStep
+            {
+                Action = new DsfDotNetMultiAssignActivity
+                {
+                    DisplayName = "Seed rows",
+                    FieldsCollection = new List<ActivityDTO>
+                    {
+                        new("[[rows().val]]", "alpha", 1),
+                        new("[[rows().val]]", "beta", 2),
+                    },
+                },
+                Next = selectAndApplyStep,
+            };
+        }
+
         // ── DataLists ─────────────────────────────────────────────────────────
 
         static XElement RedisDataList() => new("DataList",
@@ -431,6 +552,17 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             Scalar("suspensionId", "None"),
             Scalar("message", "Output"));
 
+        /// <summary>
+        /// <c>rows</c> and <c>item</c> are declared with direction "None" so the sweep's
+        /// PrepareInputs pass leaves them alone: this fixture seeds its own data, and binding the
+        /// synthetic "1" to the alias would overwrite exactly what Select and apply is meant to
+        /// iterate. <c>applied</c> is the only Output, and the one the payload comparison reads.
+        /// </summary>
+        static XElement SelectAndApplyDataList() => new("DataList",
+            Recordset("rows", "None", "val"),
+            Scalar("item", "None"),
+            Scalar("applied", "Output"));
+
         static XElement SimpleDataList(string name) => new("DataList",
             Scalar(name, "Output"));
 
@@ -441,6 +573,13 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             new XAttribute("Description", string.Empty),
             new XAttribute("IsEditable", "True"),
             new XAttribute("ColumnIODirection", direction));
+
+        /// <summary>A recordset declares its fields as child elements — see any corpus DataList.</summary>
+        static XElement Recordset(string name, string direction, params string[] fields) => new(name,
+            new XAttribute("Description", string.Empty),
+            new XAttribute("IsEditable", "True"),
+            new XAttribute("ColumnIODirection", direction),
+            fields.Select(field => Scalar(field, direction)));
 
         // ── Emission ──────────────────────────────────────────────────────────
 
