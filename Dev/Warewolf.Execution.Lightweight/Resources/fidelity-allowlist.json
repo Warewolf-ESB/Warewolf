@@ -1,5 +1,5 @@
 ﻿{
-  "generatedAtUtc": "2026-09-03T08:18:43.3654724Z",
+  "generatedAtUtc": "2026-09-04T07:53:32.96897Z",
   "harness": {
     "harnessVersion": 1,
     "maxSamplesPerType": 8,
@@ -79,9 +79,9 @@
       "StudioName": "Gate",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Gate.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: gate conditions failed; execution stopped"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\gate\\Fidelity_Gate.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Suspend Execution",
@@ -105,7 +105,7 @@
       "RequiresSource": true,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Resources - Service.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\ultra\\AppData\\Local\\Temp\\wf-fidelity-793e02df962f41aebeb801483b3a9f2a'."
+      "Detail": "[as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\ultra\\AppData\\Local\\Temp\\wf-fidelity-ca94add980ee4db186946d1094ce62af'."
     },
     {
       "StudioName": "Comment",
@@ -351,7 +351,7 @@
       "StudioName": "GET Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\http get\\TC013_Get_CustomHeader_Echoed.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\http get\\TC014_Get_MultipleHeaders_Mapped.bite",
       "Status": "Pass",
       "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },

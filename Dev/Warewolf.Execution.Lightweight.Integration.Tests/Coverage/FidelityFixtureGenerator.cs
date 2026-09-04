@@ -63,6 +63,7 @@ using Dev2.Data.Decisions.Operations;
 using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Data.Options;
 using Warewolf.Execution.Lightweight.Mcp;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
@@ -134,6 +135,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 WriteMssqlSource(),
                 WriteWorkflow("sql server database", "Fidelity_SqlServerDatabase", BuildSqlServerStep(), SimpleDataList("result")),
                 WriteWorkflow("suspend execution", "Fidelity_SuspendExecution", BuildSuspendExecutionStep(), SuspendExecutionDataList()),
+                WriteWorkflow("gate", "Fidelity_Gate", BuildGateStep(), EmptyDataList()),
             };
 
             foreach (var path in written)
@@ -183,6 +185,41 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
             StringAssert.Contains(roundTripped, "SuspendExecutionActivity",
                 "SuspendExecutionActivity must survive the round trip, not be dropped or replaced");
+        }
+
+        /// <summary>
+        /// Guards the specific gap the committed <c>Fidelity_Gate.bite</c> fixture exists to
+        /// avoid (see <see cref="BuildGateStep"/>'s remarks): proves the empty-<c>Conditions</c>
+        /// composition actually round-trips through the same XAML → X6 JSON → XAML pipeline
+        /// <see cref="RoundTripFidelityTests"/> exercises, and that <c>Conditions</c> survives as
+        /// an empty (not null) list — a null would make <c>GateActivity.Passing</c> throw and be
+        /// swallowed into a false "gate conditions failed" result, defeating the fixture's whole
+        /// point.
+        /// </summary>
+        [TestMethod]
+        public void BuildGateStep_ComposesEmptyConditionsFixture_AndRoundTripsCleanly()
+        {
+            var xaml = BuildXaml(BuildGateStep(), "Fidelity_Gate");
+            var xamlText = xaml.ToString();
+
+            StringAssert.Contains(xamlText, "GateActivity",
+                "the fixture must actually exercise GateActivity");
+
+            string roundTripped;
+            try
+            {
+                roundTripped = X6RoundTripBridge.RoundTripXaml(xaml);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Round-tripping the Gate fixture through the X6 converters threw " +
+                            ex.GetType().Name + ": " + ex.Message +
+                            " — this is exactly the TranslationFailed regression this fixture exists to prevent.");
+                return;
+            }
+
+            StringAssert.Contains(roundTripped, "GateActivity",
+                "GateActivity must survive the round trip, not be dropped or replaced");
         }
 
         // ── Activity composition ──────────────────────────────────────────────
@@ -342,6 +379,30 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             };
         }
 
+        /// <summary>
+        /// The only real corpus sample containing <c>GateActivity</c> —
+        /// <c>Resources\Examples\Control Flow - Gate.bite</c> — declares 4 conditions checking
+        /// <c>[[UserId]]</c>/<c>[[loopCount]]</c>, which stay unbound under this harness's
+        /// no-input and synthetic-input attempts, so <c>Passing()</c> (see
+        /// <c>GateActivity.Passing</c>) legitimately returns false and the workflow halts on
+        /// "gate conditions failed; execution stopped" before Gate's own round-trip logic is
+        /// ever exercised on a successful path — the same class of gap Suspend Execution's
+        /// remarks above describe. <c>Passing()</c> is explicitly documented to return true when
+        /// there are no conditions at all, so this fixture supplies an empty <c>Conditions</c>
+        /// list: the gate always passes and the workflow completes cleanly with no external
+        /// dependency, proving GateActivity's own XAML → X6 JSON → XAML round trip rather than
+        /// its condition-evaluation semantics (which are exercised elsewhere by
+        /// <c>GateActivityTests</c>).
+        /// </summary>
+        static FlowStep BuildGateStep() => new()
+        {
+            Action = new GateActivity
+            {
+                DisplayName = "Gate",
+                Conditions = new List<ConditionExpression>(),
+            },
+        };
+
         // ── DataLists ─────────────────────────────────────────────────────────
 
         static XElement RedisDataList() => new("DataList",
@@ -372,6 +433,9 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
         static XElement SimpleDataList(string name) => new("DataList",
             Scalar(name, "Output"));
+
+        /// <summary>Gate declares no inputs or outputs — <see cref="GateActivity.GetOutputs"/> returns none.</summary>
+        static XElement EmptyDataList() => new("DataList");
 
         static XElement Scalar(string name, string direction) => new(name,
             new XAttribute("Description", string.Empty),
