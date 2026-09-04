@@ -1,5 +1,5 @@
 ﻿{
-  "generatedAtUtc": "2026-09-04T13:11:04.9405528Z",
+  "generatedAtUtc": "2026-09-04T20:01:38.7142575Z",
   "harness": {
     "harnessVersion": 1,
     "maxSamplesPerType": 8,
@@ -399,17 +399,17 @@
       "StudioName": "PostgreSQL Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\TestPostgresReturningXml.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { getemployeesxml } not found"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\postgresql database\\Fidelity_PostgreSqlDatabase.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "MySQL Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\StopExecutionOnMySQLTimeoutError.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 5 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\mysql database\\Fidelity_MySqlDatabase.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Oracle Database",
@@ -471,9 +471,9 @@
       "StudioName": "Send Email (SMTP)",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Email - SMTP Send.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 11 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Invalid URI: The hostname could not be parsed."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\send email\\Fidelity_SendEmail.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Exchange Email",
@@ -481,7 +481,7 @@
       "RequiresSource": true,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Load\\Resources\\Simple Exchange Test.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: A valid SMTP address must be specified."
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Invalid Email Source"
     },
     {
       "StudioName": "JavaScript",

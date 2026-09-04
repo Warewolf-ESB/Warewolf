@@ -619,6 +619,18 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             //
             // The index is registered on a singleton and keyed by directory, so one call covers
             // both executions below and the IsSelfConsistentAsync re-run.
+            //
+            // It also LEAKS ACROSS ROWS, which is worth knowing when reading a Detail string: the
+            // singleton keeps every directory any earlier row indexed, so a row can resolve a
+            // source that its own sample directory does not contain. Measured 2026-09-04 while
+            // giving Send Email its own generated fixture: that row stopped indexing
+            // 'Resources - Release\Resources\Examples' (which carries
+            // Example Sources\Example Exchange Email Source.bite) and started indexing only its own
+            // two-file fixture folder, and the NEXT row - Exchange Email, whose sample lives in
+            // 'Resources - Load' - changed from failing on "A valid SMTP address must be specified"
+            // to failing earlier on "Invalid Email Source". Same status either way
+            // (PassBothFailedIdentically, both sides identical, not scored), so nothing regressed;
+            // the second error is simply the honest one for a row measured in isolation.
             var sourcesDirectory = Path.GetDirectoryName(samplePath) ?? string.Empty;
             if (!string.IsNullOrEmpty(sourcesDirectory))
             {

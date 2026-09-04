@@ -26,6 +26,11 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
     ///     Starts the in-process <see cref="HttpbinEmulator"/> (WireMock on port 4000) that the
     ///     Web GET/POST workflow fixtures call instead of the live httpbin.org service.
     ///   </item>
+    ///   <item>
+    ///     Starts the in-process <see cref="SmtpEmulator"/> (fake SMTP acceptor on port 2525) that
+    ///     the round-trip fidelity sweep's generated "Send Email (SMTP)" fixture delivers to
+    ///     instead of a live mail server.
+    ///   </item>
     /// </list>
     /// </summary>
     [TestClass]
@@ -42,11 +47,13 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
 
             HttpbinEmulator.Start();
             ElasticsearchEmulator.Start();
+            SmtpEmulator.Start();
         }
 
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
+            SmtpEmulator.Stop();
             ElasticsearchEmulator.Stop();
             HttpbinEmulator.Stop();
             Environment.SetEnvironmentVariable(LicenseGateEnvVar, _previousLicenseGateValue);

@@ -1,4 +1,4 @@
-﻿/*
+/*
  *  Warewolf - Once bitten, there's no going back
  *  Copyright 2024 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
@@ -69,6 +69,7 @@ using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Data.Options;
+using Warewolf.Execution.Lightweight.Integration.Tests.InProcess;
 using Warewolf.Execution.Lightweight.Mcp;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
@@ -132,6 +133,102 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 
         static readonly Guid MssqlSourceId = new("8a3f1c2d-5e6b-4a90-9c1f-7b2d4e8a6f30");
 
+        /// <summary>
+        /// Stable id shared by the generated EmailSource resource and the SelectedEmailSource on the
+        /// Send Email fixture, for the same no-gratuitous-diff reason as <see cref="RedisSourceId"/>.
+        /// </summary>
+        static readonly Guid SmtpSourceId = new("3d7b9e21-4c58-4ab6-8f0d-1e6c9a4b7d52");
+
+        /// <summary>
+        /// The From address the Send Email fixture sends from. RFC-valid in a domain that resolves
+        /// nowhere, and nothing is delivered anyway - SmtpEmulator accepts the transaction and drops
+        /// the message.
+        ///
+        /// <para>
+        /// It MUST be non-empty. <c>DsfSendEmailActivity.SendEmail</c> falls back to
+        /// <c>runtimeSource.UserName</c> when FromAccount is blank, and the generated source
+        /// deliberately carries no UserName, so a blank FromAccount reaches
+        /// <c>new MailAddress("")</c> and the activity returns "Failure" on a FROM-address error
+        /// before any SMTP connection is made. Setting it has a side effect worth knowing about:
+        /// the same method then copies it onto <c>runtimeSource.UserName</c>, which makes
+        /// <c>EmailSource.Send</c> authenticate - hence the AUTH PLAIN support in FakeSmtpServer.
+        /// </para>
+        /// </summary>
+        internal const string SmtpFromAddress = "fidelity-sender@warewolf.invalid";
+
+        internal const string SmtpToAddress = "fidelity-recipient@warewolf.invalid";
+
+        /// <summary>
+        /// Subject and body are asserted verbatim on both sides of the round trip by
+        /// <see cref="BuildSendEmailStep_ComposesSourceBackedFixture_AndRoundTripsCleanly"/>, so they
+        /// are named constants rather than literals repeated in two places.
+        /// </summary>
+        internal const string SmtpSubject = "Fidelity round-trip probe";
+
+        internal const string SmtpBody = "Sent by the round-trip fidelity corpus fixture.";
+
+        /// <summary>
+        /// Host/credentials the generated MySQL fixture points at. Matches TestRun.ps1's
+        /// <c>Start-HostMySQLServer</c> on both of its paths - the choco/native one the
+        /// <c>-LegacyWindowsDeps</c> CI job takes, and the docker one
+        /// (registry.gitlab.com/warewolf/mysql-connector-testing) - which provision root/admin on
+        /// localhost:3306 and seed <c>dev2testingdb.FidelityPing</c>, a parameterless procedure
+        /// whose body is a single <c>SELECT 1 AS Result</c>.
+        ///
+        /// <para>
+        /// The database name is load-bearing twice over, not just for connecting:
+        /// <c>DatabaseServiceExecution.MySqlExecution</c> passes <c>Source.DatabaseName</c> to
+        /// <c>MySqlServer.GetProcedureOutParams</c>, which reads INFORMATION_SCHEMA.PARAMETERS
+        /// filtered on <c>SPECIFIC_SCHEMA</c> - so a source whose DatabaseName does not match the
+        /// schema the procedure lives in finds no parameter metadata for it.
+        /// </para>
+        ///
+        /// <para>
+        /// Written PLAINTEXT for the same portability reason as <see cref="MssqlConnectionString"/>,
+        /// and it survives DbSource's parse/rebuild intact: the MySqlDatabase branch of the
+        /// ConnectionString getter re-emits Server/Port/Database/Uid/Pwd/Connect Timeout, every one
+        /// of which the setter parses back - unlike the ODBC branch, which reduces a source to
+        /// <c>DSN={DatabaseName};</c> and drops the credentials entirely.
+        /// </para>
+        /// </summary>
+        internal const string MySqlConnectionString =
+            "Server=localhost;Port=3306;Database=dev2testingdb;Uid=root;Pwd=admin;Connect Timeout=30;";
+
+        static readonly Guid MySqlSourceId = new("2b6d4f18-7c93-4a15-8e02-9f5a3c1b7d64");
+
+        /// <summary>The procedure TestRun.ps1's $MySqlFidelitySeed creates. Bare name, no schema
+        /// prefix - see <see cref="MySqlConnectionString"/>'s remarks.</summary>
+        internal const string MySqlProcedureName = "FidelityPing";
+
+        /// <summary>
+        /// Host/credentials the generated PostgreSQL fixture points at. Matches TestRun.ps1's
+        /// <c>Start-HostPostgresServer</c>: superuser postgres/admin on localhost:5432, database
+        /// dev2testingdb, function <c>public.fidelity_ping()</c>.
+        ///
+        /// <para>
+        /// Lower case throughout, and that is a requirement rather than a style choice. PostgreSQL
+        /// folds unquoted identifiers to lower case and information_schema reports them folded, so
+        /// a mixed-case routine name here would not match
+        /// <c>PostgreServer.GetProcedureReturnType</c>'s
+        /// <c>routine_name='{0}'</c> lookup - and that lookup decides how the call is built:
+        /// a scalar-returning function is executed as <c>SELECT * FROM fn()</c>
+        /// (PostgreSqlDataBaseBroker.ConfigureCommandForExecution), a miss falls through to
+        /// <c>&lt;void&gt;</c> and a different statement shape.
+        /// </para>
+        ///
+        /// <para>
+        /// The routine must also live in schema <c>public</c>: both metadata queries hard-code
+        /// <c>specific_schema='public'</c>.
+        /// </para>
+        /// </summary>
+        internal const string PostgresConnectionString =
+            "Host=localhost;Port=5432;Database=dev2testingdb;Username=postgres;Password=admin;Timeout=30";
+
+        static readonly Guid PostgresSourceId = new("7e4a2d95-0f81-4c36-b5d7-3a9e6c8f1b20");
+
+        /// <summary>The function TestRun.ps1's $PostgresFidelityFunc creates.</summary>
+        internal const string PostgresProcedureName = "fidelity_ping";
+
         static string FixtureRoot
         {
             get
@@ -164,6 +261,12 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 WriteWorkflow("delete records", "Fidelity_DeleteRecords", BuildDeleteRecordsStep(), DeleteRecordsDataList()),
                 WriteWorkflow("service", "Fidelity_ServiceTarget", BuildServiceTargetStep(), ServiceTargetDataList()),
                 WriteWorkflow("service", "Fidelity_Service", BuildServiceStep(), ServiceDataList()),
+                WriteEmailSource("send email"),
+                WriteWorkflow("send email", "Fidelity_SendEmail", BuildSendEmailStep(), SimpleDataList("result")),
+                WriteMySqlSource("mysql database"),
+                WriteWorkflow("mysql database", "Fidelity_MySqlDatabase", BuildMySqlStep(), SimpleDataList("result")),
+                WritePostgresSource("postgresql database"),
+                WriteWorkflow("postgresql database", "Fidelity_PostgreSqlDatabase", BuildPostgresStep(), SimpleDataList("result")),
             };
 
             foreach (var path in written)
@@ -474,6 +577,325 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             Assert.AreEqual(BulkInsertMappings().Count, CountOccurrences(roundTripped, "SqlDataType=\"VarChar\""),
                 "SqlDataType is the property that actually carries the column type across the round " +
                 "trip; DataType is derived from it on the way back");
+        }
+
+        /// <summary>
+        /// Guards the committed MySQL fixture pair (see <see cref="BuildMySqlStep"/>). Only two
+        /// fields decide whether this activity can do anything at all, and both cross the JSON as
+        /// flat values on <c>cell.data</c> that <c>FromX6Json</c> restores with a Try* that leaves
+        /// the property untouched on a miss (DsfMySqlDatabaseActivity.ToX6Json / FromX6Json):
+        /// <c>SourceId</c>, without which there is no server to reach, and
+        /// <c>ProcedureName</c>, which is both the routine to call and the
+        /// <c>SPECIFIC_NAME</c> the parameter-metadata lookup filters on. Losing either fails the
+        /// round-tripped side alone, which the sweep reports as ExecutionAsymmetric.
+        /// </summary>
+        [TestMethod]
+        public void BuildMySqlStep_ComposesSourceBackedFixture_AndRoundTripsCleanly()
+        {
+            AssertDatabaseFixtureRoundTrips(
+                BuildMySqlStep(), "Fidelity_MySqlDatabase", "DsfMySqlDatabaseActivity",
+                MySqlSourceId, MySqlProcedureName);
+        }
+
+        /// <summary>
+        /// Guards the committed PostgreSQL fixture pair (see <see cref="BuildPostgresStep"/>). Same
+        /// two load-bearing fields, and the same asymmetric failure mode, as the MySQL row above -
+        /// see <see cref="BuildMySqlStep_ComposesSourceBackedFixture_AndRoundTripsCleanly"/>. Here
+        /// ProcedureName additionally decides the STATEMENT SHAPE: it is the
+        /// <c>routine_name</c> PostgreServer.GetProcedureReturnType looks up, and a miss returns
+        /// <c>&lt;void&gt;</c>, which builds a bare <c>SELECT fn()</c> instead of
+        /// <c>SELECT * FROM fn()</c> and fetches nothing.
+        /// </summary>
+        [TestMethod]
+        public void BuildPostgresStep_ComposesSourceBackedFixture_AndRoundTripsCleanly()
+        {
+            AssertDatabaseFixtureRoundTrips(
+                BuildPostgresStep(), "Fidelity_PostgreSqlDatabase", "DsfPostgreSqlActivity",
+                PostgresSourceId, PostgresProcedureName);
+        }
+
+        /// <summary>
+        /// Shared body for the two database round-trip guards: compose the fixture, prove the
+        /// activity type, its source id and its procedure name are all in the composed XAML, then
+        /// round-trip through the real converters and prove all three survived.
+        /// </summary>
+        static void AssertDatabaseFixtureRoundTrips(FlowStep step, string name, string activityType,
+            Guid sourceId, string procedureName)
+        {
+            var xaml = BuildXaml(step, name);
+            var xamlText = xaml.ToString();
+
+            StringAssert.Contains(xamlText, activityType,
+                "the fixture must actually exercise " + activityType);
+            StringAssert.Contains(xamlText, sourceId.ToString(),
+                "the fixture must reference its generated DbSource by ResourceID - that id is all " +
+                "FromX6Json gets back, and all AmbientSourceLoader has to resolve");
+            StringAssert.Contains(xamlText, procedureName,
+                "the fixture must name the routine TestRun.ps1 seeds");
+
+            string roundTripped;
+            try
+            {
+                roundTripped = X6RoundTripBridge.RoundTripXaml(xaml);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Round-tripping the " + name + " fixture through the X6 converters threw " +
+                            ex.GetType().Name + ": " + ex.Message +
+                            " - this is exactly the TranslationFailed regression this fixture exists to prevent.");
+                return;
+            }
+
+            StringAssert.Contains(roundTripped, activityType,
+                activityType + " must survive the round trip, not be dropped or replaced");
+            StringAssert.Contains(roundTripped, sourceId.ToString(),
+                "the DbSource id must survive - without it the round-tripped copy alone cannot " +
+                "resolve a server, which the sweep reports as ExecutionAsymmetric");
+            StringAssert.Contains(roundTripped, procedureName,
+                "ProcedureName must survive - it is both the routine to execute and the name the " +
+                "server's own metadata lookup filters on");
+        }
+
+        /// <summary>
+        /// The committed MySQL/PostgreSQL source fixtures name a host, port, database and
+        /// credentials; TestRun.ps1's <c>Start-HostMySQLServer</c>/<c>Start-HostPostgresServer</c>
+        /// create exactly those, plus the routine each fixture calls. NOTHING couples the two -
+        /// they are a .bite file and a PowerShell script - and the failure mode is silent: rename
+        /// the seeded database, move a port or change a password on either side and both rows slide
+        /// back to PassBothFailedIdentically, which reads in the generated allow-list as the
+        /// entirely respectable "expected - this activity needs a live source not present in this
+        /// sandbox". This asserts the contract in both directions instead.
+        ///
+        /// <para>
+        /// It also pins the property-level parse, which is where a database source can lose data
+        /// that a substring check would miss: <c>DbSource</c>'s ConnectionString SETTER parses the
+        /// string into Server/Port/DatabaseName/UserID/Password and its GETTER rebuilds one from
+        /// exactly those properties, so any keyword it does not model is dropped on load. That is
+        /// not hypothetical - it is what makes the ODBC row unfixable (its branch reduces a whole
+        /// source to <c>DSN={DatabaseName};</c>), and asserting on the REBUILT string is what
+        /// proves these two do not have the same hole.
+        /// </para>
+        /// </summary>
+        [TestMethod]
+        public void CommittedDbSourceFixtures_MatchTestRunProvisioning()
+        {
+            var devRoot = RoundTripFidelityCorpus.FindRepoDevRoot();
+            if (devRoot == null)
+            {
+                Assert.Inconclusive("Could not locate the Dev/ root - the committed fixtures are not reachable from here.");
+                return;
+            }
+
+            // TestRun.ps1 lives at the REPO root in a source checkout, and beside the test binaries
+            // in the CI TestBinaries artifact (the fidelity job invokes it as
+            // <artifact>\TestRun.ps1, and the corpus is staged into that same directory, so
+            // FindRepoDevRoot returns it).
+            var testRunPath = new[]
+                {
+                    Path.Combine(devRoot, "TestRun.ps1"),
+                    Path.Combine(devRoot, "..", "TestRun.ps1"),
+                }
+                .FirstOrDefault(File.Exists);
+            if (testRunPath == null)
+            {
+                Assert.Inconclusive("TestRun.ps1 is not reachable from " + devRoot +
+                                    " - the provisioning side of this contract cannot be checked here.");
+                return;
+            }
+            var testRun = File.ReadAllText(testRunPath);
+
+            // ── MySQL ────────────────────────────────────────────────────────────────────────
+            var mysql = LoadCommittedDbSource(devRoot, "mysql database", "Fidelity MySQL Source.bite");
+
+            Assert.AreEqual(enSourceType.MySqlDatabase, mysql.ServerType,
+                "ServerType decides which branch of the ConnectionString getter re-emits the " +
+                "string; an unrecognised value silently yields enSourceType.Unknown and an empty " +
+                "connection string");
+            Assert.AreEqual("localhost", mysql.Server, "host must match the provisioned server");
+            Assert.AreEqual(3306, mysql.Port, "port must match the provisioned server");
+            Assert.AreEqual("dev2testingdb", mysql.DatabaseName,
+                "DatabaseName is passed to MySqlServer.GetProcedureOutParams as the SPECIFIC_SCHEMA " +
+                "to look the procedure's parameters up in, so it must be the schema the seed creates");
+            Assert.AreEqual("root", mysql.UserID, "credentials must match the provisioned server");
+            Assert.AreEqual("admin", mysql.Password, "credentials must match the provisioned server");
+
+            // The REBUILT string, not the authored one - see this test's remarks.
+            var mysqlRebuilt = mysql.ConnectionString;
+            foreach (var expected in new[] { "Server=localhost", "Port=3306", "Database=dev2testingdb", "Uid=root", "Pwd=admin" })
+            {
+                StringAssert.Contains(mysqlRebuilt, expected,
+                    "DbSource must re-emit " + expected + " after parsing the committed fixture; a " +
+                    "keyword it does not model is dropped on load, exactly as the ODBC branch drops " +
+                    "credentials entirely. Rebuilt: " + mysqlRebuilt);
+            }
+
+            // Pin the CREATE, not just a mention: the seed also DROPs the procedure by the same
+            // name, so a looser check stays satisfied by the teardown half after the CREATE has
+            // been renamed - measured 2026-09-04, this guard passed against a seed that no longer
+            // created FidelityPing at all.
+            StringAssert.Contains(testRun, "CREATE PROCEDURE dev2testingdb." + MySqlProcedureName,
+                "TestRun.ps1's MySQL seed must still CREATE the procedure the committed fixture calls");
+            StringAssert.Contains(testRun, "-uroot -padmin",
+                "TestRun.ps1 must still provision the credentials the committed fixture uses");
+            StringAssert.Contains(testRun, "3306",
+                "TestRun.ps1 must still expose MySQL on the port the committed fixture dials");
+
+            // ── PostgreSQL ───────────────────────────────────────────────────────────────────
+            var postgres = LoadCommittedDbSource(devRoot, "postgresql database", "Fidelity PostgreSQL Source.bite");
+
+            Assert.AreEqual(enSourceType.PostgreSQL, postgres.ServerType, "ServerType decides the connection-string branch");
+            Assert.AreEqual("localhost", postgres.Server, "host must match the provisioned server");
+            Assert.AreEqual(5432, postgres.Port, "port must match the provisioned server");
+            Assert.AreEqual("dev2testingdb", postgres.DatabaseName, "database must match the provisioned server");
+            Assert.AreEqual("postgres", postgres.UserID, "credentials must match the provisioned server");
+            Assert.AreEqual("admin", postgres.Password, "credentials must match the provisioned server");
+
+            var postgresRebuilt = postgres.ConnectionString;
+            foreach (var expected in new[] { "Host=localhost", "Port=5432", "Username=postgres", "Password=admin", "Database=dev2testingdb" })
+            {
+                StringAssert.Contains(postgresRebuilt, expected,
+                    "DbSource must re-emit " + expected + " after parsing the committed fixture. " +
+                    "Rebuilt: " + postgresRebuilt);
+            }
+
+            StringAssert.Contains(testRun, "CREATE OR REPLACE FUNCTION public." + PostgresProcedureName,
+                "TestRun.ps1's Postgres seed must still CREATE the function the committed fixture " +
+                "calls, in schema public - the only schema PostgreServer's metadata queries look in");
+            Assert.AreEqual(PostgresProcedureName, PostgresProcedureName.ToLowerInvariant(),
+                "the function name must be lower case: PostgreSQL folds unquoted identifiers and " +
+                "information_schema reports them folded, so a mixed-case name could never match " +
+                "GetProcedureReturnType's routine_name lookup");
+            StringAssert.Contains(testRun, "-U postgres",
+                "TestRun.ps1 must still provision the superuser the committed fixture connects as");
+            StringAssert.Contains(testRun, "-p 5432",
+                "TestRun.ps1 must still start Postgres on the port the committed fixture dials");
+        }
+
+        /// <summary>
+        /// Loads one committed source fixture through the real <c>DbSource(XElement)</c> ctor - the
+        /// same path the sweep's source loader takes - so the assertions see what execution would.
+        /// </summary>
+        static DbSource LoadCommittedDbSource(string devRoot, string folder, string fileName)
+        {
+            var path = Path.Combine(devRoot, "Warewolf.Execution.Lightweight", "Resources", "tools", folder, fileName);
+            Assert.IsTrue(File.Exists(path),
+                "the committed source fixture is missing at " + path +
+                " - regenerate it with Generate_MissingCorpusFixtures (remove its [Ignore] locally) " +
+                "and commit the result");
+            return new DbSource(XElement.Parse(File.ReadAllText(path)));
+        }
+
+        /// <summary>
+        /// Guards the committed Send Email fixture pair (see <see cref="BuildSendEmailStep"/>).
+        /// Every field this activity needs to reach a successful send crosses the JSON as a flat
+        /// string on <c>cell.data</c> and is restored by a <c>TryGetString</c> that leaves the
+        /// property untouched when the key is absent (see <c>DsfSendEmailActivity.ToX6Json</c> /
+        /// <c>FromX6Json</c>), so a dropped key does not throw - it silently produces a different
+        /// email, or none. Two of them are load-bearing in a way the sweep would report
+        /// confusingly:
+        ///
+        /// <list type="bullet">
+        ///   <item>
+        ///     <c>SelectedEmailSource.ResourceID</c> is the only handle on the source. FromX6Json
+        ///     rebuilds a bare <c>new EmailSource { ResourceID = ... }</c> with no Host, exactly as
+        ///     the SQL rows do, and the activity re-resolves the real source from ResourceCatalog /
+        ///     AmbientSourceLoader at execution time - so losing the id means "Invalid email source"
+        ///     on the round-tripped side only, i.e. ExecutionAsymmetric.
+        ///   </item>
+        ///   <item>
+        ///     <c>FromAccount</c> and <c>To</c> are what make the send legal at all: a lost
+        ///     FromAccount falls back to the source's empty UserName and fails on the FROM address
+        ///     (see <see cref="SmtpFromAddress"/>), and a lost To leaves nothing to deliver to.
+        ///   </item>
+        /// </list>
+        /// </summary>
+        [TestMethod]
+        public void BuildSendEmailStep_ComposesSourceBackedFixture_AndRoundTripsCleanly()
+        {
+            var xaml = BuildXaml(BuildSendEmailStep(), "Fidelity_SendEmail");
+            var xamlText = xaml.ToString();
+
+            StringAssert.Contains(xamlText, "DsfSendEmailActivity",
+                "the fixture must actually exercise DsfSendEmailActivity");
+            StringAssert.Contains(xamlText, SmtpSourceId.ToString(),
+                "the fixture must reference the generated EmailSource by ResourceID - that id is " +
+                "all FromX6Json gets back, and all AmbientSourceLoader has to resolve");
+
+            string roundTripped;
+            try
+            {
+                roundTripped = X6RoundTripBridge.RoundTripXaml(xaml);
+            }
+            catch (Exception ex)
+            {
+                Assert.Fail("Round-tripping the Send Email fixture through the X6 converters threw " +
+                            ex.GetType().Name + ": " + ex.Message +
+                            " - this is exactly the TranslationFailed regression this fixture exists to prevent.");
+                return;
+            }
+
+            StringAssert.Contains(roundTripped, "DsfSendEmailActivity",
+                "DsfSendEmailActivity must survive the round trip, not be dropped or replaced");
+            StringAssert.Contains(roundTripped, SmtpSourceId.ToString(),
+                "the EmailSource id must survive - without it the round-tripped copy alone fails " +
+                "on \"Invalid email source\", which the sweep reports as ExecutionAsymmetric");
+            StringAssert.Contains(roundTripped, SmtpFromAddress,
+                "FromAccount must survive - an empty one falls back to the source's empty UserName " +
+                "and the activity fails on the FROM address before connecting");
+            StringAssert.Contains(roundTripped, SmtpToAddress,
+                "To must survive - there is nothing to deliver to without it");
+            StringAssert.Contains(roundTripped, SmtpSubject,
+                "Subject must survive");
+            StringAssert.Contains(roundTripped, SmtpBody,
+                "Body must survive");
+            StringAssert.Contains(roundTripped, "[[result]]",
+                "Result must survive - it is the only value this activity contributes to the " +
+                "payload the sweep compares");
+        }
+
+        /// <summary>
+        /// The committed <c>Fidelity SMTP Source.bite</c> carries a literal port, while the
+        /// emulator that has to answer on it is a compile-time constant
+        /// (<see cref="InProcess.SmtpEmulator.Port"/>). Nothing else couples the two: moving the
+        /// emulator would leave the fixture dialling a dead port, the send would fail on both sides
+        /// identically, and the row would slide back to PassBothFailedIdentically - a silent loss of
+        /// coverage that reads as "expected, needs a live source" in the generated allow-list. This
+        /// fails loudly instead, on the file the sweep actually loads.
+        /// </summary>
+        [TestMethod]
+        public void CommittedEmailSourceFixture_PointsAtTheSmtpEmulatorPort()
+        {
+            var devRoot = RoundTripFidelityCorpus.FindRepoDevRoot();
+            if (devRoot == null)
+            {
+                Assert.Inconclusive("Could not locate the Dev/ root - the committed fixtures are not reachable from here.");
+                return;
+            }
+
+            var fixturePath = Path.Combine(devRoot, "Warewolf.Execution.Lightweight", "Resources",
+                "tools", "send email", "Fidelity SMTP Source.bite");
+            Assert.IsTrue(File.Exists(fixturePath),
+                "the committed EmailSource fixture is missing at " + fixturePath +
+                " - regenerate it with Generate_MissingCorpusFixtures (remove its [Ignore] locally) " +
+                "and commit the result");
+
+            var source = new EmailSource(XElement.Parse(File.ReadAllText(fixturePath)));
+
+            Assert.AreEqual(SmtpEmulator.Port, source.Port,
+                "the committed fixture's port must match the in-process emulator's, or nothing " +
+                "answers the send and the Send Email row silently regresses to PassBothFailedIdentically");
+            Assert.AreEqual(SmtpEmulator.Host, source.Host,
+                "the committed fixture's host must match the emulator's loopback binding");
+            Assert.AreEqual(SmtpSourceId, source.ResourceID,
+                "the committed fixture must carry the id the workflow fixture resolves through " +
+                "SelectedEmailSource");
+            Assert.IsFalse(source.EnableSsl,
+                "EnableSsl must stay false - EmailSource.Send would otherwise negotiate TLS " +
+                "(SecureSocketOptions.Auto) against an emulator that speaks plaintext only");
+            Assert.AreEqual(string.Empty, source.UserName,
+                "the committed fixture must carry no credential: the activity overwrites UserName " +
+                "with FromAccount before sending (see SmtpFromAddress), so a stored one is both " +
+                "unused and misleading");
         }
 
         /// <summary>
@@ -792,6 +1214,103 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 ProcedureName = "dbo.FidelityPing",
                 Inputs = new List<IServiceInput>(),
                 Outputs = new List<IServiceOutputMapping>(),
+            },
+        };
+
+        /// <summary>
+        /// Calls <c>dev2testingdb.FidelityPing</c> on the MySQL server TestRun.ps1
+        /// <c>-StartMySQLServer</c> provisions (see <see cref="MySqlConnectionString"/>), so this
+        /// fixture executes real MySQL logic rather than merely resolving a source.
+        ///
+        /// <para>
+        /// Every real corpus sample for this row (5 of them, e.g.
+        /// <c>StopExecutionOnMySQLTimeoutError.bite</c>) resolves a source that is not configured in
+        /// this sandbox and fails on "Database source is not configured" before the activity's own
+        /// logic runs. Unlike the Exchange row, a Pass here cannot be hollow: both
+        /// <c>SetupMySqlServer</c> and <c>MySqlExecution</c> add their exception message to the
+        /// error result, which the activity merges and the workflow fails on - so an unreachable
+        /// server, a missing database or a missing procedure all show up as a failure rather than a
+        /// silent success. Proven by pointing the source at a dead port - see the report on this
+        /// change.
+        /// </para>
+        ///
+        /// <para>
+        /// Outputs is set (empty, not null) only to satisfy the null guard, exactly as
+        /// <see cref="BuildSqlServerStep"/> does; the compared payload is the activity's own result,
+        /// not a column mapping.
+        /// </para>
+        /// </summary>
+        static FlowStep BuildMySqlStep() => new()
+        {
+            Action = new DsfMySqlDatabaseActivity
+            {
+                DisplayName = "MySQL Database",
+                SourceId = MySqlSourceId,
+                ActionName = MySqlProcedureName,
+                ProcedureName = MySqlProcedureName,
+                Inputs = new List<IServiceInput>(),
+                Outputs = new List<IServiceOutputMapping>(),
+            },
+        };
+
+        /// <summary>
+        /// Calls <c>public.fidelity_ping()</c> on the PostgreSQL server TestRun.ps1
+        /// <c>-StartPostgresServer</c> provisions (see <see cref="PostgresConnectionString"/>).
+        ///
+        /// <para>
+        /// A scalar-returning FUNCTION rather than a PROCEDURE on purpose: it is the branch that
+        /// exercises the most of the real path. <c>PostgreSqlDataBaseBroker.ConfigureCommandForExecution</c>
+        /// rewrites a function with a return type into <c>SELECT * FROM fidelity_ping()</c> and the
+        /// broker then fetches a DataTable from it, whereas a procedure is issued as <c>CALL</c> and
+        /// the broker deliberately skips the fetch (<c>returnType == "&lt;procedure&gt;"</c> yields an
+        /// empty DataTable), which would leave the read path untested.
+        /// </para>
+        /// </summary>
+        static FlowStep BuildPostgresStep() => new()
+        {
+            Action = new DsfPostgreSqlActivity
+            {
+                DisplayName = "PostgreSQL Database",
+                SourceId = PostgresSourceId,
+                ActionName = PostgresProcedureName,
+                ProcedureName = PostgresProcedureName,
+                Inputs = new List<IServiceInput>(),
+                Outputs = new List<IServiceOutputMapping>(),
+            },
+        };
+
+        /// <summary>
+        /// Sends one mail through <see cref="InProcess.SmtpEmulator"/>, the in-process fake SMTP
+        /// acceptor the assembly fixture starts on <see cref="InProcess.SmtpEmulator.Port"/>.
+        ///
+        /// <para>
+        /// Every real corpus sample for this row resolves an EmailSource whose Host is empty (they
+        /// were authored against a developer's own mail server and saved without one), so the sweep
+        /// could only ever report PassBothFailedIdentically on "Invalid URI: The hostname could not
+        /// be parsed." - both sides failing before DsfSendEmailActivity's own logic ran. Unlike the
+        /// Redis/SQL Server rows this needs no live service and no TestRun.ps1 -Start* flag: the
+        /// emulator is in-process, so a dev checkout and both CI jobs this assembly is partitioned
+        /// between measure it identically.
+        /// </para>
+        ///
+        /// <para>
+        /// EnableSsl is false on the source, which selects <c>SecureSocketOptions.None</c> in
+        /// <c>EmailSource.Send</c> - the emulator speaks plaintext SMTP and advertises no STARTTLS.
+        /// See <see cref="SmtpFromAddress"/> for why FromAccount must be set, and what that implies
+        /// for authentication.
+        /// </para>
+        /// </summary>
+        static FlowStep BuildSendEmailStep() => new()
+        {
+            Action = new DsfSendEmailActivity
+            {
+                DisplayName = "Send Email",
+                SelectedEmailSource = new EmailSource { ResourceID = SmtpSourceId },
+                FromAccount = SmtpFromAddress,
+                To = SmtpToAddress,
+                Subject = SmtpSubject,
+                Body = SmtpBody,
+                Result = "[[result]]",
             },
         };
 
@@ -1366,6 +1885,110 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             return WriteFixture(folder, "Fidelity SQL Server Source.bite", source.ToString());
         }
 
+        /// <summary>
+        /// The <c>EmailSource</c> Fidelity_SendEmail resolves through <c>SelectedEmailSource</c>,
+        /// pointed at the in-process <see cref="InProcess.SmtpEmulator"/>.
+        ///
+        /// <para>
+        /// PLAINTEXT ConnectionString for the same reason as <see cref="WriteRedisSource"/>:
+        /// <c>EmailSource.ToXml()</c> DPAPI-encrypts, and DPAPI ciphertext cannot be decrypted on a
+        /// different machine/user, so an encrypted value committed to source control is unusable on
+        /// a CI agent. <c>EmailSource(XElement)</c> accepts either - <c>conString.CanBeDecrypted()
+        /// ? Decrypt(conString) : conString</c> - so plaintext is the portable choice. Unlike
+        /// <see cref="MssqlConnectionString"/> there is no parse/rebuild hazard here: EmailSource
+        /// keeps Host/Port/UserName/Password/EnableSsl/Timeout as plain properties and never
+        /// reconstructs a connection string on the read path.
+        /// </para>
+        ///
+        /// <para>
+        /// UserName/Password are deliberately empty: nothing here depends on a credential, and the
+        /// activity overwrites UserName with FromAccount before sending anyway (see
+        /// <see cref="SmtpFromAddress"/>). Port comes from the emulator's own constant so the two
+        /// cannot drift silently - the guard is
+        /// <see cref="CommittedEmailSourceFixture_PointsAtTheSmtpEmulatorPort"/>.
+        /// </para>
+        /// </summary>
+        static string WriteEmailSource(string folder)
+        {
+            var source = new XElement("Source",
+                new XAttribute("ID", SmtpSourceId.ToString()),
+                new XAttribute("ResourceID", SmtpSourceId.ToString()),
+                new XAttribute("Name", "Fidelity SMTP Source"),
+                new XAttribute("ResourceType", "EmailSource"),
+                new XAttribute("IsValid", "true"),
+                new XAttribute("ConnectionString",
+                    "Host=" + SmtpEmulator.Host +
+                    ";UserName=;Password=;Port=" + SmtpEmulator.Port +
+                    ";EnableSsl=False;Timeout=10000"),
+                new XAttribute("Type", "EmailSource"),
+                new XAttribute("ServerVersion", "0.0.0.0"),
+                new XAttribute("ServerID", Guid.Empty.ToString()),
+                new XElement("DisplayName", "Fidelity SMTP Source"),
+                new XElement("AuthorRoles", string.Empty),
+                new XElement("ErrorMessages"),
+                new XElement("TypeOf", "EmailSource"),
+                new XElement("VersionInfo",
+                    new XAttribute("DateTimeStamp", FixedTimestamp.ToString("o")),
+                    new XAttribute("Reason", string.Empty),
+                    new XAttribute("User", "FidelityFixtureGenerator"),
+                    new XAttribute("VersionNumber", "1"),
+                    new XAttribute("ResourceId", SmtpSourceId.ToString()),
+                    new XAttribute("VersionId", SmtpSourceId.ToString())));
+
+            return WriteFixture(folder, "Fidelity SMTP Source.bite", source.ToString());
+        }
+
+        /// <summary>
+        /// The MySQL DbSource Fidelity_MySqlDatabase resolves through <c>SourceId</c>. Plaintext,
+        /// portable, and lossless across DbSource's parse/rebuild - see
+        /// <see cref="MySqlConnectionString"/>.
+        /// </summary>
+        static string WriteMySqlSource(string folder) =>
+            WriteDbSource(folder, "Fidelity MySQL Source", MySqlSourceId, "MySqlDatabase", MySqlConnectionString);
+
+        /// <summary>
+        /// The PostgreSQL DbSource Fidelity_PostgreSqlDatabase resolves through <c>SourceId</c>.
+        /// See <see cref="PostgresConnectionString"/>.
+        /// </summary>
+        static string WritePostgresSource(string folder) =>
+            WriteDbSource(folder, "Fidelity PostgreSQL Source", PostgresSourceId, "PostgreSQL", PostgresConnectionString);
+
+        /// <summary>
+        /// Emits one DbSource resource. The <paramref name="serverType"/> string is what
+        /// <c>DbSource(XElement)</c> switches on to pick <c>enSourceType</c> (and therefore which
+        /// branch of the ConnectionString getter re-emits the string), so it must be one of the
+        /// values that ctor recognises: sqldatabase / mysqldatabase / postgresql / oracle / odbc /
+        /// sqlite. Anything else silently becomes <c>enSourceType.Unknown</c> and the source's
+        /// connection string comes back as the empty string.
+        /// </summary>
+        static string WriteDbSource(string folder, string name, Guid id, string serverType, string connectionString)
+        {
+            var source = new XElement("Source",
+                new XAttribute("ID", id.ToString()),
+                new XAttribute("ResourceID", id.ToString()),
+                new XAttribute("Name", name),
+                new XAttribute("ResourceType", serverType),
+                new XAttribute("IsValid", "true"),
+                new XAttribute("ConnectionString", connectionString),
+                new XAttribute("Type", "DbSource"),
+                new XAttribute("ServerType", serverType),
+                new XAttribute("ServerVersion", "0.0.0.0"),
+                new XAttribute("ServerID", Guid.Empty.ToString()),
+                new XElement("DisplayName", name),
+                new XElement("AuthorRoles", string.Empty),
+                new XElement("ErrorMessages"),
+                new XElement("TypeOf", "DbSource"),
+                new XElement("VersionInfo",
+                    new XAttribute("DateTimeStamp", FixedTimestamp.ToString("o")),
+                    new XAttribute("Reason", string.Empty),
+                    new XAttribute("User", "FidelityFixtureGenerator"),
+                    new XAttribute("VersionNumber", "1"),
+                    new XAttribute("ResourceId", id.ToString()),
+                    new XAttribute("VersionId", id.ToString())));
+
+            return WriteFixture(folder, name + ".bite", source.ToString());
+        }
+
         static string WriteFixture(string folder, string fileName, string contents)
         {
             var dir = Path.Combine(FixtureRoot, folder);
@@ -1376,9 +1999,20 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         }
 
         /// <summary>
-        /// A fixed timestamp and name-derived ids keep regeneration diff-free: re-running the
-        /// generator without changing a fixture must not rewrite its GUIDs or dates, or every
-        /// regeneration would look like a change in review.
+        /// A fixed timestamp and name-derived ids keep everything THIS file controls stable across
+        /// regenerations: re-running the generator without changing a fixture must not rewrite the
+        /// GUIDs or dates it chooses, or every regeneration would look like a change in review. It
+        /// makes the generated SOURCE resources byte-identical.
+        ///
+        /// <para>
+        /// The generated WORKFLOWS are not, and cannot be made so from here:
+        /// <c>WorkflowHelper.GetXamlDefinition</c> stamps a fresh <c>UniqueID</c> into every
+        /// activity and names its ActivityFunc argument <c>explicitData_&lt;yyyyMMddHHmmss&gt;</c>,
+        /// both regenerated on every call. So a full <see cref="Generate_MissingCorpusFixtures"/>
+        /// run rewrites every committed .bite even when no fixture changed - measured 2026-09-04,
+        /// 13 files churned for one added fixture. Revert the ones you did not intend to change and
+        /// commit only the new/edited fixture, or the diff hides the real change.
+        /// </para>
         /// </summary>
         static readonly DateTimeOffset FixedTimestamp = new(2026, 8, 23, 0, 0, 0, TimeSpan.Zero);
 

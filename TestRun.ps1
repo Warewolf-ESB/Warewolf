@@ -94,6 +94,7 @@ param(
     [Switch]   $StartSFTPServer,
     [Switch]   $StartSambaShare,
     [Switch]   $StartMySQLServer,
+    [Switch]   $StartPostgresServer,
     [Switch]   $StartElasticsearchServer,
     [Switch]   $StartRabbitMQServer,
     [Switch]   $StartRedisServer,
@@ -348,7 +349,7 @@ function ConvertFrom-PipelineYaml {
         # into the recursive TestRun.ps1 invocation.
         $winSwitches = @(
             'StartFTPServer','StartFTPSServer','StartSFTPServer','StartSambaShare',
-            'StartMySQLServer','StartElasticsearchServer','StartRabbitMQServer',
+            'StartMySQLServer','StartPostgresServer','StartElasticsearchServer','StartRabbitMQServer',
             'StartRedisServer','StartExchangeConnector',
             'CreateUNCPath','UseRegionalSettings','CreateLocalSchedulerAdmin','LegacyWindowsDeps'
         )
@@ -911,6 +912,13 @@ function Stop-HostSFTPServer {
 }
 
 function Start-HostMySQLServer {
+    # mysqladmin/mysql write "[Warning] Using a password on the command line interface can be
+    # insecure" to stderr on EVERY invocation, and under the AzDO PowerShell task default
+    # ($ErrorActionPreference='Stop') a native command writing to stderr is promoted to a
+    # terminating NativeCommandError that aborts the whole script - 2>$null does NOT suppress it.
+    # Same guard, same reason, as Start-HostMSSQLServer. This was latent until the client lookup
+    # below started finding mysqladmin at all (see Resolve-MySqlClient).
+    $ErrorActionPreference = 'Continue'
     if ($LegacyWindowsDeps) {
         # Bare-metal MySQL via chocolatey. Bootstrap schema is taken from
         # C:\Users\ultra\mysql-connector-testing\mysqldump.sql (the source repo
@@ -926,10 +934,11 @@ function Start-HostMySQLServer {
         }
         # Idempotent password set + schema load. Tests connect with root/admin
         # to match the docker image's MYSQL_ROOT_PASSWORD=admin baseline.
-        $mysqladmin = Get-Command mysqladmin -ErrorAction SilentlyContinue
-        $mysql      = Get-Command mysql      -ErrorAction SilentlyContinue
-        if (-not $mysql) { Write-Warn "mysql CLI not on PATH after choco install; skipping schema load"; return }
-        & $mysqladmin.Path -uroot password 'admin' 2>$null | Out-Null
+        $mysqlPath      = Resolve-MySqlClient 'mysql.exe'
+        $mysqladminPath = Resolve-MySqlClient 'mysqladmin.exe'
+        if (-not $mysqlPath) { Write-Warn "mysql CLI not found after choco install; skipping schema load"; return }
+        $mysql = [pscustomobject]@{ Path = $mysqlPath }
+        if ($mysqladminPath) { & $mysqladminPath -uroot password 'admin' *> $null }
         $dump = "$PSScriptRoot\mysql-bootstrap.sql"
         if (-not (Test-Path $dump)) { $dump = "C:\mysql-bootstrap.sql" }
         if (Test-Path $dump) {
@@ -937,16 +946,180 @@ function Start-HostMySQLServer {
         } else {
             Write-Warn "No mysql-bootstrap.sql found at $PSScriptRoot or C:\; tests that depend on schema may fail"
         }
+        # Deterministic fixture, seeded whether or not mysql-bootstrap.sql was found - see
+        # $MySqlFidelitySeed.
+        cmd /c "`"$($mysql.Path)`" -uroot -padmin -e `"$MySqlFidelitySeed`"" *> $null
         return
     }
     docker run -d -p 3306:3306 --name mysql-connector-testing registry.gitlab.com/warewolf/mysql-connector-testing | Out-Null
+    # Wait for the server to accept connections before seeding: the container reports Up long
+    # before mysqld finishes its first-run initialisation.
+    for ($i = 1; $i -le 45; $i++) {
+        docker exec mysql-connector-testing mysql -uroot -padmin -e "SELECT 1" *> $null
+        if ($LASTEXITCODE -eq 0) { break }
+        Start-Sleep 2
+    }
+    docker exec mysql-connector-testing mysql -uroot -padmin -e "$MySqlFidelitySeed" *> $null
+    if ($LASTEXITCODE -ne 0) { Write-Warn "MySQL fidelity seed failed; the RoundTripFidelity 'MySQL Database' row will not pass" }
 }
+# Locates a MySQL client executable across PATH and the two places Windows installs put them.
+# See Start-HostMySQLServer's remarks for why PATH alone is not enough on a fresh agent.
+function Resolve-MySqlClient([string]$Exe) {
+    $cmd = Get-Command $Exe -ErrorAction SilentlyContinue
+    if ($cmd) { return $cmd.Source }
+    foreach ($glob in "C:\tools\mysql\current\bin\$Exe",
+                      "C:\tools\mysql\*\bin\$Exe",
+                      "$env:ProgramFiles\MySQL\*\bin\$Exe") {
+        $hit = Get-ChildItem $glob -ErrorAction SilentlyContinue | Sort-Object FullName -Descending | Select-Object -First 1
+        if ($hit) { return $hit.FullName }
+    }
+    return $null
+}
+
 function Stop-HostMySQLServer {
     if ($LegacyWindowsDeps) {
         Get-Service -Name 'MySQL*' -ErrorAction SilentlyContinue | Stop-Service -ErrorAction SilentlyContinue
         return
     }
     docker rm -f mysql-connector-testing 2>$null | Out-Null
+}
+
+# ============================================================================
+# Deterministic fixtures for RoundTripFidelityTests' "MySQL Database" /
+# "PostgreSQL Database" rows.
+#
+# Both rows need more than a reachable server: the activities look their routine up in the
+# server's own metadata before executing it, so the routine has to exist with the exact name and
+# schema the committed .bite source/fixture pair names (see FidelityFixtureGenerator's
+# MySqlConnectionString / PostgresConnectionString remarks). Same contract, and same reason, as
+# Start-HostMSSQLServer's dbo.FidelityPing.
+#
+# MySQL: DatabaseServiceExecution.MySqlExecution calls
+# MySqlServer.GetProcedureOutParams(ProcedureName, Source.DatabaseName), which reads
+# INFORMATION_SCHEMA.PARAMETERS filtered on SPECIFIC_SCHEMA/SPECIFIC_NAME - hence a bare
+# procedure name inside a named database. The body is deliberately ONE statement so no DELIMITER
+# juggling is needed: a BEGIN...END body containing a semicolon would be truncated by the CLI.
+#
+# PostgreSQL: PostgreServer.GetProcedureReturnType hard-codes specific_schema='public', and a
+# function with a non-void return type is executed as `SELECT * FROM fn()` by
+# PostgreSqlDataBaseBroker.ConfigureCommandForExecution - so a scalar-returning SQL function in
+# `public` is the shape that exercises the real path end to end.
+#
+# Lower-case identifiers throughout on the Postgres side: unquoted identifiers are folded to
+# lower case, and information_schema then reports them that way, so anything mixed-case in the
+# .bite fixture would fail the metadata lookup it depends on.
+# ============================================================================
+$MySqlFidelitySeed = @'
+CREATE DATABASE IF NOT EXISTS dev2testingdb; DROP PROCEDURE IF EXISTS dev2testingdb.FidelityPing; CREATE PROCEDURE dev2testingdb.FidelityPing() SELECT 1 AS Result;
+'@
+
+$PostgresFidelityDb   = 'dev2testingdb'
+$PostgresFidelityFunc = "CREATE OR REPLACE FUNCTION public.fidelity_ping() RETURNS integer LANGUAGE sql AS 'SELECT 1';"
+
+function Start-HostPostgresServer {
+    # Provisions the PostgreSQL fixture Depends(PostgreSQL) -> localhost:5432 expects: superuser
+    # postgres / admin, database dev2testingdb, function public.fidelity_ping().
+    #
+    # $ErrorActionPreference is forced to Continue for the same reason Start-HostMSSQLServer does
+    # it: psql writes connection-refused probes to stderr, and under the AzDO PowerShell task
+    # default a native command writing to stderr is promoted to a terminating NativeCommandError
+    # that would abort the whole run before any test executes.
+    $ErrorActionPreference = 'Continue'
+
+    if ($LegacyWindowsDeps) {
+        # Native Windows provisioning, for the same reason as Start-HostMSSQLServer's native path:
+        # a Microsoft-hosted windows-2022 agent's Docker daemon runs Windows containers only, so
+        # the Linux postgres image cannot start there.
+        #
+        # PORTABLE BINARIES, not `choco install postgresql`. The chocolatey package wraps EDB's
+        # interactive installer, which exits 1 under --mode unattended without writing a log and
+        # ignores the --params password (measured 2026-09-04 on an elevated Windows 11 shell:
+        # "You did not specify a password for the postgres user so an insecure one has been
+        # generated", then "The install of postgresql18 was NOT successful"). The binaries zip needs
+        # no MSI, no service account and no elevation, so it behaves the same on a dev box and a
+        # hosted agent - the same reasoning as Start-HostExchangeConnector downloading a WireMock
+        # jar rather than installing anything.
+        $pgZipUrl = 'https://get.enterprisedb.com/postgresql/postgresql-16.9-1-windows-x64-binaries.zip'
+        $pgZip    = 'C:\postgresql-16-binaries.zip'
+        $pgRoot   = 'C:\pgsql'
+        $pgData   = "$pgRoot\data"
+        $pgBin    = "$pgRoot\bin"
+
+        if (-not (Test-Path "$pgBin\pg_ctl.exe")) {
+            if (-not (Test-Path $pgZip)) {
+                Write-Host "Downloading PostgreSQL binaries..."
+                Invoke-WebRequest -UseBasicParsing -Uri $pgZipUrl -OutFile $pgZip
+            }
+            # The archive's own top-level folder is 'pgsql', so extracting to C:\ yields C:\pgsql.
+            Expand-Archive -Path $pgZip -DestinationPath 'C:\' -Force
+        }
+        if (-not (Test-Path "$pgBin\pg_ctl.exe")) { Write-Warn "PostgreSQL binaries missing after extract; cannot start Postgres"; return }
+
+        if (-not (Test-Path "$pgData\PG_VERSION")) {
+            # --pwfile is the only non-interactive way to set the superuser password; initdb
+            # reads the first line and the file is removed straight after.
+            $pwFile = Join-Path $env:TEMP 'pg-fidelity-pw.txt'
+            [IO.File]::WriteAllText($pwFile, 'admin')
+            & "$pgBin\initdb.exe" -U postgres -A scram-sha-256 --pwfile=$pwFile -D $pgData -E UTF8 *> $null
+            Remove-Item $pwFile -Force -ErrorAction SilentlyContinue
+        }
+
+        # pg_ctl start is not idempotent: it fails when a server is already attached to $pgData,
+        # which is the normal case on a retry loop, so the status probe decides.
+        #
+        # Start-Process with FILE redirection and NO -Wait. Every simpler form hangs, and the
+        # server is running the whole time it does - measured 2026-09-04, TestRun.ps1 sat
+        # indefinitely while psql served queries against the very database it had just created,
+        # which on CI burns the job's entire timeout on a healthy dependency:
+        #   * `& pg_ctl ... start *> $null` - pg_ctl hands the postmaster its INHERITED stdout, and
+        #     PowerShell's redirection waits on a handle the long-lived server never closes.
+        #   * `Start-Process -NoNewWindow -Wait` - waits on the whole process TREE, and the
+        #     postmaster shares the console, so pg_ctl exiting ("server started" in the log) is not
+        #     enough to release it.
+        # Redirecting to files gives the child handles of its own, and dropping -Wait leaves the
+        # readiness question to the pg_isready loop below, which is the only reliable answer anyway.
+        & "$pgBin\pg_ctl.exe" -D $pgData status *> $null
+        if ($LASTEXITCODE -ne 0) {
+            Start-Process -FilePath "$pgBin\pg_ctl.exe" `
+                -ArgumentList @('-D', "`"$pgData`"", '-o', '"-p 5432"', '-l', "`"$pgRoot\pg-fidelity.log`"", 'start') `
+                -RedirectStandardOutput "$pgRoot\pg-ctl-out.log" `
+                -RedirectStandardError  "$pgRoot\pg-ctl-err.log"
+        }
+
+        $env:PGPASSWORD = 'admin'
+        for ($i = 1; $i -le 30; $i++) {
+            & "$pgBin\pg_isready.exe" -h 127.0.0.1 -p 5432 -U postgres *> $null
+            if ($LASTEXITCODE -eq 0) { break }
+            Start-Sleep 2
+        }
+        # CREATE DATABASE has no IF NOT EXISTS; on a re-run it simply fails and is ignored.
+        & "$pgBin\psql.exe" -U postgres -h 127.0.0.1 -c "CREATE DATABASE $PostgresFidelityDb" *> $null
+        & "$pgBin\psql.exe" -U postgres -h 127.0.0.1 -d $PostgresFidelityDb -c $PostgresFidelityFunc *> $null
+        if ($LASTEXITCODE -ne 0) { Write-Warn "Postgres fidelity seed failed; the RoundTripFidelity 'PostgreSQL Database' row will not pass" }
+        return
+    }
+
+    docker run -d -p 5432:5432 --name postgres -e POSTGRES_PASSWORD=admin postgres:16-alpine | Out-Null
+    for ($i = 1; $i -le 45; $i++) {
+        docker exec postgres pg_isready -U postgres *> $null
+        if ($LASTEXITCODE -eq 0) { break }
+        Start-Sleep 2
+    }
+    docker exec postgres psql -U postgres -c "CREATE DATABASE $PostgresFidelityDb" *> $null
+    docker exec postgres psql -U postgres -d $PostgresFidelityDb -c $PostgresFidelityFunc *> $null
+    if ($LASTEXITCODE -ne 0) { Write-Warn "Postgres fidelity seed failed; the RoundTripFidelity 'PostgreSQL Database' row will not pass" }
+}
+
+function Stop-HostPostgresServer {
+    if ($LegacyWindowsDeps) {
+        $pgBin  = 'C:\pgsql\bin'
+        $pgData = 'C:\pgsql\data'
+        if (Test-Path "$pgBin\pg_ctl.exe") {
+            & "$pgBin\pg_ctl.exe" -D $pgData -m fast stop *> $null
+        }
+        return
+    }
+    docker rm -f postgres 2>$null | Out-Null
 }
 
 function Start-HostElasticsearchServer {
@@ -2547,7 +2720,8 @@ if ($ExcludeAssemblies.Count -gt 0 -and $ExcludeProjects.Count -eq 0) { $Exclude
 
 $hasAnyDepFlag = $StartFTPServer.IsPresent -or $StartFTPSServer.IsPresent -or `
                  $StartSFTPServer.IsPresent -or $StartSambaShare.IsPresent -or `
-                 $StartMySQLServer.IsPresent -or $StartElasticsearchServer.IsPresent -or `
+                 $StartMySQLServer.IsPresent -or $StartPostgresServer.IsPresent -or `
+                 $StartElasticsearchServer.IsPresent -or `
                  $StartRabbitMQServer.IsPresent -or $StartRedisServer.IsPresent -or `
                  $StartExchangeConnector.IsPresent -or ($StartMSSQLServer -ne "")
 
@@ -2719,6 +2893,7 @@ try {
             if ($StartSambaShare.IsPresent)          { Start-HostSambaShare }
             if ($CreateUNCPath)                      { Start-HostUNCPath }
             if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
+            if ($StartPostgresServer.IsPresent)      { Start-HostPostgresServer }
             if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
             if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
             if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
@@ -2853,6 +3028,7 @@ try {
             if ($StartSambaShare.IsPresent)          { Stop-HostSambaShare }
             if ($CreateUNCPath)                      { Stop-HostUNCPath }
             if ($StartMySQLServer.IsPresent)         { Stop-HostMySQLServer }
+            if ($StartPostgresServer.IsPresent)      { Stop-HostPostgresServer }
             if ($StartElasticsearchServer.IsPresent) { Stop-HostElasticsearchServer }
             if ($StartRabbitMQServer.IsPresent)      { Stop-HostRabbitMQServer }
             if ($StartRedisServer.IsPresent)         { Stop-HostRedisServer }
@@ -2866,6 +3042,7 @@ try {
         if ($StartSambaShare.IsPresent)          { Start-HostSambaShare }
         if ($CreateUNCPath)                      { Start-HostUNCPath }
         if ($StartMySQLServer.IsPresent)         { Start-HostMySQLServer }
+        if ($StartPostgresServer.IsPresent)      { Start-HostPostgresServer }
         if ($StartElasticsearchServer.IsPresent) { Start-HostElasticsearchServer }
         if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
         if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }

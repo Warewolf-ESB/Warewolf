@@ -26,7 +26,9 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
     /// records the raw SMTP commands it receives. Modelled after the smtp4dev/MailHog pattern
     /// (fake SMTP endpoint that captures messages without delivering them).
     ///
-    /// The server listens on a random OS-assigned port (see <see cref="Port"/>).
+    /// The server listens on a random OS-assigned port by default (see <see cref="Port"/>); pass a
+    /// port to the constructor to bind a fixed one, which <see cref="InProcess.SmtpEmulator"/> needs
+    /// because that port has to be baked into a committed .bite EmailSource fixture.
     /// Dispose to stop it.
     /// </summary>
     internal sealed class FakeSmtpServer : IDisposable
@@ -42,9 +44,19 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
         /// <summary>Set to true after a complete DATA session has been accepted.</summary>
         public bool ReceivedMessage { get; private set; }
 
-        public FakeSmtpServer()
+        /// <summary>
+        /// The raw argument of the last accepted AUTH command (mechanism plus base64 blob), or null
+        /// when the client never authenticated. Lets a test assert the AUTH leg actually happened
+        /// instead of inferring it from a successful send.
+        /// </summary>
+        public string? AuthenticatedAs { get; private set; }
+
+        /// <param name="port">
+        /// TCP port to bind on loopback, or 0 (the default) to let the OS assign one.
+        /// </param>
+        public FakeSmtpServer(int port = 0)
         {
-            _listener = new TcpListener(IPAddress.Loopback, 0);
+            _listener = new TcpListener(IPAddress.Loopback, port);
             _listener.Start();
             Port = ((IPEndPoint)_listener.LocalEndpoint).Port;
             _ = Task.Run(() => AcceptLoopAsync(_cts.Token));
@@ -119,7 +131,23 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
                             var upper = line.ToUpperInvariant();
                             if (upper.StartsWith("EHLO") || upper.StartsWith("HELO"))
                             {
-                                await WriteLineAsync("250-localhost Hello\r\n250-SIZE 10240000\r\n250 OK");
+                                // AUTH PLAIN is advertised - and PLAIN only - because MailKit refuses
+                                // to authenticate against a server advertising no mechanism it
+                                // supports, and DsfSendEmailActivity ALWAYS authenticates: a
+                                // non-empty FromAccount overwrites runtimeSource.UserName (see
+                                // DsfSendEmailActivity.SendEmail) and EmailSource.Send then calls
+                                // client.Authenticate for any non-empty UserName, while an empty
+                                // From address throws before the send. PLAIN is a single AUTH command
+                                // carrying one base64 blob, so it needs no 334-challenge state
+                                // machine here, unlike LOGIN.
+                                await WriteLineAsync("250-localhost Hello\r\n250-SIZE 10240000\r\n250-AUTH PLAIN\r\n250 OK");
+                            }
+                            else if (upper.StartsWith("AUTH"))
+                            {
+                                // Any credential is accepted: this stub proves the transaction
+                                // completes, never that a password is correct.
+                                AuthenticatedAs = line.Length > 5 ? line[5..] : string.Empty;
+                                await WriteLineAsync("235 2.7.0 Authentication successful");
                             }
                             else if (upper.StartsWith("MAIL FROM"))
                                 await WriteLineAsync("250 OK");
@@ -262,6 +290,62 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests
             Assert.AreEqual(smtp.Port, source.Port);
             Assert.IsFalse(source.EnableSsl, "EnableSsl should be false");
             Assert.AreEqual(10000, source.Timeout, "Timeout should be 10000ms");
+        }
+
+        /// <summary>
+        /// Covers the AUTH leg of <see cref="FakeSmtpServer"/>, which the round-trip fidelity
+        /// sweep's generated Send Email fixture depends on and neither test above reaches: both
+        /// write <c>UserName=</c>, and <see cref="EmailSource.Send"/> only authenticates for a
+        /// non-empty UserName.
+        ///
+        /// It is not an optional path there. <c>DsfSendEmailActivity.SendEmail</c> copies a
+        /// non-empty FromAccount onto <c>runtimeSource.UserName</c> before sending, and the
+        /// activity needs a non-empty FromAccount to have a legal FROM address at all - so the
+        /// fixture always authenticates, and against a server advertising no mechanism MailKit
+        /// throws <c>NotSupportedException</c> instead of sending. Asserting the AUTH command was
+        /// actually received (not just that the message arrived) is what distinguishes this from
+        /// the unauthenticated case.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("LiveIntegration_Email")]
+        public async Task TC_EmailSource_AuthenticatedSend_CompletesAuthLeg()
+        {
+            using var smtp = new FakeSmtpServer();
+
+            var dir = Path.Combine(Path.GetTempPath(), $"live-email-auth-{Guid.NewGuid():N}");
+            Directory.CreateDirectory(dir);
+            _tempDirs.Add(dir);
+
+            var id = Guid.NewGuid();
+            var connStr = $"Host=127.0.0.1;Port={smtp.Port};EnableSsl=false;Timeout=10000;UserName=sender@test.local;Password=any-secret";
+            File.WriteAllText(Path.Combine(dir, $"{id:N}.bite"),
+                $"""<Source Type="EmailSource" ResourceID="{id}" ID="{id}" Name="FakeEmailAuth" ResourceType="EmailSource" IsValid="false" ConnectionString="{connStr}" />""");
+
+            var loader = LightweightSourceLoader.Instance;
+            loader.EnsureIndexed(dir);
+            IOnDemandSourceLoader iLoader = loader;
+            Assert.IsTrue(iLoader.EnsureSourceLoaded(id), "Source should load from .bite");
+
+            var source = GetFromCatalog<Dev2.Runtime.ServiceModel.Data.EmailSource>(id);
+            Assert.IsNotNull(source, "EmailSource must be in ResourceCatalog after load");
+            Assert.AreEqual("sender@test.local", source.UserName,
+                "a non-empty UserName is what makes EmailSource.Send authenticate");
+
+            var msg = new MailMessage("sender@test.local", "to@test.local", "Auth Subject", "Auth Body");
+            source.Send(msg);
+
+            // Allow the fake server a brief moment to process the received data.
+            await Task.Delay(200);
+
+            Assert.IsNotNull(smtp.AuthenticatedAs,
+                "the client must have authenticated - if FakeSmtpServer stops advertising a " +
+                "mechanism MailKit supports, Send throws NotSupportedException instead and the " +
+                "fidelity sweep's Send Email row regresses to PassBothFailedIdentically");
+            StringAssert.StartsWith(smtp.AuthenticatedAs, "PLAIN",
+                "PLAIN is the only mechanism the stub advertises, and the only one whose exchange " +
+                "it can complete without a 334-challenge state machine");
+            Assert.IsTrue(smtp.ReceivedMessage,
+                "the message must still be accepted after the AUTH leg");
         }
     }
 }
