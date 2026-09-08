@@ -1743,6 +1743,143 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     stdout-parsing issue in that helper under resource contention, not a real query bug. Filed
     separately; not yet actioned.
 
+- **2026-09-08 — `ShovelBridgeLoadTest_ExternalServiceBus` (build 30636) failed end-to-end; root
+  cause is unrelated to the RabbitProcess→ProfilerMain workflow swap, but that swap independently
+  broke Phase 4c and left `ProfilerMain.bite`'s own DB dependencies unprovisioned.** Three separate
+  issues, all confirmed directly, none of which is "Phase 4c's query is wrong for the new data
+  shape" (that was the working hypothesis going in — disproven):
+  1. **Actual build failure (fatal)**: all 1000 `/secure/servicebus-result/{correlationId}` polls
+     against `warewolfserver-uat.azurewebsites.net` returned HTTP 503
+     `{"error":"config_missing","message":"Server configuration error: secure.config is absent or
+     empty."}` — a UAT server misconfiguration, unrelated to the workflow swap. 0/1000 executions
+     ever resolved.
+  2. **Phase 4c itself failed separately (already non-fatal, line ~1202)**: `usp_jobs1_Summary`
+     connection to `WarewolfDevOpsTestDb` timed out at the SQL pre-login handshake stage — a
+     connectivity issue, not a query bug.
+  3. **The real, durable problem**: `pipeline-LOADTEST.yml` switched `VerifyWorkflowName` from
+     `rabbit/RabbitProcess` to `profiler/ProfilerMain` on 2026-09-07 (see that file's own comment,
+     "Switched from RabbitProcess ... per the 2026-09-07 decision"), but `-JobsDbConnectionString`
+     (Phase 4c, `usp_jobs1_Summary`/`dbo.jobs1`) was left wired in unchanged. `ProfilerMain.bite`
+     has **zero** references to `jobs1` anywhere (confirmed via direct grep) — it writes profiler
+     recommendation data instead (`usp_InsertProfilerRecommendation`, `usp_UpdateProfiler-
+     Recommendation`, `usp_GetProfilerRecommendation`, `usp_ResetMandateScores`,
+     `usp_AddNewDebitRunIdProfileAsTied`, plus inline `usp_ClearLabelsForRecommendation` /
+     `usp_DeleteFutureProfilerRecommendation` calls). Once issues 1–2 above are fixed, Phase 4c
+     will reliably throw `"usp_jobs1_Summary returned no rows"` on every future ProfilerMain run —
+     it gives zero real signal for the workflow now under test. **Decision: defer redesigning
+     Phase 4c as a ProfilerMain-aware check until the two blockers below are resolved** — there is
+     no point querying a schema that doesn't exist yet.
+
+  **Blocker A — `WarewolfDevOpsTestDb` has no `Profiler` schema at all.** Confirmed live via a
+  read-only `sys.schemas`/`sys.objects` query (Azure AD auth, `ashley.lewis@theunlimited.co.za`,
+  `db_datareader`+): the only user schema present is `dbo`. None of the procs `ProfilerMain.bite`
+  calls exist. `ProfilerDBSource.bite` (new file, commit `d6b09d25f6`) is WFAES-encrypted so its
+  connection string can't be read directly, but the pipeline comment says it points at this same
+  `WarewolfDevOpsTestDb` — consistent with the live "nothing there" result. **Fix**: provision the
+  full `Profiler` schema on `WarewolfDevOpsTestDb` from
+  `C:\Builds\Unlimited.ProfilerServices\Database\Warewolf.ProfilerDB\Profiler\` — 10 tables
+  (`ProfilerRecommendation`, `ProfilerRecommendationLabels`, `MandateScores`, `Profiles`,
+  `ProfileDates`, `DebitRunIds`, `GrantDates`, `GrantType`, `RecommendationType`,
+  `SpecialHolidays`) and the 11 stored procedures `ProfilerMain.bite`'s tree calls
+  (`usp_InsertProfilerRecommendation`, `usp_UpdateProfilerRecommendation`,
+  `usp_GetProfilerRecommendation`, `usp_ResetMandateScores`,
+  `usp_AddNewDebitRunIdProfileAsTied`, `usp_GetFirstEarlierCollectionDate`,
+  `usp_ClearLabelsForRecommendation`, `usp_DeleteFutureProfilerRecommendation`,
+  `usp_ApplyRelatedMandatesScoring`, `usp_ScoreMandateCollectionDates`,
+  `usp_GetMandateScoredResults`) — `.sql` definitions for all 11 confirmed present in that folder.
+
+  **Blocker B — `Resources/profiler/` is missing sub-workflow dependencies, and the two
+  "missing" DAL calls flagged by the existing staging-step comment aren't actually missing.**
+  Only 11 `.bite` files were added in `d6b09d25f6`. Re-examined every dependency `ProfilerMain.bite`
+  (and its children) reference, resolving by **`ResourceID`** (the real lookup key at runtime),
+  not by the `ServiceName` label — which is sometimes stale:
+  - `usp_ClearLabelsForRecommendation` / `usp_DeleteFutureProfilerRecommendation`: **not sub-
+    workflow calls** — confirmed these are inline `DsfSqlServerDatabaseActivity` steps directly
+    inside `ProfilerMain.bite` itself. They need no `.bite` file, only the stored procs (covered
+    by Blocker A). The staging-step comment in `pipeline-LOADTEST.yml` did not name these as gaps;
+    a different, real gap was found instead — see below.
+  - `HuntingStrategy` (ResourceID `d4c09394-744d-4b2b-b14a-3d4ee7895ccc`): label matches the real
+    file, `HuntingStrategy.bite`
+    (`C:\Builds\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler\Profiler\V2\Private\`)
+    — exists in the source tree, simply never copied into `Dev/.../Resources/profiler/`.
+  - `GetMandateDRIStrategy` (ResourceID `b9827237-fadc-4dc1-bf37-b339886692d8`): **stale label** —
+    this ID actually resolves to `GetNoScoreStrategy.bite` in the same source folder. Never copied.
+  - `usp_GetMandateScoresCollectionDates` (ResourceID `b2175b3b-1fc4-485d-8140-0b7aadd0e0b7`):
+    **stale label** — resolves to `usp_GetMandateScoredResults.bite`
+    (`.../Profiler/Profiler/V2/Private/DAL/`). Never copied.
+  - `GetMandateProfiles` (ResourceID `ba49122d-09d6-4c84-a540-f0e7454ed1eb`, referenced directly
+    in `ProfilerMain.bite`) — **NOT missing. This bullet was wrong when first written; see the
+    correction entry below.** It is `GetTrackingPeriod.bite`, already staged in this folder since
+    commit `d6b09d25f6`: that file's own root element is
+    `<Service ID="ba49122d-09d6-4c84-a540-f0e7454ed1eb" … Name="GetTrackingPeriod">`. The workflow
+    was renamed at some point; only the orphaned test scenarios still carry the old
+    `GetStandardTrackingDays` name.
+
+  **Net follow-up items, in order** (items 1–3 are now DONE — see the correction entries above;
+  item 4 remains open): (1) provision the `Profiler` schema per Blocker A; (2) copy
+  `HuntingStrategy.bite`, `GetNoScoreStrategy.bite`, `usp_GetMandateScoredResults.bite` into
+  `Resources/profiler/` per Blocker B; (3) ~~locate and add the real `GetStandardTrackingDays.bite`~~
+  — retracted, it was never missing; instead, dependency closure was run properly and the six
+  genuinely-unresolved resources were copied in;
+  (4) only then redesign Phase 4c as a coarse, ProfilerMain-aware check — coarse because all 1000
+  `VerifyWorkflowInputsJson` messages in this load test carry an **identical** body (real
+  `MandateId`/GUID values, per that variable's own doc comment), so a per-correlationId
+  reconciliation like RabbitProcess's isn't possible here; the check would instead have to confirm
+  at least one upsert against `Profiler.ProfilerRecommendation` for the fixed `MandateId` landed
+  within the run's time window.
+
+  **2026-09-08, same day — items (1) and (2) done; (3) confirmed unresolvable locally:**
+  - **Blocker A resolved.** Provisioned the full `Profiler` schema onto `WarewolfDevOpsTestDb`
+    directly (read/write access via the author's own Azure AD identity, `db_owner`-equivalent —
+    `CURRENT_USER` returns `dbo`; the pipeline's plain-SQL `devops_warewolf` login was not needed).
+    Scoped to only what `ProfilerMain.bite`'s 11 called procedures actually touch — grepped each
+    proc body first: **9 of the 10 tables** (`SpecialHolidays` is unused by this call path, along
+    with all 41 `view_*` and 45 `func_*` objects in the same source folder, which belong to an
+    unrelated holiday-calendar date-profiling feature none of these 11 procs reference) and all 11
+    procedures, from `C:\Builds\Unlimited.ProfilerServices\Database\Warewolf.ProfilerDB\Profiler\`.
+    Created in dependency order (`GrantType`, `RecommendationType`, `Profiles`, `DebitRunIds` →
+    `GrantDates`, `ProfileDates` → `MandateScores`, `ProfilerRecommendation` →
+    `ProfilerRecommendationLabels`, then all 11 procs); `MandateScores`/`ProfilerRecommendation`'s
+    `SYSTEM_VERSIONING` auto-created their `_HISTORY` tables. Verified live afterward via
+    `sys.objects`: 44 objects total under schema `Profiler` (9 tables + 2 auto history tables + 11
+    procs + constraints), 0 errors.
+  - **Blocker B mostly resolved.** Copied the 3 correctly-identified files from
+    `C:\Builds\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler\Profiler\V2\Private\`
+    (`HuntingStrategy.bite`, `GetNoScoreStrategy.bite`) and `...\Private\DAL\`
+    (`usp_GetMandateScoredResults.bite`) into `Dev/Warewolf.Execution.Lightweight/Resources/profiler/`
+    — no pipeline change needed, the "Stage profiler/*.bite" step flat-copies everything in that
+    folder already.
+  - **CORRECTION (same day, later): `GetStandardTrackingDays` was never missing — that finding was
+    an analysis error, now retracted.** The resource is `GetTrackingPeriod.bite`, staged in
+    `Resources/profiler/` since commit `d6b09d25f6`, whose own root element carries the exact
+    ResourceID `ba49122d-09d6-4c84-a540-f0e7454ed1eb`. **How the error happened, so it isn't
+    repeated:** the search that should have settled it (`grep -rl 'ID="ba49122d-…"' --include=*.bite`)
+    *did* return `GetTrackingPeriod.bite`, but all hits were read as files that merely *reference*
+    the GUID; nobody checked whether one of them *was* the resource bearing it. A second search by
+    the filename `GetStandardTrackingDays.bite` then "confirmed" absence — but that is the workflow's
+    **old, pre-rename name**, preserved only in the orphaned `.test` scenarios. **Rule: resolve
+    Warewolf dependencies by root `<Service ID=…>`, never by filename or by `ServiceName` label.**
+  - **Why the mislabelled call site is harmless.** `ProfilerMain.bite` references
+    `ba49122d-…` three times — twice as `ServiceName="GetTrackingPeriod"`, once as
+    `ServiceName="GetMandateProfiles"`. Nested sub-workflow resolution goes through
+    `LightweightEsbChannel.cs:70-71` → `WorkflowResourceCache.Resolve(baseDir, resourceId,
+    serviceName)`, which matches **ResourceId first** and only falls back to name
+    (`WorkflowResourceCache.cs:88-94`); its index is built by scanning `*.bite` recursively and
+    reading each root `<Service ID=…>` (`WorkflowResourceCache.cs:139`). All three call sites carry
+    the correct GUID, so all three resolve. The stale `GetMandateProfiles` label is cosmetic and is
+    never consulted.
+  - **Proper dependency closure now run (this is what should have been done first).** Rather than
+    matching names, every `ResourceID`/`SourceId` referenced by every staged `.bite` was diffed
+    against every root ID present. That found **six** genuinely unresolved references — including
+    two nobody had spotted — all of which existed in the source tree and have now been copied in:
+    `usp_GetMandateProfilesDatesForDRIs` (`f53490a8-…`) and
+    `usp_GetMandateProfilesDatesForDRIsInitials` (`3bc6a058-…`, the Initial-path proc), both called
+    by `GetTrackingPeriod.bite`; `usp_ApplyRelatedMandatesScoring` (`4ffd2d05-…`) and
+    `usp_ScoreMandateCollectionDates` (`f4d03998-…`), both called by `ScoreMandateCollectionDates.bite`;
+    `GenerateHuntingStrategy` (`3cd1585f-…`) and `usp_CheckIfHasRecommendationType` (`826e1bf1-…`),
+    both called by `HuntingStrategy.bite`. **Closure is now clean: 20 resources staged, all 19
+    referenced IDs resolve.** No workflow needs reconstructing, and no dependency is outstanding.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a
