@@ -1,0 +1,22 @@
+
+<Source ID="2d79c4f6-a64f-40ea-902b-94b2c84b2199" Name="ProfilerDBSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="WFAES::kv7FFWMm62Fv8gK1ejFZ9UevL0MGovPD2ROUkkd4N4GSuGS45YaLT9HxR6LxEXooyK7aApLydwuGB67Zo5lbtYpG9ZUXLYwOZh1qofWTA+HR4/e4wsfRyEEWo7IdHOG3rmWN1BctgjkQPwfjMtWE3uacLWKxdvwJ2ocL9QBZqyNxWxhb+O1ghR3o8Bq70G2MVP0SZm1FeK4l47oMiS08bu9Po28v6Sq0f+7HAYyfn2g+k4zhih/J50cI6k3UuNKX3u4qrBdbOQNdJFpfaSajFaJUMOeColkF7TnxFFp/unSX6woFrM1chDJ8rp5CYm3I4MGx" ServerVersion="0.0.0.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55">
+  <DisplayName>ProfilerDBSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2020-07-10T16:56:11.1967838+05:30" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="2" ResourceId="2d79c4f6-a64f-40ea-902b-94b2c84b2199" VersionId="e370eff6-52b7-4f6f-9960-d23fc3b19231" />
+</Source>
