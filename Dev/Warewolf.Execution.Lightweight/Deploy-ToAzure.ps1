@@ -129,7 +129,8 @@ if (Test-Path $SecureConfigPath) {
     Write-Warning "No secure.config found — the function app will DENY every request with HTTP 503 until a policy is supplied."
     Write-Host "  To enforce authorization: copy your secure.config next to this script and redeploy,"
     Write-Host "  OR set the WAREWOLF_SECURE_CONFIG app setting to a mounted file path."
-    Write-Host "  For open-access (dev/test ONLY): set the BYPASS_SECURE_CONFIG=true app setting."
+    Write-Host "  For open-access (dev/test ONLY): set app setting WAREWOLF_SECURITY_FLAGS to the"
+    Write-Host "  strict JSON {\"bypassSecureConfig\":true} (WOLF-8516 replaced BYPASS_SECURE_CONFIG)."
 }
 
 # Validate resources folder

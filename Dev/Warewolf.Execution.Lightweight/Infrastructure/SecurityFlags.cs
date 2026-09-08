@@ -56,9 +56,23 @@ public sealed class SecurityFlags
         }
         catch (JsonException ex)
         {
-            Dev2Logger.Warn(
-                $"SecurityFlags failed to parse {EnvVar} — treating all flags as false " +
-                $"(safe default). ExceptionType={ex.GetType().Name}",
+            // Logged at Error, and WITH the offending value: this degradation is silent from the
+            // caller's point of view but its blast radius is total. All flags falling back to
+            // false re-enables policy enforcement, so WorkflowAuthPolicyLoader returns
+            // ConfigMissingDeny and EVERY workflow request 503s with "config_missing".
+            // WOLF-8512: a mangled value ({bypassSecureConfig:true} — unquoted property name, the
+            // result of az.cmd on a Windows agent stripping the inner double quotes) did exactly
+            // that to WarewolfServer-UAT and cost a full 1000-message load test, because the only
+            // trace was a Warn that omitted the value and so named no cause. The value is three
+            // booleans by contract, never a secret, so echoing it back is safe and is the single
+            // most useful thing this log line can carry.
+            Dev2Logger.Error(
+                $"SecurityFlags could not parse {EnvVar} — ALL security flags are being treated " +
+                $"as false (safe default). If bypassSecureConfig was intended to be true, every " +
+                $"workflow request will now fail with 503 config_missing until this is corrected. " +
+                $"Offending value: '{raw}'. Expected strict JSON, e.g. " +
+                $"{{\"bypassSecureConfig\":true}} — note the quoted property name.",
+                ex,
                 "SecurityFlags-FromEnvironment");
             return AllFalse;
         }

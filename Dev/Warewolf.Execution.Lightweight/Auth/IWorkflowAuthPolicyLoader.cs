@@ -14,7 +14,7 @@ namespace Warewolf.Execution.Lightweight.Auth;
 ///
 /// <para>
 /// <b>secure.config is mandatory.</b>  When the config is absent or contains zero
-/// permission entries and <c>BYPASS_SECURE_CONFIG</c> is not <c>true</c>,
+/// permission entries and <c>bypassSecureConfig</c> (WAREWOLF_SECURITY_FLAGS) is not <c>true</c>,
 /// <see cref="GetPolicy"/> returns <see cref="PolicyLookupResult.ConfigMissing"/>
 /// and every request is denied with 503 Service Unavailable.
 /// </para>
@@ -57,7 +57,7 @@ public interface IWorkflowAuthPolicyLoader
     ///
     /// <list type="bullet">
     ///   <item><see cref="PolicyLookupResult.IsBypass"/> — config not effective,
-    ///         <c>BYPASS_SECURE_CONFIG=true</c> set; middleware allows open-access.</item>
+    ///         <c>bypassSecureConfig=true in the WAREWOLF_SECURITY_FLAGS JSON app setting</c>; middleware allows open-access.</item>
     ///   <item><see cref="PolicyLookupResult.IsConfigMissing"/> — config not effective,
     ///         bypass not set; middleware returns 503.</item>
     ///   <item><see cref="PolicyLookupResult.HasPolicyScope"/> with non-null

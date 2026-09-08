@@ -25,7 +25,7 @@ public enum PolicyMatchOutcome
     Forbidden,
 
     /// <summary>
-    /// <c>BYPASS_SECURE_CONFIG=true</c> is set and <c>secure.config</c> is not
+    /// <c>bypassSecureConfig=true in the WAREWOLF_SECURITY_FLAGS JSON app setting</c> is set and <c>secure.config</c> is not
     /// effective (absent or blank).  The middleware treats this as open-access
     /// and passes the request through with a warning log.
     /// </summary>
@@ -33,7 +33,7 @@ public enum PolicyMatchOutcome
 
     /// <summary>
     /// <c>secure.config</c> is absent or contains zero permission entries AND
-    /// <c>BYPASS_SECURE_CONFIG</c> is not explicitly set to <c>true</c>.
+    /// <c>bypassSecureConfig</c> (WAREWOLF_SECURITY_FLAGS) is not explicitly set to <c>true</c>.
     /// This is a deployment error — return 503 Service Unavailable so that
     /// operators are alerted rather than silently granting or denying access.
     /// </summary>
@@ -71,7 +71,7 @@ public sealed record PolicyMatchResult(
         new(PolicyMatchOutcome.Forbidden, reason, matched);
 
     /// <summary>
-    /// Shorthand — <c>BYPASS_SECURE_CONFIG=true</c> is active; config is not effective.
+    /// Shorthand — <c>bypassSecureConfig=true in the WAREWOLF_SECURITY_FLAGS JSON app setting</c> is active; config is not effective.
     /// Middleware passes request through in open-access mode with a warning log.
     /// </summary>
     public static PolicyMatchResult NoPolicy() => new(PolicyMatchOutcome.NoPolicyFound);

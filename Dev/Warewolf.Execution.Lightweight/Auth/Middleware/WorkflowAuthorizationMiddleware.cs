@@ -181,10 +181,12 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 return;
 
             case PolicyMatchOutcome.NoPolicyFound:
-                // BYPASS_SECURE_CONFIG=true and config not effective — open-access mode.
+                // bypassSecureConfig=true (WAREWOLF_SECURITY_FLAGS) and config not effective
+                // — open-access mode.
                 // Operator has explicitly opted in; log a prominent warning.
                 _logger.LogDebug(
-                    "OPEN-ACCESS MODE: secure.config not effective and BYPASS_SECURE_CONFIG=true. " +
+                    "OPEN-ACCESS MODE: secure.config not effective and " +
+                    "WAREWOLF_SECURITY_FLAGS bypassSecureConfig=true. " +
                     "Allowing workflow '{Workflow}' without policy enforcement. " +
                     "This setting must NOT be used in production.",
                     workflowName);
@@ -196,7 +198,10 @@ public sealed class WorkflowAuthorizationMiddleware : IFunctionsWorkerMiddleware
                 _logger.LogError(
                     "DEPLOYMENT ERROR: secure.config is absent or contains no permission entries. " +
                     "Returning 503 for workflow '{Workflow}' requested by '{Caller}'. " +
-                    "Deploy a valid secure.config or set BYPASS_SECURE_CONFIG=true to enable open-access mode.",
+                    "Deploy a valid secure.config, or set the WAREWOLF_SECURITY_FLAGS app setting to " +
+                    "the strict JSON {{\"bypassSecureConfig\":true}} to enable open-access mode " +
+                    "(WOLF-8516 merged the old BYPASS_SECURE_CONFIG variable into that setting; " +
+                    "setting BYPASS_SECURE_CONFIG alone now has no effect).",
                     workflowName, principal.CallerIdentity);
 
                 _auditLogger.LogAuthOutcome(

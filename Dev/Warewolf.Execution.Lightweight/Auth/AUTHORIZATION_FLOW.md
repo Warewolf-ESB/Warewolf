@@ -93,11 +93,20 @@ Invoke(context)
        ConfigMissingDeny → 503 Service Unavailable + error log
 ```
 
-### BYPASS_SECURE_CONFIG mode
+### bypassSecureConfig mode
 
-When the environment variable `BYPASS_SECURE_CONFIG=true` is set, the loader returns
-`PolicyLookupResult.Bypass()` and the middleware calls `next()` unconditionally.
+When `bypassSecureConfig` is `true` in the `WAREWOLF_SECURITY_FLAGS` JSON app setting, the loader
+returns `PolicyLookupResult.Bypass()` and the middleware calls `next()` unconditionally.
 **This mode is for development only and must never be set in production.**
+
+> **WOLF-8516** replaced the standalone `BYPASS_SECURE_CONFIG` variable with this JSON setting.
+> Setting `BYPASS_SECURE_CONFIG` on its own now has **no effect** — nothing reads it.
+>
+> The value must be **strict JSON with the property name quoted**:
+> `{"bypassSecureConfig":true}`. `SecurityFlags.FromEnvironment()` treats an unparseable value as
+> **all flags false**, which re-enables enforcement and makes every request 503 `config_missing`.
+> Beware `az ... --settings 'K={"a":true}'` on a Windows agent: `az.cmd` strips the inner quotes
+> and stores `{a:true}`. Use `--settings @file.json` and read the value back to verify (WOLF-8512).
 
 ---
 
@@ -137,7 +146,7 @@ When the environment variable `BYPASS_SECURE_CONFIG=true` is set, the loader ret
 
 | State | Cause | `GetPolicy` returns |
 |---|---|---|
-| `BYPASS_SECURE_CONFIG=true` | Dev override | `PolicyLookupResult.Bypass()` |
+| `WAREWOLF_SECURITY_FLAGS` = `{"bypassSecureConfig":true}` | Dev override | `PolicyLookupResult.Bypass()` |
 | File missing / blank | Deployment error | `PolicyLookupResult.ConfigMissing()` |
 | Loaded, workflow has resource entries | Normal | `PolicyLookupResult.FromPolicy(resourcePolicy)` |
 | Loaded, no resource entries, global entries exist | Fallback | `PolicyLookupResult.FromPolicy(globalPolicy)` |
@@ -263,7 +272,6 @@ WorkflowAuthorizationMiddleware
 | Variable | Purpose | Default |
 |---|---|---|
 | `WAREWOLF_SECURE_CONFIG` | Override path to `secure.config` | `<AppContext.BaseDirectory>/secure.config` |
-| `BYPASS_SECURE_CONFIG` | Set to `true` to skip all policy checks (dev only) | *(not set)* |
-| `WAREWOLF_SUPER_ADMIN_ENABLED` | Set to `true` to enable super-admin bypass for roles with `Administrator` flag | *(not set)* |
+| `WAREWOLF_SECURITY_FLAGS` | Strict JSON; `bypassSecureConfig` skips all policy checks (dev only), `superAdminEnabled` enables super-admin bypass for roles with the `Administrator` flag, `skipFailureToRetrieveSecret` tolerates secret-retrieval failure. Unparseable ⇒ **all false**. Replaces `BYPASS_SECURE_CONFIG` / `WAREWOLF_SUPER_ADMIN_ENABLED` / `SkipFailureToRetrieveSecret` (WOLF-8516). | *(not set — all flags false)* |
 | `WAREWOLF_ENTRA_TENANT_ID` | Restrict token acceptance to this Entra tenant | *(not set — any tenant accepted)* |
 | `WAREWOLF_ENTRA_AUDIENCE` | Required `aud` claim value in Entra tokens | *(not set — any audience accepted)* |

@@ -14,7 +14,7 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 /// <list type="bullet">
 ///   <item>
 ///     <see cref="Bypass"/> — <c>secure.config</c> is not effective (absent or blank)
-///     AND <c>BYPASS_SECURE_CONFIG=true</c> is explicitly set.
+///     AND <c>bypassSecureConfig=true in the WAREWOLF_SECURITY_FLAGS JSON app setting</c> is explicitly set.
 ///     The middleware allows the request through in open-access mode with a warning log.
 ///   </item>
 ///   <item>
@@ -52,7 +52,7 @@ public sealed class PolicyLookupResult
 
     /// <summary>
     /// <c>true</c> when <c>secure.config</c> is not effective and
-    /// <c>BYPASS_SECURE_CONFIG=true</c> is set — open-access mode.
+    /// <c>bypassSecureConfig=true in the WAREWOLF_SECURITY_FLAGS JSON app setting</c> is set — open-access mode.
     /// </summary>
     public bool IsBypass => Kind == PolicyLookupKind.Bypass;
 
