@@ -4,10 +4,10 @@
     (mirrors the convention already used by Configure-RabbitMqShovel.Tests.ps1 /
     Deploy-WwExecutionEngine.Tests.ps1 / Invoke-WwQueueLoadTest.Tests.ps1).
 
-    Only Get-WwJobsDbVerdict is covered here: the rest of the script is a live-infra
-    integration harness (RabbitMQ + Shovel + Service Bus + the real engine), proven by
-    actually running it, not by Pester — same as the script had no Pester coverage at all
-    before this file.
+    Only the pure helpers are covered here (Get-WwJobsDbVerdict, Get-WwCorrelationGuidStem):
+    the rest of the script is a live-infra integration harness (RabbitMQ + Shovel + Service Bus
+    + the real engine), proven by actually running it, not by Pester — same as the script had
+    no Pester coverage at all before this file.
 #>
 
 Describe 'Test-ShovelBridgeE2E — Get-WwJobsDbVerdict (pure, no DB)' {
@@ -86,5 +86,72 @@ Describe 'Test-ShovelBridgeE2E — Get-WwJobsDbVerdict (pure, no DB)' {
         $row     = New-SummaryRow -SucceededTotal 1000
         $verdict = Get-WwJobsDbVerdict -SummaryRow $row -ExpectedMessageCount 1000
         @($verdict.MissingSeqNums).Count | Should -Be 0
+    }
+}
+
+
+Describe 'Test-ShovelBridgeE2E — Get-WwCorrelationGuidStem (pure, no DB)' {
+
+    BeforeAll {
+        $script:TargetScript = Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1'
+        . $script:TargetScript -LoadFunctionsOnly
+    }
+
+    <#
+        WHY THIS MATTERS MORE THAN IT LOOKS (WOLF-8512)
+
+        Phase 4c in ProfilerRecommendation mode rebuilds the MandateIds the E2E harness stamped
+        onto each published message, then reconciles them against Profiler.ProfilerRecommendation.
+        The harness does the stamping in C# (WorkflowInputTemplate.ToCorrelationGuid); this script
+        reproduces it in PowerShell.
+
+        A drift between those two implementations does NOT throw. It silently produces MandateIds
+        that match nothing, and Phase 4c then reports every single message as missing — a green
+        run indistinguishable from total data loss. The parity test below pins the exact literal
+        both sides must produce for the same input.
+    #>
+
+    It 'takes 26 hex characters of the prefix and formats them as the leading part of a GUID' {
+        Get-WwCorrelationGuidStem -CorrelationIdPrefix '648ddd78686d49c792c19bbf0806a1e6-000042' |
+            Should -Be '648ddd78-686d-49c7-92c1-9bbf08'
+    }
+
+    It 'produces, with the sequence appended, the SAME GUID as the C# harness (parity pin)' {
+        # Must equal WorkflowInputTemplate.ToCorrelationGuid('648ddd78686d49c792c19bbf0806a1e6-000042'),
+        # which is asserted against this same literal in WorkflowInputTemplateTests.cs
+        # (ToCorrelationGuid_TakesTwentySixHexOfPrefixThenTheSixDigitSequence).
+        $stem = Get-WwCorrelationGuidStem -CorrelationIdPrefix '648ddd78686d49c792c19bbf0806a1e6-000042'
+        ($stem + '000042') | Should -Be '648ddd78-686d-49c7-92c1-9bbf08000042'
+    }
+
+    It 'yields a stem that forms a parseable [guid] once the 6-digit sequence is appended' {
+        $stem = Get-WwCorrelationGuidStem -CorrelationIdPrefix '648ddd78686d49c792c19bbf0806a1e6-000042'
+        foreach ($seq in @('000000', '000042', '000999')) {
+            [guid]::TryParse(($stem + $seq), [ref]([guid]::Empty)) | Should -BeTrue
+        }
+    }
+
+    It 'is stable regardless of which message sequence the correlationId carries' {
+        # The stem is per-RUN, so every message in a run must derive the same one.
+        $a = Get-WwCorrelationGuidStem -CorrelationIdPrefix '648ddd78686d49c792c19bbf0806a1e6-000000'
+        $b = Get-WwCorrelationGuidStem -CorrelationIdPrefix '648ddd78686d49c792c19bbf0806a1e6-000999'
+        $a | Should -Be $b
+    }
+
+    It 'gives different runs different stems' {
+        # Run-scoping is a correctness requirement: usp_InsertProfilerRecommendation is an upsert
+        # keyed on (MandateId, ForPaymentCycle), so a repeated stem would make every later run
+        # return AlreadyExists=1, insert nothing, and look like total message loss.
+        $runOne = Get-WwCorrelationGuidStem -CorrelationIdPrefix '648ddd78686d49c792c19bbf0806a1e6-000042'
+        $runTwo = Get-WwCorrelationGuidStem -CorrelationIdPrefix '0f4f49d148c8400ab1c2d3e4f5a6b7c8-000042'
+        $runOne | Should -Not -Be $runTwo
+    }
+
+    It 'pads a short or non-hex prefix rather than emitting a malformed GUID' {
+        # The value is interpolated into a SQL uniqueidentifier literal, so it must always parse.
+        foreach ($prefix in @('short-000001', 'zzzzzzzzzzzzzzzzzzzzzzzz-000001', '-000001')) {
+            $stem = Get-WwCorrelationGuidStem -CorrelationIdPrefix $prefix
+            [guid]::TryParse(($stem + '000001'), [ref]([guid]::Empty)) | Should -BeTrue -Because "prefix '$prefix' must still yield a valid GUID"
+        }
     }
 }

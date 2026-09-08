@@ -225,6 +225,20 @@
     which usp_jobs1_Summary's own aggregation cannot see since it only groups rows that already
     exist). Skipped with a note (not a hard failure) when omitted, same as every other opt-in
     switch in this script.
+.PARAMETER DbVerificationMode
+    Which schema Phase 4c reconciles against. Only used when -JobsDbConnectionString is supplied.
+
+    'Jobs1' (default) — dbo.jobs1, written by RabbitProcess.bite via usp_jobs1_LogStart/
+    _LogProcessing/_LogFinished. Reconciles per message on the unique MessageContent
+    ('<prefix><correlationId>'), using -JobsDbMessageContentPrefix.
+
+    'ProfilerRecommendation' — Profiler.ProfilerRecommendation, written by profiler/ProfilerMain
+    via Profiler.usp_InsertProfilerRecommendation (see Resources/profiler/Provision-ProfilerSchema.sql).
+    ProfilerMain writes nothing to dbo.jobs1, so the default mode would report
+    'usp_jobs1_Summary returned no rows' for every run. Reconciles per message on MandateId,
+    which the pipeline templates as '{correlationGuid}' so each message carries a distinct,
+    run-scoped uniqueidentifier — see WorkflowInputTemplate.cs.
+
 .PARAMETER JobsDbMessageContentPrefix
     Only used when -JobsDbConnectionString is supplied. The literal prefix RabbitProcess's
     MessageContent carries ahead of the '-{correlationId}' suffix - see -WorkflowInputsJson's
@@ -310,6 +324,8 @@ param(
 
     # ── Database verification (opt-in) ──────────────────────────────────────
     [securestring] $JobsDbConnectionString,
+    [ValidateSet('Jobs1','ProfilerRecommendation')]
+    [string] $DbVerificationMode = 'Jobs1',
     [string] $JobsDbMessageContentPrefix = 'loadtest-',
     [string] $JobsDbStuckThresholdMinutes = '15',
 
@@ -468,6 +484,39 @@ function Test-ServiceBusQueueExists {
         Write-Note "Could not verify destination queue existence via Service Bus management API: $($_.Exception.Message)$hint"
         return $null
     }
+}
+
+function Get-WwCorrelationGuidStem {
+    <#
+        Derives the constant 30-character GUID "stem" shared by every MandateId in a run —
+        i.e. a correlationId prefix reformatted as the leading part of a uniqueidentifier,
+        ready for a 6-digit message sequence to be appended.
+
+        This MUST stay byte-for-byte compatible with
+        WorkflowInputTemplate.ToCorrelationGuid() in the E2E harness
+        (Dev/Warewolf.Execution.ServiceBusWorker.E2EHarness/WorkflowInputTemplate.cs), which is
+        what actually stamps MandateId onto each published message. The harness takes 26 hex
+        characters of the correlationId prefix and appends the 6-digit sequence, dashed
+        8-4-4-4-12; this reproduces the first 30 characters of that (through the 6 hex chars
+        of the final group), leaving the caller to append the sequence.
+
+        A drift between the two would not throw — it would silently produce MandateIds that
+        match nothing, and Phase 4c would report every message as missing. Pure function, no
+        DB access, so both sides are pinned by unit tests (see Test-ShovelBridgeE2E.Tests.ps1).
+    #>
+    param(
+        [Parameter(Mandatory)] [AllowEmptyString()] [string] $CorrelationIdPrefix
+    )
+
+    $hex = ($CorrelationIdPrefix -replace '[^0-9a-fA-F]', '')
+    if ($hex.Length -lt 26) {
+        $hex = $hex.PadRight(26, '0')
+    }
+    $head26 = $hex.Substring(0, 26)
+
+    return '{0}-{1}-{2}-{3}-{4}' -f $head26.Substring(0, 8),  $head26.Substring(8, 4),
+                                    $head26.Substring(12, 4), $head26.Substring(16, 4),
+                                    $head26.Substring(20, 6)
 }
 
 function Get-WwJobsDbVerdict {
@@ -1117,7 +1166,11 @@ try {
     # docs/ShovelBridge-Architecture.md's 24-unexplained-HttpError and load-balanced-instance-404
     # entries). Always attempted when supplied (pass or fail), same as Phase 4b above.
     if ($JobsDbConnectionString) {
-        Write-Phase 'Phase 4c  Database verification (dbo.jobs1)'
+        Write-Phase $(if ($DbVerificationMode -eq 'ProfilerRecommendation') {
+            'Phase 4c  Database verification (Profiler.ProfilerRecommendation)'
+        } else {
+            'Phase 4c  Database verification (dbo.jobs1)'
+        })
         try {
             $loadTestScript = Join-Path $PSScriptRoot '..\..\Invoke-WwQueueLoadTest.ps1'
             if (-not (Test-Path -LiteralPath $loadTestScript)) {
@@ -1129,6 +1182,89 @@ try {
 
             $jobsDbConnStringPlain = ConvertFrom-SecureStringPlain $JobsDbConnectionString
             $fromUtcSql            = $runStartUtc.ToString('yyyy-MM-ddTHH:mm:ss.fffZ')
+
+            if ($DbVerificationMode -eq 'ProfilerRecommendation') {
+            # ── ProfilerMain: reconcile Profiler.ProfilerRecommendation per message ──────
+            # ProfilerMain writes NO dbo.jobs1 rows at all, so the Jobs1 mode below would
+            # report "usp_jobs1_Summary returned no rows" for every run. Its per-message key
+            # is MandateId, which the pipeline templates as {correlationGuid} so each message
+            # carries a distinct, run-scoped uniqueidentifier.
+            #
+            # The GUID shape MUST match WorkflowInputTemplate.ToCorrelationGuid() in the E2E
+            # harness: 26 hex characters of this run's correlationId prefix followed by the
+            # 6-digit message sequence, dashed 8-4-4-4-12. Both sides are pinned by unit
+            # tests — if you change one, change the other.
+            #
+            # Run-scoping is load-bearing, not cosmetic: Profiler.usp_InsertProfilerRecommendation
+            # is an upsert keyed on (MandateId, ForPaymentCycle), so a constant MandateId would
+            # return AlreadyExists=1 on every later run, insert nothing, and make a healthy run
+            # look like $MessageCount lost messages.
+            $guidStem    = Get-WwCorrelationGuidStem -CorrelationIdPrefix $CorrelationId
+            $escapedStem = $guidStem.Replace("'", "''")
+
+            Write-Step "Reconciling Profiler.ProfilerRecommendation for MandateId '${guidStem}<NNNNNN>' (expecting $MessageCount)"
+            $profilerRows = Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query @"
+;WITH Nums AS (
+    SELECT TOP ($MessageCount) ROW_NUMBER() OVER (ORDER BY (SELECT NULL)) - 1 AS SeqNum
+    FROM sys.all_objects a CROSS JOIN sys.all_objects b
+),
+Expected AS (
+    SELECT SeqNum,
+           CONVERT(uniqueidentifier, '$escapedStem' + RIGHT('00000' + CAST(SeqNum AS varchar(6)), 6)) AS MandateId
+    FROM Nums
+),
+Recs AS (
+    SELECT MandateId, COUNT(*) AS RowsForMandate
+    FROM Profiler.ProfilerRecommendation WITH (NOLOCK)
+    GROUP BY MandateId
+),
+Scores AS (
+    SELECT MandateId, COUNT(*) AS ScoreRows
+    FROM Profiler.MandateScores WITH (NOLOCK)
+    GROUP BY MandateId
+)
+SELECT e.SeqNum                        AS SeqNum,
+       ISNULL(r.RowsForMandate, 0)     AS RowsForMandate,
+       ISNULL(sc.ScoreRows, 0)         AS ScoreRows
+FROM Expected e
+LEFT JOIN Recs   r  ON r.MandateId  = e.MandateId
+LEFT JOIN Scores sc ON sc.MandateId = e.MandateId
+ORDER BY e.SeqNum;
+"@
+            if (-not $profilerRows -or @($profilerRows).Count -eq 0) {
+                throw 'Profiler.ProfilerRecommendation reconciliation query returned no rows.'
+            }
+
+            $allRows      = @($profilerRows)
+            $missingSeq   = @($allRows | Where-Object { [int]$_.RowsForMandate -eq 0 } | ForEach-Object { [int]$_.SeqNum })
+            $duplicateSeq = @($allRows | Where-Object { [int]$_.RowsForMandate -gt 1 } | ForEach-Object { [int]$_.SeqNum })
+            $writtenCount = $MessageCount - $missingSeq.Count
+            $scoredCount  = @($allRows | Where-Object { [int]$_.ScoreRows -gt 0 }).Count
+
+            Write-Host "  Profiler.ProfilerRecommendation reconciliation (expected $MessageCount):" -ForegroundColor White
+            Write-Host "    Recommendation written             : $writtenCount" -ForegroundColor White
+            Write-Host "    Missing (no row for that MandateId) : $($missingSeq.Count)" -ForegroundColor White
+            Write-Host "    Duplicate rows for one MandateId    : $($duplicateSeq.Count)" -ForegroundColor White
+            Write-Host "    Also scored (MandateScores rows)    : $scoredCount" -ForegroundColor White
+
+            if ($missingSeq.Count -eq 0 -and $duplicateSeq.Count -eq 0) {
+                Write-Ok "Profiler.ProfilerRecommendation confirms all $MessageCount messages produced exactly one recommendation."
+            } else {
+                if ($missingSeq.Count -gt 0) {
+                    $shown = ($missingSeq | Select-Object -First 20) -join ', '
+                    $more  = if ($missingSeq.Count -gt 20) { " (+$($missingSeq.Count - 20) more)" } else { '' }
+                    Write-Note "Sequence numbers with no recommendation (never reached ProfilerMain's own DB activity): $shown$more"
+                }
+                if ($duplicateSeq.Count -gt 0) {
+                    $shownDup = ($duplicateSeq | Select-Object -First 20) -join ', '
+                    Write-Note "Sequence numbers with MORE THAN ONE recommendation row: $shownDup — usp_InsertProfilerRecommendation is an upsert keyed on (MandateId, ForPaymentCycle), so this indicates a real defect, not contention."
+                }
+                if ($scoredCount -lt $writtenCount) {
+                    Write-Note "$($writtenCount - $scoredCount) mandate(s) got a recommendation but no Profiler.MandateScores row — the scoring leg did not complete for them."
+                }
+                Write-Note "Profiler.ProfilerRecommendation did NOT confirm clean execution of all $MessageCount messages — see detail above."
+            }
+            } else {
             $escapedPrefix         = $JobsDbMessageContentPrefix.Replace("'", "''")
 
             Write-Step "EXEC dbo.usp_jobs1_Summary (scoped to this run, FromUtc=$fromUtcSql)"
@@ -1197,6 +1333,7 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
                     $notFinishedRows | Format-Table -AutoSize | Out-String -Width 160 | Write-Host
                 }
                 Write-Note "dbo.jobs1 did NOT confirm clean delivery of all $($verdict.Expected) messages — see detail above."
+            }
             }
         } catch {
             Write-Note "Phase 4c database verification itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"

@@ -1880,6 +1880,61 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     both called by `HuntingStrategy.bite`. **Closure is now clean: 20 resources staged, all 19
     referenced IDs resolve.** No workflow needs reconstructing, and no dependency is outstanding.
 
+- **2026-09-08 — Phase 4c is now ProfilerMain-aware (`-DbVerificationMode`), and the `Profiler`
+  schema is source-controlled.** Closes the item left open by the entry above.
+  - **`-DbVerificationMode`** (`Test-ShovelBridgeE2E.ps1`) selects which schema Phase 4c
+    reconciles. `Jobs1` (default) is the unchanged RabbitProcess path — `usp_jobs1_Summary` plus
+    the `MessageContent` anti-join. `ProfilerRecommendation` is the new ProfilerMain path.
+    `pipeline-LOADTEST.yml` passes the latter. Nothing about the RabbitProcess path changed, so a
+    local run against `rabbit/RabbitProcess` behaves exactly as before.
+  - **The hard part was not the query, it was getting a per-message key into the database.**
+    RabbitProcess reconciles 1:1 because every message carries a unique `MessageContent`.
+    ProfilerMain's 1000 messages were byte-identical, so nothing distinguished them in the DB —
+    a run where 3 of 1000 executed was indistinguishable from a clean one. The only usable
+    column is `MandateId`, and `{correlationId}` cannot go in it: it is 39 characters
+    (`<32-hex>-<6-digit>`) and will not parse as a `uniqueidentifier`. That is precisely why the
+    pipeline comment used to say interpolation was "deliberately not" done here.
+  - **`{correlationGuid}`** (`WorkflowInputTemplate.cs`) is the new placeholder: the message's own
+    correlationId reformatted as a valid GUID — 26 hex characters of the run prefix followed by
+    the 6-digit message sequence, dashed 8-4-4-4-12. `MandateId` in `VerifyWorkflowInputsJson`
+    now uses it.
+    - Per-**message** uniqueness is what restores the 1:1 anti-join.
+    - Per-**run** uniqueness is a correctness requirement, not tidiness:
+      `Profiler.usp_InsertProfilerRecommendation` is an upsert keyed on
+      `(MandateId, ForPaymentCycle)`, so a constant MandateId would return `AlreadyExists=1` on
+      every later run, insert nothing, and make a healthy run look like 1000 lost messages.
+    - It also removes the single-hot-row contention the pipeline comment previously warned about:
+      the run now exercises 1000 independent mandates rather than serialising on one.
+  - **Two implementations of one contract.** The harness stamps MandateId in C#; Phase 4c rebuilds
+    the same GUIDs in PowerShell (`Get-WwCorrelationGuidStem`, extracted as a pure helper for this
+    reason). A drift between them would not throw — it would produce MandateIds matching nothing
+    and report every message missing. Both sides assert the same literal
+    (`648ddd78686d49c792c19bbf0806a1e6-000042` → `648ddd78-686d-49c7-92c1-9bbf08000042`);
+    verified by injecting a 26→24 drift, which failed the parity test, then reverting.
+  - **What Phase 4c reports now**: per-sequence `Recommendation written` / `Missing` /
+    `Duplicate rows for one MandateId` / `Also scored (MandateScores rows)`. Duplicates are called
+    out as a real defect rather than contention, because the insert is an upsert. A mandate with a
+    recommendation but no `MandateScores` row is flagged separately — the scoring leg did not
+    finish for it.
+  - **Blocker found and closed while doing this: the tables were empty.** The earlier entry
+    provisioned schema but no data, and ProfilerMain *reads* `ProfileDates`/`Profiles`/
+    `DebitRunIds`/`GrantDates`. With those empty, `usp_GetMandateProfilesDatesForDRIs` returns
+    nothing and the insert fails its `ProfileDateId` / `RecommendationTypes` foreign keys — so
+    *any* Phase 4c design would have verified against zero rows.
+    **`Resources/profiler/Provision-ProfilerSchema.sql`** (new, companion to
+    `Resources/rabbit/Provision-ShovelBridgeSchema.sql`) now carries schema **and** reference data:
+    10 tables, 11 procedures, and the upstream project's own `MERGE` seed scripts, in its
+    `Script.PostDeployment.sql` order. Idempotent — re-running changes nothing. Applied to
+    `WarewolfDevOpsTestDb` and verified: 19,664 `ProfileDates` (63 for cycle 202402, including
+    `DebitRunId` 22, matching the load test's inputs), 41 `Profiles`, 44 `DebitRunIds`, 59
+    `RecommendationType`. This also closes the "external change, not in this diff" gap the earlier
+    provisioning left behind.
+  - `pipeline-LOADTEST.yml`'s profiler staging step now filters to `*.bite`, so that 1.3MB SQL
+    file is not copied into every deploy artefact.
+  - **Still unproven**: ProfilerMain has not been executed end to end. The resource closure and
+    the reconciliation contract are both pinned by tests, but only a pipeline run will show
+    whether the workflow itself completes against the seeded data.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

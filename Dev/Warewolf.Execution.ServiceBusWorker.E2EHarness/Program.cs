@@ -192,7 +192,7 @@ internal static class Program
         Console.WriteLine($"Publishing {messageCount} '{workflow}' workflow-trigger message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
         if (messageCount > 1 && !string.IsNullOrWhiteSpace(workflowInputsJson) && !WorkflowInputTemplate.HasCorrelationIdPlaceholder(workflowInputsJson))
         {
-            Console.WriteLine($"  WARNING: --workflow-inputs-json has no '{WorkflowInputTemplate.CorrelationIdPlaceholder}' placeholder, so all {messageCount} messages carry an IDENTICAL inputs map.");
+            Console.WriteLine($"  WARNING: --workflow-inputs-json has no '{WorkflowInputTemplate.CorrelationIdPlaceholder}' or '{WorkflowInputTemplate.CorrelationGuidPlaceholder}' placeholder, so all {messageCount} messages carry an IDENTICAL inputs map.");
             Console.WriteLine("           A workflow that keys off the message body (e.g. RabbitProcess -> usp_jobs1_LogStart, which takes an exclusive");
             Console.WriteLine("           applock on a hash of the content) will serialise every execution behind one lock instead of running concurrently.");
         }
@@ -481,8 +481,9 @@ internal static class Program
     {
         var vhostSegment = vhost == "/" ? "%2f" : Uri.EscapeDataString(vhost);
 
-        // Expand {correlationId} so each message in a bulk run carries a distinct inputs map -
-        // see WorkflowInputTemplate for why identical bodies serialise a load run.
+        // Expand {correlationId} / {correlationGuid} so each message in a bulk run carries a
+        // distinct inputs map - see WorkflowInputTemplate for why identical bodies serialise a
+        // load run, and why a uniqueidentifier input needs the GUID-shaped variant.
         var expandedInputsJson = WorkflowInputTemplate.Expand(workflowInputsJson, correlationId);
 
         Dictionary<string, string>? inputs = null;
