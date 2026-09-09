@@ -1176,9 +1176,15 @@ try {
             if (-not (Test-Path -LiteralPath $loadTestScript)) {
                 throw "Invoke-WwQueueLoadTest.ps1 not found at $loadTestScript (needed for its Invoke-WwSqlQuery helper)."
             }
-            # Dot-sourcing shares scope, but LoadFunctionsOnly returns before any of THAT
-            # script's own params are used for anything — safe even though none are passed here.
+            # Dot-sourcing shares scope, and that script's OWN param block declares a
+            # [Nullable[int]] $MessageCount (no default) - since it isn't passed here, PowerShell
+            # binds it to $null in this shared scope, clobbering THIS script's -MessageCount value.
+            # That silently turned every reconciliation query below into "TOP ()", which SQL
+            # Server rejects with "Incorrect syntax near ')'" (build 30636/30638). Save/restore
+            # around the call rather than trust that an unused param is harmless.
+            $savedMessageCount = $MessageCount
             . $loadTestScript -LoadFunctionsOnly
+            $MessageCount = $savedMessageCount
 
             $jobsDbConnStringPlain = ConvertFrom-SecureStringPlain $JobsDbConnectionString
             $fromUtcSql            = $runStartUtc.ToString('yyyy-MM-ddTHH:mm:ss.fffZ')

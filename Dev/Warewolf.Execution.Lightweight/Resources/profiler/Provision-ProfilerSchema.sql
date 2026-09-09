@@ -27,10 +27,16 @@
 -- Table and seed ORDER below is load-bearing (FK dependencies) and mirrors that project's own
 -- Script.PostDeployment.sql. Regenerate rather than hand-edit if the upstream project changes.
 --
--- SCOPE: the 10 tables and 11 procedures reachable from ProfilerMain's call path, plus the
+-- SCOPE: the 10 tables and 14 procedures reachable from ProfilerMain's call path, plus the
 -- reference data they read. The upstream project also ships 41 views and 45 functions for an
 -- unrelated holiday-calendar feature that none of these procedures reference; those are
 -- deliberately omitted.
+--
+-- usp_GetMandateProfilesDatesForDRIs, usp_GetMandateProfilesDatesForDRIsInitials and
+-- usp_CheckIfHasRecommendationType were added later (WOLF-8512, build 30636/30638): the initial
+-- cut of this script only covered the 11 procedures known at the time, missing three that the
+-- .bite dependency closure had already staged as workflow resources but whose SQL bodies were
+-- never carried across from the upstream project.
 --------------------------------------------------------------------------------------------
 
 IF SCHEMA_ID('Profiler') IS NULL
@@ -1045,6 +1051,312 @@ BEGIN
 		AND dri.IsDeleted = 0
 		AND profiles.IsDeleted = 0
 		AND [ms].[ProfileId] = 'FullyCovered'
+END
+GO
+
+
+-- ---------- Profiler.usp_GetMandateProfilesDatesForDRIs ----------
+-- Pulled verbatim (CREATE -> CREATE OR ALTER only) from the upstream source of truth cited
+-- above: C:/Builds/Unlimited.ProfilerServices/Database/Warewolf.ProfilerDB/Profiler/
+-- Stored Procedures/usp_GetMandateProfilesDatesForDRIs.sql (WOLF-8512 - was never carried into
+-- this script despite being in the .bite dependency closure; see
+-- docs/ShovelBridge-Architecture.md's 2026-09-08 entry, which assumed this procedure already
+-- existed and only its source tables were empty).
+CREATE OR ALTER PROCEDURE [Profiler].[usp_GetMandateProfilesDatesForDRIs] (
+	@MandateId UNIQUEIDENTIFIER
+	,@PaymentCycle INT
+	,@FromDebitRunId INT
+	,@ToDebitRunId INT
+	,@Day VARCHAR(2)
+	)
+AS
+SET NOCOUNT ON
+
+BEGIN
+	DECLARE @NextPaymentCycle INT = CONVERT(INT, FORMAT(DATEADD(MONTH, 1, CONVERT(DATE, CAST(@PaymentCycle AS CHAR(6)) + '01', 102)), 'yyyyMM'));
+	DECLARE @NextMaxGrantDate DATE
+
+	SELECT TOP 1 @NextMaxGrantDate = [CollectionDate]
+	FROM [Profiler].[ProfileDates] pd WITH (NOLOCK)
+	INNER JOIN [Profiler].[GrantDates] gd WITH (NOLOCK) ON gd.[Date] = pd.[CollectionDate] and gd.PaymentCycle = pd.PaymentCycle
+	WHERE pd.[PaymentCycle] = @NextPaymentCycle
+	ORDER BY gd.[Date] DESC
+
+	DECLARE @MaxTrackingDate DATE
+	--Fail safe if no grant days, then use @DAY if @NextMaxGrantDate is null
+	SELECT TOP 1 @MaxTrackingDate = ISNULL(@NextMaxGrantDate, pd.[CollectionDate])
+	FROM [Profiler].[ProfileDates] pd WITH (NOLOCK)
+	WHERE pd.[PaymentCycle] = @NextPaymentCycle
+		AND pd.[CollectionDate] <= DATEADD(MONTH, 1, CONVERT(DATE, CAST(@PaymentCycle AS CHAR(6)) + @Day, 102))
+	ORDER BY pd.[CollectionDate] DESC
+
+	SELECT pd.[ProfileDateId]
+		,pd.[CollectionDate]
+		,pd.[DebitRunId]
+		,pd.[PaymentCycle]
+		,pd.[ProfileId]
+		,CASE
+			WHEN ms.[Score] - (
+					SELECT MAX(ts.[Score])
+					FROM Profiler.MandateScores ts WITH (NOLOCK)
+					WHERE ts.MandateId = ms.MandateId
+						AND (
+							ts.ProfileId <> ms.ProfileId
+							OR ts.DebitRunId <> ms.DebitRunId
+							)
+					) >= 2
+				THEN ms.[Score]
+			ELSE NULL
+			END AS [Score]
+		,ms.[ScoreAdjustmentReason]
+	FROM Profiler.ProfileDates pd WITH (NOLOCK)
+	LEFT OUTER JOIN Profiler.MandateScores ms WITH (NOLOCK) ON ms.DebitRunId = pd.DebitRunId
+		AND ms.ProfileId = pd.ProfileId
+		AND ms.MandateId = @MandateId
+	WHERE pd.DebitRunId IN (
+			@FromDebitRunId
+			,@ToDebitRunId
+			)
+		AND pd.PaymentCycle = @PaymentCycle
+		AND pd.CollectionDate <= @MaxTrackingDate
+		AND pd.ProfileId NOT LIKE 'LastDay%'
+
+	UNION ALL
+	--Create End-Of-Tracking date for DRI selection
+	SELECT DISTINCT TOP 1 NULL AS [ProfileDateId]
+		,CASE WHEN DATEADD(DAY, CASE WHEN pd.DebitRunId NOT BETWEEN 25 AND 31
+							  THEN DATEDIFF(DAY,pd.CollectionDate,calcDate.MaxCollectionDate)
+								WHEN pd.DebitRunId BETWEEN 25 AND 31
+							  THEN DATEDIFF(DAY, pd.[CollectionDate], @MaxTrackingDate) END, pd.[CollectionDate]) > @MaxTrackingDate
+				THEN @MaxTrackingDate
+			ELSE DATEADD(DAY, CASE WHEN pd.DebitRunId NOT BETWEEN 25 AND 31
+						THEN DATEDIFF(DAY,pd.CollectionDate,calcDate.MaxCollectionDate)
+						WHEN pd.DebitRunId BETWEEN 25 AND 31 AND DATEDIFF(DAY, pd.[CollectionDate], @MaxTrackingDate) > 10
+						THEN DATEDIFF(DAY, pd.[CollectionDate], calcDate.MaxCollectionDate)
+						ELSE DATEDIFF(DAY, pd.[CollectionDate], @MaxTrackingDate)
+						END, pd.[CollectionDate])
+			END
+		,pd.[DebitRunId]
+		,pd.[PaymentCycle]
+		,'EndOfTracking' AS [ProfileId]
+		,NULL AS [Score]
+		,NULL AS [ScoreAdjustmentReason]
+	FROM Profiler.ProfileDates pd WITH (NOLOCK)
+	OUTER APPLY (
+    SELECT MAX(p2.CollectionDate) AS MaxCollectionDate -- return correct date check public holidays and sunday
+    FROM Profiler.ProfileDates p2 WITH (NOLOCK)
+    WHERE p2.PaymentCycle = pd.PaymentCycle
+      AND p2.CollectionDate < DATEADD(DAY, 10, pd.CollectionDate)
+	) calcDate
+	LEFT OUTER JOIN Profiler.MandateScores ms WITH (NOLOCK) ON ms.DebitRunId = pd.DebitRunId
+		AND ms.ProfileId = pd.ProfileId
+		AND ms.MandateId = @MandateId
+	WHERE pd.DebitRunId IN (
+			@FromDebitRunId
+			,@ToDebitRunId
+			)
+		AND pd.PaymentCycle = @PaymentCycle
+	ORDER BY pd.CollectionDate ASC
+END
+
+RETURN 0
+GO
+
+
+-- ---------- Profiler.usp_GetMandateProfilesDatesForDRIsInitials ----------
+-- Pulled verbatim (CREATE -> CREATE OR ALTER only) from the upstream source of truth:
+-- .../Warewolf.ProfilerDB/Profiler/Stored Procedures/usp_GetMandateProfilesDatesForDRIsInitials.sql
+-- (WOLF-8512 - this is the procedure build 30636/30638 hit SQL Error 15009 on: it was staged as
+-- a .bite workflow resource but its stored procedure body was never carried into this script).
+CREATE OR ALTER PROCEDURE [Profiler].[usp_GetMandateProfilesDatesForDRIsInitials] (
+	@MandateId UNIQUEIDENTIFIER
+	,@PaymentCycle INT
+	,@FromDebitRunId INT
+	,@ToDebitRunId INT
+	,@StandardTracking AS INT = 10
+	)
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @EarliestDate AS DATE;
+
+	SELECT @EarliestDate = MIN(pt.CollectionDate)
+	FROM Profiler.ProfileDates pt
+	WHERE pt.DebitRunId IN (
+			@FromDebitRunId
+			,@ToDebitRunId
+			)
+		AND pt.PaymentCycle = @PaymentCycle;
+
+	DECLARE @NextPaymentCycle INT = CONVERT(INT, FORMAT(DATEADD(MONTH, 1, CONVERT(DATE, CAST(@PaymentCycle AS CHAR(6)) + '01', 102)), 'yyyyMM'));
+	DECLARE @NextMaxGrantDate DATE
+
+	SELECT @NextMaxGrantDate = MAX([CollectionDate])
+	FROM [Profiler].[ProfileDates] pd WITH (NOLOCK)
+	INNER JOIN [Profiler].[GrantDates] gd WITH (NOLOCK) ON gd.[Date] = pd.[CollectionDate] and gd.PaymentCycle = pd.PaymentCycle
+	WHERE pd.[PaymentCycle] = @NextPaymentCycle;
+
+
+
+
+	WITH TrackingDates (
+		CollectionDate
+		,TrackingDays
+		,PaymentCycle
+		)
+	AS (
+		SELECT DISTINCT TOP (1) pd.CollectionDate
+			,DATEDIFF(DAY, @EarliestDate, pd.CollectionDate) + 1 AS TrackingDays
+			,pd.PaymentCycle
+		FROM Profiler.ProfileDates pd WITH (NOLOCK)
+		LEFT OUTER JOIN Profiler.MandateScores ms WITH (NOLOCK) ON ms.DebitRunId = pd.DebitRunId
+			AND ms.ProfileId = pd.ProfileId
+			AND ms.MandateId = @MandateId
+		WHERE pd.CollectionDate >= @EarliestDate
+			AND pd.CollectionDate <= ISNULL(@NextMaxGrantDate,DATEADD(MONTH, 1, CONVERT(DATE, CAST(pd.PaymentCycle AS VARCHAR) + '07', 102)))
+			AND DATEDIFF(DAY, @EarliestDate, pd.CollectionDate) + 1 <= @StandardTracking
+			AND pd.PaymentCycle = @PaymentCycle
+		ORDER BY pd.CollectionDate DESC
+		)
+	SELECT pd.[ProfileDateId]
+		,pd.[CollectionDate]
+		,pd.[DebitRunId]
+		,pd.[PaymentCycle]
+		,pd.[ProfileId]
+		,CASE
+			WHEN ms.[Score] - (
+					SELECT MAX(ts.[Score])
+					FROM Profiler.MandateScores ts WITH (NOLOCK)
+					WHERE ts.MandateId = ms.MandateId
+						AND (
+							ts.ProfileId <> ms.ProfileId
+							OR ts.DebitRunId <> ms.DebitRunId
+							)
+					) >= 2
+				THEN ms.[Score]
+			ELSE NULL
+			END AS [Score]
+		,ms.[ScoreAdjustmentReason]
+	FROM Profiler.ProfileDates pd WITH (NOLOCK)
+	LEFT OUTER JOIN Profiler.MandateScores ms WITH (NOLOCK) ON ms.DebitRunId = pd.DebitRunId
+		AND ms.ProfileId = pd.ProfileId
+		AND ms.MandateId = @MandateId
+	WHERE pd.DebitRunId IN (
+			@FromDebitRunId
+			,@ToDebitRunId
+			)
+		AND pd.PaymentCycle = @PaymentCycle
+		AND pd.CollectionDate <= ISNULL(@NextMaxGrantDate,DATEADD(MONTH, 1, CONVERT(DATE, CAST(pd.PaymentCycle AS VARCHAR) + '07', 102)))
+		AND pd.ProfileId NOT LIKE 'LastDay%'
+
+	UNION ALL
+
+	SELECT NULL AS [ProfileDateId]
+		,CollectionDate
+		,NULL AS [DebitRunId]
+		,[PaymentCycle]
+		,'EndOfTracking' AS [ProfileId]
+		,NULL AS [Score]
+		,NULL AS [ScoreAdjustmentReason]
+	FROM TrackingDates
+END
+GO
+
+
+-- ---------- Profiler.usp_CheckIfHasRecommendationType ----------
+-- Pulled verbatim (CREATE -> CREATE OR ALTER only) from the upstream source of truth:
+-- .../Warewolf.ProfilerDB/Profiler/Stored Procedures/usp_CheckIfHasRecommendationType.sql
+-- (WOLF-8512 - called by HuntingStrategy.bite; also never carried into this script).
+CREATE OR ALTER PROCEDURE [Profiler].[usp_CheckIfHasRecommendationType]
+	@MandateId UNIQUEIDENTIFIER
+	,@RecommendationTypes VARCHAR(MAX)
+	,@PaymentCycleCountlimit INT = 24
+AS
+BEGIN
+	SET NOCOUNT ON
+
+	IF @PaymentCycleCountlimit IS NULL
+	BEGIN
+		SET @PaymentCycleCountlimit = 24
+	END
+
+	DECLARE @tblRecommendationTypes TABLE (RecommendationTypes VARCHAR(200))
+	DECLARE @tblExistingRecomendationTypes TABLE (
+		PaymentCycle INT
+		,RecommendationType VARCHAR(200)
+		)
+	DECLARE @tblProfilerRecommendations TABLE (
+		ProfilerRecommendationId INT
+		,ForPaymentCycle INT
+		,RecommendationTypes VARCHAR(200)
+		)
+
+	INSERT INTO @tblProfilerRecommendations (
+		ProfilerRecommendationId
+		,ForPaymentCycle
+		,RecommendationTypes
+		)
+	SELECT TOP (@PaymentCycleCountlimit) pr.ProfilerRecommendationId
+		,pr.ForPaymentCycle
+		,pr.RecommendationTypes
+	FROM Profiler.ProfilerRecommendation pr WITH (NOLOCK)
+	WHERE pr.MandateId = @MandateId
+	ORDER BY pr.ForPaymentCycle DESC
+
+	INSERT INTO @tblRecommendationTypes (RecommendationTypes)
+	SELECT VALUE
+	FROM STRING_SPLIT(@RecommendationTypes, ',')
+
+	IF EXISTS (
+			SELECT TOP 1 1
+			FROM @tblProfilerRecommendations pr
+			INNER JOIN @tblRecommendationTypes AS t ON pr.RecommendationTypes = t.RecommendationTypes
+			)
+	BEGIN
+		INSERT INTO @tblExistingRecomendationTypes (
+			PaymentCycle
+			,RecommendationType
+			)
+		SELECT ForPaymentCycle
+			,pr.RecommendationTypes
+		FROM @tblProfilerRecommendations pr
+		INNER JOIN @tblRecommendationTypes AS t ON pr.RecommendationTypes = t.RecommendationTypes
+	END
+
+	IF EXISTS (
+			SELECT TOP 1 1
+			FROM Profiler.ProfilerRecommendationLabels pl WITH (NOLOCK)
+			INNER JOIN @tblProfilerRecommendations pr ON pl.ProfilerRecommendationld = pr.ProfilerRecommendationId
+			INNER JOIN @tblRecommendationTypes AS t ON pl.Label = t.RecommendationTypes
+			)
+	BEGIN
+		INSERT INTO @tblExistingRecomendationTypes (
+			PaymentCycle
+			,RecommendationType
+			)
+		SELECT ForPaymentCycle
+			,pl.Label
+		FROM Profiler.ProfilerRecommendationLabels pl WITH (NOLOCK)
+		INNER JOIN @tblProfilerRecommendations pr ON pl.ProfilerRecommendationld = pr.ProfilerRecommendationId
+		INNER JOIN @tblRecommendationTypes AS t ON pl.Label = t.RecommendationTypes
+	END
+
+	IF EXISTS (
+			SELECT TOP 1 1
+			FROM @tblExistingRecomendationTypes
+			)
+	BEGIN
+		SELECT TOP 1 'True' AS 'Exists'
+			,RecommendationType AS LatestRecommendationType
+		FROM @tblExistingRecomendationTypes
+		ORDER BY PaymentCycle DESC
+	END
+	ELSE
+	BEGIN
+		SELECT 'False' AS 'Exists'
+			,NULL AS LatestRecommendationType
+	END
 END
 GO
 

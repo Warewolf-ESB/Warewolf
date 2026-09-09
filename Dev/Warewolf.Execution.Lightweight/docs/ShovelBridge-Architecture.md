@@ -1935,6 +1935,38 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     the reconciliation contract are both pinned by tests, but only a pipeline run will show
     whether the workflow itself completes against the seeded data.
 
+- **2026-09-09 — build 30638: Phase 4c's `TOP ($MessageCount)` reconciliation query failed with
+  "Incorrect syntax near ')'" / "near ','", and the workflow itself hit `SQL Error 15009` for
+  `Profiler.usp_GetProfilerRecommendation` and `Profiler.usp_GetMandateProfilesDatesForDRIsInitials`
+  ("does not exist in database"). Two independent causes, both fixed:
+  - **Syntax error**: `Test-ShovelBridgeE2E.ps1` dot-sources `Invoke-WwQueueLoadTest.ps1
+    -LoadFunctionsOnly` to reuse its `Invoke-WwSqlQuery` helper. Dot-sourcing shares scope, and
+    that script's own param block declares an unbound `[Nullable[int]] $MessageCount` — since it
+    isn't passed at that call site, it rebinds to `$null` in the shared scope, clobbering *this*
+    script's `-MessageCount` value. The 2026-09-08 entry above assumed this dot-source was
+    harmless because none of the callee's params were used; it isn't harmless, because merely
+    binding an unpassed param overwrites a like-named caller variable. Fixed by saving/restoring
+    `$MessageCount` around the call. Regression-pinned in `Test-ShovelBridgeE2E.Tests.ps1`.
+  - **Missing procedures — the 2026-09-08 "11 procedures" count above was itself incomplete.**
+    Cross-referencing every `ProcedureName=` across `Resources/profiler/*.bite` against every
+    `CREATE OR ALTER PROCEDURE` in `Provision-ProfilerSchema.sql` found three the schema script
+    never carried across from the upstream project, despite their `.bite` workflow stubs already
+    being staged (see Blocker B's `HuntingStrategy`/DRIs entries above — those were resource-
+    closure fixes for the *workflow* layer, not the stored-procedure layer):
+    `usp_GetMandateProfilesDatesForDRIs` and `usp_GetMandateProfilesDatesForDRIsInitials` (both
+    called by `GetTrackingPeriod.bite`), and `usp_CheckIfHasRecommendationType` (called by
+    `HuntingStrategy.bite`). The line 1919-1923 entry above, which attributed
+    `usp_GetMandateProfilesDatesForDRIs` returning nothing to empty source tables, assumed the
+    procedure existed at all — it didn't. Pulled verbatim (only `CREATE` → `CREATE OR ALTER`)
+    from the same upstream source of truth this script already cites,
+    `C:\Builds\Unlimited.ProfilerServices\Database\Warewolf.ProfilerDB\Profiler\Stored
+    Procedures\`, and appended to `Provision-ProfilerSchema.sql`. Total is now 14 procedures.
+    **Still needs applying to `WarewolfDevOpsTestDb`** — this script has no automated apply step
+    (see its own header and `pipeline-LOADTEST.yml`'s staging-step comment); `usp_GetProfilerRecommendation`
+    already existed in the script yet was still reported missing at runtime, meaning the
+    script hadn't been (re-)applied since it last changed. Applying it is an external action,
+    not part of this commit.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

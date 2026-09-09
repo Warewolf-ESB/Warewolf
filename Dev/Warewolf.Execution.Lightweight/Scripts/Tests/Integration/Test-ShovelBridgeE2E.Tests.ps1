@@ -155,3 +155,38 @@ Describe 'Test-ShovelBridgeE2E — Get-WwCorrelationGuidStem (pure, no DB)' {
         }
     }
 }
+
+
+Describe 'Test-ShovelBridgeE2E — Phase 4c dot-source scope clobbering (WOLF-8512 regression, build 30636/30638)' {
+    <#
+        Phase 4c dot-sources Invoke-WwQueueLoadTest.ps1 (". `$loadTestScript -LoadFunctionsOnly")
+        purely to reuse its Invoke-WwSqlQuery helper. Dot-sourcing shares scope, and that script's
+        OWN param block declares a [Nullable[int]] $MessageCount with no default - since it isn't
+        passed at that call site, PowerShell binds it to $null in the SHARED scope, clobbering
+        THIS script's -MessageCount value. That turned every Phase 4c reconciliation query into
+        "TOP ()", which SQL Server rejected with "Incorrect syntax near ')'" - the exact failure
+        build 30636/30638 reported. These tests need no Docker/RabbitMQ/SQL/Service Bus: dot-
+        sourcing with -LoadFunctionsOnly loads only the target script's own param block and
+        function definitions before it returns.
+    #>
+
+    BeforeAll {
+        $script:LoadTestScript = Join-Path $PSScriptRoot '..\..\Invoke-WwQueueLoadTest.ps1'
+    }
+
+    It 'demonstrates the hazard: dot-sourcing Invoke-WwQueueLoadTest.ps1 -LoadFunctionsOnly clobbers an existing $MessageCount to $null' {
+        $MessageCount = 1000
+        . $script:LoadTestScript -LoadFunctionsOnly
+        $MessageCount | Should -BeNullOrEmpty -Because 'Invoke-WwQueueLoadTest.ps1 declares its own unbound [Nullable[int]] $MessageCount, which rebinds in the shared scope'
+    }
+
+    It 'confirms the fix: saving and restoring $MessageCount around the dot-source preserves it' {
+        # Mirrors exactly the save/restore now used in Test-ShovelBridgeE2E.ps1 around its own
+        # ". $loadTestScript -LoadFunctionsOnly" call.
+        $MessageCount = 1000
+        $savedMessageCount = $MessageCount
+        . $script:LoadTestScript -LoadFunctionsOnly
+        $MessageCount = $savedMessageCount
+        $MessageCount | Should -Be 1000
+    }
+}
