@@ -1967,6 +1967,26 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     script hadn't been (re-)applied since it last changed. Applying it is an external action,
     not part of this commit.
 
+- **2026-09-10 — build 30640: the predicted gap above landed exactly as written.** 996/1000
+  messages failed with `SQL Error 15009` for both `Profiler.usp_GetProfilerRecommendation` and
+  `Profiler.usp_GetMandateProfilesDatesForDRIsInitials` — both already present in
+  `Provision-ProfilerSchema.sql` at the time, confirming (not merely predicting) that the script
+  had still never been re-applied to the live database since the 2026-09-09 edit above. Ruled out
+  an alternative theory that `WarewolfDevOpsTestDb` itself gets periodically reset/recreated:
+  it's a paid, non-free-limit database (see the 2026-08-19 update at the top of this doc, which
+  migrated it off `WarewolfEntraTestDb` for exactly the opposite reason — that database *was*
+  free-limit-enrolled and got deleted for it); nothing in this repo's pipelines drops or restores
+  it. The actual defect was the one already named above: no automated apply step. **Fixed**: added
+  a `pwsh` step, `'Provision Profiler schema on WarewolfDevOpsTestDb (idempotent)'`, to the
+  `ShovelBridgeLoadTest_ExternalServiceBus` job in `pipeline-LOADTEST.yml`, immediately before the
+  `'Run ShovelBridge load test'` step. It runs `Invoke-Sqlcmd -InputFile
+  Provision-ProfilerSchema.sql` against `WarewolfDevOpsTestDb` using the same
+  `devops_warewolf`/`$(DBPassword)` credential Phase 4c already uses, on every run — safe because
+  the script is idempotent (`CREATE OR ALTER` procedures, existence-guarded tables, `MERGE`
+  seeds). This closes the gap for good: any future addition to the script (as happened twice
+  already — 11 → 14 procedures) is applied automatically on the next pipeline run instead of
+  depending on a human remembering to re-run it by hand.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a
