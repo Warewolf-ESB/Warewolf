@@ -65,7 +65,7 @@ SecureConfigLoader.Config        // Lazy<T>, ExecutionAndPublication
                                     // WOLF-8516: EntraTenantId/EntraAudience are read from the
                                     // merged WAREWOLF_ENTRA_CONFIG JSON app setting (parsed once
                                     // by Auth.Models.EntraIdentityOptions.FromEnvironment(), the
-                                    // same parse EntraAuthOptions/ServiceBusEntraAuthOptions use)
+                                    // same parse EntraAuthOptions uses)
                                     // instead of two independent env-var reads:
                                     EntraTenantId=EntraIdentityOptions.FromEnvironment().TenantId,
                                     EntraAudience=EntraIdentityOptions.FromEnvironment().Audience,

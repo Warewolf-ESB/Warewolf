@@ -93,15 +93,17 @@ param(
 
     # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
     # See docs/ServiceBusSecureTrigger-Architecture.md. Requires -EngineBaseUrl /
-    # -WorkflowName / -MessageAuthToken, and that the target engine already has the secure
+    # -WorkflowName / -ResultPollAuthToken, and that the target engine already has the
     # Service Bus trigger provisioned (see .SYNOPSIS) — this script only provisions the
     # Shovel's Send-only SAS rule, never the engine's own listen-side config.
+    # -MessageAuthToken is OPTIONAL — the trigger no longer validates a per-message caller
+    # token (trust is the configured queue's transport boundary instead); pass it only to
+    # prove the trigger genuinely ignores it.
     [switch] $VerifyWorkflowExecution,
     [string] $WorkflowName,
     [string] $WorkflowInputsJson,
     [string] $CorrelationId,
     [securestring] $MessageAuthToken,
-    [string] $Jti,
     [string] $EngineBaseUrl,
     [securestring] $ResultPollAuthToken,
     [int]    $ResultTimeoutSeconds = 90
@@ -120,7 +122,7 @@ if ($DestUriVerifyNone -and -not [string]::IsNullOrWhiteSpace($DestUriCaCertFile
 
 if ($VerifyWorkflowExecution) {
     if ([string]::IsNullOrWhiteSpace($WorkflowName)) { throw '-WorkflowName is required when -VerifyWorkflowExecution.' }
-    if ($null -eq $MessageAuthToken -or $MessageAuthToken.Length -eq 0) { throw '-MessageAuthToken is required when -VerifyWorkflowExecution.' }
+    if ($null -eq $ResultPollAuthToken -or $ResultPollAuthToken.Length -eq 0) { throw '-ResultPollAuthToken is required when -VerifyWorkflowExecution (used to poll the still Entra-protected GET /secure/servicebus-result endpoint).' }
     if ([string]::IsNullOrWhiteSpace($EngineBaseUrl)) { throw '-EngineBaseUrl is required when -VerifyWorkflowExecution.' }
 
     # The secure Service Bus trigger's queue is a distinct convention from Model B's
@@ -224,12 +226,11 @@ if ($VerifyWorkflowExecution) {
     $testArgs.VerifyWorkflowExecution = $true
     $testArgs.WorkflowName            = $WorkflowName
     $testArgs.CorrelationId           = $CorrelationId
-    $testArgs.MessageAuthToken        = $MessageAuthToken
     $testArgs.EngineBaseUrl           = $EngineBaseUrl
     $testArgs.ResultTimeoutSeconds    = $ResultTimeoutSeconds
-    if ($ResultPollAuthToken) { $testArgs.ResultPollAuthToken = $ResultPollAuthToken }
+    $testArgs.ResultPollAuthToken     = $ResultPollAuthToken
+    if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) { $testArgs.MessageAuthToken = $MessageAuthToken }
     if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $testArgs.WorkflowInputsJson = $WorkflowInputsJson }
-    if (-not [string]::IsNullOrWhiteSpace($Jti)) { $testArgs.Jti = $Jti }
 } else {
     $testArgs.ExternalServiceBusConnectionString = ConvertTo-SecureString $listenConnStr -AsPlainText -Force
 }

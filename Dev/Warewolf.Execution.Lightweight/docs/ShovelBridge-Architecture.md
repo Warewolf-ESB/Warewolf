@@ -205,8 +205,9 @@ queue — Shovel itself cannot transform messages.
 `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to the queue named by the
 `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` app setting (`%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%`
 indirection — the standard Azure Functions mechanism for a configurable binding without
-recompiling, mirroring the in-engine "Model A" trigger,
-`Functions/ServiceBusWorkflowTriggerFunction.cs`). `Deploy-WwExecutionServiceBusWorker.ps1`
+recompiling, mirroring the in-engine transport-trusted trigger,
+`Functions/ServiceBusWorkflowTriggerFunction.cs`, see
+`docs/ServiceBusSecureTrigger-Architecture.md`). `Deploy-WwExecutionServiceBusWorker.ps1`
 sets this app setting from `-ServiceBusQueueName` (default `wwexecution-queue`) — the same
 parameter that provisions the destination queue in Phase 2 — so the queue name only needs
 to be set in one place. Local dev supplies the matching default via `local.settings.json`.
@@ -498,8 +499,8 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   **Scope note:** as described above, this test proves message *arrival* on the Service Bus
   queue (bridge connectivity/plumbing) — it does not, on its own, execute a Warewolf workflow
   or exercise any engine trigger. `-VerifyWorkflowExecution` (both scripts) extends this same
-  pipeline to additionally prove workflow *execution* through the in-process Model A trigger
-  (`ServiceBusWorkflowTriggerFunction`) — see
+  pipeline to additionally prove workflow *execution* through the in-process,
+  transport-trusted trigger (`ServiceBusWorkflowTriggerFunction`) — see
   `docs/ServiceBusSecureTrigger-Architecture.md` § "End-to-end verification" for the harness
   mode, new parameters, and the separate `Enable-ServiceBusSecureTrigger.ps1` provisioning
   prerequisite. This mode IS wired into CI: as a second, additive leg in
@@ -2014,19 +2015,22 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     Working theory unchanged from 2026-09-01: the Consumption-plan process dies mid-
     execution (suspected OOM) before reaching any catch/timeout/logging path that would
     otherwise record something.
-  - **Fix shipped**: `IServiceBusReplayAndResultStore.RecordClaimStage(correlationId,
-    stage)` — durably mirrors the three existing `ClaimAcquired`/`AboutToExecute`/
-    `ExecutionReturned` `ILogger` checkpoints into the same `sbtrigger:claim:*` Hangfire
-    hash row `TryClaim` already writes, so the last-reached checkpoint survives a process
-    death even when (as confirmed twice now) App Insights captures nothing. See
-    `docs/ServiceBusSecureTrigger-Architecture.md`'s "Silent-death diagnostic breadcrumb"
-    section for the query to use next time. **Not yet re-verified against a live
-    recurrence** — by construction, that requires this bug class to happen again with the
-    fix deployed.
+  - **Diagnostic capability added, then disconnected after the load test passed**:
+    `IServiceBusReplayAndResultStore.RecordClaimStage(correlationId, stage)` was added to
+    durably mirror the three `ClaimAcquired`/`AboutToExecute`/`ExecutionReturned` `ILogger`
+    checkpoints into the same `sbtrigger:claim:*` Hangfire hash row `TryClaim` already
+    writes, so the last-reached checkpoint would survive a process death even when (as
+    confirmed twice) App Insights captures nothing. A subsequent load test run for this
+    branch passed cleanly, so the three call sites in
+    `ServiceBusWorkflowTriggerFunction` were removed again. The mechanism itself
+    (interface method, implementation, test seam) was kept in
+    `ServiceBusReplayAndResultStore` rather than deleted, so it can be re-wired in quickly
+    if this bug class recurs — see `docs/ServiceBusSecureTrigger-Architecture.md`'s
+    "Silent-death diagnostic breadcrumb" section.
   - **Still open, not actioned this session**: the App Insights telemetry gap itself. The
     2026-09-01 entry's recommendation stands — until App Insights actually receives
-    something for this app, every future recurrence still needs the same SQL/DLQ
-    archaeology (now cheaper thanks to the breadcrumb above, but not eliminated).
+    something for this app, any future recurrence still needs the same SQL/DLQ
+    archaeology, with the breadcrumb mechanism available to re-enable if needed.
 
 ## Promotion status
 

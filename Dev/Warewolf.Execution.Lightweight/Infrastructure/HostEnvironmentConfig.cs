@@ -135,7 +135,6 @@ public sealed class HostEnvironmentConfig
 
     internal sealed class ServiceBusTriggerFileSection
     {
-        public double? JtiWindowHours { get; set; }
         public double? ExecutionTimeoutSeconds { get; set; }
         public int? MaxConcurrentExecutions { get; set; }
         public double? SlotWaitTimeoutSeconds { get; set; }
@@ -290,14 +289,13 @@ public sealed class HostEnvironmentConfig
 /// File-sourced overrides for <see cref="Auth.Models.ServiceBusTriggerOptions.FromEnvironment"/>'s
 /// simple tunables — each field is <c>null</c> when the settings file/section is absent or the
 /// individual field wasn't set, in which case <c>FromEnvironment</c> falls back straight to its
-/// hardcoded default for that field. No env-var fallback (WOLF-8516) — the 5 standalone env
+/// hardcoded default for that field. No env-var fallback (WOLF-8516) — the standalone env
 /// vars these fields used to read directly were removed.
 /// </summary>
 public sealed class ServiceBusTriggerFileOverrides
 {
     public static readonly ServiceBusTriggerFileOverrides None = new();
 
-    public double? JtiWindowHours { get; private init; }
     public double? ExecutionTimeoutSeconds { get; private init; }
     public int? MaxConcurrentExecutions { get; private init; }
     public double? SlotWaitTimeoutSeconds { get; private init; }
@@ -308,7 +306,6 @@ public sealed class ServiceBusTriggerFileOverrides
             ? None
             : new ServiceBusTriggerFileOverrides
             {
-                JtiWindowHours = section.JtiWindowHours,
                 ExecutionTimeoutSeconds = section.ExecutionTimeoutSeconds,
                 MaxConcurrentExecutions = section.MaxConcurrentExecutions,
                 SlotWaitTimeoutSeconds = section.SlotWaitTimeoutSeconds,

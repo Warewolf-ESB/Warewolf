@@ -33,7 +33,7 @@ public class ServiceBusTriggerOptionsTests
     }
 
     /// <summary>
-    /// WOLF-8516: the 5 tunables below no longer have a standalone env var — they come SOLELY
+    /// WOLF-8516: the tunables below no longer have a standalone env var — they come SOLELY
     /// from <c>Settings/executionengine.settings.json</c>'s <c>serviceBusTrigger</c> block, via
     /// <see cref="HostEnvironmentConfig.ServiceBusTrigger"/>. Writes a temp settings file with
     /// the given <c>serviceBusTrigger</c> JSON body and loads a <see cref="HostEnvironmentConfig"/>
@@ -49,15 +49,6 @@ public class ServiceBusTriggerOptionsTests
     }
 
     // ── Property defaults (no environment involved) ─────────────────────────────
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public void Defaults_JtiReplayWindowIs24Hours()
-    {
-        var options = new ServiceBusTriggerOptions();
-
-        Assert.AreEqual(TimeSpan.FromHours(24), options.JtiReplayWindow);
-    }
 
     [TestMethod]
     [TestCategory("UnitTest")]
@@ -103,37 +94,10 @@ public class ServiceBusTriggerOptionsTests
     {
         var options = ServiceBusTriggerOptions.FromEnvironment();
 
-        Assert.AreEqual(TimeSpan.FromHours(24), options.JtiReplayWindow);
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.ExecutionTimeout);
         Assert.AreEqual(8, options.MaxConcurrentExecutions);
         Assert.AreEqual(TimeSpan.FromMinutes(5), options.SlotWaitTimeout);
         Assert.AreEqual(TimeSpan.FromSeconds(30), options.SettlementTimeout);
-    }
-
-    // ── FromEnvironment(hostConfig) — JtiReplayWindow ────────────────────────────
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public void FromEnvironment_ValidJtiWindowHours_IsUsed()
-    {
-        var hostConfig = BuildHostConfig(/*lang=json,strict*/ "{\"jtiWindowHours\":48}");
-
-        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
-
-        Assert.AreEqual(TimeSpan.FromHours(48), options.JtiReplayWindow);
-    }
-
-    [DataTestMethod]
-    [DataRow(0.0)]
-    [DataRow(-5.0)]
-    [TestCategory("UnitTest")]
-    public void FromEnvironment_NonPositiveJtiWindowHours_FallsBackToDefault(double value)
-    {
-        var hostConfig = BuildHostConfig($"{{\"jtiWindowHours\":{value}}}");
-
-        var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
-
-        Assert.AreEqual(TimeSpan.FromHours(24), options.JtiReplayWindow);
     }
 
     // ── FromEnvironment(hostConfig) — ExecutionTimeout ───────────────────────────
@@ -263,11 +227,10 @@ public class ServiceBusTriggerOptionsTests
     public void FromEnvironment_AllFieldsSet_EachUsedIndependently()
     {
         var hostConfig = BuildHostConfig(
-            /*lang=json,strict*/ "{\"jtiWindowHours\":12,\"executionTimeoutSeconds\":90,\"maxConcurrentExecutions\":4,\"slotWaitTimeoutSeconds\":30}");
+            /*lang=json,strict*/ "{\"executionTimeoutSeconds\":90,\"maxConcurrentExecutions\":4,\"slotWaitTimeoutSeconds\":30}");
 
         var options = ServiceBusTriggerOptions.FromEnvironment(hostConfig);
 
-        Assert.AreEqual(TimeSpan.FromHours(12), options.JtiReplayWindow);
         Assert.AreEqual(TimeSpan.FromSeconds(90), options.ExecutionTimeout);
         Assert.AreEqual(4, options.MaxConcurrentExecutions);
         Assert.AreEqual(TimeSpan.FromSeconds(30), options.SlotWaitTimeout);

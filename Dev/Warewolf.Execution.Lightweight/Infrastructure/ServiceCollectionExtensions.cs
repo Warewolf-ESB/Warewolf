@@ -91,11 +91,6 @@ internal static class ServiceCollectionExtensions
             // can be injected into health checks, audit, and tests.
             services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
 
-            // Dedicated, narrow "trigger-via-service-bus" Entra audience — a token minted
-            // for the general HTTP audience must never validate against this one (spec
-            // §4.2 step 2). Registered as its own singleton type rather than a second
-            // keyed EntraAuthOptions instance (no keyed-service DI pattern in this project).
-            services.AddSingleton(_ => ServiceBusEntraAuthOptions.FromEnvironment());
             services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment(config));
 
             // WOLF-8512: ClaimStaleAfter is resolved automatically from the host's actual
@@ -112,29 +107,17 @@ internal static class ServiceCollectionExtensions
             // Caps how many workflow executions ServiceBusWorkflowTriggerFunction runs
             // concurrently on this instance (ServiceBusTriggerOptions.MaxConcurrentExecutions).
             // MUST be a DI singleton, not an instance field on the Function class itself:
-            // the trigger function is not registered here (see the EntraBearerTokenValidator
-            // comment just below) and is resolved fresh per invocation, so an instance field
-            // would not actually be shared across concurrent invocations and would cap
-            // nothing. Sized once at startup — nothing else in this project currently needs
-            // a SemaphoreSlim, so this registration is unambiguous; if that changes, this one
-            // should move behind its own named wrapper type instead of a bare SemaphoreSlim.
+            // the trigger function is not registered here and is resolved fresh per
+            // invocation, so an instance field would not actually be shared across
+            // concurrent invocations and would cap nothing. Sized once at startup —
+            // nothing else in this project currently needs a SemaphoreSlim, so this
+            // registration is unambiguous; if that changes, this one should move behind
+            // its own named wrapper type instead of a bare SemaphoreSlim.
             services.AddSingleton(sp =>
             {
                 var capacity = sp.GetRequiredService<ServiceBusTriggerOptions>().MaxConcurrentExecutions;
                 return new SemaphoreSlim(capacity, capacity);
             });
-
-            // The Service Bus secure trigger's token validator MUST be a DI singleton, not
-            // constructed per-invocation: EntraBearerTokenValidator caches Entra's OIDC
-            // metadata/JWKS internally, and ServiceBusWorkflowTriggerFunction (unlike
-            // IPrincipalParser's HTTP-path implementations) is not itself registered here,
-            // so the Functions isolated-worker host resolves a new instance per invocation.
-            // Without this singleton, a burst of concurrent Service Bus messages triggers
-            // one cold OIDC-metadata fetch per message — reproduced by the ShovelBridge
-            // 1000-message load test as widespread IDX20803/IDX20804 + InvalidToken
-            // failures once the Function App scales out under load.
-            services.AddSingleton(sp =>
-                new EntraBearerTokenValidator(sp.GetRequiredService<ServiceBusEntraAuthOptions>()));
 
             // ── DI-07 / MWA-05 / OBS-02 ──────────────────────────────────────────
             // AuditLogger is registered unconditionally so authorization middleware

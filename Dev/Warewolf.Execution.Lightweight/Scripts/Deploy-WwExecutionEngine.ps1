@@ -157,24 +157,23 @@
     Left at the SDK default (unset) unless explicitly supplied.  See WOLF-8512,
     docs/ShovelBridge-Architecture.md.
 
-.PARAMETER ServiceBusTriggerJtiWindowHours
 .PARAMETER ServiceBusTriggerExecutionTimeoutSeconds
 .PARAMETER ServiceBusTriggerMaxConcurrentExecutions
 .PARAMETER ServiceBusTriggerSlotWaitTimeoutSeconds
 .PARAMETER ServiceBusTriggerSettlementTimeoutSeconds
-    OPT-IN, deploy-time-static tunables for the secure Service Bus workflow trigger
-    (ServiceBusTriggerOptions — jtiWindowHours/executionTimeoutSeconds/
-    maxConcurrentExecutions/slotWaitTimeoutSeconds/settlementTimeoutSeconds
-    respectively). WOLF-8516: these 5 no longer have ANY env-var fallback — they
-    are read SOLELY from the staged Settings/executionengine.settings.json file's
-    serviceBusTrigger section (see ServiceBusTriggerOptions.FromEnvironment). When
-    any one of these 5 params is supplied, this script stages that section
-    (independent of -KeyVaultName/-EncryptResources — the two concerns share the
-    same file but are otherwise unrelated); an unsupplied field is left null in the
-    staged JSON and the engine falls back to its own hardcoded default for that
-    field only. Note ServiceBusMaxConcurrentCalls above is a DIFFERENT, upstream
-    dispatch-level cap (host.json) — these 5 tune the trigger's OWN in-process
-    semaphore/timeouts, not the host's dispatch.
+    OPT-IN, deploy-time-static tunables for the in-process Service Bus workflow trigger
+    (ServiceBusTriggerOptions — executionTimeoutSeconds/maxConcurrentExecutions/
+    slotWaitTimeoutSeconds/settlementTimeoutSeconds respectively). WOLF-8516: these no
+    longer have ANY env-var fallback — they are read SOLELY from the staged
+    Settings/executionengine.settings.json file's serviceBusTrigger section (see
+    ServiceBusTriggerOptions.FromEnvironment). When any one of these params is
+    supplied, this script stages that section (independent of
+    -KeyVaultName/-EncryptResources — the two concerns share the same file but are
+    otherwise unrelated); an unsupplied field is left null in the staged JSON and the
+    engine falls back to its own hardcoded default for that field only. Note
+    ServiceBusMaxConcurrentCalls above is a DIFFERENT, upstream dispatch-level cap
+    (host.json) — these tune the trigger's OWN in-process semaphore/timeouts, not the
+    host's dispatch.
 
 .PARAMETER LicenseCheckEnabled
     WAREWOLF_LICENSE_CHECK_ENABLED (engine default: true).
@@ -219,9 +218,8 @@
     (Phase 3). EXECUTIONLOGLEVEL stays a standalone App Setting; the other 5 logging
     toggles (console/appInsights/elasticsearch/performanceCounters/structuredLogs)
     are merged into one WAREWOLF_LOGGING_CONFIG JSON App Setting. Entra identity
-    (tenantId/audience/clientId/serviceBusAudience) is written by
-    Configure-WwExecutionAuth.ps1 / Enable-ServiceBusSecureTrigger.ps1 as one
-    WAREWOLF_ENTRA_CONFIG JSON App Setting instead of 3-4 separate ones. See
+    (tenantId/audience/clientId) is written by Configure-WwExecutionAuth.ps1 as one
+    WAREWOLF_ENTRA_CONFIG JSON App Setting instead of 3 separate ones. See
     Infrastructure/HostEnvironmentConfig.cs, Logging/LoggingConfiguration.cs,
     Auth/Models/EntraIdentityOptions.cs, and Infrastructure/SecurityFlags.cs.
 
@@ -347,7 +345,6 @@ param(
     [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
 
     # ── ServiceBusTrigger tunables (WOLF-8516 — file-only, no env-var fallback) ──
-    [nullable[int]] $ServiceBusTriggerJtiWindowHours,
     [nullable[int]] $ServiceBusTriggerExecutionTimeoutSeconds,
     [nullable[int]] $ServiceBusTriggerMaxConcurrentExecutions,
     [nullable[int]] $ServiceBusTriggerSlotWaitTimeoutSeconds,
@@ -1003,11 +1000,10 @@ if ($kvRequired) {
 
 # ── ServiceBusTrigger tunables (decoupled from Key Vault — WOLF-8516) ───────────
 # Staged into the SAME executionengine.settings.json file as keyVaultName/
-# keyVaultSecretName (Phase 3.5c below) whenever ANY of these 5 is supplied, since
+# keyVaultSecretName (Phase 3.5c below) whenever ANY of these is supplied, since
 # ServiceBusTriggerOptions now reads them SOLELY from that file (no env-var
 # fallback) — independent of whether this deploy also requires a Key Vault.
 $sbtOverrides = [ordered]@{
-    jtiWindowHours           = $ServiceBusTriggerJtiWindowHours
     executionTimeoutSeconds  = $ServiceBusTriggerExecutionTimeoutSeconds
     maxConcurrentExecutions  = $ServiceBusTriggerMaxConcurrentExecutions
     slotWaitTimeoutSeconds   = $ServiceBusTriggerSlotWaitTimeoutSeconds

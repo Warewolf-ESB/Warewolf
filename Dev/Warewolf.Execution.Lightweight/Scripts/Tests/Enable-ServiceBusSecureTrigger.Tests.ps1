@@ -12,17 +12,16 @@
     * The script exposes -LoadFunctionsOnly so its helpers can be dot-sourced and unit
       tested without contacting Azure. Its mandatory parameters must still be supplied,
       so placeholders are passed below.
-    * Live incident these tests guard (2026-09-03): Phase 3 wrote the JSON-valued
-      WAREWOLF_ENTRA_CONFIG setting as an inline "KEY={json}" argument through
-      `Invoke-Az` -> `& az @CliArgs`. On Windows az resolves to az.cmd (a batch wrapper),
-      and PowerShell/cmd.exe silently strip the embedded double quotes while re-serialising
-      the argument array, so the value stored in Azure became unparseable
-      ({tenantId:...} with no quotes). az reports success either way. With the config
-      unparseable, EntraIdentityOptions falls back to all-null, ServiceBusEntraAuthOptions
-      is disabled, and the Service Bus trigger fails closed on every message.
-      Set-FunctionAppSettingsViaFile now routes each setting through its own quote-free
-      `@<tempfile>` argument, mirroring Configure-WwExecutionAuth.ps1's
-      Set-FunctionAppSettings.
+    * Live incident these tests guard (2026-09-03, against a JSON-valued app setting this
+      script wrote at the time): a JSON-valued setting written as an inline "KEY={json}"
+      argument through `Invoke-Az` -> `& az @CliArgs`. On Windows az resolves to az.cmd (a
+      batch wrapper), and PowerShell/cmd.exe silently strip the embedded double quotes
+      while re-serialising the argument array, so the value stored in Azure became
+      unparseable. az reports success either way. Set-FunctionAppSettingsViaFile routes
+      each setting through its own quote-free `@<tempfile>` argument instead, mirroring
+      Configure-WwExecutionAuth.ps1's Set-FunctionAppSettings — a generic app-setting
+      value is used below to exercise the same quote-safety behaviour, independent of
+      which specific setting this script currently writes.
 #>
 
 BeforeAll {
@@ -31,12 +30,10 @@ BeforeAll {
     # Placeholder values for the script's mandatory parameters; -LoadFunctionsOnly returns
     # before any of them is used.
     $script:LoadArgs = @{
-        FunctionAppName         = 'placeholder-app'
-        ResourceGroup           = 'placeholder-rg'
-        ServiceBusNamespace     = 'placeholder-ns'
-        EntraTenantId           = 'placeholder-tenant'
-        EntraServiceBusAudience = 'api://placeholder'
-        LoadFunctionsOnly       = $true
+        FunctionAppName     = 'placeholder-app'
+        ResourceGroup       = 'placeholder-rg'
+        ServiceBusNamespace = 'placeholder-ns'
+        LoadFunctionsOnly   = $true
     }
 }
 
@@ -54,15 +51,14 @@ Describe 'Enable-ServiceBusSecureTrigger — static' {
         Get-Command Set-FunctionAppSettingsViaFile -CommandType Function -ErrorAction SilentlyContinue | Should -Not -BeNullOrEmpty
     }
 
-    It 'never writes WAREWOLF_ENTRA_CONFIG as an inline az argument (quote-stripping regression guard)' {
-        # Phase 3 must hand the JSON setting to Set-FunctionAppSettingsViaFile, not build a
-        # literal "WAREWOLF_ENTRA_CONFIG=..." element inside an Invoke-Az argument array.
+    It 'writes Phase 3 app settings through Set-FunctionAppSettingsViaFile, not as inline az arguments (quote-stripping regression guard)' {
+        # Phase 3 must hand its settings to Set-FunctionAppSettingsViaFile, not build a
+        # literal "KEY=..." element inside a direct Invoke-Az argument array.
         $content = Get-Content -Raw -LiteralPath $script:TriggerScript
 
-        $content | Should -Match 'Set-FunctionAppSettingsViaFile'
-        # The only occurrence of the setting-assignment string should be inside the
-        # Set-FunctionAppSettingsViaFile call, never in an Invoke-Az array.
-        $content | Should -Not -Match "Invoke-Az[^\r\n]*\r?\n(?:[^\r\n]*\r?\n){0,8}[^\r\n]*`"WAREWOLF_ENTRA_CONFIG="
+        $content | Should -Match 'Set-FunctionAppSettingsViaFile[^\r\n]*-Settings @\('
+        $content | Should -Match 'ServiceBusConnection__fullyQualifiedNamespace=\$fullyQualifiedNamespace'
+        $content | Should -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=\$TriggerQueueName'
     }
 }
 
@@ -87,10 +83,10 @@ Describe 'Enable-ServiceBusSecureTrigger — Set-FunctionAppSettingsViaFile (quo
         }
 
         Set-FunctionAppSettingsViaFile -FunctionAppName 'my-app' -ResourceGroup 'my-rg' `
-            -Settings @('WAREWOLF_ENTRA_CONFIG={"tenantId":"t","serviceBusAudience":"api://sb"}')
+            -Settings @('SOME_JSON_SETTING={"foo":"bar","baz":"qux"}')
 
-        $script:capturedFileContents | Should -Match '"tenantId":"t"'
-        $script:capturedFileContents | Should -Match '"serviceBusAudience":"api://sb"'
+        $script:capturedFileContents | Should -Match '"foo":"bar"'
+        $script:capturedFileContents | Should -Match '"baz":"qux"'
     }
 
     It 'passes az one @-file argument per setting and no argument containing a literal quote' {
@@ -100,7 +96,7 @@ Describe 'Enable-ServiceBusSecureTrigger — Set-FunctionAppSettingsViaFile (quo
             -Settings @(
                 'ServiceBusConnection__fullyQualifiedNamespace=ns.servicebus.windows.net',
                 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=q',
-                'WAREWOLF_ENTRA_CONFIG={"tenantId":"t"}'
+                'SOME_JSON_SETTING={"foo":"bar"}'
             )
 
         @($script:capturedArgs | Where-Object { $_ -like '@*' }).Count | Should -Be 3
@@ -114,14 +110,14 @@ Describe 'Enable-ServiceBusSecureTrigger — Set-FunctionAppSettingsViaFile (quo
         }
 
         Set-FunctionAppSettingsViaFile -FunctionAppName 'my-app' -ResourceGroup 'my-rg' `
-            -Settings @('WAREWOLF_ENTRA_CONFIG={"tenantId":"t"}', 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=q')
+            -Settings @('SOME_JSON_SETTING={"foo":"bar"}', 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=q')
 
         $script:capturedFileContents.Count | Should -Be 2
 
-        $entraFile = $script:capturedFileContents | Where-Object { $_ -like 'WAREWOLF_ENTRA_CONFIG=*' }
-        $entraFile | Should -Not -BeNullOrEmpty
-        $entraFile | Should -Not -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'
-        $entraFile | Should -Not -Match "`n"
+        $jsonFile = $script:capturedFileContents | Where-Object { $_ -like 'SOME_JSON_SETTING=*' }
+        $jsonFile | Should -Not -BeNullOrEmpty
+        $jsonFile | Should -Not -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'
+        $jsonFile | Should -Not -Match "`n"
     }
 
     It 'deletes the temp files after the call' {

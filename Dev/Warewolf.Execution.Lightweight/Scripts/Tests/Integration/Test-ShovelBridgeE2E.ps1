@@ -173,25 +173,22 @@
     (or the generated GUID) is instead used as a PREFIX: N correlationIds are derived as
     '<CorrelationId>-000000' .. '<CorrelationId>-{N-1}' (fixed-width, zero-padded).
 .PARAMETER MessageAuthToken
-    REQUIRED when -VerifyWorkflowExecution. A valid Entra bearer token (audience =
-    WAREWOLF_ENTRA_CONFIG's serviceBusAudience field [WOLF-8516] on the target engine) for a caller authorized to run
-    -WorkflowName. Embedded as the message's Authorization application property — this is
-    the CALLER's own delegated identity, not a system/shared credential (see
-    docs/ServiceBusSecureTrigger-Architecture.md "Two trust boundaries").
-.PARAMETER Jti
-    Only used when -VerifyWorkflowExecution. Optional — mirrors -MessageAuthToken's own
-    `jti` claim as a message header for a cheaper replay-cache lookup on the engine side.
-    Falls back to the claim inside the token itself when omitted.
+    OPTIONAL, even when -VerifyWorkflowExecution. The Service Bus trigger no longer
+    validates a per-message caller token — trust is the configured queue's transport
+    boundary instead (see docs/ServiceBusSecureTrigger-Architecture.md). Pass this only to
+    prove the trigger genuinely ignores it; when supplied it is embedded as the message's
+    Authorization application property, same as before.
 .PARAMETER EngineBaseUrl
     REQUIRED when -VerifyWorkflowExecution. Base URL of the Lightweight engine Function App
     that is listening on -DestinationQueueName, e.g.
     https://warewolfserver-uat.azurewebsites.net. Used to poll
     GET /secure/servicebus-result/{correlationId}.
 .PARAMETER ResultPollAuthToken
-    Only used when -VerifyWorkflowExecution. Bearer token used to call
-    GET /secure/servicebus-result/{correlationId} (protected by the ordinary HTTP
-    EasyAuth/claims/policy pipeline, requiring WorkflowPermission.View on -WorkflowName).
-    Defaults to -MessageAuthToken when omitted (the same caller polling their own result).
+    REQUIRED when -VerifyWorkflowExecution. Bearer token used to call
+    GET /secure/servicebus-result/{correlationId} — an ordinary HTTP `/secure/*` route,
+    still protected by the EasyAuth/claims/policy pipeline (requires
+    WorkflowPermission.View on -WorkflowName). Independent of -MessageAuthToken; no longer
+    defaults from it, since that token no longer has any effect on the trigger itself.
 .PARAMETER ResultTimeoutSeconds
     Only used when -VerifyWorkflowExecution. How long to poll for ALL correlationIds (1, or N
     when -MessageCount > 1) to reach a terminal result before failing. Default: 90. Raise this
@@ -316,7 +313,6 @@ param(
     [string] $WorkflowInputsJson,
     [string] $CorrelationId,
     [securestring] $MessageAuthToken,
-    [string] $Jti,
     [string] $EngineBaseUrl,
     [securestring] $ResultPollAuthToken,
     [int]    $ResultTimeoutSeconds = 90,
@@ -598,8 +594,8 @@ if ($VerifyWorkflowExecution) {
     if ([string]::IsNullOrWhiteSpace($WorkflowName)) {
         throw '-WorkflowName is required when -VerifyWorkflowExecution.'
     }
-    if ($null -eq $MessageAuthToken -or $MessageAuthToken.Length -eq 0) {
-        throw '-MessageAuthToken is required when -VerifyWorkflowExecution.'
+    if ($null -eq $ResultPollAuthToken -or $ResultPollAuthToken.Length -eq 0) {
+        throw '-ResultPollAuthToken is required when -VerifyWorkflowExecution (used to poll the still Entra-protected GET /secure/servicebus-result endpoint).'
     }
     if ([string]::IsNullOrWhiteSpace($EngineBaseUrl)) {
         throw '-EngineBaseUrl is required when -VerifyWorkflowExecution.'
@@ -617,9 +613,9 @@ if ($VerifyWorkflowExecution) {
     # BEFORE Phase 4 starts spending the token's remaining lifetime.
     $setupBufferSeconds = 300
     $requiredLifetimeSeconds = $ResultTimeoutSeconds + $setupBufferSeconds
-    $tokensToCheck = [ordered]@{ '-MessageAuthToken' = (ConvertFrom-SecureStringPlain $MessageAuthToken) }
-    if ($ResultPollAuthToken) {
-        $tokensToCheck['-ResultPollAuthToken'] = ConvertFrom-SecureStringPlain $ResultPollAuthToken
+    $tokensToCheck = [ordered]@{ '-ResultPollAuthToken' = (ConvertFrom-SecureStringPlain $ResultPollAuthToken) }
+    if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) {
+        $tokensToCheck['-MessageAuthToken'] = ConvertFrom-SecureStringPlain $MessageAuthToken
     }
     foreach ($tokenName in $tokensToCheck.Keys) {
         $remaining = Get-JwtRemainingLifetimeSeconds -Token $tokensToCheck[$tokenName]
@@ -1059,7 +1055,6 @@ try {
     $runStartUtc = (Get-Date).ToUniversalTime()
 
     if ($VerifyWorkflowExecution) {
-        $resultTokenSecure = if ($ResultPollAuthToken) { $ResultPollAuthToken } else { $MessageAuthToken }
         $harnessArgs = @(
             'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
             '--mode', 'workflow-execution'
@@ -1070,15 +1065,14 @@ try {
             '--source-queue', $SourceQueueName
             '--workflow', $WorkflowName
             '--correlation-id', $CorrelationId
-            '--message-auth-token', (ConvertFrom-SecureStringPlain $MessageAuthToken)
             '--engine-base-url', $EngineBaseUrl
-            '--result-poll-auth-token', (ConvertFrom-SecureStringPlain $resultTokenSecure)
+            '--result-poll-auth-token', (ConvertFrom-SecureStringPlain $ResultPollAuthToken)
             '--result-timeout-seconds', $ResultTimeoutSeconds
             '--message-count', $MessageCount
             '--publish-concurrency', $PublishConcurrency
         )
         if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $harnessArgs += @('--workflow-inputs-json', $WorkflowInputsJson) }
-        if (-not [string]::IsNullOrWhiteSpace($Jti)) { $harnessArgs += @('--jti', $Jti) }
+        if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) { $harnessArgs += @('--message-auth-token', (ConvertFrom-SecureStringPlain $MessageAuthToken)) }
     } else {
         $harnessArgs = @(
             'run', '--project', $harnessProjectDir, '-c', 'Release', '--'

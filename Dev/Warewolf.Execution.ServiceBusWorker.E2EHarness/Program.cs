@@ -19,13 +19,15 @@ namespace Warewolf.Execution.ServiceBusWorker.E2EHarness;
 ///   protocols. Does NOT prove a workflow was executed — see <c>workflow-execution</c>.</item>
 ///   <item><b><c>workflow-execution</c></b> (additive). Publishes the real
 ///   <c>ServiceBusWorkflowMessage</c> JSON contract (<c>{"workflow","inputs","correlationId"}</c>)
-///   to RabbitMQ, carrying the caller's bearer token as an AMQP 0.9.1 message header
-///   (<c>Authorization</c>, optionally <c>jti</c>) — the Shovel bridges these to AMQP 1.0
-///   application properties, which is exactly where
+///   to RabbitMQ, optionally carrying a caller bearer token as an AMQP 0.9.1
+///   <c>Authorization</c> message header (the Shovel bridges it to an AMQP 1.0 application
+///   property) — but
 ///   <c>Warewolf.Execution.Lightweight.Functions.ServiceBusWorkflowTriggerFunction</c>
-///   (the in-process "Model A" secure Service Bus trigger, see
-///   docs/ServiceBusSecureTrigger-Architecture.md) reads them from. It then polls that same
-///   Lightweight engine's own <c>GET /secure/servicebus-result/{correlationId}</c> endpoint
+///   (the in-process Service Bus trigger, see docs/ServiceBusSecureTrigger-Architecture.md)
+///   no longer reads or validates it: trust is the configured queue's transport boundary
+///   instead, so this header is purely optional proof that the trigger genuinely ignores
+///   it. It then polls that same Lightweight engine's own
+///   <c>GET /secure/servicebus-result/{correlationId}</c> endpoint
 ///   for a terminal status — this is the only way to observe the outcome, since the trigger
 ///   is in-process and there is no separate worker to watch. A Service Bus SDK receiver is
 ///   deliberately NOT used to "check arrival" in this mode: it would compete with the
@@ -163,10 +165,15 @@ internal static class Program
         var sourceQueue = required("source-queue");
         var workflow = required("workflow");
         var engineBaseUrl = required("engine-base-url").TrimEnd('/');
-        var messageAuthToken = required("message-auth-token");
-        var resultPollAuthToken = opts.GetValueOrDefault("result-poll-auth-token", messageAuthToken);
+        // The trigger no longer validates a per-message caller token (it trusts the
+        // configured queue's transport boundary instead - see
+        // docs/ServiceBusSecureTrigger-Architecture.md), so this is optional now: pass it
+        // only if you want to prove the trigger genuinely ignores it. The result-polling
+        // call below hits an ordinary /secure/* HTTP route, which IS still Entra-protected,
+        // so that one is required independently rather than defaulting from this.
+        var messageAuthToken = opts.GetValueOrDefault("message-auth-token", string.Empty);
+        var resultPollAuthToken = required("result-poll-auth-token");
         var correlationIdPrefix = opts.GetValueOrDefault("correlation-id", Guid.NewGuid().ToString("N"));
-        var jti = opts.GetValueOrDefault("jti", string.Empty);
         var workflowInputsJson = opts.GetValueOrDefault("workflow-inputs-json", string.Empty);
         var timeoutSeconds = int.Parse(opts.GetValueOrDefault("result-timeout-seconds", "90"));
         var messageCount = int.Parse(opts.GetValueOrDefault("message-count", "1"));
@@ -200,7 +207,7 @@ internal static class Program
         var publishStopwatch = Stopwatch.StartNew();
         await PublishManyWorkflowTriggerMessagesAsync(
             rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
-            workflow, workflowInputsJson, correlationIds, messageAuthToken, jti, publishConcurrency);
+            workflow, workflowInputsJson, correlationIds, messageAuthToken, publishConcurrency);
         publishStopwatch.Stop();
         Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
 
@@ -313,13 +320,17 @@ internal static class Program
                 --workflow <name>                      workflow to execute, e.g. "Hello World"
                 [--workflow-inputs-json <json>]        e.g. {"Name":"FromRabbitMq"}
                 [--correlation-id <id>]                default: a freshly generated GUID
-                --message-auth-token <bearer-token>    embedded as the message's Authorization
-                                                        property (validated by the engine's
-                                                        secure Service Bus trigger)
-                [--jti <jti>]                          mirrors the token's own jti claim
+                [--message-auth-token <bearer-token>]  OPTIONAL - the trigger no longer
+                                                        validates a per-message caller token
+                                                        (trust is the configured queue's
+                                                        transport boundary instead); pass this
+                                                        only to prove the trigger genuinely
+                                                        ignores it. When supplied, embedded as
+                                                        the message's Authorization property.
                 --engine-base-url <url>                e.g. https://warewolfserver-uat.azurewebsites.net
-                [--result-poll-auth-token <token>]     default: same as --message-auth-token;
-                                                        used to call GET /secure/servicebus-result
+                --result-poll-auth-token <token>       REQUIRED - used to call the still
+                                                        Entra-protected GET
+                                                        /secure/servicebus-result endpoint
                 [--result-timeout-seconds <n>]         default: 90
                 [--message-count <n>]                  default: 1; publishes N workflow-trigger
                                                         messages with distinct correlationIds
@@ -401,19 +412,21 @@ internal static class Program
     /// <summary>
     /// Publishes the real <c>ServiceBusWorkflowMessage</c> JSON body
     /// (<c>{"workflow","inputs","correlationId"}</c>) via the same RabbitMQ Management HTTP
-    /// API publish endpoint used by <see cref="PublishToRabbitMqAsync"/>, but additionally
-    /// sets AMQP 0.9.1 basic-properties <c>headers</c> for <c>Authorization</c> (and,
-    /// optionally, <c>jti</c>) — RabbitMQ's Shovel amqp10 destination bridges these headers
-    /// to AMQP 1.0 application properties, which is exactly where
-    /// <c>ServiceBusWorkflowTriggerFunction</c> reads the caller's bearer token from (see
-    /// docs/ServiceBusSecureTrigger-Architecture.md). Also sets the AMQP 0.9.1
+    /// API publish endpoint used by <see cref="PublishToRabbitMqAsync"/>, optionally setting
+    /// an AMQP 0.9.1 basic-properties <c>Authorization</c> header when
+    /// <paramref name="authToken"/> is non-empty — RabbitMQ's Shovel amqp10 destination
+    /// bridges it to an AMQP 1.0 application property, but
+    /// <c>ServiceBusWorkflowTriggerFunction</c> no longer reads or validates it (trust is
+    /// the configured queue's transport boundary instead; see
+    /// docs/ServiceBusSecureTrigger-Architecture.md) — this exists purely so a caller can
+    /// prove the trigger genuinely ignores it. Also sets the AMQP 0.9.1
     /// <c>correlation_id</c> basic property as a belt-and-braces fallback — the trigger
     /// prefers the JSON body's own <c>correlationId</c> field, but falls back to the
     /// message's native <c>CorrelationId</c> if that field is omitted.
     /// </summary>
     private static async Task PublishManyWorkflowTriggerMessagesAsync(
         string managementUri, string username, string password, string vhost, string queue,
-        string workflow, string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken, string jti,
+        string workflow, string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken,
         int maxConcurrency = 1)
     {
         using var http = new HttpClient();
@@ -422,7 +435,7 @@ internal static class Program
 
         await PublishManyBoundedAsync(
             correlationIds,
-            id => PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflow, workflowInputsJson, id, authToken, jti),
+            id => PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflow, workflowInputsJson, id, authToken),
             maxConcurrency);
     }
 
@@ -477,7 +490,7 @@ internal static class Program
 
     private static async Task PublishWorkflowTriggerMessageAsync(
         HttpClient http, string managementUri, string vhost, string queue,
-        string workflow, string workflowInputsJson, string correlationId, string authToken, string jti)
+        string workflow, string workflowInputsJson, string correlationId, string authToken)
     {
         var vhostSegment = vhost == "/" ? "%2f" : Uri.EscapeDataString(vhost);
 
@@ -495,14 +508,15 @@ internal static class Program
 
         var payload = JsonSerializer.Serialize(new { workflow, inputs, correlationId });
 
-        var bearerValue = authToken.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
-            ? authToken
-            : $"Bearer {authToken}";
-
-        var headers = new Dictionary<string, object> { ["Authorization"] = bearerValue };
-        if (!string.IsNullOrWhiteSpace(jti))
+        // Optional: the trigger no longer reads or validates this header at all (trust is
+        // the configured queue's transport boundary instead) - only set it when a caller
+        // explicitly wants to prove the trigger genuinely ignores it.
+        var headers = new Dictionary<string, object>();
+        if (!string.IsNullOrWhiteSpace(authToken))
         {
-            headers["jti"] = jti;
+            headers["Authorization"] = authToken.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase)
+                ? authToken
+                : $"Bearer {authToken}";
         }
 
         var body = new

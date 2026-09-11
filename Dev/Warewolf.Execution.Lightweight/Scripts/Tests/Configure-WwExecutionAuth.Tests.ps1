@@ -264,13 +264,11 @@ Describe 'Configure-WwExecutionAuth — Stage 4 app-role reconciliation accepts 
 Describe 'Configure-WwExecutionAuth — Merge-EntraConfigJson (Stage 8 read-merge-write)' {
     <#
         Live incident this fixes (2026-09-03): Stage 8 rebuilt WAREWOLF_ENTRA_CONFIG from
-        scratch with only tenantId/audience/clientId. That setting is shared with
-        Enable-ServiceBusSecureTrigger.ps1, which stores 'serviceBusAudience' in it, so
-        every engine deploy silently DELETED that field. Losing it makes
-        ServiceBusEntraAuthOptions.IsEnabled false, and the Service Bus trigger then fails
-        closed - dead-lettering every message with no startup error and no telemetry, the
-        only visible symptom being a rising dead-letter count (60 messages lost this way
-        before the cause was found in the Kudu host log).
+        scratch with only tenantId/audience/clientId. This setting is a whole-value app
+        setting write (Azure has no JSON-merge primitive), so rebuilding it from scratch
+        silently DELETES any other field a different writer had stored in it - the tests
+        below use a generic placeholder field ('otherField') to exercise that
+        preserve-on-merge behaviour without tying it to any specific field name.
 
         These tests pin the merge so a future edit cannot reintroduce overwrite-from-scratch.
     #>
@@ -279,12 +277,12 @@ Describe 'Configure-WwExecutionAuth — Merge-EntraConfigJson (Stage 8 read-merg
         . $script:AuthScript -LoadFunctionsOnly
     }
 
-    It 'preserves serviceBusAudience written by Enable-ServiceBusSecureTrigger.ps1' {
+    It 'preserves a field written by some other process into WAREWOLF_ENTRA_CONFIG' {
         $merged = Merge-EntraConfigJson `
-            -ExistingJson '{"tenantId":"old-t","audience":"api://old-a","clientId":"old-c","serviceBusAudience":"api://sb-audience"}' `
+            -ExistingJson '{"tenantId":"old-t","audience":"api://old-a","clientId":"old-c","otherField":"keep-me"}' `
             -TenantId 'new-t' -Audience 'api://new-a' -ClientId 'new-c'
 
-        $merged['serviceBusAudience'] | Should -Be 'api://sb-audience'
+        $merged['otherField'] | Should -Be 'keep-me'
     }
 
     It 'preserves arbitrary unknown fields it does not own' {
@@ -298,7 +296,7 @@ Describe 'Configure-WwExecutionAuth — Merge-EntraConfigJson (Stage 8 read-merg
 
     It 'still overwrites the three fields this script owns' {
         $merged = Merge-EntraConfigJson `
-            -ExistingJson '{"tenantId":"stale","audience":"api://stale","clientId":"stale","serviceBusAudience":"api://sb"}' `
+            -ExistingJson '{"tenantId":"stale","audience":"api://stale","clientId":"stale","otherField":"keep-me"}' `
             -TenantId 'rotated-t' -Audience 'api://rotated-a' -ClientId 'rotated-c'
 
         $merged['tenantId'] | Should -Be 'rotated-t'
@@ -325,7 +323,7 @@ Describe 'Configure-WwExecutionAuth — Merge-EntraConfigJson (Stage 8 read-merg
     It 'replaces an unparseable stored value and warns instead of throwing' {
         # The corrupted shape seen live: quote-stripped JSON written by an inline
         # `--settings "KEY={json}"` az call.
-        $corrupt = '{tenantId:ca0cc53b,audience:api://9901d2f5,serviceBusAudience:api://e510a863}'
+        $corrupt = '{tenantId:ca0cc53b,audience:api://9901d2f5,otherField:api://e510a863}'
 
         $warnings = @()
         $merged = Merge-EntraConfigJson -ExistingJson $corrupt `
@@ -333,19 +331,19 @@ Describe 'Configure-WwExecutionAuth — Merge-EntraConfigJson (Stage 8 read-merg
 
         @($merged.Keys) | Should -Be @('tenantId', 'audience', 'clientId')
         $warnings.Count | Should -BeGreaterThan 0
-        ($warnings -join ' ') | Should -Match 'serviceBusAudience'
+        ($warnings -join ' ') | Should -Match 'not valid JSON'
     }
 
     It 'round-trips through ConvertTo-Json as valid JSON with the preserved field intact' {
         $merged = Merge-EntraConfigJson `
-            -ExistingJson '{"tenantId":"old","serviceBusAudience":"api://sb"}' `
+            -ExistingJson '{"tenantId":"old","otherField":"keep-me"}' `
             -TenantId 't' -Audience 'api://a' -ClientId 'c'
 
         $reparsed = $merged | ConvertTo-Json -Compress | ConvertFrom-Json
 
-        $reparsed.tenantId           | Should -Be 't'
-        $reparsed.audience           | Should -Be 'api://a'
-        $reparsed.clientId           | Should -Be 'c'
-        $reparsed.serviceBusAudience | Should -Be 'api://sb'
+        $reparsed.tenantId    | Should -Be 't'
+        $reparsed.audience    | Should -Be 'api://a'
+        $reparsed.clientId    | Should -Be 'c'
+        $reparsed.otherField  | Should -Be 'keep-me'
     }
 }

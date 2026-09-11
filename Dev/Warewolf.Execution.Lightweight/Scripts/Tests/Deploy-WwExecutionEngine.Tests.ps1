@@ -728,8 +728,8 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $callArgs = $script:commonArgs.Clone()
             $callArgs.ServiceBusTriggerMaxConcurrentExecutions = 2
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'serviceBusTrigger=.*"jtiWindowHours":null'
             $out | Should -Match 'serviceBusTrigger=.*"executionTimeoutSeconds":null'
+            $out | Should -Match 'serviceBusTrigger=.*"slotWaitTimeoutSeconds":null'
         }
 
         It 'regression: -KeyVaultName alone (no ServiceBusTrigger params) stages with NO serviceBusTrigger key' {

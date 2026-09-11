@@ -87,7 +87,7 @@ namespace Warewolf.Execution.Lightweight.Security
         {
             // WOLF-8516: sourced from the shared EntraIdentityOptions parse (WAREWOLF_ENTRA_CONFIG)
             // instead of independently reading WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_AUDIENCE —
-            // the same values EntraAuthOptions/ServiceBusEntraAuthOptions now read.
+            // the same values EntraAuthOptions now reads.
             var entra = Auth.Models.EntraIdentityOptions.FromEnvironment();
             var entraTenantId = entra.TenantId ?? string.Empty;
             var entraAudience = entra.Audience ?? string.Empty;

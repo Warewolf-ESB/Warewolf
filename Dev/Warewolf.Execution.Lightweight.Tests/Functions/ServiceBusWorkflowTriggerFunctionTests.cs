@@ -3,8 +3,11 @@
  *  Copyright 2026 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Unit tests for ServiceBusWorkflowTriggerFunction — the secure, in-process Service
- *  Bus workflow trigger (Model A of Spec-Secure-ServiceBus-Triggered-Execution.md).
+ *  Unit tests for ServiceBusWorkflowTriggerFunction — the in-process Service Bus
+ *  workflow trigger that trusts the TRANSPORT boundary only. There is no per-message
+ *  caller token, no jti replay check, and no IWorkflowPolicyMatcher authorization call —
+ *  every well-formed message on the configured queue executes unconditionally. See the
+ *  class's own XML doc ("Security posture") for why.
  *
  *  Test-double strategy (no mocking library — matches the rest of this test project):
  *   - ServiceBusMessageActions has a protected parameterless constructor and every
@@ -15,25 +18,20 @@
  *     Azure.Messaging.ServiceBus.ServiceBusModelFactory.ServiceBusReceivedMessage(...),
  *     whose optional-parameters overload lets every field but the ones under test be
  *     left at its default.
- *   - IWorkflowPolicyMatcher / IWorkflowExecutor get small hand-written fakes.
+ *   - IWorkflowExecutor gets a small hand-written fake.
  *   - ServiceBusReplayAndResultStore is the REAL production type, backed by
  *     Hangfire.MemoryStorage via its internal JobStorage test seam (mirrors
  *     ResumptionExecutorTests' convention for the suspend/resume store).
  *
  *  Coverage split, matching Run(...)'s early-exit branches vs. the extracted
- *  ProcessAuthenticatedMessageAsync(...) (see that method's XML doc for why it was
- *  pulled out): the pre-authentication branches (malformed JSON, missing 'workflow',
- *  duplicate correlation id, missing Authorization property, validator not configured)
- *  are exercised through Run(...) itself — none of them reach the network-dependent
- *  token validator. The post-authentication branches (jti replay, policy
- *  denied/allowed, execution success/failure/exception) are exercised by calling
- *  ProcessAuthenticatedMessageAsync(...) directly with a hand-built ClaimsIdentity,
- *  bypassing EntraBearerTokenValidator.ValidateAsync's live OIDC metadata call —
- *  the same network-avoidance convention BearerTokenPrincipalParserTests already
- *  established for the HTTP path.
+ *  ProcessMessageAsync(...): the pre-claim branches (malformed JSON, missing
+ *  'workflow', duplicate correlation id, in-flight claim race) are exercised through
+ *  Run(...) itself, including one test proving a message executes successfully with
+ *  no Authorization property at all — the direct behavioural proof of the new trust
+ *  model. The execution/settlement/timeout/concurrency branches are exercised by
+ *  calling ProcessMessageAsync(...) directly, mirroring Run(...)'s own dispatch.
  */
 
-using System.Security.Claims;
 using Azure.Messaging.ServiceBus;
 using Hangfire.MemoryStorage;
 using Microsoft.Azure.Functions.Worker;
@@ -41,7 +39,6 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
-using Warewolf.Execution.Lightweight.Auth.Parsers;
 using Warewolf.Execution.Lightweight.Functions;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Models;
@@ -103,17 +100,6 @@ public class ServiceBusWorkflowTriggerFunctionTests
         }
     }
 
-    private sealed class FakePolicyMatcher : IWorkflowPolicyMatcher
-    {
-        private readonly PolicyMatchResult _result;
-        public FakePolicyMatcher(PolicyMatchResult result) => _result = result;
-
-        public PolicyMatchResult Evaluate(
-            string workflowName,
-            WorkflowClaimsPrincipal principal,
-            WorkflowPermission requiredPermissions = WorkflowPermission.View | WorkflowPermission.Execute) => _result;
-    }
-
     private sealed class FakeWorkflowExecutor : IWorkflowExecutor
     {
         private readonly Func<WorkflowExecutionRequest, WorkflowExecutionResult> _impl;
@@ -132,79 +118,27 @@ public class ServiceBusWorkflowTriggerFunctionTests
         }
     }
 
-    /// <summary>
-    /// Decorates a real <see cref="ServiceBusReplayAndResultStore"/> so tests can assert
-    /// exactly which stages <see cref="IServiceBusReplayAndResultStore.RecordClaimStage"/>
-    /// was called with, in order — independent of the underlying persisted state, which
-    /// <see cref="IServiceBusReplayAndResultStore.ReleaseClaim"/> wipes (including any stage
-    /// already recorded) on the transient/unexpected-failure paths. Delegates everything
-    /// else unchanged.
-    /// </summary>
-    private sealed class RecordingReplayAndResultStore : IServiceBusReplayAndResultStore
-    {
-        private readonly IServiceBusReplayAndResultStore _inner;
-        public List<string> RecordedStages { get; } = new();
-        public RecordingReplayAndResultStore(IServiceBusReplayAndResultStore inner) => _inner = inner;
-
-        public bool TryRegisterJti(string jti) => _inner.TryRegisterJti(jti);
-        public bool TryGetResult(string correlationId, out ServiceBusTriggerResult? result) => _inner.TryGetResult(correlationId, out result);
-        public void SaveResult(ServiceBusTriggerResult result) => _inner.SaveResult(result);
-        public bool TryClaim(string correlationId) => _inner.TryClaim(correlationId);
-        public void ReleaseClaim(string correlationId) => _inner.ReleaseClaim(correlationId);
-
-        public void RecordClaimStage(string correlationId, string stage)
-        {
-            RecordedStages.Add(stage);
-            _inner.RecordClaimStage(correlationId, stage);
-        }
-    }
-
     // ── Fixture helpers ──────────────────────────────────────────────────────────
 
     private static ServiceBusReceivedMessage NewMessage(
         string body,
         string? correlationId = null,
-        string? messageId = null,
-        string? authorization = "Bearer test-token",
-        string? jtiProperty = null)
+        string? messageId = null)
     {
-        var properties = new Dictionary<string, object>();
-        if (authorization is not null)
-        {
-            properties["Authorization"] = authorization;
-        }
-        if (jtiProperty is not null)
-        {
-            properties["jti"] = jtiProperty;
-        }
-
         return ServiceBusModelFactory.ServiceBusReceivedMessage(
             body: BinaryData.FromString(body),
             messageId: messageId ?? Guid.NewGuid().ToString(),
-            correlationId: correlationId,
-            properties: properties);
+            correlationId: correlationId);
     }
 
-    private static ClaimsIdentity NewUserIdentity(string userName = "alice@example.com", string jti = "jti-001") =>
-        new(new[]
-        {
-            new Claim(ClaimTypes.Name, userName),
-            new Claim(AuthConstants.Scope, "user_impersonation"),
-            new Claim("jti", jti),
-        }, "Bearer");
-
     private static ServiceBusWorkflowTriggerFunction NewSut(
-        IWorkflowPolicyMatcher? policyMatcher = null,
         IWorkflowExecutor? executor = null,
         IServiceBusReplayAndResultStore? store = null,
-        ServiceBusEntraAuthOptions? authOptions = null,
         ServiceBusTriggerOptions? triggerOptions = null,
         SemaphoreSlim? executionConcurrencyLimiter = null)
     {
         var effectiveTriggerOptions = triggerOptions ?? new ServiceBusTriggerOptions();
         return new(
-            new EntraBearerTokenValidator(authOptions ?? new ServiceBusEntraAuthOptions()),
-            policyMatcher ?? new FakePolicyMatcher(PolicyMatchResult.Allow()),
             executor ?? new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" }),
             store ?? new ServiceBusReplayAndResultStore(new MemoryStorage()),
             new AuditLogger(NullLogger<AuditLogger>.Instance),
@@ -214,7 +148,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
             NullLogger<ServiceBusWorkflowTriggerFunction>.Instance);
     }
 
-    // ── Run(...) — pre-authentication branches (no network dependency) ──────────
+    // ── Run(...) — pre-claim branches ───────────────────────────────────────────
 
     [TestMethod]
     [TestCategory("UnitTest")]
@@ -304,196 +238,34 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task Run_MissingAuthorizationProperty_DeadLettersAsInvalidToken()
+    public async Task Run_MessageWithNoAuthorizationProperty_ExecutesSuccessfully()
     {
+        // The direct behavioural proof of the new trust model: a message carries no
+        // caller identity at all (no 'Authorization' application property - the field
+        // this trigger used to require), yet it still executes, because trust is now
+        // the transport boundary (arrival on the configured queue) rather than anything
+        // carried in the message.
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
-        var sut = NewSut(store: store);
+        var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var message = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-missing-auth\"}", correlationId: "corr-missing-auth", authorization: null);
+        var message = NewMessage("{\"workflow\":\"Hello World\"}", correlationId: "corr-no-auth");
 
         await sut.Run(message, actions, CancellationToken.None);
 
-        Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("InvalidToken:MissingAuthorizationProperty", actions.LastDeadLetterReason);
-        var (stage, _) = store.GetClaimStageForTests("corr-missing-auth");
-        Assert.AreEqual("ClaimAcquired", stage,
-            "The durable breadcrumb must record the claim before token extraction, so a future silent death still leaves this checkpoint even though App Insights has repeatedly shown zero telemetry for this app.");
+        Assert.AreEqual(1, executor.CallCount);
+        Assert.AreEqual(1, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        store.TryGetResult("corr-no-auth", out var result);
+        Assert.AreEqual(ServiceBusTriggerStatus.Succeeded, result!.Status);
+        Assert.AreEqual(ServiceBusWorkflowTriggerFunction.TrustedQueueCaller, result.Caller);
     }
+
+    // ── ProcessMessageAsync(...) — execution/settlement/timeout/concurrency ────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task Run_ServiceBusAuthNotConfigured_TreatedAsTransient_NoResultSaved_WithoutNetworkCall()
-    {
-        // WOLF-8512: engine misconfiguration (missing WAREWOLF_ENTRA_TENANT_ID /
-        // WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE) must NOT permanently poison the correlation id -
-        // a config fix followed by redelivery should succeed, so this is now transient rather
-        // than the terminal InvalidToken it used to be (see ServiceBusWorkflowTriggerFunction's
-        // "!_tokenValidator.IsEnabled" branch). Default ServiceBusEntraAuthOptions() has no
-        // TenantId/Audience → IsEnabled == false, so this must still fail BEFORE any live OIDC
-        // metadata call is attempted - only the classification of the failure has changed.
-        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
-        var sut = NewSut(authOptions: new ServiceBusEntraAuthOptions(), store: store);
-        var actions = new FakeServiceBusMessageActions();
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
-
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-            () => sut.Run(message, actions, CancellationToken.None));
-
-        Assert.AreEqual(0, actions.DeadLetterCalls,
-            "Engine misconfiguration must not dead-letter on first delivery - it must retry via standard Service Bus redelivery instead.");
-        Assert.AreEqual(0, actions.CompleteCalls);
-        Assert.IsFalse(store.TryGetResult(message.MessageId, out _),
-            "A transient failure must never persist a result - a saved result would satisfy the idempotency dedupe check and permanently prevent re-execution once the engine is fixed.");
-        Assert.IsTrue(store.TryClaim(message.MessageId),
-            "The claim taken by TryClaim must be released so a redelivery (after an operator fixes the configuration) is not blocked by this failed attempt's own claim.");
-    }
-
-    // ── IsOwnInvocationCancellation(...) — pure classification helper (WOLF-8512) ──
-    //    No I/O, no need to fake the sealed EntraBearerTokenValidator - same reason
-    //    WorkflowExecutorTransientFailureTests tests BuildTransientFailureResult directly
-    //    rather than driving the whole Execute(...) call for the analogous OOM fix.
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public void IsOwnInvocationCancellation_OwnTokenCancelled_ReturnsTrue()
-    {
-        using var cts = new CancellationTokenSource();
-        cts.Cancel();
-        var ex = new TaskCanceledException();
-
-        Assert.IsTrue(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public void IsOwnInvocationCancellation_OperationCanceledException_OwnTokenCancelled_ReturnsTrue()
-    {
-        // TaskCanceledException is the concrete type actually observed live ("A task was
-        // canceled."), but the classification must hold for the base type too - anything
-        // awaited that respects the token can surface either.
-        using var cts = new CancellationTokenSource();
-        cts.Cancel();
-        var ex = new OperationCanceledException();
-
-        Assert.IsTrue(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public void IsOwnInvocationCancellation_TokenNotCancelled_ReturnsFalse()
-    {
-        // A cancellation-shaped exception surfacing while OUR token is still live cannot be
-        // our own invocation being cancelled - do not misclassify it as transient.
-        using var cts = new CancellationTokenSource();
-        var ex = new TaskCanceledException();
-
-        Assert.IsFalse(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public void IsOwnInvocationCancellation_GenuineValidationFailure_ReturnsFalse()
-    {
-        using var cts = new CancellationTokenSource();
-        cts.Cancel(); // even with our own token already cancelled for an unrelated reason...
-        var ex = new Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException("token expired");
-
-        // ...a genuinely bad token must never be reclassified as transient just because the
-        // invocation also happened to be cancelling around the same time.
-        Assert.IsFalse(ServiceBusWorkflowTriggerFunction.IsOwnInvocationCancellation(ex, cts.Token));
-    }
-
-    // ── FailTransient(...) — shared transient-tail helper (WOLF-8512, step 5a) ──
-    //    Both the shipped IsOwnInvocationCancellation catch clause and the newer
-    //    TokenValidationFailureClassifier.IsTransient clause (and the !IsEnabled branch)
-    //    now route through this one helper - tested directly here so its release/no-save/
-    //    rethrow contract is verified independently of which caller reaches it.
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public void FailTransient_ReleasesClaim_SavesNoResult_Rethrows()
-    {
-        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
-        Assert.IsTrue(store.TryClaim("corr-fail-transient"), "Pre-claim to simulate an in-flight attempt.");
-        var sut = NewSut(store: store);
-        var originalException = new InvalidOperationException("boom");
-
-        var thrown = Assert.ThrowsException<InvalidOperationException>(
-            () => sut.FailTransient("corr-fail-transient", originalException, "template {CorrelationId}", "corr-fail-transient"));
-
-        Assert.AreSame(originalException, thrown,
-            "The original exception instance must be rethrown via ExceptionDispatchInfo, not wrapped or replaced.");
-        Assert.IsFalse(store.TryGetResult("corr-fail-transient", out _),
-            "FailTransient must never call SaveResult - a persisted result would satisfy the idempotency dedupe check and permanently prevent re-execution.");
-        Assert.IsTrue(store.TryClaim("corr-fail-transient"),
-            "The claim must be released so a new delivery is not permanently blocked by this failed attempt's own claim.");
-    }
-
-    // ── ProcessAuthenticatedMessageAsync(...) — post-authentication branches ────
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_JtiReplay_DeadLettersAsInvalidToken_NoExecution()
-    {
-        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
-        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
-        store.TryRegisterJti("jti-repeat"); // pre-seed as already used
-        var sut = NewSut(executor: executor, store: store);
-        var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}", jtiProperty: "jti-repeat");
-        var identity = NewUserIdentity(jti: "jti-repeat");
-
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-replay", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
-
-        Assert.AreEqual(0, executor.CallCount);
-        Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("InvalidToken:JtiReplay", actions.LastDeadLetterReason);
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_PolicyForbidden_DeadLettersAsDenied_NoExecution()
-    {
-        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("must not execute"));
-        var policy = new FakePolicyMatcher(PolicyMatchResult.DenyGroup("Caller is not a member of any allowed group."));
-        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
-        var sut = NewSut(policyMatcher: policy, executor: executor, store: store);
-        var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Admin Only" };
-        var message = NewMessage("{\"workflow\":\"Admin Only\"}");
-        var identity = NewUserIdentity(jti: "jti-denied");
-
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-denied", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
-
-        Assert.AreEqual(0, executor.CallCount);
-        Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("Denied:PolicyForbidden", actions.LastDeadLetterReason);
-        store.TryGetResult("corr-denied", out var result);
-        Assert.AreEqual(ServiceBusTriggerStatus.Denied, result!.Status);
-        Assert.AreEqual("Caller is not a member of any allowed group.", result.Error);
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ConfigMissingDeny_DeadLettersAsDenied()
-    {
-        var policy = new FakePolicyMatcher(PolicyMatchResult.DenyConfigMissing("secure.config is absent."));
-        var sut = NewSut(policyMatcher: policy);
-        var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-config-missing");
-
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-config-missing", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
-
-        Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("Denied:ConfigMissingDeny", actions.LastDeadLetterReason);
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionSucceeds_CompletesAndSavesOutputs()
+    public async Task ProcessMessage_ExecutionSucceeds_CompletesAndSavesOutputs()
     {
         var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{\"Greeting\":\"Hi\"}" });
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
@@ -501,89 +273,38 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(userName: "alice@example.com", jti: "jti-success");
 
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-success", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+        await sut.ProcessMessageAsync(payload, "corr-success", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
         Assert.AreEqual(1, executor.CallCount);
         Assert.AreEqual(1, actions.CompleteCalls);
         Assert.AreEqual(0, actions.DeadLetterCalls);
         store.TryGetResult("corr-success", out var result);
         Assert.AreEqual(ServiceBusTriggerStatus.Succeeded, result!.Status);
-        Assert.AreEqual("alice@example.com", result.Caller);
+        Assert.AreEqual(ServiceBusWorkflowTriggerFunction.TrustedQueueCaller, result.Caller);
         Assert.AreEqual("{\"Greeting\":\"Hi\"}", result.Outputs);
     }
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionSucceeds_RecordsAboutToExecuteThenExecutionReturnedStages()
-    {
-        // 2026-09-11: durable mirror of the ILogger checkpoints that bracket the
-        // no-cancellation-seam call into IWorkflowExecutor.Execute — added after two live
-        // investigations (2026-08-31, 2026-09-11) found Application Insights had captured
-        // ZERO telemetry for this app for the entire run window, making those ILogger calls
-        // alone an unreliable trail for a future silent-death recurrence.
-        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
-        var store = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
-        var sut = NewSut(executor: executor, store: store);
-        var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-stage-success");
-
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-stage-success", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
-
-        Assert.AreEqual(2, store.RecordedStages.Count);
-        StringAssert.StartsWith(store.RecordedStages[0], "AboutToExecute");
-        StringAssert.StartsWith(store.RecordedStages[1], "ExecutionReturned (IsSuccess=True)");
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutorThrows_RecordsAboutToExecuteStage_NeverReachesExecutionReturned()
-    {
-        // The executor throwing means the ExecutionReturned checkpoint is never reached -
-        // AboutToExecute must be the ONLY stage recorded, which is exactly the "how far did
-        // it get before it died" signal this breadcrumb exists to provide. Asserted via the
-        // recording decorator rather than reading the persisted claim row back, because
-        // ReleaseClaim (called on this same path, right before rethrow) wipes that row
-        // entirely, including any stage already written to it.
-        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));
-        var store = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
-        var sut = NewSut(executor: executor, store: store);
-        var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-stage-exception");
-
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-stage-exception", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
-
-        Assert.AreEqual(1, store.RecordedStages.Count);
-        StringAssert.StartsWith(store.RecordedStages[0], "AboutToExecute");
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionSucceeds_StampsExecutingPrincipalOnRequest()
+    public async Task ProcessMessage_ExecutionSucceeds_StampsAnonymousExecutingPrincipalOnRequest()
     {
         var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
         var sut = NewSut(executor: executor);
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(userName: "alice@example.com", jti: "jti-principal");
 
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-principal", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+        await sut.ProcessMessageAsync(payload, "corr-principal", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
         var stampedPrincipal = executor.LastRequest?.ExecutingPrincipal as WorkflowClaimsPrincipal;
-        Assert.IsNotNull(stampedPrincipal);
-        Assert.AreEqual("alice@example.com", stampedPrincipal!.CallerIdentity);
+        Assert.IsNotNull(stampedPrincipal, "ExecutingPrincipal must still be populated (WorkflowExecutor.ResolveExecutingUser depends on it), even with no per-caller identity.");
+        Assert.IsFalse(stampedPrincipal!.Identity?.IsAuthenticated, "No token is validated any more, so the stamped principal must be unauthenticated (WorkflowClaimsPrincipal.Anonymous()).");
     }
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_SettlementTimesOut_ResultStillPersisted_NoThrow()
+    public async Task ProcessMessage_SettlementTimesOut_ResultStillPersisted_NoThrow()
     {
         // WOLF-8512 (§2.2's safety argument): a settlement call that never completes within
         // SettlementTimeout must not throw or lose the outcome - the result is always saved
@@ -597,11 +318,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions { CompleteMessageDelay = TimeSpan.FromSeconds(5) };
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-settlement-timeout");
 
         // Must complete normally (no exception) despite CompleteMessageAsync never actually
         // finishing within SettlementTimeout.
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-settlement-timeout", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+        await sut.ProcessMessageAsync(payload, "corr-settlement-timeout", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
         Assert.AreEqual(0, actions.CompleteCalls, "CompleteMessageAsync must have been abandoned by the settlement timeout, never actually finishing.");
         store.TryGetResult("corr-settlement-timeout", out var result);
@@ -611,7 +331,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionBusinessFailure_DeadLettersAsFailed_NotThrown()
+    public async Task ProcessMessage_ExecutionBusinessFailure_DeadLettersAsFailed_NotThrown()
     {
         var executor = new FakeWorkflowExecutor(_ => WorkflowExecutionResult.Failure("Activity 'Divide' failed: divide by zero."));
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
@@ -619,9 +339,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-failure");
 
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-failure", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+        await sut.ProcessMessageAsync(payload, "corr-failure", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
         Assert.AreEqual(0, actions.CompleteCalls);
         Assert.AreEqual(1, actions.DeadLetterCalls);
@@ -633,7 +352,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionTransientFailure_ThrowsInsteadOfDeadLettering_NoResultPersisted()
+    public async Task ProcessMessage_ExecutionTransientFailure_ThrowsInsteadOfDeadLettering_NoResultPersisted()
     {
         // OutOfMemoryException-under-cold-start signature, surfaced by WorkflowExecutor as
         // IsTransientFailure = true — must retry (throw), NOT dead-letter, and must NOT persist a
@@ -645,10 +364,9 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-transient");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-transient", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+            () => sut.ProcessMessageAsync(payload, "corr-transient", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
 
         Assert.AreEqual(0, actions.CompleteCalls);
         Assert.AreEqual(0, actions.DeadLetterCalls);
@@ -657,7 +375,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionTransientFailure_ReleasesClaim_AllowingRetryToReExecute()
+    public async Task ProcessMessage_ExecutionTransientFailure_ReleasesClaim_AllowingRetryToReExecute()
     {
         // The claim must not survive a transient failure - otherwise the very redelivery
         // this throw exists to trigger would be permanently blocked by its own failed
@@ -668,11 +386,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-transient-release");
         Assert.IsTrue(store.TryClaim("corr-transient-release"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-transient-release", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+            () => sut.ProcessMessageAsync(payload, "corr-transient-release", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
 
         Assert.IsTrue(store.TryClaim("corr-transient-release"),
             "The claim must be released on a transient failure so a genuine Service Bus redelivery can re-execute.");
@@ -680,7 +397,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutorThrowsUnexpectedException_RethrowsWithoutSwallowing()
+    public async Task ProcessMessage_ExecutorThrowsUnexpectedException_RethrowsWithoutSwallowing()
     {
         var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
@@ -688,10 +405,9 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-exception");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-exception", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+            () => sut.ProcessMessageAsync(payload, "corr-exception", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
 
         // Left for the Service Bus extension's own retry/backoff — no settlement, no
         // recorded result for this correlation id.
@@ -702,7 +418,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutorThrowsUnexpectedException_ReleasesClaim_AllowingRetryToReExecute()
+    public async Task ProcessMessage_ExecutorThrowsUnexpectedException_ReleasesClaim_AllowingRetryToReExecute()
     {
         var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
@@ -710,43 +426,20 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-exception-release");
         Assert.IsTrue(store.TryClaim("corr-exception-release"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-exception-release", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+            () => sut.ProcessMessageAsync(payload, "corr-exception-release", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
 
         Assert.IsTrue(store.TryClaim("corr-exception-release"),
             "The claim must be released on an unexpected exception so a genuine Service Bus redelivery can re-execute.");
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_AppOnlyToken_CallerIdentityIsAppPrefixed()
-    {
-        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
-        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
-        var sut = NewSut(executor: executor, store: store);
-        var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var appOnlyIdentity = new ClaimsIdentity(new[]
-        {
-            new Claim(AuthConstants.ObjectIdentifier, "11111111-2222-3333-4444-555555555555"),
-            new Claim("jti", "jti-app-only"),
-        }, "Bearer");
-
-        await sut.ProcessAuthenticatedMessageAsync(appOnlyIdentity, payload, "corr-app-only", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
-
-        store.TryGetResult("corr-app-only", out var result);
-        Assert.AreEqual("app:11111111-2222-3333-4444-555555555555", result!.Caller);
     }
 
     // ── Bounded execution time (ServiceBusTriggerOptions.ExecutionTimeout) ──────
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionExceedsTimeout_ThrowsTimeoutException_ReleasesClaim_NoResultPersisted()
+    public async Task ProcessMessage_ExecutionExceedsTimeout_ThrowsTimeoutException_ReleasesClaim_NoResultPersisted()
     {
         // gate is never set during the assertion window below - simulates an execution that
         // hangs (e.g. thread-pool starvation under load), not one that merely errors.
@@ -761,11 +454,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-timeout");
         Assert.IsTrue(store.TryClaim("corr-timeout"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<TimeoutException>(
-            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-timeout", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+            () => sut.ProcessMessageAsync(payload, "corr-timeout", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
 
         Assert.IsTrue(store.TryClaim("corr-timeout"),
             "The claim must be released on a timeout so a genuine Service Bus redelivery can re-execute.");
@@ -777,7 +469,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ExecutionFasterThanTimeout_CompletesNormally()
+    public async Task ProcessMessage_ExecutionFasterThanTimeout_CompletesNormally()
     {
         var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
@@ -786,9 +478,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var actions = new FakeServiceBusMessageActions();
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-fast");
 
-        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-fast", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+        await sut.ProcessMessageAsync(payload, "corr-fast", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
         Assert.AreEqual(1, actions.CompleteCalls);
         store.TryGetResult("corr-fast", out var result);
@@ -797,7 +488,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_TimedOutExecution_ReleasesConcurrencySlot_OnlyWhenBackgroundExecutionActuallyFinishes()
+    public async Task ProcessMessage_TimedOutExecution_ReleasesConcurrencySlot_OnlyWhenBackgroundExecutionActuallyFinishes()
     {
         // Pins the deliberate design decision documented on ServiceBusTriggerOptions.
         // MaxConcurrentExecutions: a timed-out (abandoned, not cancelled) execution keeps
@@ -817,11 +508,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
         var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
         var message = NewMessage("{\"workflow\":\"Hello World\"}");
-        var identity = NewUserIdentity(jti: "jti-slot-honesty");
         Assert.IsTrue(store.TryClaim("corr-slot-honesty"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<TimeoutException>(
-            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-slot-honesty", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+            () => sut.ProcessMessageAsync(payload, "corr-slot-honesty", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
 
         Assert.AreEqual(0, limiter.CurrentCount,
             "The slot must stay charged against the cap while the abandoned execution is still actually running in the background.");
@@ -835,7 +525,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_ConcurrencyLimiterAtCapacity_NextDeliveryWaitsForAFreeSlot()
+    public async Task ProcessMessage_ConcurrencyLimiterAtCapacity_NextDeliveryWaitsForAFreeSlot()
     {
         var gateA = new ManualResetEventSlim(false);
         var startedA = new ManualResetEventSlim(false);
@@ -863,12 +553,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
         var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
 
-        var taskA = sut.ProcessAuthenticatedMessageAsync(
-            NewUserIdentity(jti: "jti-cap-a"), payloadA, "corr-cap-a", messageA, actionsA, DateTimeOffset.UtcNow, CancellationToken.None);
+        var taskA = sut.ProcessMessageAsync(payloadA, "corr-cap-a", messageA, actionsA, DateTimeOffset.UtcNow, CancellationToken.None);
         Assert.IsTrue(startedA.Wait(TimeSpan.FromSeconds(2)), "First delivery must acquire the only slot and start executing.");
 
-        var taskB = sut.ProcessAuthenticatedMessageAsync(
-            NewUserIdentity(jti: "jti-cap-b"), payloadB, "corr-cap-b", messageB, actionsB, DateTimeOffset.UtcNow, CancellationToken.None);
+        var taskB = sut.ProcessMessageAsync(payloadB, "corr-cap-b", messageB, actionsB, DateTimeOffset.UtcNow, CancellationToken.None);
         Assert.IsFalse(startedB.Wait(TimeSpan.FromMilliseconds(200)),
             "Second delivery must wait for a free execution slot instead of running immediately while the cap is exhausted.");
 
@@ -885,7 +573,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_SlotWaitExceedsTimeout_ThrowsTimeoutException_ReleasesClaim_NeverAcquiresSlot()
+    public async Task ProcessMessage_SlotWaitExceedsTimeout_ThrowsTimeoutException_ReleasesClaim_NeverAcquiresSlot()
     {
         // Covers the gap ExecutionTimeout alone cannot close: a slot held by a genuinely
         // deadlocked execution is never released (see ExecutionTimeout's "Known
@@ -915,13 +603,11 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
         Assert.IsTrue(store.TryClaim("corr-slot-wait-b"), "Simulates Run(...)'s claim before dispatching to this method.");
 
-        var taskA = sut.ProcessAuthenticatedMessageAsync(
-            NewUserIdentity(jti: "jti-slot-wait-a"), payloadA, "corr-slot-wait-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
+        var taskA = sut.ProcessMessageAsync(payloadA, "corr-slot-wait-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
         Assert.IsTrue(startedA.Wait(TimeSpan.FromSeconds(2)), "First delivery must acquire the only slot and start executing.");
 
         await Assert.ThrowsExceptionAsync<TimeoutException>(
-            () => sut.ProcessAuthenticatedMessageAsync(
-                NewUserIdentity(jti: "jti-slot-wait-b"), payloadB, "corr-slot-wait-b", messageB, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+            () => sut.ProcessMessageAsync(payloadB, "corr-slot-wait-b", messageB, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
 
         Assert.IsTrue(store.TryClaim("corr-slot-wait-b"),
             "The claim must be released when the wait for a free slot itself times out, so a redelivery can retry.");
@@ -934,7 +620,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessAuthenticated_DifferentCorrelationIds_WithinCapacity_BothProceedWithoutWaitingOnEachOther()
+    public async Task ProcessMessage_DifferentCorrelationIds_WithinCapacity_BothProceedWithoutWaitingOnEachOther()
     {
         var gateA = new ManualResetEventSlim(false);
         var gateB = new ManualResetEventSlim(false);
@@ -962,10 +648,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
         var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
 
-        var taskA = sut.ProcessAuthenticatedMessageAsync(
-            NewUserIdentity(jti: "jti-within-a"), payloadA, "corr-within-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
-        var taskB = sut.ProcessAuthenticatedMessageAsync(
-            NewUserIdentity(jti: "jti-within-b"), payloadB, "corr-within-b", messageB, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
+        var taskA = sut.ProcessMessageAsync(payloadA, "corr-within-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
+        var taskB = sut.ProcessMessageAsync(payloadB, "corr-within-b", messageB, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
 
         Assert.IsTrue(startedA.Wait(TimeSpan.FromSeconds(2)) && startedB.Wait(TimeSpan.FromSeconds(2)),
             "Both deliveries must be able to start concurrently when the cap is not exceeded.");

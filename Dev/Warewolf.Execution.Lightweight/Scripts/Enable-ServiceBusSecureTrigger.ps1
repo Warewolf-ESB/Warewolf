@@ -1,11 +1,11 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-    Idempotently enables the Lightweight engine's in-process "secure Service Bus trigger"
-    (Model A — ServiceBusWorkflowTriggerFunction, see docs/ServiceBusSecureTrigger-Architecture.md)
+    Idempotently enables the Lightweight engine's in-process Service Bus trigger
+    (ServiceBusWorkflowTriggerFunction, see docs/ServiceBusSecureTrigger-Architecture.md)
     on an ALREADY-DEPLOYED Function App: creates the trigger queue, grants the app's managed
-    identity the Service Bus Data Receiver role, and sets the four app settings the trigger
-    binding and token validator require.
+    identity the Service Bus Data Receiver role, and sets the app settings the trigger binding
+    requires.
 
     ⚠ THIS SCRIPT IS NOT RUN AUTOMATICALLY BY ANY CI JOB OR OTHER SCRIPT IN THIS REPO. ⚠
     It is a deliberately separate, reviewed operator step because it mutates a live Function
@@ -17,11 +17,9 @@
 .DESCRIPTION
     Without this step, a freshly-deployed Lightweight engine Function App has the
     ServiceBusWorkflowTrigger function *code* present, but the [ServiceBusTrigger] attribute's
-    "%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%" indirection cannot resolve (no such app setting), the
-    listen connection has nothing to bind to (no ServiceBusConnection__fullyQualifiedNamespace),
-    and EntraBearerTokenValidator reports IsEnabled=false (no tenant/audience configured) — so
-    the trigger unconditionally dead-letters every message with reason InvalidToken. This script
-    closes exactly that gap:
+    "%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%" indirection cannot resolve (no such app setting) and
+    the listen connection has nothing to bind to (no ServiceBusConnection__fullyQualifiedNamespace)
+    — so the trigger never fires. This script closes exactly that gap:
 
       1. Verifies the Function App and Service Bus namespace both exist and are reachable.
       2. Idempotently creates -TriggerQueueName on the namespace, with dead-lettering and
@@ -30,20 +28,20 @@
          script does not assign one, since removing/replacing an existing identity on a live,
          possibly-shared app is a separate, higher-risk decision left to the operator).
       4. Idempotently grants that identity the "Azure Service Bus Data Receiver" RBAC role,
-         scoped to the namespace (checks for an existing assignment first).
-      5. Sets the app settings the trigger needs: ServiceBusConnection__fullyQualifiedNamespace,
-         WAREWOLF_SERVICEBUS_TRIGGER_QUEUE, and WAREWOLF_ENTRA_CONFIG's tenantId/serviceBusAudience
-         fields (WOLF-8516 — merged with any tenantId/audience/clientId Configure-WwExecutionAuth.ps1
-         already wrote via a read-merge-write, since an app setting is a whole-value overwrite).
+         scoped to the namespace (checks for an existing assignment first). THIS ROLE GRANT IS
+         THE ENGINE'S ENTIRE TRUST BOUNDARY for this trigger: the trigger executes ANY
+         well-formed message that arrives on the queue, unconditionally, with no per-message
+         caller token and no secure.config permission check (see
+         docs/ServiceBusSecureTrigger-Architecture.md "Threat model coverage"). Controlling who
+         holds "Azure Service Bus Data Sender" on this namespace/queue is therefore the only
+         access control that matters — scope it as tightly as your deployment allows.
+      5. Sets the app settings the trigger needs: ServiceBusConnection__fullyQualifiedNamespace
+         and WAREWOLF_SERVICEBUS_TRIGGER_QUEUE.
 
     NOT done by this script (separate, out-of-scope operator steps):
-      * Creating the Entra App Registration -EntraServiceBusAudience refers to, or minting any
-        client credentials/tokens from it. This script only wires the engine to VALIDATE tokens
-        against that audience — producing them is the caller's own concern (see
-        docs/ServiceBusSecureTrigger-Architecture.md "Topology").
-      * Granting any caller's identity permission, via secure.config, to actually run a given
-        workflow. IWorkflowPolicyMatcher denies-by-default; a caller with a validly-signed token
-        for the right audience but no secure.config permission row still gets a Denied outcome.
+      * Restricting who may send to -TriggerQueueName. This script does not grant "Azure
+        Service Bus Data Sender" to anyone — that assignment is the actual authorization
+        decision for this trigger and is left to the operator to scope deliberately.
       * host.json's "serviceBus": { "autoCompleteMessages": false } — already committed in this
         repo's host.json and deployed with the app's own published output; nothing to set here.
 
@@ -75,15 +73,6 @@
     using host.json's own functionTimeout (+ 1 minute margin) as its estimate of
     ClaimStaleAfter's runtime-resolved default. Applied via `az servicebus queue update` (not
     only at creation) so it converges on an already-provisioned queue too.
-.PARAMETER EntraTenantId
-    REQUIRED. Entra tenant id — sets the 'tenantId' field of the WAREWOLF_ENTRA_CONFIG JSON app
-    setting (WOLF-8516). Must match the tenant that issues tokens for -EntraServiceBusAudience.
-.PARAMETER EntraServiceBusAudience
-    REQUIRED. Expected `aud` claim for tokens carried in Service-Bus-triggered messages — sets
-    the 'serviceBusAudience' field of WAREWOLF_ENTRA_CONFIG (WOLF-8516). Deliberately separate
-    from the general HTTP audience (see docs/ServiceBusSecureTrigger-Architecture.md
-    "Configuration reference"). The Entra App Registration this refers to must already exist —
-    this script does not create one.
 .PARAMETER NonInteractive
     Skip the "does this look right?" confirmation prompt before applying mutating changes.
 .PARAMETER DryRun
@@ -105,9 +94,6 @@ param(
     [string] $TriggerQueueName = 'wwexecution-secure-trigger-queue-e2e',
     [int]    $MaxDeliveryCount = 10,
     [string] $LockDuration = 'PT5M',
-
-    [Parameter(Mandatory)] [string] $EntraTenantId,
-    [Parameter(Mandatory)] [string] $EntraServiceBusAudience,
 
     [switch] $NonInteractive,
     [switch] $DryRun,
@@ -155,12 +141,11 @@ function Set-FunctionAppSettingsViaFile {
 
         WHY: Invoke-Az calls az via `& az @CliArgs` (PowerShell's call operator splatting
         against az.cmd, a batch wrapper on Windows). Any argument containing embedded
-        double quotes - e.g. the JSON-valued WAREWOLF_ENTRA_CONFIG - is silently stripped
-        of those quotes when PowerShell/cmd.exe re-serialise the array for the child
-        process. The az call still reports success while the value stored in Azure is
-        unparseable JSON ({tenantId:...} with no quotes), so EntraIdentityOptions falls
-        back to all-null and the Service Bus trigger fails closed. Observed live
-        2026-09-03 writing this exact setting by hand.
+        double quotes - e.g. a JSON-valued app setting - is silently stripped of those
+        quotes when PowerShell/cmd.exe re-serialise the array for the child process. The
+        az call still reports success while the value stored in Azure is unparseable JSON,
+        so the affected setting silently fails closed at runtime. Observed live 2026-09-03
+        writing a JSON-valued app setting by hand this same way.
 
         ONE FILE PER SETTING matters: az's `@file` substitution replaces a single argument
         with the file's raw content as ONE token; a shared file holding several KEY=VALUE
@@ -168,8 +153,7 @@ function Set-FunctionAppSettingsViaFile {
         setting into the first one's value.
 
         This mirrors Configure-WwExecutionAuth.ps1's Set-FunctionAppSettings, which
-        documents both failure modes in full - the two scripts write the same
-        WAREWOLF_ENTRA_CONFIG setting and must be equally quote-safe.
+        documents the same quote-stripping hazard for its own JSON-valued setting.
     #>
     param(
         [Parameter(Mandatory)][string]   $FunctionAppName,
@@ -292,9 +276,9 @@ Write-Host ''
 Write-Host '  This run will (idempotently):' -ForegroundColor White
 Write-Host "    1. Create (or converge) queue '$TriggerQueueName' on '$ServiceBusNamespace' (dead-lettering on, max delivery $MaxDeliveryCount, lock duration $LockDuration)." -ForegroundColor White
 Write-Host "    2. Grant principal '$principalId' the 'Azure Service Bus Data Receiver' role on '$ServiceBusNamespace' if not already granted." -ForegroundColor White
-Write-Host "    3. Set app settings on '$FunctionAppName': ServiceBusConnection__fullyQualifiedNamespace, WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName, and merge tenantId/serviceBusAudience=$EntraServiceBusAudience into WAREWOLF_ENTRA_CONFIG (WOLF-8516)." -ForegroundColor White
+Write-Host "    3. Set app settings on '$FunctionAppName': ServiceBusConnection__fullyQualifiedNamespace, WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName." -ForegroundColor White
 Write-Host ''
-Write-Note "This does NOT create the Entra App Registration for '$EntraServiceBusAudience', mint any tokens, or grant secure.config permission to run any workflow — see this script's .DESCRIPTION."
+Write-Note "This does NOT grant 'Azure Service Bus Data Sender' on '$ServiceBusNamespace' to anyone — see this script's .DESCRIPTION for why that assignment is the actual authorization decision for this trigger, left to you to scope deliberately."
 
 if (-not $NonInteractive -and -not $DryRun) {
     $confirm = Read-Host "Proceed with these changes against '$FunctionAppName' / '$ServiceBusNamespace'? (y/N)"
@@ -340,7 +324,7 @@ if (Test-AzExists @('servicebus', 'queue', 'show', '--name', $TriggerQueueName, 
     if ($DryRun) { Write-Note "Queue '$TriggerQueueName' would be created (not applied — DryRun)." } else { Write-Ok "Queue '$TriggerQueueName' created." }
 }
 
-Write-Phase 'Phase 2  RBAC — Azure Service Bus Data Receiver'
+Write-Phase 'Phase 2  RBAC — Azure Service Bus Data Receiver (the trigger''s ENTIRE trust boundary)'
 
 $namespaceScope = "/subscriptions/$($acct.id)/resourceGroups/$ServiceBusNamespaceResourceGroup/providers/Microsoft.ServiceBus/namespaces/$ServiceBusNamespace"
 $existingAssignment = Invoke-Az -AllowFail @('role', 'assignment', 'list', '--assignee', $principalId, '--scope', $namespaceScope, '-o', 'json') | Out-String | ConvertFrom-Json
@@ -358,41 +342,14 @@ if ($hasReceiverRole) {
     ) | Out-Null
     if ($DryRun) { Write-Note "'Azure Service Bus Data Receiver' on '$ServiceBusNamespace' would be granted to '$principalId' (not applied — DryRun)." } else { Write-Ok "Granted 'Azure Service Bus Data Receiver' on '$ServiceBusNamespace' to '$principalId'." }
 }
+Write-Note "REMINDER: ServiceBusWorkflowTriggerFunction executes ANY well-formed message on '$TriggerQueueName' unconditionally — no per-message token, no secure.config permission check. Whoever holds 'Azure Service Bus Data Sender' on '$ServiceBusNamespace' (or on '$TriggerQueueName' specifically) can run any workflow this engine can name. Scope that role assignment deliberately; this script does not grant it."
 
 Write-Phase 'Phase 3  App settings'
-
-# WOLF-8516: WAREWOLF_ENTRA_TENANT_ID / WAREWOLF_ENTRA_SERVICEBUS_AUDIENCE were merged into
-# the WAREWOLF_ENTRA_CONFIG JSON app setting also written by Configure-WwExecutionAuth.ps1
-# (tenantId/audience/clientId). Since an app setting is a whole-value overwrite (Azure has
-# no JSON-merge primitive), a bare `set` here would silently wipe out the audience/clientId
-# that script already wrote. Read-merge-write instead: fetch whatever is currently on the
-# Function App, layer tenantId/serviceBusAudience on top, preserving any other fields.
-$existingEntraConfigRaw = Invoke-Az -AllowFail @(
-    'functionapp', 'config', 'appsettings', 'list',
-    '--name', $FunctionAppName,
-    '--resource-group', $ResourceGroup,
-    '--query', "[?name=='WAREWOLF_ENTRA_CONFIG'].value | [0]",
-    '-o', 'tsv'
-) | Out-String
-$existingEntraConfigRaw = $existingEntraConfigRaw.Trim()
-
-$entraConfigValue = [ordered]@{}
-if ($existingEntraConfigRaw -and $existingEntraConfigRaw -ne 'None') {
-    try {
-        ($existingEntraConfigRaw | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $entraConfigValue[$_.Name] = $_.Value }
-        Write-Note "Existing WAREWOLF_ENTRA_CONFIG found on '$FunctionAppName' — merging tenantId/serviceBusAudience into it (audience/clientId preserved)."
-    } catch {
-        Write-Note "Existing WAREWOLF_ENTRA_CONFIG is not valid JSON — it will be replaced. ExceptionType=$($_.Exception.GetType().Name)"
-    }
-}
-$entraConfigValue['tenantId']           = $EntraTenantId
-$entraConfigValue['serviceBusAudience'] = $EntraServiceBusAudience
 
 $fullyQualifiedNamespace = "$ServiceBusNamespace.servicebus.windows.net"
 Set-FunctionAppSettingsViaFile -FunctionAppName $FunctionAppName -ResourceGroup $ResourceGroup -Settings @(
     "ServiceBusConnection__fullyQualifiedNamespace=$fullyQualifiedNamespace",
-    "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName",
-    "WAREWOLF_ENTRA_CONFIG=$($entraConfigValue | ConvertTo-Json -Compress)"
+    "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=$TriggerQueueName"
 )
 if ($DryRun) { Write-Note "App settings would be applied to '$FunctionAppName' (not applied — DryRun)." } else { Write-Ok "App settings applied to '$FunctionAppName'." }
 
@@ -400,6 +357,6 @@ Write-Phase 'Done'
 if ($DryRun) {
     Write-Note 'DRY RUN complete — nothing was actually changed. Re-run without -DryRun to apply.'
 } else {
-    Write-Ok "'$FunctionAppName' is now configured to listen on '$TriggerQueueName' via the secure Service Bus trigger."
-    Write-Note 'Remaining, separate operator steps: (1) ensure an Entra App Registration issuing tokens for the configured audience exists; (2) grant the calling identity a secure.config permission row for whichever workflow(s) it will run; (3) restart/re-warm the Function App if app settings changes are not picked up live.'
+    Write-Ok "'$FunctionAppName' is now configured to listen on '$TriggerQueueName' via the Service Bus trigger."
+    Write-Note "Remaining, separate operator step: scope who holds 'Azure Service Bus Data Sender' on '$ServiceBusNamespace'/'$TriggerQueueName' deliberately — that grant is this trigger's entire authorization boundary; restart/re-warm the Function App if app settings changes are not picked up live."
 }

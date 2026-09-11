@@ -19,12 +19,12 @@
 
     "MICROSOFT_PROVIDER_AUTHENTICATION_SECRET": "<your-entra-app-client-secret>",
 
-    "WAREWOLF_ENTRA_CONFIG": "{\"tenantId\":\"ca0cc53b-9af4-4067-bcdf-be9c648450d1\",\"audience\":\"api://<your-entra-app-client-id>\",\"serviceBusAudience\":\"api://<your-entra-app-client-id>/.default\"}",
+    "WAREWOLF_ENTRA_CONFIG": "{\"tenantId\":\"ca0cc53b-9af4-4067-bcdf-be9c648450d1\",\"audience\":\"api://<your-entra-app-client-id>\"}",
     "WAREWOLF_LICENSE_CHECK_ENABLED": "true",
 
     "ServiceBusConnection__fullyQualifiedNamespace": "<your-servicebus-namespace>.servicebus.windows.net",
     "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE": "wwexecution-secure-trigger-queue",
-    "_WOLF8516_ServiceBusTunablesHowTo": "WAREWOLF_SERVICEBUS_TRIGGER_JTI_WINDOW_HOURS and the other 4 simple tunables are no longer env vars — set serviceBusTrigger.jtiWindowHours etc. in Settings/executionengine.settings.json instead (no env-var fallback).",
+    "_WOLF8516_ServiceBusTunablesHowTo": "The simple tunables (executionTimeoutSeconds, maxConcurrentExecutions, slotWaitTimeoutSeconds, settlementTimeoutSeconds) are not env vars — set serviceBusTrigger.executionTimeoutSeconds etc. in Settings/executionengine.settings.json instead (no env-var fallback).",
 
     "WAREWOLF_DEBUG_CONFIG": "{\"keyVaultSecret\":\"\",\"principalToken\":\"\"}",
     "_WOLF8516_DebugPrincipalTokenHowTo": "principalToken: obtain by calling https://<your-site>/.auth/me, taking the first element's clientPrincipal JSON object, base64-encoding it, and setting it as WAREWOLF_DEBUG_CONFIG.principalToken above. Never set in production."

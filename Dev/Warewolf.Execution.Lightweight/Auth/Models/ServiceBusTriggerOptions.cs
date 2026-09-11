@@ -34,17 +34,6 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 public sealed class ServiceBusTriggerOptions
 {
     /// <summary>
-    /// Logical replay window for the jti dedupe cache: a jti already seen within this
-    /// window is treated as a replay and the message is dead-lettered. Because the
-    /// Hangfire-hash-backed store (see <c>Security.IServiceBusReplayAndResultStore</c>)
-    /// has no built-in expiry, this value is advisory — it bounds how far back
-    /// <see cref="Security.ServiceBusReplayAndResultStore"/> considers an entry "seen"
-    /// when reasoning about token lifetime, not a hard storage TTL. Accepted trade-off:
-    /// unbounded hash growth is a documented follow-up (no expiry-sweep job in this pass).
-    /// </summary>
-    public TimeSpan JtiReplayWindow { get; init; } = TimeSpan.FromHours(24);
-
-    /// <summary>
     /// Hard time budget for a single workflow execution
     /// (<c>Functions.ServiceBusWorkflowTriggerFunction</c>'s call into
     /// <c>IWorkflowExecutor.Execute</c>). If execution has not completed within this
@@ -292,9 +281,6 @@ public sealed class ServiceBusTriggerOptions
     {
         var fileOverrides = hostConfig?.ServiceBusTrigger;
 
-        var windowHours = fileOverrides?.JtiWindowHours;
-        var window = windowHours is > 0 ? TimeSpan.FromHours(windowHours.Value) : TimeSpan.FromHours(24);
-
         var executionTimeoutSeconds = fileOverrides?.ExecutionTimeoutSeconds;
         var executionTimeout = executionTimeoutSeconds is > 0
             ? TimeSpan.FromSeconds(executionTimeoutSeconds.Value)
@@ -316,7 +302,6 @@ public sealed class ServiceBusTriggerOptions
 
         return new ServiceBusTriggerOptions
         {
-            JtiReplayWindow = window,
             ExecutionTimeout = executionTimeout,
             MaxConcurrentExecutions = maxConcurrentExecutions,
             SlotWaitTimeout = slotWaitTimeout,

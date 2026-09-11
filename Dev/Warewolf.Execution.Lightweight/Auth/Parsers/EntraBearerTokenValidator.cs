@@ -28,10 +28,9 @@ namespace Warewolf.Execution.Lightweight.Auth.Parsers;
 /// </para>
 ///
 /// <para>
-/// Each instance is bound to one <see cref="EntraAuthOptions"/> (tenant + audience), so the
-/// HTTP path and the Service Bus path — which intentionally use DIFFERENT, non-overlapping
-/// audiences (see <see cref="ServiceBusEntraAuthOptions"/>) — each get their own validator
-/// instance and their own cached OIDC signing-key set.
+/// Each instance is bound to one <see cref="EntraAuthOptions"/> (tenant + audience), so a
+/// caller needing a different audience constructs its own validator instance and gets its
+/// own cached OIDC signing-key set.
 /// </para>
 /// </summary>
 public sealed class EntraBearerTokenValidator

@@ -499,18 +499,13 @@ function Merge-EntraConfigJson {
         Layers THIS script's authoritative Entra identity fields on top of whatever
         WAREWOLF_ENTRA_CONFIG already holds, preserving every other field.
 
-        WHY: WOLF-8516 merged the individual env vars into one JSON app setting that is
-        written by TWO scripts - this one (tenantId/audience/clientId) and
-        Enable-ServiceBusSecureTrigger.ps1 (tenantId/serviceBusAudience). An app setting
-        write is a whole-value overwrite; Azure has no JSON-merge primitive. Building the
-        value from scratch here therefore DELETED serviceBusAudience on every engine
-        deploy, which makes ServiceBusEntraAuthOptions.IsEnabled false so the Service Bus
-        trigger fails closed and dead-letters every message it receives - with no startup
-        error and no telemetry, the only symptom being a rising dead-letter count
-        (see Auth/Models/ServiceBusEntraAuthOptions.cs and
-        docs/ServiceBusSecureTrigger-Architecture.md "Security"). Read-merge-write is the
-        mirror image of Enable-ServiceBusSecureTrigger.ps1's own Phase 3 merge, which
-        already preserves audience/clientId for exactly the same reason.
+        WHY: WOLF-8516 merged the individual env vars into one JSON app setting. An app
+        setting write is a whole-value overwrite; Azure has no JSON-merge primitive, so
+        this script preserves any OTHER field already stored on the setting (whatever
+        wrote it) rather than rebuilding the value from scratch and silently deleting
+        that field on every engine deploy — this generic, field-agnostic preservation is
+        deliberate precisely so this script does not need to know what else might be
+        stored in WAREWOLF_ENTRA_CONFIG.
 
         Unparseable stored JSON is replaced (with a warning) rather than aborting the
         stage: a corrupt value is already broken for every consumer, and refusing to
@@ -534,8 +529,8 @@ function Merge-EntraConfigJson {
                 ForEach-Object { $merged[$_.Name] = $_.Value }
         } catch {
             Write-Warning ("WAREWOLF_ENTRA_CONFIG currently stored on the Function App is not valid JSON - " +
-                           "it will be REPLACED, and any serviceBusAudience it held is lost (re-run " +
-                           "Enable-ServiceBusSecureTrigger.ps1 afterwards). ExceptionType=$($_.Exception.GetType().Name)")
+                           "it will be REPLACED, and any other field it held is lost. " +
+                           "ExceptionType=$($_.Exception.GetType().Name)")
         }
     }
 
@@ -1709,10 +1704,9 @@ Write-Host "═══ Stage 8  Function App settings ═════════
 # (see EntraAuthOptions.ClientId doc comment and the pipeline-CLOUD.yml diagnostic probe
 # for the full aud/audience mismatch writeup).
 #
-# The value is READ-MERGE-WRITTEN, not rebuilt: Enable-ServiceBusSecureTrigger.ps1 stores
-# 'serviceBusAudience' in this same setting, and rebuilding from scratch here deleted it on
-# every deploy - failing the Service Bus trigger closed with no error and no telemetry.
-# See Merge-EntraConfigJson's comment for the full writeup.
+# The value is READ-MERGE-WRITTEN, not rebuilt: any other field already stored in this
+# setting is preserved rather than silently deleted on every deploy. See
+# Merge-EntraConfigJson's comment for the full writeup.
 $existingEntraConfigRaw = Get-FunctionAppSetting `
     -Name $FunctionAppName -ResourceGroup $ResourceGroupName -SettingName 'WAREWOLF_ENTRA_CONFIG'
 
@@ -2038,10 +2032,9 @@ if ($liveEntraConfigRaw) {
                 $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field is missing or empty")
             }
         }
-        # Fields this run carried over from the previously-stored value (e.g.
-        # serviceBusAudience, written by Enable-ServiceBusSecureTrigger.ps1) must still be
-        # there after the write - a rebuilt-from-scratch value silently breaks the Service
-        # Bus trigger, so assert rather than assume the merge held.
+        # Fields this run carried over from the previously-stored value must still be
+        # there after the write - a rebuilt-from-scratch value would silently drop
+        # whatever else was stored, so assert rather than assume the merge held.
         foreach ($field in @($script:PreservedEntraFields)) {
             if ([string]::IsNullOrWhiteSpace($liveEntraConfig.$field)) {
                 $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field was present before this run but is missing or empty after it (read-merge-write regression)")

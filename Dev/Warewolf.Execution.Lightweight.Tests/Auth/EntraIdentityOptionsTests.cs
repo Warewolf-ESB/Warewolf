@@ -28,17 +28,16 @@ public class EntraIdentityOptionsTests
     public void RestoreEnvironment() => Environment.SetEnvironmentVariable(ConfigEnv, _previousConfig);
 
     [TestMethod]
-    public void FromEnvironment_FullJson_ParsesAllFourFields()
+    public void FromEnvironment_FullJson_ParsesAllThreeFields()
     {
         Environment.SetEnvironmentVariable(ConfigEnv,
-            /*lang=json,strict*/ "{\"tenantId\":\"t\",\"audience\":\"a\",\"clientId\":\"c\",\"serviceBusAudience\":\"sb\"}");
+            /*lang=json,strict*/ "{\"tenantId\":\"t\",\"audience\":\"a\",\"clientId\":\"c\"}");
 
         var opts = EntraIdentityOptions.FromEnvironment();
 
         Assert.AreEqual("t", opts.TenantId);
         Assert.AreEqual("a", opts.Audience);
         Assert.AreEqual("c", opts.ClientId);
-        Assert.AreEqual("sb", opts.ServiceBusAudience);
     }
 
     [TestMethod]
@@ -51,7 +50,6 @@ public class EntraIdentityOptionsTests
         Assert.IsNull(opts.TenantId);
         Assert.IsNull(opts.Audience);
         Assert.IsNull(opts.ClientId);
-        Assert.IsNull(opts.ServiceBusAudience);
     }
 
     [TestMethod]
@@ -64,7 +62,6 @@ public class EntraIdentityOptionsTests
         Assert.AreEqual("t", opts.TenantId);
         Assert.IsNull(opts.Audience);
         Assert.IsNull(opts.ClientId);
-        Assert.IsNull(opts.ServiceBusAudience);
     }
 
     [TestMethod]
@@ -77,7 +74,6 @@ public class EntraIdentityOptionsTests
         Assert.IsNull(opts.TenantId);
         Assert.IsNull(opts.Audience);
         Assert.IsNull(opts.ClientId);
-        Assert.IsNull(opts.ServiceBusAudience);
     }
 
     [TestMethod]

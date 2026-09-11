@@ -29,7 +29,7 @@
   // (WorkflowExecutor's pool). Defaults to 8 when absent.
   "workflowPoolMax": null,
 
-  // Secure Service Bus workflow trigger tunables. Each field defaults independently
+  // In-process Service Bus workflow trigger tunables. Each field defaults independently
   // when absent/null — see ServiceBusTriggerOptions.cs. NOTE: claimStaleAfter is
   // deliberately NOT included here — it has its own incident-scarred (WOLF-8512),
   // Lazy-cached resolution chain (env override -> host.json functionTimeout ->
@@ -38,7 +38,6 @@
   // WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES is itself already documented
   // as an explicit operator override, not a deploy-time-static value.
   "serviceBusTrigger": {
-    "jtiWindowHours": null,
     "executionTimeoutSeconds": null,
     "maxConcurrentExecutions": null,
     "slotWaitTimeoutSeconds": null,
