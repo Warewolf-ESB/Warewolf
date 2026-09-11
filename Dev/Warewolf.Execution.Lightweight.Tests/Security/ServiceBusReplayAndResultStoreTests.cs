@@ -437,6 +437,108 @@ public class ServiceBusReplayAndResultStoreTests
             "A claim older than the staleness threshold must be taken over by a new delivery in the fallback path too - this is the exact mechanism that recovers correlation ids stuck by a hung execution (see the 2026-08-24 ShovelBridge load test incident).");
     }
 
+    // ── Durable claim-stage breadcrumb (RecordClaimStage) — Hangfire-backed ─────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordClaimStage_AfterClaim_IsReadableViaTheTestSeam()
+    {
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("stage-001"));
+
+        store.RecordClaimStage("stage-001", "ClaimAcquired");
+
+        var (stage, atUtc) = store.GetClaimStageForTests("stage-001");
+        Assert.AreEqual("ClaimAcquired", stage);
+        Assert.IsNotNull(atUtc);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordClaimStage_CalledMultipleTimes_LatestStageWins_WithoutClobberingClaimedAtUtc()
+    {
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("stage-002"));
+
+        store.RecordClaimStage("stage-002", "ClaimAcquired");
+        store.RecordClaimStage("stage-002", "AboutToExecute");
+
+        var (stage, _) = store.GetClaimStageForTests("stage-002");
+        Assert.AreEqual("AboutToExecute", stage, "The most recently recorded stage must win.");
+        // The claim itself (written by TryClaim, read by a fresh TryClaim call below) must
+        // still be intact — RecordClaimStage merges into the same hash and must not disturb
+        // the claimedAtUtc field TryClaim's own staleness check depends on.
+        Assert.IsFalse(store.TryClaim("stage-002"), "The original claim must still be held after RecordClaimStage merges extra fields into its hash.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordClaimStage_NoPriorClaim_DoesNotThrow()
+    {
+        var store = NewHangfireBackedStore();
+
+        store.RecordClaimStage("stage-never-claimed", "ClaimAcquired"); // must not throw
+
+        var (stage, _) = store.GetClaimStageForTests("stage-never-claimed");
+        Assert.AreEqual("ClaimAcquired", stage, "Recording a stage with no prior claim still creates a readable breadcrumb row.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordClaimStage_EmptyOrWhitespaceCorrelationId_IsANoOp()
+    {
+        var store = NewHangfireBackedStore();
+
+        store.RecordClaimStage(string.Empty, "ClaimAcquired"); // must not throw
+        store.RecordClaimStage("   ", "ClaimAcquired"); // must not throw
+
+        Assert.AreEqual((null, (DateTimeOffset?)null), store.GetClaimStageForTests(string.Empty));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void GetClaimStageForTests_NoStageEverRecorded_ReturnsNull()
+    {
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("stage-untouched"));
+
+        var (stage, atUtc) = store.GetClaimStageForTests("stage-untouched");
+
+        Assert.IsNull(stage);
+        Assert.IsNull(atUtc);
+    }
+
+    // ── Durable claim-stage breadcrumb (RecordClaimStage) — in-memory fallback ──
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    [DoNotParallelize] // swaps process-global Config.Persistence
+    public void PersistenceDisabled_RecordClaimStage_IsReadableViaTheTestSeam()
+    {
+        using var _ = ResumeTestSupport.SwapPersistence(enable: false);
+        var store = new ServiceBusReplayAndResultStore();
+        Assert.IsTrue(store.TryClaim("fallback-stage-001"));
+
+        store.RecordClaimStage("fallback-stage-001", "AboutToExecute");
+
+        var (stage, atUtc) = store.GetClaimStageForTests("fallback-stage-001");
+        Assert.AreEqual("AboutToExecute", stage);
+        Assert.IsNotNull(atUtc);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    [DoNotParallelize] // swaps process-global Config.Persistence
+    public void PersistenceDisabled_RecordClaimStage_EmptyCorrelationId_IsANoOp()
+    {
+        using var _ = ResumeTestSupport.SwapPersistence(enable: false);
+        var store = new ServiceBusReplayAndResultStore();
+
+        store.RecordClaimStage(string.Empty, "ClaimAcquired"); // must not throw
+
+        Assert.AreEqual((null, (DateTimeOffset?)null), store.GetClaimStageForTests(string.Empty));
+    }
+
     [TestMethod]
     [TestCategory("UnitTest")]
     [DoNotParallelize] // swaps process-global Config.Persistence

@@ -68,6 +68,8 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     private const string ResultFieldName = "json";
     private const string ClaimHashKeyPrefix = "sbtrigger:claim:";
     private const string ClaimFieldName = "claimedAtUtc";
+    private const string StageFieldName = "lastStage";
+    private const string StageAtFieldName = "lastStageAtUtc";
     private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(10);
 
     /// <summary>
@@ -88,6 +90,7 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     private readonly ConcurrentDictionary<string, byte> _inMemoryJti = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, string> _inMemoryResults = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, DateTimeOffset> _inMemoryClaims = new(StringComparer.Ordinal);
+    private readonly ConcurrentDictionary<string, (string Stage, DateTimeOffset AtUtc)> _inMemoryClaimStages = new(StringComparer.Ordinal);
 
     public ServiceBusReplayAndResultStore(TimeSpan? claimStaleAfter = null)
         : this(() => DateTimeOffset.UtcNow, claimStaleAfter)
@@ -300,5 +303,65 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
             transaction.RemoveHash(ClaimHashKeyPrefix + correlationId);
             transaction.Commit();
         }
+    }
+
+    /// <inheritdoc/>
+    public void RecordClaimStage(string correlationId, string stage)
+    {
+        if (string.IsNullOrWhiteSpace(correlationId))
+        {
+            return;
+        }
+
+        var now = _clock();
+
+        if (!_usePersistence)
+        {
+            _inMemoryClaimStages[correlationId] = (stage, now);
+            return;
+        }
+
+        // Best-effort: merged into the SAME hash TryClaim already wrote (no new key, no
+        // lock — this is a diagnostic breadcrumb, not something correctness depends on),
+        // so a failure here must never fail or delay the execution it is observing. See
+        // the interface doc comment for why this exists.
+        try
+        {
+            using var connection = _jobStorage!.Value.GetConnection();
+            connection.SetRangeInHash(
+                ClaimHashKeyPrefix + correlationId,
+                new[]
+                {
+                    new KeyValuePair<string, string>(StageFieldName, stage),
+                    new KeyValuePair<string, string>(StageAtFieldName, now.ToString("O")),
+                });
+        }
+        catch (Exception ex)
+        {
+            Dev2Logger.Warn($"ServiceBusReplayAndResultStore.RecordClaimStage failed to persist stage '{stage}' — continuing without it.", ex, correlationId);
+        }
+    }
+
+    /// <summary>Test seam: reads back what <see cref="RecordClaimStage"/> last wrote for <paramref name="correlationId"/> — <c>null</c> stage if none was ever recorded.</summary>
+    internal (string? Stage, DateTimeOffset? AtUtc) GetClaimStageForTests(string correlationId)
+    {
+        if (!_usePersistence)
+        {
+            return _inMemoryClaimStages.TryGetValue(correlationId, out var entry)
+                ? (entry.Stage, entry.AtUtc)
+                : (null, null);
+        }
+
+        using var connection = _jobStorage!.Value.GetConnection();
+        var hash = connection.GetAllEntriesFromHash(ClaimHashKeyPrefix + correlationId);
+        if (hash == null || !hash.TryGetValue(StageFieldName, out var stage))
+        {
+            return (null, null);
+        }
+
+        var atUtc = hash.TryGetValue(StageAtFieldName, out var atRaw)
+            ? DateTimeOffset.Parse(atRaw, null, System.Globalization.DateTimeStyles.RoundtripKind)
+            : (DateTimeOffset?)null;
+        return (stage, atUtc);
     }
 }

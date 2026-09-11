@@ -295,6 +295,46 @@ status still match, since it remains the string's prefix.
 | Policy denial | `Denied:PolicyForbidden` / `Denied:ConfigMissingDeny` |
 | Business/activity failure | `Failed:ExecutionFailed` |
 
+### Silent-death diagnostic breadcrumb (`RecordClaimStage`)
+
+The 1000-message ShovelBridge load test has repeatedly produced correlation ids that are
+claimed (`TryClaim` succeeds) and then simply vanish — no result, no dead-letter, no
+exception (`docs/ShovelBridge-Architecture.md`'s running log, 2026-08-30 through
+2026-09-11 entries) — consistent with the host process dying (suspected OOM under
+Consumption-plan burst pressure) before reaching any of this function's own failure-path
+logging. Two independent live investigations (2026-08-31, 2026-09-11) additionally found
+**Application Insights had captured zero telemetry of any kind for the engine for the
+entire run window**, so the three `ILogger.LogInformation` checkpoints already bracketing
+the call into `IWorkflowExecutor.Execute` (`ClaimAcquired` → `AboutToExecute` →
+`ExecutionReturned`) are not on their own a reliable trail for a future recurrence.
+
+`IServiceBusReplayAndResultStore.RecordClaimStage(correlationId, stage)` mirrors those
+same three checkpoints into a `lastStage`/`lastStageAtUtc` pair merged into the same
+`sbtrigger:claim:<correlationId>` Hangfire hash row `TryClaim` already wrote (no new key,
+no distributed lock — best-effort, must never fail or delay the execution it observes).
+That row is durable SQL, written synchronously, independent of the telemetry pipeline —
+it is exactly how the 2026-09-11 investigation found message `...-000573`'s claim despite
+App Insights showing nothing at all. A future recurrence can be diagnosed directly:
+
+```sql
+SELECT [Key], [Field], [Value]
+FROM HangFire.Hash
+WHERE [Key] = 'sbtrigger:claim:<correlationId>'
+```
+
+`lastStage = "AboutToExecute (...)"` with no `ExecutionReturned` ever recorded means the
+process died inside (or was killed during) `IWorkflowExecutor.Execute` itself — no further
+code in this function ever runs to record more than that. `lastStage = "ClaimAcquired"`
+with nothing further means it died during token validation, jti/policy checks, or while
+waiting for a concurrency slot — all of which already have their own dedicated
+`LogWarning`/`LogError` calls, so check those (and this same row, since they are not
+guaranteed to reach App Insights either) next.
+
+Note this row is only ever removed by `ReleaseClaim` (the transient/unexpected-exception
+paths) — a successful or business-failure execution leaves it in place indefinitely,
+consistent with this store's existing "Known limitation" (no TTL/auto-eviction) already
+documented on `ServiceBusReplayAndResultStore`.
+
 ## Threat model coverage (see spec for full detail)
 
 | Threat | Mitigation |

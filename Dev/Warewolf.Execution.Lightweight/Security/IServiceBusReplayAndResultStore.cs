@@ -75,4 +75,36 @@ public interface IServiceBusReplayAndResultStore
     /// empty, or a result was already saved instead).
     /// </summary>
     void ReleaseClaim(string correlationId);
+
+    /// <summary>
+    /// Durably records the last checkpoint <paramref name="correlationId"/>'s in-flight
+    /// execution reached — a "last known state" breadcrumb, merged into the same claim
+    /// record <see cref="TryClaim"/> already wrote, so it survives a process death that
+    /// leaves no other trace.
+    ///
+    /// <para>
+    /// <b>Why this exists.</b> The 1000-message ShovelBridge load test has repeatedly
+    /// produced correlation ids that are claimed and then simply vanish — no result, no
+    /// dead-letter, no exception — consistent with the host process dying (suspected
+    /// OOM under Consumption-plan burst pressure) before any of
+    /// <see cref="Functions.ServiceBusWorkflowTriggerFunction"/>'s existing
+    /// <c>ILogger</c> checkpoints reach Application Insights. Two separate live
+    /// investigations (2026-08-31, 2026-09-11) found Application Insights had captured
+    /// <b>zero</b> telemetry of any kind for the engine for the entire run window —
+    /// so those <c>ILogger</c> calls, however well-placed, are not a reliable trail on
+    /// their own. This method gives the same checkpoints a second, SQL-durable path
+    /// that does not depend on the telemetry pipeline: a direct query against the
+    /// claim row (see <c>docs/ServiceBusSecureTrigger-Architecture.md</c>) shows exactly
+    /// which checkpoint a vanished execution last reached, even when App Insights shows
+    /// nothing at all.
+    /// </para>
+    ///
+    /// <para>
+    /// Best-effort: a failure to record a stage must never fail or delay the
+    /// execution it is merely observing. A no-op if no claim is held (e.g.
+    /// <paramref name="correlationId"/> is empty) — there is nothing to attach the
+    /// breadcrumb to.
+    /// </para>
+    /// </summary>
+    void RecordClaimStage(string correlationId, string stage);
 }

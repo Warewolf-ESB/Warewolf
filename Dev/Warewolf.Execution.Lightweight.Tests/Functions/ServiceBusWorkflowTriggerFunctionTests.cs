@@ -132,6 +132,33 @@ public class ServiceBusWorkflowTriggerFunctionTests
         }
     }
 
+    /// <summary>
+    /// Decorates a real <see cref="ServiceBusReplayAndResultStore"/> so tests can assert
+    /// exactly which stages <see cref="IServiceBusReplayAndResultStore.RecordClaimStage"/>
+    /// was called with, in order — independent of the underlying persisted state, which
+    /// <see cref="IServiceBusReplayAndResultStore.ReleaseClaim"/> wipes (including any stage
+    /// already recorded) on the transient/unexpected-failure paths. Delegates everything
+    /// else unchanged.
+    /// </summary>
+    private sealed class RecordingReplayAndResultStore : IServiceBusReplayAndResultStore
+    {
+        private readonly IServiceBusReplayAndResultStore _inner;
+        public List<string> RecordedStages { get; } = new();
+        public RecordingReplayAndResultStore(IServiceBusReplayAndResultStore inner) => _inner = inner;
+
+        public bool TryRegisterJti(string jti) => _inner.TryRegisterJti(jti);
+        public bool TryGetResult(string correlationId, out ServiceBusTriggerResult? result) => _inner.TryGetResult(correlationId, out result);
+        public void SaveResult(ServiceBusTriggerResult result) => _inner.SaveResult(result);
+        public bool TryClaim(string correlationId) => _inner.TryClaim(correlationId);
+        public void ReleaseClaim(string correlationId) => _inner.ReleaseClaim(correlationId);
+
+        public void RecordClaimStage(string correlationId, string stage)
+        {
+            RecordedStages.Add(stage);
+            _inner.RecordClaimStage(correlationId, stage);
+        }
+    }
+
     // ── Fixture helpers ──────────────────────────────────────────────────────────
 
     private static ServiceBusReceivedMessage NewMessage(
@@ -279,14 +306,18 @@ public class ServiceBusWorkflowTriggerFunctionTests
     [TestCategory("UnitTest")]
     public async Task Run_MissingAuthorizationProperty_DeadLettersAsInvalidToken()
     {
-        var sut = NewSut();
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(store: store);
         var actions = new FakeServiceBusMessageActions();
-        var message = NewMessage("{\"workflow\":\"Hello World\"}", authorization: null);
+        var message = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-missing-auth\"}", correlationId: "corr-missing-auth", authorization: null);
 
         await sut.Run(message, actions, CancellationToken.None);
 
         Assert.AreEqual(1, actions.DeadLetterCalls);
         Assert.AreEqual("InvalidToken:MissingAuthorizationProperty", actions.LastDeadLetterReason);
+        var (stage, _) = store.GetClaimStageForTests("corr-missing-auth");
+        Assert.AreEqual("ClaimAcquired", stage,
+            "The durable breadcrumb must record the claim before token extraction, so a future silent death still leaves this checkpoint even though App Insights has repeatedly shown zero telemetry for this app.");
     }
 
     [TestMethod]
@@ -481,6 +512,55 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.AreEqual(ServiceBusTriggerStatus.Succeeded, result!.Status);
         Assert.AreEqual("alice@example.com", result.Caller);
         Assert.AreEqual("{\"Greeting\":\"Hi\"}", result.Outputs);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutionSucceeds_RecordsAboutToExecuteThenExecutionReturnedStages()
+    {
+        // 2026-09-11: durable mirror of the ILogger checkpoints that bracket the
+        // no-cancellation-seam call into IWorkflowExecutor.Execute — added after two live
+        // investigations (2026-08-31, 2026-09-11) found Application Insights had captured
+        // ZERO telemetry for this app for the entire run window, making those ILogger calls
+        // alone an unreliable trail for a future silent-death recurrence.
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var store = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-stage-success");
+
+        await sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-stage-success", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+
+        Assert.AreEqual(2, store.RecordedStages.Count);
+        StringAssert.StartsWith(store.RecordedStages[0], "AboutToExecute");
+        StringAssert.StartsWith(store.RecordedStages[1], "ExecutionReturned (IsSuccess=True)");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessAuthenticated_ExecutorThrows_RecordsAboutToExecuteStage_NeverReachesExecutionReturned()
+    {
+        // The executor throwing means the ExecutionReturned checkpoint is never reached -
+        // AboutToExecute must be the ONLY stage recorded, which is exactly the "how far did
+        // it get before it died" signal this breadcrumb exists to provide. Asserted via the
+        // recording decorator rather than reading the persisted claim row back, because
+        // ReleaseClaim (called on this same path, right before rethrow) wipes that row
+        // entirely, including any stage already written to it.
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));
+        var store = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
+        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var identity = NewUserIdentity(jti: "jti-stage-exception");
+
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.ProcessAuthenticatedMessageAsync(identity, payload, "corr-stage-exception", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.AreEqual(1, store.RecordedStages.Count);
+        StringAssert.StartsWith(store.RecordedStages[0], "AboutToExecute");
     }
 
     [TestMethod]

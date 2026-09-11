@@ -1987,6 +1987,47 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   already — 11 → 14 procedures) is applied automatically on the next pipeline run instead of
   depending on a human remembering to re-run it by hand.
 
+- **2026-09-11 — build 30643: 999/1000, the same "claimed, no result, not dead-lettered,
+  zero telemetry" signature as builds 30578/30583/30585 and the 2026-09-01 local repro —
+  confirmed live, not just inferred, and a durable diagnostic fix shipped.** Only
+  correlationId `...-000573` never resolved (a large improvement over the 996-failure
+  build 30640 fixed above, confirming that fix held); this is a residual instance of the
+  still-open bug class, not a new defect.
+  - **Full evidence chain for `-000573`, all confirmed directly**:
+    - `HangFire.Hash` (`wwexecution-uat-hangfire`, Entra token auth): a
+      `sbtrigger:claim:...-000573` row exists, claimed `2026-09-10T21:21:39Z`. No
+      `sbtrigger:result:...-000573` row exists at all.
+    - Application Insights (`warewolfserver-uat-ai`, RG `DEV2`): **zero telemetry of any
+      kind** — traces, exceptions, requests, dependencies — for the entire run window
+      (21:19–21:51Z) and for the two days surrounding it. This repeats the exact gap the
+      2026-08-31 entry flagged as a standing blocker and the 2026-09-01 entry believed it
+      had addressed (three new `LogInformation` checkpoints) — those checkpoints exist in
+      the deployed code but evidently still never reach App Insights for this app.
+    - Service Bus dead-letter queue (`wwexecution-secure-trigger-queue-e2e`): exhaustively
+      peeked non-destructively (`PeekMessagesAsync`, all 20,460 entries scanned via a
+      throwaway `Azure.Messaging.ServiceBus` console app) — zero matches for this
+      correlationId. Active queue: 0 messages.
+    - `Profiler.ProfilerRecommendation` (Phase 4c): no row for this MandateId, consistent
+      with the process never reaching that far.
+  - **Conclusion**: rules out dead-lettering entirely for this occurrence (the DLQ scan is
+    exhaustive, not a sample) and reconfirms the App Insights telemetry gap is still open.
+    Working theory unchanged from 2026-09-01: the Consumption-plan process dies mid-
+    execution (suspected OOM) before reaching any catch/timeout/logging path that would
+    otherwise record something.
+  - **Fix shipped**: `IServiceBusReplayAndResultStore.RecordClaimStage(correlationId,
+    stage)` — durably mirrors the three existing `ClaimAcquired`/`AboutToExecute`/
+    `ExecutionReturned` `ILogger` checkpoints into the same `sbtrigger:claim:*` Hangfire
+    hash row `TryClaim` already writes, so the last-reached checkpoint survives a process
+    death even when (as confirmed twice now) App Insights captures nothing. See
+    `docs/ServiceBusSecureTrigger-Architecture.md`'s "Silent-death diagnostic breadcrumb"
+    section for the query to use next time. **Not yet re-verified against a live
+    recurrence** — by construction, that requires this bug class to happen again with the
+    fix deployed.
+  - **Still open, not actioned this session**: the App Insights telemetry gap itself. The
+    2026-09-01 entry's recommendation stands — until App Insights actually receives
+    something for this app, every future recurrence still needs the same SQL/DLQ
+    archaeology (now cheaper thanks to the breadcrumb above, but not eliminated).
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

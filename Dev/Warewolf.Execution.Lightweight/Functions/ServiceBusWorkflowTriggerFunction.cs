@@ -208,6 +208,11 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Claim acquired — proceeding to token validation. ElapsedSinceReceivedMs={ElapsedMs}",
             correlationId, payload.Workflow, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+        // 2026-09-11: mirrored durably (see IServiceBusReplayAndResultStore.RecordClaimStage) —
+        // two live investigations (2026-08-31, 2026-09-11) found Application Insights had
+        // captured ZERO telemetry for this app for the entire run window, so the ILogger call
+        // above is not on its own a reliable trail for a future silent-death recurrence.
+        _store.RecordClaimStage(correlationId, "ClaimAcquired");
 
         // ── Token extraction ────────────────────────────────────────────────────
         if (!message.ApplicationProperties.TryGetValue("Authorization", out var authObj)
@@ -422,6 +427,10 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | About to call IWorkflowExecutor.Execute — last log point before the no-cancellation-seam call. ElapsedSinceReceivedMs={ElapsedMs} GcTotalMemoryBytes={GcTotalMemoryBytes} ProcessWorkingSetBytes={ProcessWorkingSetBytes}",
             correlationId, payload.Workflow, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds, GC.GetTotalMemory(false), Environment.WorkingSet);
+        // 2026-09-11: durable mirror, same reasoning as the ClaimAcquired stage above — this is
+        // the last checkpoint before the no-cancellation-seam call, so it is the most likely
+        // stage a future silent death is last recorded at.
+        _store.RecordClaimStage(correlationId, $"AboutToExecute (GcTotalMemoryBytes={GC.GetTotalMemory(false)}, ProcessWorkingSetBytes={Environment.WorkingSet})");
         var executionTask = Task.Run(() => _executor.Execute(executionRequest));
 
         // The concurrency slot is released only once execution actually finishes (success,
@@ -470,6 +479,8 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution task returned. IsSuccess={IsSuccess} ElapsedSinceReceivedMs={ElapsedMs}",
             correlationId, payload.Workflow, result.IsSuccess, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+        // 2026-09-11: durable mirror, same reasoning as the checkpoints above.
+        _store.RecordClaimStage(correlationId, $"ExecutionReturned (IsSuccess={result.IsSuccess})");
 
         if (!result.IsSuccess && result.IsTransientFailure)
         {
