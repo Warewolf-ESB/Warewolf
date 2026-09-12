@@ -195,6 +195,11 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Claim acquired — proceeding to execution (transport-trusted, no per-message token). ElapsedSinceReceivedMs={ElapsedMs}",
             correlationId, _triggerDefinition.WorkflowName, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+        // WOLF-8512: mirrored durably (see IServiceBusReplayAndResultStore.RecordClaimStage) —
+        // re-wired in after build 30651 (2026-09-12) reproduced the same claimed/vanished
+        // signature as prior incidents; see docs/ServiceBusSecureTrigger-Architecture.md's
+        // "Silent-death diagnostic breadcrumb" section.
+        _store.RecordClaimStage(correlationId, "ClaimAcquired");
 
         await ProcessMessageAsync(payload, correlationId, message, messageActions, receivedAt, cancellationToken).ConfigureAwait(false);
     }
@@ -281,6 +286,10 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | About to call IWorkflowExecutor.Execute — last log point before the no-cancellation-seam call. ElapsedSinceReceivedMs={ElapsedMs} GcTotalMemoryBytes={GcTotalMemoryBytes} ProcessWorkingSetBytes={ProcessWorkingSetBytes}",
             correlationId, _triggerDefinition.WorkflowName, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds, GC.GetTotalMemory(false), Environment.WorkingSet);
+        // WOLF-8512: durable mirror, same reasoning as the ClaimAcquired stage above — this is
+        // the last checkpoint before the no-cancellation-seam call, so it is the most likely
+        // stage a future silent death is last recorded at.
+        _store.RecordClaimStage(correlationId, $"AboutToExecute (GcTotalMemoryBytes={GC.GetTotalMemory(false)}, ProcessWorkingSetBytes={Environment.WorkingSet})");
         var executionTask = Task.Run(() => _executor.Execute(executionRequest));
 
         // The concurrency slot is released only once execution actually finishes (success,
@@ -329,6 +338,8 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution task returned. IsSuccess={IsSuccess} ElapsedSinceReceivedMs={ElapsedMs}",
             correlationId, _triggerDefinition.WorkflowName, result.IsSuccess, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+        // WOLF-8512: durable mirror, same reasoning as the checkpoints above.
+        _store.RecordClaimStage(correlationId, $"ExecutionReturned (IsSuccess={result.IsSuccess})");
 
         if (!result.IsSuccess && result.IsTransientFailure)
         {

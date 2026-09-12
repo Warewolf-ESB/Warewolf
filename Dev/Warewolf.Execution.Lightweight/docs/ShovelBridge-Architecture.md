@@ -2042,6 +2042,48 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     something for this app, any future recurrence still needs the same SQL/DLQ
     archaeology, with the breadcrumb mechanism available to re-enable if needed.
 
+- **2026-09-12 — build 30651: 998/1000, the same signature again; App Insights confirmed
+  healthy this time, and the `RecordClaimStage` breadcrumb re-wired in.** Only
+  correlationIds `...-000304` and `...-000307` never resolved.
+  - **Evidence chain, both confirmed directly**:
+    - `Profiler.ProfilerRecommendation` (Phase 4c): no row for either MandateId.
+    - Application Insights (`warewolfserver-uat-ai`, RG `DEV2`), queried live via `az
+      monitor app-insights query`: across the entire run window (11:14–11:47Z) and for
+      ~2h45m afterward, the **only** telemetry either correlationId has anywhere (traces,
+      exceptions, dependencies all checked) is a single `"Another delivery is already in
+      flight for this correlation id"` line each, both at `11:21:31Z` — proving some
+      earlier delivery DID successfully claim each id, then produced zero telemetry of
+      its own, not even the unconditional `ClaimAcquired` log that fires immediately
+      after a successful claim.
+    - Unlike the 2026-08-31/09-11 investigations, App Insights ingestion was **not**
+      globally blank this run — ~50k trace/request/exception rows came through fine for
+      the other 998 messages (`traces | summarize count() by bin(timestamp,5m)` shows
+      steady volume throughout). This narrows the theory: the loss is scoped to the
+      individual dying executions' own (apparently unflushed) telemetry, not a wholesale
+      App Insights outage.
+    - 17 distinct Function App instances (`cloud_RoleInstance`) were active in the burst
+      window, several logging their `ClaimStaleAfter resolved to 00:11:00` startup line
+      within a single 6-minute span — direct evidence of Consumption-plan scale-out churn
+      during the burst, consistent with the standing OOM/cold-start theory. Memory
+      counters showed no unambiguous near-OOM sample (max observed ~1.35GB private bytes
+      against a ~2GB ceiling on one instance) — suggestive, not conclusive.
+    - No further delivery attempt for either correlationId was ever logged, checked up to
+      ~2h45m after the run, despite `ClaimStaleAfter`/`maxAutoLockRenewalDuration` (both
+      11 minutes, `host.json:10`) having elapsed long before then — consistent with the
+      historical finding that these never reach the dead-letter queue either.
+  - **Conclusion**: same still-open bug class, not a new defect. **Action taken**: the
+    `RecordClaimStage` checkpoint calls (`ClaimAcquired`/`AboutToExecute`/
+    `ExecutionReturned`) were re-wired into `ServiceBusWorkflowTriggerFunction` (see
+    `docs/ServiceBusSecureTrigger-Architecture.md`'s "Silent-death diagnostic breadcrumb"
+    section) so a recurrence leaves a durable SQL row even when telemetry is lost. Covered
+    by three new tests in `ServiceBusWorkflowTriggerFunctionTests` (success path records
+    all three stages in order; timeout/unexpected-exception paths record `AboutToExecute`
+    but never `ExecutionReturned`) — confirmed to fail without the production change and
+    pass with it. **Still open**: whether this occurrence's death happened between
+    `TryClaim` and the `ClaimAcquired` log flush, or the whole first invocation's
+    telemetry was lost together, is unresolved; the re-wired breadcrumb is what the next
+    recurrence needs to narrow it further.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

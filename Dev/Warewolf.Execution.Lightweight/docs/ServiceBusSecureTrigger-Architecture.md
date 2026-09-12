@@ -295,7 +295,7 @@ status still match, since it remains the string's prefix.
 (The `InvalidToken:*`/`Denied:*` sub-reasons from the removed per-caller-token design no
 longer occur — see "History" above.)
 
-### Silent-death diagnostic breadcrumb (`RecordClaimStage`) — available, not currently wired in
+### Silent-death diagnostic breadcrumb (`RecordClaimStage`) — re-wired in (build 30651, 2026-09-12)
 
 The 1000-message ShovelBridge load test had repeatedly produced correlation ids that were
 claimed (`TryClaim` succeeds) and then simply vanished — no result, no dead-letter, no
@@ -307,17 +307,26 @@ logging. Two independent live investigations (2026-08-31, 2026-09-11) additional
 entire run window**, so the `ILogger.LogInformation` checkpoints bracketing the call into
 `IWorkflowExecutor.Execute` were not on their own a reliable trail for a recurrence.
 
-`IServiceBusReplayAndResultStore.RecordClaimStage(correlationId, stage)` exists to mirror
-such checkpoints into a `lastStage`/`lastStageAtUtc` pair merged into the same
+`IServiceBusReplayAndResultStore.RecordClaimStage(correlationId, stage)` mirrors such
+checkpoints into a `lastStage`/`lastStageAtUtc` pair merged into the same
 `sbtrigger:claim:<correlationId>` Hangfire hash row `TryClaim` already writes (no new key,
 no distributed lock — best-effort, must never fail or delay the execution it observes).
-That row would be durable SQL, written synchronously, independent of the telemetry
-pipeline. **`ServiceBusWorkflowTriggerFunction` does not currently call it** — the
-2026-09-11 load test run passed cleanly (see the ShovelBridge log), so the checkpoint
-calls added for that investigation were removed from the trigger function afterward. The
-capability itself (interface method, implementation, `GetClaimStageForTests` test seam)
-was kept in `ServiceBusReplayAndResultStore` in case a future recurrence needs it
-re-wired in; a future occurrence can be diagnosed directly once re-added, via:
+That row is durable SQL, written synchronously, independent of the telemetry pipeline.
+
+**Re-wired into `ServiceBusWorkflowTriggerFunction` again after build 30651 (2026-09-12)
+reproduced the same signature** (`...-000304`, `...-000307` claimed, never resolved — see
+`docs/ShovelBridge-Architecture.md`'s 2026-09-12 entry). This time App Insights ingestion
+was healthy overall (thousands of trace/request rows for the other 998 messages), yet the
+two dying executions left literally nothing — not even the unconditional `ClaimAcquired`
+log line that fires immediately after a successful claim — reinforcing that an abrupt
+process death can lose telemetry that was never flushed, independent of whether the app's
+telemetry pipeline is healthy in general. It had previously been disconnected after the
+2026-09-11 load test run passed cleanly; the capability itself (interface method,
+implementation, `GetClaimStageForTests` test seam) was kept in
+`ServiceBusReplayAndResultStore` throughout, so this re-wiring only touched
+`ServiceBusWorkflowTriggerFunction`'s three checkpoint call sites (covered by
+`ServiceBusWorkflowTriggerFunctionTests`'s "Silent-death diagnostic breadcrumb" test
+group). A future occurrence can be diagnosed directly via:
 
 ```sql
 SELECT [Key], [Field], [Value]

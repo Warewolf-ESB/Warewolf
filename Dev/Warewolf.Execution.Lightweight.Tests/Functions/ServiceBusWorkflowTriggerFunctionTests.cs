@@ -100,6 +100,37 @@ public class ServiceBusWorkflowTriggerFunctionTests
         }
     }
 
+    /// <summary>
+    /// WOLF-8512: wraps a real <see cref="IServiceBusReplayAndResultStore"/> and records
+    /// every <see cref="RecordClaimStage"/> call, in order, so tests can assert the
+    /// silent-death breadcrumb sequence directly. The production store only ever keeps
+    /// the LATEST stage per correlation id (and <see cref="ReleaseClaim"/> wipes it
+    /// entirely), so a post-hoc read back from the real store cannot prove ordering or
+    /// survive the timeout/exception cleanup paths - recording the calls as they happen
+    /// is the only way to assert them.
+    /// </summary>
+    private sealed class RecordingReplayAndResultStore : IServiceBusReplayAndResultStore
+    {
+        private readonly IServiceBusReplayAndResultStore _inner;
+        private readonly List<(string CorrelationId, string Stage)> _recordedStages = new();
+
+        public RecordingReplayAndResultStore(IServiceBusReplayAndResultStore inner) => _inner = inner;
+
+        public IReadOnlyList<(string CorrelationId, string Stage)> RecordedStages => _recordedStages;
+
+        public bool TryRegisterJti(string jti) => _inner.TryRegisterJti(jti);
+        public bool TryGetResult(string correlationId, out ServiceBusTriggerResult? result) => _inner.TryGetResult(correlationId, out result);
+        public void SaveResult(ServiceBusTriggerResult result) => _inner.SaveResult(result);
+        public bool TryClaim(string correlationId) => _inner.TryClaim(correlationId);
+        public void ReleaseClaim(string correlationId) => _inner.ReleaseClaim(correlationId);
+
+        public void RecordClaimStage(string correlationId, string stage)
+        {
+            _recordedStages.Add((correlationId, stage));
+            _inner.RecordClaimStage(correlationId, stage);
+        }
+    }
+
     private sealed class FakeWorkflowExecutor : IWorkflowExecutor
     {
         private readonly Func<WorkflowExecutionRequest, WorkflowExecutionResult> _impl;
@@ -447,6 +478,81 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
         Assert.IsTrue(store.TryClaim("corr-exception-release"),
             "The claim must be released on an unexpected exception so a genuine Service Bus redelivery can re-execute.");
+    }
+
+    // ── Silent-death diagnostic breadcrumb (IServiceBusReplayAndResultStore.RecordClaimStage) ──
+    // WOLF-8512: re-wired in after build 30651 (2026-09-12) reproduced the same
+    // claimed/vanished-without-a-trace signature as prior incidents - see
+    // docs/ServiceBusSecureTrigger-Architecture.md's "Silent-death diagnostic breadcrumb"
+    // section for the App Insights evidence.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_SuccessfulExecution_RecordsClaimStageCheckpointsInOrder()
+    {
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var recordingStore = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var sut = NewSut(executor: executor, store: recordingStore);
+        var actions = new FakeServiceBusMessageActions();
+        var message = NewMessage("{}", correlationId: "corr-stages-success");
+
+        await sut.Run(message, actions, CancellationToken.None);
+
+        Assert.AreEqual(3, recordingStore.RecordedStages.Count,
+            "Expected exactly ClaimAcquired, AboutToExecute and ExecutionReturned for a successful run.");
+        Assert.AreEqual(("corr-stages-success", "ClaimAcquired"), recordingStore.RecordedStages[0]);
+        Assert.AreEqual("corr-stages-success", recordingStore.RecordedStages[1].CorrelationId);
+        StringAssert.StartsWith(recordingStore.RecordedStages[1].Stage, "AboutToExecute");
+        Assert.AreEqual(("corr-stages-success", "ExecutionReturned (IsSuccess=True)"), recordingStore.RecordedStages[2]);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_ExecutionExceedsTimeout_RecordsAboutToExecute_ButNeverExecutionReturned()
+    {
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var recordingStore = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50) };
+        var sut = NewSut(executor: executor, store: recordingStore, triggerOptions: triggerOptions);
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
+        Assert.IsTrue(recordingStore.TryClaim("corr-stages-timeout"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        await Assert.ThrowsExceptionAsync<TimeoutException>(
+            () => sut.ProcessMessageAsync(payload, "corr-stages-timeout", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.AreEqual(1, recordingStore.RecordedStages.Count,
+            "A timed-out execution never returns, so ExecutionReturned must never be recorded - only the checkpoint immediately before the no-cancellation-seam call.");
+        Assert.AreEqual("corr-stages-timeout", recordingStore.RecordedStages[0].CorrelationId);
+        StringAssert.StartsWith(recordingStore.RecordedStages[0].Stage, "AboutToExecute");
+
+        gate.Set(); // let the orphaned background execution finish so it doesn't leak past the test
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_ExecutorThrowsUnexpectedException_RecordsAboutToExecute_ButNeverExecutionReturned()
+    {
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("unexpected boom"));
+        var recordingStore = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var sut = NewSut(executor: executor, store: recordingStore);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
+        Assert.IsTrue(recordingStore.TryClaim("corr-stages-exception"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.ProcessMessageAsync(payload, "corr-stages-exception", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.AreEqual(1, recordingStore.RecordedStages.Count,
+            "An unhandled executor exception never reaches the 'Execution task returned' checkpoint, so ExecutionReturned must never be recorded.");
+        Assert.AreEqual("corr-stages-exception", recordingStore.RecordedStages[0].CorrelationId);
+        StringAssert.StartsWith(recordingStore.RecordedStages[0].Stage, "AboutToExecute");
     }
 
     // ── Bounded execution time (ServiceBusTriggerOptions.ExecutionTimeout) ──────
