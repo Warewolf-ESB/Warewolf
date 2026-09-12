@@ -166,7 +166,7 @@ compute only when a message arrives.
 
 ```
 RabbitMQ producer (existing/unchanged)
-   │  publishes JSON: {"route":"secure|public","workflow":"...","inputs":{...}}
+   │  publishes JSON: {"route":"secure|public","inputs":{...}}
    ▼
 RabbitMQ source queue (AMQP 0.9.1)
    │  Shovel plugin (rabbitmq_shovel + rabbitmq_shovel_management)
@@ -189,12 +189,17 @@ Shovel forwards message bytes **verbatim** — it cannot reshape payloads. The R
 producer must publish exactly the JSON `WorkflowQueueTrigger` expects:
 
 ```json
-{ "route": "secure", "workflow": "Hello World", "inputs": { "Name": "FromRabbitMq" } }
+{ "route": "secure", "inputs": { "Name": "FromRabbitMq" } }
 ```
 
 - `route` (optional) — `secure` (default) or `public`.
-- `workflow` (required) — the workflow name.
 - `inputs` (optional) — a string map sent as query-string parameters.
+
+WOLF-8517: there is no `workflow` field any more. Every message on the destination queue
+runs the SAME workflow, named by `Settings/servicebustrigger.bite`'s `WorkflowName` (see
+"Trigger binding configuration" below) — a producer that used to select the workflow
+per-message via this field can no longer do so through this bridge; each distinct target
+workflow now needs its own destination queue / worker deployment.
 
 If an existing RabbitMQ producer uses a different schema, it must be changed to emit
 this contract, or an adapter service must sit between the producer and the source
@@ -203,14 +208,19 @@ queue — Shovel itself cannot transform messages.
 ## Trigger binding configuration
 
 `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to the queue named by the
-`WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` app setting (`%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%`
+`WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` configuration key (`%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%`
 indirection — the standard Azure Functions mechanism for a configurable binding without
 recompiling, mirroring the in-engine transport-trusted trigger,
 `Functions/ServiceBusWorkflowTriggerFunction.cs`, see
-`docs/ServiceBusSecureTrigger-Architecture.md`). `Deploy-WwExecutionServiceBusWorker.ps1`
-sets this app setting from `-ServiceBusQueueName` (default `wwexecution-queue`) — the same
-parameter that provisions the destination queue in Phase 2 — so the queue name only needs
-to be set in one place. Local dev supplies the matching default via `local.settings.json`.
+`docs/ServiceBusSecureTrigger-Architecture.md`). WOLF-8517: this is no longer a plain app
+setting — `Program.cs` resolves it at cold start from `Settings/servicebustrigger.bite`,
+which also names the one workflow every message on that queue runs (`WorkflowName`).
+`Deploy-WwExecutionServiceBusWorker.ps1` writes that file from `-ServiceBusQueueName`
+(default `wwexecution-queue`) and the now-required `-WorkflowName` into the local
+publish/staging directory before deploying — the same `-ServiceBusQueueName` value also
+provisions the destination queue in Phase 2, so the queue name only needs to be set in one
+place. Local dev supplies the matching default via `Settings/servicebustrigger.bite` in the
+project itself.
 
 Four additional trigger tunables, otherwise fixed in the worker's `host.json`
 (`extensions.serviceBus`), are exposed as deploy parameters and applied via the standard

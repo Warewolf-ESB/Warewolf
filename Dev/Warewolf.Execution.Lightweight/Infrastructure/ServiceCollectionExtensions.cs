@@ -32,7 +32,8 @@ internal static class ServiceCollectionExtensions
     /// </summary>
     internal static IServiceCollection AddCoreServices(
         this IServiceCollection services,
-        HostEnvironmentConfig   config)
+        HostEnvironmentConfig   config,
+        ServiceBusTriggerDefinition? serviceBusTrigger = null)
     {
         const string executionId = "ServiceCollectionExtensions-CoreServices";
 
@@ -92,6 +93,16 @@ internal static class ServiceCollectionExtensions
             services.AddSingleton(_ => EntraAuthOptions.FromEnvironment());
 
             services.AddSingleton(_ => ServiceBusTriggerOptions.FromEnvironment(config));
+
+            // Registered only when the trigger is enabled (ServiceBusTriggerDefinition.Load
+            // returns null when AzureWebJobs.ServiceBusWorkflowTrigger.Disabled is set) —
+            // ServiceBusWorkflowTriggerFunction is never constructed in that case, so an
+            // absent registration is safe (DI resolves it lazily per invocation, not eagerly
+            // at startup).
+            if (serviceBusTrigger is not null)
+            {
+                services.AddSingleton(serviceBusTrigger);
+            }
 
             // WOLF-8512: ClaimStaleAfter is resolved automatically from the host's actual
             // functionTimeout (never a fixed constant - see ServiceBusTriggerOptions.

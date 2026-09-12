@@ -1,0 +1,29 @@
+{
+  // Warewolf.Execution.ServiceBusWorker — Service Bus trigger config (WOLF-8517).
+  //
+  // Loaded once at cold start by ServiceBusTriggerDefinition.Load(), BEFORE the host is
+  // built. QueueName replaces the old WAREWOLF_SERVICEBUS_TRIGGER_QUEUE app setting;
+  // WorkflowName replaces the "workflow" field that used to be required on every message
+  // (see Functions/WorkflowQueueTrigger.cs) — every message on QueueName now runs
+  // WorkflowName unconditionally. Both are required: a missing file, or either field
+  // blank, refuses to start the trigger (see README.md's config reference).
+  //
+  // Contains no secret — Service Bus auth is Managed-Identity-only — so this file is
+  // plain JSON, never WFAES-encrypted, safe to commit a dev/sample value here.
+  //
+  // To disable the trigger entirely, set the AzureWebJobs.WorkflowQueueTrigger.Disabled
+  // app setting instead of deleting this file — ServiceBusTriggerDefinition.Load() then
+  // returns null without reading it.
+
+  // Service Bus queue this worker listens on. Matches
+  // Deploy-WwExecutionServiceBusWorker.ps1's -ServiceBusQueueName in Azure.
+  "QueueName": "wwexecution-queue",
+
+  // The workflow every message on QueueName executes.
+  "WorkflowName": "Hello World",
+
+  // Optional metadata — audit/telemetry correlation only, not read by the trigger logic.
+  "TriggerId": "00000000-0000-0000-0000-000000000000",
+  "Name": "WwExecutionServiceBusWorkerTrigger",
+  "ResourceId": "00000000-0000-0000-0000-000000000000"
+}

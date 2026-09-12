@@ -82,6 +82,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
     private readonly AuditLogger _audit;
     private readonly HostEnvironmentConfig _config;
     private readonly ServiceBusTriggerOptions _triggerOptions;
+    private readonly ServiceBusTriggerDefinition _triggerDefinition;
     private readonly SemaphoreSlim _executionConcurrencyLimiter;
     private readonly ILogger<ServiceBusWorkflowTriggerFunction> _logger;
 
@@ -91,6 +92,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
         AuditLogger audit,
         HostEnvironmentConfig config,
         ServiceBusTriggerOptions triggerOptions,
+        ServiceBusTriggerDefinition triggerDefinition,
         SemaphoreSlim executionConcurrencyLimiter,
         ILogger<ServiceBusWorkflowTriggerFunction> logger)
     {
@@ -99,6 +101,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _audit                       = audit;
         _config                      = config;
         _triggerOptions              = triggerOptions;
+        _triggerDefinition           = triggerDefinition;
         _executionConcurrencyLimiter = executionConcurrencyLimiter;
         _logger                      = logger;
     }
@@ -121,18 +124,18 @@ public sealed class ServiceBusWorkflowTriggerFunction
         catch (JsonException ex)
         {
             await RecordTerminalOutcomeAsync(
-                messageActions, message, correlationId, workflow: string.Empty, caller: "(unknown)",
+                messageActions, message, correlationId, workflow: _triggerDefinition.WorkflowName, caller: "(unknown)",
                 status: ServiceBusTriggerStatus.Malformed, reason: $"Message body is not valid JSON: {ex.Message}",
                 receivedAt, subReason: "BodyNotJson");
             return;
         }
 
-        if (payload is null || string.IsNullOrWhiteSpace(payload.Workflow))
+        if (payload is null)
         {
             await RecordTerminalOutcomeAsync(
-                messageActions, message, correlationId, workflow: payload?.Workflow ?? string.Empty, caller: "(unknown)",
-                status: ServiceBusTriggerStatus.Malformed, reason: "Message is missing the required 'workflow' field.",
-                receivedAt, subReason: "MissingWorkflowField");
+                messageActions, message, correlationId, workflow: _triggerDefinition.WorkflowName, caller: "(unknown)",
+                status: ServiceBusTriggerStatus.Malformed, reason: "Message body deserialized to null.",
+                receivedAt, subReason: "NullPayload");
             return;
         }
 
@@ -191,7 +194,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // exist purely so a future silent death leaves a last-known-state trail.
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Claim acquired — proceeding to execution (transport-trusted, no per-message token). ElapsedSinceReceivedMs={ElapsedMs}",
-            correlationId, payload.Workflow, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+            correlationId, _triggerDefinition.WorkflowName, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
 
         await ProcessMessageAsync(payload, correlationId, message, messageActions, receivedAt, cancellationToken).ConfigureAwait(false);
     }
@@ -220,7 +223,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
 
         // ── Execute in-process (no HTTP hop) ────────────────────────────────────
         var executionRequest = WorkflowFunctionHelper.CreateRequestByName(
-            payload.Workflow!, _config.WorkflowsDirectory, payload.Inputs ?? new Dictionary<string, string>());
+            _triggerDefinition.WorkflowName, _config.WorkflowsDirectory, payload.Inputs ?? new Dictionary<string, string>());
         executionRequest.ExecutingPrincipal = principal;
 
         WorkflowExecutionResult result;
@@ -249,7 +252,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
                 _store.ReleaseClaim(correlationId);
                 _logger.LogWarning(
                     "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Timed out after {SlotWaitTimeout} waiting for a free execution slot ({MaxConcurrent} max concurrent) — leaving message for standard Service Bus retry instead of waiting indefinitely.",
-                    correlationId, payload.Workflow, _triggerOptions.SlotWaitTimeout, _triggerOptions.MaxConcurrentExecutions);
+                    correlationId, _triggerDefinition.WorkflowName, _triggerOptions.SlotWaitTimeout, _triggerOptions.MaxConcurrentExecutions);
                 throw new TimeoutException(
                     $"Timed out waiting for a free execution slot for correlationId '{correlationId}' after {_triggerOptions.SlotWaitTimeout}.");
             }
@@ -262,7 +265,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             _logger.LogError(
                 ex,
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Failed while waiting for a free execution slot — leaving message for standard Service Bus retry.",
-                correlationId, payload.Workflow);
+                correlationId, _triggerDefinition.WorkflowName);
             throw;
         }
 
@@ -277,7 +280,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // incidents of 2026-08-24/25).
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | About to call IWorkflowExecutor.Execute — last log point before the no-cancellation-seam call. ElapsedSinceReceivedMs={ElapsedMs} GcTotalMemoryBytes={GcTotalMemoryBytes} ProcessWorkingSetBytes={ProcessWorkingSetBytes}",
-            correlationId, payload.Workflow, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds, GC.GetTotalMemory(false), Environment.WorkingSet);
+            correlationId, _triggerDefinition.WorkflowName, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds, GC.GetTotalMemory(false), Environment.WorkingSet);
         var executionTask = Task.Run(() => _executor.Execute(executionRequest));
 
         // The concurrency slot is released only once execution actually finishes (success,
@@ -298,7 +301,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             _store.ReleaseClaim(correlationId);
             _logger.LogWarning(
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution exceeded the configured timeout ({Timeout}) — leaving message for standard Service Bus retry instead of waiting indefinitely. The abandoned execution keeps running in the background (IWorkflowExecutor.Execute has no cancellation seam) and will release its concurrency slot whenever it eventually finishes.",
-                correlationId, payload.Workflow, _triggerOptions.ExecutionTimeout);
+                correlationId, _triggerDefinition.WorkflowName, _triggerOptions.ExecutionTimeout);
             throw new TimeoutException(
                 $"Workflow execution for correlationId '{correlationId}' exceeded the configured timeout ({_triggerOptions.ExecutionTimeout}).");
         }
@@ -319,13 +322,13 @@ public sealed class ServiceBusWorkflowTriggerFunction
             _logger.LogError(
                 ex,
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Unexpected execution exception — leaving message for standard Service Bus retry.",
-                correlationId, payload.Workflow);
+                correlationId, _triggerDefinition.WorkflowName);
             throw;
         }
 
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution task returned. IsSuccess={IsSuccess} ElapsedSinceReceivedMs={ElapsedMs}",
-            correlationId, payload.Workflow, result.IsSuccess, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+            correlationId, _triggerDefinition.WorkflowName, result.IsSuccess, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
 
         if (!result.IsSuccess && result.IsTransientFailure)
         {
@@ -341,7 +344,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
             _store.ReleaseClaim(correlationId);
             _logger.LogWarning(
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Transient execution failure ({Error}) — leaving message for standard Service Bus retry instead of dead-lettering.",
-                correlationId, payload.Workflow, transientError);
+                correlationId, _triggerDefinition.WorkflowName, transientError);
             throw new InvalidOperationException(
                 $"Transient workflow execution failure for correlationId '{correlationId}': {transientError}");
         }
@@ -350,7 +353,7 @@ public sealed class ServiceBusWorkflowTriggerFunction
         {
             CorrelationId  = correlationId,
             Status         = result.IsSuccess ? ServiceBusTriggerStatus.Succeeded : ServiceBusTriggerStatus.Failed,
-            Workflow       = payload.Workflow,
+            Workflow       = _triggerDefinition.WorkflowName,
             Caller         = TrustedQueueCaller,
             Outputs        = result.IsSuccess ? await result.ReadPayloadAsync(cancellationToken).ConfigureAwait(false) : null,
             Error          = result.IsSuccess ? null : string.Join("; ", result.Errors),
@@ -363,12 +366,12 @@ public sealed class ServiceBusWorkflowTriggerFunction
         {
             _logger.LogInformation(
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Caller={Caller} | Succeeded | DurationMs={DurationMs}",
-                correlationId, payload.Workflow, TrustedQueueCaller, result.Duration.TotalMilliseconds);
+                correlationId, _triggerDefinition.WorkflowName, TrustedQueueCaller, result.Duration.TotalMilliseconds);
             await SettleAsync(ct => messageActions.CompleteMessageAsync(message, ct), correlationId, "CompleteMessageAsync (success)").ConfigureAwait(false);
         }
         else
         {
-            _audit.LogServiceBusOutcome("Failed", TrustedQueueCaller, payload.Workflow ?? string.Empty, outcome.Error ?? "Workflow execution failed.", correlationId);
+            _audit.LogServiceBusOutcome("Failed", TrustedQueueCaller, _triggerDefinition.WorkflowName, outcome.Error ?? "Workflow execution failed.", correlationId);
             // A workflow/activity failure is a business outcome, not a transient transport
             // failure — dead-letter rather than let Service Bus retry an execution that will
             // fail identically every time.

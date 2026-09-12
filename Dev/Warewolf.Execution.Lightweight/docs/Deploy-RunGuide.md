@@ -349,22 +349,24 @@ The engine's other first-class trigger path alongside HTTPS — see
 | `-ServiceBusWorkerAppName` | string | prompt (child) | Function App name for the worker. |
 | `-ServiceBusWorkerPublishPath` | string | prompt / required for companion | Folder/.zip of the worker's `dotnet publish` output. **Must be a different directory than the engine's `-PublishPath`** (different app/csproj); the engine resolves it at plan time and fails loudly on a collision. Required (no prompt) under `-NonInteractive`. |
 | `-ServiceBusWorkerStorageAccount` | string | prompt (child) | Storage account for the worker. |
+| `-ServiceBusWorkerWorkflowName` | string | prompt (child) — **required**, no default | WOLF-8517: the workflow every message on the worker's queue runs, written into `Settings/servicebustrigger.bite`. The message body no longer names it, so a `-NonInteractive` companion deploy MUST pass this or the child script throws. |
 | `-WwExecutionScope` | string | derived from auth output, or prompt (child) | MI token scope the worker uses to call the engine, e.g. `api://<engine-app-id>/.default`. |
 
 > Role assignment for the worker's MI (`Warewolf_ClientApps`) is a **separate** step —
 > see `docs/KB-ClientApps-Configuration.md` §2.6. `Deploy-WwExecutionServiceBusWorker.ps1`
 > can also be run **standalone** (see its `-?` help and the `Scripts/README.md` section).
 
-> The worker's own `-ServiceBusQueueName` (live-wired to the `[ServiceBusTrigger]` binding
-> via the `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` app setting) and its four
-> `-ServiceBusTrigger*` binding-tuning parameters (`MaxConcurrentCalls`/`PrefetchCount`/
-> `MaxAutoLockRenewalMinutes`/`AutoCompleteMessages`) are **not** forwarded by the engine
-> orchestrator — `-DeployServiceBusWorker` only passes shared targeting/auth context, so a
-> companion run always deploys with the worker's own defaults. To customize the queue name
-> or trigger tuning, run `Deploy-WwExecutionServiceBusWorker.ps1` standalone with those
-> parameters (before or after the engine deploy — it's idempotent). See
-> `docs/ShovelBridge-Architecture.md` § "Trigger binding configuration" for the full list
-> and the app-setting override mechanism's reliability caveat.
+> The worker's own `-ServiceBusQueueName` (WOLF-8517: written into `Settings/servicebustrigger.bite`,
+> which the `[ServiceBusTrigger]` binding resolves via the `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`
+> configuration key at cold start) and its four `-ServiceBusTrigger*` binding-tuning parameters
+> (`MaxConcurrentCalls`/`PrefetchCount`/`MaxAutoLockRenewalMinutes`/`AutoCompleteMessages`) are
+> **not** forwarded by the engine orchestrator (unlike `-ServiceBusWorkerWorkflowName` above,
+> which is) — so a companion run always deploys with the worker's own queue-name default and
+> trigger-tuning defaults. To customize the queue name or trigger tuning, run
+> `Deploy-WwExecutionServiceBusWorker.ps1` standalone with those parameters (before or after
+> the engine deploy — it's idempotent). See `docs/ShovelBridge-Architecture.md` § "Trigger
+> binding configuration" for the full list and the app-setting override mechanism's
+> reliability caveat.
 
 ### RabbitMQ QueueProcessor (optional companion)
 

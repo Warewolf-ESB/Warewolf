@@ -694,6 +694,7 @@ dotnet publish Dev/Warewolf.Execution.ServiceBusWorker/Warewolf.Execution.Servic
   -StorageAccount stwwsbworker -AppName $ServiceBusWorkerApp `
   -PublishPath D:\ServiceBusWorker\Publish `
   -ServiceBusNamespace $ServiceBusNamespace -ServiceBusQueueName wwexecution-queue `
+  -WorkflowName 'Hello World' `
   -CreateShovelSendRule $true `
   -WwExecutionBaseUrl $EngineUrl -WwExecutionTenantId $TenantId `
   -WwExecutionResourceAppId $ResourceAppId
@@ -706,13 +707,17 @@ prompts for anything not passed):
 .\Deploy-WwExecutionEngine.ps1 ... `
   -DeployServiceBusWorker -ServiceBusWorkerAppName $ServiceBusWorkerApp `
   -ServiceBusWorkerPublishPath D:\ServiceBusWorker\Publish `
-  -ServiceBusWorkerStorageAccount stwwsbworker
+  -ServiceBusWorkerStorageAccount stwwsbworker `
+  -ServiceBusWorkerWorkflowName 'Hello World'
 ```
 
 `-ServiceBusQueueName` is live-wired to the trigger (not just queue provisioning), and four
 `-ServiceBusTrigger*` parameters tune the trigger's binding (concurrency/prefetch/lock-renewal/
 auto-complete) without editing `host.json` — both only available on the **standalone** worker
-invocation above, not the engine-companion form. See
+invocation above, not the engine-companion form. `-WorkflowName` (WOLF-8517, REQUIRED — no
+default) is the workflow every message on the queue runs; it's forwarded from the engine
+deploy's own `-ServiceBusWorkerWorkflowName`, or the child script prompts for it interactively
+when omitted (a `-NonInteractive` engine-companion deploy must pass it). See
 [`docs/ShovelBridge-Architecture.md`](ShovelBridge-Architecture.md) § "Trigger binding
 configuration" for the full list, defaults, and an override-reliability caveat.
 

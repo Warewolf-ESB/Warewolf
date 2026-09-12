@@ -163,6 +163,7 @@ Describe 'Deploy-WwExecutionServiceBusWorker — end-to-end (DryRun, no side eff
             PublishPath              = $global:pubDir
             LogDir                   = $global:logDir
             ServiceBusNamespace      = 'ns-wwsb-test'
+            WorkflowName             = 'Hello World'
             EnableAppInsights        = $false
             WwExecutionBaseUrl       = 'https://wwengine.azurewebsites.net'
             WwExecutionResourceAppId = 'engine-app-id'
@@ -256,15 +257,20 @@ Describe 'Deploy-WwExecutionServiceBusWorker — end-to-end (DryRun, no side eff
         $out | Should -Match '\[DRYRUN\] az functionapp config appsettings set'
     }
 
-    It 'applies WAREWOLF_SERVICEBUS_TRIGGER_QUEUE matching the default -ServiceBusQueueName' {
+    It 'no longer applies WAREWOLF_SERVICEBUS_TRIGGER_QUEUE as an app setting (WOLF-8517: it comes from servicebustrigger.bite now)' {
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
-        $out | Should -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE\s*= wwexecution-queue'
+        $out | Should -Not -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE\s*='
     }
 
-    It 'retargets WAREWOLF_SERVICEBUS_TRIGGER_QUEUE when a custom -ServiceBusQueueName is supplied' {
-        $a = $script:commonArgs.Clone(); $a.ServiceBusQueueName = 'custom-queue'
+    It 'stages Settings/servicebustrigger.bite with the default -ServiceBusQueueName and -WorkflowName before deploy' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Match "Write '.*servicebustrigger\.bite': QueueName=wwexecution-queue, WorkflowName=Hello World"
+    }
+
+    It 'stages a custom -ServiceBusQueueName and -WorkflowName' {
+        $a = $script:commonArgs.Clone(); $a.ServiceBusQueueName = 'custom-queue'; $a.WorkflowName = 'Other Workflow'
         $out = (& $script:DeployScript @a) 6>&1 | Out-String
-        $out | Should -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE\s*= custom-queue'
+        $out | Should -Match "Write '.*servicebustrigger\.bite': QueueName=custom-queue, WorkflowName=Other Workflow"
     }
 
     It 'applies Service Bus trigger binding-option app settings with host.json-matching defaults' {
@@ -318,6 +324,7 @@ Describe 'Deploy-WwExecutionServiceBusWorker — end-to-end (DryRun, no side eff
         $summary.dryRun | Should -BeTrue
         $summary.status | Should -Be 'completed'
         $summary.serviceBusNamespace | Should -Be 'ns-wwsb-test'
+        $summary.workflowName | Should -Be 'Hello World'
         $summary.serviceBusTriggerMaxConcurrentCalls | Should -Be 16
         $summary.serviceBusTriggerPrefetchCount | Should -Be 0
         $summary.serviceBusTriggerMaxAutoLockRenewalDuration | Should -Be '00:05:00'
@@ -343,6 +350,11 @@ Describe 'Deploy-WwExecutionServiceBusWorker — end-to-end (DryRun, no side eff
     It 'throws when -WwExecutionResourceAppId is missing (NonInteractive)' {
         $a = $script:commonArgs.Clone(); $a.Remove('WwExecutionResourceAppId')
         { & $script:DeployScript @a } | Should -Throw '*WwExecutionResourceAppId*'
+    }
+
+    It 'throws when -WorkflowName is missing (NonInteractive, WOLF-8517)' {
+        $a = $script:commonArgs.Clone(); $a.Remove('WorkflowName')
+        { & $script:DeployScript @a } | Should -Throw '*WorkflowName*'
     }
 
     It 'throws when -PublishPath does not exist' {

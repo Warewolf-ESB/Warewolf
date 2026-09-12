@@ -395,7 +395,7 @@ WorkflowClaimsPrincipal : ClaimsPrincipal
 | `KEYVAULT_SECRET_NAME` | `HostEnvironmentConfig` | Key Vault secret name (default `dp-keyring-v1`) |
 | `MICROSOFT_PROVIDER_AUTHENTICATION_SECRET` | Easy Auth | Client secret reference |
 | `AZURE_FUNCTIONS_ENVIRONMENT` | `HostEnvironmentConfig` | `Development` triggers dev bypasses |
-| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | `[ServiceBusTrigger]` attribute indirection | Queue name the trigger listens on — the sole trust boundary for that trigger (see `docs/ServiceBusSecureTrigger-Architecture.md`) |
+| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | `[ServiceBusTrigger]` attribute indirection | Queue name the trigger listens on — the sole trust boundary for that trigger. WOLF-8517: no longer set as a plain app setting; resolved at cold start from `Settings/servicebustrigger.bite` (see `docs/ServiceBusSecureTrigger-Architecture.md`), which also names the one workflow every message on that queue runs |
 | `ServiceBusConnection__fullyQualifiedNamespace` | Functions Service Bus binding | Identity-based Service Bus connection (no connection string) |
 
 ---

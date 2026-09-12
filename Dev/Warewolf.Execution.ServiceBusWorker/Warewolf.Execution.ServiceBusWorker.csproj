@@ -98,6 +98,15 @@
       <!-- Never published; never commit real values. -->
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
+    <!--
+      Contains no secret (Service Bus auth is Managed-Identity-only), so unlike
+      local.settings.json this ships to Release publish output the same way
+      Warewolf.Execution.Lightweight's Settings\servicebustrigger.bite does.
+    -->
+    <None Update="Settings\servicebustrigger.bite">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

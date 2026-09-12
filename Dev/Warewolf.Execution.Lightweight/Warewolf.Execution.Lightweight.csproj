@@ -275,6 +275,9 @@
     <None Update="Settings\executionengine.settings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Settings\servicebustrigger.bite">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Settings\persistencesettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -3,9 +3,11 @@
  *  Copyright 2026 by Warewolf Ltd <alpha@warewolf.io>
  *  Licensed under GNU Affero General Public License 3.0 or later.
  *
- *  Pins the WorkflowQueueTrigger message contract (route/workflow/inputs), the
- *  route-resolution defaulting/validation rules, and the poison-message contract
- *  (exceptions are never swallowed so the Functions runtime dead-letters the message).
+ *  Pins the WorkflowQueueTrigger message contract (route/inputs — WOLF-8517 dropped
+ *  "workflow": every message now runs the workflow named by the injected
+ *  ServiceBusTriggerDefinition), the route-resolution defaulting/validation rules, and
+ *  the poison-message contract (exceptions are never swallowed so the Functions runtime
+ *  dead-letters the message).
  */
 
 using Microsoft.Azure.Functions.Worker;
@@ -15,6 +17,7 @@ using Moq;
 using System.Reflection;
 using System.Text.Json;
 using Warewolf.Execution.ServiceBusWorker;
+using Warewolf.Execution.ServiceBusWorker.Configuration;
 using Warewolf.Execution.ServiceBusWorker.Functions;
 
 namespace Warewolf.Execution.ServiceBusWorker.Tests;
@@ -22,8 +25,14 @@ namespace Warewolf.Execution.ServiceBusWorker.Tests;
 [TestClass]
 public class WorkflowQueueTriggerTests
 {
-    static WorkflowQueueTrigger NewTrigger(Mock<IWwExecutionClient> client) =>
-        new(client.Object, NullLogger<WorkflowQueueTrigger>.Instance);
+    static readonly ServiceBusTriggerDefinition DefaultTriggerDefinition = new()
+    {
+        QueueName = "wwexecution-queue",
+        WorkflowName = "Hello World",
+    };
+
+    static WorkflowQueueTrigger NewTrigger(Mock<IWwExecutionClient> client, ServiceBusTriggerDefinition? triggerDefinition = null) =>
+        new(client.Object, triggerDefinition ?? DefaultTriggerDefinition, NullLogger<WorkflowQueueTrigger>.Instance);
 
     [TestMethod]
     [TestCategory("UnitTest")]
@@ -35,7 +44,7 @@ public class WorkflowQueueTriggerTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync("{}");
 
-        var body = """{ "route": "secure", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }""";
+        var body = """{ "route": "secure", "inputs": { "Name": "FromServiceBus" } }""";
         await NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None);
 
         client.Verify(c => c.ExecuteSecureAsync("Hello World",
@@ -52,7 +61,7 @@ public class WorkflowQueueTriggerTests
         client.Setup(c => c.ExecutePublicAsync("Hello World", It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync("{}");
 
-        var body = """{ "route": "public", "workflow": "Hello World" }""";
+        var body = """{ "route": "public" }""";
         await NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None);
 
         client.Verify(c => c.ExecutePublicAsync("Hello World", It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()), Times.Once);
@@ -66,10 +75,28 @@ public class WorkflowQueueTriggerTests
         client.Setup(c => c.ExecuteSecureAsync("Hello World", It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync("{}");
 
-        var body = """{ "workflow": "Hello World" }""";
+        var body = "{}";
         await NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None);
 
         client.Verify(c => c.ExecuteSecureAsync("Hello World", It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()), Times.Once);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task RunAsync_UsesWorkflowNameFromInjectedTriggerDefinition_NotFromMessage()
+    {
+        // WOLF-8517: the workflow to run comes solely from the injected
+        // ServiceBusTriggerDefinition — proves a different definition changes which
+        // workflow is called, with the message body unchanged.
+        var client = new Mock<IWwExecutionClient>();
+        client.Setup(c => c.ExecuteSecureAsync("Other Workflow", It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync("{}");
+        var triggerDefinition = new ServiceBusTriggerDefinition { QueueName = "wwexecution-queue", WorkflowName = "Other Workflow" };
+
+        var body = "{}";
+        await NewTrigger(client, triggerDefinition).RunAsync(body, context: null!, CancellationToken.None);
+
+        client.Verify(c => c.ExecuteSecureAsync("Other Workflow", It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()), Times.Once);
     }
 
     [TestMethod]
@@ -85,7 +112,7 @@ public class WorkflowQueueTriggerTests
         client.Setup(c => c.ExecutePublicAsync(It.IsAny<string>(), It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()))
             .ReturnsAsync("{}");
 
-        var body = JsonSerializer.Serialize(new { route, workflow = "Hello World" });
+        var body = JsonSerializer.Serialize(new { route });
 
         // Should not throw for any of these normalized values.
         await NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None);
@@ -96,7 +123,7 @@ public class WorkflowQueueTriggerTests
     public async Task RunAsync_UnsupportedRoute_ThrowsInvalidOperationException()
     {
         var client = new Mock<IWwExecutionClient>();
-        var body = """{ "route": "ftp", "workflow": "Hello World" }""";
+        var body = """{ "route": "ftp" }""";
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
             () => NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None));
@@ -106,21 +133,13 @@ public class WorkflowQueueTriggerTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task RunAsync_MissingWorkflowField_ThrowsInvalidOperationException()
+    public async Task RunAsync_NullPayload_ThrowsInvalidOperationException()
     {
+        // WOLF-8517: there is no "workflow" field to be missing/blank any more — the only
+        // remaining malformed shape (short of invalid JSON) is a body that deserializes to
+        // null, e.g. the literal "null".
         var client = new Mock<IWwExecutionClient>();
-        var body = """{ "route": "secure" }""";
-
-        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
-            () => NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None));
-    }
-
-    [TestMethod]
-    [TestCategory("UnitTest")]
-    public async Task RunAsync_BlankWorkflowField_ThrowsInvalidOperationException()
-    {
-        var client = new Mock<IWwExecutionClient>();
-        var body = """{ "workflow": "   " }""";
+        var body = "null";
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
             () => NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None));
@@ -149,7 +168,7 @@ public class WorkflowQueueTriggerTests
                 It.IsAny<CancellationToken>()))
             .ReturnsAsync("{}");
 
-        var body = """{ "workflow": "Hello World" }""";
+        var body = "{}";
         await NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None);
 
         client.Verify(c => c.ExecuteSecureAsync("Hello World",
@@ -165,7 +184,7 @@ public class WorkflowQueueTriggerTests
         client.Setup(c => c.ExecuteSecureAsync(It.IsAny<string>(), It.IsAny<IDictionary<string, string?>>(), It.IsAny<CancellationToken>()))
             .ThrowsAsync(new InvalidOperationException("engine unreachable"));
 
-        var body = """{ "workflow": "Hello World" }""";
+        var body = "{}";
 
         var ex = await Assert.ThrowsExceptionAsync<InvalidOperationException>(
             () => NewTrigger(client).RunAsync(body, context: null!, CancellationToken.None));
@@ -180,8 +199,8 @@ public class WorkflowQueueTriggerTests
         // Guards against regressing to a hard-coded queue name literal: the trigger must bind
         // via the standard Azure Functions %AppSetting% indirection (WAREWOLF_SERVICEBUS_TRIGGER_QUEUE)
         // — the same pattern ServiceBusWorkflowTriggerFunction.cs uses — so that
-        // Deploy-WwExecutionServiceBusWorker.ps1's -ServiceBusQueueName actually retargets the
-        // trigger instead of only provisioning a queue nothing listens on.
+        // ServiceBusTriggerDefinition.QueueName (via Program.cs's configuration injection)
+        // actually retargets the trigger instead of only naming a queue nothing listens on.
         var parameter = typeof(WorkflowQueueTrigger)
             .GetMethod(nameof(WorkflowQueueTrigger.RunAsync), BindingFlags.Public | BindingFlags.Instance)!
             .GetParameters()

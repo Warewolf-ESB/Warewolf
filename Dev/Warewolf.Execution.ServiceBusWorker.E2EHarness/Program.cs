@@ -18,7 +18,10 @@ namespace Warewolf.Execution.ServiceBusWorker.E2EHarness;
 ///   marker to arrive, proving a RabbitMQ Shovel actually bridged the message across
 ///   protocols. Does NOT prove a workflow was executed — see <c>workflow-execution</c>.</item>
 ///   <item><b><c>workflow-execution</c></b> (additive). Publishes the real
-///   <c>ServiceBusWorkflowMessage</c> JSON contract (<c>{"workflow","inputs","correlationId"}</c>)
+///   <c>ServiceBusWorkflowMessage</c> JSON contract (<c>{"inputs","correlationId"}</c> — WOLF-8517
+///   dropped "workflow": every message on the deployed trigger's queue now runs the ONE
+///   workflow named by its own <c>Settings/servicebustrigger.bite</c>, not a value this
+///   harness supplies)
 ///   to RabbitMQ, optionally carrying a caller bearer token as an AMQP 0.9.1
 ///   <c>Authorization</c> message header (the Shovel bridges it to an AMQP 1.0 application
 ///   property) — but
@@ -163,7 +166,6 @@ internal static class Program
         var rabbitMqPassword = required("rabbitmq-password");
         var rabbitMqVHost = opts.GetValueOrDefault("rabbitmq-vhost", "/");
         var sourceQueue = required("source-queue");
-        var workflow = required("workflow");
         var engineBaseUrl = required("engine-base-url").TrimEnd('/');
         // The trigger no longer validates a per-message caller token (it trusts the
         // configured queue's transport boundary instead - see
@@ -196,7 +198,7 @@ internal static class Program
         Console.WriteLine(messageCount == 1
             ? $"CorrelationId: {correlationIds[0]}"
             : $"CorrelationId prefix: {correlationIdPrefix} ({messageCount} messages, '{correlationIds[0]}' .. '{correlationIds[^1]}')");
-        Console.WriteLine($"Publishing {messageCount} '{workflow}' workflow-trigger message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
+        Console.WriteLine($"Publishing {messageCount} workflow-trigger message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
         if (messageCount > 1 && !string.IsNullOrWhiteSpace(workflowInputsJson) && !WorkflowInputTemplate.HasCorrelationIdPlaceholder(workflowInputsJson))
         {
             Console.WriteLine($"  WARNING: --workflow-inputs-json has no '{WorkflowInputTemplate.CorrelationIdPlaceholder}' or '{WorkflowInputTemplate.CorrelationGuidPlaceholder}' placeholder, so all {messageCount} messages carry an IDENTICAL inputs map.");
@@ -207,7 +209,7 @@ internal static class Program
         var publishStopwatch = Stopwatch.StartNew();
         await PublishManyWorkflowTriggerMessagesAsync(
             rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
-            workflow, workflowInputsJson, correlationIds, messageAuthToken, publishConcurrency);
+            workflowInputsJson, correlationIds, messageAuthToken, publishConcurrency);
         publishStopwatch.Stop();
         Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
 
@@ -231,22 +233,22 @@ internal static class Program
             if (succeededIds.Length == 1)
             {
                 var outputs = results[correlationIds[0]].OutputsJson ?? "(none)";
-                Console.WriteLine($"PASS: workflow '{workflow}' (correlationId '{correlationIds[0]}') executed successfully via RabbitMQ -> Shovel -> Service Bus -> Lightweight engine. Outputs: {outputs}");
+                Console.WriteLine($"PASS: workflow-trigger message (correlationId '{correlationIds[0]}') executed successfully via RabbitMQ -> Shovel -> Service Bus -> Lightweight engine. Outputs: {outputs}");
                 return 0;
             }
             var (failedId, failedResult) = failedResults[0];
-            Console.WriteLine($"FAIL: workflow '{workflow}' (correlationId '{failedId}') did not succeed. Status='{failedResult.Status}'. Error='{failedResult.Error ?? "(no error detail)"}'.");
+            Console.WriteLine($"FAIL: workflow-trigger message (correlationId '{failedId}') did not succeed. Status='{failedResult.Status}'. Error='{failedResult.Error ?? "(no error detail)"}'.");
             return 1;
         }
 
         if (succeededIds.Length == messageCount)
         {
             var rate = messageCount / Math.Max(waitStopwatch.Elapsed.TotalSeconds, 0.001);
-            Console.WriteLine($"PASS: all {messageCount} '{workflow}' executions (correlationId prefix '{correlationIdPrefix}') succeeded via RabbitMQ -> Shovel -> Service Bus -> Lightweight engine in {waitStopwatch.Elapsed.TotalSeconds:F1}s ({rate:F1} exec/s).");
+            Console.WriteLine($"PASS: all {messageCount} executions (correlationId prefix '{correlationIdPrefix}') succeeded via RabbitMQ -> Shovel -> Service Bus -> Lightweight engine in {waitStopwatch.Elapsed.TotalSeconds:F1}s ({rate:F1} exec/s).");
             return 0;
         }
 
-        Console.WriteLine($"FAIL: only {succeededIds.Length}/{messageCount} '{workflow}' execution(s) (correlationId prefix '{correlationIdPrefix}') succeeded within {timeoutSeconds}s ({failedResults.Length} failed, {neverResolvedIds.Length} never got a result).");
+        Console.WriteLine($"FAIL: only {succeededIds.Length}/{messageCount} execution(s) (correlationId prefix '{correlationIdPrefix}') succeeded within {timeoutSeconds}s ({failedResults.Length} failed, {neverResolvedIds.Length} never got a result).");
         foreach (var (id, result) in failedResults.Take(10))
         {
             Console.WriteLine($"  FAILED correlationId '{id}': Status='{result.Status}', Error='{result.Error ?? "(no error detail)"}'");
@@ -317,8 +319,11 @@ internal static class Program
                 --rabbitmq-password <password>
                 [--rabbitmq-vhost <vhost>]             default: /
                 --source-queue <name>
-                --workflow <name>                      workflow to execute, e.g. "Hello World"
-                [--workflow-inputs-json <json>]        e.g. {"Name":"FromRabbitMq"}
+                [--workflow-inputs-json <json>]        e.g. {"Name":"FromRabbitMq"} — WOLF-8517:
+                                                        no --workflow option any more; every
+                                                        message on the deployed trigger's queue
+                                                        runs the ONE workflow named by its own
+                                                        Settings/servicebustrigger.bite
                 [--correlation-id <id>]                default: a freshly generated GUID
                 [--message-auth-token <bearer-token>]  OPTIONAL - the trigger no longer
                                                         validates a per-message caller token
@@ -411,7 +416,9 @@ internal static class Program
 
     /// <summary>
     /// Publishes the real <c>ServiceBusWorkflowMessage</c> JSON body
-    /// (<c>{"workflow","inputs","correlationId"}</c>) via the same RabbitMQ Management HTTP
+    /// (<c>{"inputs","correlationId"}</c> — WOLF-8517 dropped "workflow": the deployed
+    /// trigger's own <c>Settings/servicebustrigger.bite</c> now names the one workflow every
+    /// message on its queue runs) via the same RabbitMQ Management HTTP
     /// API publish endpoint used by <see cref="PublishToRabbitMqAsync"/>, optionally setting
     /// an AMQP 0.9.1 basic-properties <c>Authorization</c> header when
     /// <paramref name="authToken"/> is non-empty — RabbitMQ's Shovel amqp10 destination
@@ -426,7 +433,7 @@ internal static class Program
     /// </summary>
     private static async Task PublishManyWorkflowTriggerMessagesAsync(
         string managementUri, string username, string password, string vhost, string queue,
-        string workflow, string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken,
+        string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken,
         int maxConcurrency = 1)
     {
         using var http = new HttpClient();
@@ -435,7 +442,7 @@ internal static class Program
 
         await PublishManyBoundedAsync(
             correlationIds,
-            id => PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflow, workflowInputsJson, id, authToken),
+            id => PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflowInputsJson, id, authToken),
             maxConcurrency);
     }
 
@@ -490,7 +497,7 @@ internal static class Program
 
     private static async Task PublishWorkflowTriggerMessageAsync(
         HttpClient http, string managementUri, string vhost, string queue,
-        string workflow, string workflowInputsJson, string correlationId, string authToken)
+        string workflowInputsJson, string correlationId, string authToken)
     {
         var vhostSegment = vhost == "/" ? "%2f" : Uri.EscapeDataString(vhost);
 
@@ -506,7 +513,7 @@ internal static class Program
                 ?? throw new InvalidOperationException($"--workflow-inputs-json did not deserialize to a string map: {expandedInputsJson}");
         }
 
-        var payload = JsonSerializer.Serialize(new { workflow, inputs, correlationId });
+        var payload = JsonSerializer.Serialize(new { inputs, correlationId });
 
         // Optional: the trigger no longer reads or validates this header at all (trust is
         // the configured queue's transport boundary instead) - only set it when a caller

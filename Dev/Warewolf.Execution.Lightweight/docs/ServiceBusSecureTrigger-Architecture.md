@@ -108,16 +108,17 @@ ServiceBusResultFunction  (ordinary HTTP function, [RequireWorkflowPermission(Vi
 
 ```json
 {
-  "workflow": "Hello World",
   "inputs": { "Name": "FromServiceBus" },
   "correlationId": "optional-caller-supplied-id"
 }
 ```
 
-- `workflow` (required) — the workflow name, resolved directly to a `.bite` file under
-  the engine's workflows directory (`WorkflowFunctionHelper.CreateRequestByName`) — no
-  `secure.config` permission check happens for this trigger at all (see "Threat model
-  coverage"); the name is used purely to locate the file to execute.
+- There is no `workflow` field (WOLF-8517). Every message on the configured queue runs the
+  SAME workflow — named by `Settings/servicebustrigger.bite`'s `WorkflowName` (see
+  "Configuration reference" below), resolved directly to a `.bite` file under the engine's
+  workflows directory (`WorkflowFunctionHelper.CreateRequestByName`) — no `secure.config`
+  permission check happens for this trigger at all (see "Threat model coverage"); the name
+  is used purely to locate the file to execute.
 - `inputs` (optional) — a string map, passed through identically to how HTTP query-string
   inputs are handled today (`WorkflowFunctionHelper.CreateRequestByName`).
 - `correlationId` (optional) — caller-supplied idempotency/polling key. If omitted, the
@@ -180,9 +181,20 @@ is unrelated to it.
 | App setting | Purpose |
 |---|---|
 | `ServiceBusConnection__fullyQualifiedNamespace` | Identity-based Service Bus connection (Managed Identity in Azure, developer credentials locally). No connection string / SAS key is used. |
-| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | Queue name the trigger listens on — controlling who may send to it is this trigger's ENTIRE authorization boundary. Resolved via the Azure Functions `%AppSetting%` attribute-indirection syntax (default convention: `wwexecution-secure-trigger-queue`). |
 | `WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES` | WOLF-8512: operator escape hatch overriding `ClaimStaleAfter` directly, bypassing its runtime-resolved default entirely. Normally left unset — see "Failure classification" below for how the default is inferred automatically. |
-| `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. |
+| `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. `ServiceBusTriggerDefinition.Load()` (see below) returns `null` without reading its config file when this is set. |
+
+WOLF-8517: the queue name is no longer `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` either. It, and
+the workflow the trigger runs, are sourced SOLELY from `Settings/servicebustrigger.bite`
+(`ServiceBusTriggerDefinition.cs`) — a plain-JSON, deploy-bundled file (no secret in it, so
+never WFAES-encrypted), loaded once at cold start **before** the host is built. Its
+`QueueName` is injected into configuration under the `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`
+key (`HostBuilderExtensions.ConfigureWarewolf`) so the `[ServiceBusTrigger("%...%")]`
+attribute indirection resolves exactly as it did when that was a real app setting; its
+`WorkflowName` is registered as a DI singleton and consumed directly by
+`ServiceBusWorkflowTriggerFunction` — **the message body no longer names the workflow**
+(see "Message contract" above). A missing file, or either field blank, is fatal — refuses
+to start rather than silently defaulting.
 
 The remaining tunables are sourced SOLELY from `Settings/executionengine.settings.json`'s
 `serviceBusTrigger` section (deploy-bundled JSON file — see `HostEnvironmentConfig.cs` and
@@ -265,7 +277,7 @@ status still match, since it remains the string's prefix.
 | Terminal path | `deadLetterReason` |
 |---|---|
 | Message body is not valid JSON | `Malformed:BodyNotJson` |
-| Missing `workflow` field | `Malformed:MissingWorkflowField` |
+| Message body deserialized to null (e.g. literal `null`) | `Malformed:NullPayload` |
 | Business/activity failure | `Failed:ExecutionFailed` |
 
 (The `InvalidToken:*`/`Denied:*` sub-reasons from the removed per-caller-token design no
@@ -330,11 +342,18 @@ extends the same pipeline to prove actual **workflow execution** through this tr
    original arrival-proof `--mode arrival` (default, unchanged, still what CI's
    `pipeline*.yml` jobs use).
 2. In this mode the harness publishes the real `ServiceBusWorkflowMessage` contract
-   (`{"workflow","inputs","correlationId"}`) to the RabbitMQ source queue.
+   (`{"inputs","correlationId"}`) to the RabbitMQ source queue.
    `-MessageAuthToken` is OPTIONAL: since this trigger no longer validates a
    per-message caller token, setting it only proves the trigger genuinely ignores the
    `Authorization` header when present — it has no effect on whether the message
    executes.
+   > **WOLF-8517 follow-up (not yet done):** the harness/scripts still build a
+   > `"workflow"` field into this payload and pass `-WorkflowName` as a message value.
+   > Now that the workflow comes solely from `Settings/servicebustrigger.bite` (see
+   > "Configuration reference" above), the harness needs to (a) drop `"workflow"` from
+   > the published body and (b) verify the deployed trigger file's `WorkflowName`
+   > matches `-WorkflowName` instead of relying on the message to select it. Flagged
+   > here rather than changed silently — needs its own review pass.
 3. The harness does **not** open its own Service Bus receiver on the trigger queue in
    this mode — Service Bus queues are single-consumer, so a second listener could steal
    the message before this trigger's own Managed-Identity subscription consumes it.

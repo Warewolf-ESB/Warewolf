@@ -69,6 +69,15 @@ Load-test-critical values (non-secret):
 
 - `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE = wwexecution-secure-trigger-queue-e2e` — **must match**
   the queue `pipeline-LOADTEST.yml` shovels into, or every message silently goes unconsumed.
+
+  **2026-09-12 correction (WOLF-8517):** this is no longer an app setting. The queue name AND
+  the workflow every message on it runs now come SOLELY from `Settings/servicebustrigger.bite`
+  on the Function App, staged via `Enable-ServiceBusSecureTrigger.ps1 -WorkflowName` (a
+  separate, reviewed operator step — see that script's own `.SYNOPSIS`). A future redeploy
+  will NOT show `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` in `az functionapp config appsettings
+  list` any more; verify the staged trigger file instead (its `QueueName` must still match
+  what `pipeline-LOADTEST.yml`/`pipeline-CLOUD.yml` shovel into, and its `WorkflowName` must
+  match `VerifyWorkflowName` in those pipelines).
 - `BYPASS_SECURE_CONFIG = true`, `WAREWOLF_LICENSE_CHECK_ENABLED = false`,
   `ASPNETCORE_ENVIRONMENT = Production`, `EXECUTIONLOGLEVEL = INFO`.
 
@@ -297,7 +306,9 @@ The orchestrator resolves every decision and prints a masked summary **before** 
 anything. Confirm specifically:
 
 - targeting is `WarewolfServer-UAT` / `DEV2` — **not** `warewolfserver`;
-- `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` is unchanged;
+- the Service Bus trigger's queue/workflow are unchanged — WOLF-8517: check
+  `Settings/servicebustrigger.bite` on the app (no longer `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`
+  in the app-settings list — see the §5's correction note above);
 - **`Workflows source` is NOT `(none)`** — it must show the §5.4 staging folder path;
 - staged workflow resources include `RabbitProcess.bite`, `RabbitProcess2.bite`, and a
   `NewSqlServerSource.bite` resolving to `SourceId="b9184f70-64ea-4dc5-b23b-02fcd5f91082"`;

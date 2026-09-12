@@ -17,6 +17,16 @@ try
     var config = HostEnvironmentConfig.Load();
     var loggingConfig = LoggingConfiguration.FromEnvironment();
 
+    // WOLF-8517: which Service Bus queue the secure in-process trigger listens on, and
+    // which workflow it runs, now come from Settings/servicebustrigger.bite rather than
+    // the WAREWOLF_SERVICEBUS_TRIGGER_QUEUE app setting + the message's own "workflow"
+    // field. Loaded here (before the host is built) so ConfigureWarewolf can inject the
+    // queue name into configuration in time for the [ServiceBusTrigger("%...%")] attribute
+    // indirection to resolve it. Returns null when the trigger is disabled via
+    // AzureWebJobs.ServiceBusWorkflowTrigger.Disabled; otherwise a missing/invalid file is
+    // fatal — see ServiceBusTriggerDefinition.Load's doc comment.
+    var serviceBusTrigger = ServiceBusTriggerDefinition.Load();
+
     // WOLF-8512: raised as early in cold start as possible (before host build / DI
     // resolution) rather than lazily on first trigger invocation — see
     // ThreadPoolStartupConfigurator's own doc comment for why. ServiceBusTriggerOptions.
@@ -38,7 +48,7 @@ try
     // ── Step 3: Build host ───────────────────────────────────────────────────
 
     var host = new HostBuilder()
-        .ConfigureWarewolf(config)
+        .ConfigureWarewolf(config, serviceBusTrigger)
         // ── Worker logging (driven entirely by environment variables, NOT host.json) ──
         // The isolated WORKER's MEL pipeline does NOT read host.json — host.json logging
         // rules apply to the host process only. Every worker logging knob is an env var:

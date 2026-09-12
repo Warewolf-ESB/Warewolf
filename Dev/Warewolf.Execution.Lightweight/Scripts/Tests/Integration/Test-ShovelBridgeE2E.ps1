@@ -141,18 +141,19 @@
     workflow execution), requiring all N executions to succeed, not just N message arrivals.
     REQUIRES -DestinationMode ExternalServiceBus (a live engine must already be listening
     on -DestinationQueueName via Managed Identity — the local emulator has no engine
-    attached to it) and -WorkflowName / -MessageAuthToken / -EngineBaseUrl. Deliberately does
+    attached to it) and -MessageAuthToken / -EngineBaseUrl. Deliberately does
     NOT also run the Service Bus receiver-based arrival check in this mode: a second
     receiver on the same queue would compete with the engine's own subscription and could
     steal the message before the engine processes it.
-.PARAMETER WorkflowName
-    REQUIRED when -VerifyWorkflowExecution. The workflow to execute, e.g. "RabbitProcess" (see
-    Resources/rabbit/RabbitProcess.bite — a dedicated shovel-bridge test workflow, replacing
-    the generic "Hello World" smoke-test workflow previously used as the example here. Its DB
-    activities bind to SourceId b9184f70-… (the shared NewSqlServerSource the pipeline
-    downloads), NOT the unreferenced "NewSqlServerSource (Local Backup)" .bite sitting beside
-    it, whose connection string is DPAPI-encrypted under its author's account) — matched against the
-    target engine's secure.config exactly as an HTTP /secure/{workflow} path segment would be.
+
+    WOLF-8517: there is no -WorkflowName parameter any more. The message body no longer
+    names a workflow — the deployed trigger's own Settings/servicebustrigger.bite fixes
+    which single workflow every message on -DestinationQueueName runs (see
+    docs/ServiceBusSecureTrigger-Architecture.md). Point -DestinationQueueName at a trigger
+    already deployed/configured for the workflow you want to exercise (e.g.
+    Resources/rabbit/RabbitProcess.bite — a dedicated shovel-bridge test workflow whose DB
+    activities bind to SourceId b9184f70-… , the shared NewSqlServerSource the pipeline
+    downloads).
 .PARAMETER WorkflowInputsJson
     Only used when -VerifyWorkflowExecution. Optional JSON object of string inputs, e.g.
     '{"message":"FromRabbitMq"}' (RabbitProcess's own single input — see its DataList). Passed
@@ -187,7 +188,8 @@
     REQUIRED when -VerifyWorkflowExecution. Bearer token used to call
     GET /secure/servicebus-result/{correlationId} — an ordinary HTTP `/secure/*` route,
     still protected by the EasyAuth/claims/policy pipeline (requires
-    WorkflowPermission.View on -WorkflowName). Independent of -MessageAuthToken; no longer
+    WorkflowPermission.View on whichever workflow the deployed trigger's
+    Settings/servicebustrigger.bite names). Independent of -MessageAuthToken; no longer
     defaults from it, since that token no longer has any effect on the trigger itself.
 .PARAMETER ResultTimeoutSeconds
     Only used when -VerifyWorkflowExecution. How long to poll for ALL correlationIds (1, or N
@@ -309,7 +311,6 @@ param(
 
     # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
     [switch] $VerifyWorkflowExecution,
-    [string] $WorkflowName,
     [string] $WorkflowInputsJson,
     [string] $CorrelationId,
     [securestring] $MessageAuthToken,
@@ -591,9 +592,6 @@ if ($VerifyWorkflowExecution) {
     if ($DestinationMode -ne 'ExternalServiceBus') {
         throw '-VerifyWorkflowExecution requires -DestinationMode ExternalServiceBus (a live Lightweight engine must already be listening on -DestinationQueueName).'
     }
-    if ([string]::IsNullOrWhiteSpace($WorkflowName)) {
-        throw '-WorkflowName is required when -VerifyWorkflowExecution.'
-    }
     if ($null -eq $ResultPollAuthToken -or $ResultPollAuthToken.Length -eq 0) {
         throw '-ResultPollAuthToken is required when -VerifyWorkflowExecution (used to poll the still Entra-protected GET /secure/servicebus-result endpoint).'
     }
@@ -603,7 +601,7 @@ if ($VerifyWorkflowExecution) {
     if ([string]::IsNullOrWhiteSpace($CorrelationId)) {
         $CorrelationId = [Guid]::NewGuid().ToString('N')
     }
-    Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish workflow '$WorkflowName' ($(if ($MessageCount -eq 1) { "correlationId '$CorrelationId'" } else { "$MessageCount messages, correlationId prefix '$CorrelationId'" })) and poll $EngineBaseUrl for $(if ($MessageCount -eq 1) { 'its' } else { 'their' }) execution result, instead of proving bare message arrival."
+    Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish $(if ($MessageCount -eq 1) { "a workflow-trigger message (correlationId '$CorrelationId')" } else { "$MessageCount workflow-trigger messages (correlationId prefix '$CorrelationId')" }) to the deployed trigger's queue and poll $EngineBaseUrl for $(if ($MessageCount -eq 1) { 'its' } else { 'their' }) execution result, instead of proving bare message arrival. Whichever workflow -DestinationQueueName's trigger is configured to run (Settings/servicebustrigger.bite) is what executes — this script no longer selects it."
 
     # Fail fast on a stale bearer token rather than discovering it 30 minutes and (at
     # load-test volumes) 1000 messages later as a wall of "401: Authentication required"
@@ -1063,7 +1061,6 @@ try {
             '--rabbitmq-password', $rmqPassword
             '--rabbitmq-vhost', $rmqVHost
             '--source-queue', $SourceQueueName
-            '--workflow', $WorkflowName
             '--correlation-id', $CorrelationId
             '--engine-base-url', $EngineBaseUrl
             '--result-poll-auth-token', (ConvertFrom-SecureStringPlain $ResultPollAuthToken)
@@ -1349,7 +1346,7 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
         Write-Host "  Mode          : $DestinationMode (VerifyWorkflowExecution)" -ForegroundColor White
         Write-Host "  Source        : $SourceQueueName (RabbitMQ)" -ForegroundColor White
         Write-Host "  Destination   : $DestinationQueueName (Service Bus, Managed Identity trigger)" -ForegroundColor White
-        Write-Host "  Workflow      : $WorkflowName" -ForegroundColor White
+        Write-Host "  Workflow      : (fixed by the deployed trigger's Settings/servicebustrigger.bite)" -ForegroundColor White
         Write-Host "  Messages      : $MessageCount" -ForegroundColor White
         Write-Host "  CorrelationId : $CorrelationId" -ForegroundColor White
         Write-Host "  Engine        : $EngineBaseUrl" -ForegroundColor White

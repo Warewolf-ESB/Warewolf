@@ -31,7 +31,7 @@ This sample *is* that compute trigger.
 ```
  ┌────────────┐      enqueue       ┌──────────────────────┐     trigger     ┌─────────────────────────────┐
  │  Producer  │  ───────────────▶  │  Azure Service Bus    │  ────────────▶  │  This Functions worker       │
- │ (any app)  │  {workflow,inputs} │  queue:               │   (message)     │  WorkflowQueueTrigger        │
+ │ (any app)  │  {route,inputs}    │  queue:               │   (message)     │  WorkflowQueueTrigger        │
  └────────────┘                    │  wwexecution-queue    │                 │                             │
                                    └──────────────────────┘                 │  1. parse message            │
                                                                             │  2. get app-only token  ─────┼──┐
@@ -79,25 +79,27 @@ The queue message body is JSON:
 ```json
 {
   "route": "secure",
-  "workflow": "Hello World",
   "inputs": { "Name": "FromServiceBus" }
 }
 ```
 
 - `route` (optional) — target engine route: `secure` (default when omitted/blank) or `public`
   (anonymous). Any other value throws — see **dead-lettering** below.
-- `workflow` (required) — the workflow name. Each `/`-separated segment is URL-encoded for you, so
-  spaces (`Hello World` → `Hello%20World`) and folder-qualified names (`data/sales` → `data/sales.json`) both work.
 - `inputs` (optional) — a string map sent as query-string parameters.
 
-Call a public (anonymous) workflow by setting the route:
+There is no `workflow` field any more (WOLF-8517): every message on this queue runs the SAME
+workflow, named by `Settings/servicebustrigger.bite`'s `WorkflowName` — see **Configuration**
+below. Each `/`-separated segment of that name is URL-encoded for you, so spaces
+(`Hello World` → `Hello%20World`) and folder-qualified names (`data/sales` → `data/sales.json`)
+both work.
+
+Call the public (anonymous) route instead:
 
 ```json
-{ "route": "public", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }
+{ "route": "public", "inputs": { "Name": "FromServiceBus" } }
 ```
 
-A message with invalid JSON, a missing `workflow`, or an unsupported `route` throws — see
-**dead-lettering** below.
+A message with invalid JSON or an unsupported `route` throws — see **dead-lettering** below.
 
 ---
 
@@ -174,7 +176,7 @@ env vars). See [`local.settings.json`](local.settings.json) for the full set.
 | `WwExecution:ManagedIdentityClientId` | no | User-assigned MI client id |
 | `WwExecution:TokenRefreshSkewSeconds` | no | Refresh lead time (default 120) |
 | `ServiceBusConnection` | yes | SB connection string or `…__fullyQualifiedNamespace` for identity-based |
-| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | yes | Queue name `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to (default `wwexecution-queue`) — see below |
+| `Settings/servicebustrigger.bite` (`QueueName`, `WorkflowName`) | yes | Queue name `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to, and the workflow every message on it runs — see below (WOLF-8517; no longer an app setting) |
 
 > **`local.settings.json` must never be committed.** It is for local dev only; put real values in
 > the Function App's application settings (and secrets in Key Vault) when deployed.
@@ -182,10 +184,15 @@ env vars). See [`local.settings.json`](local.settings.json) for the full set.
 ### Service Bus trigger binding options
 
 The queue name is **not** hard-coded — `WorkflowQueueTrigger`'s `[ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%", ...)]`
-binds via the standard Azure Functions `%AppSetting%` indirection (the same pattern
-`Warewolf.Execution.Lightweight/Functions/ServiceBusWorkflowTriggerFunction.cs` uses).
-`Deploy-WwExecutionServiceBusWorker.ps1`'s `-ServiceBusQueueName` sets both the app setting
-and the queue it provisions, so they can't drift apart.
+still binds via the standard Azure Functions `%AppSetting%` indirection (the same pattern
+`Warewolf.Execution.Lightweight/Functions/ServiceBusWorkflowTriggerFunction.cs` uses), but the
+value now comes from `Settings/servicebustrigger.bite`'s `QueueName` field
+(`ServiceBusTriggerDefinition.Load()`, called in `Program.cs` before the host is built) rather
+than being set directly as an app setting. `Deploy-WwExecutionServiceBusWorker.ps1`'s
+`-ServiceBusQueueName`/`-WorkflowName` parameters generate that file and provision the matching
+queue, so they can't drift apart. Contains no secret (Managed-Identity-only auth), so the file
+is plain JSON, never WFAES-encrypted. To disable the trigger entirely, set
+`AzureWebJobs.WorkflowQueueTrigger.Disabled=true` instead of removing the file.
 
 Four more binding options are otherwise fixed in [`host.json`](host.json)'s
 `extensions.serviceBus` block, but can be overridden per environment via the standard
@@ -223,17 +230,18 @@ func start
 Using the Azure CLI:
 
 ```bash
-# Secure route (default — route omitted)
+# Secure route (default — route omitted). Runs whatever Settings/servicebustrigger.bite
+# names as WorkflowName — there is no "workflow" field in the message any more.
 az servicebus queue message send \
   --namespace-name <your-namespace> \
   --queue-name wwexecution-queue \
-  --body '{ "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }'
+  --body '{ "inputs": { "Name": "FromServiceBus" } }'
 
 # Public route (anonymous)
 az servicebus queue message send \
   --namespace-name <your-namespace> \
   --queue-name wwexecution-queue \
-  --body '{ "route": "public", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }'
+  --body '{ "route": "public", "inputs": { "Name": "FromServiceBus" } }'
 ```
 
 The worker logs the engine's JSON response. To exercise the engine directly (anonymous, no token):
@@ -246,8 +254,8 @@ GET https://WWExecutionEngine.azurewebsites.net/public/Hello%20World.json?Name=D
 
 ## Dead-lettering
 
-The trigger **does not swallow exceptions**. A bad message (invalid JSON, missing `workflow`, or an
-unsupported `route`) or a failed engine call throws; the Functions runtime abandons the message, and after the queue's
+The trigger **does not swallow exceptions**. A bad message (invalid JSON, or an unsupported
+`route`) or a failed engine call throws; the Functions runtime abandons the message, and after the queue's
 max-delivery-count the broker moves it to the **dead-letter sub-queue** for inspection — the correct
 behaviour for poison messages.
 
@@ -263,4 +271,6 @@ behaviour for poison messages.
 | `Auth/WwExecutionTokenHandler.cs` | DelegatingHandler — acquire/cache/refresh/inject token |
 | `IWwExecutionClient.cs` / `WwExecutionClient.cs` | Typed engine client |
 | `Functions/WorkflowQueueTrigger.cs` | Service Bus queue trigger |
+| `Configuration/ServiceBusTriggerDefinition.cs` | Loads `Settings/servicebustrigger.bite` (queue name + workflow name) |
+| `Settings/servicebustrigger.bite` | Queue name + workflow name this trigger runs (WOLF-8517) |
 | `host.json` / `local.settings.json` / `appsettings.json` | Runtime + config |

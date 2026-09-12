@@ -70,10 +70,17 @@
     REQUIRED (no default). Service Bus namespace name (3-50 chars, globally unique).
 .PARAMETER ServiceBusQueueName
     Queue the worker's ServiceBusTrigger listens on. Default: wwexecution-queue.
-    Applied as the WAREWOLF_SERVICEBUS_TRIGGER_QUEUE app setting, which
+    WOLF-8517: written into Settings/servicebustrigger.bite in the local publish/staging
+    directory (Phase 5, before it is zipped and deployed), which
     WorkflowQueueTrigger.cs's [ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%", ...)]
-    binds to via the standard Azure Functions %AppSetting% indirection — overriding this
-    param now actually retargets the trigger, not just queue provisioning.
+    resolves via Program.cs injecting that file's QueueName into configuration at cold start
+    — no longer a plain app setting. Overriding this param still actually retargets the
+    trigger, not just queue provisioning.
+.PARAMETER WorkflowName
+    REQUIRED (WOLF-8517). The workflow every message on -ServiceBusQueueName executes —
+    written into the same Settings/servicebustrigger.bite as -ServiceBusQueueName. The
+    message body no longer names the workflow, so this is now the ONLY place that selects
+    it for this worker.
 .PARAMETER ServiceBusSku
     Service Bus namespace SKU. Default: Standard (required for topics/RBAC parity;
     Basic also works for a single queue but cannot host authorization rules per-queue
@@ -151,6 +158,7 @@ param(
     # Service Bus provisioning
     [string] $ServiceBusNamespace,
     [string] $ServiceBusQueueName = 'wwexecution-queue',
+    [string] $WorkflowName,
     [ValidateSet('Basic','Standard','Premium')] [string] $ServiceBusSku = 'Standard',
     [nullable[int]] $ServiceBusMaxDeliveryCount,
     [nullable[int]] $ServiceBusLockDurationSeconds,
@@ -296,6 +304,33 @@ function Invoke-Az {
     return $out
 }
 
+function Set-StagedServiceBusTriggerConfig {
+    <#
+        WOLF-8517: overwrites Settings/servicebustrigger.bite in the LOCAL publish/staging
+        directory — BEFORE Phase 5 zips and deploys it — with this run's queue name and
+        workflow name. The value shipped in the publish output (the project's own
+        Settings/servicebustrigger.bite) is a local-dev sample, not what any real deployment
+        should run. Contains no secret (Service Bus auth is Managed-Identity-only), so this
+        is always plain JSON, never WFAES-encrypted.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $StagingDir,
+        [Parameter(Mandatory)][string] $QueueName,
+        [Parameter(Mandatory)][string] $WorkflowName
+    )
+    $path = Join-Path $StagingDir 'Settings\servicebustrigger.bite'
+    if ($DryRun) {
+        Write-Host "      [DRYRUN] Write '$path': QueueName=$QueueName, WorkflowName=$WorkflowName" -ForegroundColor DarkGray
+        return
+    }
+    $settingsDir = Split-Path $path -Parent
+    if (-not (Test-Path -LiteralPath $settingsDir)) {
+        New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null
+    }
+    $json = [ordered]@{ QueueName = $QueueName; WorkflowName = $WorkflowName } | ConvertTo-Json
+    Set-Content -LiteralPath $path -Value $json -Encoding UTF8
+}
+
 function Invoke-ChildScript {
     param(
         [Parameter(Mandatory)][string] $Path,
@@ -368,6 +403,7 @@ function Save-DeploySummary {
         appInsights     = $enableAppInsights
         serviceBusNamespace       = $ServiceBusNamespace
         serviceBusQueueName       = $ServiceBusQueueName
+        workflowName              = $WorkflowName
         serviceBusSku             = $ServiceBusSku
         serviceBusMaxDeliveryCount = $maxDeliveryCount
         serviceBusLockDurationSeconds = $lockDurationSeconds
@@ -455,6 +491,7 @@ $useMiForServiceBus = Resolve-Toggle -Name 'UseManagedIdentityForServiceBus' -Cu
 
 # ── Service Bus provisioning inputs ─────────────────────────────────────────────
 $ServiceBusNamespace = Read-Required -Name 'ServiceBusNamespace' -Current $ServiceBusNamespace -Hint 'globally-unique Service Bus namespace name'
+$WorkflowName        = Read-Required -Name 'WorkflowName'        -Current $WorkflowName        -Hint 'the workflow every message on the queue runs (WOLF-8517)'
 $maxDeliveryCount    = if ($null -ne $ServiceBusMaxDeliveryCount)    { [int]$ServiceBusMaxDeliveryCount }    else { 10 }
 $lockDurationSeconds = if ($null -ne $ServiceBusLockDurationSeconds) { [int]$ServiceBusLockDurationSeconds } else { 300 }
 
@@ -499,11 +536,12 @@ if (-not [string]::IsNullOrWhiteSpace($WwExecutionManagedIdentityClientId)) {
 # a deployed worker. Local dev's local.settings.json is where the secret fallback lives.
 $appSettings['WwExecution__UseClientSecretFallback'] = 'false'
 
-# WAREWOLF_SERVICEBUS_TRIGGER_QUEUE — the %AppSetting% indirection WorkflowQueueTrigger.cs's
-# [ServiceBusTrigger] attribute binds to (mirrors ServiceBusWorkflowTriggerFunction.cs's
-# in-engine "Model A" trigger). Overriding -ServiceBusQueueName now actually retargets the
-# trigger, not just queue provisioning.
-$appSettings['WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'] = $ServiceBusQueueName
+# WOLF-8517: the queue name and workflow are no longer app settings — they are written into
+# Settings/servicebustrigger.bite in the local staging directory in Phase 5 (before it is
+# zipped and deployed), via Set-StagedServiceBusTriggerConfig. WorkflowQueueTrigger.cs's
+# [ServiceBusTrigger] attribute still binds via the %WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%
+# %AppSetting% indirection, but Program.cs now resolves that key from the staged file at
+# cold start rather than from an app setting.
 
 # Service Bus trigger binding options — the standard Azure Functions host.json override
 # convention (AzureFunctionsJobHost__extensions__<section>__<setting>). Defaults match
@@ -528,6 +566,7 @@ Write-Host ("    {0,-28}: {1}" -f 'PublishMethod', $PublishMethod)
 Write-Host ("    {0,-28}: {1}" -f 'App Insights', ($enableAppInsights ? "enabled ($AppInsightsName)" : 'disabled'))
 Write-Host ("    {0,-28}: {1}" -f 'Service Bus namespace', "$ServiceBusNamespace ($ServiceBusSku)")
 Write-Host ("    {0,-28}: {1}" -f 'Service Bus queue', "$ServiceBusQueueName (maxDelivery=$maxDeliveryCount, lock=${lockDurationSeconds}s, DLQ on)")
+Write-Host ("    {0,-28}: {1}" -f 'Workflow', "$WorkflowName (Settings/servicebustrigger.bite — WOLF-8517)")
 Write-Host ("    {0,-28}: {1}" -f 'Trigger binding', "maxConcurrentCalls=$triggerMaxConcurrentCalls, prefetchCount=$triggerPrefetchCount, maxAutoLockRenewal=$triggerMaxAutoLockRenewalIso, autoComplete=$triggerAutoCompleteMessages")
 Write-Host ("    {0,-28}: {1}" -f 'Worker listen auth', ($useMiForServiceBus ? 'Managed Identity (recommended)' : 'SAS connection string (dev only)'))
 Write-Host ("    {0,-28}: {1}" -f 'Shovel Send SAS rule', ($doCreateShovelRule ? "$ShovelSendRuleName (for the RabbitMQ Shovel bridge)" : 'not created'))
@@ -782,6 +821,12 @@ try {
     Write-Phase 'Phase 5  Deploy package to Function App'
     $script:DeployLastPhase = 'Phase 5  Deploy package'
 
+    # WOLF-8517: overwrite Settings/servicebustrigger.bite in the staging directory with THIS
+    # run's queue/workflow BEFORE it is zipped/published below — must happen before both the
+    # func-publish and zip-deploy branches, since both publish from $StagingDir.
+    Set-StagedServiceBusTriggerConfig -StagingDir $StagingDir -QueueName $ServiceBusQueueName -WorkflowName $WorkflowName
+    if ($DryRun) { Write-Note "Settings/servicebustrigger.bite would be written into the staging directory (not applied — DryRun): QueueName=$ServiceBusQueueName, WorkflowName=$WorkflowName." } else { Write-Ok "Settings/servicebustrigger.bite staged: QueueName=$ServiceBusQueueName, WorkflowName=$WorkflowName." }
+
     $useFunc = $false
     switch ($PublishMethod) {
         'Func' {
@@ -837,6 +882,7 @@ try {
     Write-Host "  RG               : $ResourceGroup" -ForegroundColor White
     Write-Host "  Endpoint         : $baseUrl" -ForegroundColor White
     Write-Host "  Service Bus queue: $ServiceBusNamespace / $ServiceBusQueueName" -ForegroundColor White
+    Write-Host "  Workflow         : $WorkflowName" -ForegroundColor White
     Write-Host "  Summary          : $summaryPath" -ForegroundColor White
     Write-Host ''
     if ($doCreateShovelRule) {

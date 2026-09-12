@@ -24,8 +24,8 @@
  *     ResumptionExecutorTests' convention for the suspend/resume store).
  *
  *  Coverage split, matching Run(...)'s early-exit branches vs. the extracted
- *  ProcessMessageAsync(...): the pre-claim branches (malformed JSON, missing
- *  'workflow', duplicate correlation id, in-flight claim race) are exercised through
+ *  ProcessMessageAsync(...): the pre-claim branches (malformed JSON, null payload,
+ *  duplicate correlation id, in-flight claim race) are exercised through
  *  Run(...) itself, including one test proving a message executes successfully with
  *  no Authorization property at all — the direct behavioural proof of the new trust
  *  model. The execution/settlement/timeout/concurrency branches are exercised by
@@ -131,10 +131,17 @@ public class ServiceBusWorkflowTriggerFunctionTests
             correlationId: correlationId);
     }
 
+    private static readonly ServiceBusTriggerDefinition DefaultTriggerDefinition = new()
+    {
+        QueueName = "wwexecution-secure-trigger-queue",
+        WorkflowName = "Hello World",
+    };
+
     private static ServiceBusWorkflowTriggerFunction NewSut(
         IWorkflowExecutor? executor = null,
         IServiceBusReplayAndResultStore? store = null,
         ServiceBusTriggerOptions? triggerOptions = null,
+        ServiceBusTriggerDefinition? triggerDefinition = null,
         SemaphoreSlim? executionConcurrencyLimiter = null)
     {
         var effectiveTriggerOptions = triggerOptions ?? new ServiceBusTriggerOptions();
@@ -144,6 +151,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
             new AuditLogger(NullLogger<AuditLogger>.Instance),
             HostEnvironmentConfig.Load(),
             effectiveTriggerOptions,
+            triggerDefinition ?? DefaultTriggerDefinition,
             executionConcurrencyLimiter ?? new SemaphoreSlim(effectiveTriggerOptions.MaxConcurrentExecutions, effectiveTriggerOptions.MaxConcurrentExecutions),
             NullLogger<ServiceBusWorkflowTriggerFunction>.Instance);
     }
@@ -172,16 +180,22 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task Run_MissingWorkflowField_DeadLettersAsMalformed()
+    public async Task Run_NullPayload_DeadLettersAsMalformed()
     {
-        var sut = NewSut();
+        // WOLF-8517: there is no "workflow" field on the message any more (it always comes
+        // from the injected ServiceBusTriggerDefinition), so the only remaining malformed
+        // shape is a body that is valid JSON but deserializes to null (e.g. the literal
+        // "null").
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("must not execute"));
+        var sut = NewSut(executor: executor);
         var actions = new FakeServiceBusMessageActions();
-        var message = NewMessage("{\"inputs\":{}}");
+        var message = NewMessage("null");
 
         await sut.Run(message, actions, CancellationToken.None);
 
+        Assert.AreEqual(0, executor.CallCount);
         Assert.AreEqual(1, actions.DeadLetterCalls);
-        Assert.AreEqual("Malformed:MissingWorkflowField", actions.LastDeadLetterReason);
+        Assert.AreEqual("Malformed:NullPayload", actions.LastDeadLetterReason);
     }
 
     [TestMethod]
@@ -198,7 +212,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         });
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var message = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"dup-corr\"}", correlationId: "dup-corr");
+        var message = NewMessage("{\"correlationId\":\"dup-corr\"}", correlationId: "dup-corr");
 
         await sut.Run(message, actions, CancellationToken.None);
 
@@ -220,7 +234,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.IsTrue(store.TryClaim("corr-in-flight"), "Pre-claim to simulate the first, still-executing delivery.");
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var message = NewMessage("{\"workflow\":\"Hello World\",\"correlationId\":\"corr-in-flight\"}", correlationId: "corr-in-flight");
+        var message = NewMessage("{\"correlationId\":\"corr-in-flight\"}", correlationId: "corr-in-flight");
 
         await sut.Run(message, actions, CancellationToken.None);
 
@@ -249,7 +263,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var message = NewMessage("{\"workflow\":\"Hello World\"}", correlationId: "corr-no-auth");
+        var message = NewMessage("{}", correlationId: "corr-no-auth");
 
         await sut.Run(message, actions, CancellationToken.None);
 
@@ -271,8 +285,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
 
         await sut.ProcessMessageAsync(payload, "corr-success", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
@@ -292,8 +306,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
         var sut = NewSut(executor: executor);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
 
         await sut.ProcessMessageAsync(payload, "corr-principal", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
@@ -316,8 +330,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var triggerOptions = new ServiceBusTriggerOptions { SettlementTimeout = TimeSpan.FromMilliseconds(50) };
         var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
         var actions = new FakeServiceBusMessageActions { CompleteMessageDelay = TimeSpan.FromSeconds(5) };
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
 
         // Must complete normally (no exception) despite CompleteMessageAsync never actually
         // finishing within SettlementTimeout.
@@ -337,8 +351,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
 
         await sut.ProcessMessageAsync(payload, "corr-failure", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
@@ -362,8 +376,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
             () => sut.ProcessMessageAsync(payload, "corr-transient", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
@@ -384,8 +398,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
         Assert.IsTrue(store.TryClaim("corr-transient-release"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
@@ -403,8 +417,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
             () => sut.ProcessMessageAsync(payload, "corr-exception", message, actions, DateTimeOffset.UtcNow, CancellationToken.None));
@@ -424,8 +438,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var sut = NewSut(executor: executor, store: store);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
         Assert.IsTrue(store.TryClaim("corr-exception-release"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<InvalidOperationException>(
@@ -452,8 +466,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
         var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50) };
         var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
         Assert.IsTrue(store.TryClaim("corr-timeout"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<TimeoutException>(
@@ -476,8 +490,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50) };
         var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
         var actions = new FakeServiceBusMessageActions();
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
 
         await sut.ProcessMessageAsync(payload, "corr-fast", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
 
@@ -506,8 +520,8 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var limiter = new SemaphoreSlim(1, 1);
         var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50), MaxConcurrentExecutions = 1 };
         var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
-        var payload = new ServiceBusWorkflowMessage { Workflow = "Hello World" };
-        var message = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
         Assert.IsTrue(store.TryClaim("corr-slot-honesty"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         await Assert.ThrowsExceptionAsync<TimeoutException>(
@@ -548,10 +562,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var sut = NewSut(executor: executor, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
         var actionsA = new FakeServiceBusMessageActions();
         var actionsB = new FakeServiceBusMessageActions();
-        var payloadA = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
-        var payloadB = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
-        var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
-        var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payloadA = new ServiceBusWorkflowMessage { Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
+        var payloadB = new ServiceBusWorkflowMessage { Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
+        var messageA = NewMessage("{}");
+        var messageB = NewMessage("{}");
 
         var taskA = sut.ProcessMessageAsync(payloadA, "corr-cap-a", messageA, actionsA, DateTimeOffset.UtcNow, CancellationToken.None);
         Assert.IsTrue(startedA.Wait(TimeSpan.FromSeconds(2)), "First delivery must acquire the only slot and start executing.");
@@ -597,10 +611,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var limiter = new SemaphoreSlim(1, 1);
         var triggerOptions = new ServiceBusTriggerOptions { MaxConcurrentExecutions = 1, SlotWaitTimeout = TimeSpan.FromMilliseconds(50) };
         var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
-        var payloadA = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
-        var payloadB = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
-        var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
-        var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payloadA = new ServiceBusWorkflowMessage { Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
+        var payloadB = new ServiceBusWorkflowMessage { Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
+        var messageA = NewMessage("{}");
+        var messageB = NewMessage("{}");
         Assert.IsTrue(store.TryClaim("corr-slot-wait-b"), "Simulates Run(...)'s claim before dispatching to this method.");
 
         var taskA = sut.ProcessMessageAsync(payloadA, "corr-slot-wait-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
@@ -643,10 +657,10 @@ public class ServiceBusWorkflowTriggerFunctionTests
         var limiter = new SemaphoreSlim(2, 2);
         var triggerOptions = new ServiceBusTriggerOptions { MaxConcurrentExecutions = 2 };
         var sut = NewSut(executor: executor, triggerOptions: triggerOptions, executionConcurrencyLimiter: limiter);
-        var payloadA = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
-        var payloadB = new ServiceBusWorkflowMessage { Workflow = "Hello World", Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
-        var messageA = NewMessage("{\"workflow\":\"Hello World\"}");
-        var messageB = NewMessage("{\"workflow\":\"Hello World\"}");
+        var payloadA = new ServiceBusWorkflowMessage { Inputs = new Dictionary<string, string> { ["marker"] = "A" } };
+        var payloadB = new ServiceBusWorkflowMessage { Inputs = new Dictionary<string, string> { ["marker"] = "B" } };
+        var messageA = NewMessage("{}");
+        var messageB = NewMessage("{}");
 
         var taskA = sut.ProcessMessageAsync(payloadA, "corr-within-a", messageA, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);
         var taskB = sut.ProcessMessageAsync(payloadB, "corr-within-b", messageB, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None);

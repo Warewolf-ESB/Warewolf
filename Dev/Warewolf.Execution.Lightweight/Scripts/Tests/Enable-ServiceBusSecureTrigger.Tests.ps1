@@ -33,6 +33,7 @@ BeforeAll {
         FunctionAppName     = 'placeholder-app'
         ResourceGroup       = 'placeholder-rg'
         ServiceBusNamespace = 'placeholder-ns'
+        WorkflowName        = 'placeholder-workflow'
         LoadFunctionsOnly   = $true
     }
 }
@@ -58,7 +59,53 @@ Describe 'Enable-ServiceBusSecureTrigger — static' {
 
         $content | Should -Match 'Set-FunctionAppSettingsViaFile[^\r\n]*-Settings @\('
         $content | Should -Match 'ServiceBusConnection__fullyQualifiedNamespace=\$fullyQualifiedNamespace'
-        $content | Should -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=\$TriggerQueueName'
+    }
+
+    It 'no longer writes WAREWOLF_SERVICEBUS_TRIGGER_QUEUE as an app setting (WOLF-8517: it comes from servicebustrigger.bite now)' {
+        $content = Get-Content -Raw -LiteralPath $script:TriggerScript
+        $content | Should -Not -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE=\$TriggerQueueName'
+    }
+
+    It 'writes the trigger config file through Set-ServiceBusTriggerConfigFile with the queue and workflow names' {
+        $content = Get-Content -Raw -LiteralPath $script:TriggerScript
+        $content | Should -Match 'Set-ServiceBusTriggerConfigFile -FunctionAppName \$FunctionAppName -QueueName \$TriggerQueueName -WorkflowName \$WorkflowName'
+    }
+}
+
+Describe 'Enable-ServiceBusSecureTrigger — Set-ServiceBusTriggerConfigFile (servicebustrigger.bite upload)' {
+
+    BeforeAll {
+        . $script:TriggerScript @script:LoadArgs
+    }
+
+    BeforeEach {
+        $script:capturedArgs = $null
+        $script:capturedBody = $null
+    }
+
+    It 'PUTs to the Kudu VFS path for Settings/servicebustrigger.bite via az rest' {
+        Mock Invoke-Az { $script:capturedArgs = @($CliArgs) }
+
+        Set-ServiceBusTriggerConfigFile -FunctionAppName 'my-app' -QueueName 'my-queue' -WorkflowName 'Hello World'
+
+        $script:capturedArgs | Should -Contain 'rest'
+        ($script:capturedArgs -join ' ') | Should -Match 'https://my-app\.scm\.azurewebsites\.net/api/vfs/site/wwwroot/Settings/servicebustrigger\.bite'
+        ($script:capturedArgs -join ' ') | Should -Match '--method put'
+    }
+
+    It 'writes QueueName and WorkflowName as plain (non-encrypted) JSON, and cleans up the temp file' {
+        Mock Invoke-Az {
+            $fileArg = @(@($CliArgs) | Where-Object { $_ -like '@*' })[0]
+            $script:capturedBody = Get-Content -Raw -LiteralPath $fileArg.Substring(1)
+            $script:capturedFileArg = $fileArg
+        }
+
+        Set-ServiceBusTriggerConfigFile -FunctionAppName 'my-app' -QueueName 'my-queue' -WorkflowName 'Hello World'
+
+        $script:capturedBody | Should -Match '"QueueName":\s*"my-queue"'
+        $script:capturedBody | Should -Match '"WorkflowName":\s*"Hello World"'
+        $script:capturedBody | Should -Not -Match 'WFAES::'
+        Test-Path -LiteralPath $script:capturedFileArg.Substring(1) | Should -BeFalse
     }
 }
 

@@ -307,6 +307,11 @@ param(
     [string] $ServiceBusWorkerAppName,
     [string] $ServiceBusWorkerPublishPath,
     [string] $ServiceBusWorkerStorageAccount,
+    # WOLF-8517: Deploy-WwExecutionServiceBusWorker.ps1's -WorkflowName is now REQUIRED (the
+    # message body no longer names the workflow) — forwarded here so -NonInteractive companion
+    # deploys don't fail on a missing prompt; when omitted, the child script prompts for it
+    # interactively same as its other unforwarded parameters.
+    [string] $ServiceBusWorkerWorkflowName,
     [string] $WwExecutionScope,               # MI token scope the worker uses (api://<engine-app-id>/.default)
 
     # ── RabbitMQ queue triggers (optional companion deploy) ───────────────────
@@ -803,6 +808,7 @@ function Save-DeploySummary {
         jobProcessorAppName = ($DeployJobProcessor ? $JobProcessorAppName : $null)
         deployServiceBusWorker  = [bool]$DeployServiceBusWorker
         serviceBusWorkerAppName = ($DeployServiceBusWorker ? $ServiceBusWorkerAppName : $null)
+        serviceBusWorkerWorkflowName = ($DeployServiceBusWorker ? $ServiceBusWorkerWorkflowName : $null)
         deployRabbitMqTriggers = [bool]$DeployRabbitMqTriggers
         queueProcessorApps  = ($DeployRabbitMqTriggers ? $script:QueueProcessorApps : $null)
         keyVault        = ($kvRequired ? @{ name = $KeyVaultName; secret = $KeyVaultSecretName } : $null)
@@ -1274,6 +1280,7 @@ if ($DeployJobProcessor) {
 Write-Host ("    {0,-28}: {1}" -f 'Deploy ServiceBusWorker', ($DeployServiceBusWorker ? "yes -> Deploy-WwExecutionServiceBusWorker.ps1$($ServiceBusWorkerAppName ? " ($ServiceBusWorkerAppName)" : '')" : 'no'))
 if ($DeployServiceBusWorker) {
     Write-Host ("    {0,-28}: {1}" -f 'ServiceBusWorker PublishPath', "$ServiceBusWorkerPublishPath  (separate from engine PublishDir)")
+    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusWorker WorkflowName', ($ServiceBusWorkerWorkflowName ? $ServiceBusWorkerWorkflowName : '(not supplied — child script will prompt)'))
 }
 Write-Host ("    {0,-28}: {1}" -f 'Deploy RabbitMQ triggers', ($DeployRabbitMqTriggers ? "yes -> Deploy-WwQueueProcessor.ps1 ($($script:QueueTriggerFiles.Count) trigger(s): $((($script:QueueTriggerFiles | ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_) }) -join ', ')))" : 'no'))
 if ($DeployRabbitMqTriggers) {
@@ -2003,6 +2010,7 @@ try {
         if ($ServiceBusWorkerAppName)        { $sbwParams['AppName']        = $ServiceBusWorkerAppName }
         if ($ServiceBusWorkerPublishPath)    { $sbwParams['PublishPath']    = $ServiceBusWorkerPublishPath }
         if ($ServiceBusWorkerStorageAccount) { $sbwParams['StorageAccount'] = $ServiceBusWorkerStorageAccount }
+        if ($ServiceBusWorkerWorkflowName)   { $sbwParams['WorkflowName']   = $ServiceBusWorkerWorkflowName }
         if ($authOut) {
             $sbwParams['WwExecutionTenantId']       = $TenantId
             $sbwParams['WwExecutionResourceAppId']  = $authOut.ClientId

@@ -23,7 +23,7 @@
     "WAREWOLF_LICENSE_CHECK_ENABLED": "true",
 
     "ServiceBusConnection__fullyQualifiedNamespace": "<your-servicebus-namespace>.servicebus.windows.net",
-    "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE": "wwexecution-secure-trigger-queue",
+    "_WOLF8517_ServiceBusQueueAndWorkflowHowTo": "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE is no longer an app setting — the queue name AND the workflow the trigger runs now come SOLELY from Settings/servicebustrigger.bite (no env-var fallback). Edit that file locally; set AzureWebJobs.ServiceBusWorkflowTrigger.Disabled=true here instead if you don't want the trigger to start at all.",
     "_WOLF8516_ServiceBusTunablesHowTo": "The simple tunables (executionTimeoutSeconds, maxConcurrentExecutions, slotWaitTimeoutSeconds, settlementTimeoutSeconds) are not env vars — set serviceBusTrigger.executionTimeoutSeconds etc. in Settings/executionengine.settings.json instead (no env-var fallback).",
 
     "WAREWOLF_DEBUG_CONFIG": "{\"keyVaultSecret\":\"\",\"principalToken\":\"\"}",

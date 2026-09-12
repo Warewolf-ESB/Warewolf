@@ -93,14 +93,17 @@ param(
 
     # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
     # See docs/ServiceBusSecureTrigger-Architecture.md. Requires -EngineBaseUrl /
-    # -WorkflowName / -ResultPollAuthToken, and that the target engine already has the
+    # -ResultPollAuthToken, and that the target engine already has the
     # Service Bus trigger provisioned (see .SYNOPSIS) — this script only provisions the
-    # Shovel's Send-only SAS rule, never the engine's own listen-side config.
+    # Shovel's Send-only SAS rule, never the engine's own listen-side config. WOLF-8517:
+    # there is no -WorkflowName here any more — the deployed trigger's own
+    # Settings/servicebustrigger.bite fixes which workflow -EngineBaseUrl runs for every
+    # message on -ServiceBusQueueName; set it there (Enable-ServiceBusSecureTrigger.ps1
+    # -WorkflowName), not on this test run.
     # -MessageAuthToken is OPTIONAL — the trigger no longer validates a per-message caller
     # token (trust is the configured queue's transport boundary instead); pass it only to
     # prove the trigger genuinely ignores it.
     [switch] $VerifyWorkflowExecution,
-    [string] $WorkflowName,
     [string] $WorkflowInputsJson,
     [string] $CorrelationId,
     [securestring] $MessageAuthToken,
@@ -121,7 +124,6 @@ if ($DestUriVerifyNone -and -not [string]::IsNullOrWhiteSpace($DestUriCaCertFile
 }
 
 if ($VerifyWorkflowExecution) {
-    if ([string]::IsNullOrWhiteSpace($WorkflowName)) { throw '-WorkflowName is required when -VerifyWorkflowExecution.' }
     if ($null -eq $ResultPollAuthToken -or $ResultPollAuthToken.Length -eq 0) { throw '-ResultPollAuthToken is required when -VerifyWorkflowExecution (used to poll the still Entra-protected GET /secure/servicebus-result endpoint).' }
     if ([string]::IsNullOrWhiteSpace($EngineBaseUrl)) { throw '-EngineBaseUrl is required when -VerifyWorkflowExecution.' }
 
@@ -224,7 +226,6 @@ if ($SkipTeardown) { $testArgs.SkipTeardown = $true }
 
 if ($VerifyWorkflowExecution) {
     $testArgs.VerifyWorkflowExecution = $true
-    $testArgs.WorkflowName            = $WorkflowName
     $testArgs.CorrelationId           = $CorrelationId
     $testArgs.EngineBaseUrl           = $EngineBaseUrl
     $testArgs.ResultTimeoutSeconds    = $ResultTimeoutSeconds

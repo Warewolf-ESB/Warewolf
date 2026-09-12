@@ -2,17 +2,20 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Warewolf.Execution.ServiceBusWorker.Configuration;
 
 namespace Warewolf.Execution.ServiceBusWorker.Functions;
 
 /// <summary>
-/// Triggered by a message on the Service Bus queue named by the <c>WAREWOLF_SERVICEBUS_TRIGGER_QUEUE</c>
-/// app setting (default <c>wwexecution-queue</c> — see <c>local.settings.json</c> for local dev and
-/// <c>Deploy-WwExecutionServiceBusWorker.ps1</c>'s <c>-ServiceBusQueueName</c> param in Azure). Each
-/// message names a Warewolf workflow, an optional target route, and its inputs; this worker
-/// authenticates to Entra (Managed Identity) and calls the engine's <c>/secure</c> or <c>/public</c>
-/// route on the message's behalf (mirroring the AzureFunction sample's <c>run</c> / <c>runpublic</c>
-/// proxies).
+/// Triggered by a message on the Service Bus queue named by
+/// <c>Settings/servicebustrigger.bite</c>'s <c>QueueName</c> (see
+/// <see cref="ServiceBusTriggerDefinition"/> — default <c>wwexecution-queue</c>, matching
+/// <c>Deploy-WwExecutionServiceBusWorker.ps1</c>'s <c>-ServiceBusQueueName</c> param in Azure).
+/// Every message on that queue runs the SAME workflow, named by that file's
+/// <c>WorkflowName</c> — the message itself only carries an optional target route and its
+/// inputs; this worker authenticates to Entra (Managed Identity) and calls the engine's
+/// <c>/secure</c> or <c>/public</c> route on the message's behalf (mirroring the AzureFunction
+/// sample's <c>run</c> / <c>runpublic</c> proxies).
 ///
 /// Why an SB-triggered worker (and not "Service Bus calls the engine")? Service Bus is a message
 /// broker — it cannot hold an OAuth token or make an outbound HTTP call. The realistic pattern is
@@ -21,6 +24,7 @@ namespace Warewolf.Execution.ServiceBusWorker.Functions;
 public sealed class WorkflowQueueTrigger
 {
     private readonly IWwExecutionClient _client;
+    private readonly ServiceBusTriggerDefinition _triggerDefinition;
     private readonly ILogger<WorkflowQueueTrigger> _logger;
 
     private static readonly JsonSerializerOptions JsonOptions = new()
@@ -29,17 +33,23 @@ public sealed class WorkflowQueueTrigger
         ReadCommentHandling = JsonCommentHandling.Skip,
     };
 
-    public WorkflowQueueTrigger(IWwExecutionClient client, ILogger<WorkflowQueueTrigger> logger)
+    public WorkflowQueueTrigger(
+        IWwExecutionClient client,
+        ServiceBusTriggerDefinition triggerDefinition,
+        ILogger<WorkflowQueueTrigger> logger)
     {
         _client = client ?? throw new ArgumentNullException(nameof(client));
+        _triggerDefinition = triggerDefinition ?? throw new ArgumentNullException(nameof(triggerDefinition));
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     /// <summary>
     /// Message contract:
-    /// <c>{ "route": "secure", "workflow": "Hello World", "inputs": { "Name": "FromServiceBus" } }</c>
+    /// <c>{ "route": "secure", "inputs": { "Name": "FromServiceBus" } }</c>
     /// <para><c>route</c> is optional: omitted/blank defaults to <c>secure</c>; <c>public</c> targets
-    /// the engine's anonymous route. Any other value dead-letters the message.</para>
+    /// the engine's anonymous route. Any other value dead-letters the message. There is no
+    /// <c>workflow</c> field any more — every message on this queue runs
+    /// <see cref="ServiceBusTriggerDefinition.WorkflowName"/>.</para>
     /// </summary>
     [Function(nameof(WorkflowQueueTrigger))]
     public async Task RunAsync(
@@ -63,26 +73,27 @@ public sealed class WorkflowQueueTrigger
             throw;
         }
 
-        if (request is null || string.IsNullOrWhiteSpace(request.Workflow))
+        if (request is null)
         {
             throw new InvalidOperationException(
-                $"Message is missing the required 'workflow' field. Body: {messageBody}");
+                $"Message body deserialized to null. Body: {messageBody}");
         }
 
+        var workflow = _triggerDefinition.WorkflowName;
         var route = ResolveRoute(request.Route);
         var query = request.Inputs ?? new Dictionary<string, string?>();
 
         _logger.LogInformation(
             "Executing workflow '{Workflow}' on the '{Route}' route with {InputCount} input(s) from Service Bus message.",
-            request.Workflow, route, query.Count);
+            workflow, route, query.Count);
 
         var result = route == "public"
-            ? await _client.ExecutePublicAsync(request.Workflow, query, cancellationToken).ConfigureAwait(false)
-            : await _client.ExecuteSecureAsync(request.Workflow, query, cancellationToken).ConfigureAwait(false);
+            ? await _client.ExecutePublicAsync(workflow, query, cancellationToken).ConfigureAwait(false)
+            : await _client.ExecuteSecureAsync(workflow, query, cancellationToken).ConfigureAwait(false);
 
         _logger.LogInformation(
             "Workflow '{Workflow}' completed on '{Route}'. Response: {Response}",
-            request.Workflow, route, result);
+            workflow, route, result);
     }
 
     /// <summary>
@@ -111,9 +122,6 @@ public sealed class WorkflowQueueTrigger
     {
         [JsonPropertyName("route")]
         public string? Route { get; init; }
-
-        [JsonPropertyName("workflow")]
-        public string? Workflow { get; init; }
 
         [JsonPropertyName("inputs")]
         public Dictionary<string, string?>? Inputs { get; init; }

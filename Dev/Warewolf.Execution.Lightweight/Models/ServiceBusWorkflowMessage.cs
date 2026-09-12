@@ -26,13 +26,16 @@ namespace Warewolf.Execution.Lightweight.Models;
 /// (Model B) worker's <c>wwexecution-queue</c> — the two message contracts are not
 /// interchangeable (this one requires a per-caller token; Model B's does not).
 /// </para>
+///
+/// <para>
+/// Does NOT carry a workflow name. This trigger runs exactly one workflow, named by
+/// <c>Auth.Models.ServiceBusTriggerDefinition.WorkflowName</c>
+/// (<c>Settings/servicebustrigger.bite</c>) — every message on the configured queue
+/// executes that workflow, so the message only needs to supply its inputs.
+/// </para>
 /// </summary>
 public sealed class ServiceBusWorkflowMessage
 {
-    /// <summary>Workflow name to execute (resolved the same way as the HTTP routes).</summary>
-    [JsonPropertyName("workflow")]
-    public string? Workflow { get; init; }
-
     /// <summary>
     /// Input parameters for the workflow, keyed by DataList variable name (no
     /// <c>[[ ]]</c> notation) — mirrors the HTTP routes' JSON body / query-string inputs.

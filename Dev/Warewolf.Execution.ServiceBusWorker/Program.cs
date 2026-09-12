@@ -7,6 +7,16 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Options;
 using Warewolf.Execution.ServiceBusWorker;
 using Warewolf.Execution.ServiceBusWorker.Auth;
+using Warewolf.Execution.ServiceBusWorker.Configuration;
+
+// WOLF-8517: which Service Bus queue WorkflowQueueTrigger listens on, and which workflow it
+// runs, now come from Settings/servicebustrigger.bite rather than the
+// WAREWOLF_SERVICEBUS_TRIGGER_QUEUE app setting + the message's own "workflow" field. Loaded
+// here, before the host is built, so its QueueName can be injected into configuration in time
+// for the [ServiceBusTrigger("%...%")] attribute indirection to resolve it. Returns null when
+// the trigger is disabled via AzureWebJobs.WorkflowQueueTrigger.Disabled; otherwise a
+// missing/invalid file is fatal — see ServiceBusTriggerDefinition.Load's doc comment.
+var serviceBusTrigger = ServiceBusTriggerDefinition.Load();
 
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
@@ -16,9 +26,29 @@ var host = new HostBuilder()
         config
             .AddJsonFile("appsettings.json", optional: true, reloadOnChange: false)
             .AddEnvironmentVariables();
+
+        // Registered LAST so it wins over any leftover WAREWOLF_SERVICEBUS_TRIGGER_QUEUE app
+        // setting — later-registered sources take precedence for the same key.
+        if (serviceBusTrigger is not null)
+        {
+            config.AddInMemoryCollection(new[]
+            {
+                new KeyValuePair<string, string?>(
+                    "WAREWOLF_SERVICEBUS_TRIGGER_QUEUE", serviceBusTrigger.QueueName),
+            });
+        }
     })
     .ConfigureServices((context, services) =>
     {
+        // Registered only when the trigger is enabled (ServiceBusTriggerDefinition.Load
+        // returns null when AzureWebJobs.WorkflowQueueTrigger.Disabled is set) —
+        // WorkflowQueueTrigger is never constructed in that case, so an absent registration
+        // is safe (DI resolves it lazily per invocation, not eagerly at startup).
+        if (serviceBusTrigger is not null)
+        {
+            services.AddSingleton(serviceBusTrigger);
+        }
+
         // --- Options ---------------------------------------------------------------------
         services
             .AddOptions<WwExecutionOptions>()
