@@ -37,12 +37,6 @@
          holds "Azure Service Bus Data Sender" on this namespace/queue is therefore the only
          access control that matters — scope it as tightly as your deployment allows.
       5. Sets the app setting the trigger needs: ServiceBusConnection__fullyQualifiedNamespace.
-      6. WOLF-8517: writes/overwrites Settings/servicebustrigger.bite in the deployed app's
-         file system (via `az rest` against the Kudu VFS API) with -TriggerQueueName and
-         -WorkflowName — the queue name and the workflow every message on it now runs. This
-         file carries no secret (Service Bus auth is Managed-Identity-only), so it is written
-         as plain JSON, never WFAES-encrypted. The message body no longer names the workflow
-         at all (see docs/ServiceBusSecureTrigger-Architecture.md's "Message contract").
 
     NOT done by this script (separate, out-of-scope operator steps):
       * Restricting who may send to -TriggerQueueName. This script does not grant "Azure
@@ -50,6 +44,17 @@
         decision for this trigger and is left to the operator to scope deliberately.
       * host.json's "serviceBus": { "autoCompleteMessages": false } — already committed in this
         repo's host.json and deployed with the app's own published output; nothing to set here.
+      * WOLF-8517: which QUEUE the trigger listens on (its NAME here is just the queue this
+        script provisions/grants RBAC on) and which WORKFLOW every message on it executes are
+        selected by Settings/servicebustrigger.bite, staged at DEPLOY TIME by
+        Deploy-WwExecutionEngine.ps1's -ServiceBusTriggerQueueName/-ServiceBusTriggerWorkflowName
+        (see that script). This script originally (WOLF-8517's first pass) tried to write that
+        file into an already-deployed app's file system afterwards via the Kudu VFS API — that
+        cannot work once WEBSITE_RUN_FROM_PACKAGE=1 mounts wwwroot read-only (the normal
+        zip-deploy mode Deploy-WwExecutionEngine.ps1 uses), confirmed live against
+        WarewolfServer-UAT (2026-09-12): UnauthorizedAccessException. -TriggerQueueName here
+        MUST match whatever -ServiceBusTriggerQueueName that deploy was given, or the trigger
+        listens on a queue nothing is provisioned/authorized for.
 
 .PARAMETER FunctionAppName
     REQUIRED. The already-deployed Lightweight engine Function App name, e.g. WarewolfServer-UAT.
@@ -66,10 +71,6 @@
     deployment sharing the same namespace). Must match whatever
     Test-ShovelBridgeE2E.ps1/Run-ShovelBridgeE2E-DevOpsRabbit.ps1 pass as
     -DestinationQueueName/-ServiceBusQueueName when using -VerifyWorkflowExecution.
-.PARAMETER WorkflowName
-    REQUIRED (WOLF-8517). The workflow every message on -TriggerQueueName executes — written
-    into Settings/servicebustrigger.bite's WorkflowName field. The message body no longer names
-    the workflow, so this is now the ONLY place that selects it for this trigger.
 .PARAMETER MaxDeliveryCount
     Max delivery attempts before the broker dead-letters a message. Default: 10.
 .PARAMETER LockDuration
@@ -99,7 +100,6 @@ param(
     [Parameter(Mandatory)] [string] $FunctionAppName,
     [Parameter(Mandatory)] [string] $ResourceGroup,
     [Parameter(Mandatory)] [string] $ServiceBusNamespace,
-    [Parameter(Mandatory)] [string] $WorkflowName,
     [string] $ServiceBusNamespaceResourceGroup,
 
     [string] $TriggerQueueName = 'wwexecution-secure-trigger-queue-e2e',
@@ -204,40 +204,6 @@ function Set-FunctionAppSettingsViaFile {
     }
 }
 
-function Set-ServiceBusTriggerConfigFile {
-    <#
-        WOLF-8517: writes Settings/servicebustrigger.bite (QueueName + WorkflowName) directly
-        into the deployed Function App's file system via `az rest` against the Kudu VFS API
-        (https://<app>.scm.azurewebsites.net/api/vfs/...) — routed through Invoke-Az like every
-        other az call in this script, so DryRun/mocking behave identically. Contains no secret
-        (Service Bus auth is Managed-Identity-only), so this is always plain JSON, never
-        WFAES-encrypted — no Key Vault/Encrypt-Config.ps1 involvement needed.
-
-        'If-Match: *' unconditionally overwrites whatever is already at that path (there is no
-        optimistic-concurrency scenario worth failing on here — this script is the only writer).
-    #>
-    param(
-        [Parameter(Mandatory)][string] $FunctionAppName,
-        [Parameter(Mandatory)][string] $QueueName,
-        [Parameter(Mandatory)][string] $WorkflowName
-    )
-
-    $json = [ordered]@{ QueueName = $QueueName; WorkflowName = $WorkflowName } | ConvertTo-Json -Compress
-    $tempFile = [System.IO.Path]::GetTempFileName()
-    try {
-        [System.IO.File]::WriteAllText($tempFile, $json, (New-Object System.Text.UTF8Encoding $false))
-        $uri = "https://$FunctionAppName.scm.azurewebsites.net/api/vfs/site/wwwroot/Settings/servicebustrigger.bite"
-        Invoke-Az -Mutating @(
-            'rest', '--method', 'put',
-            '--url', $uri,
-            '--headers', 'Content-Type=application/json', 'If-Match=*',
-            '--body', "@$tempFile"
-        ) | Out-Null
-    } finally {
-        Remove-Item $tempFile -Force -ErrorAction SilentlyContinue
-    }
-}
-
 function Get-EstimatedClaimStaleAfter {
     <#
         WOLF-8512: mirrors (approximately - this is a deploy-time sanity check, not the runtime
@@ -322,8 +288,8 @@ Write-Host '  This run will (idempotently):' -ForegroundColor White
 Write-Host "    1. Create (or converge) queue '$TriggerQueueName' on '$ServiceBusNamespace' (dead-lettering on, max delivery $MaxDeliveryCount, lock duration $LockDuration)." -ForegroundColor White
 Write-Host "    2. Grant principal '$principalId' the 'Azure Service Bus Data Receiver' role on '$ServiceBusNamespace' if not already granted." -ForegroundColor White
 Write-Host "    3. Set app setting on '$FunctionAppName': ServiceBusConnection__fullyQualifiedNamespace." -ForegroundColor White
-Write-Host "    4. Write Settings/servicebustrigger.bite on '$FunctionAppName': QueueName=$TriggerQueueName, WorkflowName=$WorkflowName." -ForegroundColor White
 Write-Host ''
+Write-Note "This does NOT stage Settings/servicebustrigger.bite (queue/workflow selection) — that is now baked in at deploy time by Deploy-WwExecutionEngine.ps1's -ServiceBusTriggerQueueName/-ServiceBusTriggerWorkflowName. Verify '$FunctionAppName' was deployed with -ServiceBusTriggerQueueName '$TriggerQueueName' — a mismatch means the trigger listens on a queue this run's RBAC grant doesn't cover, or that this queue has no workflow assigned to it at all."
 Write-Note "This does NOT grant 'Azure Service Bus Data Sender' on '$ServiceBusNamespace' to anyone — see this script's .DESCRIPTION for why that assignment is the actual authorization decision for this trigger, left to you to scope deliberately."
 
 if (-not $NonInteractive -and -not $DryRun) {
@@ -398,15 +364,10 @@ Set-FunctionAppSettingsViaFile -FunctionAppName $FunctionAppName -ResourceGroup 
 )
 if ($DryRun) { Write-Note "App settings would be applied to '$FunctionAppName' (not applied — DryRun)." } else { Write-Ok "App settings applied to '$FunctionAppName'." }
 
-Write-Phase 'Phase 4  Trigger config file (Settings/servicebustrigger.bite)'
-
-Set-ServiceBusTriggerConfigFile -FunctionAppName $FunctionAppName -QueueName $TriggerQueueName -WorkflowName $WorkflowName
-if ($DryRun) { Write-Note "Settings/servicebustrigger.bite would be written to '$FunctionAppName' (not applied — DryRun): QueueName=$TriggerQueueName, WorkflowName=$WorkflowName." } else { Write-Ok "Settings/servicebustrigger.bite written to '$FunctionAppName': QueueName=$TriggerQueueName, WorkflowName=$WorkflowName." }
-
 Write-Phase 'Done'
 if ($DryRun) {
     Write-Note 'DRY RUN complete — nothing was actually changed. Re-run without -DryRun to apply.'
 } else {
-    Write-Ok "'$FunctionAppName' is now configured to listen on '$TriggerQueueName' and run '$WorkflowName' via the Service Bus trigger."
-    Write-Note "Remaining, separate operator step: scope who holds 'Azure Service Bus Data Sender' on '$ServiceBusNamespace'/'$TriggerQueueName' deliberately — that grant is this trigger's entire authorization boundary; restart/re-warm the Function App if app settings/file changes are not picked up live."
+    Write-Ok "'$FunctionAppName' is now configured to listen on '$TriggerQueueName' via the Service Bus trigger."
+    Write-Note "Remaining, separate steps: (1) scope who holds 'Azure Service Bus Data Sender' on '$ServiceBusNamespace'/'$TriggerQueueName' deliberately — that grant is this trigger's entire authorization boundary; (2) confirm '$FunctionAppName' was (or will be) deployed with Deploy-WwExecutionEngine.ps1 -ServiceBusTriggerQueueName '$TriggerQueueName' -ServiceBusTriggerWorkflowName '<workflow>' so servicebustrigger.bite actually selects a workflow — this script no longer sets it; restart/re-warm the Function App if app settings changes are not picked up live."
 }

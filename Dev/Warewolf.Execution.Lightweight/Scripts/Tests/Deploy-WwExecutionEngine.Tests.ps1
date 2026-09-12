@@ -753,6 +753,54 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Match 'serviceBusTrigger=.*"settlementTimeoutSeconds":30'
         }
     }
+
+    Context 'ServiceBusTrigger queue/workflow selection (servicebustrigger.bite, WOLF-8517 corrected)' {
+        It 'stages servicebustrigger.bite with the supplied QueueName and WorkflowName' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName    = 'wwexecution-secure-trigger-queue-e2e'
+            $callArgs.ServiceBusTriggerWorkflowName = 'profiler/ProfilerMain'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'servicebustrigger.bite'.*QueueName=wwexecution-secure-trigger-queue-e2e.*WorkflowName=profiler/ProfilerMain"
+        }
+
+        It 'does NOT stage servicebustrigger.bite when neither param is supplied (checked-in dev/sample file ships unchanged)' {
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Not -Match "Staging 'servicebustrigger.bite'"
+        }
+
+        It 'throws when only -ServiceBusTriggerQueueName is supplied (both-or-neither)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName = 'wwexecution-secure-trigger-queue-e2e'
+            { & $script:DeployScript @callArgs } | Should -Throw '*together*'
+        }
+
+        It 'throws when only -ServiceBusTriggerWorkflowName is supplied (both-or-neither)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerWorkflowName = 'profiler/ProfilerMain'
+            { & $script:DeployScript @callArgs } | Should -Throw '*together*'
+        }
+
+        It 'stages servicebustrigger.bite independently of executionengine.settings.json (no Key Vault / ServiceBusTrigger tunables supplied)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName    = 'wwexecution-secure-trigger-queue-e2e'
+            $callArgs.ServiceBusTriggerWorkflowName = 'profiler/ProfilerMain'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'servicebustrigger.bite'"
+            $out | Should -Not -Match "Staging 'executionengine.settings.json'"
+        }
+
+        It 'stages BOTH servicebustrigger.bite and executionengine.settings.json when both concerns are supplied' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.KeyVaultName                  = 'kv-test'
+            $callArgs.KeyVaultSecretName             = 'dp-keyring-v1'
+            $callArgs.ServiceBusTriggerQueueName    = 'wwexecution-secure-trigger-queue-e2e'
+            $callArgs.ServiceBusTriggerWorkflowName = 'profiler/ProfilerMain'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "Staging 'servicebustrigger.bite'.*QueueName=wwexecution-secure-trigger-queue-e2e.*WorkflowName=profiler/ProfilerMain"
+            $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1"
+        }
+    }
+
     Context 'breaking change — required params have no defaults' {
         It 'throws under -NonInteractive when <Param> is omitted' -ForEach @(
             @{ Param = 'ResourceGroup' }

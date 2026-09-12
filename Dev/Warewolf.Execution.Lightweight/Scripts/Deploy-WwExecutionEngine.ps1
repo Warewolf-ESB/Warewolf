@@ -28,8 +28,9 @@
                                   workflow resources (+ optional WFAES encryption),
                                   Elasticsearch source (+ WFAES encryption),
                                   executionengine.settings.json (Key Vault topology +
-                                  ServiceBusTrigger tunables — WOLF-8516), environment
-                                  variables
+                                  ServiceBusTrigger tunables — WOLF-8516),
+                                  servicebustrigger.bite (queue/workflow selection —
+                                  WOLF-8517), environment variables
         Phase 4    Deploy       - publish the package dir to the Function App
                                   (func, falling back to az zip-deploy)
         Phase 5    Verify       - endpoint banner + optional HTTP probe
@@ -174,6 +175,25 @@
     ServiceBusMaxConcurrentCalls above is a DIFFERENT, upstream dispatch-level cap
     (host.json) — these tune the trigger's OWN in-process semaphore/timeouts, not the
     host's dispatch.
+
+.PARAMETER ServiceBusTriggerQueueName
+.PARAMETER ServiceBusTriggerWorkflowName
+    WOLF-8517 (corrected). Which queue the in-process Service Bus trigger listens on, and
+    which workflow every message on that queue executes — staged into
+    Settings/servicebustrigger.bite (ServiceBusTriggerDefinition.cs) in Phase 3, THE SAME WAY
+    the ServiceBusTrigger tunables above are staged into executionengine.settings.json. Both
+    are REQUIRED together, or both omitted: ServiceBusTriggerDefinition.Load() refuses to
+    start an enabled trigger with either field blank, so a deploy-plan-time throw here is
+    cheaper than a cold-start failure discovered later. When neither is supplied, the file
+    already present in -PublishPath (the checked-in dev/sample value) ships unchanged — this
+    keeps local/dev behaviour exactly as before.
+
+    NOTE: earlier versions of this design tried to write this file to an ALREADY-DEPLOYED
+    Function App's file system after the fact (Enable-ServiceBusSecureTrigger.ps1's Kudu VFS
+    write). That cannot work when WEBSITE_RUN_FROM_PACKAGE=1 (the normal zip-deploy mode this
+    script uses) mounts wwwroot read-only — confirmed live against WarewolfServer-UAT
+    (2026-09-12): the write failed with UnauthorizedAccessException. Baking the file into the
+    package at deploy time (here) is the only mechanism that actually works.
 
 .PARAMETER LicenseCheckEnabled
     WAREWOLF_LICENSE_CHECK_ENABLED (engine default: true).
@@ -354,6 +374,10 @@ param(
     [nullable[int]] $ServiceBusTriggerMaxConcurrentExecutions,
     [nullable[int]] $ServiceBusTriggerSlotWaitTimeoutSeconds,
     [nullable[int]] $ServiceBusTriggerSettlementTimeoutSeconds,
+
+    # ── ServiceBusTrigger queue/workflow selection (WOLF-8517 — file-only, deploy-time-baked) ──
+    [string] $ServiceBusTriggerQueueName,
+    [string] $ServiceBusTriggerWorkflowName,
 
     # ── Logging output ───────────────────────────────────────────────────────
     [string] $LogDir,
@@ -812,6 +836,7 @@ function Save-DeploySummary {
         deployRabbitMqTriggers = [bool]$DeployRabbitMqTriggers
         queueProcessorApps  = ($DeployRabbitMqTriggers ? $script:QueueProcessorApps : $null)
         keyVault        = ($kvRequired ? @{ name = $KeyVaultName; secret = $KeyVaultSecretName } : $null)
+        serviceBusTrigger = ($triggerConfigRequired ? @{ queueName = $ServiceBusTriggerQueueName; workflowName = $ServiceBusTriggerWorkflowName } : $null)
         appSettings     = $maskedSettings
     }
     # Atomic write: render to a temp sibling, then replace — a crash mid-write
@@ -1016,6 +1041,20 @@ $sbtOverrides = [ordered]@{
     settlementTimeoutSeconds = $ServiceBusTriggerSettlementTimeoutSeconds
 }
 $sbtRequired = @($sbtOverrides.Values | Where-Object { $null -ne $_ }).Count -gt 0
+
+# ── ServiceBusTrigger queue/workflow selection (WOLF-8517 — corrected) ─────────
+# Staged into Settings/servicebustrigger.bite (Phase 3 below), replacing WOLF-8517's
+# original post-deploy Kudu VFS write (Enable-ServiceBusSecureTrigger.ps1's now-removed
+# Phase 4), which cannot work once WEBSITE_RUN_FROM_PACKAGE=1 mounts wwwroot read-only —
+# confirmed live against WarewolfServer-UAT (2026-09-12): UnauthorizedAccessException.
+# Required together or not at all: ServiceBusTriggerDefinition.Load() refuses to start an
+# enabled trigger with either field blank, so failing at plan time is cheaper than
+# discovering it at cold start.
+$triggerConfigProvided = @(@($ServiceBusTriggerQueueName, $ServiceBusTriggerWorkflowName) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
+if ($triggerConfigProvided.Count -eq 1) {
+    throw "-ServiceBusTriggerQueueName and -ServiceBusTriggerWorkflowName must be supplied together (or neither) — got only $(if ([string]::IsNullOrWhiteSpace($ServiceBusTriggerQueueName)) { '-ServiceBusTriggerWorkflowName' } else { '-ServiceBusTriggerQueueName' }). ServiceBusTriggerDefinition.Load() refuses to start an enabled trigger with either field blank."
+}
+$triggerConfigRequired = $triggerConfigProvided.Count -eq 2
 
 # ── Elasticsearch source (user-supplied, exact filename) ───────────────────────
 if ($enableEs) {
@@ -1295,6 +1334,9 @@ if ($kvRequired) {
 if ($sbtRequired) {
     $sbtSummary = ($sbtOverrides.GetEnumerator() | Where-Object { $null -ne $_.Value } | ForEach-Object { "$($_.Key)=$($_.Value)" }) -join ', '
     Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger tunables', "$sbtSummary -> Settings/executionengine.settings.json")
+}
+if ($triggerConfigRequired) {
+    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger queue/workflow', "QueueName=$ServiceBusTriggerQueueName, WorkflowName=$ServiceBusTriggerWorkflowName -> Settings/servicebustrigger.bite")
 }
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)
 Write-Host ("    {0,-28}: {1}" -f 'Run tag', "wwx-test-run=$runId  (rollback targets this tag only)")
@@ -1830,6 +1872,34 @@ try {
         Write-Step "Staging 'executionengine.settings.json' -> '$engineSettingsDest' ($logDetail)"
         ($engineSettingsValue | ConvertTo-Json) | Set-Content -LiteralPath $engineSettingsDest -Encoding UTF8
         Write-Ok 'executionengine.settings.json staged.'
+    }
+
+    # 3.5d Settings/servicebustrigger.bite (WOLF-8517, corrected) — which queue the
+    # in-process Service Bus trigger listens on, and which workflow every message on it
+    # executes (ServiceBusTriggerDefinition.cs). Plain JSON, staged AS-IS — no secret in it,
+    # Service Bus auth is Managed-Identity-only. Overwrites whatever dev/sample value shipped
+    # in the publish output (Warewolf.Execution.Lightweight/Settings/servicebustrigger.bite,
+    # WorkflowName="Hello World") with the real values for this deployment.
+    #
+    # Baked in HERE, at deploy time, rather than written to an already-deployed app's file
+    # system afterwards: this Function App is normally deployed with
+    # WEBSITE_RUN_FROM_PACKAGE=1, which mounts wwwroot read-only, so a post-deploy write
+    # (Enable-ServiceBusSecureTrigger.ps1's original Kudu VFS approach) cannot ever succeed —
+    # confirmed live against WarewolfServer-UAT (2026-09-12): UnauthorizedAccessException.
+    #
+    # When $triggerConfigRequired is false (neither param supplied), the checked-in
+    # dev/sample file ships unchanged — local/dev behaviour is unaffected.
+    if ($triggerConfigRequired) {
+        $settingsDir = Join-Path $StagingDir 'Settings'
+        if (-not (Test-Path -LiteralPath $settingsDir)) { New-Item -ItemType Directory -Path $settingsDir -Force | Out-Null }
+        $triggerConfigDest = Join-Path $settingsDir 'servicebustrigger.bite'
+        Write-Step "Staging 'servicebustrigger.bite' -> '$triggerConfigDest' (QueueName=$ServiceBusTriggerQueueName, WorkflowName=$ServiceBusTriggerWorkflowName)"
+        $triggerConfigValue = [ordered]@{
+            QueueName    = $ServiceBusTriggerQueueName
+            WorkflowName = $ServiceBusTriggerWorkflowName
+        }
+        ($triggerConfigValue | ConvertTo-Json) | Set-Content -LiteralPath $triggerConfigDest -Encoding UTF8
+        Write-Ok 'servicebustrigger.bite staged.'
     }
 
     # 3.6 Workflow index — generate workflow-index.json over the STAGED Resources so

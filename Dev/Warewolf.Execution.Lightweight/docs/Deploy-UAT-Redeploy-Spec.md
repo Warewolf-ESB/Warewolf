@@ -72,12 +72,23 @@ Load-test-critical values (non-secret):
 
   **2026-09-12 correction (WOLF-8517):** this is no longer an app setting. The queue name AND
   the workflow every message on it runs now come SOLELY from `Settings/servicebustrigger.bite`
-  on the Function App, staged via `Enable-ServiceBusSecureTrigger.ps1 -WorkflowName` (a
-  separate, reviewed operator step — see that script's own `.SYNOPSIS`). A future redeploy
-  will NOT show `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` in `az functionapp config appsettings
-  list` any more; verify the staged trigger file instead (its `QueueName` must still match
-  what `pipeline-LOADTEST.yml`/`pipeline-CLOUD.yml` shovel into, and its `WorkflowName` must
-  match `VerifyWorkflowName` in those pipelines).
+  on the Function App.
+
+  **2026-09-12 further correction:** that file is baked in at DEPLOY TIME by
+  `Deploy-WwExecutionEngine.ps1 -ServiceBusTriggerQueueName`/`-ServiceBusTriggerWorkflowName`
+  (`pipeline-LOADTEST.yml`'s `Deploy_UAT` job passes both), NOT written to the already-deployed
+  Function App afterwards by `Enable-ServiceBusSecureTrigger.ps1 -WorkflowName` as originally
+  designed — that write used the Kudu VFS API and cannot succeed once
+  `WEBSITE_RUN_FROM_PACKAGE=1` (above) mounts `wwwroot` read-only; confirmed live against this
+  exact app (`UnauthorizedAccessException`) the same day. `Enable-ServiceBusSecureTrigger.ps1`
+  no longer has a `-WorkflowName` parameter — it still owns the queue/RBAC/app-setting side
+  (its `-TriggerQueueName` must match the deploy's `-ServiceBusTriggerQueueName`). A future
+  redeploy will NOT show `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` in `az functionapp config
+  appsettings list` any more; verify the staged trigger file instead (its `QueueName` must
+  still match what `pipeline-LOADTEST.yml`/`pipeline-CLOUD.yml` shovel into, and its
+  `WorkflowName` must match `VerifyWorkflowName`/`WwExecutionServiceBusTriggerWorkflowName` in
+  those pipelines). See `docs/ServiceBusSecureTrigger-Architecture.md` "Configuration
+  reference" for the full story.
 - `BYPASS_SECURE_CONFIG = true`, `WAREWOLF_LICENSE_CHECK_ENABLED = false`,
   `ASPNETCORE_ENVIRONMENT = Production`, `EXECUTIONLOGLEVEL = INFO`.
 

@@ -196,6 +196,18 @@ attribute indirection resolves exactly as it did when that was a real app settin
 (see "Message contract" above). A missing file, or either field blank, is fatal — refuses
 to start rather than silently defaulting.
 
+**"Deploy-bundled" means exactly that — baked into the package by
+`Deploy-WwExecutionEngine.ps1`'s `-ServiceBusTriggerQueueName`/`-ServiceBusTriggerWorkflowName`
+(Phase 3), not written to an already-deployed app's file system afterwards.** WOLF-8517's
+first pass tried the latter — `Enable-ServiceBusSecureTrigger.ps1` writing this file into a
+live Function App via the Kudu VFS API (`az rest ... /api/vfs/site/wwwroot/...`) — which
+cannot work whenever `WEBSITE_RUN_FROM_PACKAGE=1` (the normal zip-deploy mode this repo
+uses) mounts `wwwroot` read-only. Confirmed live against `WarewolfServer-UAT`
+(2026-09-12): the write failed with `UnauthorizedAccessException: Access to the path is
+denied.` `Enable-ServiceBusSecureTrigger.ps1` still owns the queue/RBAC/app-setting side
+(its `-TriggerQueueName` must match whatever `-ServiceBusTriggerQueueName` the deploy was
+given), but no longer touches this file at all.
+
 The remaining tunables are sourced SOLELY from `Settings/executionengine.settings.json`'s
 `serviceBusTrigger` section (deploy-bundled JSON file — see `HostEnvironmentConfig.cs` and
 `ServiceBusTriggerOptions.FromEnvironment`) — **no env-var fallback**, they are not App
@@ -368,13 +380,21 @@ extends the same pipeline to prove actual **workflow execution** through this tr
    parameter docs.
 
 **Prerequisite — this trigger must already be provisioned on the target Function App**
-(queue exists, managed identity has `Azure Service Bus Data Receiver`, and the two app
-settings from "Configuration reference" above are set) before `-VerifyWorkflowExecution`
-can pass. `Scripts/Enable-ServiceBusSecureTrigger.ps1` does exactly that, idempotently,
-against an already-deployed app — run it (ideally with `-DryRun` first) as a separate,
-reviewed step; it is **not** invoked automatically by either E2E script or any CI job.
-It does not grant "Azure Service Bus Data Sender" to anyone — that assignment remains
-separate manual steps, detailed next.
+(queue exists, managed identity has `Azure Service Bus Data Receiver`, and the
+`ServiceBusConnection__fullyQualifiedNamespace` app setting is set) before
+`-VerifyWorkflowExecution` can pass. `Scripts/Enable-ServiceBusSecureTrigger.ps1` does
+exactly that, idempotently, against an already-deployed app — run it (ideally with
+`-DryRun` first) as a separate, reviewed step; it is **not** invoked automatically by
+either E2E script or any CI job. It does not grant "Azure Service Bus Data Sender" to
+anyone — that assignment remains separate manual steps, detailed next.
+
+**Second, separate prerequisite:** the target app must have been deployed (or redeployed)
+with `Deploy-WwExecutionEngine.ps1 -ServiceBusTriggerQueueName`/
+`-ServiceBusTriggerWorkflowName` matching `Enable-ServiceBusSecureTrigger.ps1`'s
+`-TriggerQueueName` — otherwise `Settings/servicebustrigger.bite` either doesn't name this
+workflow at all (every message fails `Workflow not found`) or names a queue nothing is
+provisioned for. `Enable-ServiceBusSecureTrigger.ps1` no longer sets this file itself (see
+"Configuration reference" above for why the original post-deploy write couldn't work).
 
 ### Getting `-ResultPollAuthToken` (superseded Entra provisioning history)
 
