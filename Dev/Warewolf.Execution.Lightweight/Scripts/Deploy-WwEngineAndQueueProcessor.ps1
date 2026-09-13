@@ -471,6 +471,15 @@ function New-WwQpParams {
         DockerfilePath        = $Context.DockerFile   # NOT -Dockerfile; that binds only by prefix abbreviation
         LogDir                = $Context.LogDir
     }
+    # The QueueProcessor grants each app's managed identity the engine app role itself. Hand it the
+    # two ids this wrapper already resolved into the handover file so it skips the directory lookups
+    # - and so the grant targets THIS run's engine rather than whatever the tenant search returns.
+    # ContainsKey, not a bare $Context.SpObjectId: Set-StrictMode -Version Latest turns a missing
+    # hashtable key into a PropertyNotFoundException, and callers legitimately build a narrower
+    # context than step 5's (every unit test does).
+    if ($Context.ContainsKey('SpObjectId') -and $Context.SpObjectId) {
+        $p.EngineSpObjectId = $Context.SpObjectId
+    }
     if ($AppInsightsConnectionString) {
         $p.EnableAppInsights           = $true
         $p.AppInsightsConnectionString = $AppInsightsConnectionString
@@ -774,7 +783,7 @@ $Ctx = @{
     EngineAi = $EngineAi; EngineAuthApp = $EngineAuthApp
     QpPublish = $QpPublish; QpPrefix = $QpPrefix; ImageRepo = $ImageRepo; DockerFile = $DockerFile
     RabbitSecretUri = $RabbitSecretUri
-    EngineUrl = $null; EngineAppId = $null     # filled by step 5
+    EngineUrl = $null; EngineAppId = $null; SpObjectId = $null   # filled by step 5
 }
 
 if (-not $SkipEngine) {
@@ -848,6 +857,10 @@ if ($DryRun -and -not $SkipEngine) {
 
 $Ctx.EngineUrl   = $HO.Endpoint
 $Ctx.EngineAppId = $HO.ClientId
+# The engine SERVICE PRINCIPAL object id - not the app id. Deploy-WwQueueProcessor.ps1 assigns the
+# Warewolf_QueueProcessor app role against it, and taking it from the handover rather than letting
+# the child re-search the directory guarantees the grant targets THIS run's engine.
+$Ctx.SpObjectId  = $HO.SpObjectId
 $Ctx.EngineAi    = $EngineAi
 $Ctx.EngineAuthApp = $EngineAuthApp
 

@@ -4,7 +4,7 @@
 #
 # Provisions:
 #   * Resource group + storage account
-#   * Azure Functions app (Consumption, .NET 8 isolated)
+#   * Azure Functions app (Consumption, .NET 10 isolated)
 #   * Entra ID app registration with app roles matching
 #     the Warewolf secure.config WindowsGroup role values
 #   * Easy Auth (authsettingsV2) in AllowAnonymous global mode:
@@ -12,6 +12,9 @@
 #
 # Prerequisites:
 #   az cli 2.40+, PowerShell 7+
+#   The az CLI must be new enough to know 'dotnet-isolated 10' — older builds reject
+#   --runtime-version 10 outright. Confirm with:
+#     az functionapp list-runtimes --os windows --query "[?runtime=='dotnet-isolated'].version"
 #   az login && az account set --subscription <id>
 ##########################################################
 
@@ -41,12 +44,12 @@ az storage account create `
     --allow-blob-public-access false
 
 # ── 3. Function App (Consumption / free tier) ──────────
-Write-Host "[3/8] Creating function app '$FUNCTION_APP' (.NET 8 isolated, consumption)..."
+Write-Host "[3/8] Creating function app '$FUNCTION_APP' (.NET 10 isolated, consumption)..."
 az functionapp create `
     --resource-group            $RESOURCE_GROUP `
     --consumption-plan-location $LOCATION `
     --runtime                   dotnet-isolated `
-    --runtime-version           8 `
+    --runtime-version           10 `
     --functions-version         4 `
     --name                      $FUNCTION_APP `
     --storage-account           $STORAGE_ACCOUNT `

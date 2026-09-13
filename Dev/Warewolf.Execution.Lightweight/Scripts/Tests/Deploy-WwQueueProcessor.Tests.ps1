@@ -963,3 +963,123 @@ Describe 'Deploy-WwQueueProcessor — DryRun end-to-end' {
         $out | Should -Not -Match 'KEDA rule set'
     }
 }
+
+Describe 'Deploy-WwQueueProcessor — Assert-PublishMatchesBaseImage' {
+
+    <#
+        The image's two halves are produced independently: the DLLs by the deploy machine's
+        `dotnet publish`, the framework by the Dockerfile's FROM. Nothing reconciles them, and
+        a mismatch surfaces only as ACA CrashLoopBackOff — the container exits before it opens
+        a RabbitMQ connection, so the deploy output says nothing useful. This guard runs BEFORE
+        the ~6-minute ACR build.
+    #>
+
+    BeforeAll {
+        . $script:DeployScript -LoadFunctionsOnly
+
+        # Defined HERE, not at Describe scope: Pester 5 runs It bodies in a child scope of
+        # BeforeAll, so a function declared beside the Its is not in scope when they run.
+    function New-RuntimeConfig {
+        param([string] $Dir, [string] $Version, [switch] $SingleFramework)
+        $body = if ($SingleFramework) {
+            '{"runtimeOptions":{"framework":{"name":"Microsoft.NETCore.App","version":"' + $Version + '"}}}'
+        } else {
+            '{"runtimeOptions":{"frameworks":[{"name":"Microsoft.NETCore.App","version":"' + $Version + '"},' +
+            '{"name":"Microsoft.AspNetCore.App","version":"' + $Version + '"}]}}'
+        }
+        $body | Set-Content (Join-Path $Dir 'Warewolf.Execution.QueueProcessor.runtimeconfig.json')
+    }
+
+    function New-Dockerfile {
+        param([string] $Dir, [string] $Name, [string[]] $Lines)
+        $path = Join-Path $Dir $Name
+        $Lines | Set-Content $path
+        return $path
+    }
+    }
+
+    BeforeEach {
+        $script:pub = Join-Path ([System.IO.Path]::GetTempPath()) ("wwqp-rt-" + [guid]::NewGuid())
+        New-Item -ItemType Directory -Path $script:pub -Force | Out-Null
+    }
+
+    AfterEach {
+        if ($script:pub -and (Test-Path -LiteralPath $script:pub)) {
+            Remove-Item -LiteralPath $script:pub -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'passes when the publish major matches the base-image major' {
+        New-RuntimeConfig -Dir $script:pub -Version '10.0.0'
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.ok' -Lines @('FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final', 'WORKDIR /srv')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } | Should -Not -Throw
+    }
+
+    It 'THROWS on a net10.0 publish against an 8.0 base image' {
+        New-RuntimeConfig -Dir $script:pub -Version '10.0.0'
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.bad' -Lines @('FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } |
+            Should -Throw '*Runtime mismatch*'
+    }
+
+    It 'THROWS on the reverse drift too (net8 publish, 10.0 base image)' {
+        # This is the direction the QueueProcessor actually moved through: the project went to
+        # net10.0 and the Dockerfile followed. A stale publish directory reproduces it.
+        New-RuntimeConfig -Dir $script:pub -Version '8.0.0'
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.new' -Lines @('FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } |
+            Should -Throw '*Runtime mismatch*'
+    }
+
+    It 'reads the LAST FROM — the final stage is what ships' {
+        New-RuntimeConfig -Dir $script:pub -Version '10.0.0'
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.multi' -Lines @(
+            'FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build',
+            'RUN echo build',
+            'FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } | Should -Not -Throw
+    }
+
+    It 'handles a single-framework runtimeconfig (no AspNetCore FrameworkReference)' {
+        New-RuntimeConfig -Dir $script:pub -Version '10.0.0' -SingleFramework
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.single' -Lines @('FROM mcr.microsoft.com/dotnet/runtime:10.0 AS final')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } | Should -Not -Throw
+    }
+
+    It 'SKIPS (does not throw) when the runtimeconfig is missing' {
+        # Non-fatal by design: the guard blocks a mismatch it can PROVE, never a deploy it
+        # simply could not evaluate.
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.ok' -Lines @('FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } | Should -Not -Throw
+    }
+
+    It 'SKIPS when the runtimeconfig cannot be parsed' {
+        'not json at all' | Set-Content (Join-Path $script:pub 'Warewolf.Execution.QueueProcessor.runtimeconfig.json')
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.ok' -Lines @('FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } | Should -Not -Throw
+    }
+
+    It 'SKIPS when the FROM tag is templated rather than a literal version' {
+        New-RuntimeConfig -Dir $script:pub -Version '10.0.0'
+        $df = New-Dockerfile -Dir $script:pub -Name 'Dockerfile.tmpl' -Lines @('FROM $BASE_IMAGE AS final')
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $df } | Should -Not -Throw
+    }
+
+    It 'agrees with the Dockerfile this repo actually ships (net10.0)' {
+        # Regression anchor: if the project moves framework and the Dockerfile does not follow
+        # (or vice versa), this fails here instead of in ACA.
+        $shipped = Join-Path (Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent) 'Warewolf.Execution.QueueProcessor\Dockerfile'
+        if (-not (Test-Path -LiteralPath $shipped)) { Set-ItResult -Skipped -Because 'the shipped Dockerfile is not present in this checkout'; return }
+        New-RuntimeConfig -Dir $script:pub -Version '10.0.0'
+        { Assert-PublishMatchesBaseImage -PublishRoot $script:pub -DockerfilePath $shipped } | Should -Not -Throw
+    }
+
+    It 'runs BEFORE the ACR build, not after it' {
+        $src = Get-Content $script:DeployScript -Raw
+        $guardAt = $src.IndexOf('Assert-PublishMatchesBaseImage -PublishRoot')
+        $buildAt = $src.IndexOf("'acr', 'build'")
+        $guardAt | Should -BeGreaterThan 0
+        $buildAt | Should -BeGreaterThan 0
+        $guardAt | Should -BeLessThan $buildAt -Because 'a ~6-minute ACR build must not precede a check that would reject its output'
+    }
+}

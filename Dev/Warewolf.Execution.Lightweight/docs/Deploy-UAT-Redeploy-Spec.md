@@ -106,7 +106,7 @@ free-limit-exhausted `WarewolfEntraTestDb` on 2026-08-19 — see
 
 | # | Risk | Impact | Mitigation |
 |---|---|---|---|
-| **R1** | **.NET 10 isolated support on Azure Functions v4 / Windows Consumption is unconfirmed.** | Blocker — app fails to start. | **Verify before deploying** (§5.2). If unsupported, either stay on `net8.0` for UAT or move the app to a supported plan/OS. This is the single biggest unknown. |
+| **R1** | ~~.NET 10 isolated support on Azure Functions v4 / Windows Consumption is unconfirmed.~~ **RESOLVED 2026-09-13** — `az functionapp list-runtimes --os windows` advertises `dotnet-isolated` version `10` for Functions v4 (az CLI 2.87.0). | ~~Blocker~~ | Closed. `Deploy-WwExecutionEngine.ps1` now creates on `--runtime-version 10`, and `-UpgradeRuntimeVersion` reconciles an app that already exists on `v8.0`. Still re-run the §5.2 check on the machine you deploy from: an older az CLI rejects `--runtime-version 10` outright. |
 | **R2** | `WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED=1` pins a version-specific cold-start placeholder. | App may fail to start or silently run the wrong runtime. | Set to `0` for the first .NET 10 deploy; restore to `1` only once confirmed working. |
 | **R3** | Consumption (`Y1`) plan: no `alwaysOn`, cold starts, capped scale-out. | Load-test noise — the post-login timeouts and pool exhaustion already seen may be partly this. | Decide explicitly whether UAT stays on `Y1`. Changing tier affects **other apps on the shared plan in RG `Warewolf`** — do not change it casually. |
 | **R4** | Plan is shared and lives in a **different resource group**. | A plan-level change hits unrelated apps. | Treat the plan as read-only for this deploy. |
@@ -136,7 +136,25 @@ Check that the Functions runtime advertises .NET 10 isolated for Windows:
 az functionapp list-runtimes --os windows --query "dotnet-isolated[].{version:version, functions:supported_functions_versions}" -o table
 ```
 
-If `v10.0` is absent, **stop** and take the R1 decision before proceeding.
+If `10` is absent, **stop** and take the R1 decision before proceeding — an az CLI that does not
+know the stack rejects `--runtime-version 10` at `functionapp create`.
+
+**Confirmed 2026-09-13** on az CLI 2.87.0: `dotnet-isolated` versions `10`, `9`, `8`, `7`, `6` are
+all offered for Functions v4 / Windows. `Deploy-WwExecutionEngine.ps1` (and the JobProcessor /
+ServiceBusWorker companions) now create on `10`.
+
+**The create path is not the whole story.** `--runtime-version` applies only at
+`functionapp create`; `WarewolfServer-UAT` already exists on `netFrameworkVersion v8.0`, so a
+redeploy leaves it there and the `net10.0` package fails at startup with *"You must install or
+update .NET to run this application."* Pass `-UpgradeRuntimeVersion` to reconcile it (the app
+restarts), or set it out of band:
+
+```powershell
+az functionapp config set -n WarewolfServer-UAT -g Warewolf --net-framework-version v10.0
+```
+
+Without the switch the orchestrator reports the mismatch in the Phase 0.5 plan and warns in
+Phase 1, but changes nothing.
 
 ### 5.3 Build
 

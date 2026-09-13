@@ -263,11 +263,27 @@ The handover file is still written, so the worker deploy can be run later.
 
 ---
 
-## 5. After the deploy — the app-role grant
+## 5. After the deploy — verifying the app-role grant
 
-This is the main consumer of the handover file, and the reason it exists. Each Container App's
-managed identity should hold the engine app role `Warewolf_QueueProcessor`. The `spObjectId` and the
-role id both come out of the file — no Graph lookup, no display-name guessing:
+**The grant is no longer a manual step.** `Deploy-WwQueueProcessor.ps1` assigns the engine app role
+`Warewolf_QueueProcessor` to each app's managed identity inside its per-trigger loop, and this
+wrapper hands it the `spObjectId` it resolved into the handover file so the grant targets **this
+run's** engine rather than whatever a directory search returns.
+
+What remains here is verification — the grant is deliberately **non-fatal**, because writing an
+`appRoleAssignment` needs `AppRoleAssignment.ReadWrite.All` (or Privileged Role Administrator), a
+different privilege from the Contributor rights the rest of the deploy uses:
+
+```powershell
+$qpSummary = (Get-ChildItem "<LogDir>\deploy-WwQueueProcessor-*.summary.json" |
+              Sort-Object LastWriteTime | Select-Object -Last 1).FullName
+(Get-Content $qpSummary -Raw | ConvertFrom-Json).queueProcessorApps |
+    Select-Object app, principalId, engineAppRole, status
+```
+
+`engineAppRole` is `granted` or `already-assigned` for every app, or the deploy printed the exact
+per-app remediation command in its summary. To repair a run by hand, the handover file still carries
+everything the grant needs — no Graph lookup, no display-name guessing:
 
 ```powershell
 $H = Get-Content "<LogDir>\deploy-both-<stamp>.handover.json" -Raw | ConvertFrom-Json
@@ -292,8 +308,11 @@ foreach ($app in $H.queueProcessor.apps) {
 }
 ```
 
-`secure.config` also needs a **per-workflow Execute row** for each trigger's `WorkflowName`. The
-grant is defence in depth; the secure.config row is the one that governs execution.
+**`secure.config` needs no per-workflow row, and adding one can lock the worker out.** A workflow
+with no resource-scoped entry inherits the global (`IsServer=true`) map, which the app role above
+satisfies. Once a workflow has *any* `Execute`-bearing resource entry it uses the resource map
+**exclusively**, so a row that omits `Warewolf_QueueProcessor` denies the worker outright. Add one
+only to deliberately narrow access, and then it must name `Warewolf_QueueProcessor`.
 
 ---
 
@@ -460,7 +479,10 @@ A warning rather than a stop:
   engine splat asks for App Insights by name, so an empty result usually means the component was
   created under a different name.
 - **`App role 'Warewolf_QueueProcessor' is not defined`** — your `authconfig.json` doesn't define it,
-  so §5 has nothing to assign. The grant is optional; secure.config is not.
+  so the QueueProcessor's grant has nothing to assign and every worker will be denied by the engine.
+  Define the role (`Configure-WwExecutionAuth.ps1`) and re-run `Deploy-WwQueueProcessor.ps1`, which
+  grants it idempotently. The denial surfaces as HTTP **500**, not 403 (WOLF-8418), and the worker
+  dead-letters **and acks** the message — so the queue drains and the run looks clean.
 
 ---
 

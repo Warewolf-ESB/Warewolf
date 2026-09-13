@@ -344,3 +344,41 @@ rollback at that one, or it will under-delete.
   appearing to process normally.
 - **TLS is off by default**, matching `PublishRabbitMQActivity`. The worker logs a warning per app.
   Production requires `amqps` + `RABBITMQ__USESSL=true` — a documented go-live gate.
+
+---
+
+## RabbitMQ publish connection cache — live verification
+
+Separate from the 18-criterion run above and **independent of any Azure deployment**: it needs only a
+reachable broker, so it can be run before staging, after a deploy, or on its own.
+
+```powershell
+$env:WAREWOLF_E2E_RABBITMQ = 'HostName=<host>;Port=5672;UserName=<user>;Password=<pwd>;VirtualHost=<vhost>'
+cd Dev
+dotnet test Warewolf.Execution.Lightweight.Integration.Tests --filter "TestCategory=LiveBroker"
+Remove-Item Env:\WAREWOLF_E2E_RABBITMQ
+```
+
+**Credentials are never committed.** With `WAREWOLF_E2E_RABBITMQ` unset — every CI run — the tests
+report **Inconclusive**, not a pass. Read "Inconclusive" as *not verified*, never as *verified*.
+
+The verification owns the queue `Test_Connection_Queue_For_PublishActivity` and creates its own
+topology: a **direct exchange named after the queue**, plus a binding on an **empty routing key**. It
+purges before each run, so it is safe to re-run.
+
+| Verifies | How |
+|---|---|
+| One handshake serves many publishes | `cache.ConnectionsCreated == 1` across 20 publishes |
+| Messages actually arrive | Every correlation id published is consumed back off the queue |
+| Recovery-off + background-I/O survives real traffic | `IsOpen` asserted before every publish; 200 channels over one connection |
+| The speed claim | Uncached vs cached elapsed, asserted and printed |
+
+Measured 2026-09-12 against CloudAMQP: **20 publishes, 32,209 ms uncached → 5,807 ms cached (5.5×)**.
+
+> **Do not read a green run as proof the cache is enabled in production.** These tests construct the
+> cache directly. Whether a deployed engine uses it depends solely on `WAREWOLF_RABBITMQ_CACHE` being
+> present and `enabled:true` in its app settings — absent means disabled, which is the default. Check
+> the startup log line `Startup | Phase=RabbitMqCache | …` to see which way a given deployment went.
+
+Design, leak analysis and the negative-control results:
+[`RabbitMQ-ConnectionCache-Plan.md`](./RabbitMQ-ConnectionCache-Plan.md).

@@ -1,4 +1,4 @@
-#pragma warning disable
+﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2021 by Warewolf Ltd <alpha@warewolf.io>
@@ -84,6 +84,30 @@ namespace Dev2.Activities.RabbitMQ.Publish
         internal IConnection Connection { get; set; }
 
         internal IModel Channel { get; set; }
+
+        /// <summary>
+        /// Name reported to the broker for cached connections, so an operator can tell a pooled
+        /// Warewolf publisher apart from a per-execution one in the RabbitMQ management UI.
+        /// </summary>
+        static string CachedConnectionClientName => "warewolf-publish/" + Environment.MachineName;
+
+        [NonSerialized] Func<IRabbitMqConnectionCache> _connectionCacheResolver;
+
+        /// <summary>
+        /// Resolves the connection cache for this execution. Defaults to the ambient registry, which
+        /// is null on the full Warewolf server and whenever caching is disabled.
+        ///
+        /// <para>Indirected through a resolver rather than read from
+        /// <see cref="AmbientRabbitMqConnectionCache.Current"/> inline so unit tests can supply a fake
+        /// — or force the uncached path — <b>without mutating process-wide static state</b>. That
+        /// matters: <c>Dev2.Activities.Tests</c> runs in parallel in CI, and tests that registered a
+        /// real ambient cache would flake against each other.</para>
+        /// </summary>
+        protected Func<IRabbitMqConnectionCache> ConnectionCacheResolver
+        {
+            get => _connectionCacheResolver ?? (_connectionCacheResolver = () => AmbientRabbitMqConnectionCache.Current);
+            set => _connectionCacheResolver = value;
+        }
 
         public RabbitMQSource RabbitMQSource { get; set; }
 
@@ -191,60 +215,46 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 ConnectionFactory.Password = RabbitMQSource.Password;
                 ConnectionFactory.VirtualHost = RabbitMQSource.VirtualHost;
 
-                using (Connection = ConnectionFactory.CreateConnection())
+                // Cache lookup, not a host check: the resolver returns null on the full Warewolf
+                // server (nothing registers an ambient cache there) and whenever
+                // WAREWOLF_RABBITMQ_CACHE leaves caching disabled, which is the default. In that
+                // case this method performs exactly the open-publish-dispose it always has.
+                var connectionCache = ConnectionCacheResolver();
+                if (connectionCache is null)
                 {
-                    Channel = Connection.CreateModel();
-                    try
+                    using (Connection = ConnectionFactory.CreateConnection())
                     {
-                        bool newExchangeOrQueue = false;
-						try
-						{
-							// Check if the exchange exists
-							Channel.ExchangeDeclarePassive(queueName);
-						}
-						catch (OperationInterruptedException)
-						{
-							// A failed passive declare closes the channel server-side (the
-							// broker's 404 NOT_FOUND is a channel-level AMQP exception), so
-							// the active declare must run on a brand-new channel - retrying
-							// on the one the broker just closed throws AlreadyClosedException
-							// instead of creating the exchange (see also
-							// RabbitMqDeadLetterPublisher.EnsureChannelAsync, which documents
-							// and avoids this same pitfall).
-							Channel.Dispose();
-							Channel = Connection.CreateModel();
-							// The exchange does not exist, so declare it
-							Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
-                            newExchangeOrQueue = true;
-						}
-						try
-						{
-							// Check if the queue exists
-							Channel.QueueDeclarePassive(queueName);
-						}
-						catch (OperationInterruptedException)
-						{
-							// Same reasoning as above: the queue's passive-declare 404 also
-							// closes this channel, so its active declare needs a fresh one too.
-							Channel.Dispose();
-							Channel = Connection.CreateModel();
-							// The queue does not exist, so declare it
-							Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
-							newExchangeOrQueue = true;
-						}
-                        if (newExchangeOrQueue)
-                        {
-                            Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
-                        }
-
-                        var basicProperties = Channel.CreateBasicProperties();
-                        basicProperties.Persistent = true;
-                        basicProperties.CorrelationId = CorrelationID;
-                        Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
+                        PublishCore(Connection, queueName, message, CorrelationID, null);
                     }
-                    finally
+                }
+                else
+                {
+                    var cacheKey = RabbitMqCacheKey.For(RabbitMQSource.HostName, RabbitMQSource.Port,
+                        RabbitMQSource.UserName, RabbitMQSource.VirtualHost, RabbitMQSource.Password);
+
+                    // Only on the cached path: these settings exist because the connection will be
+                    // long-lived. Applying them to the uncached path would change behaviour that has
+                    // shipped for years, for no benefit to a connection that dies in milliseconds.
+                    RabbitMqCachedConnectionSettings.Apply(ConnectionFactory,
+                        CachedConnectionClientName);
+
+                    // No using(Connection = ...) here: a cached connection outlives this execution
+                    // and is owned by the cache. Only the LEASE is disposed, which returns the
+                    // connection rather than closing it.
+                    using (var lease = connectionCache.Acquire(cacheKey, () => ConnectionFactory.CreateConnection()))
                     {
-                        Channel?.Dispose();
+                        Connection = lease.Connection;
+                        try
+                        {
+                            PublishCore(lease.Connection, queueName, message, CorrelationID, lease);
+                        }
+                        catch
+                        {
+                            // A failed publish may have left the connection half-dead. Poison it so
+                            // the next execution reconnects instead of inheriting the failure.
+                            lease.Invalidate();
+                            throw;
+                        }
                     }
                 }
 
@@ -256,6 +266,97 @@ namespace Dev2.Activities.RabbitMQ.Publish
             {
                 Dev2Logger.Error("PublishRabbitMQActivity", ex, GlobalConstants.WarewolfError);
                 throw new Exception(ex.GetAllMessages());
+            }
+        }
+
+        /// <summary>
+        /// Opens a channel, ensures the topology exists, publishes, and disposes the channel.
+        ///
+        /// <para>Shared verbatim by the cached and uncached paths so the two cannot drift. With
+        /// <paramref name="memo"/> null the sequence of broker calls is identical to what this
+        /// activity has always issued — which is what lets the pre-existing tests stand unmodified as
+        /// the guarantee that disabling the cache restores today's behaviour exactly.</para>
+        ///
+        /// <para>The channel is always short-lived, even on a cached connection. <c>IModel</c> is
+        /// <b>not</b> thread-safe in RabbitMQ.Client 5.1.2 — concurrent publishes on one channel
+        /// corrupt the frame stream — whereas <c>IConnection</c> is, so a channel per publish is what
+        /// makes sharing a connection across concurrent executions safe without any locking.</para>
+        /// </summary>
+        void PublishCore(IConnection connection, string queueName, string message, string correlationID,
+            IRabbitMqConnectionLease memo)
+        {
+            // Null memo (uncached) is always "stale", so the declares below always run.
+            var topologyFresh = memo != null && memo.IsTopologyFresh(queueName);
+
+            Channel = connection.CreateModel();
+            try
+            {
+                if (!topologyFresh)
+                {
+                    EnsureTopology(connection, queueName);
+                }
+
+                var basicProperties = Channel.CreateBasicProperties();
+                basicProperties.Persistent = true;
+                basicProperties.CorrelationId = correlationID;
+                Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
+
+                // Only after a publish actually succeeded: marking earlier would let a run of
+                // failures keep refreshing the memo and skipping the declares that would have
+                // re-created the missing topology.
+                memo?.MarkTopologyDeclared(queueName);
+            }
+            finally
+            {
+                Channel?.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Verifies (and creates, if absent) the exchange, queue and binding for
+        /// <paramref name="queueName"/>. Unchanged from the long-standing implementation.
+        /// </summary>
+        void EnsureTopology(IConnection connection, string queueName)
+        {
+            bool newExchangeOrQueue = false;
+            try
+            {
+                // Check if the exchange exists
+                Channel.ExchangeDeclarePassive(queueName);
+            }
+            catch (OperationInterruptedException)
+            {
+                // A failed passive declare closes the channel server-side (the
+                // broker's 404 NOT_FOUND is a channel-level AMQP exception), so
+                // the active declare must run on a brand-new channel - retrying
+                // on the one the broker just closed throws AlreadyClosedException
+                // instead of creating the exchange (see also
+                // RabbitMqDeadLetterPublisher.EnsureChannelAsync, which documents
+                // and avoids this same pitfall).
+                Channel.Dispose();
+                Channel = connection.CreateModel();
+                // The exchange does not exist, so declare it
+                Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
+                newExchangeOrQueue = true;
+            }
+            try
+            {
+                // Check if the queue exists
+                Channel.QueueDeclarePassive(queueName);
+            }
+            catch (OperationInterruptedException)
+            {
+                // Same reasoning as above: the queue's passive-declare 404 also
+                // closes this channel, so its active declare needs a fresh one too.
+                Channel.Dispose();
+                Channel = connection.CreateModel();
+                // The queue does not exist, so declare it
+                Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
+                newExchangeOrQueue = true;
+            }
+            if (newExchangeOrQueue)
+            {
+                Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
             }
         }
 

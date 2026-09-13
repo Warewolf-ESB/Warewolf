@@ -116,9 +116,13 @@ az group create --name $ResourceGroup --location $Location | Out-Null
 az storage account create --name $StorageAccount --resource-group $ResourceGroup `
   --location $Location --sku Standard_LRS --kind StorageV2 --min-tls-version TLS1_2 | Out-Null
 
+# .NET 10 isolated: must match the engine's <TargetFramework> (net10.0). A v8.0 host loading
+# a net10.0 package fails at startup with "You must install or update .NET to run this
+# application." Requires an az CLI that knows the stack - check with:
+#   az functionapp list-runtimes --os windows --query "[?runtime=='dotnet-isolated'].version"
 az functionapp create --name $AppName --resource-group $ResourceGroup `
   --consumption-plan-location $Location --storage-account $StorageAccount `
-  --runtime dotnet-isolated --runtime-version 8 --functions-version 4 `
+  --runtime dotnet-isolated --runtime-version 10 --functions-version 4 `
   --https-only true --os-type Windows | Out-Null
 ```
 
@@ -225,10 +229,11 @@ az group create --name $ClientRg --location $Location | Out-Null
 az storage account create --name $ClientStorage --resource-group $ClientRg `
   --location $Location --sku Standard_LRS --kind StorageV2 --min-tls-version TLS1_2 | Out-Null
 
-# Consumption Function App, .NET 8 isolated, Functions v4, HTTPS-only, Windows plan
+# Consumption Function App, .NET 10 isolated, Functions v4, HTTPS-only, Windows plan
+# (matches ClientExamples/AzureFunction, which targets net10.0)
 az functionapp create --name $ClientAppName --resource-group $ClientRg `
   --storage-account $ClientStorage --consumption-plan-location $Location `
-  --runtime dotnet-isolated --runtime-version 8 --functions-version 4 `
+  --runtime dotnet-isolated --runtime-version 10 --functions-version 4 `
   --https-only true --os-type Windows | Out-Null
 
 "Client Function App created: $ClientAppName (rg: $ClientRg)"
@@ -588,22 +593,42 @@ with the engine's `-PublishPath` **or** the JobProcessor's. Add `-ContinueOnQueu
 going past a failing trigger. The `containerapp` CLI extension is installed by the **child**, so an
 engine deploy without this switch gains no new prerequisite.
 
-### 8d. Authorize each app (loop)
+### 8d. Authorize each app — done by the deploy
 
-One MI per app, so iterate the deployed apps — the summary JSON lists them.
+`Deploy-WwQueueProcessor.ps1` grants the engine app role `Warewolf_QueueProcessor` to **each**
+deployed app's managed identity, inside the per-trigger loop. There is **one MI per app**, and the
+old manual snippet here was written against a single app — which is how multi-trigger stacks ended
+up with exactly one authorized worker while the rest silently dead-lettered everything they consumed.
 
-> If you deployed via the combined wrapper, take the app list, the engine SP object id and the role
-> id straight from its handover file instead of re-querying Graph — the role-grant snippet in
-> [`Deploy-Both-RunGuide.md`](Deploy-Both-RunGuide.md) §5 does exactly that.
+| Switch | Effect |
+|---|---|
+| `-EngineAppRole <value>` | role to assign (default `Warewolf_QueueProcessor`) |
+| `-EngineSpObjectId <oid>` | skip the directory lookup; the combined wrapper passes what it already resolved |
+| `-SkipEngineAppRoleGrant` | do not attempt the grant at all |
+
+The grant is **idempotent** (an existing assignment is detected and reported, never re-POSTed) and
+**never fatal**. Writing an `appRoleAssignment` needs `AppRoleAssignment.ReadWrite.All` or Privileged
+Role Administrator — a different privilege from the Contributor rights everything else here uses — so
+a denial leaves the worker deployed, records `engineAppRole: failed-permission` for that app, and
+prints the exact remediation command per app. **Verify** rather than assume:
 
 ```powershell
 $qpSummary = (Get-ChildItem "$LogDir\deploy-WwQueueProcessor-*.summary.json" |
               Sort-Object LastWriteTime | Select-Object -Last 1).FullName
+(Get-Content $qpSummary | ConvertFrom-Json).queueProcessorApps |
+    Select-Object app, principalId, engineAppRole, status
+```
+
+Anything whose `engineAppRole` is not `granted` or `already-assigned` still needs the role. Grant it
+with the daemon flow — `Configure-WwExecutionAuth-Clients.ps1` takes
+`-DaemonFunctionAppName`/`-DaemonFunctionAppResourceGroup` for Function Apps, which use
+`az functionapp identity assign`, so a **Container App** MI goes through `-ManagedIdentityObjectId`:
+
+```powershell
 $apps = (Get-Content $qpSummary | ConvertFrom-Json).queueProcessorApps |
-        Where-Object { $_.status -eq 'deployed' }
+        Where-Object { $_.engineAppRole -notin @('granted', 'already-assigned') -and $_.status -eq 'deployed' }
 
 foreach ($app in $apps) {
-    # A Container App's MI principalId is already captured in the summary; if absent, read it:
     $principalId = $app.principalId
     if (-not $principalId) {
         $principalId = az containerapp show --name $app.app --resource-group $ResourceGroup `
@@ -619,10 +644,10 @@ foreach ($app in $apps) {
 }
 ```
 
-> `Configure-WwExecutionAuth-Clients.ps1` takes `-DaemonFunctionAppName`/`-DaemonFunctionAppResourceGroup`
-> for Function Apps, which use `az functionapp identity assign`. A **Container App** MI is read with
-> `az containerapp identity show`, so the `-ManagedIdentityObjectId` path above is used instead — it
-> works today with **no script change**.
+> **A roleless worker does not fail visibly.** The engine denies the call, WOLF-8418 wraps the denial
+> as HTTP **500** (not 403), `EngineForwarder` classifies 500 as a business failure and
+> **dead-letters AND acks** the message. The queue drains, the app scales back to zero, and the run
+> looks clean while every message was discarded. An empty queue is never evidence of success.
 
 ### 8e. Verify
 

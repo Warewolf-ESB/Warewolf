@@ -191,6 +191,16 @@
     WAREWOLF_LOGGING_CONFIG JSON app setting (WOLF-8516; formerly the standalone
     STRUCTURED_LOGS env var).
 
+.PARAMETER UpgradeRuntimeVersion
+    OPT-IN.  Reconcile an EXISTING Function App's runtime to dotnet-isolated 10 /
+    netFrameworkVersion v10.0 (what the engine's net10.0 payload requires).  A new
+    app is always created on the correct runtime; an app created by an earlier run
+    keeps the runtime it was created with, so a v8.0 host would load the net10.0
+    worker and die at startup with "You must install or update .NET to run this
+    application."  Changing it RESTARTS the app, which is why it is not automatic:
+    without this switch a mismatch is reported in the Phase 0.5 plan and warned
+    about in Phase 1, but nothing is changed.
+
 .PARAMETER LogDir
     Directory for the transcript + summary.  Default: <PublishDir>\..\deploy-logs.
 
@@ -239,6 +249,11 @@ param(
     [string] $Location,
     [string] $StorageAccount,
     [string] $AppName,
+
+    # ── Runtime ──────────────────────────────────────────────────────────────
+    # OPT-IN.  A Function App is created on the correct runtime; one that ALREADY
+    # exists keeps whatever it was created with, and changing it restarts the app.
+    [switch] $UpgradeRuntimeVersion,
 
     # ── Publish source (REQUIRED — folder or .zip) ───────────────────────────
     [string] $PublishPath,
@@ -368,6 +383,27 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+
+# ════════════════════════════════════════════════════════════════════════════
+# .NET runtime the Function App must run on
+# ════════════════════════════════════════════════════════════════════════════
+# These MUST track <TargetFramework> in Warewolf.Execution.Lightweight.csproj (net10.0)
+# and the AzureFunctionsVersion (v4) beside it. The host does not adapt to the payload:
+# a v8.0 host loading a net10.0 worker fails at startup with "You must install or update
+# .NET to run this application." before a single function is indexed — the Function App
+# equivalent of the base-image mismatch documented in the QueueProcessor's Dockerfile.
+# The companion scripts (Deploy-WwJobProcessor.ps1, Deploy-WwExecutionServiceBusWorker.ps1)
+# carry the same three constants; all four projects target net10.0, so they move together.
+$script:TargetFunctionsRuntime    = 'dotnet-isolated'
+$script:TargetRuntimeVersion      = '10'      # `functionapp create --runtime-version`
+$script:TargetNetFrameworkVersion = 'v10.0'   # `siteConfig.netFrameworkVersion` on an existing app
+$script:TargetFunctionsVersion    = '4'       # `functionapp create --functions-version`
+
+# Resolved for real in Phase 0.5. Seeded here so Save-DeploySummary is StrictMode-safe no
+# matter how early a run dies (the summary is the rollback's record of intent).
+$script:RuntimePlan = [pscustomobject]@{
+    Current = $null; Target = $script:TargetNetFrameworkVersion; Action = 'create'; Message = '(not yet resolved)'
+}
 
 # ════════════════════════════════════════════════════════════════════════════
 # Helpers
@@ -783,6 +819,16 @@ function Save-DeploySummary {
         location        = $Location
         storageAccount  = $StorageAccount
         appName         = $AppName
+        # What this run did about the .NET runtime. An operator reading a summary after a
+        # failed startup needs to see 'warn' here without re-deriving it from the log.
+        runtime         = [ordered]@{
+            runtime            = $script:TargetFunctionsRuntime
+            runtimeVersion     = $script:TargetRuntimeVersion
+            functionsVersion   = $script:TargetFunctionsVersion
+            netFrameworkTarget = $script:TargetNetFrameworkVersion
+            netFrameworkBefore = $script:RuntimePlan.Current
+            action             = $script:RuntimePlan.Action
+        }
         appInsightsName = ($enableAppInsights ? $AppInsightsName : $null)
         appInsightsConnectionString = $aiConnMasked
         endpoint        = $baseUrl
@@ -905,6 +951,54 @@ function Grant-RoleAssignment {
     throw ("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). " +
            "If the identity was only just created, re-running the deploy usually succeeds." -f
            $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds))
+}
+
+function Resolve-FunctionRuntimePlan {
+    <#
+        Decide what THIS run does about the Function App's .NET runtime, from the
+        app's CURRENT netFrameworkVersion.  Pure — no az calls — so the decision is
+        made once at plan time (Phase 0.5), printed, and then replayed in Phase 1.
+
+        $CurrentNetFrameworkVersion is $null/empty when the app does not exist yet,
+        or when `functionapp show` returned a payload without siteConfig.
+
+          Action 'create'  - no app yet; `functionapp create` pins the target runtime.
+          Action 'none'    - already on the target.
+          Action 'upgrade' - mismatch AND -UpgradeRuntimeVersion; Phase 1 will run
+                             `functionapp config set --net-framework-version`.
+          Action 'warn'    - mismatch WITHOUT the switch; report loudly, change nothing.
+
+        Why 'warn' and not 'upgrade' by default: `config set` restarts the app, and a
+        restart is not something a deploy should do to a running environment on its own
+        inference.  The cost of the warning path is explicit — the run continues and the
+        engine will fail at startup — so the message has to say exactly that.
+    #>
+    param(
+        [string] $CurrentNetFrameworkVersion,
+        [switch] $Upgrade,
+        [string] $TargetNetFrameworkVersion = $script:TargetNetFrameworkVersion
+    )
+    $current = if ([string]::IsNullOrWhiteSpace($CurrentNetFrameworkVersion)) { $null }
+               else { $CurrentNetFrameworkVersion.Trim() }
+
+    $action = if (-not $current)                                        { 'create'  }
+              elseif ($current -ieq $TargetNetFrameworkVersion)         { 'none'    }
+              elseif ($Upgrade)                                         { 'upgrade' }
+              else                                                      { 'warn'    }
+
+    $message = switch ($action) {
+        'create'  { "will be created on $script:TargetFunctionsRuntime $script:TargetRuntimeVersion ($TargetNetFrameworkVersion, Functions v$script:TargetFunctionsVersion)" }
+        'none'    { "$current — already correct" }
+        'upgrade' { "$current -> $TargetNetFrameworkVersion (-UpgradeRuntimeVersion; the app RESTARTS)" }
+        'warn'    { "$current, but this package needs $TargetNetFrameworkVersion — NOT changed (pass -UpgradeRuntimeVersion)" }
+    }
+
+    [pscustomobject]@{
+        Current = $current
+        Target  = $TargetNetFrameworkVersion
+        Action  = $action
+        Message = $message
+    }
 }
 
 if ($LoadFunctionsOnly) { return }
@@ -1249,6 +1343,25 @@ $appSettings['WAREWOLF_LICENSE_CHECK_ENABLED'] = ($licenseCheck ? 'true' : 'fals
 # file instead (see Phase 3, "3.5c" below). HostEnvironmentConfig no longer reads
 # these env vars at all.
 
+# ── Runtime decision (resolved HERE so the plan can state it, applied in Phase 1) ──
+# `functionapp show` is a READ, so it runs under -DryRun too and the plan tells the truth
+# about an app that already exists rather than assuming a fresh create. StrictMode-safe:
+# no app, or a payload without siteConfig, both resolve to $null ("will be created").
+$existingNetFx = $null
+$appShowJson   = Invoke-Az @('functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+if ($appShowJson) {
+    try {
+        $appShow    = ($appShowJson | Out-String) | ConvertFrom-Json
+        $siteConfig = $appShow.PSObject.Properties['siteConfig']
+        if ($siteConfig -and $siteConfig.Value) {
+            $netFxProp = $siteConfig.Value.PSObject.Properties['netFrameworkVersion']
+            if ($netFxProp) { $existingNetFx = [string]$netFxProp.Value }
+        }
+    }
+    catch { $existingNetFx = $null }
+}
+$script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $existingNetFx -Upgrade:$UpgradeRuntimeVersion
+
 # ── Settings summary + single confirmation (item 8) ────────────────────────────
 Write-Host ''
 Write-Host '  ── Resolved deployment settings ──────────────────────────────────────' -ForegroundColor White
@@ -1258,6 +1371,8 @@ Write-Host ("    {0,-28}: {1}" -f 'ResourceGroup', $ResourceGroup)
 Write-Host ("    {0,-28}: {1}" -f 'Location', $Location)
 Write-Host ("    {0,-28}: {1}" -f 'StorageAccount', $StorageAccount)
 Write-Host ("    {0,-28}: {1}" -f 'AppName', $AppName)
+Write-Host ("    {0,-28}: {1}" -f 'Runtime', ("{0} {1} (Functions v{2}) — {3}" -f
+    $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion, $script:RuntimePlan.Message))
 Write-Host ("    {0,-28}: {1}" -f 'PublishPath', $PublishPath)
 Write-Host ("    {0,-28}: {1}" -f 'PublishDir', ($publishIsZip ? "$PublishDir  (extracted from zip)" : $PublishDir))
 Write-Host ("    {0,-28}: {1}" -f 'PublishMethod', $PublishMethod)
@@ -1309,6 +1424,18 @@ if (-not $SkipAuthProvisioning) {
     Write-Host '    WAREWOLF_ENTRA_CONFIG (tenantId/audience/clientId) = (set by Configure-WwExecutionAuth.ps1 — WOLF-8516)'
 }
 Write-Host ''
+
+# Surfaced BEFORE the confirmation, not buried in the settings table: continuing past a
+# runtime mismatch produces a deploy that reports success and an engine that never starts.
+if ($script:RuntimePlan.Action -eq 'warn') {
+    Write-Note ("RUNTIME MISMATCH: Function App '{0}' runs {1}, but this package targets {2}. " -f
+                $AppName, $script:RuntimePlan.Current, $script:RuntimePlan.Target)
+    Write-Note ("  The deploy will SUCCEED and the engine will then fail at startup with " +
+                "'You must install or update .NET to run this application.' Re-run with " +
+                '-UpgradeRuntimeVersion to reconcile the app (it restarts), or fix it out of band ' +
+                ("with: az functionapp config set -n {0} -g {1} --net-framework-version {2}" -f
+                 $AppName, $ResourceGroup, $script:RuntimePlan.Target))
+}
 
 if (-not (Confirm-Yes 'Proceed with this deployment?' $true)) {
     Write-Note 'Aborted by user.'
@@ -1399,19 +1526,47 @@ try {
         Write-Ok 'Storage account created.'
     }
 
-    # 1.3 Function App (Consumption Y1, .NET 8 isolated, Functions v4)
+    # 1.3 Function App (Consumption Y1, .NET 10 isolated, Functions v4)
     $appExists = Invoke-Az @('functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
     if ($appExists) {
         Write-Ok "Function App '$AppName' already exists."
         $created['functionApp'] = $false
+
+        # An existing app keeps the runtime it was CREATED with — `functionapp create` is
+        # the only place --runtime-version applies, and this branch never runs it. Replay
+        # the Phase 0.5 decision so a long-lived app does not silently stay a version
+        # behind the payload being deployed onto it.
+        switch ($script:RuntimePlan.Action) {
+            'upgrade' {
+                Write-Step ("Upgrading Function App runtime {0} -> {1} (the app restarts)" -f
+                            $script:RuntimePlan.Current, $script:RuntimePlan.Target)
+                Invoke-Az @(
+                    'functionapp', 'config', 'set',
+                    '--name', $AppName, '--resource-group', $ResourceGroup,
+                    '--net-framework-version', $script:RuntimePlan.Target, '-o', 'none'
+                ) -Mutating | Out-Null
+                Write-Ok "Function App runtime set to $($script:RuntimePlan.Target)."
+            }
+            'warn' {
+                Write-Note (("Function App runtime left at {0}; this package targets {1}. " -f
+                             $script:RuntimePlan.Current, $script:RuntimePlan.Target) +
+                            'Re-run with -UpgradeRuntimeVersion to reconcile it.')
+            }
+            default {
+                Write-Ok "Function App runtime is $($script:RuntimePlan.Target)."
+            }
+        }
     } else {
         $created['functionApp'] = $true   # intent recorded BEFORE creating
-        Write-Step "Creating Function App '$AppName' (Consumption Y1, dotnet-isolated 8, Functions v4)"
+        Write-Step ("Creating Function App '{0}' (Consumption Y1, {1} {2}, Functions v{3})" -f
+                    $AppName, $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion)
         Invoke-Az (@(
             'functionapp', 'create',
             '--name', $AppName, '--resource-group', $ResourceGroup, '--consumption-plan-location', $Location,
-            '--storage-account', $StorageAccount, '--runtime', 'dotnet-isolated', '--runtime-version', '8',
-            '--functions-version', '4', '--https-only', 'true', '--os-type', 'Windows', '--tags'
+            '--storage-account', $StorageAccount, '--runtime', $script:TargetFunctionsRuntime,
+            '--runtime-version', $script:TargetRuntimeVersion,
+            '--functions-version', $script:TargetFunctionsVersion,
+            '--https-only', 'true', '--os-type', 'Windows', '--tags'
         ) + $ResourceTags) -Mutating | Out-Null
         Write-Ok 'Function App created.'
     }
@@ -2099,8 +2254,10 @@ try {
         }
 
         Write-Ok "QueueProcessor companion deploy invoked for $($script:QueueTriggerFiles.Count) trigger(s)."
-        Write-Note 'Reminder: grant EACH QueueProcessor MI the engine role Warewolf_QueueProcessor, and add'
-        Write-Note 'a PER-WORKFLOW Execute row to secure.config for each trigger workflow (runbook section 8).'
+        Write-Note 'Deploy-WwQueueProcessor.ps1 grants EACH app''s managed identity the engine role'
+        Write-Note 'Warewolf_QueueProcessor itself; check its summary for any app it could not grant (that'
+        Write-Note 'needs AppRoleAssignment.ReadWrite.All). No per-workflow secure.config row is required -'
+        Write-Note 'a workflow with no resource-scoped entry inherits the global map (runbook section 8).'
 
         if ($qpFailures -gt 0) {
             Write-Note "$qpFailures trigger deploy(s) failed - see the summary JSON."

@@ -54,6 +54,7 @@ internal static class StartupOrchestrator
             PersistenceConfigLoader.Initialize();
             RegisterJobValuesEnricher();
             RegisterResumptionExecutor(host);
+            RegisterRabbitMqConnectionCache(host);
             WarmUpWorkflowIndex(config);
 
             Dev2Logger.Info("StartupOrchestrator RunStartupAsync completed successfully", executionId);
@@ -179,6 +180,59 @@ internal static class StartupOrchestrator
             CustomContainer.Register<Warewolf.Driver.Persistence.IResumptionExecutor>(
                 host.Services.GetRequiredService<ResumptionExecutor>());
             Dev2Logger.Info("Startup | Phase=Persistence | ResumptionExecutor registered (manual resumption runs on the engine pipeline).", executionId);
+        }
+    }
+
+    /// <summary>
+    /// Registers the RabbitMQ publish connection cache when <c>WAREWOLF_RABBITMQ_CACHE</c> enables
+    /// it, and arranges for it to be disposed on graceful shutdown.
+    ///
+    /// <para><b>This method is the entire blast radius of the feature.</b> When it does not run — the
+    /// full Warewolf server, or this host with the setting absent or disabled —
+    /// <c>AmbientRabbitMqConnectionCache.Current</c> stays null and every RabbitMQ publish takes the
+    /// open-publish-dispose path it has always taken. There is deliberately no host check anywhere in
+    /// <c>Dev2.Activities</c>.</para>
+    ///
+    /// <para>Never throws: a cache that fails to construct must not stop the host from serving
+    /// traffic, because the feature it provides is an optimisation.</para>
+    /// </summary>
+    static void RegisterRabbitMqConnectionCache(IHost host)
+    {
+        const string executionId = "StartupOrchestrator-RabbitMqCache";
+
+        try
+        {
+            var options = RabbitMqCacheOptions.FromEnvironment();
+            if (!options.Enabled)
+            {
+                Dev2Logger.Info(
+                    $"Startup | Phase=RabbitMqCache | disabled ({RabbitMqCacheOptions.EnvVar} absent or enabled=false); " +
+                    "publishes open and close a connection per execution, as before.",
+                    executionId);
+                return;
+            }
+
+            var cache = new LightweightRabbitMqConnectionCache(options);
+            AmbientRabbitMqConnectionCache.Register(cache);
+
+            // Releases every socket, background I/O thread and heartbeat timer on a graceful stop.
+            // Clear() first so nothing can acquire from a cache that is being torn down.
+            host.Services.GetRequiredService<IHostApplicationLifetime>()
+                .ApplicationStopping.Register(() =>
+                {
+                    AmbientRabbitMqConnectionCache.Clear();
+                    cache.Dispose();
+                });
+
+            Dev2Logger.Info($"Startup | Phase=RabbitMqCache | {options}.", executionId);
+        }
+        catch (Exception ex)
+        {
+            AmbientRabbitMqConnectionCache.Clear();
+            Dev2Logger.Error(
+                $"Startup | Phase=RabbitMqCache | registration failed; continuing UNCACHED. " +
+                $"ExceptionType={ex.GetType().Name}, Message={ex.Message}",
+                executionId);
         }
     }
 
