@@ -32,6 +32,7 @@
  *  calling ProcessMessageAsync(...) directly, mirroring Run(...)'s own dispatch.
  */
 
+using System.Linq;
 using Azure.Messaging.ServiceBus;
 using Hangfire.MemoryStorage;
 using Microsoft.Azure.Functions.Worker;
@@ -129,6 +130,9 @@ public class ServiceBusWorkflowTriggerFunctionTests
             _recordedStages.Add((correlationId, stage));
             _inner.RecordClaimStage(correlationId, stage);
         }
+
+        public void RecordInstanceHeartbeat(string instanceId, int inFlightExecutions) =>
+            _inner.RecordInstanceHeartbeat(instanceId, inFlightExecutions);
     }
 
     private sealed class FakeWorkflowExecutor : IWorkflowExecutor
@@ -553,6 +557,119 @@ public class ServiceBusWorkflowTriggerFunctionTests
             "An unhandled executor exception never reaches the 'Execution task returned' checkpoint, so ExecutionReturned must never be recorded.");
         Assert.AreEqual("corr-stages-exception", recordingStore.RecordedStages[0].CorrelationId);
         StringAssert.StartsWith(recordingStore.RecordedStages[0].Stage, "AboutToExecute");
+    }
+
+    // ── Execution heartbeat (build 30653 addendum, ServiceBusTriggerOptions.HeartbeatInterval) ──
+    // Closes the gap the three bracketing checkpoints above leave open: AboutToExecute and
+    // ExecutionReturned only bracket execution, so an execution that dies partway through a
+    // LONG run leaves a "before" snapshot that can be stale by however long it had already
+    // been running. RunExecutionHeartbeatAsync refreshes the breadcrumb periodically while
+    // execution is in flight instead.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_SlowExecution_RecordsStillExecutingHeartbeatsBetweenAboutToExecuteAndExecutionReturned()
+    {
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            Assert.IsTrue(gate.Wait(TimeSpan.FromSeconds(5)), "Test executor did not get released in time.");
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var recordingStore = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var triggerOptions = new ServiceBusTriggerOptions { HeartbeatInterval = TimeSpan.FromMilliseconds(20) };
+        var sut = NewSut(executor: executor, store: recordingStore, triggerOptions: triggerOptions);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
+        Assert.IsTrue(recordingStore.TryClaim("corr-heartbeat-slow"));
+
+        var processTask = sut.ProcessMessageAsync(payload, "corr-heartbeat-slow", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+        // Let several heartbeat ticks land while the executor is still blocked on the gate.
+        await Task.Delay(TimeSpan.FromMilliseconds(120));
+        gate.Set();
+        await processTask;
+
+        // ProcessMessageAsync is called directly here (bypassing Run's own ClaimAcquired
+        // stage, exactly like the other ProcessMessage_* tests above), so the sequence is
+        // AboutToExecute, one-or-more StillExecuting heartbeats, then ExecutionReturned.
+        var stages = recordingStore.RecordedStages;
+        Assert.IsTrue(stages.Count >= 3,
+            $"Expected AboutToExecute, at least one StillExecuting tick, and ExecutionReturned; got {stages.Count}: [{string.Join(", ", stages.Select(s => s.Stage))}]");
+        StringAssert.StartsWith(stages[0].Stage, "AboutToExecute");
+        var middleStages = stages.Skip(1).Take(stages.Count - 2).ToList();
+        Assert.IsTrue(middleStages.Count > 0, "Expected at least one StillExecuting heartbeat between AboutToExecute and ExecutionReturned.");
+        foreach (var (correlationId, stage) in middleStages)
+        {
+            Assert.AreEqual("corr-heartbeat-slow", correlationId);
+            StringAssert.StartsWith(stage, "StillExecuting");
+        }
+        Assert.AreEqual(("corr-heartbeat-slow", "ExecutionReturned (IsSuccess=True)"), stages[^1]);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_FastExecution_NoHeartbeatTicksFire()
+    {
+        // Mirrors ProcessMessage_ExecutionSucceeds_CompletesAndSavesOutputs's shape (called
+        // directly, bypassing Run's own ClaimAcquired stage): a synchronous, immediate
+        // executor return must not race a heartbeat tick even at a 5s interval, so only
+        // AboutToExecute + ExecutionReturned are ever recorded.
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var recordingStore = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var triggerOptions = new ServiceBusTriggerOptions { HeartbeatInterval = TimeSpan.FromSeconds(5) };
+        var sut = NewSut(executor: executor, store: recordingStore, triggerOptions: triggerOptions);
+        var actions = new FakeServiceBusMessageActions();
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
+        Assert.IsTrue(recordingStore.TryClaim("corr-heartbeat-fast"));
+
+        await sut.ProcessMessageAsync(payload, "corr-heartbeat-fast", message, actions, DateTimeOffset.UtcNow, CancellationToken.None);
+
+        Assert.AreEqual(2, recordingStore.RecordedStages.Count,
+            "A fast execution must finish (and cancel its heartbeat) well before the 5s interval's first tick.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_ExecutionExceedsTimeout_HeartbeatStillTicksForTheAbandonedBackgroundExecution()
+    {
+        // The abandoned execution keeps running in the background after ExecutionTimeout
+        // fires (IWorkflowExecutor.Execute has no cancellation seam) - its heartbeat must
+        // keep ticking for as long as that background execution runs, not stop merely
+        // because the trigger itself gave up waiting and threw.
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var recordingStore = new RecordingReplayAndResultStore(new ServiceBusReplayAndResultStore(new MemoryStorage()));
+        var triggerOptions = new ServiceBusTriggerOptions
+        {
+            ExecutionTimeout = TimeSpan.FromMilliseconds(50),
+            HeartbeatInterval = TimeSpan.FromMilliseconds(20),
+        };
+        var sut = NewSut(executor: executor, store: recordingStore, triggerOptions: triggerOptions);
+        var payload = new ServiceBusWorkflowMessage();
+        var message = NewMessage("{}");
+        Assert.IsTrue(recordingStore.TryClaim("corr-heartbeat-timeout"));
+
+        await Assert.ThrowsExceptionAsync<TimeoutException>(
+            () => sut.ProcessMessageAsync(payload, "corr-heartbeat-timeout", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+
+        // The trigger has already given up and thrown, but the background execution (and
+        // therefore its heartbeat) is still running - give it a couple more intervals.
+        await Task.Delay(TimeSpan.FromMilliseconds(80));
+        gate.Set(); // let the orphaned background execution finish so it doesn't leak past the test
+
+        Assert.IsTrue(recordingStore.RecordedStages.Count > 1,
+            "Expected at least one StillExecuting heartbeat beyond the initial AboutToExecute, recorded WHILE the trigger method had already returned from the timeout.");
+        foreach (var (correlationId, stage) in recordingStore.RecordedStages.Skip(1))
+        {
+            Assert.AreEqual("corr-heartbeat-timeout", correlationId);
+            StringAssert.StartsWith(stage, "StillExecuting");
+        }
     }
 
     // ── Bounded execution time (ServiceBusTriggerOptions.ExecutionTimeout) ──────

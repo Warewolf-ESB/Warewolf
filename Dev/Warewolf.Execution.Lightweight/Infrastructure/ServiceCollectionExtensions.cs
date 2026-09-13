@@ -259,6 +259,14 @@ internal static class ServiceCollectionExtensions
         // when bearer-token validation is not configured.  Zero per-request cost.
         services.AddHostedService<EntraAuthHealthCheck>();
 
+        // WOLF-8512 (build 30653 addendum): per-instance liveness heartbeat for the silent-
+        // death diagnostic breadcrumb — see ServiceBusTriggerInstanceHeartbeat's doc comment.
+        // Registered unconditionally (like IServiceBusReplayAndResultStore and the
+        // concurrency-limiter semaphore above, neither of which is gated on the Service Bus
+        // trigger being enabled either): a periodic best-effort hash write is negligible cost
+        // even on an engine where the trigger never fires.
+        services.AddHostedService<ServiceBusTriggerInstanceHeartbeat>();
+
         return services;
     }
 

@@ -70,7 +70,30 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     private const string ClaimFieldName = "claimedAtUtc";
     private const string StageFieldName = "lastStage";
     private const string StageAtFieldName = "lastStageAtUtc";
+    private const string StageInstanceIdFieldName = "lastStageInstanceId";
+    private const string StageProcessIdFieldName = "lastStageProcessId";
+    private const string InstanceHashKeyPrefix = "sbtrigger:instance:";
+    private const string InstanceHeartbeatAtFieldName = "lastHeartbeatUtc";
+    private const string InstanceInFlightFieldName = "inFlightExecutions";
+    private const string InstanceProcessIdFieldName = "processId";
     private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(10);
+
+    /// <summary>
+    /// WOLF-8512: this instance's stable identifier, for <see cref="RecordClaimStage"/>'s
+    /// and <see cref="RecordInstanceHeartbeat"/>'s durable rows. Deliberately mirrors
+    /// <c>HostEnvironmentConfig.InstanceId</c>'s exact resolution rather than taking a
+    /// dependency on it: this store is constructed in many tests via
+    /// <c>new ServiceBusReplayAndResultStore(...)</c> with no <c>HostEnvironmentConfig</c>
+    /// available, and — as documented on <c>InstanceCorrelationMiddleware.InstanceId</c> —
+    /// this codebase already keeps more than one independently-resolved instance-id
+    /// constant rather than force a shared dependency between unrelated layers.
+    /// </summary>
+    private static readonly string CurrentInstanceId =
+        Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID") ?? Environment.MachineName;
+
+    private static readonly string CurrentProcessId = Environment.ProcessId.ToString();
+
+    private readonly ConcurrentDictionary<string, (int InFlight, DateTimeOffset AtUtc)> _inMemoryInstanceHeartbeats = new(StringComparer.Ordinal);
 
     /// <summary>
     /// Fallback used when no <c>claimStaleAfter</c> is supplied to a constructor — i.e. only
@@ -334,11 +357,52 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
                 {
                     new KeyValuePair<string, string>(StageFieldName, stage),
                     new KeyValuePair<string, string>(StageAtFieldName, now.ToString("O")),
+                    // WOLF-8512 (build 30653 addendum): which instance/process reached this
+                    // stage, so a future recurrence can tell whether two stuck correlation ids
+                    // died on the SAME instance (see RecordInstanceHeartbeat's doc comment for
+                    // the other half of this question).
+                    new KeyValuePair<string, string>(StageInstanceIdFieldName, CurrentInstanceId),
+                    new KeyValuePair<string, string>(StageProcessIdFieldName, CurrentProcessId),
                 });
         }
         catch (Exception ex)
         {
             Dev2Logger.Warn($"ServiceBusReplayAndResultStore.RecordClaimStage failed to persist stage '{stage}' — continuing without it.", ex, correlationId);
+        }
+    }
+
+    /// <inheritdoc/>
+    public void RecordInstanceHeartbeat(string instanceId, int inFlightExecutions)
+    {
+        if (string.IsNullOrWhiteSpace(instanceId))
+        {
+            return;
+        }
+
+        var now = _clock();
+
+        if (!_usePersistence)
+        {
+            _inMemoryInstanceHeartbeats[instanceId] = (inFlightExecutions, now);
+            return;
+        }
+
+        // Best-effort, same guarantee as RecordClaimStage - see that method's comment.
+        try
+        {
+            using var connection = _jobStorage!.Value.GetConnection();
+            connection.SetRangeInHash(
+                InstanceHashKeyPrefix + instanceId,
+                new[]
+                {
+                    new KeyValuePair<string, string>(InstanceHeartbeatAtFieldName, now.ToString("O")),
+                    new KeyValuePair<string, string>(InstanceInFlightFieldName, inFlightExecutions.ToString()),
+                    new KeyValuePair<string, string>(InstanceProcessIdFieldName, CurrentProcessId),
+                });
+        }
+        catch (Exception ex)
+        {
+            Dev2Logger.Warn($"ServiceBusReplayAndResultStore.RecordInstanceHeartbeat failed to persist heartbeat for instance '{instanceId}' — continuing without it.", ex, instanceId);
         }
     }
 
@@ -363,5 +427,55 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
             ? DateTimeOffset.Parse(atRaw, null, System.Globalization.DateTimeStyles.RoundtripKind)
             : (DateTimeOffset?)null;
         return (stage, atUtc);
+    }
+
+    /// <summary>
+    /// Test seam: reads back the instance/process identity <see cref="RecordClaimStage"/>
+    /// last wrote alongside <paramref name="correlationId"/>'s stage — <c>null</c>s if no
+    /// stage was ever recorded (in-memory mode always returns <c>null</c>s: instance/process
+    /// identity is only persisted on the Hangfire-backed path, matching this class's other
+    /// diagnostic-only fields).
+    /// </summary>
+    internal (string? InstanceId, string? ProcessId) GetClaimInstanceForTests(string correlationId)
+    {
+        if (!_usePersistence)
+        {
+            return (null, null);
+        }
+
+        using var connection = _jobStorage!.Value.GetConnection();
+        var hash = connection.GetAllEntriesFromHash(ClaimHashKeyPrefix + correlationId);
+        if (hash == null)
+        {
+            return (null, null);
+        }
+
+        hash.TryGetValue(StageInstanceIdFieldName, out var instanceId);
+        hash.TryGetValue(StageProcessIdFieldName, out var processId);
+        return (instanceId, processId);
+    }
+
+    /// <summary>Test seam: reads back what <see cref="RecordInstanceHeartbeat"/> last wrote for <paramref name="instanceId"/> — <c>null</c>s if none was ever recorded.</summary>
+    internal (int? InFlightExecutions, DateTimeOffset? AtUtc) GetInstanceHeartbeatForTests(string instanceId)
+    {
+        if (!_usePersistence)
+        {
+            return _inMemoryInstanceHeartbeats.TryGetValue(instanceId, out var entry)
+                ? (entry.InFlight, entry.AtUtc)
+                : (null, null);
+        }
+
+        using var connection = _jobStorage!.Value.GetConnection();
+        var hash = connection.GetAllEntriesFromHash(InstanceHashKeyPrefix + instanceId);
+        if (hash == null || !hash.TryGetValue(InstanceHeartbeatAtFieldName, out var atRaw))
+        {
+            return (null, null);
+        }
+
+        var inFlight = hash.TryGetValue(InstanceInFlightFieldName, out var inFlightRaw) && int.TryParse(inFlightRaw, out var parsed)
+            ? parsed
+            : (int?)null;
+        var atUtc = DateTimeOffset.Parse(atRaw, null, System.Globalization.DateTimeStyles.RoundtripKind);
+        return (inFlight, atUtc);
     }
 }

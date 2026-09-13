@@ -292,13 +292,29 @@ public sealed class ServiceBusWorkflowTriggerFunction
         _store.RecordClaimStage(correlationId, $"AboutToExecute (GcTotalMemoryBytes={GC.GetTotalMemory(false)}, ProcessWorkingSetBytes={Environment.WorkingSet})");
         var executionTask = Task.Run(() => _executor.Execute(executionRequest));
 
+        // WOLF-8512 (build 30653 addendum): AboutToExecute/ExecutionReturned only bracket
+        // execution - for an execution that runs a while before dying silently, that leaves
+        // the actual moment of death unobserved (the "before" snapshot can be stale by
+        // however long execution had already been running). This periodic heartbeat narrows
+        // that window to ServiceBusTriggerOptions.HeartbeatInterval instead of the whole
+        // execution's duration. Stopped in the same continuation that releases the
+        // concurrency slot below, so it keeps running for as long as an abandoned
+        // (timed-out) execution keeps running in the background too.
+        var heartbeatCts = new CancellationTokenSource();
+        _ = RunExecutionHeartbeatAsync(correlationId, receivedAt, heartbeatCts.Token);
+
         // The concurrency slot is released only once execution actually finishes (success,
         // failure, or - if we time out below - whenever the abandoned task eventually
         // completes on its own), not merely once we stop waiting on it: a timed-out
         // execution keeps running and keeps consuming real resources, so the slot it
         // occupies must stay charged against the cap until it genuinely frees up.
         _ = executionTask.ContinueWith(
-            _ => _executionConcurrencyLimiter.Release(),
+            _ =>
+            {
+                _executionConcurrencyLimiter.Release();
+                heartbeatCts.Cancel();
+                heartbeatCts.Dispose();
+            },
             CancellationToken.None,
             TaskContinuationOptions.ExecuteSynchronously,
             TaskScheduler.Default);
@@ -399,6 +415,32 @@ public sealed class ServiceBusWorkflowTriggerFunction
                     cancellationToken: ct),
                 correlationId,
                 "DeadLetterMessageAsync (execution failed)").ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// WOLF-8512 (build 30653 addendum): periodically refreshes <paramref name="correlationId"/>'s
+    /// claim-stage breadcrumb with a "still executing" snapshot while <see cref="IWorkflowExecutor.Execute"/>
+    /// is running on the thread pool. See the call site's comment for why this exists;
+    /// stops as soon as <paramref name="cancellationToken"/> is cancelled (execution finished,
+    /// one way or another) rather than running for a fixed number of ticks.
+    /// </summary>
+    internal async Task RunExecutionHeartbeatAsync(string correlationId, DateTimeOffset receivedAt, CancellationToken cancellationToken)
+    {
+        try
+        {
+            while (true)
+            {
+                await Task.Delay(_triggerOptions.HeartbeatInterval, cancellationToken).ConfigureAwait(false);
+                _store.RecordClaimStage(
+                    correlationId,
+                    $"StillExecuting (ElapsedSinceReceivedMs={(DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds}, GcTotalMemoryBytes={GC.GetTotalMemory(false)}, ProcessWorkingSetBytes={Environment.WorkingSet})");
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // Execution finished (or the trigger stopped waiting on it) before the next
+            // tick - expected, not an error.
         }
     }
 

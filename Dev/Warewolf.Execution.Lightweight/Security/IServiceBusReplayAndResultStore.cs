@@ -107,4 +107,31 @@ public interface IServiceBusReplayAndResultStore
     /// </para>
     /// </summary>
     void RecordClaimStage(string correlationId, string stage);
+
+    /// <summary>
+    /// WOLF-8512: durably records THIS instance's liveness, independent of any single
+    /// correlation id — a "the instance itself is still alive" breadcrumb, separate from
+    /// <see cref="RecordClaimStage"/>'s "this one execution reached this checkpoint".
+    ///
+    /// <para>
+    /// <b>Why this exists.</b> The build-30653 recurrence (2026-09-12) showed
+    /// <c>RecordClaimStage</c> stuck at <c>AboutToExecute</c> for two correlation ids, which
+    /// proves the in-flight execution never returned but cannot by itself distinguish "the
+    /// whole instance died" from "this one execution hung forever while its instance stayed
+    /// alive and kept serving other work" — both leave an identical claim-row signature. A
+    /// per-instance heartbeat answers that: if THIS instance's heartbeat keeps advancing
+    /// after a claim stalls, the instance survived and the hang is execution-local; if the
+    /// heartbeat itself stops at the same moment, the instance died with it. See
+    /// <c>docs/ServiceBusSecureTrigger-Architecture.md</c>'s "Silent-death diagnostic
+    /// breadcrumb" section.
+    /// </para>
+    ///
+    /// <para>
+    /// Best-effort, same guarantee as <see cref="RecordClaimStage"/>: a failure to record a
+    /// heartbeat must never fail or delay anything it observes.
+    /// </para>
+    /// </summary>
+    /// <param name="instanceId">This instance's stable identifier (see <c>HostEnvironmentConfig.InstanceId</c>).</param>
+    /// <param name="inFlightExecutions">How many workflow executions this instance is currently running (its concurrency-limiter's in-use count) at the moment of this heartbeat.</param>
+    void RecordInstanceHeartbeat(string instanceId, int inFlightExecutions);
 }

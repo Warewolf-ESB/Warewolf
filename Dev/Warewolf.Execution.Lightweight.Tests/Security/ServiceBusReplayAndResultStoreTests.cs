@@ -508,6 +508,133 @@ public class ServiceBusReplayAndResultStoreTests
         Assert.IsNull(atUtc);
     }
 
+    // ── Claim-stage instance/process identity (build 30653 addendum) — Hangfire-backed ──
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordClaimStage_HangfireBacked_RecordsInstanceAndProcessIdAlongsideStage()
+    {
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("stage-instance-001"));
+
+        store.RecordClaimStage("stage-instance-001", "ClaimAcquired");
+
+        var (instanceId, processId) = store.GetClaimInstanceForTests("stage-instance-001");
+        Assert.IsFalse(string.IsNullOrWhiteSpace(instanceId), "A stage write must always record SOME instance identifier (falls back to Environment.MachineName off-Azure).");
+        Assert.IsFalse(string.IsNullOrWhiteSpace(processId));
+        Assert.AreEqual(Environment.ProcessId.ToString(), processId);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void GetClaimInstanceForTests_NoStageEverRecorded_ReturnsNull()
+    {
+        var store = NewHangfireBackedStore();
+        Assert.IsTrue(store.TryClaim("stage-instance-untouched"));
+
+        var (instanceId, processId) = store.GetClaimInstanceForTests("stage-instance-untouched");
+
+        Assert.IsNull(instanceId);
+        Assert.IsNull(processId);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    [DoNotParallelize] // swaps process-global Config.Persistence
+    public void PersistenceDisabled_GetClaimInstanceForTests_AlwaysReturnsNull_InstanceIdentityIsPersistenceOnly()
+    {
+        using var _ = ResumeTestSupport.SwapPersistence(enable: false);
+        var store = new ServiceBusReplayAndResultStore();
+        store.RecordClaimStage("fallback-stage-instance", "ClaimAcquired");
+
+        var (instanceId, processId) = store.GetClaimInstanceForTests("fallback-stage-instance");
+
+        Assert.IsNull(instanceId);
+        Assert.IsNull(processId);
+    }
+
+    // ── Instance liveness heartbeat (RecordInstanceHeartbeat) — Hangfire-backed ─
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordInstanceHeartbeat_IsReadableViaTheTestSeam()
+    {
+        var store = NewHangfireBackedStore();
+
+        store.RecordInstanceHeartbeat("instance-A", inFlightExecutions: 3);
+
+        var (inFlight, atUtc) = store.GetInstanceHeartbeatForTests("instance-A");
+        Assert.AreEqual(3, inFlight);
+        Assert.IsNotNull(atUtc);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordInstanceHeartbeat_CalledMultipleTimes_LatestOverwritesPrevious()
+    {
+        var store = NewHangfireBackedStore();
+
+        store.RecordInstanceHeartbeat("instance-B", inFlightExecutions: 1);
+        store.RecordInstanceHeartbeat("instance-B", inFlightExecutions: 5);
+
+        var (inFlight, _) = store.GetInstanceHeartbeatForTests("instance-B");
+        Assert.AreEqual(5, inFlight, "The most recently recorded heartbeat must win.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordInstanceHeartbeat_TwoDifferentInstances_TrackedIndependently()
+    {
+        var store = NewHangfireBackedStore();
+
+        store.RecordInstanceHeartbeat("instance-C1", inFlightExecutions: 2);
+        store.RecordInstanceHeartbeat("instance-C2", inFlightExecutions: 7);
+
+        Assert.AreEqual(2, store.GetInstanceHeartbeatForTests("instance-C1").InFlightExecutions);
+        Assert.AreEqual(7, store.GetInstanceHeartbeatForTests("instance-C2").InFlightExecutions);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void RecordInstanceHeartbeat_EmptyOrWhitespaceInstanceId_IsANoOp()
+    {
+        var store = NewHangfireBackedStore();
+
+        store.RecordInstanceHeartbeat(string.Empty, 1); // must not throw
+        store.RecordInstanceHeartbeat("   ", 1); // must not throw
+
+        Assert.AreEqual((null, (DateTimeOffset?)null), store.GetInstanceHeartbeatForTests(string.Empty));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void GetInstanceHeartbeatForTests_NeverRecorded_ReturnsNull()
+    {
+        var store = NewHangfireBackedStore();
+
+        var (inFlight, atUtc) = store.GetInstanceHeartbeatForTests("instance-never-seen");
+
+        Assert.IsNull(inFlight);
+        Assert.IsNull(atUtc);
+    }
+
+    // ── Instance liveness heartbeat (RecordInstanceHeartbeat) — in-memory fallback ─
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    [DoNotParallelize] // swaps process-global Config.Persistence
+    public void PersistenceDisabled_RecordInstanceHeartbeat_IsReadableViaTheTestSeam()
+    {
+        using var _ = ResumeTestSupport.SwapPersistence(enable: false);
+        var store = new ServiceBusReplayAndResultStore();
+
+        store.RecordInstanceHeartbeat("fallback-instance", inFlightExecutions: 4);
+
+        var (inFlight, atUtc) = store.GetInstanceHeartbeatForTests("fallback-instance");
+        Assert.AreEqual(4, inFlight);
+        Assert.IsNotNull(atUtc);
+    }
+
     // ── Durable claim-stage breadcrumb (RecordClaimStage) — in-memory fallback ──
 
     [TestMethod]

@@ -107,6 +107,26 @@ public sealed class ServiceBusTriggerOptions
     public TimeSpan SettlementTimeout { get; init; } = TimeSpan.FromSeconds(30);
 
     /// <summary>
+    /// WOLF-8512 (build 30653 addendum): how often (a) an in-flight execution's "still
+    /// alive" breadcrumb is refreshed while <c>IWorkflowExecutor.Execute</c> is running, and
+    /// (b) this instance refreshes its own liveness heartbeat (see
+    /// <c>Infrastructure.ServiceBusTriggerInstanceHeartbeat</c> and
+    /// <c>IServiceBusReplayAndResultStore.RecordInstanceHeartbeat</c>).
+    ///
+    /// <para>
+    /// <b>Why this exists.</b> The existing <c>RecordClaimStage</c> checkpoints only bracket
+    /// execution (immediately before and immediately after) — for an execution that runs any
+    /// length of time before dying silently, that leaves the actual moment of death
+    /// unobserved: the "before" snapshot can be stale by however long the execution had
+    /// already been running. A periodic heartbeat during execution narrows that window to
+    /// this interval instead of the whole execution's duration. See
+    /// <c>docs/ServiceBusSecureTrigger-Architecture.md</c>'s "Silent-death diagnostic
+    /// breadcrumb" section.
+    /// </para>
+    /// </summary>
+    public TimeSpan HeartbeatInterval { get; init; } = TimeSpan.FromSeconds(5);
+
+    /// <summary>
     /// WOLF-8512: how long a claim taken by <c>IServiceBusReplayAndResultStore.TryClaim</c> is
     /// honoured before a new delivery is allowed to take it over as abandoned (see
     /// <see cref="Security.ServiceBusReplayAndResultStore"/>'s "Claim staleness" doc comment).
@@ -300,12 +320,18 @@ public sealed class ServiceBusTriggerOptions
             ? TimeSpan.FromSeconds(settlementTimeoutSeconds.Value)
             : TimeSpan.FromSeconds(30);
 
+        var heartbeatIntervalSeconds = fileOverrides?.HeartbeatIntervalSeconds;
+        var heartbeatInterval = heartbeatIntervalSeconds is > 0
+            ? TimeSpan.FromSeconds(heartbeatIntervalSeconds.Value)
+            : TimeSpan.FromSeconds(5);
+
         return new ServiceBusTriggerOptions
         {
             ExecutionTimeout = executionTimeout,
             MaxConcurrentExecutions = maxConcurrentExecutions,
             SlotWaitTimeout = slotWaitTimeout,
             SettlementTimeout = settlementTimeout,
+            HeartbeatInterval = heartbeatInterval,
             // ClaimStaleAfter intentionally omitted here - its own property initializer already
             // resolves WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES / the host.json
             // functionTimeout chain (see ResolveClaimStaleAfter), so FromEnvironment() and the

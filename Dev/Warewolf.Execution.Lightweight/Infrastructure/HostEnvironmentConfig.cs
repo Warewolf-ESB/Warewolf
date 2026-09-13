@@ -139,6 +139,7 @@ public sealed class HostEnvironmentConfig
         public int? MaxConcurrentExecutions { get; set; }
         public double? SlotWaitTimeoutSeconds { get; set; }
         public double? SettlementTimeoutSeconds { get; set; }
+        public double? HeartbeatIntervalSeconds { get; set; }
     }
 
     // ── Properties ───────────────────────────────────────────────────────────────
@@ -300,6 +301,7 @@ public sealed class ServiceBusTriggerFileOverrides
     public int? MaxConcurrentExecutions { get; private init; }
     public double? SlotWaitTimeoutSeconds { get; private init; }
     public double? SettlementTimeoutSeconds { get; private init; }
+    public double? HeartbeatIntervalSeconds { get; private init; }
 
     internal static ServiceBusTriggerFileOverrides From(HostEnvironmentConfig.ServiceBusTriggerFileSection? section) =>
         section is null
@@ -310,5 +312,6 @@ public sealed class ServiceBusTriggerFileOverrides
                 MaxConcurrentExecutions = section.MaxConcurrentExecutions,
                 SlotWaitTimeoutSeconds = section.SlotWaitTimeoutSeconds,
                 SettlementTimeoutSeconds = section.SettlementTimeoutSeconds,
+                HeartbeatIntervalSeconds = section.HeartbeatIntervalSeconds,
             };
 }
