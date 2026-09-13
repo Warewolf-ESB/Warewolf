@@ -1019,3 +1019,173 @@ Describe 'Deploy-WwExecutionEngine — RabbitMQ queue-trigger companion (paramet
         $text | Should -Match 'Warewolf_QueueProcessor'
     }
 }
+
+Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
+
+    <#
+        The Function App host does not adapt to its payload. `functionapp create` is the ONLY
+        place --runtime-version applies, so an app created by an earlier run keeps the runtime
+        it was born with — deploying a net10.0 package onto a v8.0 host produces a deploy that
+        reports success and an engine that never starts ("You must install or update .NET to
+        run this application."). These tests pin both halves: creation on 10, and what the run
+        does about an app that is already on something else.
+    #>
+
+    Context 'Resolve-FunctionRuntimePlan (pure decision)' {
+
+        BeforeAll { . $script:DeployScript -LoadFunctionsOnly }
+
+        It 'plans a create when the app does not exist yet' {
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $null
+            $p.Action | Should -Be 'create'
+            $p.Target | Should -Be 'v10.0'
+        }
+
+        It 'plans nothing when the app is already on the target' {
+            (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion 'v10.0').Action | Should -Be 'none'
+        }
+
+        It 'WARNS (never changes) on a mismatch without -UpgradeRuntimeVersion' {
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion 'v8.0'
+            $p.Action  | Should -Be 'warn'
+            $p.Current | Should -Be 'v8.0'
+            $p.Message | Should -Match 'pass -UpgradeRuntimeVersion'
+        }
+
+        It 'upgrades on a mismatch only when -UpgradeRuntimeVersion is passed' {
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion 'v8.0' -Upgrade
+            $p.Action  | Should -Be 'upgrade'
+            $p.Message | Should -Match 'RESTARTS'
+        }
+
+        It 'treats whitespace/casing from az as the same version (no spurious upgrade)' {
+            # `az ... -o tsv`-shaped values and ARM casing must not look like a mismatch and
+            # trigger a needless app restart.
+            (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '  V10.0 ' -Upgrade).Action |
+                Should -Be 'none'
+        }
+
+        It 'treats an empty netFrameworkVersion as "no app" rather than a mismatch' {
+            (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '   ').Action | Should -Be 'create'
+        }
+    }
+
+    Context 'end-to-end (DryRun)' {
+
+        BeforeEach {
+            # Shim distinguishes "app absent" from "app present on <netFx>". The Phase 0.5 probe
+            # and the Phase 1 existence check both go through `functionapp show`.
+            $global:appExists = $true
+            $global:appNetFx  = 'v8.0'
+            function az {
+                $a = $args; $global:LASTEXITCODE = 0
+                if ($a[0] -eq 'account'     -and $a -contains 'show')   { return '{"id":"sub-123","tenantId":"tid-456","user":{"name":"dev@x"},"name":"My Sub"}' }
+                if ($a[0] -eq 'group'       -and $a -contains 'exists') { return 'true' }
+                if ($a[0] -eq 'storage'     -and $a -contains 'show')   { return '{"name":"st"}' }
+                if ($a[0] -eq 'functionapp' -and $a -contains 'show')   {
+                    if (-not $global:appExists) { $global:LASTEXITCODE = 1; return $null }
+                    if ($null -eq $global:appNetFx) { return '{"name":"app"}' }   # payload with no siteConfig
+                    return ('{"name":"app","siteConfig":{"netFrameworkVersion":"' + $global:appNetFx + '"}}')
+                }
+                if ($a[0] -eq 'keyvault' -and $a -contains 'secret' -and $a -contains 'show') { $global:LASTEXITCODE = 1; return $null }
+                return '{}'
+            }
+
+            $global:pubDir = Join-Path ([System.IO.Path]::GetTempPath()) ("wwpub-" + [guid]::NewGuid())
+            New-Item -ItemType Directory -Path $global:pubDir -Force | Out-Null
+            '{ "logging": { "logLevel": { "default": "Information" } } }' | Set-Content (Join-Path $global:pubDir 'host.json')
+            $global:logDir = Join-Path ([System.IO.Path]::GetTempPath()) ("wwlog-" + [guid]::NewGuid())
+            $script:appName = 'wwrt-' + [guid]::NewGuid().ToString('N').Substring(0, 8)
+
+            $script:commonArgs = @{
+                SubscriptionId      = 'sub-123'
+                TenantId            = 'tid-456'
+                ResourceGroup       = 'DEV2'
+                Location            = 'southafricanorth'
+                StorageAccount      = 'stwwrt'
+                AppName             = $script:appName
+                PublishPath         = $global:pubDir
+                LogDir              = $global:logDir
+                EncryptResources    = $false
+                EnableAppInsights   = $false
+                EnableElasticsearch = $false
+                NonInteractive      = $true
+                DryRun              = $true
+            }
+        }
+
+        AfterEach {
+            if ($global:pubDir -and (Test-Path -LiteralPath $global:pubDir)) { Remove-Item -LiteralPath $global:pubDir -Recurse -Force }
+            if ($global:logDir -and (Test-Path -LiteralPath $global:logDir)) { Remove-Item -LiteralPath $global:logDir -Recurse -Force }
+            Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter "wwexecutionengine-stage-$($script:appName)-*" -ErrorAction SilentlyContinue |
+                ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
+        }
+
+        AfterAll {
+            Remove-Variable -Name appExists -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name appNetFx  -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name pubDir    -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name logDir    -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'creates a NEW app on dotnet-isolated 10, never 8' {
+            $global:appExists = $false
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Match '\[DRYRUN\] az functionapp create .*--runtime dotnet-isolated --runtime-version 10'
+            $out | Should -Not -Match '--runtime-version 8'
+            $out | Should -Match 'Consumption Y1, dotnet-isolated 10, Functions v4'
+        }
+
+        It 'states the runtime decision in the Phase 0.5 plan' {
+            $global:appExists = $false
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Match 'Runtime\s+: dotnet-isolated 10 \(Functions v4\)'
+        }
+
+        It 'upgrades an existing v8.0 app when -UpgradeRuntimeVersion is passed' {
+            $global:appExists = $true; $global:appNetFx = 'v8.0'
+            $out = (& $script:DeployScript @commonArgs -UpgradeRuntimeVersion) 6>&1 | Out-String
+            $out | Should -Match '\[DRYRUN\] az functionapp config set .*--net-framework-version v10\.0'
+            $out | Should -Match 'Upgrading Function App runtime v8\.0 -> v10\.0'
+        }
+
+        It 'does NOT touch an existing v8.0 app without the switch, but warns before the confirmation' {
+            # The default must never restart a live app on inference alone — but silence here
+            # would hand the operator a "successful" deploy whose engine cannot start.
+            $global:appExists = $true; $global:appNetFx = 'v8.0'
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            # Anchor on the [DRYRUN] marker, not the bare command: the warning itself QUOTES the
+            # remediation command (`az functionapp config set ...`), so a looser pattern passes
+            # whether or not the call was actually made.
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+            $out | Should -Match 'RUNTIME MISMATCH'
+            $out | Should -Match 'Re-run with -UpgradeRuntimeVersion'
+        }
+
+        It 'does nothing when the existing app is already v10.0 (no needless restart)' {
+            $global:appExists = $true; $global:appNetFx = 'v10.0'
+            $out = (& $script:DeployScript @commonArgs -UpgradeRuntimeVersion) 6>&1 | Out-String
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+            $out | Should -Not -Match 'RUNTIME MISMATCH'
+            $out | Should -Match 'Function App runtime is v10\.0'
+        }
+
+        It 'tolerates a functionapp show payload with no siteConfig (treats it as a create)' {
+            $global:appExists = $true; $global:appNetFx = $null
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Not -Match 'RUNTIME MISMATCH'
+            $out | Should -Match 'Dry-run complete'
+        }
+
+        It 'records the runtime decision in the summary for the operator' {
+            $global:appExists = $true; $global:appNetFx = 'v8.0'
+            (& $script:DeployScript @commonArgs) 6>&1 | Out-Null
+            $summary = Get-ChildItem -Path $global:logDir -Filter '*.summary.json' | Select-Object -First 1
+            $json = Get-Content $summary.FullName -Raw | ConvertFrom-Json
+            $json.runtime.runtimeVersion     | Should -Be '10'
+            $json.runtime.netFrameworkTarget | Should -Be 'v10.0'
+            $json.runtime.netFrameworkBefore | Should -Be 'v8.0'
+            $json.runtime.action             | Should -Be 'warn'
+        }
+    }
+}

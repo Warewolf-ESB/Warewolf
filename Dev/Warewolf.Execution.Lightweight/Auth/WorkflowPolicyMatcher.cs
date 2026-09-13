@@ -79,9 +79,12 @@ public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
                 "Add a WindowsGroupPermissions entry to grant access.");
 
         // ── Resolve effective permissions for this caller ─────────────────────
-        // Collect all role identifiers: group claims + UPN for direct-UPN entries.
+        // Collect all role identifiers: group claims + UPN for direct-UPN entries +
+        // the Entra object id, for secure.config rows keyed on the one claim that
+        // stays stable across display-name/UPN drift.
         var callerRoles = principal.Groups
             .Append(principal.UserName)
+            .Append(principal.UserId)
             .Where(s => !string.IsNullOrWhiteSpace(s))
             .Distinct(StringComparer.OrdinalIgnoreCase);
 
@@ -105,7 +108,8 @@ public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
                 .FirstOrDefault(e =>
                     e.IsPublic ||
                     principal.IsInGroup(e.GroupName) ||
-                    string.Equals(e.GroupName, principal.UserName, StringComparison.OrdinalIgnoreCase));
+                    string.Equals(e.GroupName, principal.UserName, StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(e.GroupName, principal.UserId, StringComparison.OrdinalIgnoreCase));
 
             return PolicyMatchResult.DenyPermission(
                 $"Caller '{principal.CallerIdentity}' resolved permissions [{effectivePermissions}] " +

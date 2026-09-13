@@ -18,5 +18,11 @@ namespace Warewolf.Execution.Lightweight
         /// Executes a workflow based on a <see cref="WorkflowExecutionRequest"/>.
         /// </summary>
         WorkflowExecutionResult Execute(WorkflowExecutionRequest request);
+
+        /// <summary>
+        /// Runs a persisted workflow test based on a <see cref="TestExecutionRequest"/> — the
+        /// test-execution counterpart of <see cref="Execute(WorkflowExecutionRequest)"/>.
+        /// </summary>
+        TestExecutionResult ExecuteTest(TestExecutionRequest request);
     }
 }

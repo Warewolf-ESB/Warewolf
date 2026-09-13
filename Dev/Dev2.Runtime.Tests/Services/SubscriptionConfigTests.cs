@@ -154,5 +154,149 @@ namespace Dev2.Tests.Runtime.Services
 
             Assert.AreEqual(MarketplaceResourceId, config.MarketplaceResourceId);
         }
+
+        // ── Absolute base-path file resolution (isolated-worker CWD-relative bug fix) ──
+        // See docs/SubscriptionConfig-IsolatedWorker-Resolution-Spec.md. These exercise the real
+        // file-backed constructor path end-to-end (no SaveConfig mocking) — the path that had
+        // zero coverage before this fix, which is exactly how the original bug shipped unnoticed.
+
+        string _tempDir = string.Empty;
+
+        [TestInitialize]
+        public void SetupBasePathTests() => _tempDir = System.IO.Directory.CreateDirectory(
+            System.IO.Path.Combine(System.IO.Path.GetTempPath(), "subscriptionconfig-tests-" + Guid.NewGuid().ToString("N"))).FullName;
+
+        [TestCleanup]
+        public void CleanupBasePathTests()
+        {
+            if (System.IO.Directory.Exists(_tempDir))
+            {
+                System.IO.Directory.Delete(_tempDir, recursive: true);
+            }
+        }
+
+        string LicenseFilePath => System.IO.Path.Combine(_tempDir, "Warewolf License.secureconfig");
+
+        static void WriteRealLicenseFile(
+            string path, string customerId, string planId, string subscriptionId, string status,
+            string subscriptionSiteName, string subscriptionKey, string stopExecutions, string marketplaceResourceId = "")
+        {
+            var root = new System.Xml.Linq.XElement("subscriptionSettings",
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "CustomerId"), new System.Xml.Linq.XAttribute("value", customerId)),
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "SubscriptionId"), new System.Xml.Linq.XAttribute("value", subscriptionId)),
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "MarketplaceResourceId"), new System.Xml.Linq.XAttribute("value", marketplaceResourceId)),
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "Status"), new System.Xml.Linq.XAttribute("value", status)),
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "PlanId"), new System.Xml.Linq.XAttribute("value", planId)),
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "SubscriptionKey"), new System.Xml.Linq.XAttribute("value", subscriptionKey)),
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "SubscriptionSiteName"), new System.Xml.Linq.XAttribute("value", subscriptionSiteName)),
+                new System.Xml.Linq.XElement("add", new System.Xml.Linq.XAttribute("key", "StopExecutions"), new System.Xml.Linq.XAttribute("value", stopExecutions)));
+            new System.Xml.Linq.XDocument(new System.Xml.Linq.XDeclaration("1.0", "utf-8", ""), root).Save(path);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(SubscriptionConfig))]
+        public void SubscriptionConfig_ForBasePath_MissingFile_WritesDefaultsAtThatExactAbsolutePath()
+        {
+            Assert.IsFalse(System.IO.File.Exists(LicenseFilePath));
+
+            var config = SubscriptionConfig.ForBasePath(_tempDir);
+
+            Assert.IsTrue(System.IO.File.Exists(LicenseFilePath),
+                "Defaults must be written at the resolved absolute path passed to ForBasePath, never a CWD-relative one.");
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultPlanId), config.PlanId);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionKey), config.SubscriptionKey);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionSiteName), config.SubscriptionSiteName);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(SubscriptionConfig))]
+        public void SubscriptionConfig_ForBasePath_ExistingRealFile_IsReadCorrectly_AndNotOverwritten()
+        {
+            // This is the exact reproduction from the spec: a genuine, plaintext-staged license
+            // file with real values must be read as-is on the very first construction, and must
+            // NOT be silently replaced with SubscriptionProvider's default/broken-installation
+            // constants — which is what the original CWD-relative bug did.
+            const string CustomerId = "real-customer";
+            const string PlanId = "enterprise";
+            const string SubscriptionId = "sub-12345";
+            const string Status = "Active";
+            const string SubscriptionSiteName = "warewolf";
+            const string SubscriptionKey = "Azq9KATrttxzMIhF";
+            const string StopExecutions = "false";
+
+            WriteRealLicenseFile(LicenseFilePath, CustomerId, PlanId, SubscriptionId, Status, SubscriptionSiteName, SubscriptionKey, StopExecutions);
+            var fileContentBefore = System.IO.File.ReadAllText(LicenseFilePath);
+
+            var config = SubscriptionConfig.ForBasePath(_tempDir);
+
+            Assert.AreEqual(CustomerId, config.CustomerId);
+            Assert.AreEqual(PlanId, config.PlanId);
+            Assert.AreEqual(SubscriptionId, config.SubscriptionId);
+            Assert.AreEqual(Status, config.Status);
+            Assert.AreEqual(SubscriptionSiteName, config.SubscriptionSiteName);
+            Assert.AreEqual(SubscriptionKey, config.SubscriptionKey);
+            Assert.AreEqual(bool.Parse(StopExecutions), config.StopExecutions);
+
+            // Plaintext input re-encrypts and re-saves in place (existing isPlainText behaviour) —
+            // so the file content is expected to CHANGE, but must still round-trip to the SAME
+            // real values, never SubscriptionProvider's default/live constants.
+            var fileContentAfter = System.IO.File.ReadAllText(LicenseFilePath);
+            Assert.AreNotEqual(fileContentBefore, fileContentAfter, "Plaintext staged values should have been re-encrypted in place.");
+
+            var reloaded = SubscriptionConfig.ForBasePath(_tempDir);
+            Assert.AreEqual(CustomerId, reloaded.CustomerId);
+            Assert.AreEqual(PlanId, reloaded.PlanId);
+            Assert.AreEqual(SubscriptionKey, reloaded.SubscriptionKey);
+            Assert.AreEqual(SubscriptionSiteName, reloaded.SubscriptionSiteName);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(SubscriptionConfig))]
+        public void SubscriptionConfig_ForBasePath_FileWithEmptyKeyValues_FallsBackToDefaults()
+        {
+            WriteRealLicenseFile(LicenseFilePath, "", "", "", "", "", "", "false");
+
+            // Pre-existing behaviour (unchanged by this fix): the "broken installation" branch
+            // writes fresh defaults to disk, but does not populate the constructing instance's
+            // own in-memory properties. A subsequent construction reads the now-default file back
+            // correctly — which is what this test actually verifies: the write landed at the same
+            // absolute path this instance itself resolved, not a CWD-relative one.
+            SubscriptionConfig.ForBasePath(_tempDir);
+
+            var reloaded = SubscriptionConfig.ForBasePath(_tempDir);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultPlanId), reloaded.PlanId);
+            Assert.AreEqual(SubscriptionConfig.DecryptKey(DefaultSubscriptionKey), reloaded.SubscriptionKey);
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(SubscriptionConfig))]
+        public void SubscriptionConfig_ForBasePath_IsUnaffectedByCurrentWorkingDirectory()
+        {
+            // Regression test for the original defect: resolution must depend ONLY on the
+            // explicit base path, never on Environment.CurrentDirectory — reproduces the
+            // isolated-worker host's "CWD != deployment directory" scenario directly.
+            const string CustomerId = "cwd-independence-customer";
+            WriteRealLicenseFile(LicenseFilePath, CustomerId, "developer", "sub-1", "Active", "warewolf", "real-key-value", "false");
+
+            var originalCwd = Environment.CurrentDirectory;
+            var otherDir = System.IO.Directory.CreateDirectory(
+                System.IO.Path.Combine(System.IO.Path.GetTempPath(), "subscriptionconfig-cwd-" + Guid.NewGuid().ToString("N"))).FullName;
+            try
+            {
+                Environment.CurrentDirectory = otherDir;
+
+                var config = SubscriptionConfig.ForBasePath(_tempDir);
+
+                Assert.AreEqual(CustomerId, config.CustomerId,
+                    "Resolution must use the explicit base path, not a CWD-relative lookup that would miss the real file.");
+                Assert.IsFalse(System.IO.File.Exists(System.IO.Path.Combine(otherDir, "Warewolf License.secureconfig")),
+                    "Nothing should ever be written relative to the current working directory.");
+            }
+            finally
+            {
+                Environment.CurrentDirectory = originalCwd;
+                System.IO.Directory.Delete(otherDir, recursive: true);
+            }
+        }
     }
 }

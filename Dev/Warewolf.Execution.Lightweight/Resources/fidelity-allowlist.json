@@ -1,13 +1,23 @@
 ﻿{
-  "generatedAtUtc": "2026-08-10T10:09:52.0043392Z",
+  "generatedAtUtc": "2026-09-04T20:01:38.7142575Z",
+  "harness": {
+    "harnessVersion": 1,
+    "maxSamplesPerType": 8,
+    "corpusRoots": [
+      "Resources - Release",
+      "Resources - ServerTests",
+      "Resources - Load",
+      "Warewolf.Execution.Lightweight\\Resources"
+    ]
+  },
   "results": [
     {
       "StudioName": "Assign",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Hello World.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: variable { Name } not found"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\delete records\\Fidelity_DeleteRecords.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Assign Object",
@@ -15,23 +25,23 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\Merge Acceptance Tests\\WorkFlowWithOneObject.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Decision",
       "Category": "Control Flow",
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Hello World.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: variable { Name } not found"
+      "Status": "Pass",
+      "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Decision (legacy)",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfDecision. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\decision legacy\\Fidelity_DecisionLegacy.bite",
+      "Status": "Pass",
+      "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Switch",
@@ -39,7 +49,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Switch.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Sequence",
@@ -47,7 +57,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "For Each",
@@ -55,71 +65,71 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Select and apply",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Loop Constructs - Select and Apply.bite",
-      "Status": "TranslationFailed",
-      "Detail": "UnsupportedActivityTypeException: Activity type 'Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignObjectActivity, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' is not supported by the X6 workflow converter."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\select and apply\\Fidelity_SelectAndApply.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Gate",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Gate.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: gate conditions failed; execution stopped"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\gate\\Fidelity_Gate.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Suspend Execution",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\hangfiredemo\\Suspend Execution Example.bite",
-      "Status": "TranslationFailed",
-      "Detail": "UnsupportedActivityTypeException: Activity type 'Unlimited.Applications.BusinessDesignStudio.Activities.DsfActivity, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' is not supported by the X6 workflow converter."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\suspend execution\\Fidelity_SuspendExecution.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Manual Resumption",
       "Category": "Control Flow",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfManualResumptionActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\hangfiredemo\\Manual Resumption Tool Example.bite",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (the activity's own preconditions are not met by this sample even with its declared inputs bound). Error: SuspensionID must not be null or empty."
     },
     {
       "StudioName": "Service (sub-workflow)",
       "Category": "Control Flow",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Resources - Service.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Sub-workflow 'Double Roll and Check' (ID: 7c4cea10-d06e-4248-b041-c60af21a2f6e) not found in 'C:\\Users\\ultra\\AppData\\Local\\Temp\\wf-fidelity-79a2a285cff3401db0c00c18b6679228'."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\service\\Fidelity_Service.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Comment",
       "Category": "Utility",
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Hello World.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: variable { Name } not found"
+      "Status": "Pass",
+      "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Calculate",
       "Category": "Data",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfDotNetCalculateActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Calculate.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Aggregate Calculate",
       "Category": "Data",
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Calculate.bite",
-      "Status": "TranslationFailed",
-      "Detail": "UnsupportedActivityTypeException: Activity type 'Unlimited.Applications.BusinessDesignStudio.Activities.DsfCalculateActivity, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' is not supported by the X6 workflow converter."
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Create JSON",
@@ -127,7 +137,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Create JSON.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Data Merge",
@@ -135,7 +145,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Data Split",
@@ -143,7 +153,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Base Conversion",
@@ -151,7 +161,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Base Conversion.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Case Conversion",
@@ -159,7 +169,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Replace",
@@ -167,7 +177,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Replace.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Find Index",
@@ -175,7 +185,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Data - Find Index.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Format Number",
@@ -183,7 +193,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Format Number.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Random",
@@ -191,7 +201,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Loop Constructs - For Each.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "XPath",
@@ -199,7 +209,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - XPath.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Find Records",
@@ -207,15 +217,15 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Recordset - Find Records.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Delete Records",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Recordset - Delete Records.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\delete records\\Fidelity_DeleteRecords.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Sort Records",
@@ -223,7 +233,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Count Records",
@@ -231,15 +241,15 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\AdvancedRecordsetAcceptanceTest.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Length",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Server Tests Setup\\Resources\\AlphaNumericValidator.bite",
-      "Status": "TranslationFailed",
-      "Detail": "UnsupportedActivityTypeException: Activity type 'Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null' is not supported by the X6 workflow converter."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\length\\Fidelity_Length.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Unique Records",
@@ -247,15 +257,15 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Control Flow - Sequence.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Advanced Recordset",
       "Category": "Recordset",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Advanced Recordset - Delete.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Advanced Recordset - Update.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Read File",
@@ -263,23 +273,23 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Read File.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Write File",
       "Category": "Files & Folders",
       "RequiresSource": false,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing FileWriteWithBase64. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Read File.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Folder Read",
       "Category": "Files & Folders",
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Read Folder.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: Directory not found c:\\Users\\Default User"
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Create (path)",
@@ -287,7 +297,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Copy.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Copy",
@@ -295,7 +305,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Copy.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Move",
@@ -303,7 +313,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Move.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Rename",
@@ -311,7 +321,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Rename.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Delete (path)",
@@ -319,7 +329,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Delete.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Zip",
@@ -327,7 +337,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Unzip.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "UnZip",
@@ -335,71 +345,71 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\File and Folder - Unzip.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "GET Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Get.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: The web source has an incomplete web address."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\http get\\TC013_Get_CustomHeader_Echoed.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "POST Web Method",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Post.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\http post\\TC005_PostJsonBody_MapsName_Returns_Alice.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "PUT Web Method",
       "Category": "Integration",
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Put.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: Object reference not set to an instance of an object."
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "DELETE Web Method",
       "Category": "Integration",
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\HTTP Web Methods - Delete.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: Object reference not set to an instance of an object."
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Web Request",
       "Category": "Integration",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\ProcessOrders.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: No such host is known. (warewolf-dev:3142)"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Web Request.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "SQL Server Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\ForXmlWithMultipleRows.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\sql server database\\Fidelity_SqlServerDatabase.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "PostgreSQL Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\TestPostgresReturningXml.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { getemployeesxml } not found"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\postgresql database\\Fidelity_PostgreSqlDatabase.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "MySQL Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\StopExecutionOnMySQLTimeoutError.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\mysql database\\Fidelity_MySqlDatabase.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Oracle Database",
@@ -407,63 +417,63 @@
       "RequiresSource": true,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\TestOracleReturningXml.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { RESULT } not found"
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Database source is not configured.; variable { RESULT } not found"
     },
     {
       "StudioName": "ODBC Database",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfOdbcDatabaseActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\odbc database\\Fidelity_OdbcDatabase.bite",
+      "Status": "PassBothFailedIdentically",
+      "Detail": "Best of 2 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Value cannot be null. (Parameter 'source')"
     },
     {
       "StudioName": "SQL Bulk Insert",
       "Category": "Database",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing DsfSqlBulkInsertActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\sql bulk insert\\Fidelity_SqlBulkInsert.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Redis Cache",
       "Category": "Cache",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing RedisCacheActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis cache\\Fidelity_RedisCache.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Redis Remove",
       "Category": "Cache",
       "RequiresSource": true,
-      "SamplePath": null,
-      "Status": "NoCorpusSample",
-      "Detail": "No real .bite sample found containing RedisRemoveActivity. Needs a synthetic fixture to cover this activity type."
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\redis remove\\Fidelity_RedisRemove.bite",
+      "Status": "Pass",
+      "Detail": "[with inputs bound] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "RabbitMQ Publish",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - RabbitMQ Publish.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: <InnerError>Variable is null</InnerError>"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "RabbitMQ Consume",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - RabbitMQ Consume.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: <InnerError>None of the specified endpoints were reachable\r\nOne or more errors occurred. (Connection failed)\r\nConnection failed\r\nNo connection could be made because the target machine actively refused it.</InnerError>"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - ServerTests\\Resources\\RabbitMqTestPrefetch.xml",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Send Email (SMTP)",
       "Category": "Communication",
       "RequiresSource": true,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Email - SMTP Send.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Invalid Email Source"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\send email\\Fidelity_SendEmail.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Exchange Email",
@@ -471,7 +481,7 @@
       "RequiresSource": true,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Load\\Resources\\Simple Exchange Test.bite",
       "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: A valid SMTP address must be specified."
+      "Detail": "Best of 3 corpus samples. [as authored] Both original and round-tripped executions failed identically (expected — this activity needs a live source not present in this sandbox). Error: Invalid Email Source"
     },
     {
       "StudioName": "JavaScript",
@@ -479,7 +489,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - JavaScript.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Ruby",
@@ -487,7 +497,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - Ruby.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Python",
@@ -495,7 +505,7 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - Python.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Execute Command Line",
@@ -503,31 +513,31 @@
       "RequiresSource": false,
       "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Scripting - CMD Script.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Date and Time",
       "Category": "Date & Time",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\ProcessOrders.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: No such host is known. (warewolf-dev:3142)"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Date and Time Difference.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Date and Time Difference",
       "Category": "Date & Time",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\ProcessOrders.bite",
-      "Status": "PassBothFailedIdentically",
-      "Detail": "Both original and round-tripped executions failed identically (likely a missing required input under the empty InputParameters used by this harness). Error: No such host is known. (warewolf-dev:3142)"
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - Date and Time Difference.bite",
+      "Status": "Pass",
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     },
     {
       "StudioName": "Gather System Information",
       "Category": "Utility",
       "RequiresSource": false,
-      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Resources - Release\\Resources\\Examples\\Utility - System Information.bite",
+      "SamplePath": "C:\\Users\\ultra\\warewolf-review\\Dev\\Warewolf.Execution.Lightweight\\Resources\\tools\\system info\\TestGettingComputerName.bite",
       "Status": "Pass",
-      "Detail": "Original and round-tripped executions match (both succeeded)."
+      "Detail": "[as authored] Original and round-tripped executions match (both succeeded)."
     }
   ]
 }

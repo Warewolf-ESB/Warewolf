@@ -1,0 +1,7 @@
+<Source ID="6c2f5f4e-9d1a-4f27-9d3e-2a5b8c7e1d40" Name="Fidelity Redis Source" ResourceType="RedisSource" IsValid="true" ConnectionString="HostName=localhost;Port=6379;AuthenticationType=Anonymous" Type="RedisSource" ServerVersion="0.0.0.0" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>Fidelity Redis Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>RedisSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-08-23T00:00:00.0000000+00:00" Reason="" User="FidelityFixtureGenerator" VersionNumber="1" ResourceId="6c2f5f4e-9d1a-4f27-9d3e-2a5b8c7e1d40" VersionId="6c2f5f4e-9d1a-4f27-9d3e-2a5b8c7e1d40" />
+</Source>

@@ -191,6 +191,26 @@ public class WorkflowClaimsPrincipalGapTests
         Assert.AreEqual("charlie@contoso.com", p.UserName);
     }
 
+    [TestMethod]
+    public void UserName_PrefersPreferredUsernameOverClaimTypesName_WhenBothPresent()
+    {
+        // Regression test for the live warewolfserver-mcp incident: secure.config's
+        // WindowsGroup rows are keyed on UPN/email, so when a token carries both the
+        // display name (ClaimTypes.Name) and the UPN (preferred_username), UserName
+        // must resolve to the UPN — not whichever claim happened to be found first.
+        var claims = new List<Claim>
+        {
+            new(ClaimTypes.NameIdentifier, "oid-abc"),
+            new(ClaimTypes.Name, "Alice Example"),
+            new(AuthConstants.PreferredUsername, "alice@contoso.com"),
+            new(AuthConstants.Scope, "user_impersonation"),
+        };
+        var p = new WorkflowClaimsPrincipal(
+            new ClaimsIdentity(claims, "Test", ClaimTypes.Name, ClaimTypes.Role));
+
+        Assert.AreEqual("alice@contoso.com", p.UserName);
+    }
+
     // ── Duplicate role de-duplication ─────────────────────────────────────────
 
     [TestMethod]

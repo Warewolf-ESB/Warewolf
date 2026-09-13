@@ -163,6 +163,35 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             }
         }
 
+        /// <summary>
+        /// F10 regression guard: FromX6Json now defaults an omitted headers key to an empty list,
+        /// but this guard is a genuine defence for other construction paths (e.g. an activity
+        /// built programmatically, not via X6 round-trip) and must not be silently removed.
+        /// </summary>
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(WebGetActivity))]
+        public void WebGetActivity_ExecutionImpl_HeadersNull_AddsHeadersAreNullError()
+        {
+            //-----------------------Arrange-------------------------
+            var environment = new ExecutionEnvironment();
+            var mockEsbChannel = new Mock<IEsbChannel>();
+            var mockDSFDataObject = new Mock<IDSFDataObject>();
+            mockDSFDataObject.Setup(o => o.Environment).Returns(environment);
+
+            var dsfWebGetActivity = new TestWebGetActivity
+            {
+                QueryString = "test Query",
+                Headers = null
+            };
+            //-----------------------Act-----------------------------
+            dsfWebGetActivity.TestExecutionImpl(mockEsbChannel.Object, mockDSFDataObject.Object, "Test Inputs", "Test Outputs", out var errorResultTO, 0);
+            //-----------------------Assert--------------------------
+            Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
+            Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.HeadersAreNull, errorResultTO.FetchErrors()[0]);
+        }
+
         [TestMethod]
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]

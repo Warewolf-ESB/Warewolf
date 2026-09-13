@@ -1,4 +1,5 @@
-﻿using Dev2.Common;
+﻿using Dev2;
+using Dev2.Common;
 using Dev2.Common.X6;
 using Dev2.Utilities;
 using Dev2.Activities.Exchange;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+using Dev2.WorkflowConverters;
 namespace Dev2.Activities.WF
 {
     /// <summary>
@@ -142,15 +144,28 @@ namespace Dev2.Activities.WF
             foreach (var node in topLevelNodes)
             {
                 var activity = CreateActivityFromNode(node, out bool isStartNode);
-                if (activity != null)
+                if (activity == null)
                 {
-                    ApplyDisplayNameFromNode(node, activity);
-                    activityMap[node.id] = activity;
+                    // Previously this node was skipped in silence, producing a workflow that was
+                    // missing a step while every caller was told the conversion had succeeded — the
+                    // worst possible outcome for a round trip, since the loss is invisible until the
+                    // workflow runs and behaves differently. CreateActivityFromNode returns null only
+                    // for a genuine defect (an absent/blank node type, or a Create* helper that could
+                    // not read the node's display name), so fail loudly for the same reason an
+                    // unrecognised activity type throws UnsupportedActivityTypeException.
+                    node.data.TryGetString(Constants.TYPE, out var unconvertibleType);
+                    throw new InvalidOperationException(
+                        $"Could not convert node '{node.id}' (type '{unconvertibleType}') into an activity. " +
+                        "Dropping it would silently change the workflow.");
+                }
 
-                    if (isStartNode)
-                    {
-                        startcell = node;
-                    }
+                ApplyDisplayNameFromNode(node, activity);
+                ApplyUniqueIdFromNode(node, activity);
+                activityMap[node.id] = activity;
+
+                if (isStartNode)
+                {
+                    startcell = node;
                 }
             }
 
@@ -165,6 +180,9 @@ namespace Dev2.Activities.WF
 
         private void EmbedNestedActivities(List<Cell> allNodes)
         {
+            // Legacy first, generic second: a body that carries both key sets resolves to the
+            // documented isNested/parentId mechanism, which is the one callers are told to author.
+            EmbedLegacyNestedActivitiesIntoForEachActivities(allNodes);
             EmbedNestedActivitiesIntoForEachActivities(allNodes);
             EmbedNestedActivitiesIntoSequenceActivities(allNodes);
             EmbedNestedActivitiesIntoSelectAndApplyActivities(allNodes);
@@ -177,10 +195,14 @@ namespace Dev2.Activities.WF
 
 
         /// <summary>
-        /// Embeds nested activities into their parent ForEach activities' DataFunc.Handler property
+        /// Embeds nested activities into their parent ForEach activities' DataFunc.Handler property,
+        /// for bodies authored against the legacy isNestedInForEach/forEachParentId keys.
+        /// New bodies use the generic isNested/parentId mechanism — see
+        /// <see cref="EmbedNestedActivitiesIntoForEachActivities"/>, which runs after this and
+        /// takes precedence.
         /// </summary>
         /// <param name="allNodes">All nodes from the X6 graph</param>
-        private void EmbedNestedActivitiesIntoForEachActivities(List<Cell> allNodes)
+        private void EmbedLegacyNestedActivitiesIntoForEachActivities(List<Cell> allNodes)
         {
             // Group nested nodes by their parent ForEach ID
             var nestedNodesByParent = new Dictionary<string, List<Cell>>();
@@ -217,6 +239,7 @@ namespace Dev2.Activities.WF
                     if (nestedActivity != null)
                     {
                         ApplyDisplayNameFromNode(nestedNode, nestedActivity);
+                        ApplyUniqueIdFromNode(nestedNode, nestedActivity);
 
                         // Initialize DataFunc if it doesn't exist
                         if (forEach.DataFunc == null)
@@ -464,6 +487,21 @@ namespace Dev2.Activities.WF
         }
 
         /// <summary>
+        /// Persists the X6 cell's id as this activity's UniqueID so that a later
+        /// WorkflowToX6Converter.ConvertToX6Json call (e.g. from a subsequent get_workflow_definition
+        /// or add_step call) reports the same node id back for this activity, instead of minting a
+        /// fresh random one. This is what makes add_step's afterStepId/stepId contract ("stepId...
+        /// usable as a future call's afterStepId") actually hold across calls.
+        /// </summary>
+        private static void ApplyUniqueIdFromNode(Cell node, Activity activity)
+        {
+            if (node?.id != null && activity is IDev2Activity dev2Activity)
+            {
+                dev2Activity.UniqueID = node.id;
+            }
+        }
+
+        /// <summary>
         /// Activity Factory: Creates Flow Node from Activity (action) 
         /// </summary>
         /// <param name="action"></param>
@@ -693,6 +731,10 @@ namespace Dev2.Activities.WF
                     return CreateDotNetAggregateCalculateActivity(node);
                 case var t when t.Contains(Constants.DSFAGGREGATECALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateAggregateCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFDOTNETCALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateDotNetCalculateActivity(node);
+                case var t when t.Contains(Constants.DSFCALCULATEACTIVITY, StringComparison.OrdinalIgnoreCase):
+                    return CreateCalculateActivity(node);
                 case var t when t.Contains(Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
                     return CreateDotNetGatherSystemInformationActivity(node);
                 case var t when t.Contains(Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY, StringComparison.OrdinalIgnoreCase):
@@ -763,8 +805,8 @@ namespace Dev2.Activities.WF
         /// <returns>DsfFlowDecisionActivity</returns>
         private static DsfFlowDecisionActivity CreateFlowDecisionActivity(Cell node)
         {
-            if (!node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
-                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!node.data.TryGetString(Constants.DISPLAYTEXT, out var displayName)
+                || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfFlowDecisionActivity();
@@ -779,8 +821,8 @@ namespace Dev2.Activities.WF
         /// <returns>DsfDecision</returns>
         private static DsfDecision CreateDecisionActivity(Cell node)
         {
-            if (!node.data.TryGetValue(Constants.DISPLAYTEXT, out var displayObject)
-                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!node.data.TryGetString(Constants.DISPLAYTEXT, out var displayName)
+                || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDecision();
@@ -795,9 +837,11 @@ namespace Dev2.Activities.WF
         /// <returns>DsfDotNetMultiAssignActivity</returns>
         private static DsfDotNetMultiAssignObjectActivity CreateAssignObectActivity(Cell node)
         {
+            // Try both camelCase and lowercase variations for compatibility
+            var hasDisplayName = node.data.TryGetString("displayName", out var displayName) ||
+                                 node.data.TryGetString(Constants.DISPLAYNAME, out displayName);
 
-            if (!node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject)
-                || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDotNetMultiAssignObjectActivity();
@@ -813,10 +857,10 @@ namespace Dev2.Activities.WF
         private static DsfDotNetMultiAssignActivity CreateAssignActivity(Cell node)
         {
             // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
-                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            var hasDisplayName = node.data.TryGetString("displayName", out var displayName) ||
+                                 node.data.TryGetString(Constants.DISPLAYNAME, out displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfDotNetMultiAssignActivity();
@@ -832,10 +876,10 @@ namespace Dev2.Activities.WF
         private static DsfForEachActivity CreateForEachActivity(Cell node)
         {
             // Try both camelCase and lowercase variations for compatibility
-            var hasDisplayName = node.data.TryGetValue("displayName", out var displayObject) ||
-                                 node.data.TryGetValue(Constants.DISPLAYNAME, out displayObject);
+            var hasDisplayName = node.data.TryGetString("displayName", out var displayName) ||
+                                 node.data.TryGetString(Constants.DISPLAYNAME, out displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfForEachActivity();

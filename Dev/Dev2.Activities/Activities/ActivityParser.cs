@@ -199,16 +199,16 @@ namespace Dev2.Activities
                     if (chart.StartNode is FlowStep start)
                     {
                         var tool = ParseTools(start, seenActivities);
-                        return tool.FirstOrDefault();
+                        return tool?.FirstOrDefault();
                     }
 
                     if (chart.StartNode is FlowSwitch<string> flowstart)
                     {
-                        return ParseSwitch(flowstart, seenActivities).FirstOrDefault();
+                        return ParseSwitch(flowstart, seenActivities)?.FirstOrDefault();
                     }
 
                     var flowdec = chart.StartNode as FlowDecision;
-                    return ParseDecision(flowdec, seenActivities).FirstOrDefault();
+                    return ParseDecision(flowdec, seenActivities)?.FirstOrDefault();
                 }
                 return null;
             }

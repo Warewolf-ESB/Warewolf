@@ -355,6 +355,7 @@
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ODBCDatabaseActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_RubyActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_SuspendExecutionActivityHelper.cs" />
+    <Compile Include="WorkflowConverters\X6ToWorkflowConverter_ForEachActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_GateActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_PythonActivityHelper.cs" />
     <Compile Include="WorkflowConverters\X6ToWorkflowConverter_UnZipActivityHelper.cs" />

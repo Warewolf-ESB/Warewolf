@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -72,6 +72,7 @@
     <Compile Include="BussinessLogic\RsOpSearchValidationTests.cs" />
     <Compile Include="Activities\DropBox2016\DsfDropBoxBaseActivityTests.cs" />
     <Compile Include="Activities\DsfWebGetRequestWithTimeoutActivity\DsfWebGetRequestWithTimeoutActivityTests.cs" />
+    <Compile Include="Activities\WebRequestInvoker\WebRequestInvokerTests.cs" />
     <Compile Include="Activities\DsfComDllActivityTests.cs" />
     <Compile Include="Activities\EmailSenderTests.cs" />
     <Compile Include="Activities\DsfPluginActivityTests.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="ActivityTests\ManualResumptionActivityTests.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\RabbitMQ\Publish\PublishRabbitMQActivityTests.cs" />
+    <Compile Include="ActivityTests\RabbitMQ\Publish\PublishRabbitMQActivityCacheTests.cs" />
     <Compile Include="ActivityTests\ReadFolderNewTests.cs" />
     <Compile Include="ActivityTests\AdvancedRecordsetTests.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />

@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.WorkflowConverters;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
@@ -559,8 +560,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 cell.data?.TryGetValue(Constants.FIELDS, out fieldObject);
             }
-            var array = fieldObject as JArray;
-            if (array != null)
+            if (CommonHelper.TryAsJArray(fieldObject, out var array))
             {
                 FieldsCollection = array.ToObject<List<ActivityDTO>>();
             }

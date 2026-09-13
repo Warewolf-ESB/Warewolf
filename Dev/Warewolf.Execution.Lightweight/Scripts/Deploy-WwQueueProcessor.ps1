@@ -75,9 +75,14 @@
       -NonInteractive
 
 .NOTES
-    After deploying, EACH app's managed identity must be granted the engine app role
-    Warewolf_QueueProcessor, and secure.config needs a PER-WORKFLOW Execute row for each
-    trigger's WorkflowName. See Deploy-EndToEnd-Runbook.md section 8.
+    EACH app's managed identity is granted the engine app role Warewolf_QueueProcessor by this
+    script, once per deployed trigger (-EngineAppRole / -SkipEngineAppRoleGrant). It used to be a
+    manual post-deploy step, and that step was written against ONE app while this script deploys
+    ONE PER TRIGGER - so a multi-trigger stack routinely authorized only the first worker.
+
+    secure.config needs NO per-workflow row: a workflow with no resource-scoped entry inherits the
+    global (IsServer = true) map, which the app role above satisfies. See Deploy-EndToEnd-Runbook.md
+    section 8.
 
     Plan: docs/QueueWorker-Migration-To-AzureContainerApps-KEDA-Plan-Step-By-Step.md
 #>
@@ -134,6 +139,30 @@ param(
     # HARD CEILING is the ENGINE's own functionTimeout (host.json, 00:10:00 = 600s). At or above
     # that the engine kills the invocation first and the worker waits for a reply that never comes.
     [int]    $EngineTimeoutSeconds = 180,
+
+    # ── Engine app role (Entra, NOT Azure RBAC) ──────────────────────────────
+    # The role the worker's managed identity must hold on the ENGINE's Easy Auth app before the
+    # engine will execute anything for it. This is an Entra appRoleAssignment; Grant-AppIdentityRoles
+    # below handles the two ARM roles (AcrPull, Key Vault Secrets User) and neither implies this one.
+    #
+    # Granting it was a documented manual step ("NEXT (required)") until it moved in here. A roleless
+    # worker does not fail visibly: the engine denies the call, WOLF-8418 wraps the denial as HTTP
+    # 500 rather than 403, EngineForwarder classifies 500 as a business failure and DEAD-LETTERS AND
+    # ACKS the message. The queue drains, the app scales back to zero, and the run looks clean while
+    # every message was discarded.
+    [string] $EngineAppRole = 'Warewolf_QueueProcessor',
+
+    # Object id of the engine's SERVICE PRINCIPAL - not its application; they are different object
+    # ids for the same appId, and Graph answers 'ResourceNotFound' if the app's is used. Derived
+    # from -EngineResourceAppId when omitted. Deploy-WwEngineAndQueueProcessor.ps1 passes the value
+    # it already resolved into its handover file, which skips the lookup.
+    [string] $EngineSpObjectId,
+
+    # Skip the grant. Writing an appRoleAssignment needs AppRoleAssignment.ReadWrite.All (or
+    # Privileged Role Administrator) - a DIFFERENT privilege from the Contributor rights the rest of
+    # this deploy uses - so an operator who has the role granted out of band can turn it off. The
+    # manual command for each ungranted app is printed in the summary either way.
+    [switch] $SkipEngineAppRoleGrant,
 
     # ── Scaling (derived from the trigger unless overridden) ──────────────────
     [ValidateSet('Elastic', 'Fixed', 'Warm')]
@@ -534,6 +563,165 @@ function Grant-AppIdentityRoles {
                                 -Scope "$vaultId".Trim() -ScopeLabel $vaultName
         }
     }
+}
+
+function Resolve-EngineAppRoleGrantContext {
+    <#
+        Resolves, ONCE per run, the two Entra ids every per-app grant needs:
+          - the app role id  (appRoles[].id on the ENGINE's application, matched on -EngineAppRole)
+          - the engine SERVICE PRINCIPAL object id (the assignment's resourceId)
+
+        Returns $null - after an actionable note - when the grant cannot proceed. A $null context is
+        NOT fatal: the deploy continues and every app reports 'skipped'. Losing the grant must not
+        discard a worker that is otherwise correctly deployed, and the summary names every app that
+        still needs it plus the exact command to run.
+    #>
+    if ($SkipEngineAppRoleGrant) {
+        Write-Note ("-SkipEngineAppRoleGrant: the '$EngineAppRole' grant will NOT be attempted. Each " +
+                    'worker stays UNAUTHORIZED until it is granted out of band - the engine denies ' +
+                    'every call and the denial arrives as HTTP 500 (WOLF-8418), which the worker ' +
+                    'dead-letters AND acks.')
+        return $null
+    }
+
+    Write-Step "Resolving the engine app role '$EngineAppRole' on app '$EngineResourceAppId'"
+
+    # Project appRoles as JSON and filter in PowerShell. Do NOT use a JMESPath filter such as
+    # "appRoles[?value=='$EngineAppRole'].id": `az` on Windows is a .cmd shim and a --query
+    # containing SINGLE QUOTES is mangled by cmd.exe before Python ever sees it - az then exits
+    # non-zero, -AllowFail turns that into $null, and a role that IS defined looks absent. Same
+    # defect, same fix, as Assert-RoleAssigned above.
+    $rolesRaw = Invoke-Az -AzArgs @('ad', 'app', 'show', '--id', $EngineResourceAppId,
+                                    '--query', 'appRoles', '-o', 'json') -AllowFail
+    $roleId = $null
+    if ($rolesRaw) {
+        try {
+            $roleId = (@($rolesRaw) -join [Environment]::NewLine | ConvertFrom-Json |
+                       Where-Object { $_.value -eq $EngineAppRole } |
+                       Select-Object -First 1).id
+        } catch { $roleId = $null }
+    }
+    $roleId = "$roleId".Trim()
+
+    if (-not $roleId) {
+        Write-Note ("App '$EngineResourceAppId' defines no app role '$EngineAppRole' (or it could not " +
+                    'be read - that read needs directory read access). Nothing to assign, so every ' +
+                    'worker will be DENIED by the engine. Define the role with ' +
+                    'Configure-WwExecutionAuth.ps1 and re-run this script to grant it.')
+        return $null
+    }
+
+    # The assignment is created against the SERVICE PRINCIPAL, not the application: same appId, two
+    # different object ids, and Graph answers ResourceNotFound for the wrong one.
+    $spId = if ($EngineSpObjectId) { "$EngineSpObjectId".Trim() }
+            else {
+                $resolved = Invoke-Az -AzArgs @('ad', 'sp', 'show', '--id', $EngineResourceAppId,
+                                                '--query', 'id', '-o', 'tsv') -AllowFail
+                "$resolved".Trim()
+            }
+    if (-not $spId) {
+        Write-Note ("Could not resolve the engine service principal for appId '$EngineResourceAppId'. " +
+                    "Pass -EngineSpObjectId, or grant '$EngineAppRole' by hand after this run.")
+        return $null
+    }
+
+    Write-Ok "Engine app role resolved: '$EngineAppRole' ($roleId) on service principal $spId."
+    return @{ RoleId = $roleId; ResourceSpId = $spId; RoleName = $EngineAppRole }
+}
+
+function Grant-EngineAppRole {
+    <#
+        Grants ONE Container App's managed identity the engine app role, idempotently.
+
+        Called PER APP rather than once per run by design: this script deploys one Container App per
+        trigger and each gets its OWN system-assigned identity. The manual step this replaces was
+        written against a single app, so a multi-trigger stack authorized only the first worker and
+        the rest silently dead-lettered everything they consumed.
+
+        NEVER FATAL. Writing an appRoleAssignment needs AppRoleAssignment.ReadWrite.All or Privileged
+        Role Administrator, which is a different privilege from the Contributor rights every other
+        call here uses. Failing the deploy would break operators who deploy correctly today and have
+        the role granted for them out of band. The returned status is recorded per app, and the
+        summary prints the exact remediation command for anything not granted.
+
+        Returns: granted | already-assigned | dryrun | skipped | failed-permission | failed
+    #>
+    param([string] $PrincipalId, [hashtable] $Context)
+
+    if (-not $Context) { return 'skipped' }
+
+    if (-not $PrincipalId) {
+        if ($DryRun) {
+            Write-Note ("DryRun: would grant '$($Context.RoleName)' to this app's managed identity " +
+                        '(the app does not exist yet, so there is no principal id to assign to).')
+            return 'dryrun'
+        }
+        Write-Note ("No managed identity principalId resolved, so the '$($Context.RoleName)' grant was " +
+                    'skipped. The worker will be denied by the engine on its first message.')
+        return 'skipped'
+    }
+
+    $sp = "$PrincipalId".Trim()
+
+    # Read the PRINCIPAL's own assignments, not the resource's appRoleAssignedTo collection: it is
+    # scoped to this one identity, so the response stays small however many clients the engine has.
+    # Filtered in PowerShell - never a quoted JMESPath (see Resolve-EngineAppRoleGrantContext).
+    $existingRaw = Invoke-Az -AzArgs @('rest', '--method', 'GET',
+                                       '--url', "https://graph.microsoft.com/v1.0/servicePrincipals/$sp/appRoleAssignments",
+                                       '-o', 'json') -AllowFail
+    if ($existingRaw) {
+        try {
+            $already = @((@($existingRaw) -join [Environment]::NewLine | ConvertFrom-Json).value |
+                         Where-Object { $_.appRoleId -eq $Context.RoleId })
+            if ($already.Count -gt 0) {
+                Write-Ok "Engine app role '$($Context.RoleName)' already assigned to $sp."
+                return 'already-assigned'
+            }
+        } catch { }
+    }
+
+    # The body goes through a TEMP FILE, never inline. `az` on Windows strips the inner double
+    # quotes out of an inline JSON value, so --body '{"principalId":...}' arrives as unparseable
+    # JSON - the same trap that stored an invalid WAREWOLF_ENTRA_CONFIG and aborted an engine deploy
+    # in Phase 2. utf8NoBOM because a BOM makes Graph reject the payload outright.
+    $tmp = Join-Path ([System.IO.Path]::GetTempPath()) "ww-approle-$([Guid]::NewGuid()).json"
+    try {
+        @{ principalId = $sp; resourceId = $Context.ResourceSpId; appRoleId = $Context.RoleId } |
+            ConvertTo-Json -Compress | Set-Content -LiteralPath $tmp -Encoding utf8NoBOM
+
+        Invoke-Az -AzArgs @('rest', '--method', 'POST',
+                            '--url', "https://graph.microsoft.com/v1.0/servicePrincipals/$($Context.ResourceSpId)/appRoleAssignedTo",
+                            '--headers', 'Content-Type=application/json',
+                            '--body', "@$tmp", '-o', 'none') -Mutating | Out-Null
+    }
+    catch {
+        $msg = $_.Exception.Message
+
+        # Graph reports a duplicate as a 400, not a 409. Treat it as success: two concurrent deploys
+        # of the same app must not make one of them look broken.
+        if ($msg -match 'already exists|already been granted|Permission being assigned was already assigned') {
+            Write-Ok "Engine app role '$($Context.RoleName)' already assigned to $sp."
+            return 'already-assigned'
+        }
+
+        if ($msg -match 'Authorization_RequestDenied|Insufficient privileges|Forbidden|403') {
+            Write-Note ("Engine app role '$($Context.RoleName)' NOT granted to $sp - this account cannot " +
+                        'write appRoleAssignments (needs AppRoleAssignment.ReadWrite.All or Privileged ' +
+                        'Role Administrator). The worker is DEPLOYED BUT UNAUTHORIZED: the engine will ' +
+                        'deny every call, the denial arrives as HTTP 500 (WOLF-8418), and the worker ' +
+                        'dead-letters AND acks it - a clean-looking run that discards every message. ' +
+                        'The remediation command is printed in the summary below.')
+            return 'failed-permission'
+        }
+
+        Write-Note "Engine app role '$($Context.RoleName)' NOT granted to ${sp}: $msg"
+        return 'failed'
+    }
+    finally { Remove-Item -LiteralPath $tmp -Force -ErrorAction SilentlyContinue }
+
+    if ($DryRun) { return 'dryrun' }
+    Write-Ok "Engine app role '$($Context.RoleName)' granted to $sp."
+    return 'granted'
 }
 
 function Resolve-AppNameCollision {
@@ -958,6 +1146,89 @@ function New-StagingDirectory {
     return $dir
 }
 
+function Assert-PublishMatchesBaseImage {
+    <#
+        Fail at PLAN time when the publish output's .NET major and the Dockerfile's base-image
+        major disagree.
+
+        The two halves of this image are produced independently: the DLLs come from the deploy
+        machine's `dotnet publish`, the framework from whatever FROM line the Dockerfile carries.
+        Nothing reconciles them, and the failure they produce is mute - the container starts,
+        the muxer cannot satisfy the runtimeconfig.json "version", and the process exits before
+        it opens a RabbitMQ connection. ACA reports only CrashLoopBackOff, so the actual cause
+        (a framework mismatch) is invisible from the deploy output. That has already been paid
+        for once in each direction: an aspnet:8.0 base image under a net10.0 publish, and the
+        reverse when the QueueProcessor moved to net10.0 while the Dockerfile lagged.
+
+        Deliberately NON-FATAL when it cannot read either side: an unparsable runtimeconfig or
+        a Dockerfile with a templated FROM must not block a deploy that would otherwise work.
+        This guard exists to catch a mismatch it can PROVE, not to gate on its own confidence.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $PublishRoot,
+        [Parameter(Mandatory)][string] $DockerfilePath
+    )
+
+    $rcPath = Join-Path $PublishRoot 'Warewolf.Execution.QueueProcessor.runtimeconfig.json'
+    if (-not (Test-Path -LiteralPath $rcPath)) {
+        Write-Note "Runtime-version check skipped: '$rcPath' not found."
+        return
+    }
+
+    # runtimeconfig.json carries the framework either as a single runtimeOptions.framework or,
+    # with a FrameworkReference (this project pulls in Microsoft.AspNetCore.App), as a
+    # runtimeOptions.frameworks array. Take the highest major across whatever is present.
+    $publishMajor = $null
+    try {
+        $rc = Get-Content -LiteralPath $rcPath -Raw | ConvertFrom-Json
+        $opts = $rc.PSObject.Properties['runtimeOptions']
+        if ($opts -and $opts.Value) {
+            $frameworks = @()
+            $single = $opts.Value.PSObject.Properties['framework']
+            if ($single -and $single.Value) { $frameworks += $single.Value }
+            $many = $opts.Value.PSObject.Properties['frameworks']
+            if ($many -and $many.Value) { $frameworks += @($many.Value) }
+            foreach ($fw in $frameworks) {
+                $verProp = $fw.PSObject.Properties['version']
+                if ($verProp -and $verProp.Value -match '^(\d+)\.') {
+                    $m = [int]$Matches[1]
+                    if ($null -eq $publishMajor -or $m -gt $publishMajor) { $publishMajor = $m }
+                }
+            }
+        }
+    }
+    catch { $publishMajor = $null }
+
+    if ($null -eq $publishMajor) {
+        Write-Note "Runtime-version check skipped: could not read a framework version from '$rcPath'."
+        return
+    }
+
+    # The LAST FROM wins - the Dockerfile's final stage is the one that ships.
+    $imageMajor = $null
+    $imageRef   = $null
+    foreach ($line in (Get-Content -LiteralPath $DockerfilePath)) {
+        if ($line -match '^\s*FROM\s+(\S+)') {
+            $ref = $Matches[1]
+            if ($ref -match ':(\d+)\.') { $imageMajor = [int]$Matches[1]; $imageRef = $ref }
+        }
+    }
+
+    if ($null -eq $imageMajor) {
+        Write-Note "Runtime-version check skipped: no versioned FROM tag found in '$DockerfilePath'."
+        return
+    }
+
+    if ($imageMajor -ne $publishMajor) {
+        throw ("Runtime mismatch: the publish in '$PublishRoot' targets .NET $publishMajor, but " +
+               "'$DockerfilePath' builds on '$imageRef' (.NET $imageMajor). The container would start " +
+               'and exit immediately - "You must install or update .NET to run this application." - ' +
+               'which ACA reports only as CrashLoopBackOff. Align the Dockerfile FROM tag with the ' +
+               "project's TargetFramework (or re-publish against .NET $imageMajor) and retry.")
+    }
+    Write-Ok "Runtime check: publish targets .NET $publishMajor, base image '$imageRef' matches."
+}
+
 # Test hook: stop here when only the helper functions are wanted (Pester).
 if ($LoadFunctionsOnly) { return }
 
@@ -1167,6 +1438,10 @@ if (-not $RabbitMqSecretUri) {
     Write-Note 'No -RabbitMqSecretUri: the KEDA rule will be created WITHOUT broker auth and cannot scale.'
 }
 
+Write-Host ("    {0,-28}: {1}" -f 'Engine app role',
+            $(if ($SkipEngineAppRoleGrant) { "$EngineAppRole  (grant SKIPPED: -SkipEngineAppRoleGrant)" }
+              else { "$EngineAppRole  (granted to EVERY app's managed identity)" }))
+
 $totalCores = ($plannedApps |
     ForEach-Object { [double]$_.Scale.Cpu * [int]$_.Scale.MaxReplicas } |
     Measure-Object -Sum).Sum
@@ -1235,6 +1510,10 @@ else {
         throw "Dockerfile not found at '$dockerfile'. Pass -DockerfilePath explicitly."
     }
 
+    # Before the ~6-minute ACR build, not after it: a framework mismatch between the publish and
+    # the base image is only visible as CrashLoopBackOff once the app is running.
+    Assert-PublishMatchesBaseImage -PublishRoot $PublishPath -DockerfilePath $dockerfile
+
     # The context is a STAGED COPY of the publish output with Settings/ baked in - not the repo.
     # All triggers go into the single shared image; each Container App picks its own via
     # QUEUE__TRIGGERID.
@@ -1268,10 +1547,18 @@ Write-Phase 'Phase 3  Deploy one Container App per trigger'
 
 $results = @()
 
+# Resolved ONCE: the role id and the engine SP object id are the same for every app, and both are
+# directory reads. A $null context means the grant cannot proceed - deliberately not fatal; each app
+# then reports 'skipped' and the summary prints what to run.
+$engineRoleContext = Resolve-EngineAppRoleGrantContext
+
 foreach ($planned in $plannedApps) {
     $t = $planned.Trigger
     $scale = $planned.Scale
     $appName = $planned.AppName
+    # Reset per iteration, or a trigger that throws before the grant would inherit the PREVIOUS
+    # app's status and report an authorization it never received.
+    $engineRoleStatus = 'not-attempted'
 
     Write-Host ''
     Write-Step "Trigger '$($t.Name)' -> app '$appName' (queue '$($t.QueueName)')"
@@ -1382,6 +1669,13 @@ foreach ($planned in $plannedApps) {
                                            '--query', 'identity.principalId', '-o', 'tsv') -AllowFail
 
         Grant-AppIdentityRoles -PrincipalId $principalId
+
+        # BEFORE the settle wait, not after: this is an ENTRA assignment, so its own propagation then
+        # overlaps the Key Vault RBAC wait instead of being added to it. Its position is otherwise
+        # free - nothing in the revision depends on it, unlike the two ARM grants above, which must
+        # land before the keyvaultref secret is set.
+        $engineRoleStatus = Grant-EngineAppRole -PrincipalId $principalId -Context $engineRoleContext
+
         Wait-RbacDataPlaneSettle -PrincipalId $principalId
 
         # ── Secret (Key Vault reference) + env vars + KEDA rule ──────────────
@@ -1461,15 +1755,49 @@ foreach ($planned in $plannedApps) {
         # 8520 item 6: KEDA poll cadence. Also a TEMPLATE property, and unlike
         # --termination-grace-period there is no `az containerapp update` flag for it at all, so it
         # goes through `az resource update` on the ARM resource. 0 = leave the deployed value alone.
-        if ($PollingInterval -gt 0) {
+        if ($PollingInterval -gt 0 -and -not $DryRun) {
             # Invoke-Az is the value-returning helper (it splits stderr so `az`'s extension WARNING
             # cannot contaminate the value - see its own comment). There is no Invoke-AzText.
+            #
+            # Skipped under -DryRun on purpose. This is a READ, so it carries neither -Mutating (which
+            # would make it print and return) nor -AllowFail - and under -DryRun the app was never
+            # created, so `containerapp show` fails with ResourceNotFound and fail-fast marks the
+            # whole trigger deploy FAILED. That made -DryRun unusable for any app that did not
+            # already exist, which is precisely the case a dry run is for. The ARM patch cannot be
+            # simulated anyway without a real resource id.
             $caId = Invoke-Az -AzArgs @('containerapp', 'show', '--name', $appName,
-                                        '--resource-group', $ResourceGroup, '--query', 'id', '-o', 'tsv')
-            Invoke-Az -AzArgs @('resource', 'update', '--ids', $caId,
-                                '--set', "properties.template.scale.pollingInterval=$PollingInterval",
-                                '-o', 'none') -Mutating | Out-Null
-            Write-Ok "KEDA pollingInterval set to ${PollingInterval}s (ACA default is 30s)."
+                                        '--resource-group', $ResourceGroup, '--query', 'id', '-o', 'tsv') -AllowFail
+            if (-not $caId) {
+                Write-Note "pollingInterval not applied: could not resolve the resource id for '$appName'."
+            }
+            else {
+                # NON-FATAL on purpose. `az resource update` is a GET-modify-PUT of the WHOLE
+                # resource, and ARM REDACTS secret values on GET. So when the app carries an inline
+                # secret (-InlineRabbitMqSecret), the PUT replays that secret with no value and ARM
+                # rejects the entire call:
+                #   (ContainerAppSecretInvalid) secret(s) 'rabbitmq-connection' are invalid:
+                #   value or keyVaultUrl and identity should be provided
+                # It succeeds only when every secret is a keyVaultUrl+identity REFERENCE, which GET
+                # does return - which is why this passed against the DEV2 app and failed on the first
+                # UAT deploy (2026-09-08), aborting an otherwise complete trigger deploy.
+                #
+                # pollingInterval is a scale-LATENCY optimisation; ACA's 30s default is slower, not
+                # wrong. Losing it must not discard a deployed worker.
+                try {
+                    Invoke-Az -AzArgs @('resource', 'update', '--ids', "$caId".Trim(),
+                                        '--set', "properties.template.scale.pollingInterval=$PollingInterval",
+                                        '-o', 'none') -Mutating | Out-Null
+                    Write-Ok "KEDA pollingInterval set to ${PollingInterval}s (ACA default is 30s)."
+                }
+                catch {
+                    Write-Note ("pollingInterval NOT applied - ACA's 30s default remains. This is " +
+                                'expected when the app has an inline secret; omit -InlineRabbitMqSecret ' +
+                                'to use a Key Vault reference if the faster cadence matters.')
+                }
+            }
+        }
+        elseif ($PollingInterval -gt 0) {
+            Write-Note "DryRun: pollingInterval=${PollingInterval}s NOT applied (needs the real resource id)."
         }
 
         if ($scale.MaxReplicas -gt 0 -and $RabbitMqSecretUri) {
@@ -1501,6 +1829,7 @@ foreach ($planned in $plannedApps) {
             prefetch       = $t.Prefetch
             scalingMode    = $scale.Mode
             principalId    = ($principalId ? "$principalId".Trim() : $null)
+            engineAppRole  = $engineRoleStatus
             image          = $resolvedImage
             status         = 'deployed'
         }
@@ -1539,6 +1868,7 @@ if (-not $DryRun) {
         image                 = $resolvedImage
         engineBaseUrl         = $EngineBaseUrl
         engineScope           = $effectiveScope
+        engineAppRole         = $EngineAppRole
         deployRabbitMqTriggers = $true
         queueProcessorApps    = $results
     } | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath $summaryPath -Encoding UTF8
@@ -1571,7 +1901,10 @@ foreach ($r in $results) {
                     $r.minReplicas, $r.maxReplicas, $r.targetLength, $r.prefetch, $r.scalingMode) -ForegroundColor DarkGray
     }
     if (& $has 'principalId') {
-        Write-Host ("         identity {0}  (granted AcrPull + Key Vault Secrets User)" -f $r.principalId) -ForegroundColor DarkGray
+        $roleText = if (& $has 'engineAppRole') { $r.engineAppRole } else { 'not-attempted' }
+        Write-Host ("         identity {0}  (AcrPull + Key Vault Secrets User; {1}: {2})" -f `
+                    $r.principalId, $EngineAppRole, $roleText) `
+                   -ForegroundColor $(if ($roleText -in @('granted', 'already-assigned', 'dryrun')) { 'DarkGray' } else { 'Yellow' })
     }
     if ($failedRow -and (& $has 'error')) {
         Write-Host ("         error: {0}" -f $r.error) -ForegroundColor Red
@@ -1594,7 +1927,33 @@ foreach ($r in ($results | Where-Object { $_.PSObject.Properties['workflow'] -an
 }
 Write-Host ''
 
-Write-Note 'NEXT (required): grant EACH app''s managed identity the engine app role Warewolf_QueueProcessor.'
+# Only the apps that did NOT get the role. Printing the instruction unconditionally - as this script
+# used to - trained operators to ignore it, which is how multi-trigger stacks ended up with exactly
+# one authorized worker.
+$ungranted = @($results | Where-Object {
+    $_.PSObject.Properties['engineAppRole'] -and
+    $_.engineAppRole -notin @('granted', 'already-assigned', 'dryrun')
+})
+if ($ungranted.Count -gt 0) {
+    Write-Host ''
+    Write-Note ("ACTION REQUIRED: $($ungranted.Count) of $($results.Count) worker(s) do NOT hold the engine " +
+                "app role '$EngineAppRole'. Until they do, the engine DENIES every call, the denial " +
+                'arrives as HTTP 500 (WOLF-8418), and the worker DEAD-LETTERS AND ACKS the message - ' +
+                'the queue drains and the run looks clean while every message is discarded. Grant them:')
+    foreach ($u in $ungranted) {
+        Write-Host ("         .\Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId $EngineResourceAppId " +
+                    "-ClientType Daemon -DaemonUseManagedIdentity -ManagedIdentityObjectId " +
+                    "$($u.principalId) -AppRolesToAssign $EngineAppRole -NonInteractive    # $($u.app)") `
+                   -ForegroundColor Yellow
+    }
+}
+elseif (@($results | Where-Object { $_.status -eq 'deployed' }).Count -gt 0) {
+    # A dry run grants nothing, so it must not claim the role is held - that is the exact sentence an
+    # operator would quote back as evidence the stack was authorized.
+    if ($DryRun) { Write-Ok "DryRun: '$EngineAppRole' WOULD be granted to every app's managed identity." }
+    else         { Write-Ok "Every deployed worker holds the engine app role '$EngineAppRole'." }
+}
+
 Write-Note 'A per-workflow secure.config row is NOT required, and adding one can LOCK THE WORKER OUT: a'
 Write-Note 'workflow uses the resource role map exclusively once it has any Execute-bearing resource entry,'
 Write-Note 'otherwise it inherits the global (IsServer=true) map - which the app role above satisfies. Only'

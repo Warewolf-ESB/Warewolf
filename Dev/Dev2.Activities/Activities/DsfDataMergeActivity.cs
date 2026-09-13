@@ -696,8 +696,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 cell.data.TryGetValue(Constants.MERGECOLLECTION, out fieldObject);
             }
-            var array = fieldObject as JArray;
-            if (array != null)
+            if (CommonHelper.TryAsJArray(fieldObject, out var array))
             {
                 MergeCollection = array.ToObject<List<DataMergeDTO>>();
             }

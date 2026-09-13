@@ -1,0 +1,7 @@
+<Source ID="2b6d4f18-7c93-4a15-8e02-9f5a3c1b7d64" ResourceID="2b6d4f18-7c93-4a15-8e02-9f5a3c1b7d64" Name="Fidelity MySQL Source" ResourceType="MySqlDatabase" IsValid="true" ConnectionString="Server=localhost;Port=3306;Database=dev2testingdb;Uid=root;Pwd=admin;Connect Timeout=30;" Type="DbSource" ServerType="MySqlDatabase" ServerVersion="0.0.0.0" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>Fidelity MySQL Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>DbSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-08-23T00:00:00.0000000+00:00" Reason="" User="FidelityFixtureGenerator" VersionNumber="1" ResourceId="2b6d4f18-7c93-4a15-8e02-9f5a3c1b7d64" VersionId="2b6d4f18-7c93-4a15-8e02-9f5a3c1b7d64" />
+</Source>

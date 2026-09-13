@@ -531,8 +531,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 cell.data.TryGetValue(Constants.CONVERTCOLLECTION, out fieldObject);
             }
-            var array = fieldObject as JArray;
-            if (array != null)
+            if (CommonHelper.TryAsJArray(fieldObject, out var array))
             {
                 ConvertCollection = array.ToObject<List<BaseConvertTO>>();
             }

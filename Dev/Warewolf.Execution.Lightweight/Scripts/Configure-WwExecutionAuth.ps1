@@ -807,6 +807,19 @@ function Read-AppRoleConflictAction {
     }
 
     Write-Host ""
+
+    # -NonInteractive must NOT prompt. The parameter docs for -ReplaceAppRoles state the
+    # contract plainly: in that mode the script merges (adds missing, keeps existing),
+    # which is safe for re-runs, and -ReplaceAppRoles is the explicit opt-in to replace.
+    # Without this guard the Read-Host below throws "PowerShell is in NonInteractive
+    # mode" and kills the deploy in Phase 2 the first time a diff exists - which is
+    # exactly what happened deploying wwuat3 on 2026-09-13.
+    if ($NonInteractive) {
+        $decided = if ($ReplaceAppRoles) { 'replace' } else { 'keep' }
+        Write-Host "  -NonInteractive: $decided (pass -ReplaceAppRoles to clear and reassign)" -ForegroundColor DarkGray
+        return $decided
+    }
+
     $action = (Read-Host "  [k]eep (add new only) / [r]eplace all (disable+rewrite)  (default: k)").ToLower()
     if ([string]::IsNullOrWhiteSpace($action) -or $action[0] -eq 'k') { return 'keep' }
     return 'replace'
@@ -932,6 +945,19 @@ function Read-UserAssignmentConflictAction {
     }
 
     Write-Host ""
+
+    # -NonInteractive must NOT prompt. The parameter docs for -ReplaceUserAssignments state the
+    # contract plainly: in that mode the script merges (adds missing, keeps existing),
+    # which is safe for re-runs, and -ReplaceUserAssignments is the explicit opt-in to replace.
+    # Without this guard the Read-Host below throws "PowerShell is in NonInteractive
+    # mode" and kills the deploy in Phase 2 the first time a diff exists - which is
+    # exactly what happened deploying wwuat3 on 2026-09-13.
+    if ($NonInteractive) {
+        $decided = if ($ReplaceUserAssignments) { 'replace' } else { 'keep' }
+        Write-Host "  -NonInteractive: $decided (pass -ReplaceUserAssignments to clear and reassign)" -ForegroundColor DarkGray
+        return $decided
+    }
+
     $action = (Read-Host "  [k]eep (add missing only) / [r]eplace all (clear+reassign)  (default: k)").ToLower()
     if ([string]::IsNullOrWhiteSpace($action) -or $action[0] -eq 'k') { return 'keep' }
     return 'replace'

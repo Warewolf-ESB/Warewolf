@@ -264,5 +264,191 @@ namespace Warewolf.Execution.Lightweight.Tests.Execution
             public new bool Equals(object? x, object? y) => ReferenceEquals(x, y);
             public int GetHashCode(object obj) => System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(obj);
         }
+        // ── Staleness: a changed .bite must never be served from the pool ────
+        //
+        // The defect: the pool key was the file path ALONE, and RentPreparedWorkflow returns a
+        // pooled instance BEFORE it looks at the freshly-read xamlDefinition. So once a workflow
+        // had executed, edit_workflow could rewrite its .bite and every later execution still
+        // replayed the pre-edit compilation until the process restarted - the tool reported
+        // success, the file genuinely changed, and behaviour did not. Reproduced against
+        // warewolfserver-mcp on 2026-08-21: get_workflow_definition showed the edited description
+        // while execute_workflow kept returning the old output.
+
+        static string CopyToTempBite()
+        {
+            var temp = Path.Combine(Path.GetTempPath(), "wwpool-" + Guid.NewGuid().ToString("N") + ".bite");
+            File.Copy(WorkflowPath, temp);
+            return temp;
+        }
+
+        static System.Text.StringBuilder XamlOf(string path)
+        {
+            var contents = WorkflowExecutor.ReadWorkflowFile(path);
+            var (xaml, _, _) = WorkflowExecutor.ExtractWorkflowParts(contents);
+            Assert.IsNotNull(xaml, "test resource must contain a XamlDefinition");
+            return xaml!;
+        }
+
+        /// <summary>
+        /// Appends trailing whitespace after the root element - legal XML that leaves the workflow
+        /// semantically identical (so it still parses) while changing the file's length and
+        /// last-write time, which is what the pool key discriminates on.
+        /// </summary>
+        static void MutateBite(string path) => File.AppendAllText(path, "\n");
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Rent_AfterTheFileChanges_DoesNotServeTheStalePooledInstance()
+        {
+            var temp = CopyToTempBite();
+            try
+            {
+                var first = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+                Assert.IsNotNull(first);
+                WorkflowExecutor.ReturnPreparedWorkflow(temp, first);
+
+                MutateBite(temp);
+
+                var second = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+
+                Assert.IsNotNull(second);
+                Assert.AreNotSame(first, second,
+                    "a pooled instance compiled from the PRE-edit file was served after the file changed");
+            }
+            finally
+            {
+                File.Delete(temp);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Rent_WhenFileIsUnchanged_StillReusesThePooledInstance()
+        {
+            // The other half of the contract: keying on file identity must not defeat pooling for
+            // the overwhelmingly common case where nothing changed between executions.
+            var temp = CopyToTempBite();
+            try
+            {
+                var first = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+                WorkflowExecutor.ReturnPreparedWorkflow(temp, first);
+
+                var second = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+
+                Assert.AreSame(first, second, "an unchanged workflow should still be pooled and reused");
+            }
+            finally
+            {
+                File.Delete(temp);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Return_AfterTheFileChangedMidExecution_DoesNotFileTheStaleInstanceUnderTheNewKey()
+        {
+            // Return must use the key STAMPED at rent time, not recompute it from the file. If it
+            // recomputed, an instance compiled from the old definition would be filed under the new
+            // definition's key and handed to the very next execution - reintroducing the bug by a
+            // different route.
+            var temp = CopyToTempBite();
+            try
+            {
+                var rented = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+                Assert.IsNotNull(rented);
+
+                MutateBite(temp);                                   // changes while "executing"
+                WorkflowExecutor.ReturnPreparedWorkflow(temp, rented);
+
+                var next = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+
+                Assert.AreNotSame(rented, next,
+                    "the instance compiled from the pre-change file was filed under the changed file's key");
+            }
+            finally
+            {
+                File.Delete(temp);
+            }
+        }
+
+        // ── Explicit eviction (what the MCP write tools call) ────────────────
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void EvictWorkflow_DropsPooledInstancesForThatPath()
+        {
+            var temp = CopyToTempBite();
+            try
+            {
+                var first = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+                WorkflowExecutor.ReturnPreparedWorkflow(temp, first);
+
+                WorkflowExecutor.EvictWorkflow(temp);
+
+                var second = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+
+                Assert.AreNotSame(first, second, "eviction should force the next rent to recompile");
+            }
+            finally
+            {
+                File.Delete(temp);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void EvictWorkflow_LeavesOtherWorkflowsPooled()
+        {
+            var a = CopyToTempBite();
+            var b = CopyToTempBite();
+            try
+            {
+                var pooledB = WorkflowExecutor.RentPreparedWorkflow(b, XamlOf(b));
+                WorkflowExecutor.ReturnPreparedWorkflow(b, pooledB);
+
+                WorkflowExecutor.EvictWorkflow(a);
+
+                var againB = WorkflowExecutor.RentPreparedWorkflow(b, XamlOf(b));
+                Assert.AreSame(pooledB, againB, "evicting one workflow must not clear another");
+            }
+            finally
+            {
+                File.Delete(a);
+                File.Delete(b);
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void EvictWorkflow_IsSafeForUnknownNullAndEmptyPaths()
+        {
+            WorkflowExecutor.EvictWorkflow(Path.Combine(Path.GetTempPath(), "never-pooled.bite"));
+            WorkflowExecutor.EvictWorkflow(null!);
+            WorkflowExecutor.EvictWorkflow(string.Empty);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Rent_AfterFileChange_StillYieldsExclusiveInstances()
+        {
+            // The staleness fix must not weaken the invariant this whole class exists to protect:
+            // two renters never hold the same instance, regardless of which key bucket they hit.
+            var temp = CopyToTempBite();
+            try
+            {
+                var first = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+                MutateBite(temp);
+                var second = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+                var third = WorkflowExecutor.RentPreparedWorkflow(temp, XamlOf(temp));
+
+                Assert.AreNotSame(first, second);
+                Assert.AreNotSame(second, third);
+                Assert.AreNotSame(first, third);
+            }
+            finally
+            {
+                File.Delete(temp);
+            }
+        }
     }
 }

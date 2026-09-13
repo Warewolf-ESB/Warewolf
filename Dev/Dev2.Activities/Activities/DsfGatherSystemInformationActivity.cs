@@ -623,8 +623,8 @@ namespace Dev2.Activities
 
             base.ToX6Json(cell);
 
-            cell.shape = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY;
-            cell.data[Constants.TYPE] = Constants.DSFDOTNETGATHERSYSTEMINFORMATIONACTIVITY.ToLower();
+            cell.shape = Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY;
+            cell.data[Constants.TYPE] = Constants.DSFGATHERSYSTEMINFORMATIONACTIVITY.ToLower();
             cell.data[Constants.DISPLAYNAME] = DisplayName ?? Constants.DISPLAYNAME_GATHERSYSTEMINFORMATION;
             cell.data[Constants.UNIQUEID] = UniqueID;
 
@@ -646,8 +646,7 @@ namespace Dev2.Activities
             // Gather System Information specific properties
             if (cell.data.TryGetValue(Constants.GATHERSYSINFO_SYSTEMINFOCOLLECTION, out var collectionObj))
             {
-                var array = collectionObj as JArray;
-                if (array != null)
+                if (CommonHelper.TryAsJArray(collectionObj, out var array))
                 {
                     SystemInformationCollection = array.ToObject<List<GatherSystemInformationTO>>();
                 }

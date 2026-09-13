@@ -345,6 +345,33 @@ Describe 'Deploy-WwEngineAndQueueProcessor — QueueProcessor splat' {
         $p.RabbitMqSecretUri   | Should -Be 'https://kv-1.vault.azure.net/secrets/rabbitmq-uri'
     }
 
+    It 'hands the engine SERVICE PRINCIPAL object id to the app-role grant' {
+        # Deploy-WwQueueProcessor.ps1 assigns Warewolf_QueueProcessor itself and would otherwise
+        # re-search the directory for the engine SP. This wrapper has already resolved it into the
+        # handover file, so passing it both saves two directory reads and pins the grant to THIS
+        # run's engine rather than whatever a display-name search happens to return first.
+        $ctx = New-Ctx
+        $ctx.SpObjectId = 'ENGINE-SP-OBJECT-ID'
+        (New-WwQpParams -Context $ctx).EngineSpObjectId | Should -Be 'ENGINE-SP-OBJECT-ID'
+    }
+
+    It 'omits -EngineSpObjectId when step 5 could not resolve it' {
+        # A blank value would be worse than none: the child would take it as "supplied" and skip its
+        # own lookup, leaving the grant with no resource id at all.
+        $ctx = New-Ctx
+        $ctx.SpObjectId = $null
+        (New-WwQpParams -Context $ctx).ContainsKey('EngineSpObjectId') | Should -BeFalse
+    }
+
+    It 'tolerates a context that predates SpObjectId' {
+        # Set-StrictMode -Version Latest turns a missing hashtable KEY into a PropertyNotFoundException,
+        # and callers legitimately build a narrower context than step 5's - every test above does.
+        # Reading it with a bare $Context.SpObjectId broke all six splat tests when it was added.
+        $ctx = New-Ctx
+        $ctx.Remove('SpObjectId')
+        { New-WwQpParams -Context $ctx } | Should -Not -Throw
+    }
+
     It 'reuses the shared values rather than declaring them twice' {
         $ctx = New-Ctx
         $e = New-WwEngineParams -Context $ctx

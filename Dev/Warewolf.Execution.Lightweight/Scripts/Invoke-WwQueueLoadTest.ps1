@@ -1401,8 +1401,14 @@ if ($SkipPreWarm) {
 else {
     $preWarm = Join-Path $ScriptDir 'Invoke-WwEnginePreWarm.ps1'
     if (-not (Test-Path -LiteralPath $preWarm)) { throw "Pre-warm script not found: $preWarm" }
-    & $preWarm -EngineAppName $cfg.EngineAppName -EngineAppId $cfg.EngineAppId `
-               -ResourceGroup $cfg.ResourceGroup -TenantId $cfg.EngineTenantId `
+
+    # Invoke-WwEnginePreWarm.ps1 is self-contained (no WwE2E.Common.psm1 dependency of its own), so
+    # the token it needs is minted here, the same way the workflow-execution verification leg already
+    # does, and handed in as a SecureString.
+    $preWarmToken = Get-E2EEngineToken -TenantId $cfg.EngineTenantId -EngineAppId $cfg.EngineAppId `
+                                        -FunctionAppName $cfg.EngineAppName -ResourceGroup $cfg.ResourceGroup
+    $preWarmAccessToken = ConvertTo-SecureString $preWarmToken -AsPlainText -Force
+    & $preWarm -EngineBaseUrl "https://$($cfg.EngineAppName).azurewebsites.net" -AccessToken $preWarmAccessToken `
                -WorkflowRoute $d.WorkflowRoute -TargetConcurrency $concurrency
 }
 

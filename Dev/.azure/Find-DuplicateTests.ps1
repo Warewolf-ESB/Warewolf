@@ -6,6 +6,9 @@
 .DESCRIPTION
     Tests are partitioned across pipeline jobs by TestCategory filters (Dev/.azure/pipeline.yml).
     Most jobs run a single category; a few are exclusionary (TestCategory!=A&TestCategory!=B...).
+    A job expresses that partition through any of TestRun.ps1's four selection flags -
+    -Filter, -Category, -Categories, -ExcludeCategories - which Get-JobTestCaseFilter collapses
+    into the one /TestCaseFilter expression vstest receives.
     There is no built-in check that a given test isn't selected by two jobs at once. A test that
     carries two categories, or a category that an exclusionary job forgets to exclude, will run in
     more than one job and waste CI time / skew results.
@@ -16,7 +19,7 @@
       For every job it parses out of pipeline.yml it resolves the same assemblies TestRun.ps1 would
       (Projects globs minus ExcludeProjects against -BinariesDir), then asks the *real* VSTest engine
       which tests each job would select:
-          vstest.console.exe <assembly> /ListFullyQualifiedTests /TestCaseFilter:"<-Filter value>"
+          vstest.console.exe <assembly> /ListFullyQualifiedTests /TestCaseFilter:"<job's filter>"
       (VSTest honours /TestCaseFilter while listing, so this exactly reproduces job selection without
       re-implementing filter semantics.) Any test selected by >= 2 jobs is reported as a duplicate.
 
@@ -139,6 +142,43 @@ function Split-QuotedList([string]$token) {
     return @($token -split ',' | ForEach-Object { $_.Trim().Trim('"').Trim("'") } | Where-Object { $_ })
 }
 
+function Get-JobTestCaseFilter {
+    # Collapses a TestRun.ps1 argument string into the single /TestCaseFilter expression
+    # vstest would actually receive. TestRun.ps1 accepts FOUR selection flags, not one:
+    # -ExcludeCategories / -Category / -Categories (mutually exclusive, in that precedence)
+    # and -Filter, which is AND-ed onto whichever of those won. This mirrors the builder at
+    # TestRun.ps1's vstest invocation - if the two drift, this gate reports phantom
+    # duplicates for every job whose real filter it failed to reproduce.
+    param([string]$ArgString)
+
+    $filter = Get-FlagQuoted $ArgString '-Filter'
+    # ignore the diagnostic "*.trx" Get-ChildItem -Filter that lives elsewhere in the job
+    if ($filter -and ($filter -notmatch 'TestCategory')) { $filter = $null }
+
+    # -Category takes a single (possibly space-bearing) category, so it is read as a quoted
+    # value; the list flags are read as one whitespace-delimited token exactly like -Projects.
+    # None of these regexes cross-match: Get-FlagToken/Get-FlagQuoted both require whitespace
+    # straight after the flag, so '-Category' never swallows '-Categories'.
+    $excludeCategories = Split-QuotedList (Get-FlagToken  $ArgString '-ExcludeCategories')
+    $category          =                   Get-FlagQuoted $ArgString '-Category'
+    $categories        = Split-QuotedList (Get-FlagToken  $ArgString '-Categories')
+
+    $categoryArg = $null
+    if ($excludeCategories.Count -gt 0) {
+        $categoryArg = '(TestCategory!=' + ($excludeCategories -join ')&(TestCategory!=') + ')'
+    } elseif ($category) {
+        $categoryArg = "(TestCategory=$category)"
+    } elseif ($categories.Count -gt 0) {
+        $categoryArg = '(TestCategory=' + ($categories -join ')|(TestCategory=') + ')'
+    }
+
+    if ($filter) {
+        if ($categoryArg) { return "($categoryArg)&($filter)" }
+        return $filter
+    }
+    return $categoryArg
+}
+
 function Parse-PipelineJobs {
     param([string]$Path)
     $lines = Get-Content -LiteralPath $Path
@@ -180,9 +220,7 @@ function Parse-PipelineJobs {
 
             $projects        = Split-QuotedList (Get-FlagToken  $argString '-Projects')
             $excludeProjects = Split-QuotedList (Get-FlagToken  $argString '-ExcludeProjects')
-            $filter          = Get-FlagQuoted $argString '-Filter'
-            # ignore the diagnostic "*.trx" Get-ChildItem -Filter that lives elsewhere in the job
-            if ($filter -and ($filter -notmatch 'TestCategory')) { $filter = $null }
+            $filter          = Get-JobTestCaseFilter $argString
 
             if ($projects.Count -gt 0) {
                 $jobs.Add([pscustomobject]@{

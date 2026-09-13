@@ -850,15 +850,18 @@ namespace Warewolf.Storage
             {
                 if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.NameExpression nameExpression)
                 {
-                    if (_env.JsonObjects.Count > 0)
+                    if (_env.JsonObjects.TryGetValue(nameExpression.Item.Name, out var namedContainer))
                     {
-                        return _env.JsonObjects[nameExpression.Item.Name];
+                        return namedContainer;
                     }
                 }
 
                 if (jsonIdentifierExpression.Item is LanguageAST.JsonIdentifierExpression.IndexNestedNameExpression arrayExpression)
                 {
-                    return _env.JsonObjects[arrayExpression.Item.ObjectName];
+                    if (_env.JsonObjects.TryGetValue(arrayExpression.Item.ObjectName, out var indexedContainer))
+                    {
+                        return indexedContainer;
+                    }
                 }
             }
 

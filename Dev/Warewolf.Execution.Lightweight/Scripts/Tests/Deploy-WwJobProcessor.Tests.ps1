@@ -100,12 +100,19 @@ Describe 'Deploy-WwJobProcessor — end-to-end (DryRun, no side effects)' {
 
     BeforeEach {
         $global:resourcesExist = $true
+        $global:appNetFx       = $null
         function az {
             $a = $args; $global:LASTEXITCODE = 0
             if ($a[0] -eq 'account'     -and $a -contains 'show')   { return '{"id":"sub-123","tenantId":"tid-456","user":{"name":"dev@x"},"name":"My Sub"}' }
             if ($a[0] -eq 'group'       -and $a -contains 'exists') { return ($global:resourcesExist ? 'true' : 'false') }
             if ($a[0] -eq 'storage'     -and $a -contains 'show')   { if (-not $global:resourcesExist) { $global:LASTEXITCODE = 1; return $null } return '{"name":"st"}' }
-            if ($a[0] -eq 'functionapp' -and $a -contains 'show')   { if (-not $global:resourcesExist) { $global:LASTEXITCODE = 1; return $null } return '{"name":"app"}' }
+            if ($a[0] -eq 'functionapp' -and $a -contains 'show')   {
+                if (-not $global:resourcesExist) { $global:LASTEXITCODE = 1; return $null }
+                # $global:appNetFx lets a test place an EXISTING app on a specific runtime.
+                # $null keeps the original siteConfig-less payload every other test relies on.
+                if ($null -eq $global:appNetFx) { return '{"name":"app"}' }
+                return ('{"name":"app","siteConfig":{"netFrameworkVersion":"' + $global:appNetFx + '"}}')
+            }
             if ($a[0] -eq 'keyvault'    -and $a -contains 'secret' -and $a -contains 'show') { $global:LASTEXITCODE = 1; return $null }
             return '{}'
         }
@@ -154,6 +161,7 @@ Describe 'Deploy-WwJobProcessor — end-to-end (DryRun, no side effects)' {
 
     AfterAll {
         Remove-Variable -Name resourcesExist -Scope Global -ErrorAction SilentlyContinue
+        Remove-Variable -Name appNetFx       -Scope Global -ErrorAction SilentlyContinue
         Remove-Variable -Name pubDir, srcDir, logDir, psFile, dbFile -Scope Global -ErrorAction SilentlyContinue
     }
 
@@ -265,5 +273,52 @@ Describe 'Deploy-WwJobProcessor — end-to-end (DryRun, no side effects)' {
         $out = (& $script:DeployScript @b) 6>&1 | Out-String
         $out | Should -Match 'ENGINE_RESUME_AUTH_DISABLED\s*= true'
         $out | Should -Not -Match 'ENGINE_RESUME_SCOPE\s*='
+    }
+
+    # ── .NET runtime (create + reconcile) ──────────────────────────────────────
+    # `functionapp create` is the ONLY place --runtime-version applies, so an app created
+    # by an earlier run keeps the runtime it was born with. Deploying a net10.0 package
+    # onto a v8.0 host gives a deploy that reports success and a worker that never starts.
+
+    It 'creates a NEW app on dotnet-isolated 10, never 8' {
+        $global:resourcesExist = $false
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Match '\[DRYRUN\] az functionapp create .*--runtime dotnet-isolated --runtime-version 10'
+        $out | Should -Not -Match '--runtime-version 8'
+    }
+
+    It 'states the runtime decision in the plan' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Match 'Runtime\s+: dotnet-isolated 10 \(Functions v4\)'
+    }
+
+    It 'upgrades an existing v8.0 app when -UpgradeRuntimeVersion is passed' {
+        $global:appNetFx = 'v8.0'
+        $out = (& $script:DeployScript @commonArgs -UpgradeRuntimeVersion) 6>&1 | Out-String
+        $out | Should -Match '\[DRYRUN\] az functionapp config set .*--net-framework-version v10\.0'
+    }
+
+    It 'does NOT touch an existing v8.0 app without the switch, but warns' {
+        # Anchor on the [DRYRUN] marker, not the bare command: the warning QUOTES the
+        # remediation command, so a looser pattern passes either way.
+        $global:appNetFx = 'v8.0'
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+        $out | Should -Match 'RUNTIME MISMATCH'
+    }
+
+    It 'does nothing when the existing app is already v10.0 (no needless restart)' {
+        $global:appNetFx = 'v10.0'
+        $out = (& $script:DeployScript @commonArgs -UpgradeRuntimeVersion) 6>&1 | Out-String
+        $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+        $out | Should -Not -Match 'RUNTIME MISMATCH'
+    }
+
+    It 'exposes -UpgradeRuntimeVersion as an off-by-default switch' {
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile($script:DeployScript, [ref]$null, [ref]$null)
+        $p   = $ast.ParamBlock.Parameters | Where-Object { $_.Name.VariablePath.UserPath -eq 'UpgradeRuntimeVersion' }
+        $p                    | Should -Not -BeNullOrEmpty
+        $p.StaticType.Name    | Should -Be 'SwitchParameter'
+        $p.DefaultValue       | Should -BeNullOrEmpty
     }
 }

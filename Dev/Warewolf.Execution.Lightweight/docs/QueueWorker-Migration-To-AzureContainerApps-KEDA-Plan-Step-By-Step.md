@@ -7,10 +7,10 @@ Phased implementation plan for migrating Warewolf's RabbitMQ **queue-trigger** p
 Engine** (Azure Function App, EasyAuth + Entra ID) with a **managed identity**.
 
 Companion documents:
-- [QueueWorker-Migration-To-Azure-Plan-Step-By-Step.md](QueueWorker-Migration-To-Azure-Plan-Step-By-Step.md)
+- [QueueWorker-Migration-To-Azure-Plan-Step-By-Step.md](archive/QueueWorker-Migration-To-Azure-Plan-Step-By-Step.md)
   — **superseded**; retained as the recorded evaluation of the Azure Functions RabbitMQ trigger-binding
   option. Its §1 analysis and §2.7 hosting comparison remain valid.
-- [HangFire-Migration-To-Azure-Plan-Step-By-Step.md](HangFire-Migration-To-Azure-Plan-Step-By-Step.md)
+- [HangFire-Migration-To-Azure-Plan-Step-By-Step.md](archive/HangFire-Migration-To-Azure-Plan-Step-By-Step.md)
   and [HangeFire-Azure-Architecture.md](HangeFire-Azure-Architecture.md) — the sibling migration whose
   MI + Entra app-role authorization, WFAES/Key Vault secret handling, linked-shared-source pattern, and
   deploy-script conventions are reused here.

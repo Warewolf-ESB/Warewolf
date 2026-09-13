@@ -210,6 +210,16 @@
     WAREWOLF_LOGGING_CONFIG JSON app setting (WOLF-8516; formerly the standalone
     STRUCTURED_LOGS env var).
 
+.PARAMETER UpgradeRuntimeVersion
+    OPT-IN.  Reconcile an EXISTING Function App's runtime to dotnet-isolated 10 /
+    netFrameworkVersion v10.0 (what the engine's net10.0 payload requires).  A new
+    app is always created on the correct runtime; an app created by an earlier run
+    keeps the runtime it was created with, so a v8.0 host would load the net10.0
+    worker and die at startup with "You must install or update .NET to run this
+    application."  Changing it RESTARTS the app, which is why it is not automatic:
+    without this switch a mismatch is reported in the Phase 0.5 plan and warned
+    about in Phase 1, but nothing is changed.
+
 .PARAMETER LogDir
     Directory for the transcript + summary.  Default: <PublishDir>\..\deploy-logs.
 
@@ -257,6 +267,11 @@ param(
     [string] $Location,
     [string] $StorageAccount,
     [string] $AppName,
+
+    # ── Runtime ──────────────────────────────────────────────────────────────
+    # OPT-IN.  A Function App is created on the correct runtime; one that ALREADY
+    # exists keeps whatever it was created with, and changing it restarts the app.
+    [switch] $UpgradeRuntimeVersion,
 
     # ── Publish source (REQUIRED — folder or .zip) ───────────────────────────
     [string] $PublishPath,
@@ -367,6 +382,43 @@ param(
     [nullable[bool]] $LicenseCheckEnabled,
     [nullable[bool]] $StructuredLogs,
     [switch] $AlignHostJsonLogLevel,      # opt-in: also rewrite host.json logLevel (host-process only)
+
+    # RabbitMQ publish connection cache (WAREWOLF_RABBITMQ_CACHE). Reuses the AMQP connection
+    # across PublishRabbitMQActivity executions instead of opening one per publish, which removes
+    # ~6 of the 8 broker round-trips a publish costs. Measured 4.5x on a remote broker; a 500-row
+    # recordset publish drops from ~11 min to ~2.5 min. See docs/RabbitMQ-ConnectionCache-Plan.md
+    # and docs/RabbitMQ-ConnectionCache-Benchmark.md.
+    #
+    # ON BY DEFAULT FOR EVERY ENGINE, by explicit decision (2026-09-13): optimum RabbitMQ publish
+    # throughput is wanted on every instance, not opted into per deployment. The engine itself still
+    # defaults to OFF when the variable is absent - that safety net is unchanged and is what a host
+    # other than this script (the on-prem server, a hand-made app) continues to get.
+    #
+    # Pass '' (empty) to omit the setting entirely, which leaves the engine on the uncached path it
+    # has always used. Do that only to isolate a suspected caching fault; it is not the normal state.
+    #
+    # WAREWOLF_RABBITMQ_CACHE is the ONLY environment variable controlling this feature; all eight
+    # knobs live inside it (RabbitMqCacheOptions.FileShape). Every field is stated explicitly rather
+    # than left to the engine's defaults, so what a deployed app is running is readable from the
+    # Function App's settings blade without cross-referencing source.
+    #
+    # These values are the configuration MEASURED FASTEST, not a guess:
+    #   enabled + channelPool     19,262 msg/s  (0.03 ms/publish, 1 connection, 1 channel)
+    #   enabled only               3.3 msg/s    (294.8 ms/publish - channel.open+close is 99.6% of it)
+    #   neither                    0.7 msg/s    (1340.7 ms/publish - full handshake per message)
+    #
+    #   channelPool              - reuses channels instead of one open+close per publish. This is the
+    #                              big one: with the connection cached it is ~99.6% of what remains.
+    #   maxChannelsPerConnection - ceiling, not a target. The pool only ever grows to the peak
+    #                              concurrency actually seen (measured: 1 channel sequential, 8 for
+    #                              8 concurrent threads), so 32 is headroom that is never allocated.
+    #   topologyTtl              - skips the two passive declares while fresh. Each expiry costs one
+    #                              publish ~2 extra round-trips (measured 324.7 ms -> 481.1 ms), which
+    #                              matters proportionally MORE once pooling has removed everything else.
+    #   maxConnections           - per-broker connection ceiling; one broker needs one.
+    #   idleTimeout/maxLifetime/sweepInterval - connection hygiene. No measurable effect on throughput;
+    #                              they exist so a cached socket is released rather than held forever.
+    [string] $RabbitMqCacheConfig = '{"enabled":true,"channelPool":true,"maxChannelsPerConnection":32,"idleTimeout":"00:05:00","maxLifetime":"00:30:00","topologyTtl":"00:00:30","maxConnections":4,"sweepInterval":"00:01:00"}',
     [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
 
     # ── ServiceBusTrigger tunables (WOLF-8516 — file-only, no env-var fallback) ──
@@ -394,6 +446,27 @@ param(
 
 Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
+
+# ════════════════════════════════════════════════════════════════════════════
+# .NET runtime the Function App must run on
+# ════════════════════════════════════════════════════════════════════════════
+# These MUST track <TargetFramework> in Warewolf.Execution.Lightweight.csproj (net10.0)
+# and the AzureFunctionsVersion (v4) beside it. The host does not adapt to the payload:
+# a v8.0 host loading a net10.0 worker fails at startup with "You must install or update
+# .NET to run this application." before a single function is indexed — the Function App
+# equivalent of the base-image mismatch documented in the QueueProcessor's Dockerfile.
+# The companion scripts (Deploy-WwJobProcessor.ps1, Deploy-WwExecutionServiceBusWorker.ps1)
+# carry the same three constants; all four projects target net10.0, so they move together.
+$script:TargetFunctionsRuntime    = 'dotnet-isolated'
+$script:TargetRuntimeVersion      = '10'      # `functionapp create --runtime-version`
+$script:TargetNetFrameworkVersion = 'v10.0'   # `siteConfig.netFrameworkVersion` on an existing app
+$script:TargetFunctionsVersion    = '4'       # `functionapp create --functions-version`
+
+# Resolved for real in Phase 0.5. Seeded here so Save-DeploySummary is StrictMode-safe no
+# matter how early a run dies (the summary is the rollback's record of intent).
+$script:RuntimePlan = [pscustomobject]@{
+    Current = $null; Target = $script:TargetNetFrameworkVersion; Action = 'create'; Message = '(not yet resolved)'
+}
 
 # ════════════════════════════════════════════════════════════════════════════
 # Helpers
@@ -809,6 +882,16 @@ function Save-DeploySummary {
         location        = $Location
         storageAccount  = $StorageAccount
         appName         = $AppName
+        # What this run did about the .NET runtime. An operator reading a summary after a
+        # failed startup needs to see 'warn' here without re-deriving it from the log.
+        runtime         = [ordered]@{
+            runtime            = $script:TargetFunctionsRuntime
+            runtimeVersion     = $script:TargetRuntimeVersion
+            functionsVersion   = $script:TargetFunctionsVersion
+            netFrameworkTarget = $script:TargetNetFrameworkVersion
+            netFrameworkBefore = $script:RuntimePlan.Current
+            action             = $script:RuntimePlan.Action
+        }
         appInsightsName = ($enableAppInsights ? $AppInsightsName : $null)
         appInsightsConnectionString = $aiConnMasked
         endpoint        = $baseUrl
@@ -933,6 +1016,54 @@ function Grant-RoleAssignment {
     throw ("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). " +
            "If the identity was only just created, re-running the deploy usually succeeds." -f
            $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds))
+}
+
+function Resolve-FunctionRuntimePlan {
+    <#
+        Decide what THIS run does about the Function App's .NET runtime, from the
+        app's CURRENT netFrameworkVersion.  Pure — no az calls — so the decision is
+        made once at plan time (Phase 0.5), printed, and then replayed in Phase 1.
+
+        $CurrentNetFrameworkVersion is $null/empty when the app does not exist yet,
+        or when `functionapp show` returned a payload without siteConfig.
+
+          Action 'create'  - no app yet; `functionapp create` pins the target runtime.
+          Action 'none'    - already on the target.
+          Action 'upgrade' - mismatch AND -UpgradeRuntimeVersion; Phase 1 will run
+                             `functionapp config set --net-framework-version`.
+          Action 'warn'    - mismatch WITHOUT the switch; report loudly, change nothing.
+
+        Why 'warn' and not 'upgrade' by default: `config set` restarts the app, and a
+        restart is not something a deploy should do to a running environment on its own
+        inference.  The cost of the warning path is explicit — the run continues and the
+        engine will fail at startup — so the message has to say exactly that.
+    #>
+    param(
+        [string] $CurrentNetFrameworkVersion,
+        [switch] $Upgrade,
+        [string] $TargetNetFrameworkVersion = $script:TargetNetFrameworkVersion
+    )
+    $current = if ([string]::IsNullOrWhiteSpace($CurrentNetFrameworkVersion)) { $null }
+               else { $CurrentNetFrameworkVersion.Trim() }
+
+    $action = if (-not $current)                                        { 'create'  }
+              elseif ($current -ieq $TargetNetFrameworkVersion)         { 'none'    }
+              elseif ($Upgrade)                                         { 'upgrade' }
+              else                                                      { 'warn'    }
+
+    $message = switch ($action) {
+        'create'  { "will be created on $script:TargetFunctionsRuntime $script:TargetRuntimeVersion ($TargetNetFrameworkVersion, Functions v$script:TargetFunctionsVersion)" }
+        'none'    { "$current — already correct" }
+        'upgrade' { "$current -> $TargetNetFrameworkVersion (-UpgradeRuntimeVersion; the app RESTARTS)" }
+        'warn'    { "$current, but this package needs $TargetNetFrameworkVersion — NOT changed (pass -UpgradeRuntimeVersion)" }
+    }
+
+    [pscustomobject]@{
+        Current = $current
+        Target  = $TargetNetFrameworkVersion
+        Action  = $action
+        Message = $message
+    }
 }
 
 if ($LoadFunctionsOnly) { return }
@@ -1278,6 +1409,19 @@ $loggingConfigValue = [ordered]@{
 }
 $appSettings['WAREWOLF_LOGGING_CONFIG']       = ($loggingConfigValue | ConvertTo-Json -Compress)
 $appSettings['WAREWOLF_LICENSE_CHECK_ENABLED'] = ($licenseCheck ? 'true' : 'false')
+
+# RabbitMQ publish connection cache. Omitted entirely when -RabbitMqCacheConfig is empty, because
+# an ABSENT variable is the engine's documented "uncached" default - writing '{"enabled":false}'
+# would mean the same thing but leave a misleading setting on the app.
+if (-not [string]::IsNullOrWhiteSpace($RabbitMqCacheConfig)) {
+    # Validated HERE, not at the engine. RabbitMqCacheOptions.FromJson treats unparseable JSON as
+    # DISABLED and only warns, so a typo would produce a deploy that reports success and an engine
+    # that silently never caches. Failing now is the only way that becomes visible.
+    try { $null = $RabbitMqCacheConfig | ConvertFrom-Json }
+    catch { throw "RabbitMqCacheConfig is not valid JSON: $($_.Exception.Message)`nValue: $RabbitMqCacheConfig" }
+
+    $appSettings['WAREWOLF_RABBITMQ_CACHE'] = $RabbitMqCacheConfig
+}
 # NOTE: BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
 # SkipFailureToRetrieveSecret (merged into WAREWOLF_SECURITY_FLAGS — WOLF-8516) are
 # deliberately NOT set here (not shown in logs/summary, not created on the Function
@@ -1290,6 +1434,25 @@ $appSettings['WAREWOLF_LICENSE_CHECK_ENABLED'] = ($licenseCheck ? 'true' : 'fals
 # file instead (see Phase 3, "3.5c" below). HostEnvironmentConfig no longer reads
 # these env vars at all.
 
+# ── Runtime decision (resolved HERE so the plan can state it, applied in Phase 1) ──
+# `functionapp show` is a READ, so it runs under -DryRun too and the plan tells the truth
+# about an app that already exists rather than assuming a fresh create. StrictMode-safe:
+# no app, or a payload without siteConfig, both resolve to $null ("will be created").
+$existingNetFx = $null
+$appShowJson   = Invoke-Az @('functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+if ($appShowJson) {
+    try {
+        $appShow    = ($appShowJson | Out-String) | ConvertFrom-Json
+        $siteConfig = $appShow.PSObject.Properties['siteConfig']
+        if ($siteConfig -and $siteConfig.Value) {
+            $netFxProp = $siteConfig.Value.PSObject.Properties['netFrameworkVersion']
+            if ($netFxProp) { $existingNetFx = [string]$netFxProp.Value }
+        }
+    }
+    catch { $existingNetFx = $null }
+}
+$script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $existingNetFx -Upgrade:$UpgradeRuntimeVersion
+
 # ── Settings summary + single confirmation (item 8) ────────────────────────────
 Write-Host ''
 Write-Host '  ── Resolved deployment settings ──────────────────────────────────────' -ForegroundColor White
@@ -1299,6 +1462,8 @@ Write-Host ("    {0,-28}: {1}" -f 'ResourceGroup', $ResourceGroup)
 Write-Host ("    {0,-28}: {1}" -f 'Location', $Location)
 Write-Host ("    {0,-28}: {1}" -f 'StorageAccount', $StorageAccount)
 Write-Host ("    {0,-28}: {1}" -f 'AppName', $AppName)
+Write-Host ("    {0,-28}: {1}" -f 'Runtime', ("{0} {1} (Functions v{2}) — {3}" -f
+    $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion, $script:RuntimePlan.Message))
 Write-Host ("    {0,-28}: {1}" -f 'PublishPath', $PublishPath)
 Write-Host ("    {0,-28}: {1}" -f 'PublishDir', ($publishIsZip ? "$PublishDir  (extracted from zip)" : $PublishDir))
 Write-Host ("    {0,-28}: {1}" -f 'PublishMethod', $PublishMethod)
@@ -1354,6 +1519,18 @@ if (-not $SkipAuthProvisioning) {
     Write-Host '    WAREWOLF_ENTRA_CONFIG (tenantId/audience/clientId) = (set by Configure-WwExecutionAuth.ps1 — WOLF-8516)'
 }
 Write-Host ''
+
+# Surfaced BEFORE the confirmation, not buried in the settings table: continuing past a
+# runtime mismatch produces a deploy that reports success and an engine that never starts.
+if ($script:RuntimePlan.Action -eq 'warn') {
+    Write-Note ("RUNTIME MISMATCH: Function App '{0}' runs {1}, but this package targets {2}. " -f
+                $AppName, $script:RuntimePlan.Current, $script:RuntimePlan.Target)
+    Write-Note ("  The deploy will SUCCEED and the engine will then fail at startup with " +
+                "'You must install or update .NET to run this application.' Re-run with " +
+                '-UpgradeRuntimeVersion to reconcile the app (it restarts), or fix it out of band ' +
+                ("with: az functionapp config set -n {0} -g {1} --net-framework-version {2}" -f
+                 $AppName, $ResourceGroup, $script:RuntimePlan.Target))
+}
 
 if (-not (Confirm-Yes 'Proceed with this deployment?' $true)) {
     Write-Note 'Aborted by user.'
@@ -1444,19 +1621,47 @@ try {
         Write-Ok 'Storage account created.'
     }
 
-    # 1.3 Function App (Consumption Y1, .NET 8 isolated, Functions v4)
+    # 1.3 Function App (Consumption Y1, .NET 10 isolated, Functions v4)
     $appExists = Invoke-Az @('functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
     if ($appExists) {
         Write-Ok "Function App '$AppName' already exists."
         $created['functionApp'] = $false
+
+        # An existing app keeps the runtime it was CREATED with — `functionapp create` is
+        # the only place --runtime-version applies, and this branch never runs it. Replay
+        # the Phase 0.5 decision so a long-lived app does not silently stay a version
+        # behind the payload being deployed onto it.
+        switch ($script:RuntimePlan.Action) {
+            'upgrade' {
+                Write-Step ("Upgrading Function App runtime {0} -> {1} (the app restarts)" -f
+                            $script:RuntimePlan.Current, $script:RuntimePlan.Target)
+                Invoke-Az @(
+                    'functionapp', 'config', 'set',
+                    '--name', $AppName, '--resource-group', $ResourceGroup,
+                    '--net-framework-version', $script:RuntimePlan.Target, '-o', 'none'
+                ) -Mutating | Out-Null
+                Write-Ok "Function App runtime set to $($script:RuntimePlan.Target)."
+            }
+            'warn' {
+                Write-Note (("Function App runtime left at {0}; this package targets {1}. " -f
+                             $script:RuntimePlan.Current, $script:RuntimePlan.Target) +
+                            'Re-run with -UpgradeRuntimeVersion to reconcile it.')
+            }
+            default {
+                Write-Ok "Function App runtime is $($script:RuntimePlan.Target)."
+            }
+        }
     } else {
         $created['functionApp'] = $true   # intent recorded BEFORE creating
-        Write-Step "Creating Function App '$AppName' (Consumption Y1, dotnet-isolated 8, Functions v4)"
+        Write-Step ("Creating Function App '{0}' (Consumption Y1, {1} {2}, Functions v{3})" -f
+                    $AppName, $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion)
         Invoke-Az (@(
             'functionapp', 'create',
             '--name', $AppName, '--resource-group', $ResourceGroup, '--consumption-plan-location', $Location,
-            '--storage-account', $StorageAccount, '--runtime', 'dotnet-isolated', '--runtime-version', '8',
-            '--functions-version', '4', '--https-only', 'true', '--os-type', 'Windows', '--tags'
+            '--storage-account', $StorageAccount, '--runtime', $script:TargetFunctionsRuntime,
+            '--runtime-version', $script:TargetRuntimeVersion,
+            '--functions-version', $script:TargetFunctionsVersion,
+            '--https-only', 'true', '--os-type', 'Windows', '--tags'
         ) + $ResourceTags) -Mutating | Out-Null
         Write-Ok 'Function App created.'
     }
@@ -1928,9 +2133,102 @@ try {
 
     # 3.7 Apply environment variables (App Settings).
     Write-Step 'Applying environment variables (App Settings)'
-    $settingsArgs = @($appSettings.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" })
-    Invoke-Az (@('functionapp', 'config', 'appsettings', 'set', '--name', $AppName, '--resource-group', $ResourceGroup, '--settings') + $settingsArgs + @('-o', 'none')) -Mutating | Out-Null
+    # --settings @FILE, never inline "K=V" pairs.
+    #
+    # On Windows az consumes the inner double quotes of --settings "K={"a":1}", so a JSON value
+    # arrives stored as {a:1} - not valid JSON. Hit live on 2026-09-08 deploying 'wwuat', where it
+    # made WAREWOLF_ENTRA_CONFIG unparseable and aborted the run with
+    #   "WAREWOLF_ENTRA_CONFIG is not valid JSON ... Path 'tenantId'"
+    # Configure-WwExecutionAuth.ps1 was fixed the same way for exactly that reason.
+    #
+    # The inline form ALSO silently corrupted the two JSON settings written here, where nothing
+    # verifies the stored value and so nothing complained:
+    #   WAREWOLF_LOGGING_CONFIG  -> RawFlags.FromEnvironment() returns AllFalse, so console logging
+    #                               and the App Insights SDK are OFF while the deploy reports success
+    #   WAREWOLF_RABBITMQ_CACHE  -> RabbitMqCacheOptions.FromJson treats unparseable JSON as DISABLED,
+    #                               so the connection cache never engages
+    # An @file carries every value verbatim and fixes all three at once.
+    #
+    # -AsArray is load-bearing: ConvertTo-Json unwraps a single-element array into a bare object,
+    # which az accepts and then silently no-ops (it can even create settings literally named
+    # name/value). .json extension, not .tmp: az infers the payload format from it.
+    $settingsFile = Join-Path ([System.IO.Path]::GetTempPath()) ("ww-appsettings-{0}.json" -f [guid]::NewGuid().ToString('N'))
+    try {
+        $settingObjects = @($appSettings.GetEnumerator() | ForEach-Object {
+            [ordered]@{ name = $_.Key; value = [string]$_.Value; slotSetting = $false }
+        })
+        # UTF-8 WITHOUT BOM: a BOM makes az reject the payload before it reaches ARM.
+        [System.IO.File]::WriteAllText(
+            $settingsFile,
+            ($settingObjects | ConvertTo-Json -Depth 5 -AsArray),
+            (New-Object System.Text.UTF8Encoding $false))
+
+        Invoke-Az @('functionapp', 'config', 'appsettings', 'set',
+                    '--name', $AppName, '--resource-group', $ResourceGroup,
+                    '--settings', "@$settingsFile", '-o', 'none') -Mutating | Out-Null
+    }
+    finally {
+        # May hold secret values - remove it even if az threw.
+        Remove-Item -LiteralPath $settingsFile -Force -ErrorAction SilentlyContinue
+    }
     Write-Ok "$($appSettings.Count) app setting(s) applied."
+
+    # ── Read the JSON settings BACK and prove they are still JSON ──────────────
+    # Writing them correctly is not the same as their having arrived correctly, and every failure
+    # in this area has been silent: the engine treats an unparseable WAREWOLF_RABBITMQ_CACHE as
+    # DISABLED and an unparseable WAREWOLF_LOGGING_CONFIG as all-flags-false, both with at most a
+    # warning in a log nobody reads. A deploy that reports success while the feature is off is
+    # exactly the outcome this whole check exists to make impossible.
+    #
+    # Deliberately NOT ConvertFrom-Json: PowerShell accepts unquoted property names, so it parses
+    # the mangled {enabled:true} quite happily and would report a corrupt value as healthy. The
+    # engine uses System.Text.Json, which rejects it - so the quotes are asserted directly.
+    $jsonSettingNames = @($appSettings.Keys | Where-Object { "$($appSettings[$_])".TrimStart().StartsWith('{') })
+    if ($jsonSettingNames.Count -gt 0 -and -not $DryRun) {
+        Write-Step "Verifying $($jsonSettingNames.Count) JSON app setting(s) round-tripped intact"
+
+        $storedByName = @{}
+        $storedJson = Invoke-Az @('functionapp', 'config', 'appsettings', 'list',
+                                  '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+        if ($storedJson) {
+            try {
+                # StrictMode-safe: an entry without name/value - an unexpected payload shape, or a
+                # stub in a test - must be skipped, never dereferenced. This check is a safety net
+                # and must not become a new way for a successful deploy to fail.
+                foreach ($entry in @(($storedJson | Out-String) | ConvertFrom-Json)) {
+                    if ($entry -and
+                        $entry.PSObject.Properties['name'] -and
+                        $entry.PSObject.Properties['value']) {
+                        $storedByName[[string]$entry.name] = [string]$entry.value
+                    }
+                }
+            }
+            catch { $storedByName = @{} }
+        }
+
+        if ($storedByName.Count -eq 0) {
+            Write-Note 'App settings could not be read back in a recognisable shape; JSON round-trip check skipped.'
+        }
+        else {
+            foreach ($name in $jsonSettingNames) {
+                if (-not $storedByName.ContainsKey($name)) {
+                    throw "App setting '$name' was applied but is not present on '$AppName'."
+                }
+
+                # Deliberately NOT ConvertFrom-Json: PowerShell accepts UNQUOTED property names, so it
+                # parses the mangled {enabled:true} happily and would certify a corrupt value as
+                # healthy. The engine uses System.Text.Json, which rejects it. az stripping the inner
+                # quotes is exactly what produces {a:1}, so their absence IS the defect - assert on
+                # the quotes themselves.
+                if ($storedByName[$name] -notmatch '"\s*:') {
+                    throw ("App setting '$name' was stored WITHOUT quoted property names, so the engine " +
+                           "cannot parse it and the feature it controls would be silently OFF." +
+                           "`nStored: $($storedByName[$name])")
+                }
+            }
+            Write-Ok "JSON app settings verified: $($jsonSettingNames -join ', ')."
+        }
+    }
 
     Save-DeploySummary -Status 'in-progress'   # persist created-map + staging dir before deploy
 
@@ -2173,8 +2471,10 @@ try {
         }
 
         Write-Ok "QueueProcessor companion deploy invoked for $($script:QueueTriggerFiles.Count) trigger(s)."
-        Write-Note 'Reminder: grant EACH QueueProcessor MI the engine role Warewolf_QueueProcessor, and add'
-        Write-Note 'a PER-WORKFLOW Execute row to secure.config for each trigger workflow (runbook section 8).'
+        Write-Note 'Deploy-WwQueueProcessor.ps1 grants EACH app''s managed identity the engine role'
+        Write-Note 'Warewolf_QueueProcessor itself; check its summary for any app it could not grant (that'
+        Write-Note 'needs AppRoleAssignment.ReadWrite.All). No per-workflow secure.config row is required -'
+        Write-Note 'a workflow with no resource-scoped entry inherits the global map (runbook section 8).'
 
         if ($qpFailures -gt 0) {
             Write-Note "$qpFailures trigger deploy(s) failed - see the summary JSON."

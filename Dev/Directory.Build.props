@@ -46,8 +46,10 @@
        last wins, so an older DLL can silently overwrite the 10.0.3 copy Lightweight requires,
        causing the dotnet-isolated Azure Functions worker to crash with a FileNotFoundException on
        startup (assembly version 10.0.0.0 not found). Setting the minimum version here forces every
-       project's NuGet resolution to 10.0.3. -->
-  <ItemGroup>
+       project's NuGet resolution to 10.0.3.
+       Scoped to pre-net10.0 TargetFrameworks: on net10.0 System.Text.Json ships in the shared
+       framework, so an explicit PackageReference is redundant and raises NU1510. -->
+  <ItemGroup Condition="'$(TargetFramework)' != 'net10.0'">
     <PackageReference Include="System.Text.Json" Version="10.0.3" />
   </ItemGroup>
 

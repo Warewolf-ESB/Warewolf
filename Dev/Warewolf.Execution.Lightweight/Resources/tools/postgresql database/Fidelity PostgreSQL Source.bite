@@ -1,0 +1,7 @@
+<Source ID="7e4a2d95-0f81-4c36-b5d7-3a9e6c8f1b20" ResourceID="7e4a2d95-0f81-4c36-b5d7-3a9e6c8f1b20" Name="Fidelity PostgreSQL Source" ResourceType="PostgreSQL" IsValid="true" ConnectionString="Host=localhost;Port=5432;Database=dev2testingdb;Username=postgres;Password=admin;Timeout=30" Type="DbSource" ServerType="PostgreSQL" ServerVersion="0.0.0.0" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>Fidelity PostgreSQL Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>DbSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-08-23T00:00:00.0000000+00:00" Reason="" User="FidelityFixtureGenerator" VersionNumber="1" ResourceId="7e4a2d95-0f81-4c36-b5d7-3a9e6c8f1b20" VersionId="7e4a2d95-0f81-4c36-b5d7-3a9e6c8f1b20" />
+</Source>

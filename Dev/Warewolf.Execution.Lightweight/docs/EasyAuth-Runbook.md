@@ -8,7 +8,7 @@
 │  Stage 0  Prerequisites                                                      │
 │  Stage 1  Provision Azure resources (RG, Storage, Function App)              │
 │  Stage 2  Run Configure-WwExecutionAuth.ps1  (Entra + Easy Auth)             │
-│  Stage 3  Build the function (.NET 8 isolated worker)                        │
+│  Stage 3  Build the function (.NET 10 isolated worker)                       │
 │  Stage 4  Publish secure.config alongside the package                        │
 │  Stage 5  Deploy the function (zip deploy / func azure functionapp publish)  │
 │  Stage 6  Smoke tests — anonymous, browser, token                            │
@@ -58,11 +58,12 @@ az storage account create `
     --name $Stg --resource-group $Rg --location $Loc `
     --sku Standard_LRS --kind StorageV2 --min-tls-version TLS1_2
 
-# 1.3 Function App on Consumption (Y1) - Free tier, .NET 8 isolated
+# 1.3 Function App on Consumption (Y1) - Free tier, .NET 10 isolated
+# Must match the engine's <TargetFramework> (net10.0); a v8.0 host cannot load it.
 az functionapp create `
     --name $AppName --resource-group $Rg --consumption-plan-location $Loc `
     --storage-account $Stg `
-    --runtime dotnet-isolated --runtime-version 8 --functions-version 4 `
+    --runtime dotnet-isolated --runtime-version 10 --functions-version 4 `
     --os-type Windows --https-only true
 
 # 1.4 Optional: Application Insights (strongly recommended)

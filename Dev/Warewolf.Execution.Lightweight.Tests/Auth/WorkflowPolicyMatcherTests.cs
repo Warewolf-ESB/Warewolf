@@ -86,6 +86,26 @@ public class WorkflowPolicyMatcherTests
         public void Reload() { }
     }
 
+    /// <summary>
+    /// Like <see cref="Principal"/>, but keys the identity on an explicit Entra object id
+    /// (the <see cref="AuthConstants.ObjectIdentifier"/> claim) instead of the shared fixed
+    /// NameIdentifier every other helper-built principal carries — for tests that need a
+    /// caller matched purely by object id, distinguishable from other principals.
+    /// </summary>
+    private static WorkflowClaimsPrincipal PrincipalWithObjectId(string displayName, string objectId, params string[] roles)
+    {
+        var claims = new List<Claim>
+        {
+            new(AuthConstants.ObjectIdentifier, objectId),
+            new(ClaimTypes.Name, displayName),
+            new(AuthConstants.Scope, "user_impersonation"),
+        };
+        foreach (var r in roles)
+            claims.Add(new Claim(ClaimTypes.Role, r));
+        return new WorkflowClaimsPrincipal(
+            new ClaimsIdentity(claims, "Bearer", ClaimTypes.Name, ClaimTypes.Role));
+    }
+
     private static WorkflowAuthPolicy MakePolicy(
         string workflow,
         params (string group, WorkflowPermission perms)[] entries)
@@ -327,6 +347,43 @@ public class WorkflowPolicyMatcherTests
         var result = matcher.Evaluate("hello", Principal("roleless@x.com"));
 
         Assert.AreEqual(PolicyMatchOutcome.Allowed, result.Outcome);
+    }
+
+    // ── Object-id matching (WOLF CR: AAD-user Contribute grant had zero effect) ──
+    // Display name / UPN claims can drift or be ambiguous; the Entra object id (oid)
+    // is the one identity claim guaranteed stable, so secure.config rows keyed on it
+    // must be honoured the same way UPN-keyed rows already are (TST12).
+
+    [TestMethod]
+    public void TST16_ObjectIdEntry_MatchedByUserId()
+    {
+        const string objectId = "33333333-3333-3333-3333-333333333333";
+        var policy  = MakePolicy("hello", (objectId, WorkflowPermission.View | WorkflowPermission.Execute));
+        var loader  = new StaticLoader(PolicyLookupResult.FromPolicy(policy));
+        var matcher = new WorkflowPolicyMatcher(loader);
+
+        // Display name matches no row — only the object id does.
+        var result = matcher.Evaluate("hello", PrincipalWithObjectId("display-name-that-does-not-match", objectId));
+
+        Assert.AreEqual(PolicyMatchOutcome.Allowed, result.Outcome);
+    }
+
+    [TestMethod]
+    public void TST17_DenyPermission_MatchedEntry_ResolvesViaUserId()
+    {
+        // The matched-entry diagnostic lookup must also recognise an object-id match,
+        // not just Groups/UserName — otherwise a denial reached purely via UserId
+        // reports a null MatchedEntry, misleading anyone reading the log/response.
+        const string objectId = "44444444-4444-4444-4444-444444444444";
+        var policy  = MakePolicy("hello", (objectId, WorkflowPermission.DeployTo));
+        var loader  = new StaticLoader(PolicyLookupResult.FromPolicy(policy));
+        var matcher = new WorkflowPolicyMatcher(loader);
+
+        var result = matcher.Evaluate("hello", PrincipalWithObjectId("someone", objectId));
+
+        Assert.AreEqual(PolicyMatchOutcome.Forbidden, result.Outcome);
+        Assert.IsNotNull(result.MatchedEntry, "the object-id row should be identified as the matched entry.");
+        Assert.AreEqual(objectId, result.MatchedEntry!.GroupName, ignoreCase: true);
     }
 }
 

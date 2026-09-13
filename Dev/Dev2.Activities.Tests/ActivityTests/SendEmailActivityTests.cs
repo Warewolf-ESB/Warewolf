@@ -17,11 +17,13 @@ using ActivityUnitTests;
 using Dev2.Activities;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
+using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Storage;
 
 
 namespace Dev2.Tests.Activities.ActivityTests
@@ -124,7 +126,23 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(activity.Subject, mailMessage.Subject);
         }
 
+        [TestMethod]
+        [Timeout(60000)]
+        [TestCategory("SendEmail_Execute")]
+        public void SendEmail_Execute_SelectedEmailSourceIsNull_ReturnsInvalidEmailSourceError()
+        {
+            //------------Setup for test--------------------------
+            var env = new ExecutionEnvironment();
+            var dataMock = new Mock<IDSFDataObject>();
+            dataMock.Setup(o => o.Environment).Returns(() => env);
 
+            var activity = GetSendEmailActivity(); // SelectedEmailSource left unset (null)
+            //------------Execute Test---------------------------
+            activity.Execute(dataMock.Object, 0);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, env.Errors.Count);
+            Assert.AreEqual("Invalid Email Source", env.FetchErrors());
+        }
 
         [TestMethod]
         [Timeout(60000)]

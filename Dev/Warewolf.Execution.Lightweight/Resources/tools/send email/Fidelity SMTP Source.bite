@@ -1,0 +1,7 @@
+<Source ID="3d7b9e21-4c58-4ab6-8f0d-1e6c9a4b7d52" ResourceID="3d7b9e21-4c58-4ab6-8f0d-1e6c9a4b7d52" Name="Fidelity SMTP Source" ResourceType="EmailSource" IsValid="true" ConnectionString="Host=localhost;UserName=;Password=;Port=2525;EnableSsl=False;Timeout=10000" Type="EmailSource" ServerVersion="0.0.0.0" ServerID="00000000-0000-0000-0000-000000000000">
+  <DisplayName>Fidelity SMTP Source</DisplayName>
+  <AuthorRoles></AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>EmailSource</TypeOf>
+  <VersionInfo DateTimeStamp="2026-08-23T00:00:00.0000000+00:00" Reason="" User="FidelityFixtureGenerator" VersionNumber="1" ResourceId="3d7b9e21-4c58-4ab6-8f0d-1e6c9a4b7d52" VersionId="3d7b9e21-4c58-4ab6-8f0d-1e6c9a4b7d52" />
+</Source>

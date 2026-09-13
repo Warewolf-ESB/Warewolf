@@ -463,6 +463,7 @@ namespace Dev2.Common.X6
         public const string CREATEJSON_JSONSTRING = "jsonstring";
 
         // Calculate Activity
+        public const string DSFCALCULATEACTIVITY = "DsfCalculateActivity";
         public const string DSFDOTNETCALCULATEACTIVITY = "DsfDotNetCalculateActivity";
         public const string DISPLAYNAME_CALCULATE = "Calculate";
         public const string CALCULATE_EXPRESSION = "expression";
@@ -489,6 +490,7 @@ namespace Dev2.Common.X6
         public const string WEBREQUEST_TIMEOUTTEXT = "webrequest_timeouttext";
         public const string WEBREQUEST_URL = "webrequest_url";
         public const string WEBREQUEST_HEADERS = "webrequest_headers";
+        public const string WEBREQUEST_POSTDATA = "webrequest_postdata";
         public const string WEBREQUEST_RESULT = "webrequest_result";
     
 

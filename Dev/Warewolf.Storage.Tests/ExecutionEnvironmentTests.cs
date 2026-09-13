@@ -1868,6 +1868,31 @@ namespace Warewolf.Storage.Tests
             Assert.IsNull(evalJContainer, "should be null, if [[@obj]] is not exist in execution environment");
         }
 
+        // Fix for: EvalJContainer's guard was `if (_env.JsonObjects.Count > 0)`, checking whether the
+        // map was non-empty at all rather than whether THIS key was present. A never-populated object
+        // variable (e.g. PUT/DELETE Web Method's output silently failing to assign — see
+        // WebPutActivityTests/DsfWebDeleteActivityTests) returned null cleanly when it was the ONLY
+        // json object referenced, but threw an unhandled KeyNotFoundException (F# Map.find) the moment
+        // ANY other json object already existed in the environment — exactly the case in a workflow
+        // chaining GET (populates a json object) then PUT (fails to, silently) then reads PUT's output.
+        [TestMethod]
+        [Owner("Warewolf")]
+        [TestCategory(nameof(ExecutionEnvironment))]
+        public void ExecutionEnvironment_EvalJContainer_NameExpression_GetNonExistentObject_WhenAnotherObjectAlreadyExists_ReturnsNullNotThrows()
+        {
+            var _environment = new ExecutionEnvironment();
+            _environment.AssignJson(new AssignValue("[[@Obj]]", "{\"name\":\"Bob\"}"), 0);
+
+            // Precondition: [[@Obj]] actually landed in JsonObjects (Count > 0), or this test would
+            // pass for the wrong reason (the Count == 0 short-circuit, already covered by the sibling
+            // test above) rather than exercising the "key genuinely missing" branch.
+            Assert.IsNotNull(_environment.EvalJContainer("[[@Obj]]"), "precondition: [[@Obj]] must actually be assigned");
+
+            const string something = "[[@NeverAssigned]]";
+            var evalJContainer = _environment.EvalJContainer(something);
+            Assert.IsNull(evalJContainer, "should be null, not throw, even when another json object already exists in the environment");
+        }
+
         [TestMethod]
         [Owner("Rory McGuire")]
         [TestCategory(nameof(ExecutionEnvironment))]

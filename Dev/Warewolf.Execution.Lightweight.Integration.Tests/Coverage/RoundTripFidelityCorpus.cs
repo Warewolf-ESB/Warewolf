@@ -1,7 +1,6 @@
 /*
  * Corpus discovery and classification helpers for the round-trip fidelity gate
- * (see warewolf-lee-mcp-v3-spec.md's "bodyEditable gating" section and
- * warewolf-lee-mcp-v3-addendum-a.md's recommended next step).
+ * behind `bodyEditable`.
  *
  * This file is intentionally decoupled from the test class so the corpus/classification
  * logic can be exercised or extended independently of the MSTest lifecycle.
@@ -43,7 +42,7 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
     public static class RoundTripFidelityCorpus
     {
         /// <summary>
-        /// The "Toolbox subset (v3)" table from warewolf-lee-mcp-v3-spec.md, condensed to the
+        /// The toolbox subset table, condensed to the
         /// class-name substrings needed to find real corpus samples. Kept in one place so the
         /// fidelity gate and any future MCP `list_tools` implementation can be diffed against
         /// each other for drift.
@@ -60,10 +59,17 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             new() { StudioName = "Select and apply", Category = "Control Flow", SearchTokens = new[] { "DsfSelectAndApplyActivity" } },
             new() { StudioName = "Gate", Category = "Control Flow", SearchTokens = new[] { "GateActivity" } },
             new() { StudioName = "Suspend Execution", Category = "Control Flow", SearchTokens = new[] { "SuspendExecutionActivity" } },
-            new() { StudioName = "Manual Resumption", Category = "Control Flow", SearchTokens = new[] { "DsfManualResumptionActivity" } },
+            // The class is ManualResumptionActivity — there is no Dsf-prefixed variant. The old
+            // "DsfManualResumptionActivity" token matched nothing, so this row reported
+            // NoCorpusSample even though Resources\hangfiredemo\Manual Resumption Tool Example.bite
+            // has covered it all along.
+            new() { StudioName = "Manual Resumption", Category = "Control Flow", SearchTokens = new[] { "ManualResumptionActivity" } },
             new() { StudioName = "Service (sub-workflow)", Category = "Control Flow", RequiresSource = true, SearchTokens = new[] { "DsfWorkflowActivity" } },
             new() { StudioName = "Comment", Category = "Utility", SearchTokens = new[] { "DsfCommentActivity" } },
-            new() { StudioName = "Calculate", Category = "Data", SearchTokens = new[] { "DsfDotNetCalculateActivity" } },
+            // Both the legacy and .NET variants exist as real classes, exactly as for the sibling
+            // "Aggregate Calculate" row below. Listing only the DotNet one hid the 6 corpus samples
+            // that use DsfCalculateActivity (e.g. Utility - Calculate.bite).
+            new() { StudioName = "Calculate", Category = "Data", SearchTokens = new[] { "DsfDotNetCalculateActivity", "DsfCalculateActivity" } },
             new() { StudioName = "Aggregate Calculate", Category = "Data", SearchTokens = new[] { "DsfAggregateCalculateActivity", "DsfDotNetAggregateCalculateActivity" } },
             new() { StudioName = "Create JSON", Category = "Data", SearchTokens = new[] { "DsfCreateJsonActivity" } },
             new() { StudioName = "Data Merge", Category = "Data", SearchTokens = new[] { "DsfDataMergeActivity" } },
@@ -83,7 +89,10 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
             new() { StudioName = "Unique Records", Category = "Recordset", SearchTokens = new[] { "DsfUniqueActivity" } },
             new() { StudioName = "Advanced Recordset", Category = "Recordset", SearchTokens = new[] { "AdvancedRecordsetActivity" } },
             new() { StudioName = "Read File", Category = "Files & Folders", SearchTokens = new[] { "DsfFileRead", "FileReadWithBase64" } },
-            new() { StudioName = "Write File", Category = "Files & Folders", SearchTokens = new[] { "FileWriteWithBase64" } },
+            // "FileWriteWithBase64" names no class that exists, so this row could never match. The
+            // real classes are DsfFileWrite and FileWriteActivity — mirroring the "Read File" row
+            // above, which works precisely because it lists its DsfFileRead alias.
+            new() { StudioName = "Write File", Category = "Files & Folders", SearchTokens = new[] { "DsfFileWrite", "FileWriteActivity", "FileWriteWithBase64" } },
             new() { StudioName = "Folder Read", Category = "Files & Folders", SearchTokens = new[] { "DsfFolderReadActivity", "DsfFolderRead" } },
             new() { StudioName = "Create (path)", Category = "Files & Folders", SearchTokens = new[] { "DsfPathCreate" } },
             new() { StudioName = "Copy", Category = "Files & Folders", SearchTokens = new[] { "DsfPathCopy" } },
@@ -123,14 +132,41 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// (Studio and Web-Studio saved). Mirrors the "Resources*"/"Server Tests Setup" scan the
         /// addendum's residual-activity-list pass already did manually.
         /// </summary>
-        static readonly string[] CorpusRoots =
+        public static readonly IReadOnlyList<string> CorpusRoots = new[]
         {
             "Resources - Release",
             "Resources - ServerTests",
             "Resources - Load",
-            "Server Tests Setup",
+            // 'Server Tests Setup' is deliberately NOT a corpus root, though it holds 341 more
+            // .bite files than every other root combined. It is the only tree that carries
+            // configured Database/RabbitMQ *source* definitions, so including it stops the
+            // source-backed activities failing fast on "source is not configured" and starts them
+            // dialling real hosts that are not there. Measured 2026-08-23 on the same checkout:
+            // 60 seconds without it, 22.4 minutes with it, the difference being connection
+            // timeouts (38 MySQL alone). It used to buy samples for three rows - Select and apply,
+            // Suspend Execution, Length - and as of 2026-08-23 it buys NOTHING: all three are now
+            // covered from the included roots, because *.xml resources are discovered (see
+            // ResourceFilePatterns) and the Warewolf.Execution.Lightweight\Resources fixtures are
+            // staged into the test artifact. Re-measured against all 66 toolbox rows: zero rows
+            // would gain a sample from this tree. The source-backed rows it slows down all land on
+            // PassBothFailedIdentically either way, which this gate does not score. Leaving it out
+            // also keeps a dev checkout and
+            // the CI TestBinaries artifact measuring the SAME corpus, so a baseline generated on
+            // one is comparable to a run on the other - see FidelityRegressionGate.
             Path.Combine("Warewolf.Execution.Lightweight", "Resources"),
         };
+
+        /// <summary>
+        /// The subset of <see cref="CorpusRoots"/> that actually exists under
+        /// <paramref name="devRoot"/>. Recorded in the generated report and used by
+        /// <see cref="FidelityRegressionGate.Compare"/>, because which roots are present decides
+        /// which samples an activity is measured against — and a dev checkout and the CI
+        /// TestBinaries artifact do not carry the same set.
+        /// </summary>
+        public static List<string> PresentCorpusRoots(string devRoot) =>
+            string.IsNullOrEmpty(devRoot)
+                ? new List<string>()
+                : CorpusRoots.Where(root => Directory.Exists(Path.Combine(devRoot, root))).ToList();
 
         /// <summary>
         /// Walks parents of the test assembly's base directory looking for the repo root
@@ -158,9 +194,25 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         }
 
         /// <summary>
-        /// Enumerates every `.bite` file under the known corpus roots. Returns an empty list
-        /// (never null/throws) when the repo root cannot be located, so callers degrade to
-        /// Inconclusive rather than failing.
+        /// Workflow-resource file extensions the corpus is built from. Both carry the identical
+        /// <c>&lt;Service ... ResourceType="WorkflowService"&gt;</c> envelope with an escaped
+        /// <c>XamlDefinition</c> — `.bite` is simply the newer name for the same format.
+        ///
+        /// <para>
+        /// `.xml` was originally omitted, which silently excluded whole workflows from the sweep.
+        /// The most consequential was <c>Resources - Load\Resources\All Tools.xml</c> (187 KB,
+        /// <c>IsValid="true"</c>), which alone contains 51 of the 66 toolbox types — including
+        /// Length, ODBC Database and SQL Bulk Insert, all three of which the 2026-08-23 CI
+        /// allow-list reported as <c>NoCorpusSample</c> while a sample for them sat in an
+        /// already-declared corpus root.
+        /// </para>
+        /// </summary>
+        public static readonly IReadOnlyList<string> ResourceFilePatterns = new[] { "*.bite", "*.xml" };
+
+        /// <summary>
+        /// Enumerates every workflow-resource file (see <see cref="ResourceFilePatterns"/>) under
+        /// the known corpus roots. Returns an empty list (never null/throws) when the repo root
+        /// cannot be located, so callers degrade to Inconclusive rather than failing.
         /// </summary>
         public static List<string> DiscoverBiteFiles(string devRoot)
         {
@@ -177,17 +229,37 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
                 {
                     continue;
                 }
-                try
+                foreach (var pattern in ResourceFilePatterns)
                 {
-                    results.AddRange(Directory.EnumerateFiles(full, "*.bite", SearchOption.AllDirectories));
-                }
-                catch (IOException)
-                {
-                    // Best-effort: skip roots that vanish/lock mid-enumeration.
+                    try
+                    {
+                        results.AddRange(Directory.EnumerateFiles(full, pattern, SearchOption.AllDirectories));
+                    }
+                    catch (IOException)
+                    {
+                        // Best-effort: skip roots that vanish/lock mid-enumeration.
+                    }
                 }
             }
             return results;
         }
+
+        /// <summary>
+        /// Repo-relative folder FidelityFixtureGenerator writes its purpose-built fixtures under.
+        /// <see cref="ClassifyCorpus"/> gives files here first shot at a type's sample bucket — see
+        /// its remarks.
+        /// </summary>
+        static readonly string GeneratedFixturesMarker = Path.Combine("Warewolf.Execution.Lightweight", "Resources", "tools");
+
+        /// <summary>
+        /// True when <paramref name="path"/> is one of FidelityFixtureGenerator's committed
+        /// fixtures rather than a real corpus workflow. Public because
+        /// <see cref="RoundTripFidelityTests"/> needs the same question answered - a generated
+        /// fixture's folder holds only that fixture and its companions, which a real corpus folder
+        /// emphatically does not.
+        /// </summary>
+        public static bool IsGeneratedFixture(string path) =>
+            path.Replace('/', '\\').IndexOf(GeneratedFixturesMarker, StringComparison.OrdinalIgnoreCase) >= 0;
 
         /// <summary>
         /// Classifies the discovered `.bite` corpus against <see cref="ToolboxSubset"/>, returning
@@ -197,12 +269,29 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// rather than a full XAML parse — the class names appear verbatim inside the escaped
         /// XamlDefinition, so this is a cheap, reliable-enough classifier for corpus discovery
         /// (not for the actual conversion, which always goes through the real converter).
+        ///
+        /// <para>
+        /// Files under <see cref="GeneratedFixturesMarker"/> are considered FIRST, ahead of every
+        /// other corpus root, so a purpose-built fixture always gets a chance to be measured even
+        /// when real corpus samples for the same type already fill the bucket first. Real corpus
+        /// samples still fill any remaining slots up to <paramref name="maxSamplesPerType"/>.
+        /// <c>OrderByDescending</c> is stable, so relative order within each group is unchanged —
+        /// this is a no-op for every type whose generated-fixture-plus-real-sample count does not
+        /// exceed the cap (i.e. every type FidelityFixtureGenerator covered before SQL Server
+        /// Database, none of which had more than a couple of competing real samples). It matters
+        /// only where real corpus samples for a RequiresSource type outnumber the cap and are all
+        /// broken/unreachable — e.g. "SQL Server Database", which had 10 real candidates (the
+        /// committed NewSqlServerSource.bite's DPAPI connection string crashes off-machine — see
+        /// FidelityFixtureGenerator.MssqlConnectionString) filling all 8 slots from 'Resources -
+        /// ServerTests' before 'Warewolf.Execution.Lightweight\Resources' — scanned last — was ever
+        /// reached, silently excluding the generated fixture from every attempt.
+        /// </para>
         /// </summary>
         public static Dictionary<string, List<string>> ClassifyCorpus(IEnumerable<string> biteFiles, int maxSamplesPerType = 2)
         {
             var byToolboxName = ToolboxSubset.ToDictionary(t => t.StudioName, t => new List<string>());
 
-            foreach (var file in biteFiles)
+            foreach (var file in biteFiles.OrderByDescending(IsGeneratedFixture))
             {
                 string content;
                 try

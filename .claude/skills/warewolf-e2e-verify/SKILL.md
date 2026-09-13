@@ -201,7 +201,7 @@ Every run's markdown summary carries its own teardown block. The rules that matt
   `createdDateTime` against the run), or pass `-IncludeEntraApp` deliberately. Note this is the mirror
   of the `functionApp` hazard above: that one under-deletes, this one **over**-deletes.
 
-Full detail: `docs/Deploy-E2E-Rollback-Commands.md`.
+Full detail: `docs/archive/Deploy-E2E-Rollback-Commands.md` (archived — superseded by this harness).
 
 ## Load testing is a different job — use `Invoke-WwQueueLoadTest.ps1`
 
@@ -243,9 +243,9 @@ Full detail — setup, phases, join keys, artefacts, traps: `docs/LoadTest-Guide
 | `docs/RUN-LoadTest-Runbook.md` | The manual 7-step runbook the load-test script automates |
 | `docs/E2E-Harness-README.md` | Prerequisites, parameters, what is secret, how to read the output |
 | `docs/Deploy-E2E-Verification-Runbook.md` | The manual runbook this harness automates |
-| `docs/Deploy-E2E-Execution-StepByStep.md` | A worked isolated-parallel run |
-| `docs/Deploy-E2E-Execution-Summary.md` | Findings and measurements from the 2026-08-06 run |
-| `docs/Deploy-E2E-Rollback-Commands.md` | Surgical teardown |
+| `docs/archive/Deploy-E2E-Execution-StepByStep.md` | A worked isolated-parallel run (archived — superseded by this harness) |
+| `docs/archive/Deploy-E2E-Execution-Summary.md` | Findings and measurements from the 2026-08-06 run (archived) |
+| `docs/archive/Deploy-E2E-Rollback-Commands.md` | Surgical teardown (archived — superseded by this harness) |
 | `docs/QueueWorker-Migration-To-AzureContainerApps-KEDA-Plan-Step-By-Step.md` | Design rationale, concurrency/prefetch → KEDA mapping |
 
 Deployment-script internals and the phased deploy flow → invoke `warewolf-deploy`.

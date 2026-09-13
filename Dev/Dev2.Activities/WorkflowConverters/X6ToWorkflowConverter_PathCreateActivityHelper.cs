@@ -1,6 +1,7 @@
 using Dev2.Common.X6;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
+using Dev2.WorkflowConverters;
 namespace Dev2.Activities.WF
 {
     /// <summary>
@@ -10,9 +11,9 @@ namespace Dev2.Activities.WF
     {
         private static DsfPathCreate CreatePathCreateActivity(Cell node)
         {
-            var hasDisplayName = node.data.TryGetValue(Constants.DISPLAYNAME, out var displayObject);
+            var hasDisplayName = node.data.TryGetString(Constants.DISPLAYNAME, out var displayName);
 
-            if (!hasDisplayName || displayObject is not string displayName || string.IsNullOrWhiteSpace(displayName))
+            if (!hasDisplayName || string.IsNullOrWhiteSpace(displayName))
                 return null;
 
             var activity = new DsfPathCreate();

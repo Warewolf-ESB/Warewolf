@@ -256,6 +256,10 @@ namespace Dev2.Activities
             if (cell.data.TryGetOutputs(out var outputs)) Outputs = outputs;
             if (cell.data.TryGetOutputDescription(out var outputDesc)) OutputDescription = outputDesc;
             if (cell.data.TryGetBool(Constants.WEBMETHOD_ISRESPONSEBASE64, out var isResponseBase64)) IsResponseBase64 = isResponseBase64;
+
+            // Omitting the optional headers key left Headers null, hard-failing execution via the
+            // HeadersAreNull guard below — the schema documents headers as optional (F10).
+            Headers ??= new List<INameValue>();
         }
 
     }

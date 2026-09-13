@@ -262,6 +262,7 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 | `-Location` | string | **required** | Azure region, e.g. `southafricanorth`. |
 | `-StorageAccount` | string | **required** | Storage account name (3–24 lowercase chars). |
 | `-AppName` | string | **required** | Function App name (globally unique). |
+| `-UpgradeRuntimeVersion` | switch | off | Reconcile an **existing** app's runtime to `netFrameworkVersion v10.0`. A *new* app is always created on .NET 10; an app created by an earlier run keeps its original runtime, and a v8.0 host loading the `net10.0` package fails at startup with *"You must install or update .NET to run this application."* Off by default because the change **restarts the app** — without it the mismatch is reported in the Phase 0.5 plan and warned about in Phase 1, but nothing is changed. |
 
 ### Publish source
 
@@ -580,7 +581,7 @@ this run actually created.
 |---|---|---|
 | Resource group | Always | Created in `-Location` if it doesn't exist. |
 | Storage account | Always | `Standard_LRS`, `StorageV2`, TLS 1.2. |
-| Function App | Always | Consumption (Y1), `dotnet-isolated` 8, Functions v4, HTTPS-only. |
+| Function App | Always | Consumption (Y1), `dotnet-isolated` **10**, Functions v4, HTTPS-only. Matches the engine's `net10.0` `<TargetFramework>`. An app that **already exists** keeps the runtime it was created with — see `-UpgradeRuntimeVersion`. |
 | Application Insights | When `-EnableAppInsights` | Default name `<AppName>-ai`; worker telemetry wired via `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. |
 | System-assigned managed identity | When a Key Vault is in play | Enabled on the Function App so the engine can read the key at runtime. |
 | **Key Vault** | **Only with `-EncryptResources`** | RBAC-authorized vault. If a vault is needed but missing and `-EncryptResources` is **off**, the script **throws** (it will not create one). |

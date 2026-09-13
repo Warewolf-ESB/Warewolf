@@ -12,6 +12,7 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.IO;
 using System.Linq;
 
@@ -54,6 +55,7 @@ internal static class StartupOrchestrator
             PersistenceConfigLoader.Initialize();
             RegisterJobValuesEnricher();
             RegisterResumptionExecutor(host);
+            RegisterRabbitMqConnectionCache(host);
             WarmUpWorkflowIndex(config);
 
             Dev2Logger.Info("StartupOrchestrator RunStartupAsync completed successfully", executionId);
@@ -179,6 +181,74 @@ internal static class StartupOrchestrator
             CustomContainer.Register<Warewolf.Driver.Persistence.IResumptionExecutor>(
                 host.Services.GetRequiredService<ResumptionExecutor>());
             Dev2Logger.Info("Startup | Phase=Persistence | ResumptionExecutor registered (manual resumption runs on the engine pipeline).", executionId);
+        }
+    }
+
+    /// <summary>
+    /// Registers the RabbitMQ publish connection cache when <c>WAREWOLF_RABBITMQ_CACHE</c> enables
+    /// it, and arranges for it to be disposed on graceful shutdown.
+    ///
+    /// <para><b>This method is the entire blast radius of the feature.</b> When it does not run — the
+    /// full Warewolf server, or this host with the setting absent or disabled —
+    /// <c>AmbientRabbitMqConnectionCache.Current</c> stays null and every RabbitMQ publish takes the
+    /// open-publish-dispose path it has always taken. There is deliberately no host check anywhere in
+    /// <c>Dev2.Activities</c>.</para>
+    ///
+    /// <para>Never throws: a cache that fails to construct must not stop the host from serving
+    /// traffic, because the feature it provides is an optimisation.</para>
+    /// </summary>
+    static void RegisterRabbitMqConnectionCache(IHost host)
+    {
+        const string executionId = "StartupOrchestrator-RabbitMqCache";
+
+        try
+        {
+            // ILogger ALONGSIDE Dev2Logger, not instead of it.
+            //
+            // Dev2Logger is log4net and has no Application Insights sink, so everything this method
+            // logs through it is invisible in AI - which is exactly where an operator looks to confirm
+            // a feature flag took effect. Proven on 2026-09-13: a 1000-message benchmark run produced
+            // SEVEN cold starts and not one StartupOrchestrator message in AI, not even the
+            // unconditional "RunStartupAsync starting", so the run could not be shown to have used the
+            // cache at all. Every message that DOES reach AI on this host comes through ILogger.
+            var aiLogger = host.Services.GetService<ILoggerFactory>()?.CreateLogger("RabbitMqCache");
+
+            var options = RabbitMqCacheOptions.FromEnvironment();
+            if (!options.Enabled)
+            {
+                var disabledMessage =
+                    $"Startup | Phase=RabbitMqCache | disabled ({RabbitMqCacheOptions.EnvVar} absent or enabled=false); " +
+                    "publishes open and close a connection per execution, as before.";
+                Dev2Logger.Info(disabledMessage, executionId);
+                aiLogger?.LogInformation("{StartupMessage}", disabledMessage);
+                return;
+            }
+
+            var cache = new LightweightRabbitMqConnectionCache(options);
+            AmbientRabbitMqConnectionCache.Register(cache);
+
+            // Releases every socket, background I/O thread and heartbeat timer on a graceful stop.
+            // Clear() first so nothing can acquire from a cache that is being torn down.
+            host.Services.GetRequiredService<IHostApplicationLifetime>()
+                .ApplicationStopping.Register(() =>
+                {
+                    AmbientRabbitMqConnectionCache.Clear();
+                    cache.Dispose();
+                });
+
+            var enabledMessage = $"Startup | Phase=RabbitMqCache | {options}.";
+            Dev2Logger.Info(enabledMessage, executionId);
+            aiLogger?.LogInformation("{StartupMessage}", enabledMessage);
+        }
+        catch (Exception ex)
+        {
+            AmbientRabbitMqConnectionCache.Clear();
+            var failedMessage =
+                $"Startup | Phase=RabbitMqCache | registration failed; continuing UNCACHED. " +
+                $"ExceptionType={ex.GetType().Name}, Message={ex.Message}";
+            Dev2Logger.Error(failedMessage, executionId);
+            host.Services.GetService<ILoggerFactory>()?.CreateLogger("RabbitMqCache")
+                .LogError("{StartupMessage}", failedMessage);
         }
     }
 

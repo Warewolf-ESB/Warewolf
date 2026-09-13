@@ -11,7 +11,6 @@
 
 using System;
 using System.Collections.Specialized;
-using System.Configuration;
 using System.IO;
 using System.Xml.Linq;
 using Dev2.Common;
@@ -28,14 +27,59 @@ namespace Dev2.Runtime.Subscription
     public class SubscriptionConfig : ISubscriptionConfig
     {
         const string SectionName = "subscriptionSettings";
-        private const string FileName = "Warewolf License.secureconfig";
+        internal const string FileName = "Warewolf License.secureconfig";
 
-        public SubscriptionConfig()
+        /// <summary>
+        /// Absolute path to this instance's <c>Warewolf License.secureconfig</c> file. Computed
+        /// once at construction from an explicit/injected base path (see
+        /// <see cref="ForBasePath"/>), defaulting to
+        /// <see cref="AppContext.BaseDirectory"/> — the deployment directory of the running
+        /// assembly — for both hosts (Dev2.Server and the Lightweight isolated-worker Function
+        /// App). Deliberately never resolved against <see cref="Environment.CurrentDirectory"/>:
+        /// that is process-wide, mutable, and not guaranteed to equal the deployment directory
+        /// under the Azure Functions isolated-worker host, which is what silently broke license
+        /// resolution there (see docs/SubscriptionConfig-IsolatedWorker-Resolution-Spec.md).
+        /// </summary>
+        private readonly string _configFilePath;
+
+        /// <summary>
+        /// Production constructor. Resolves the license file against
+        /// <see cref="AppContext.BaseDirectory"/> — correct for both hosts without requiring a
+        /// DI container or any host-specific startup wiring.
+        /// </summary>
+        public SubscriptionConfig() : this(AppContext.BaseDirectory, fromFile: true)
         {
+        }
+
+        /// <summary>
+        /// Test-only constructor: bypasses file resolution entirely and initializes directly
+        /// from the supplied settings. Still resolves <see cref="_configFilePath"/> against
+        /// <see cref="AppContext.BaseDirectory"/> for consistency, in case a caller other than
+        /// a mocked subclass ever reaches <see cref="SaveConfig"/> from this path.
+        /// </summary>
+        public SubscriptionConfig(NameValueCollection settings)
+        {
+            _configFilePath = Path.Combine(AppContext.BaseDirectory, FileName);
+            Initialize(settings);
+        }
+
+        /// <summary>
+        /// Backing constructor shared by the parameterless constructor and
+        /// <see cref="ForBasePath"/>. Not public itself — a public <c>SubscriptionConfig(string)</c>
+        /// overload would be ambiguous with <see cref="SubscriptionConfig(NameValueCollection)"/>
+        /// for a <c>null</c> argument (both are single-reference-type overloads), which existing
+        /// callers rely on resolving to the <c>NameValueCollection</c> overload (see
+        /// <c>SubscriptionConfigTests.SubscriptionConfig_WithoutConfig_Expected_ThrowsArgumentNullException</c>).
+        /// </summary>
+        private SubscriptionConfig(string basePath, bool fromFile)
+        {
+            _configFilePath = Path.Combine(
+                string.IsNullOrWhiteSpace(basePath) ? AppContext.BaseDirectory : basePath,
+                FileName);
+
             try
             {
-                EnsureSubscriptionConfigFileExists();
-                var settings = (NameValueCollection)ConfigurationManager.GetSection(SectionName);
+                var settings = EnsureSubscriptionConfigFileExists();
                 Initialize(settings);
             }
             catch(Exception e)
@@ -44,10 +88,20 @@ namespace Dev2.Runtime.Subscription
             }
         }
 
-        public SubscriptionConfig(NameValueCollection settings)
-        {
-            Initialize(settings);
-        }
+        /// <summary>
+        /// Constructs against an explicit base directory instead of
+        /// <see cref="AppContext.BaseDirectory"/>. Exists so callers (and tests) can inject the
+        /// deployment directory explicitly rather than relying on ambient process state — the
+        /// fix for the CWD-relative resolution bug this class used to have (see
+        /// docs/SubscriptionConfig-IsolatedWorker-Resolution-Spec.md). A static factory method,
+        /// not a constructor overload, to avoid the overload-resolution ambiguity described on
+        /// the private constructor above.
+        /// </summary>
+        /// <param name="basePath">
+        /// Directory the license file lives in. Falls back to <see cref="AppContext.BaseDirectory"/>
+        /// when null/whitespace.
+        /// </param>
+        public static SubscriptionConfig ForBasePath(string basePath) => new SubscriptionConfig(basePath, fromFile: true);
 
         public string SubscriptionKey { get; private set; }
         public string SubscriptionSiteName { get; private set; }
@@ -104,53 +158,89 @@ namespace Dev2.Runtime.Subscription
             else
             {
                 //Broken Installation
-                // ReSharper disable once RedundantAssignment
-                var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
-                // ReSharper disable once RedundantAssignment
-                var subscriptionSiteName = SubscriptionProvider.SubscriptionLiveSiteName;
-#if DEBUG
-                subscriptionKey = SubscriptionProvider.SubscriptionTestKey;
-                subscriptionSiteName = SubscriptionProvider.SubscriptionTestSiteName;
-#endif
-                var newSettings = new NameValueCollection();
-                newSettings["CustomerId"] = "";
-                newSettings["SubscriptionId"] = "";
-                newSettings["MarketplaceResourceId"] = "";
-                newSettings["Status"] = SubscriptionProvider.SubscriptionDefaultStatus;
-                newSettings["PlanId"] = SubscriptionProvider.SubscriptionDefaultPlanId;
-                newSettings["SubscriptionKey"] = subscriptionKey;
-                newSettings["SubscriptionSiteName"] = subscriptionSiteName;
-                newSettings["StopExecutions"] = SubscriptionProvider.StopExecutionsDefault;
-                SaveConfig(newSettings);
+                Dev2Logger.Warn(
+                    $"Subscription settings at '{_configFilePath}' were empty/missing key values. " +
+                    "Writing default (unlicensed) settings over this file.",
+                    GlobalConstants.WarewolfWarn);
+                SaveConfig(BuildDefaultSettings());
             }
         }
 
-        void EnsureSubscriptionConfigFileExists()
+        /// <summary>
+        /// Reads this instance's <see cref="_configFilePath"/> directly, bypassing
+        /// <c>ConfigurationManager</c>/<c>configSource</c> entirely — that indirection is what
+        /// silently broke under the isolated-worker host (see docs/
+        /// SubscriptionConfig-IsolatedWorker-Resolution-Spec.md, root cause). When the file does
+        /// not yet exist at the resolved absolute path, a fresh default (unlicensed) file is
+        /// written there and returned, exactly as before, but now targeting the *same* absolute
+        /// path this method just checked — so a "not found" read can never overwrite a
+        /// *different*, real file elsewhere, which is the failure mode this fix closes.
+        /// </summary>
+        NameValueCollection EnsureSubscriptionConfigFileExists()
         {
-            ConfigurationManager.RefreshSection(SectionName);
-            if(!File.Exists(FileName))
+            if (!File.Exists(_configFilePath))
             {
-                Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
+                Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, _configFilePath), GlobalConstants.WarewolfInfo);
 
-                // ReSharper disable once RedundantAssignment
-                var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
-                // ReSharper disable once RedundantAssignment
-                var subscriptionSiteName = SubscriptionProvider.SubscriptionLiveSiteName;
-#if DEBUG
-                subscriptionKey = SubscriptionProvider.SubscriptionTestKey;
-                subscriptionSiteName = SubscriptionProvider.SubscriptionTestSiteName;
-#endif
-                var newSettings = new NameValueCollection();
-                newSettings["CustomerId"] = "";
-                newSettings["SubscriptionId"] = "";
-                newSettings["MarketplaceResourceId"] = "";
-                newSettings["Status"] = SubscriptionProvider.SubscriptionDefaultStatus;
-                newSettings["PlanId"] = SubscriptionProvider.SubscriptionDefaultPlanId;
-                newSettings["SubscriptionKey"] = subscriptionKey;
-                newSettings["SubscriptionSiteName"] = subscriptionSiteName;
-                newSettings["StopExecutions"] = SubscriptionProvider.StopExecutionsDefault;
+                var newSettings = BuildDefaultSettings();
                 SaveConfig(newSettings);
+                return newSettings;
             }
+
+            return ReadConfigFile(_configFilePath);
+        }
+
+        /// <summary>
+        /// Parses the <c>&lt;subscriptionSettings&gt;&lt;add key="..." value="..." /&gt;...</c>
+        /// XML shape <see cref="UpdateConfig"/> writes, directly from disk at an absolute path —
+        /// the read-side counterpart to <see cref="UpdateConfig"/>, replacing the
+        /// <c>ConfigurationManager.GetSection</c>/<c>configSource</c> redirect this class used to
+        /// depend on.
+        /// </summary>
+        static NameValueCollection ReadConfigFile(string configFilePath)
+        {
+            var settings = new NameValueCollection();
+            var root = XDocument.Load(configFilePath).Root;
+            if (root != null)
+            {
+                foreach (var add in root.Elements("add"))
+                {
+                    var key = (string)add.Attribute("key");
+                    if (!string.IsNullOrEmpty(key))
+                    {
+                        settings[key] = (string)add.Attribute("value") ?? string.Empty;
+                    }
+                }
+            }
+
+            return settings;
+        }
+
+        /// <summary>
+        /// The "broken/fresh installation" default settings shared by both
+        /// <see cref="Initialize"/>'s empty-values branch and <see cref="EnsureSubscriptionConfigFileExists"/>'s
+        /// missing-file branch — factored out so the two call sites can never drift apart.
+        /// </summary>
+        static NameValueCollection BuildDefaultSettings()
+        {
+            // ReSharper disable once RedundantAssignment
+            var subscriptionKey = SubscriptionProvider.SubscriptionLiveKey;
+            // ReSharper disable once RedundantAssignment
+            var subscriptionSiteName = SubscriptionProvider.SubscriptionLiveSiteName;
+#if DEBUG
+            subscriptionKey = SubscriptionProvider.SubscriptionTestKey;
+            subscriptionSiteName = SubscriptionProvider.SubscriptionTestSiteName;
+#endif
+            var newSettings = new NameValueCollection();
+            newSettings["CustomerId"] = "";
+            newSettings["SubscriptionId"] = "";
+            newSettings["MarketplaceResourceId"] = "";
+            newSettings["Status"] = SubscriptionProvider.SubscriptionDefaultStatus;
+            newSettings["PlanId"] = SubscriptionProvider.SubscriptionDefaultPlanId;
+            newSettings["SubscriptionKey"] = subscriptionKey;
+            newSettings["SubscriptionSiteName"] = subscriptionSiteName;
+            newSettings["StopExecutions"] = SubscriptionProvider.StopExecutionsDefault;
+            return newSettings;
         }
 
         public void UpdateSubscriptionSettings(ISubscriptionData subscriptionData)
@@ -177,10 +267,18 @@ namespace Dev2.Runtime.Subscription
 
         protected virtual void SaveConfig(NameValueCollection subscriptionSettings)
         {
-            UpdateConfig(subscriptionSettings);
+            UpdateConfig(subscriptionSettings, _configFilePath);
         }
 
-        private static void UpdateConfig(NameValueCollection subscriptionSettings)
+        /// <summary>
+        /// Writes to <paramref name="configFilePath"/> — an absolute path resolved once at
+        /// construction (see <see cref="_configFilePath"/>) — instead of the bare relative
+        /// <see cref="FileName"/> this used to resolve against
+        /// <see cref="Environment.CurrentDirectory"/>. That CWD-relative write is what let a
+        /// "file not found" read (itself CWD-relative) silently overwrite a real, correctly
+        /// staged license file living elsewhere on disk under the isolated-worker host.
+        /// </summary>
+        private static void UpdateConfig(NameValueCollection subscriptionSettings, string configFilePath)
         {
             try
             {
@@ -196,7 +294,7 @@ namespace Dev2.Runtime.Subscription
                 }
 
                 var configDoc = new XDocument(new XDeclaration("1.0", "utf-8", ""), config);
-                configDoc.Save(FileName, SaveOptions.None);
+                configDoc.Save(configFilePath, SaveOptions.None);
             }
             catch(Exception ex)
             {

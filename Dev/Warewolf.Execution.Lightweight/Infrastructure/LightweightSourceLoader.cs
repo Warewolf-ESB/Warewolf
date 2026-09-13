@@ -123,6 +123,43 @@ namespace Warewolf.Execution.Lightweight
         }
 
         /// <summary>
+        /// Forces the per-directory index built by <see cref="EnsureIndexed"/> to be rebuilt on
+        /// its next access, so a source file written to <paramref name="baseDirectory"/> AFTER
+        /// the index was first built becomes visible to <see cref="IOnDemandSourceLoader.EnsureSourceLoaded"/>.
+        ///
+        /// Without this, <c>add_source</c>'s newly-created source is invisible forever on any
+        /// already-warm instance whose index was built before the file existed — the index is a
+        /// <see cref="Lazy{T}"/> built at most once per directory
+        /// (<see cref="_directoryIndices"/>/<see cref="EnsureIndexed"/>) with no staleness check.
+        /// Call this after writing a new/changed source <c>.bite</c> file (<c>AddSourceTool</c>,
+        /// <c>EditSourceTool</c>); <see cref="Invalidate"/> alone does not help here since it only
+        /// clears a per-ID registration flag for an ID the index (and therefore
+        /// <see cref="EnsureSourceLoaded"/>'s ID-existence check) may not know about yet.
+        ///
+        /// Replaces the cached <see cref="Lazy{T}"/> reference rather than mutating the built
+        /// dictionary in place (that dictionary is documented read-only and shared with concurrent
+        /// readers). A full re-scan is cheap — <see cref="BuildFileIndex"/> only peeks each file's
+        /// root-element attributes — and add_source/edit_source are low-frequency authoring calls,
+        /// not hot-path.
+        /// </summary>
+        internal void InvalidateDirectory(string baseDirectory)
+        {
+            if (string.IsNullOrEmpty(baseDirectory))
+            {
+                return;
+            }
+
+            var key = Path.GetFullPath(baseDirectory);
+            _directoryIndices[key] = new Lazy<IReadOnlyDictionary<Guid, (string Path, string Type)>>(
+                () => BuildFileIndex(key),
+                LazyThreadSafetyMode.ExecutionAndPublication);
+
+            Dev2Logger.Warn(
+                $"[LightweightSourceLoader] InvalidateDirectory('{DirName(key)}'): index cleared, will rebuild on next access.",
+                GlobalConstants.WarewolfInfo);
+        }
+
+        /// <summary>
         /// Returns a one-line diagnostic snapshot: indexed directories, their sizes, and any
         /// source-load errors captured since this instance was created.  Designed to be embedded
         /// directly in exception messages so the information surfaces in structured log sinks

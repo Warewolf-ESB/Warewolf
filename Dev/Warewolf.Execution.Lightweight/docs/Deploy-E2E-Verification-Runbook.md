@@ -20,7 +20,7 @@ delete at the end:
 > predates: broker topology must be **pre-created** (§S11), the documented
 > `az account get-access-token` step **cannot work** on a fresh app registration (§S9), and execution
 > evidence comes from **Log Analytics**, not App Insights `traces` (§S12). Details in
-> [Deploy-E2E-Execution-Summary.md](Deploy-E2E-Execution-Summary.md).
+> [Deploy-E2E-Execution-Summary.md](archive/Deploy-E2E-Execution-Summary.md) (archived).
 
 > ### Read before running
 > - **Everything in Phase A is billable** while it exists. Phase F removes all of it in one command
@@ -145,7 +145,8 @@ deploy succeeds without them:
   workflows the triggers invoke must be staged from `$WorkflowsSrc`; the deploy also generates
   `Resources\workflow-index.json` from them for `apis.json` discovery.
 - **`-AuthConfigPath`** — each `GroupPermissions` key becomes an assignable Entra app role. If
-  `Warewolf_QueueProcessor` is not in this file, Phase C's role grant has nothing to assign.
+  `Warewolf_QueueProcessor` is not in this file, Phase C's role grant has nothing to assign and says
+  so; the deploy continues and every app reports `engineAppRole: skipped`.
 
 Confirm the trigger workflows are actually stageable before deploying:
 
@@ -716,10 +717,16 @@ Re-run without `-DryRun` to deploy. Per trigger the script:
 > group's server-level `Execute` is always OR'd into the effective permissions, which covers any
 > authenticated caller.
 >
-> Treat the grant as **defence in depth / least privilege**, not a prerequisite. It becomes genuinely
-> required the moment a workflow gains an Execute-bearing resource row, because the global grant then
-> stops applying to it (§3's narrowing warning). The deploy script's closing note still prompts for
-> it deliberately.
+> Treat the grant as **defence in depth / least privilege** on a `secure.config` shaped like this
+> one. It becomes genuinely required the moment a workflow gains an Execute-bearing resource row,
+> because the global grant then stops applying to it (§3's narrowing warning) — and required
+> unconditionally on any `secure.config` whose `Public` row is not server-level `Execute`.
+
+**`Deploy-WwQueueProcessor.ps1` now performs grant 1 itself**, once per deployed app, and reports
+`engineAppRole` per app in its summary JSON. The snippet below is the by-hand repair for an app the
+deploy could not grant — the grant is non-fatal, because writing an `appRoleAssignment` needs
+`AppRoleAssignment.ReadWrite.All` (or Privileged Role Administrator), which the deploy operator may
+not hold.
 
 The two grants, per app:
 
@@ -1337,7 +1344,7 @@ Phase F deletes.
 | A | `az keyvault secret set --name rabbitmq-uri` | One new secret in the reused vault — **the only change Phase A makes**. No environment, registry or workspace is created |
 | B | `Deploy-WwExecutionEngine.ps1` (no `-DryRun`) | Creates `stwwengine1` + `wwengine1`, app settings, **an Entra app registration**, and WFAES-encrypts the staged workflow resources |
 | C | `Deploy-WwQueueProcessor.ps1` (no `-DryRun`) | `az acr build` — pushes **one new repository into the reused `tudev2containerregistry`** — + **one Container App per trigger (2), into the shared `dev2-cae`**; WFAES-encrypts staged triggers/sources; **grants each app MI `AcrPull` on the registry and `Key Vault Secrets User` on the vault** (two RBAC writes) |
-| C | `az rest … appRoleAssignments` | **Directory change** — grants each MI the engine app role `Warewolf_QueueProcessor` |
+| C | `az rest … appRoleAssignedTo` (inside `Deploy-WwQueueProcessor.ps1`) | **Directory change** — grants each MI the engine app role `Warewolf_QueueProcessor`, once per app. Idempotent, and non-fatal if your account cannot write `appRoleAssignment`s |
 | D | `az containerapp update --scale-rule-*` | Applies the KEDA rule (already done by Phase C) |
 | E | `RabbitPublish` / `containerapp revision restart` | Publishes real messages to the dev broker; restarts a revision |
 | F | `az containerapp delete` (×2), `Rollback-WwExecutionEngine.ps1`, `az ad app delete` | **Targeted deletes only.** ⛔ **No `az group delete`** — see Phase F |

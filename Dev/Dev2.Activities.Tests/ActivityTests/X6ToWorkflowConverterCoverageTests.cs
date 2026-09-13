@@ -38,8 +38,10 @@ using System.Text;
 using System.Xml.Linq;
 using Dev2.Activities.WF;
 using Dev2.Common.X6;
+using Dev2.Data.SystemTemplates.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -65,6 +67,22 @@ namespace Dev2.Tests.Activities.ActivityTests
             }
             return new Cell { id = id, data = data };
         }
+
+
+        /// <summary>
+        /// A DsfDecision's EXPRESSION is a serialized <see cref="Dev2DecisionStack"/>, not a raw
+        /// Warewolf expression. Passing "[[a]] = 1" made Newtonsoft read the leading '[' as the start
+        /// of a JSON array and throw. That went unnoticed because the decision node was being dropped
+        /// before the expression was ever parsed.
+        /// </summary>
+        static string DecisionStack(string displayText) =>
+            JsonConvert.SerializeObject(new Dev2DecisionStack
+            {
+                TheStack      = new List<Dev2Decision>(),
+                DisplayText   = displayText,
+                TrueArmText   = "Yes",
+                FalseArmText  = "No"
+            });
 
         static Cell MakeStartNode()
         {
@@ -103,7 +121,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             // An empty graph has no cell that resolves to a start node, so BuildWorkflow
             // falls back to a bare Sequence and EnsureImplementation cannot finalise it.
             // This is now a structured, named exception rather than a raw NullReferenceException
-            // (round-trip fidelity gate hardening — see warewolf-lee-mcp-v3-addendum-a.md).
+            // (round-trip fidelity gate hardening).
             var converter = new X6ToWorkflowConverter();
             Assert.ThrowsException<EmptyWorkflowGraphException>(() =>
                 converter.X6JsonToWorkflow(Serialise("EmptyWorkflow")));
@@ -142,7 +160,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             var decision = MakeNode("DsfDecision", "Is A == 1",
                 new Dictionary<string, object>
                 {
-                    [Constants.EXPRESSION]   = "[[a]] = 1",
+                    // CreateDecisionActivity reads DISPLAYTEXT, not DISPLAYNAME. Without it the
+                    // decision was silently dropped and this test passed on the start node alone.
+                    [Constants.DISPLAYTEXT]  = "Is A == 1",
+                    [Constants.EXPRESSION]   = DecisionStack("Is A == 1"),
                     [Constants.TRUEARMTEXT]  = "Yes",
                     [Constants.FALSEARMTEXT] = "No"
                 });
@@ -174,6 +195,127 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(result.Length > 0);
         }
 
+        // ─────────────────────────────────────────────────────────────────
+        // ForEach loop bodies
+        //
+        // body_schema and get_tool_schema tell callers to nest a loop body with the generic
+        // data.isNested/data.parentId keys, the same as Sequence. The converter only read the
+        // legacy isNestedInForEach/forEachParentId keys, so a body authored per the published
+        // schema was dropped and the engine failed at run time with "Cannot execute a For Each
+        // with no content". Asserting only that the XAML is non-empty is what let that through —
+        // the ForEach itself converts fine, it is the body that goes missing — so these assert
+        // the child is actually present in the output.
+        // ─────────────────────────────────────────────────────────────────
+
+        /// <summary>
+        /// The display names of the activities that ended up inside a ForEach's DataFunc — that is,
+        /// the loop body. Asserting merely that a name appears somewhere in the XAML proves nothing
+        /// here: a child the converter fails to embed is still emitted as its own top-level
+        /// FlowStep, so it is present in the document either way — just running once, outside the
+        /// loop, while the loop itself runs empty.
+        /// </summary>
+        static List<string> ForEachBodyDisplayNames(string xaml)
+        {
+            var forEach = XDocument.Parse(xaml)
+                .Descendants()
+                .FirstOrDefault(e => e.Name.LocalName == "DsfForEachActivity");
+            Assert.IsNotNull(forEach, "No DsfForEachActivity in the converted workflow.");
+
+            var dataFunc = forEach.Descendants()
+                .FirstOrDefault(e => e.Name.LocalName == "DsfForEachActivity.DataFunc");
+            Assert.IsNotNull(dataFunc, "The ForEach has no DataFunc — its loop body was dropped.");
+
+            return dataFunc.Descendants()
+                .Select(e => (string)e.Attribute("DisplayName"))
+                .Where(n => !string.IsNullOrEmpty(n))
+                .ToList();
+        }
+
+        static int TopLevelFlowStepCount(string xaml) =>
+            XDocument.Parse(xaml).Descendants().Count(e => e.Name.LocalName == "FlowStep");
+
+        static Cell MakeForEachNode(string displayName = "ForEachLoop") =>
+            MakeNode("DsfForEachActivity", displayName,
+                new Dictionary<string, object>
+                {
+                    ["foreachtype"] = "NumOfExecution",
+                    ["numofexecutions"] = "3"
+                });
+
+        static Cell MakeNestedAssign(string displayName, string parentId, int? index = null)
+        {
+            var extra = new Dictionary<string, object>
+            {
+                [Constants.ISNESTED] = true,
+                [Constants.PARENTID] = parentId,
+                ["fields"] = JsonConvert.SerializeObject(new[]
+                {
+                    new { FieldName = "[[acc]]", FieldValue = "[[acc]]x" }
+                })
+            };
+            if (index.HasValue)
+            {
+                extra[Constants.SEQUENCE_NESTED_ACTIVITY_INDEX] = index.Value;
+            }
+
+            return MakeNode("DsfDotNetMultiAssignActivity", displayName, extra);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_ForEachWithIsNestedChild_EmbedsChildInLoopBody()
+        {
+            var fe = MakeForEachNode();
+            var child = MakeNestedAssign("InLoop", fe.id);
+
+            var result = Convert("ForEachNestedFlow", MakeStartNode(), fe, child).ToString();
+
+            CollectionAssert.Contains(ForEachBodyDisplayNames(result), "InLoop",
+                "A child nested with isNested/parentId must end up in the ForEach's DataFunc handler.");
+
+            // start + the ForEach itself. A third would mean the child also ran as its own
+            // top-level step, executing once outside the loop instead of once per iteration.
+            Assert.AreEqual(2, TopLevelFlowStepCount(result),
+                "The embedded child must not also be emitted as a top-level FlowStep.");
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_ForEachWithMultipleIsNestedChildren_KeepsEveryChild()
+        {
+            var fe = MakeForEachNode();
+            var first = MakeNestedAssign("LoopStepOne", fe.id, 0);
+            var second = MakeNestedAssign("LoopStepTwo", fe.id, 1);
+
+            var result = Convert("ForEachMultiNestedFlow", MakeStartNode(), fe, first, second).ToString();
+
+            var body = ForEachBodyDisplayNames(result);
+            CollectionAssert.Contains(body, "LoopStepOne");
+            CollectionAssert.Contains(body, "LoopStepTwo",
+                "A ForEach runs one handler, so multiple nested children are wrapped in a Sequence — " +
+                "keeping only the first would silently drop loop-body steps.");
+            Assert.AreEqual(2, TopLevelFlowStepCount(result));
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_ForEachWithLegacyNestingKeys_StillEmbedsChild()
+        {
+            var fe = MakeForEachNode();
+            var child = MakeNode("DsfDotNetMultiAssignActivity", "LegacyInLoop",
+                new Dictionary<string, object>
+                {
+                    [Constants.ISNESTED_INFOREACH] = true,
+                    [Constants.PARENTID_FOREACH] = fe.id,
+                    ["fields"] = JsonConvert.SerializeObject(new[]
+                    {
+                        new { FieldName = "[[acc]]", FieldValue = "[[acc]]x" }
+                    })
+                });
+
+            var result = Convert("ForEachLegacyNestedFlow", MakeStartNode(), fe, child).ToString();
+
+            CollectionAssert.Contains(ForEachBodyDisplayNames(result), "LegacyInLoop",
+                "Bodies authored against the legacy isNestedInForEach/forEachParentId keys must keep working.");
+        }
+
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
         public void X6JsonToWorkflow_CommentActivity_ProducesNonEmptyXaml()
         {
@@ -198,12 +340,56 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_CalculateActivity_PreservesExpressionAndResult()
+        {
+            // Regression test for the "Calculate" gap documented in
+            // X6-Converter-Missing-Activity-Support-Spec.md §3.1: the legacy DsfCalculateActivity
+            // had no ToX6Json/FromX6Json at all, so a Calculate node fell through
+            // CreateActivityFromNode's default case and threw UnsupportedActivityTypeException.
+            // Assert on the actual Expression/Result values surviving the round trip, not merely
+            // that XAML was produced — see spec §4 for why the weaker assertion previously hid
+            // vacuous coverage.
+            var calculate = MakeNode("DsfCalculateActivity", "Calculate",
+                new Dictionary<string, object>
+                {
+                    [Constants.CALCULATE_EXPRESSION] = "1+1",
+                    [Constants.CALCULATE_RESULT] = "[[legacyCalcResult]]"
+                });
+
+            var result = Convert("CalculateFlow", MakeStartNode(), calculate);
+            var xaml = result.ToString();
+
+            Assert.IsTrue(xaml.Contains("1+1"), "The Calculate activity's Expression should survive the round trip.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("legacyCalcResult"), "The Calculate activity's Result should survive the round trip.\n" + xaml);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_DotNetCalculateActivity_PreservesExpressionAndResult()
+        {
+            // DsfDotNetCalculateActivity had a ToX6Json but no FromX6Json override at all, so this
+            // direction of the round trip silently dropped Expression/Result even once dispatch
+            // was wired up (see spec §3.1 step 3).
+            var calculate = MakeNode("DsfDotNetCalculateActivity", "Calculate",
+                new Dictionary<string, object>
+                {
+                    [Constants.CALCULATE_EXPRESSION] = "2+2",
+                    [Constants.CALCULATE_RESULT] = "[[dotnetCalcResult]]"
+                });
+
+            var result = Convert("DotNetCalculateFlow", MakeStartNode(), calculate);
+            var xaml = result.ToString();
+
+            Assert.IsTrue(xaml.Contains("2+2"), "The Calculate activity's Expression should survive the round trip.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("dotnetCalcResult"), "The Calculate activity's Result should survive the round trip.\n" + xaml);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
         public void X6JsonToWorkflow_UnknownActivityType_ThrowsUnsupportedActivityTypeException()
         {
             // Unknown 'type' values fall through the switch to the default case, which now
             // throws instead of silently substituting a no-op WriteLine activity — an LLM/MCP
             // caller must see this as a hard error, not a silently-corrupted workflow (round-trip
-            // fidelity gate hardening — see warewolf-lee-mcp-v3-addendum-a.md).
+            // fidelity gate hardening).
             var unknown = MakeNode("ThisIsNotARealActivityType");
 
             var ex = Assert.ThrowsException<UnsupportedActivityTypeException>(() =>
@@ -213,19 +399,22 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
-        public void X6JsonToWorkflow_NodeMissingType_IsSkipped()
+        public void X6JsonToWorkflow_NodeMissingType_ThrowsRatherThanBeingSkipped()
         {
-            // A node whose 'data' has no 'type' key returns null from CreateActivityFromNode
-            // and should be silently skipped.  We still need a start node so that
-            // WorkflowHelper.EnsureImplementation has something to finalise.
+            // A node whose 'data' has no 'type' key cannot be turned into an activity. This used to
+            // be skipped in silence, so the converter returned a workflow quietly missing a step
+            // while reporting success. It now fails loudly instead — see the call site in
+            // X6ToWorkflowConverter.X6JsonToActivityBuilder.
             var noType = new Cell
             {
                 id   = Guid.NewGuid().ToString(),
                 data = new Dictionary<string, object> { ["displayname"] = "no-type" }
             };
-            var result = Convert("NoTypeFlow", MakeStartNode(), noType);
-            Assert.IsTrue(result.Length > 0,
-                "Workflow with one start node and one typeless node should still build");
+
+            var ex = Assert.ThrowsException<InvalidOperationException>(() =>
+                Convert("NoTypeFlow", MakeStartNode(), noType));
+
+            StringAssert.Contains(ex.Message, noType.id);
         }
 
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
@@ -262,7 +451,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                 {
                     ["type"] = "DsfDecision",
                     [Constants.DISPLAYNAME] = "Is x == 42",
-                    [Constants.EXPRESSION]  = "[[x]] = 42",
+                    // CreateDecisionActivity reads DISPLAYTEXT; without it the decision was dropped
+                    // and this test's "non-empty XAML" assertion never actually covered the decision.
+                    [Constants.DISPLAYTEXT]  = "Is x == 42",
+                    [Constants.EXPRESSION]  = DecisionStack("Is x == 42"),
                     [Constants.PROPERTY_UNIQUEID] = decisionId
                 }
             };
@@ -547,5 +739,44 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreSame(input, result,
                 "On parse failure AddReplaceNameSpace must return the original StringBuilder instance");
         }
+
+        // ─────────────────────────────────────────────────────────────────
+        // Unconvertible nodes must not vanish
+        //
+        // CreateActivityFromNode returns null when a node cannot be turned into an activity.
+        // The caller used to skip such nodes in silence, so conversion "succeeded" while quietly
+        // producing a workflow with a step missing — invisible until the workflow ran and behaved
+        // differently. That is the exact failure the round-trip fidelity gate exists to prevent.
+        // ─────────────────────────────────────────────────────────────────
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_NodeWithBlankDisplayName_ThrowsRatherThanDroppingTheStep()
+        {
+            // A blank display name makes the Create* helper return null. Conversion must fail
+            // loudly rather than return a workflow that is silently one step short.
+            var unconvertible = MakeNode("dsfdotnetmultiassignactivity", displayName: "   ");
+
+            var ex = Assert.ThrowsException<InvalidOperationException>(() =>
+                Convert("DropsAStep", MakeStartNode(), unconvertible));
+
+            StringAssert.Contains(ex.Message, unconvertible.id,
+                "The error must name the offending node so the caller can find it.");
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_DisplayNameThatSurvivedJsonAsNonString_StillResolves()
+        {
+            // Cell.data is Dictionary<string, object>. After a serialize/deserialize cycle a value
+            // arrives as a Newtonsoft JValue, not a string, so the old "is not string" guard
+            // rejected a perfectly good display name and dropped the activity. TryGetString
+            // tolerates it, matching what the FromX6Json implementations already did.
+            var node = MakeNode("dsfdotnetmultiassignactivity");
+            node.data[Constants.DISPLAYNAME] = new JValue("Assign");
+
+            var xaml = Convert("NonStringDisplayName", MakeStartNode(), node);
+
+            Assert.IsTrue(xaml.Length > 0, "A JValue display name must not cause the activity to be dropped.");
+        }
+
     }
 }

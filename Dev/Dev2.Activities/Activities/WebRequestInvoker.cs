@@ -1,4 +1,4 @@
-#pragma warning disable
+﻿#pragma warning disable
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2019 by Warewolf Ltd <alpha@warewolf.io>
@@ -45,7 +45,15 @@ namespace Dev2.Activities
 
                 var uri = new Uri(url.Contains("http://") || url.Contains("https://") ? url : "http://" + url);
 
-                switch (method)
+                // The verb is normalised because it arrives from user-authored workflow data
+                // (the X6 `webrequest_method` field), not from a constrained UI control.
+                var verb = (method ?? string.Empty).Trim().ToUpperInvariant();
+                // WebClient.UploadString throws ArgumentNullException on a null body, and the
+                // callers that only supply a verb + URL pass data: null. An absent body is a
+                // legitimate request, so it is sent as empty rather than crashing the workflow.
+                var payload = data ?? string.Empty;
+
+                switch (verb)
                 {
                     case "GET":
                         if (asyncCallback == null)
@@ -56,16 +64,19 @@ namespace Dev2.Activities
                         webClient.DownloadStringAsync(uri, null);
                         break;
                     case "POST":
+                    case "PUT":
+                    case "DELETE":
+                    case "PATCH":
                         if (asyncCallback == null)
                         {
-                            return webClient.UploadString(uri, data);
+                            return webClient.UploadString(uri, verb, payload);
                         }
                         webClient.UploadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
-                        webClient.UploadStringAsync(uri, data);
+                        webClient.UploadStringAsync(uri, verb, payload);
                         break;
                     default:
-                        Dev2Logger.Info("No Web method for the Web Request Property Name: " + method, GlobalConstants.WarewolfInfo);
-                        break;
+                        Dev2Logger.Warn("Unsupported Web Request method: " + method, GlobalConstants.WarewolfInfo);
+                        throw new ArgumentException("Unsupported Web Request method '" + method + "'. Supported methods are GET, POST, PUT, DELETE and PATCH.");
                 }
             }
             return string.Empty;
@@ -93,7 +104,15 @@ namespace Dev2.Activities
 
                 var uri = new Uri(url.Contains("http://") || url.Contains("https://") ? url : "http://" + url);
 
-                switch (method)
+                // The verb is normalised because it arrives from user-authored workflow data
+                // (the X6 `webrequest_method` field), not from a constrained UI control.
+                var verb = (method ?? string.Empty).Trim().ToUpperInvariant();
+                // WebClient.UploadString throws ArgumentNullException on a null body, and the
+                // callers that only supply a verb + URL pass data: null. An absent body is a
+                // legitimate request, so it is sent as empty rather than crashing the workflow.
+                var payload = data ?? string.Empty;
+
+                switch (verb)
                 {
                     case "GET":
                         if (asyncCallback == null)
@@ -104,15 +123,19 @@ namespace Dev2.Activities
                         webClient.DownloadStringAsync(uri, null);
                         break;
                     case "POST":
+                    case "PUT":
+                    case "DELETE":
+                    case "PATCH":
                         if (asyncCallback == null)
                         {
-                            return webClient.UploadString(uri, data);
+                            return webClient.UploadString(uri, verb, payload);
                         }
                         webClient.UploadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
-                        webClient.UploadStringAsync(uri, data);
+                        webClient.UploadStringAsync(uri, verb, payload);
                         break;
                     default:
-                        return string.Empty;
+                        Dev2Logger.Warn("Unsupported Web Request method: " + method, GlobalConstants.WarewolfInfo);
+                        throw new ArgumentException("Unsupported Web Request method '" + method + "'. Supported methods are GET, POST, PUT, DELETE and PATCH.");
                 }
             }
             return string.Empty;
