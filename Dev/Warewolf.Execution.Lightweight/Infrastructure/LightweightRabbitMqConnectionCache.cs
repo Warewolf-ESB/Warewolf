@@ -93,6 +93,34 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
     internal int ConnectionsDisposed => Volatile.Read(ref _connectionsDisposed);
     internal int UncachedFallbacks => Volatile.Read(ref _uncachedFallbacks);
 
+    /// <summary>Channels opened across every cached connection. 0 when pooling is off.</summary>
+    internal int ChannelsCreated
+    {
+        get
+        {
+            var total = 0;
+            foreach (var kvp in _entries)
+            {
+                total += kvp.Value.ChannelPool?.ChannelsCreated ?? 0;
+            }
+            return total;
+        }
+    }
+
+    /// <summary>Pooled channels dropped because the broker had closed them.</summary>
+    internal int ChannelsDiscarded
+    {
+        get
+        {
+            var total = 0;
+            foreach (var kvp in _entries)
+            {
+                total += kvp.Value.ChannelPool?.ChannelsDiscarded ?? 0;
+            }
+            return total;
+        }
+    }
+
     // ── Public surface ──────────────────────────────────────────────────────────────────────────
 
     public IRabbitMqConnectionLease Acquire(string cacheKey, Func<IConnection> connectionFactory)
@@ -190,7 +218,10 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
             }
 
             var connection = factory();
-            var entry = new CacheEntry(connection, _clock().UtcTicks);
+            var entry = new CacheEntry(connection, _clock().UtcTicks,
+                _options.ChannelPool
+                    ? new RabbitMqChannelPool(connection, _options.MaxChannelsPerConnection)
+                    : null);
 
             if (_entries.TryAdd(key, entry))
             {
@@ -272,6 +303,10 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
     {
         if (Interlocked.Decrement(ref entry.RefCount) == 0)
         {
+            // Channels first. Disposing the connection would close them anyway, but doing it in this
+            // order keeps the pool's own counters honest and closes each channel cleanly rather than
+            // having the broker tear them down underneath it.
+            entry.ChannelPool?.Dispose();
             DisposeConnection(entry.Connection);
         }
     }
@@ -407,12 +442,20 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
 
         internal int Poisoned;
 
-        internal CacheEntry(IConnection connection, long nowTicks)
+        /// <summary>
+        /// Reusable channels for this connection, or null when channel pooling is off. Owned by the
+        /// entry - not by a lease - because channels must outlive the publish that opened them,
+        /// which is the entire point.
+        /// </summary>
+        internal readonly RabbitMqChannelPool ChannelPool;
+
+        internal CacheEntry(IConnection connection, long nowTicks, RabbitMqChannelPool channelPool)
         {
             Connection = connection;
             CreatedTicks = nowTicks;
             LastUsedTicks = nowTicks;
             RefCount = 2;
+            ChannelPool = channelPool;
         }
     }
 
@@ -461,6 +504,29 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
             topology[topologyKey] = _cache._clock().UtcTicks + _cache._options.TopologyTtl.Ticks;
         }
 
+        /// <summary>
+        /// A pooled channel when pooling is on, otherwise a brand-new one - the historical behaviour.
+        /// Exclusively owned by this publish until <see cref="ReturnChannel"/>, which is what keeps a
+        /// non-thread-safe <c>IModel</c> safe while the connection underneath is shared.
+        /// </summary>
+        public IModel RentChannel() =>
+            _entry.ChannelPool is null ? _entry.Connection.CreateModel() : _entry.ChannelPool.Rent();
+
+        /// <summary>
+        /// Hands the channel back to the pool, or disposes it when pooling is off. The pool drops any
+        /// channel the broker has closed rather than recycling it.
+        /// </summary>
+        public void ReturnChannel(IModel channel)
+        {
+            if (_entry.ChannelPool is null)
+            {
+                channel?.Dispose();
+                return;
+            }
+
+            _entry.ChannelPool.Return(channel);
+        }
+
         public void Invalidate()
         {
             Volatile.Write(ref _entry.Poisoned, 1);
@@ -468,6 +534,13 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
             // Whatever we believed about this connection's topology was learned over a connection we
             // no longer trust. A replacement must re-verify from scratch.
             _entry.Topology.Clear();
+
+            // Same reasoning for the channels: they are multiplexed on the very connection we have
+            // just declared unusable, so keeping them idle would hand a later publish a channel on a
+            // half-dead socket. Safe to do while other leases are still using this entry - a disposed
+            // pool opens a private channel per Rent and disposes it on Return, which is exactly the
+            // unpooled behaviour.
+            _entry.ChannelPool?.Dispose();
         }
 
         public void Dispose()

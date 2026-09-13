@@ -1083,3 +1083,326 @@ Describe 'Deploy-WwQueueProcessor — Assert-PublishMatchesBaseImage' {
         $guardAt | Should -BeLessThan $buildAt -Because 'a ~6-minute ACR build must not precede a check that would reject its output'
     }
 }
+Describe 'Deploy-WwQueueProcessor - engine app-role grant' {
+
+    <#
+        The engine app role (an Entra appRoleAssignment) is what lets a worker's managed identity
+        call the engine at all. Without it the engine DENIES every call, WOLF-8418 wraps the denial
+        as HTTP 500 rather than 403, EngineForwarder classifies 500 as a business failure and
+        DEAD-LETTERS AND ACKS the message. The queue drains, the app scales back to zero, and the
+        run scores clean while every message was discarded - so nothing about the deployed state
+        reveals the missing grant. That is why these are locks, not conveniences.
+
+        The grant used to be a manual post-deploy step documented against ONE app, while this script
+        deploys ONE PER TRIGGER. `fans the grant out over EVERY deployed app` is the regression that
+        matters most: it is the shape of the bug the manual step actually produced in UAT.
+    #>
+
+    BeforeAll {
+        $script:QpText = Get-Content -LiteralPath $script:DeployScript -Raw
+
+        # TWO valid triggers in their own folder, and the source in a SEPARATE one: -TriggerFilter
+        # defaults to *.bite, so a source sitting beside the triggers is read as a trigger and the
+        # run dies on 'not plaintext JSON'.
+        $script:GrantDir = Join-Path ([System.IO.Path]::GetTempPath()) "wwqp-grant-$([Guid]::NewGuid())"
+        $script:GrantSrc = Join-Path $script:GrantDir 'sources'
+        New-Item -ItemType Directory -Force $script:GrantDir, $script:GrantSrc | Out-Null
+
+        Set-Content (Join-Path $script:GrantDir 'one.bite') $script:TriggerJson -Encoding UTF8
+        $script:TriggerJson.
+            Replace('MandateCollectionSuccessTrigger', 'SecondTrigger').
+            Replace('1ac40da8-3b56-45f8-a1aa-00e6864db38b', '7f3c2e91-5a40-4d18-9c22-8b61e0f4a3d7').
+            Replace('profiler.mandatecollectionsuccess.request', 'second.request') |
+            Set-Content (Join-Path $script:GrantDir 'two.bite') -Encoding UTF8
+
+        Set-Content (Join-Path $script:GrantSrc '0b142714-8f6d-41b7-9832-2aefa8c731ec.bite') @'
+<Source ID="0b142714-8f6d-41b7-9832-2aefa8c731ec" Name="Warewolf DevOps RabbitMQ Source" ResourceType="RabbitMQSource" ConnectionString="HostName=server.ngrok.io;Port=20313;UserName=testuser;Password=test123;VirtualHost=/" Type="RabbitMQSource" />
+'@ -Encoding UTF8
+
+        # `az` shadowed with a tracking FUNCTION (functions win over applications), so the suite is
+        # identical with or without the Azure CLI installed and never reaches a directory.
+        $global:azCalls          = @()
+        $global:principalId      = 'MI-PRINCIPAL-ID'
+        $global:appRolesJson     = '[{"id":"ROLE-GUID-1","value":"Warewolf_QueueProcessor"},{"id":"ROLE-GUID-2","value":"Warewolf_ClientApps"}]'
+        $global:engineSpId       = 'ENGINE-SP-OBJECT-ID'
+        $global:assignmentsJson  = '{"value":[]}'
+        $global:grantFailure     = $null
+
+        function global:az {
+            $line = $args -join ' '
+            $global:azCalls += ,$line
+            $global:LASTEXITCODE = 0
+            if ($line -match 'account show.*tenantId') { return 'tid-from-az-context' }
+            if ($line -match '^group exists')          { return 'false' }
+            if ($line -match '^ad app show')           { return $global:appRolesJson }
+            if ($line -match '^ad sp show')            { return $global:engineSpId }
+            if ($line -match 'identity\.principalId')  { return $global:principalId }
+            if ($line -match 'appRoleAssignments')     { return $global:assignmentsJson }
+            if ($line -match 'appRoleAssignedTo' -and $global:grantFailure) {
+                $global:LASTEXITCODE = 1
+                Write-Error $global:grantFailure
+                return
+            }
+            return ''
+        }
+
+        # -RbacPropagationSeconds 0 keeps each real-run case instant; the settle wait is a
+        # Start-Sleep with nothing to assert here.
+        # Declared HERE, not at Describe scope: Pester 5 runs each It in a child scope that does
+        # not see a function declared directly in the Describe body (same reason New-Planned above
+        # lives in its BeforeAll).
+        function script:Invoke-Qp {
+            param([hashtable] $Extra = @{})
+            $splat = $script:Base.Clone()
+            foreach ($k in $Extra.Keys) { $splat[$k] = $Extra[$k] }
+            & $script:DeployScript @splat 6>&1 | Out-String
+        }
+
+        function script:Get-GrantPosts {
+            @($global:azCalls | Where-Object { $_ -match 'appRoleAssignedTo' })
+        }
+
+        $script:Base = @{
+            ResourceGroup       = 'RG'
+            Location            = 'southafricanorth'
+            AcaEnvironment      = 'aca-test'
+            Image               = 'acr.azurecr.io/wwqp@sha256:abc'
+            TriggerPath         = $script:GrantDir
+            QueueSourcePath     = $script:GrantSrc
+            EngineBaseUrl       = 'https://engine'
+            EngineResourceAppId = 'engine-app-id'
+            RabbitMqSecretUri   = 'https://kv.vault.azure.net/secrets/rabbit'
+            NonInteractive      = $true
+        }
+    }
+
+    BeforeEach {
+        # Every case starts from "role defined, engine SP resolvable, nothing assigned yet".
+        $global:azCalls         = @()
+        $global:principalId     = 'MI-PRINCIPAL-ID'
+        $global:appRolesJson    = '[{"id":"ROLE-GUID-1","value":"Warewolf_QueueProcessor"},{"id":"ROLE-GUID-2","value":"Warewolf_ClientApps"}]'
+        $global:engineSpId      = 'ENGINE-SP-OBJECT-ID'
+        $global:assignmentsJson = '{"value":[]}'
+        $global:grantFailure    = $null
+    }
+
+    AfterAll {
+        Remove-Item Function:\az -ErrorAction SilentlyContinue
+        foreach ($v in 'azCalls', 'principalId', 'appRolesJson', 'engineSpId', 'assignmentsJson', 'grantFailure') {
+            Remove-Variable -Name $v -Scope Global -ErrorAction SilentlyContinue
+        }
+        if ($script:GrantDir -and (Test-Path $script:GrantDir)) {
+            Remove-Item $script:GrantDir -Recurse -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'exposes Grant-EngineAppRole and its context resolver under -LoadFunctionsOnly' {
+        # Same convention as every other helper here: dot-sourceable with no cloud or filesystem
+        # action, so the grant logic is unit-testable without an Azure CLI.
+        . $script:DeployScript -LoadFunctionsOnly 6>&1 | Out-Null
+        foreach ($fn in 'Grant-EngineAppRole', 'Resolve-EngineAppRoleGrantContext') {
+            Get-Command $fn -CommandType Function -ErrorAction SilentlyContinue |
+                Should -Not -BeNullOrEmpty -Because "$fn must be dot-sourceable for unit testing"
+        }
+    }
+
+    It 'fans the grant out over EVERY deployed app, not just the first' {
+        # THE regression. One Container App per trigger, each with its OWN system-assigned identity,
+        # so a grant applied once authorizes exactly one worker. The others consume happily and
+        # dead-letter everything the engine denies - invisibly, because the queue still drains.
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0 }
+
+        (script:Get-GrantPosts).Count | Should -Be 2 -Because 'there are two triggers, so there are two managed identities'
+        $out | Should -Match "granted to MI-PRINCIPAL-ID"
+    }
+
+    It 'resolves the role id and engine SP ONCE per run, not once per app' {
+        # Both ids are identical for every app in a run. Re-reading them per trigger turns a
+        # 2-trigger deploy into 4 extra directory calls and a 20-trigger deploy into 40.
+        script:Invoke-Qp @{ RbacPropagationSeconds = 0 } | Out-Null
+
+        @($global:azCalls | Where-Object { $_ -match '^ad app show' }).Count | Should -Be 1
+        @($global:azCalls | Where-Object { $_ -match '^ad sp show'  }).Count | Should -Be 1
+    }
+
+    It 'is idempotent - an existing assignment is detected and never re-POSTed' {
+        # Re-running a deploy is the normal repair path (see the registry/identity notes above), so
+        # a second run must not depend on Graph tolerating a duplicate.
+        $global:assignmentsJson = '{"value":[{"id":"assignment-1","appRoleId":"ROLE-GUID-1"}]}'
+
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0 }
+
+        (script:Get-GrantPosts).Count | Should -Be 0 -Because 'the role is already held by this identity'
+        $out | Should -Match 'already assigned'
+    }
+
+    It 'ignores an assignment for a DIFFERENT role on the same identity' {
+        # An identity that holds Warewolf_ClientApps is not authorized as a queue processor. Matching
+        # on "has any assignment" would skip the grant and leave the worker denied.
+        $global:assignmentsJson = '{"value":[{"id":"assignment-9","appRoleId":"ROLE-GUID-2"}]}'
+
+        script:Invoke-Qp @{ RbacPropagationSeconds = 0 } | Out-Null
+
+        (script:Get-GrantPosts).Count | Should -Be 2 -Because 'a different role does not satisfy Warewolf_QueueProcessor'
+    }
+
+    It 'performs NO directory write under -DryRun' {
+        $out = script:Invoke-Qp @{ DryRun = $true }
+
+        (script:Get-GrantPosts | Where-Object { $_ -notmatch '^\[DRYRUN\]' }).Count |
+            Should -Be 0 -Because '-DryRun must not change the directory'
+        $out | Should -Match 'WOULD be granted'
+        $out | Should -Not -Match 'Every deployed worker holds' -Because 'a dry run grants nothing and must not claim otherwise'
+    }
+
+    It 'does NOT fail the deploy when the account cannot write appRoleAssignments' {
+        # Writing an appRoleAssignment needs AppRoleAssignment.ReadWrite.All (or Privileged Role
+        # Administrator) - a different privilege from the Contributor rights every other call here
+        # uses. Hard-failing would break operators who deploy correctly today and have the role
+        # granted for them out of band.
+        $global:grantFailure = 'Forbidden: Authorization_RequestDenied - Insufficient privileges to complete the operation.'
+
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0 }
+
+        $out | Should -Match 'NOT granted'
+        $out | Should -Match 'AppRoleAssignment\.ReadWrite\.All'
+        $out | Should -Match 'ACTION REQUIRED: 2 of 2 worker\(s\)'
+        # The app itself must still be reported as deployed - the worker exists, it is just not
+        # authorized yet, and the operator needs to know both facts.
+        $out | Should -Match 'failed-permission'
+    }
+
+    It 'names every ungranted app with a runnable remediation command' {
+        # A count alone sends the operator back to the portal to work out WHICH app and WHICH
+        # principal. Both are already known here.
+        $global:grantFailure = 'Forbidden: Authorization_RequestDenied'
+
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0 }
+
+        @($out -split "`n" | Where-Object { $_ -match 'Configure-WwExecutionAuth-Clients\.ps1' }).Count |
+            Should -Be 2 -Because 'one remediation line per ungranted app'
+        $out | Should -Match '-ManagedIdentityObjectId MI-PRINCIPAL-ID'
+        $out | Should -Match '-AppRolesToAssign Warewolf_QueueProcessor'
+    }
+
+    It 'treats a duplicate-assignment error from Graph as success, not failure' {
+        # Graph reports a duplicate as a 400, not a 409. Two concurrent deploys of the same app must
+        # not make one of them report an unauthorized worker.
+        $global:grantFailure = 'Permission being assigned was already assigned to the principal'
+
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0 }
+
+        $out | Should -Match 'already assigned'
+        $out | Should -Not -Match 'ACTION REQUIRED'
+    }
+
+    It 'continues - and says why - when the engine app defines no such role' {
+        $global:appRolesJson = '[{"id":"ROLE-GUID-2","value":"Warewolf_ClientApps"}]'
+
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0 }
+
+        $out | Should -Match "defines no app role 'Warewolf_QueueProcessor'"
+        $out | Should -Match 'Configure-WwExecutionAuth\.ps1'
+        (script:Get-GrantPosts).Count | Should -Be 0 -Because 'there is no role id to assign'
+        $out | Should -Match 'ACTION REQUIRED' -Because 'the workers are deployed and unauthorized'
+    }
+
+    It 'honours -SkipEngineAppRoleGrant with zero directory calls' {
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0; SkipEngineAppRoleGrant = $true }
+
+        @($global:azCalls | Where-Object { $_ -match 'appRoleAssign|^ad app show|^ad sp show' }).Count |
+            Should -Be 0 -Because 'the switch must suppress the lookups too, not just the write'
+        $out | Should -Match 'SkipEngineAppRoleGrant'
+        $out | Should -Match 'Configure-WwExecutionAuth-Clients\.ps1' -Because 'the manual instructions must still be printed'
+    }
+
+    It 'uses -EngineSpObjectId when supplied and skips the lookup' {
+        # Deploy-WwEngineAndQueueProcessor.ps1 has already resolved this into its handover file.
+        # Taking it from there also guarantees the grant targets THIS run's engine rather than
+        # whatever a directory search happens to return.
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0; EngineSpObjectId = 'HANDOVER-SP-ID' }
+
+        @($global:azCalls | Where-Object { $_ -match '^ad sp show' }).Count |
+            Should -Be 0 -Because 'the caller supplied the object id'
+        $out | Should -Match 'HANDOVER-SP-ID'
+        (script:Get-GrantPosts)[0] | Should -Match 'servicePrincipals/HANDOVER-SP-ID/appRoleAssignedTo'
+    }
+
+    It 'honours a non-default -EngineAppRole' {
+        $global:appRolesJson = '[{"id":"ROLE-CUSTOM","value":"Warewolf_Custom"}]'
+
+        $out = script:Invoke-Qp @{ RbacPropagationSeconds = 0; EngineAppRole = 'Warewolf_Custom' }
+
+        $out | Should -Match "'Warewolf_Custom' granted"
+        (script:Get-GrantPosts).Count | Should -Be 2
+    }
+
+    It 'records engineAppRole per app in the summary JSON' {
+        # The deployed state cannot be inspected for this: a roleless worker looks identical to an
+        # authorized one until a message is denied. The summary is the record.
+        $logDir = Join-Path ([System.IO.Path]::GetTempPath()) "wwqp-sum-$([Guid]::NewGuid())"
+        New-Item -ItemType Directory -Force $logDir | Out-Null
+        try {
+            script:Invoke-Qp @{ RbacPropagationSeconds = 0; LogDir = $logDir } | Out-Null
+
+            $summary = Get-ChildItem $logDir -Filter 'deploy-WwQueueProcessor-*.summary.json' |
+                       Sort-Object LastWriteTime | Select-Object -Last 1
+            $summary | Should -Not -BeNullOrEmpty
+
+            $json = Get-Content $summary.FullName -Raw | ConvertFrom-Json
+            $json.engineAppRole | Should -Be 'Warewolf_QueueProcessor'
+            @($json.queueProcessorApps).Count | Should -Be 2
+            foreach ($app in $json.queueProcessorApps) {
+                $app.engineAppRole | Should -Be 'granted'
+            }
+        } finally { Remove-Item $logDir -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It 'sends the assignment body as an @file, never inline' {
+        # `az` on Windows strips the inner double quotes out of an inline JSON value, so
+        # --body '{"principalId":...}' arrives as unparseable JSON. That exact defect stored an
+        # invalid WAREWOLF_ENTRA_CONFIG and aborted an engine deploy in Phase 2.
+        script:Invoke-Qp @{ RbacPropagationSeconds = 0 } | Out-Null
+
+        $post = (script:Get-GrantPosts)[0]
+        $post | Should -Match '--body @'
+        $post | Should -Not -Match '--body \{' -Because 'an inline JSON body is mangled by the az .cmd shim on Windows'
+        $script:QpText | Should -Match "ConvertTo-Json -Compress \| Set-Content -LiteralPath \`$tmp -Encoding utf8NoBOM"
+    }
+
+    It 'removes the temp body file even when the POST fails' {
+        $global:grantFailure = 'Forbidden: Authorization_RequestDenied'
+        $before = @(Get-ChildItem ([System.IO.Path]::GetTempPath()) -Filter 'ww-approle-*.json' -ErrorAction SilentlyContinue).Count
+
+        script:Invoke-Qp @{ RbacPropagationSeconds = 0 } | Out-Null
+
+        @(Get-ChildItem ([System.IO.Path]::GetTempPath()) -Filter 'ww-approle-*.json' -ErrorAction SilentlyContinue).Count |
+            Should -Be $before -Because 'the cleanup is in a finally block, so a failed grant leaks nothing'
+    }
+
+    It 'never filters Graph or directory reads with a quoted JMESPath' {
+        # `az` on Windows is a .cmd shim and cmd.exe mangles a --query containing SINGLE QUOTES
+        # before Python ever sees it, producing "].name was unexpected at this time". az then exits
+        # non-zero, -AllowFail turns that into $null, and a role that IS defined reads as absent -
+        # a false negative that silently skips the grant. Same trap Assert-RoleAssigned documents.
+        # Matched as an az ARGUMENT ('--query', '<jmespath>'), not anywhere in the file: the
+        # comment above Resolve-EngineAppRoleGrantContext quotes the anti-pattern deliberately.
+        $script:QpText | Should -Not -Match "'--query', 'appRoles\[\?"
+        $script:QpText | Should -Not -Match 'value\[\?appRoleId'
+        $script:QpText | Should -Match "'--query', 'appRoles'"
+    }
+
+    It 'grants the app role AFTER the ARM roles and BEFORE the RBAC settle wait' {
+        # Ordering is a deliberate optimisation, and the kind that silently regresses. The ARM
+        # grants must stay first (the keyvaultref secret is resolved with that identity), and
+        # placing the Entra grant before the settle wait lets its own propagation overlap the
+        # 60s Key Vault wait instead of being added to it.
+        $armIdx    = $script:QpText.IndexOf('Grant-AppIdentityRoles -PrincipalId $principalId')
+        $roleIdx   = $script:QpText.IndexOf('Grant-EngineAppRole -PrincipalId $principalId')
+        $settleIdx = $script:QpText.IndexOf('Wait-RbacDataPlaneSettle -PrincipalId $principalId')
+
+        $armIdx    | Should -BeGreaterThan 0
+        $roleIdx   | Should -BeGreaterThan $armIdx
+        $settleIdx | Should -BeGreaterThan $roleIdx
+    }
+}

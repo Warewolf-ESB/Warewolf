@@ -42,6 +42,9 @@ public sealed class RabbitMqCacheOptions
     public static readonly TimeSpan DefaultSweepInterval = TimeSpan.FromMinutes(1);
     public const int DefaultMaxConnections = 4;
 
+    /// <summary>Channels kept per cached connection when <see cref="ChannelPool"/> is on.</summary>
+    public const int DefaultMaxChannelsPerConnection = 32;
+
     /// <summary>
     /// Hard ceiling on <see cref="MaxConnections"/> regardless of configuration. Each cached
     /// connection costs a socket, an I/O thread and two heartbeat timers; on a Consumption instance
@@ -49,6 +52,12 @@ public sealed class RabbitMqCacheOptions
     /// exhaust the host.
     /// </summary>
     public const int MaxAllowedConnections = 64;
+
+    /// <summary>
+    /// Hard ceiling on <see cref="MaxChannelsPerConnection"/>. Well below AMQP's negotiated
+    /// channel-max (commonly 2047) so the pool can never be the thing that exhausts it.
+    /// </summary>
+    public const int MaxAllowedChannelsPerConnection = 256;
 
     /// <summary>The feature switch. False for every failure mode, by design.</summary>
     public bool Enabled { get; private init; }
@@ -74,6 +83,30 @@ public sealed class RabbitMqCacheOptions
 
     /// <summary>How often expired entries are swept so idle sockets are released at their TTL.</summary>
     public TimeSpan SweepInterval { get; private init; } = DefaultSweepInterval;
+
+    /// <summary>
+    /// Reuse channels on a cached connection instead of opening and closing one per publish.
+    ///
+    /// <para>OFF by default, and gated SEPARATELY from <see cref="Enabled"/> on purpose: turning the
+    /// connection cache on should not silently change channel behaviour as well. Enable the cache
+    /// first, confirm it, then enable this.</para>
+    ///
+    /// <para>With the connection cached, <c>channel.open</c> + <c>channel.close</c> are the only
+    /// broker round-trips a publish still pays - measured at 99.6% of the remaining cost against a
+    /// remote broker. Pooling removes them. It has no effect unless <see cref="Enabled"/> is true,
+    /// because an uncached publish has no connection to pool channels on.</para>
+    /// </summary>
+    public bool ChannelPool { get; private init; }
+
+    /// <summary>
+    /// Ceiling on pooled channels per connection. Beyond it a publish gets a private channel and
+    /// disposes it, exactly as it does today - the pool degrades, it never fails or blocks a publish.
+    ///
+    /// <para>The pool only ever grows to the peak concurrency actually seen, so this is a safety
+    /// ceiling rather than a dial to tune. AMQP negotiates its own channel-max per connection
+    /// (commonly 2047); this stays far below it deliberately.</para>
+    /// </summary>
+    public int MaxChannelsPerConnection { get; private init; } = DefaultMaxChannelsPerConnection;
 
     /// <summary>The all-off instance returned for every absent/invalid configuration.</summary>
     public static RabbitMqCacheOptions Disabled { get; } = new();
@@ -128,6 +161,8 @@ public sealed class RabbitMqCacheOptions
             // Zero is meaningful here (memo off), so only a NEGATIVE value is rejected.
             TopologyTtl    = NonNegativeOrDefault(shape.TopologyTtl, DefaultTopologyTtl,    nameof(TopologyTtl)),
             MaxConnections = ClampConnections(shape.MaxConnections),
+            ChannelPool    = shape.ChannelPool,
+            MaxChannelsPerConnection = ClampChannels(shape.MaxChannelsPerConnection),
         };
 
         // A max lifetime shorter than the idle window is almost certainly a mistake, and would make
@@ -175,6 +210,38 @@ public sealed class RabbitMqCacheOptions
         return value.Value;
     }
 
+    /// <summary>
+    /// Ceiling on pooled channels per connection. Unlike connections, a channel is cheap - it is a
+    /// multiplexed stream on an existing socket, not a socket - so the ceiling is higher and is a
+    /// guard against runaway concurrency rather than a resource budget.
+    /// </summary>
+    static int ClampChannels(int? value)
+    {
+        if (value is null)
+        {
+            return DefaultMaxChannelsPerConnection;
+        }
+        if (value.Value < 1)
+        {
+            Dev2Logger.Warn(
+                $"{EnvVar}: maxChannelsPerConnection must be at least 1 (was {value.Value}); " +
+                $"using {DefaultMaxChannelsPerConnection}.",
+                "RabbitMqCacheOptions-FromJson");
+            return DefaultMaxChannelsPerConnection;
+        }
+        if (value.Value > MaxAllowedChannelsPerConnection)
+        {
+            Dev2Logger.Warn(
+                $"{EnvVar}: maxChannelsPerConnection {value.Value} exceeds the " +
+                $"{MaxAllowedChannelsPerConnection} ceiling; clamping. The pool only grows to the " +
+                "peak concurrency seen, so a high ceiling buys nothing and risks the broker's own " +
+                "negotiated channel-max.",
+                "RabbitMqCacheOptions-FromJson");
+            return MaxAllowedChannelsPerConnection;
+        }
+        return value.Value;
+    }
+
     static int ClampConnections(int? value)
     {
         if (value is null)
@@ -202,7 +269,8 @@ public sealed class RabbitMqCacheOptions
     public override string ToString() =>
         Enabled
             ? $"enabled, idle={IdleTimeout}, maxLifetime={MaxLifetime}, topologyTtl={TopologyTtl}, " +
-              $"maxConnections={MaxConnections}, sweep={SweepInterval}"
+              $"maxConnections={MaxConnections}, sweep={SweepInterval}, " +
+              $"channelPool={(ChannelPool ? $"on (max {MaxChannelsPerConnection}/connection)" : "off")}"
             : "disabled";
 
     /// <summary>
@@ -216,6 +284,8 @@ public sealed class RabbitMqCacheOptions
         [JsonPropertyName("maxLifetime")]    public TimeSpan? MaxLifetime { get; set; }
         [JsonPropertyName("topologyTtl")]    public TimeSpan? TopologyTtl { get; set; }
         [JsonPropertyName("maxConnections")] public int? MaxConnections { get; set; }
+        [JsonPropertyName("channelPool")]    public bool ChannelPool { get; set; }
+        [JsonPropertyName("maxChannelsPerConnection")] public int? MaxChannelsPerConnection { get; set; }
         [JsonPropertyName("sweepInterval")]  public TimeSpan? SweepInterval { get; set; }
     }
 }

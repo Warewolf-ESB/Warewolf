@@ -380,12 +380,25 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             }
         }
 
+        /// <summary>
+        /// A cached lease that does NOT pool channels: it opens one per publish and disposes it on
+        /// return.
+        ///
+        /// <para><b>Non-pooling on purpose.</b> The assertions above pin the channel being disposed
+        /// once per publish (T2, T5) and once per row (T6), which is the behaviour the activity has
+        /// always had. A fake that pooled would quietly change what those tests mean. Channel pooling
+        /// is a property of the real cached lease and is covered where it lives, in
+        /// <c>LightweightRabbitMqConnectionCacheTests</c> - not here, where the subject is the
+        /// activity's branching.</para>
+        /// </summary>
         sealed class FakeLease : IRabbitMqConnectionLease
         {
             internal readonly List<string> Marked = new List<string>();
             internal bool TopologyFresh;
             internal int InvalidateCount;
             internal int DisposeCount;
+            internal int RentChannelCount;
+            internal int ReturnChannelCount;
 
             public IConnection Connection { get; set; }
 
@@ -396,6 +409,20 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Publish
             public void MarkTopologyDeclared(string topologyKey) => Marked.Add(topologyKey);
 
             public void Invalidate() => InvalidateCount++;
+
+            public IModel RentChannel()
+            {
+                RentChannelCount++;
+                return Connection.CreateModel();
+            }
+
+            public void ReturnChannel(IModel channel)
+            {
+                ReturnChannelCount++;
+                // Null-tolerant for the same reason the real implementations are: the caller returns
+                // whatever it holds, and it holds nothing if opening the channel is what failed.
+                channel?.Dispose();
+            }
 
             public void Dispose() => DisposeCount++;
         }

@@ -59,14 +59,19 @@ Describe 'Measure-FunctionPerf — static' {
             { param($n) $n -is [System.Management.Automation.Language.IfStatementAst] },
             $true)
 
+        # Clauses[0].Item1, NOT .Condition: IfStatementAst exposes only Clauses and ElseClause -
+        # there is no Condition property, so $_.Condition silently evaluated to $null and this test
+        # could never find either block. The production dispatch was correct all along.
+        $conditionOf = { param($ifAst) $ifAst.Clauses[0].Item1.Extent.Text }
+
         # The AllNew block: contains "AllNew" string literal in its condition
         $allNewIf = $allIfs | Where-Object {
-            $_.Condition.Extent.Text -match '"AllNew"'
+            (& $conditionOf $_) -match '"AllNew"'
         } | Select-Object -First 1
 
         # The Correlate block: contains "Correlate" in its condition
         $correlateIf = $allIfs | Where-Object {
-            $_.Condition.Extent.Text -match '"Correlate"'
+            (& $conditionOf $_) -match '"Correlate"'
         } | Select-Object -First 1
 
         $allNewIf     | Should -Not -BeNullOrEmpty -Because 'AllNew dispatch block must exist'

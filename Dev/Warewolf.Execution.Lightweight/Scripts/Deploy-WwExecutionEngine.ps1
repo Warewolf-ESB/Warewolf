@@ -359,6 +359,43 @@ param(
     [nullable[bool]] $LicenseCheckEnabled,
     [nullable[bool]] $StructuredLogs,
     [switch] $AlignHostJsonLogLevel,      # opt-in: also rewrite host.json logLevel (host-process only)
+
+    # RabbitMQ publish connection cache (WAREWOLF_RABBITMQ_CACHE). Reuses the AMQP connection
+    # across PublishRabbitMQActivity executions instead of opening one per publish, which removes
+    # ~6 of the 8 broker round-trips a publish costs. Measured 4.5x on a remote broker; a 500-row
+    # recordset publish drops from ~11 min to ~2.5 min. See docs/RabbitMQ-ConnectionCache-Plan.md
+    # and docs/RabbitMQ-ConnectionCache-Benchmark.md.
+    #
+    # ON BY DEFAULT FOR EVERY ENGINE, by explicit decision (2026-09-13): optimum RabbitMQ publish
+    # throughput is wanted on every instance, not opted into per deployment. The engine itself still
+    # defaults to OFF when the variable is absent - that safety net is unchanged and is what a host
+    # other than this script (the on-prem server, a hand-made app) continues to get.
+    #
+    # Pass '' (empty) to omit the setting entirely, which leaves the engine on the uncached path it
+    # has always used. Do that only to isolate a suspected caching fault; it is not the normal state.
+    #
+    # WAREWOLF_RABBITMQ_CACHE is the ONLY environment variable controlling this feature; all eight
+    # knobs live inside it (RabbitMqCacheOptions.FileShape). Every field is stated explicitly rather
+    # than left to the engine's defaults, so what a deployed app is running is readable from the
+    # Function App's settings blade without cross-referencing source.
+    #
+    # These values are the configuration MEASURED FASTEST, not a guess:
+    #   enabled + channelPool     19,262 msg/s  (0.03 ms/publish, 1 connection, 1 channel)
+    #   enabled only               3.3 msg/s    (294.8 ms/publish - channel.open+close is 99.6% of it)
+    #   neither                    0.7 msg/s    (1340.7 ms/publish - full handshake per message)
+    #
+    #   channelPool              - reuses channels instead of one open+close per publish. This is the
+    #                              big one: with the connection cached it is ~99.6% of what remains.
+    #   maxChannelsPerConnection - ceiling, not a target. The pool only ever grows to the peak
+    #                              concurrency actually seen (measured: 1 channel sequential, 8 for
+    #                              8 concurrent threads), so 32 is headroom that is never allocated.
+    #   topologyTtl              - skips the two passive declares while fresh. Each expiry costs one
+    #                              publish ~2 extra round-trips (measured 324.7 ms -> 481.1 ms), which
+    #                              matters proportionally MORE once pooling has removed everything else.
+    #   maxConnections           - per-broker connection ceiling; one broker needs one.
+    #   idleTimeout/maxLifetime/sweepInterval - connection hygiene. No measurable effect on throughput;
+    #                              they exist so a cached socket is released rather than held forever.
+    [string] $RabbitMqCacheConfig = '{"enabled":true,"channelPool":true,"maxChannelsPerConnection":32,"idleTimeout":"00:05:00","maxLifetime":"00:30:00","topologyTtl":"00:00:30","maxConnections":4,"sweepInterval":"00:01:00"}',
     [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
 
     # ── ServiceBusTrigger tunables (WOLF-8516 — file-only, no env-var fallback) ──
@@ -1331,6 +1368,19 @@ $loggingConfigValue = [ordered]@{
 }
 $appSettings['WAREWOLF_LOGGING_CONFIG']       = ($loggingConfigValue | ConvertTo-Json -Compress)
 $appSettings['WAREWOLF_LICENSE_CHECK_ENABLED'] = ($licenseCheck ? 'true' : 'false')
+
+# RabbitMQ publish connection cache. Omitted entirely when -RabbitMqCacheConfig is empty, because
+# an ABSENT variable is the engine's documented "uncached" default - writing '{"enabled":false}'
+# would mean the same thing but leave a misleading setting on the app.
+if (-not [string]::IsNullOrWhiteSpace($RabbitMqCacheConfig)) {
+    # Validated HERE, not at the engine. RabbitMqCacheOptions.FromJson treats unparseable JSON as
+    # DISABLED and only warns, so a typo would produce a deploy that reports success and an engine
+    # that silently never caches. Failing now is the only way that becomes visible.
+    try { $null = $RabbitMqCacheConfig | ConvertFrom-Json }
+    catch { throw "RabbitMqCacheConfig is not valid JSON: $($_.Exception.Message)`nValue: $RabbitMqCacheConfig" }
+
+    $appSettings['WAREWOLF_RABBITMQ_CACHE'] = $RabbitMqCacheConfig
+}
 # NOTE: BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
 # SkipFailureToRetrieveSecret (merged into WAREWOLF_SECURITY_FLAGS — WOLF-8516) are
 # deliberately NOT set here (not shown in logs/summary, not created on the Function
@@ -2010,9 +2060,102 @@ try {
 
     # 3.7 Apply environment variables (App Settings).
     Write-Step 'Applying environment variables (App Settings)'
-    $settingsArgs = @($appSettings.GetEnumerator() | ForEach-Object { "$($_.Key)=$($_.Value)" })
-    Invoke-Az (@('functionapp', 'config', 'appsettings', 'set', '--name', $AppName, '--resource-group', $ResourceGroup, '--settings') + $settingsArgs + @('-o', 'none')) -Mutating | Out-Null
+    # --settings @FILE, never inline "K=V" pairs.
+    #
+    # On Windows az consumes the inner double quotes of --settings "K={"a":1}", so a JSON value
+    # arrives stored as {a:1} - not valid JSON. Hit live on 2026-09-08 deploying 'wwuat', where it
+    # made WAREWOLF_ENTRA_CONFIG unparseable and aborted the run with
+    #   "WAREWOLF_ENTRA_CONFIG is not valid JSON ... Path 'tenantId'"
+    # Configure-WwExecutionAuth.ps1 was fixed the same way for exactly that reason.
+    #
+    # The inline form ALSO silently corrupted the two JSON settings written here, where nothing
+    # verifies the stored value and so nothing complained:
+    #   WAREWOLF_LOGGING_CONFIG  -> RawFlags.FromEnvironment() returns AllFalse, so console logging
+    #                               and the App Insights SDK are OFF while the deploy reports success
+    #   WAREWOLF_RABBITMQ_CACHE  -> RabbitMqCacheOptions.FromJson treats unparseable JSON as DISABLED,
+    #                               so the connection cache never engages
+    # An @file carries every value verbatim and fixes all three at once.
+    #
+    # -AsArray is load-bearing: ConvertTo-Json unwraps a single-element array into a bare object,
+    # which az accepts and then silently no-ops (it can even create settings literally named
+    # name/value). .json extension, not .tmp: az infers the payload format from it.
+    $settingsFile = Join-Path ([System.IO.Path]::GetTempPath()) ("ww-appsettings-{0}.json" -f [guid]::NewGuid().ToString('N'))
+    try {
+        $settingObjects = @($appSettings.GetEnumerator() | ForEach-Object {
+            [ordered]@{ name = $_.Key; value = [string]$_.Value; slotSetting = $false }
+        })
+        # UTF-8 WITHOUT BOM: a BOM makes az reject the payload before it reaches ARM.
+        [System.IO.File]::WriteAllText(
+            $settingsFile,
+            ($settingObjects | ConvertTo-Json -Depth 5 -AsArray),
+            (New-Object System.Text.UTF8Encoding $false))
+
+        Invoke-Az @('functionapp', 'config', 'appsettings', 'set',
+                    '--name', $AppName, '--resource-group', $ResourceGroup,
+                    '--settings', "@$settingsFile", '-o', 'none') -Mutating | Out-Null
+    }
+    finally {
+        # May hold secret values - remove it even if az threw.
+        Remove-Item -LiteralPath $settingsFile -Force -ErrorAction SilentlyContinue
+    }
     Write-Ok "$($appSettings.Count) app setting(s) applied."
+
+    # ── Read the JSON settings BACK and prove they are still JSON ──────────────
+    # Writing them correctly is not the same as their having arrived correctly, and every failure
+    # in this area has been silent: the engine treats an unparseable WAREWOLF_RABBITMQ_CACHE as
+    # DISABLED and an unparseable WAREWOLF_LOGGING_CONFIG as all-flags-false, both with at most a
+    # warning in a log nobody reads. A deploy that reports success while the feature is off is
+    # exactly the outcome this whole check exists to make impossible.
+    #
+    # Deliberately NOT ConvertFrom-Json: PowerShell accepts unquoted property names, so it parses
+    # the mangled {enabled:true} quite happily and would report a corrupt value as healthy. The
+    # engine uses System.Text.Json, which rejects it - so the quotes are asserted directly.
+    $jsonSettingNames = @($appSettings.Keys | Where-Object { "$($appSettings[$_])".TrimStart().StartsWith('{') })
+    if ($jsonSettingNames.Count -gt 0 -and -not $DryRun) {
+        Write-Step "Verifying $($jsonSettingNames.Count) JSON app setting(s) round-tripped intact"
+
+        $storedByName = @{}
+        $storedJson = Invoke-Az @('functionapp', 'config', 'appsettings', 'list',
+                                  '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+        if ($storedJson) {
+            try {
+                # StrictMode-safe: an entry without name/value - an unexpected payload shape, or a
+                # stub in a test - must be skipped, never dereferenced. This check is a safety net
+                # and must not become a new way for a successful deploy to fail.
+                foreach ($entry in @(($storedJson | Out-String) | ConvertFrom-Json)) {
+                    if ($entry -and
+                        $entry.PSObject.Properties['name'] -and
+                        $entry.PSObject.Properties['value']) {
+                        $storedByName[[string]$entry.name] = [string]$entry.value
+                    }
+                }
+            }
+            catch { $storedByName = @{} }
+        }
+
+        if ($storedByName.Count -eq 0) {
+            Write-Note 'App settings could not be read back in a recognisable shape; JSON round-trip check skipped.'
+        }
+        else {
+            foreach ($name in $jsonSettingNames) {
+                if (-not $storedByName.ContainsKey($name)) {
+                    throw "App setting '$name' was applied but is not present on '$AppName'."
+                }
+
+                # Deliberately NOT ConvertFrom-Json: PowerShell accepts UNQUOTED property names, so it
+                # parses the mangled {enabled:true} happily and would certify a corrupt value as
+                # healthy. The engine uses System.Text.Json, which rejects it. az stripping the inner
+                # quotes is exactly what produces {a:1}, so their absence IS the defect - assert on
+                # the quotes themselves.
+                if ($storedByName[$name] -notmatch '"\s*:') {
+                    throw ("App setting '$name' was stored WITHOUT quoted property names, so the engine " +
+                           "cannot parse it and the feature it controls would be silently OFF." +
+                           "`nStored: $($storedByName[$name])")
+                }
+            }
+            Write-Ok "JSON app settings verified: $($jsonSettingNames -join ', ')."
+        }
+    }
 
     Save-DeploySummary -Status 'in-progress'   # persist created-map + staging dir before deploy
 

@@ -17,7 +17,6 @@ namespace Warewolf.Configuration
     public class ChatbotSettingsData : BindableBase, IEquatable<ChatbotSettingsData>
     {
         private NamedGuidWithEncryptedPayload _chatbotSource = new NamedGuidWithEncryptedPayload();
-        private bool? _encryptDataSource;
         private bool _includeSystemLog = true;
         private bool _loadResourcesAsXaml = false;
         private int _numberOfLogLines = 1000;
