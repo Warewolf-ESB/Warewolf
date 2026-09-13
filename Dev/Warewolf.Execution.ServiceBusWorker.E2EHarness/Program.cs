@@ -8,7 +8,7 @@ using Azure.Messaging.ServiceBus;
 namespace Warewolf.Execution.ServiceBusWorker.E2EHarness;
 
 /// <summary>
-/// Two harness modes, selected via <c>--mode</c> (default <c>arrival</c>):
+/// Three harness modes, selected via <c>--mode</c> (default <c>arrival</c>):
 ///
 /// <list type="bullet">
 ///   <item><b><c>arrival</c></b> (original/default — unchanged behaviour). Publishes a
@@ -36,6 +36,11 @@ namespace Warewolf.Execution.ServiceBusWorker.E2EHarness;
 ///   deliberately NOT used to "check arrival" in this mode: it would compete with the
 ///   engine's own Managed-Identity subscription on the SAME queue and could steal the
 ///   message before the engine processes it.</item>
+///   <item><b><c>servicebus-send</c></b> (additive). Sends ONE message of that same
+///   <c>{"inputs","correlationId"}</c> contract straight to a Service Bus queue and exits —
+///   no RabbitMQ, no Shovel, no waiting. For tests whose assertion is about engine-side
+///   state rather than message delivery, and which therefore must not have a bridge in the
+///   picture at all (see <c>Test-ServiceBusTriggerCrashRecovery.ps1</c>).</item>
 /// </list>
 ///
 /// Exit code 0 + "PASS: ..." on success, exit code 1 + "FAIL: ..." otherwise.
@@ -75,7 +80,8 @@ internal static class Program
             {
                 "arrival" => await RunArrivalModeAsync(opts, Required),
                 "workflow-execution" => await RunWorkflowExecutionModeAsync(opts, Required),
-                _ => throw new ArgumentException($"Unsupported --mode '{mode}'. Supported: 'arrival' (default), 'workflow-execution'."),
+                "servicebus-send" => await RunServiceBusSendModeAsync(opts, Required),
+                _ => throw new ArgumentException($"Unsupported --mode '{mode}'. Supported: 'arrival' (default), 'workflow-execution', 'servicebus-send'."),
             };
         }
         catch (Exception ex)
@@ -269,6 +275,45 @@ internal static class Program
         return 1;
     }
 
+    /// <summary>
+    /// Publishes ONE <c>ServiceBusWorkflowMessage</c> straight onto a Service Bus queue —
+    /// no RabbitMQ, no Shovel, and no result-polling. The other two modes both go through
+    /// the bridge because proving the bridge IS their point; this one exists for tests that
+    /// only need a message to land on the trigger's own queue, where routing it via RabbitMQ
+    /// would add two moving parts the test isn't making any claim about (see
+    /// Scripts/Tests/Integration/Test-ServiceBusTriggerCrashRecovery.ps1, which kills the
+    /// engine mid-execution and then asserts on the claim row the trigger left behind).
+    ///
+    /// Deliberately does NOT wait for or assert any outcome: the caller owns the assertion,
+    /// because the whole point of its scenario is that no result is ever produced.
+    /// </summary>
+    private static async Task<int> RunServiceBusSendModeAsync(Dictionary<string, string> opts, Func<string, string> required)
+    {
+        var serviceBusConnectionString = required("servicebus-connection-string");
+        var destinationQueue = required("destination-queue");
+        var correlationId = opts.GetValueOrDefault("correlation-id", Guid.NewGuid().ToString("N"));
+        var workflowInputsJson = opts.GetValueOrDefault("workflow-inputs-json", string.Empty);
+
+        Dictionary<string, string>? inputs = null;
+        if (!string.IsNullOrWhiteSpace(workflowInputsJson))
+        {
+            var expandedInputsJson = WorkflowInputTemplate.Expand(workflowInputsJson, correlationId);
+            inputs = JsonSerializer.Deserialize<Dictionary<string, string>>(expandedInputsJson)
+                ?? throw new InvalidOperationException($"--workflow-inputs-json did not deserialize to a string map: {expandedInputsJson}");
+        }
+
+        // Same {"inputs","correlationId"} contract PublishWorkflowTriggerMessageAsync builds for
+        // the bridged path, so the trigger cannot tell the two apart.
+        var payload = JsonSerializer.Serialize(new { inputs, correlationId });
+
+        await using var client = new ServiceBusClient(serviceBusConnectionString);
+        await using var sender = client.CreateSender(destinationQueue);
+        await sender.SendMessageAsync(new ServiceBusMessage(payload) { CorrelationId = correlationId });
+
+        Console.WriteLine($"PASS: sent workflow-trigger message (correlationId '{correlationId}') directly to Service Bus queue '{destinationQueue}'.");
+        return 0;
+    }
+
     private static Dictionary<string, string> ParseArgs(string[] args)
     {
         var result = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
@@ -349,6 +394,16 @@ internal static class Program
                                                         raise this (e.g. 20) at load-test volumes,
                                                         since sequential HTTP-per-message publish
                                                         is the dominant cost, not shovel throughput
+
+            Usage: ShovelBridgeE2EHarness --mode servicebus-send [options]
+                --servicebus-connection-string <conn>  emulator or real Azure Service Bus
+                --destination-queue <name>             the trigger's own queue
+                [--correlation-id <id>]                default: a freshly generated GUID
+                [--workflow-inputs-json <json>]        e.g. {"Name":"FromTest"}
+                                                        Sends ONE message straight to Service Bus
+                                                        (no RabbitMQ/Shovel) and exits without
+                                                        waiting for any outcome - for tests that
+                                                        assert on engine-side state themselves.
             """);
     }
 

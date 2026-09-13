@@ -30,6 +30,19 @@ namespace Warewolf.Driver.Persistence
     public static class HangfireStorageFactory
     {
         public static JobStorage BuildFromPersistenceConfig()
+            => new SqlServerStorage(ResolveConnectionString(), new SqlServerStorageOptions
+            {
+                PrepareSchemaIfNecessary = Config.Persistence.PrepareSchemaIfNecessary,
+            });
+
+        /// <summary>
+        /// The same connection <see cref="BuildFromPersistenceConfig"/> hands to Hangfire, for
+        /// callers that need to read the job store's tables directly instead of through
+        /// Hangfire's API — which cannot enumerate hash keys by prefix (see the JobProcessor's
+        /// <c>ServiceBusClaimWatchdogFunction</c>). Resolution stays here so decryption and
+        /// DbSource parsing have exactly one implementation across every host.
+        /// </summary>
+        public static string ResolveConnectionString()
         {
             var payload = Config.Persistence.PersistenceDataSource?.Payload;
             if (string.IsNullOrWhiteSpace(payload))
@@ -47,10 +60,7 @@ namespace Warewolf.Driver.Persistence
                          ?? throw new InvalidOperationException(
                              "Persistence data source payload could not be deserialised to a DbSource.");
 
-            return new SqlServerStorage(source.ConnectionString, new SqlServerStorageOptions
-            {
-                PrepareSchemaIfNecessary = Config.Persistence.PrepareSchemaIfNecessary,
-            });
+            return source.ConnectionString;
         }
     }
 }

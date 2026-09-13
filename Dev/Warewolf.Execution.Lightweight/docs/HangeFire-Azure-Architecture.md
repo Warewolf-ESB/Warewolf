@@ -89,7 +89,13 @@ misbehave. See §4.3.
 │ │ ReaperFunction            │ │      │  ResumptionExecutor (start-at-node)  │
 │ │ stale Processing → Failed │ │      │  FileEncryption/DecryptionHelper     │
 │ │ %JOB_STALE_MINUTES%       │ │      │  (AES-256-GCM, WFAES::)              │
-│ └───────────────────────────┘ │      └───────┬──────────────────┬───────────┘
+│ └───────────────────────────┘ │      │                                      │
+│ ┌───────────────────────────┐ │      │  ServiceBusWorkflowTriggerFunction   │
+│ │ ServiceBusClaimWatchdog   │ │      │   (writes sbtrigger:claim:* rows     │
+│ │ stalled claims → alert    │ │      │    this watchdog reads)              │
+│ │ %SERVICEBUS_CLAIM_        │ │      └───────┬──────────────────┬───────────┘
+│ │   WATCHDOG_SCHEDULE%      │ │              │                  │
+│ └───────────────────────────┘ │              │                  │
 └───────────────┬───────────────┘              │                  │
                 │ poll due Scheduled jobs      │ job CRUD +       │ AES key
                 │ + reaper state writes        │ state CAS        │ (secret)
@@ -106,7 +112,7 @@ misbehave. See §4.3.
 | Component | Hosting | Responsibility |
 |---|---|---|
 | **Execution Engine** (`Warewolf.Execution.Lightweight`) | Azure Function App, Windows Consumption (Y1), dotnet-isolated 8 | Workflow execution incl. `SuspendExecutionActivity` and `ManualResumptionActivity`; **`/Resume/{suspensionId}` route**: atomic claim → execute continuation → record final job status + audit |
-| **ExecutionEngineJobProcessor** (new) | Dedicated Azure Function App, Windows Consumption (Y1) | Timer-driven poll of Hangfire storage for **due Scheduled jobs**; fire-and-forget invoke of the engine's resume route (MI bearer token); **fail-only reaper** for stale `Processing` jobs |
+| **ExecutionEngineJobProcessor** (new) | Dedicated Azure Function App, Windows Consumption (Y1) | Timer-driven poll of Hangfire storage for **due Scheduled jobs**; fire-and-forget invoke of the engine's resume route (MI bearer token); **fail-only reaper** for stale `Processing` jobs; **Service Bus claim watchdog** (WOLF-8512) alerting on trigger claims that were taken but never resolved |
 | **Hangfire SQL storage** | Azure SQL / SQL Server (prod), SQL LocalDB (dev), `Hangfire.InMemory` (tests) | Job store — schema unchanged; single source of truth for the job state machine |
 | **Azure Key Vault** | existing | AES-256-GCM key (secret) for `WFAES::` encryption of persisted environments/principals and the persistence DbSource |
 | **Entra ID** | existing engine app registration | `Warewolf_JobProcessor` app role for the processor's system-assigned MI; optional `Warewolf_ResumeOperators` role for human/manual callers |
@@ -308,6 +314,9 @@ existing code itself warns *"these jobs may not be very safe to resume … re-qu
 | `Settings/persistencesettingsdbsource.bite` | Engine + Processor | Hangfire SQL `DbSource`; `ConnectionString` WFAES-encrypted and runtime-decrypted exactly like `Settings/ElasticsearchLoggingSource.bite` |
 | `%JOB_POLL_SCHEDULE%` | Processor app setting | NCRONTAB poll cadence (default `0 */1 * * * *`) — TimerTrigger reads `%VAR%` natively |
 | `%JOB_REAPER_SCHEDULE%` | Processor app setting | NCRONTAB reaper cadence (default `30 */5 * * * *`) |
+| `%SERVICEBUS_CLAIM_WATCHDOG_SCHEDULE%` | Processor app setting | NCRONTAB claim-watchdog cadence (default `0 */10 * * * *`) |
+| `%SERVICEBUS_CLAIM_WATCHDOG_ALERT_AFTER_MINUTES%` | Processor app setting | How old a claim with no result must be before it is alerted (default 30). Deliberately well above the engine's own `ClaimStaleAfter`, which governs when a redelivery may take a claim over |
+| `%SERVICEBUS_CLAIM_WATCHDOG_MAX_ALERTS_PER_TICK%` | Processor app setting | Cap on alerts raised per tick (default 50), so one bad run cannot flood the logs |
 | `%JOB_STALE_MINUTES%` | Processor app setting | Reaper threshold for stale `Processing` → `Failed` (default 15) |
 | `%ENGINE_RESUME_BASEURL%` | Processor app setting | Engine base URL for the resume route |
 | `%ENGINE_RESUME_SCOPE%` | Processor app setting | Token scope for the engine's app registration, e.g. `api://<engine-app-id>/.default` |

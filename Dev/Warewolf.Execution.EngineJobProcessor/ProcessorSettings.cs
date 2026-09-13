@@ -19,6 +19,8 @@ namespace Warewolf.Execution.EngineJobProcessor;
 /// | ENGINE_RESUME_TIMEOUT_SECONDS  | 15      | HTTP ack timeout — the processor never waits for workflow completion |
 /// | ENGINE_RESUME_AUTH_DISABLED    | false   | Development only: skip bearer token acquisition |
 /// | JOB_STALE_MINUTES              | 15      | Reaper threshold: Processing older than this → Failed (fail-only) |
+/// | SERVICEBUS_CLAIM_WATCHDOG_ALERT_AFTER_MINUTES | 30 | Claim watchdog threshold: a claim this old with no result is alerted |
+/// | SERVICEBUS_CLAIM_WATCHDOG_MAX_ALERTS_PER_TICK | 50 | Cap on alerts raised per tick, so one bad run cannot flood the logs |
 /// </summary>
 public sealed record ProcessorSettings
 {
@@ -28,6 +30,16 @@ public sealed record ProcessorSettings
     public bool AuthDisabled { get; init; }
     public int StaleMinutes { get; init; } = 15;
 
+    /// <summary>
+    /// How old a claim with no recorded result must be before the watchdog treats it as
+    /// stalled. Deliberately well above the engine's own <c>ClaimStaleAfter</c> (which governs
+    /// when a REDELIVERY may take a claim over): a claim younger than that is still expected to
+    /// recover by itself, and alerting on it would just be noise.
+    /// </summary>
+    public int ClaimWatchdogAlertAfterMinutes { get; init; } = 30;
+
+    public int ClaimWatchdogMaxAlertsPerTick { get; init; } = 50;
+
     public static ProcessorSettings FromEnvironment() => new()
     {
         EngineResumeBaseUrl = TrimmedOrNull(Environment.GetEnvironmentVariable("ENGINE_RESUME_BASEURL"))?.TrimEnd('/'),
@@ -35,6 +47,8 @@ public sealed record ProcessorSettings
         ResumeTimeoutSeconds = ParsePositiveInt(Environment.GetEnvironmentVariable("ENGINE_RESUME_TIMEOUT_SECONDS"), 15),
         AuthDisabled         = string.Equals(Environment.GetEnvironmentVariable("ENGINE_RESUME_AUTH_DISABLED"), "true", StringComparison.OrdinalIgnoreCase),
         StaleMinutes         = ParsePositiveInt(Environment.GetEnvironmentVariable("JOB_STALE_MINUTES"), 15),
+        ClaimWatchdogAlertAfterMinutes = ParsePositiveInt(Environment.GetEnvironmentVariable("SERVICEBUS_CLAIM_WATCHDOG_ALERT_AFTER_MINUTES"), 30),
+        ClaimWatchdogMaxAlertsPerTick  = ParsePositiveInt(Environment.GetEnvironmentVariable("SERVICEBUS_CLAIM_WATCHDOG_MAX_ALERTS_PER_TICK"), 50),
     };
 
     static string? TrimmedOrNull(string? value)

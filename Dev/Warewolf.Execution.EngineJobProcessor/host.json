@@ -20,6 +20,7 @@
       "Host.Aggregator": "Warning",
       "Warewolf.Execution.EngineJobProcessor.Functions.JobPollFunction": "Information",
       "Warewolf.Execution.EngineJobProcessor.Functions.ReaperFunction": "Information",
+      "Warewolf.Execution.EngineJobProcessor.Functions.ServiceBusClaimWatchdogFunction": "Information",
       "Warewolf.Execution.EngineJobProcessor.Services.EngineResumeClient": "Information"
     },
     "console": {

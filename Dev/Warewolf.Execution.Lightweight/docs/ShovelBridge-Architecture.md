@@ -2084,6 +2084,93 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     telemetry was lost together, is unresolved; the re-wired breadcrumb is what the next
     recurrence needs to narrow it further.
 
+- **2026-09-13 — build 30655: 997/1000, same signature — but the enriched breadcrumb finally
+  identified the mechanism, and two local repros narrowed the remaining gap to "nothing was
+  listening".** CorrelationIds `...-000104`, `...-000108`, `...-000657` never resolved.
+  - **What the breadcrumb showed (the point of the build-30653 addendum).** All three claims
+    were frozen at `StillExecuting`, not `AboutToExecute` — so each execution genuinely ran
+    (10–15s of elapsed time recorded) and then stopped, rather than dying at the call boundary.
+    `-000104`/`-000108` share `lastStageInstanceId` AND `lastStageProcessId=4284`, 36ms apart:
+    one event killed both. `-000657` died separately on another instance (pid `6696`).
+  - **The decisive new evidence is the instance heartbeat.** Both instances were still
+    heartbeating long after the claims froze — but under a **different process id** (`4284 →
+    5048`, `6696 → 6496`). No multi-worker-per-instance setting exists in this repo, so a stable
+    `WEBSITE_INSTANCE_ID` reporting a new pid means the isolated **worker process crashed and was
+    respawned on the same sandbox**. That distinguishes, for the first time, worker-process death
+    from both host death and an execution-local hang — the exact question
+    `RecordInstanceHeartbeat` was added to answer.
+  - **Re-checked 13+ hours later: the claim rows were byte-for-byte unchanged** (same
+    `claimedAtUtc`, same `lastStage`), and no `sbtrigger:result:*` row ever appeared. So these
+    were never retried — not "retried and failed again", which would have rewritten
+    `claimedAtUtc`.
+  - **Repro 1 (Service Bus itself is fine).** Against the local Service Bus emulator
+    (`LockDuration=PT10S`, `MaxDeliveryCount=3`), a receiving process SIGKILLed three times
+    without settling produced `delivery_count` 0→1→2 and then auto-dead-lettered with
+    `MaxDeliveryCountExceeded`. The "unsettled ⇒ redelivered ⇒ eventually dead-lettered"
+    guarantee holds exactly as documented, even under an abrupt process kill.
+  - **Repro 2 (our own claim logic is fine).** Running the real engine locally against the
+    emulator and killing its process tree mid-execution reproduced the frozen-claim signature
+    precisely. Left alone, the message then sat unlocked and untouched; once a listener was
+    running again AND the claim had aged past `ClaimStaleAfter`, `TryClaim` correctly stole the
+    stale claim, re-executed, and succeeded. Before staleness elapsed, redeliveries were bounced
+    by the "another delivery is already in flight" guard, as designed.
+  - **Conclusion — the gap is not Service Bus and not the claim guard.** Service Bus only ever
+    hands a message to a receiver that asks for it. A Consumption-plan engine that has scaled to
+    zero after the burst has no receiver, so a message freed by a crashed host can sit
+    indefinitely with nothing to redeliver it to — which is exactly the 13-hour silence above.
+    The standing OOM/burst-pressure theory for *why* the worker process dies is unchanged and
+    still unproven; what is now settled is why the loss is *silent and permanent* afterwards.
+  - **Actions taken**:
+    - `ServiceBusClaimWatchdogFunction` (JobProcessor, TimerTrigger
+      `%SERVICEBUS_CLAIM_WATCHDOG_SCHEDULE%`) — scans for claims past
+      `%SERVICEBUS_CLAIM_WATCHDOG_ALERT_AFTER_MINUTES%` with no result, classifies them against
+      the instance heartbeat (`WorkerProcessRestarted` / `InstanceStoppedHeartbeating` /
+      `InstanceAliveExecutionStalled` / `NoInstanceHeartbeat`), and raises a structured error plus
+      a `ServiceBusClaimStalled` App Insights event. Deliberately on a timer: a TimerTrigger is
+      not subject to the scale-to-zero blind spot above. Detect-and-alert only — it does not
+      touch the message, matching `ReaperFunction`'s fail-only policy.
+    - `Scripts/Tests/Integration/Test-ServiceBusTriggerCrashRecovery.ps1` + the
+      `ServiceBusTriggerCrashRecoveryTest` CI job — automates repro 2 so the breadcrumb's
+      behaviour is CI-enforced rather than reproduced by hand.
+  - **Still open**: the root cause of the worker-process crash itself, and whether the watchdog
+    should ever act on the message (dead-letter/re-drive) rather than only alert.
+
+- **2026-09-13 — Phase 4c's database assertion may be the wrong assertion for the profiler
+  workflows: they also publish to RabbitMQ. Queue identified, but its role is NOT yet
+  confirmed.** Raised by a teammate working on `8520-Performance-Optimization`, who reported
+  that the profiler workflows "publish a message to a different queue" — which would make
+  Phase 4c's `Profiler.ProfilerRecommendation` reconciliation report false missing rows.
+  - **The repo copies do not publish anything.** `Resources/profiler/ProfilerMain.bite` is
+    entirely DB-shaped: 12 `DsfSqlServerDatabaseActivity`, 5 `DsfSqlBulkInsertActivity`, 60
+    sub-workflow `DsfActivity` calls, and zero queue activities. `ProfilerMain.bite` also exists
+    on **only one branch** (`8512-LoadTest-ProfilerMain-Workflow`); `8520-Performance-Optimization`
+    was branched off `7580-ServerPlatformImprovements` before the profiler resources were added
+    and contains none of them, so the reported change is not in git.
+  - **The authoritative profiler source is a separate tree** — `C:\builds\Unlimited.ProfilerServices`
+    (`Warewolf.ProfilerServices.sln`, its own `ProfilerService-CI-{Dev,UAT,PRD}.yml`). There,
+    exactly one of 53 workflows publishes to RabbitMQ:
+    `Profiler/ProfilerWrapper/RequestForProfiling.bite`, via a **`PublishRabbitMQActivity`**
+    (note: NOT `Dsf`-prefixed — grepping for `DsfPublishRabbitMQActivity` finds nothing and is
+    how this was missed once already), publishing `[[ProfilerInstruction]]`, durable, to
+    **`collectionv2.profilerrecommendation.request`** — the only `QueueName=` value anywhere in
+    that tree. Its source is `ProfilerRabbitMQSource` (AMQP), whose connection string still
+    points at a 2020-era ngrok endpoint (`4.tcp.eu.ngrok.io:20313`) and cannot be live.
+    A second source, `ProfilerRabbitMQAPISource` (a WebSource onto the management API at
+    `:15672/api/exchanges//`), is referenced by nothing.
+  - **Unresolved, and the reason no verification change has been made yet**: that queue is named
+    `…request` and is published by `RequestForProfiling`, which reads as the INBOUND door (a
+    request going in), not as ProfilerMain's output replacing the recommendation row. No
+    `.response`/`.result` queue exists anywhere in that tree. So either (a) the load test should
+    publish to that queue to drive the real front door, leaving the DB assertion intact, or
+    (b) some result queue exists that is not in this tree. Which one decides whether Phase 4c
+    changes at all.
+  - **If it does become message-based, note the trap already documented above**: the harness
+    deliberately does not open a receiver on the destination queue, because a second consumer
+    steals messages from the real one. A publication check would have to be non-destructive
+    (peek by correlation id, or broker-side counts), not a consume. `Test-ShovelBridgeE2E.ps1`
+    already has the shape for this — `-DbVerificationMode` is a `ValidateSet`, so a third mode
+    sits alongside `Jobs1`/`ProfilerRecommendation` rather than replacing them.
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

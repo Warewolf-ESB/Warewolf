@@ -340,6 +340,43 @@ further code in this function ever runs to record more than that. `lastStage =
 "ClaimAcquired"` with nothing further would mean it died while waiting for a concurrency
 slot (there is no token validation or policy check between claim and execution any more).
 
+### Watched automatically since build 30655 (2026-09-13)
+
+The query above is no longer the only way this is found. `ServiceBusClaimWatchdogFunction`
+(in the **JobProcessor** app, TimerTrigger `%SERVICEBUS_CLAIM_WATCHDOG_SCHEDULE%`, default
+every 10 min) runs exactly that scan on a schedule: claims older than
+`%SERVICEBUS_CLAIM_WATCHDOG_ALERT_AFTER_MINUTES%` (default 30) with no
+`sbtrigger:result:<correlationId>` row are reported as a structured `LogError` plus a
+`ServiceBusClaimStalled` Application Insights event, and marked with `watchdogAlertedAtUtc`
+in their own claim hash so a persistently stalled claim is alerted once, not every tick.
+
+It lives on a timer, and in the *other* app, for a specific reason established by the build
+30655 investigation (`docs/ShovelBridge-Architecture.md`'s running log): Service Bus only
+hands a message to a receiver that asks for it, so a Consumption-plan engine that has scaled
+to zero after a burst has nothing listening and a message freed by a crashed host can sit
+untouched indefinitely — build 30655's three correlation ids were still frozen 13 hours
+later. A TimerTrigger is woken by the platform on schedule regardless of queue depth, so the
+watchdog is not subject to the blind spot it is watching for.
+
+It **detects and alerts only** — it never settles, dead-letters or re-drives the message,
+matching the fail-only policy `ReaperFunction` already applies to suspend/resume jobs.
+
+The watchdog also reports the instance/process cross-reference this section's breadcrumb was
+extended for, as one of four diagnoses:
+
+| Diagnosis | Meaning |
+|---|---|
+| `WorkerProcessRestarted` | The instance is alive under a **different** pid than the one that took the claim — the isolated worker process died mid-execution. This is build 30655's signature. |
+| `InstanceStoppedHeartbeating` | The instance's own heartbeat stops at or before the claim's last checkpoint — the host went down with the execution. |
+| `InstanceAliveExecutionStalled` | The instance kept heartbeating past the claim's last checkpoint under the same pid — the execution itself is hung. |
+| `NoInstanceHeartbeat` | Nothing is recording liveness for the instance that took the claim. |
+
+The behaviour this breadcrumb depends on is CI-enforced by
+`Scripts/Tests/Integration/Test-ServiceBusTriggerCrashRecovery.ps1` (pipeline job
+`ServiceBusTriggerCrashRecoveryTest`), which kills the engine's process tree mid-execution
+against a local Service Bus emulator and asserts the claim is left at a non-terminal stage
+with no result row.
+
 ## Threat model coverage
 
 | Threat | Mitigation |

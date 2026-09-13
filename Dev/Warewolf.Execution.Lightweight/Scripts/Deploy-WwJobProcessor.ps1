@@ -20,7 +20,7 @@
         WFAES-encrypting the DbSource ConnectionString exactly like the engine's
         Elasticsearch source. Both source files are PROMPTED when not passed.
       * Applies the processor's app settings (JOB_POLL_SCHEDULE / JOB_REAPER_SCHEDULE /
-        JOB_STALE_MINUTES + ENGINE_RESUME_BASEURL / ENGINE_RESUME_SCOPE /
+        JOB_STALE_MINUTES / SERVICEBUS_CLAIM_WATCHDOG_* + ENGINE_RESUME_BASEURL / ENGINE_RESUME_SCOPE /
         ENGINE_RESUME_TIMEOUT_SECONDS / ENGINE_RESUME_AUTH_DISABLED) and the Key Vault
         settings the persistence DbSource decryption needs.
 
@@ -101,6 +101,9 @@ param(
     [string] $JobPollSchedule = '0 */1 * * * *',
     [string] $JobReaperSchedule = '0 */5 * * * *',
     [nullable[int]] $JobStaleMinutes,
+    [string] $ServiceBusClaimWatchdogSchedule = '0 */10 * * * *',
+    [nullable[int]] $ServiceBusClaimWatchdogAlertAfterMinutes,
+    [nullable[int]] $ServiceBusClaimWatchdogMaxAlertsPerTick,
     [string] $EngineResumeBaseUrl,
     [string] $EngineResumeScope,
     [nullable[int]] $EngineResumeTimeoutSeconds,
@@ -410,6 +413,8 @@ if (-not $authDisabled) {
 }
 $resumeTimeout = if ($null -ne $EngineResumeTimeoutSeconds) { [int]$EngineResumeTimeoutSeconds } else { 15 }
 $staleMinutes  = if ($null -ne $JobStaleMinutes)            { [int]$JobStaleMinutes }            else { 15 }
+$claimWatchdogAlertAfterMinutes = if ($null -ne $ServiceBusClaimWatchdogAlertAfterMinutes) { [int]$ServiceBusClaimWatchdogAlertAfterMinutes } else { 30 }
+$claimWatchdogMaxAlertsPerTick  = if ($null -ne $ServiceBusClaimWatchdogMaxAlertsPerTick)  { [int]$ServiceBusClaimWatchdogMaxAlertsPerTick }  else { 50 }
 
 # ── Build the environment-variable (app settings) map ──────────────────────────
 $appSettings = [ordered]@{}
@@ -424,6 +429,12 @@ $appSettings['ENABLEAPPLICATIONINSIGHTS']  = ($enableAppInsights ? 'true' : 'fal
 $appSettings['JOB_POLL_SCHEDULE']          = $JobPollSchedule
 $appSettings['JOB_REAPER_SCHEDULE']        = $JobReaperSchedule
 $appSettings['JOB_STALE_MINUTES']          = "$staleMinutes"
+# Service Bus claim watchdog (WOLF-8512): alerts on claims taken but never resolved. Runs on
+# its own timer precisely because a Consumption-plan engine that has scaled to zero has no
+# Service Bus receiver, so nothing else notices a claim stranded by a crashed host.
+$appSettings['SERVICEBUS_CLAIM_WATCHDOG_SCHEDULE']              = $ServiceBusClaimWatchdogSchedule
+$appSettings['SERVICEBUS_CLAIM_WATCHDOG_ALERT_AFTER_MINUTES']   = "$claimWatchdogAlertAfterMinutes"
+$appSettings['SERVICEBUS_CLAIM_WATCHDOG_MAX_ALERTS_PER_TICK']   = "$claimWatchdogMaxAlertsPerTick"
 # Resume dispatch (processor -> engine /secure/resume/{jobId}).
 $appSettings['ENGINE_RESUME_BASEURL']         = $EngineResumeBaseUrl
 $appSettings['ENGINE_RESUME_TIMEOUT_SECONDS'] = "$resumeTimeout"
