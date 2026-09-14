@@ -79,7 +79,12 @@ param(
     [string] $FuncExePath = 'func',
     [int] $EngineStartupTimeoutSeconds = 300,
 
-    [switch] $SkipTeardown
+    [switch] $SkipTeardown,
+
+    # Test hook: dot-source the helpers without standing up a single container, so
+    # Tests/Integration/Test-ServiceBusTriggerCrashRecovery.Tests.ps1 can unit-test them
+    # offline. Same convention as Test-ShovelBridgeE2E.ps1 and the Deploy-Ww* scripts.
+    [switch] $LoadFunctionsOnly
 )
 
 $ErrorActionPreference = 'Stop'
@@ -181,6 +186,53 @@ function Invoke-SqlEdgeQuery {
     }
     return $output
 }
+
+function Invoke-DotnetBuild {
+    <#
+    Builds a project quietly but keeps the output so it can be echoed when the build fails.
+    A bare `dotnet build ... | Out-Null` leaves a CI failure undiagnosable — the pipeline log
+    for build 30657 carried nothing but "exit 1", while the real cause was an MSB3030 from a
+    case-mismatched csproj path that only bites on the Linux agent. Errors are surfaced in
+    preference to the tail because `-v quiet` still emits this solution's ~850 warnings, which
+    would otherwise push the single error line out of view.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $ProjectPath,
+        [Parameter(Mandatory)][string] $Description,
+        [int] $TailLines = 40
+    )
+    $buildOutputLines = & dotnet build $ProjectPath -c Debug --nologo -v quiet 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        $buildExitCode = $LASTEXITCODE
+        $errorLines = @($buildOutputLines | Where-Object { $_ -match ':\s*(error|fatal)\s' })
+        $detail = if ($errorLines.Count -gt 0) { $errorLines } else { @($buildOutputLines) }
+        $detail | Select-Object -Last $TailLines | ForEach-Object { Write-Host "      $_" }
+        # The first error also goes in the exception message: Azure DevOps surfaces only that
+        # in the step's error summary, which is all a reader sees without opening the raw log.
+        $message = "dotnet build failed for $Description (exit $buildExitCode)."
+        if ($errorLines.Count -gt 0) { $message += " First error: $(($errorLines[0] | Out-String).Trim())" }
+        throw "$message See the build output above."
+    }
+}
+
+function Get-WwEngineBuildOutputPath {
+    <#
+    Resolves where `dotnet build -c Debug` leaves the engine — the folder this script stages the
+    throwaway deploy from, and the one carrying the .azurefunctions metadata `func start` needs.
+    Chained Join-Path keeps the separator platform-correct on the Linux CI agent.
+
+    Deliberately NOT bin/output: that spelling only ever resolved on a dev box still holding a
+    stale publish there, and never exists on a clean checkout or a CI agent (build 30657).
+    #>
+    param(
+        [Parameter(Mandatory)][string] $EngineDir,
+        [string] $Configuration = 'Debug',
+        [string] $TargetFramework = 'net10.0'
+    )
+    return Join-Path $EngineDir 'bin' | Join-Path -ChildPath $Configuration | Join-Path -ChildPath $TargetFramework
+}
+
+if ($LoadFunctionsOnly) { return }
 
 # ── Paths ────────────────────────────────────────────────────────────────────
 $engineDir    = Resolve-Path (Join-Path $PSScriptRoot '..\..\..')          # Warewolf.Execution.Lightweight
@@ -372,18 +424,16 @@ IF DB_ID('$hangfireDatabase') IS NULL CREATE DATABASE [$hangfireDatabase];
     Write-Phase 'Phase 3  Stage a throwaway engine deploy'
     # ════════════════════════════════════════════════════════════════════════
     Write-Step 'Building the Execution Engine'
-    & dotnet build (Join-Path $engineDir 'Warewolf.Execution.Lightweight.csproj') -c Debug --nologo -v quiet | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw "dotnet build failed for the Execution Engine (exit $LASTEXITCODE)." }
+    Invoke-DotnetBuild -ProjectPath (Join-Path $engineDir 'Warewolf.Execution.Lightweight.csproj') -Description 'the Execution Engine'
 
     Write-Step 'Building the E2E harness'
-    & dotnet build (Join-Path $harnessDir 'Warewolf.Execution.ServiceBusWorker.E2EHarness.csproj') -c Debug --nologo -v quiet | Out-Null
-    if ($LASTEXITCODE -ne 0) { throw "dotnet build failed for the E2E harness (exit $LASTEXITCODE)." }
+    Invoke-DotnetBuild -ProjectPath (Join-Path $harnessDir 'Warewolf.Execution.ServiceBusWorker.E2EHarness.csproj') -Description 'the E2E harness'
     # Invoked as a DLL rather than via `dotnet run`, which eats the first --mode before the
     # app ever sees it.
     $harnessDll = Join-Path $harnessDir 'bin' | Join-Path -ChildPath 'Debug' | Join-Path -ChildPath 'net10.0' | Join-Path -ChildPath 'ShovelBridgeE2EHarness.dll'
     if (-not (Test-Path -LiteralPath $harnessDll)) { throw "E2E harness assembly not found at $harnessDll" }
 
-    $buildOutput = Join-Path $engineDir 'bin\output'
+    $buildOutput = Get-WwEngineBuildOutputPath -EngineDir $engineDir
     if (-not (Test-Path -LiteralPath $buildOutput)) { throw "Engine build output not found at $buildOutput" }
 
     # Staged copy so the committed Settings/Resources are never mutated by a test run.

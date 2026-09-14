@@ -474,8 +474,8 @@
 		<None Include="SSL Generation\CreateCertificate.bat">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
-		<None Include="ssl generation\CreateCertificate.ps1" />
-		<None Include="ssl generation\TrustCertificate.bat">
+		<None Include="SSL Generation\CreateCertificate.ps1" />
+		<None Include="SSL Generation\TrustCertificate.bat">
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</None>
 		<None Include="ESB\Management\Services\Prompts\introduction.md">
