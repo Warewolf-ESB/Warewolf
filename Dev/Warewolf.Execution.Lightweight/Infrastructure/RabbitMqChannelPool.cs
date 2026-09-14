@@ -47,6 +47,18 @@ sealed class RabbitMqChannelPool : IDisposable
     readonly int _maxChannels;
     readonly ConcurrentBag<IModel> _idle = new();
 
+    /// <summary>
+    /// Every channel counted in <see cref="_live"/>, i.e. the ones this pool issued against the cap.
+    ///
+    /// <para>Membership — not <c>IsOpen</c> — is what <see cref="Return"/> branches on. Without it the
+    /// pool cannot tell its own channel from the PRIVATE one <see cref="Rent"/> hands out over the cap,
+    /// and it got both halves wrong: a healthy private channel was parked in <see cref="_idle"/>, so
+    /// the cap bounded nothing, and a faulted one decremented <see cref="_live"/> it had never
+    /// incremented, so the counter drifted below zero until the cap check could no longer fire at all.
+    /// </para>
+    /// </summary>
+    readonly ConcurrentDictionary<IModel, byte> _owned = new();
+
     int _live;          // channels this pool owns: idle + rented
     int _created;
     int _discarded;
@@ -84,20 +96,22 @@ sealed class RabbitMqChannelPool : IDisposable
                 return pooled;
             }
 
-            Discard(pooled);
-            Interlocked.Decrement(ref _live);
+            Release(pooled);
         }
 
         // Over the cap: serve a private channel rather than blocking or failing. The publish still
-        // succeeds; it simply pays the round-trips it would have paid anyway.
+        // succeeds; it simply pays the round-trips it would have paid anyway. It is deliberately NOT
+        // recorded in _owned, which is how Return knows to dispose it instead of pooling it.
         if (Interlocked.Increment(ref _live) > _maxChannels)
         {
             Interlocked.Decrement(ref _live);
             return _connection.CreateModel();
         }
 
+        var channel = _connection.CreateModel();
+        _owned[channel] = 0;
         Interlocked.Increment(ref _created);
-        return _connection.CreateModel();
+        return channel;
     }
 
     /// <summary>
@@ -105,7 +119,9 @@ sealed class RabbitMqChannelPool : IDisposable
     ///
     /// <para>Tolerates a channel this pool never issued — the over-cap path above hands out private
     /// channels, and the caller cannot tell the difference. Such a channel is simply disposed, which
-    /// is what the caller would have done itself.</para>
+    /// is what the caller would have done itself. It is NOT pooled (it was never counted against the
+    /// cap, so pooling it would let <see cref="_idle"/> grow past <see cref="_maxChannels"/>) and it
+    /// does NOT decrement <see cref="_live"/> (it never incremented it).</para>
     /// </summary>
     internal void Return(IModel channel)
     {
@@ -114,14 +130,35 @@ sealed class RabbitMqChannelPool : IDisposable
             return;
         }
 
-        if (Volatile.Read(ref _disposed) != 0 || !IsUsable(channel))
+        if (!_owned.ContainsKey(channel))
         {
             Discard(channel);
-            Interlocked.Decrement(ref _live);
+            return;
+        }
+
+        if (Volatile.Read(ref _disposed) != 0 || !IsUsable(channel))
+        {
+            Release(channel);
             return;
         }
 
         _idle.Add(channel);
+    }
+
+    /// <summary>
+    /// Drops a pool-owned channel: forgets it, frees its slot under the cap, and closes it. The
+    /// <see cref="_owned"/> removal gates the rest, so two racing callers cannot decrement
+    /// <see cref="_live"/> twice for one channel.
+    /// </summary>
+    void Release(IModel channel)
+    {
+        if (!_owned.TryRemove(channel, out _))
+        {
+            return;
+        }
+
+        Interlocked.Decrement(ref _live);
+        Discard(channel);
     }
 
     static bool IsUsable(IModel channel)
@@ -169,7 +206,11 @@ sealed class RabbitMqChannelPool : IDisposable
 
         while (_idle.TryTake(out var channel))
         {
-            Discard(channel);
+            Release(channel);
         }
+
+        // Anything left is RENTED, and a rented channel is returned to a disposed pool, which disposes
+        // it. Forgetting them here would make that return look private and skip the _live decrement,
+        // so they stay in _owned and the map empties itself as the last publishes finish.
     }
 }

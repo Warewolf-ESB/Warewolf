@@ -1065,8 +1065,25 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
                 Should -Be 'none'
         }
 
-        It 'treats an empty netFrameworkVersion as "no app" rather than a mismatch' {
+        It 'treats an empty netFrameworkVersion as "no app" when the app does NOT exist' {
             (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '   ').Action | Should -Be 'create'
+        }
+
+        It 'reports UNKNOWN — never a create — when the app exists but its runtime is unreadable' {
+            # The distinction this pins is the whole point of the action. `functionapp create` is the
+            # only call that pins a runtime and it does not run for an existing app, so treating an
+            # unreadable runtime as a create means the run reconciles nothing and then says it did.
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '   ' -AppExists
+            $p.Action  | Should -Be 'unknown'
+            $p.Current | Should -BeNullOrEmpty
+            $p.Message | Should -Match 'COULD NOT BE READ'
+        }
+
+        It 'does not let -UpgradeRuntimeVersion turn an unreadable runtime into a blind config set' {
+            # An upgrade RESTARTS the app. Doing that on a runtime nobody could read would be acting
+            # on an inference, which is exactly what the warn-by-default posture exists to prevent.
+            (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $null -AppExists -Upgrade).Action |
+                Should -Be 'unknown'
         }
     }
 
@@ -1170,9 +1187,19 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
             $out | Should -Match 'Function App runtime is v10\.0'
         }
 
-        It 'tolerates a functionapp show payload with no siteConfig (treats it as a create)' {
+        It 'flags a functionapp show payload with no siteConfig instead of claiming the app is on v10.0' {
+            # This used to assert only that nothing blew up, which let the run print
+            # "Function App runtime is v10.0" about an app whose runtime it never read - the exact
+            # deploy-succeeds/engine-dies outcome the runtime check exists to catch.
             $global:appExists = $true; $global:appNetFx = $null
             $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+
+            $out | Should -Match 'RUNTIME UNVERIFIED'
+            $out | Should -Match 'netFrameworkVersion could not'
+            # Never asserts a version it did not read, and never restarts on that inference.
+            $out | Should -Not -Match 'Function App runtime is v10\.0'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+            # A mismatch is a DIFFERENT finding: we did not read a version, so we cannot call it one.
             $out | Should -Not -Match 'RUNTIME MISMATCH'
             $out | Should -Match 'Dry-run complete'
         }

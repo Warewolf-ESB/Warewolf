@@ -303,7 +303,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
             {
                 if (!topologyFresh)
                 {
-                    EnsureTopology(connection, queueName);
+                    EnsureTopology(connection, queueName, memo);
                 }
 
                 var basicProperties = Channel.CreateBasicProperties();
@@ -336,7 +336,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
         /// Verifies (and creates, if absent) the exchange, queue and binding for
         /// <paramref name="queueName"/>. Unchanged from the long-standing implementation.
         /// </summary>
-        void EnsureTopology(IConnection connection, string queueName)
+        void EnsureTopology(IConnection connection, string queueName, IRabbitMqConnectionLease memo)
         {
             bool newExchangeOrQueue = false;
             try
@@ -353,8 +353,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                 // instead of creating the exchange (see also
                 // RabbitMqDeadLetterPublisher.EnsureChannelAsync, which documents
                 // and avoids this same pitfall).
-                Channel.Dispose();
-                Channel = connection.CreateModel();
+                ReplaceClosedChannel(connection, memo);
                 // The exchange does not exist, so declare it
                 Channel.ExchangeDeclare(queueName, ExchangeType.Direct, IsDurable, IsAutoDelete, null);
                 newExchangeOrQueue = true;
@@ -368,8 +367,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
             {
                 // Same reasoning as above: the queue's passive-declare 404 also
                 // closes this channel, so its active declare needs a fresh one too.
-                Channel.Dispose();
-                Channel = connection.CreateModel();
+                ReplaceClosedChannel(connection, memo);
                 // The queue does not exist, so declare it
                 Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
                 newExchangeOrQueue = true;
@@ -378,6 +376,37 @@ namespace Dev2.Activities.RabbitMQ.Publish
             {
                 Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
             }
+        }
+
+        /// <summary>
+        /// Swaps <see cref="Channel"/> - which the broker has just closed under us - for a fresh one.
+        ///
+        /// <para>Routed through the LEASE rather than disposing and calling
+        /// <c>connection.CreateModel()</c> directly. A pooling lease counts the channels it issued
+        /// against <c>maxChannelsPerConnection</c>; closing one behind its back would retire the
+        /// channel while the pool still charged a slot for it, and every 404 - which is the NORMAL
+        /// path for a queue name computed from workflow data - would burn one more, until the pool
+        /// believed it was permanently full and stopped pooling at all.</para>
+        ///
+        /// <para>With <paramref name="memo"/> null this is dispose-then-CreateModel, exactly what it
+        /// has always been, which is what keeps the uncached broker-call sequence byte-for-byte
+        /// unchanged and the pre-existing tests green.</para>
+        /// </summary>
+        void ReplaceClosedChannel(IConnection connection, IRabbitMqConnectionLease memo)
+        {
+            var closed = Channel;
+            Channel = null;
+
+            if (memo is null)
+            {
+                closed?.Dispose();
+                Channel = connection.CreateModel();
+                return;
+            }
+
+            // The pool drops a channel it finds closed rather than recycling it, which frees the slot.
+            memo.ReturnChannel(closed);
+            Channel = memo.RentChannel();
         }
 
         private string GetCorrelationID()

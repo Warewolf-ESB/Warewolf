@@ -16,12 +16,40 @@ confirmed, and measured against a live broker at **5.5× faster** — see §11.
 | # | Decision | Chosen |
 |---|---|---|
 | 1 | Config channel | **`WAREWOLF_RABBITMQ_CACHE`** — one JSON app setting, `WAREWOLF_*` prefixed, mirroring `SecurityFlags` / `DebugConfig` |
-| 2 | Cache depth | **Connection only.** A fresh `IModel` per publish — no channel pool, no locking |
+| 2 | Cache depth | **Connection only by default.** A fresh `IModel` per publish — no channel pool, no locking. See the amendment below: an opt-in channel pool was added after this plan was signed off, and ships **off**. |
 | 3 | Topology declares | **Short-TTL memo** (default 30 s) skips the two passive declares while fresh |
 | 4 | Connection TTL | **Sliding idle (5 min) + absolute max lifetime (30 min)** |
 | 5 | Activity scope | **`PublishRabbitMQActivity` only.** `DsfPublishRabbitMQActivity` and `DsfConsumeRabbitMQActivity` untouched |
 | 6 | Over-cap policy | **Cap + LRU evict, then fall back to uncached.** The cache never fails a publish |
 | 7 | Database caching | **Out of scope** — see §8 for why it would be the wrong lever anyway |
+
+### Amendment — channel pooling (2026-09-14)
+
+Decision 2 above said "no channel pool". The implementation added one anyway
+(`RabbitMqChannelPool`), because with the connection cached, `channel.open` + `channel.close` are
+the only broker round-trips a publish still pays and they measure as ~99.6% of what remains
+(323.3 ms of 324.7 ms against a remote broker). The benchmark is decisive:
+
+| Configuration | Throughput | Per publish |
+|---|---|---|
+| `enabled` + `channelPool` | 19,262 msg/s | 0.03 ms |
+| `enabled` only | 3.3 msg/s | 294.8 ms |
+| neither | 0.7 msg/s | 1,340.7 ms |
+
+**It nevertheless ships OFF** (`channelPool:false` in `Deploy-WwExecutionEngine.ps1`'s
+`-RabbitMqCacheConfig` default), for two reasons:
+
+1. Decision 2 was signed off by the requester. Reversing it in a deploy-script default rather than
+   here is how an unreviewed decision reaches every engine — which is exactly what happened between
+   2026-09-13 and the 2026-09-14 review.
+2. The pool shipped with a cap that enforced nothing. `Rent()` hands out a *private* channel over the
+   cap, and `Return()` pooled it anyway and decremented a counter it had never incremented, so
+   `_live` drifted below zero, the cap check stopped firing, and the idle bag grew without bound —
+   against a broker whose default `channel_max` is 2047 per connection. Fixed on 2026-09-14 (the pool
+   now tracks the channels it issued) and covered by `RabbitMqChannelPoolTests`.
+
+**To turn it on:** amend decision 2 with the requester, then set `channelPool:true` in the deploy
+default. The code path is correct and tested; what is missing is the sign-off, not the engineering.
 
 ---
 
@@ -212,6 +240,8 @@ New `Warewolf.Execution.Lightweight/Infrastructure/RabbitMqCacheOptions.cs`, mod
 ```json
 {
   "enabled": true,
+  "channelPool": false,
+  "maxChannelsPerConnection": 32,
   "idleTimeout": "00:05:00",
   "maxLifetime": "00:30:00",
   "topologyTtl": "00:00:30",
@@ -219,6 +249,11 @@ New `Warewolf.Execution.Lightweight/Infrastructure/RabbitMqCacheOptions.cs`, mod
   "sweepInterval": "00:01:00"
 }
 ```
+
+`channelPool` / `maxChannelsPerConnection` were added after this plan was signed off — see the
+amendment to decision 2 above. `channelPool` defaults to `false` both in `RabbitMqCacheOptions` and
+in the deploy script; `maxChannelsPerConnection` is a ceiling, not a target, and is inert while
+pooling is off.
 
 **Absent, empty, malformed, or `enabled:false` ⇒ `enabled = false`** — the cache is never registered,
 `AmbientRabbitMqConnectionCache.Current` stays null, and every activity takes today's path. Safe by

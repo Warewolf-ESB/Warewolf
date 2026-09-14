@@ -81,6 +81,70 @@ namespace Dev2.Runtime.Tests.Coverage
             CollectionAssert.AreEqual(msg, dec);
         }
 
+        // ── Wire-format vectors ─────────────────────────────────────────────────────────────────
+        //
+        // Every other test in this class encrypts and decrypts in the SAME process, so all of them
+        // pass whatever the algorithm is, as long as it is self-consistent. That is no guard at all
+        // for this type: Warewolf WFAES-encrypts secure.config rows and .bite payloads that are
+        // already deployed, so a change to the cipher or the key derivation does not fail a test —
+        // it silently makes every stored secret in the field undecryptable.
+        //
+        // These two blobs were produced by the code as it stood BEFORE the 2026-09-14 net10 cleanup
+        // (AesManaged -> Aes.Create, and the explicit HashAlgorithmName.SHA1 on Rfc2898DeriveBytes).
+        // They are checked in precisely so they can never be regenerated to match a change: if a
+        // future edit alters the wire format, these fail and say so.
+        //
+        //   - PasswordVector exercises PBKDF2 (SHA1, 10,000 iterations) AND the AES layer.
+        //   - KeyVector uses explicit keys, so it isolates the AES layer on its own.
+
+        const string VectorPlaintext = "Warewolf golden vector: secure.config connection string";
+        const string VectorPassword = "correct horse battery staple";
+
+        const string PasswordVector =
+            "aKmYK0CdHRRSOGfyD66li4xXfjk1lQXrfy/fNytt0GKRibtu+PVxvOu2t2gyJ89QFhoX2ojbBPLab28q6G46GsSk" +
+            "laMmDog7Vea003Y/rAJkHS8tfy305T0yffGmsPhfqKhJ9U5UmlfaDZ+YgbLdWi8LorqYjU3TwHyjfPX34J4=";
+
+        const string KeyVector =
+            "NARJwNqGv7CqzGgAC5+ijqzM5ydiPzBBlQUqqee52KyhTCSpu9CioDu6HtGfApm+jE4RnTHoHx3p3sW4atDb7mOZ" +
+            "XzalNwPi3nIj5gyFPls/dmtyRJHteIcWkDG5yM/mCRHKTtSuu6f+6vDhu5Io7w==";
+
+        const string VectorCryptKeyBase64 = "Bl1v8mJcNfTQ0YhPqHkR2wXsA5uZjE7L9dCgOoIbVyk=";
+        const string VectorAuthKeyBase64 = "Tz3xNqWkLpR7yGvCdH4aUeJm8sB2fXnZ0OiQtYwKlM0=";
+
+        [TestMethod, Owner(Owner), TestCategory(Cat)]
+        public void SimpleDecryptWithPassword_StillDecryptsABlobEncryptedBeforeTheNet10Cleanup()
+        {
+            // Fails if the PBKDF2 hash algorithm ever moves off SHA1 without a versioned format:
+            // the obsolete Rfc2898DeriveBytes ctor defaulted to SHA1, so SHA256 "looks" like the
+            // safer choice and would quietly strand every deployed secure.config.
+            var decrypted = AESThenHMAC.SimpleDecryptWithPassword(PasswordVector, VectorPassword);
+
+            Assert.AreEqual(VectorPlaintext, decrypted,
+                "a password-encrypted blob from before the AesManaged/Rfc2898 change no longer decrypts — " +
+                "the WFAES wire format has changed and deployed secrets are unreadable.");
+        }
+
+        [TestMethod, Owner(Owner), TestCategory(Cat)]
+        public void SimpleDecrypt_StillDecryptsAKeyEncryptedBlobFromBeforeTheNet10Cleanup()
+        {
+            var crypt = Convert.FromBase64String(VectorCryptKeyBase64);
+            var auth = Convert.FromBase64String(VectorAuthKeyBase64);
+
+            var decrypted = AESThenHMAC.SimpleDecrypt(KeyVector, crypt, auth);
+
+            Assert.AreEqual(VectorPlaintext, decrypted,
+                "a key-encrypted blob from before the AesManaged -> Aes.Create change no longer decrypts — " +
+                "the AES parameters (CBC/PKCS7/128-bit block) have moved.");
+        }
+
+        [TestMethod, Owner(Owner), TestCategory(Cat)]
+        public void SimpleDecryptWithPassword_WrongPassword_ReturnsNullRatherThanGarbage()
+        {
+            // The HMAC gate must reject before the cipher runs; a wrong password is authenticated
+            // failure, not a decrypt that yields nonsense.
+            Assert.IsNull(AESThenHMAC.SimpleDecryptWithPassword(PasswordVector, "not the password"));
+        }
+
         [TestMethod, Owner(Owner), TestCategory(Cat)]
         public void SimpleEncrypt_NullOrEmpty_String_Throws()
         {

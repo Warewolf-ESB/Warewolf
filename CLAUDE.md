@@ -38,7 +38,7 @@ State explicitly which artefacts you updated, or that none needed updating, and 
 
 Work at an enterprise-grade level against this stack:
 
-- **.NET 8** (C# 12) — nullable reference types enabled, modern language features preferred
+- **.NET 10** (C# 14) — nullable reference types enabled, modern language features preferred
 - **Azure Functions v4 isolated worker** — the Lightweight engine specifically (Entra ID, Easy Auth, Azure Key Vault, Application Insights)
 - **Clean Architecture** — respect layer boundaries; domain logic must not depend on infrastructure
 - **Code quality** — prefer refactoring/optimisation over new abstractions; reduce duplication; improve readability without changing behaviour unless asked
@@ -54,7 +54,7 @@ Pick the model tier that matches the task. If the targeted model is unavailable,
 
 ## Architecture orientation
 
-Warewolf is a .NET 8 SOA/ESB platform with a visual flow-based designer; workflows authored in Warewolf Studio (WPF) / Warewolf Web Studio (Angular) execute as `.bite` files. `Dev/` holds ~133 source projects and ~55 test projects. There are **two execution engines** sharing the same activity/runtime libraries:
+Warewolf is a .NET 10 SOA/ESB platform with a visual flow-based designer; workflows authored in Warewolf Studio (WPF) / Warewolf Web Studio (Angular) execute as `.bite` files. `Dev/` holds ~133 source projects and ~55 test projects. There are **two execution engines** sharing the same activity/runtime libraries:
 
 | | **Lightweight** | **Server** |
 |---|---|---|

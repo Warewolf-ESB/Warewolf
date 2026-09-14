@@ -1941,6 +1941,18 @@ if ($ungranted.Count -gt 0) {
                 'arrives as HTTP 500 (WOLF-8418), and the worker DEAD-LETTERS AND ACKS the message - ' +
                 'the queue drains and the run looks clean while every message is discarded. Grant them:')
     foreach ($u in $ungranted) {
+        # A 'skipped' status is returned precisely WHEN the principal id could not be resolved, so
+        # printing the command regardless hands the operator a -ManagedIdentityObjectId with nothing
+        # after it - a line that fails when pasted, for a worker that genuinely needs the grant. Say
+        # what is missing instead, and where to get it.
+        if ([string]::IsNullOrWhiteSpace($u.principalId)) {
+            Write-Host ("         # $($u.app): managed-identity principal id UNRESOLVED - no command can be " +
+                        "given. Get it with: az containerapp show -n $($u.app) -g $ResourceGroup " +
+                        "--query identity.principalId -o tsv, then grant $EngineAppRole to it.") `
+                       -ForegroundColor Yellow
+            continue
+        }
+
         Write-Host ("         .\Configure-WwExecutionAuth-Clients.ps1 -ResourceAppId $EngineResourceAppId " +
                     "-ClientType Daemon -DaemonUseManagedIdentity -ManagedIdentityObjectId " +
                     "$($u.principalId) -AppRolesToAssign $EngineAppRole -NonInteractive    # $($u.app)") `

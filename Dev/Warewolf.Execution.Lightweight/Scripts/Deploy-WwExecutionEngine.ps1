@@ -418,7 +418,18 @@ param(
     #   maxConnections           - per-broker connection ceiling; one broker needs one.
     #   idleTimeout/maxLifetime/sweepInterval - connection hygiene. No measurable effect on throughput;
     #                              they exist so a cached socket is released rather than held forever.
-    [string] $RabbitMqCacheConfig = '{"enabled":true,"channelPool":true,"maxChannelsPerConnection":32,"idleTimeout":"00:05:00","maxLifetime":"00:30:00","topologyTtl":"00:00:30","maxConnections":4,"sweepInterval":"00:01:00"}',
+    #
+    # channelPool SHIPS OFF (2026-09-14 review). RabbitMqCacheOptions still accepts it and
+    # RabbitMqChannelPool is correct - the cap defect that let _live drift below zero, and with it the
+    # unbounded channel growth, is fixed and covered by RabbitMqChannelPoolTests - but the plan of
+    # record (docs/RabbitMQ-ConnectionCache-Plan.md, decision 2) is "connection only, a fresh IModel
+    # per publish", and reversing that in the deploy default rather than in the plan is how a decision
+    # nobody reviewed ends up on every engine. Flip it to true here once the plan is amended.
+    #
+    # Be aware of what that costs today: the benchmark above is 3.3 msg/s without the pool against
+    # 19,262 msg/s with it. The connection cache alone still removes ~6 of the 8 round-trips (0.7 ->
+    # 3.3 msg/s); the pool is what removes the other two, and they are 99.6% of what is left.
+    [string] $RabbitMqCacheConfig = '{"enabled":true,"channelPool":false,"maxChannelsPerConnection":32,"idleTimeout":"00:05:00","maxLifetime":"00:30:00","topologyTtl":"00:00:30","maxConnections":4,"sweepInterval":"00:01:00"}',
     [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
 
     # ── ServiceBusTrigger tunables (WOLF-8516 — file-only, no env-var fallback) ──
@@ -1024,14 +1035,23 @@ function Resolve-FunctionRuntimePlan {
         app's CURRENT netFrameworkVersion.  Pure — no az calls — so the decision is
         made once at plan time (Phase 0.5), printed, and then replayed in Phase 1.
 
-        $CurrentNetFrameworkVersion is $null/empty when the app does not exist yet,
-        or when `functionapp show` returned a payload without siteConfig.
+        $CurrentNetFrameworkVersion is $null/empty in TWO very different situations, and
+        -AppExists is what separates them: the app does not exist yet, or the app DOES
+        exist but `functionapp show` returned a payload whose siteConfig.netFrameworkVersion
+        could not be read.  Conflating them is why this used to report success on an app
+        whose runtime it had never determined — see 'unknown' below.
 
           Action 'create'  - no app yet; `functionapp create` pins the target runtime.
           Action 'none'    - already on the target.
           Action 'upgrade' - mismatch AND -UpgradeRuntimeVersion; Phase 1 will run
                              `functionapp config set --net-framework-version`.
           Action 'warn'    - mismatch WITHOUT the switch; report loudly, change nothing.
+          Action 'unknown' - the app exists but its runtime could not be read.  Report it and
+                             change nothing.  NEVER claim the app is on the target: `functionapp
+                             create` is not going to run for an existing app, so an unread
+                             runtime is an UNRECONCILED runtime, and saying otherwise produces
+                             exactly the deploy-reports-success/engine-dies-at-startup outcome
+                             this whole check exists to prevent.
 
         Why 'warn' and not 'upgrade' by default: `config set` restarts the app, and a
         restart is not something a deploy should do to a running environment on its own
@@ -1041,12 +1061,14 @@ function Resolve-FunctionRuntimePlan {
     param(
         [string] $CurrentNetFrameworkVersion,
         [switch] $Upgrade,
+        [switch] $AppExists,
         [string] $TargetNetFrameworkVersion = $script:TargetNetFrameworkVersion
     )
     $current = if ([string]::IsNullOrWhiteSpace($CurrentNetFrameworkVersion)) { $null }
                else { $CurrentNetFrameworkVersion.Trim() }
 
-    $action = if (-not $current)                                        { 'create'  }
+    $action = if (-not $current -and $AppExists)                        { 'unknown' }
+              elseif (-not $current)                                    { 'create'  }
               elseif ($current -ieq $TargetNetFrameworkVersion)         { 'none'    }
               elseif ($Upgrade)                                         { 'upgrade' }
               else                                                      { 'warn'    }
@@ -1056,6 +1078,7 @@ function Resolve-FunctionRuntimePlan {
         'none'    { "$current — already correct" }
         'upgrade' { "$current -> $TargetNetFrameworkVersion (-UpgradeRuntimeVersion; the app RESTARTS)" }
         'warn'    { "$current, but this package needs $TargetNetFrameworkVersion — NOT changed (pass -UpgradeRuntimeVersion)" }
+        'unknown' { "COULD NOT BE READ; this package needs $TargetNetFrameworkVersion — verify with ``az functionapp config show``" }
     }
 
     [pscustomobject]@{
@@ -1437,9 +1460,12 @@ if (-not [string]::IsNullOrWhiteSpace($RabbitMqCacheConfig)) {
 # ── Runtime decision (resolved HERE so the plan can state it, applied in Phase 1) ──
 # `functionapp show` is a READ, so it runs under -DryRun too and the plan tells the truth
 # about an app that already exists rather than assuming a fresh create. StrictMode-safe:
-# no app, or a payload without siteConfig, both resolve to $null ("will be created").
+# no app, or a payload without siteConfig, both resolve to $null — but they are NOT the same
+# decision, so whether the app exists is tracked separately and passed to the planner. A
+# payload we could not read the runtime out of yields 'unknown', never a silent "it's fine".
 $existingNetFx = $null
 $appShowJson   = Invoke-Az @('functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+$appShowFound  = [bool]$appShowJson
 if ($appShowJson) {
     try {
         $appShow    = ($appShowJson | Out-String) | ConvertFrom-Json
@@ -1451,7 +1477,9 @@ if ($appShowJson) {
     }
     catch { $existingNetFx = $null }
 }
-$script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $existingNetFx -Upgrade:$UpgradeRuntimeVersion
+$script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $existingNetFx `
+                                                 -Upgrade:$UpgradeRuntimeVersion `
+                                                 -AppExists:$appShowFound
 
 # ── Settings summary + single confirmation (item 8) ────────────────────────────
 Write-Host ''
@@ -1530,6 +1558,14 @@ if ($script:RuntimePlan.Action -eq 'warn') {
                 '-UpgradeRuntimeVersion to reconcile the app (it restarts), or fix it out of band ' +
                 ("with: az functionapp config set -n {0} -g {1} --net-framework-version {2}" -f
                  $AppName, $ResourceGroup, $script:RuntimePlan.Target))
+}
+elseif ($script:RuntimePlan.Action -eq 'unknown') {
+    Write-Note ("RUNTIME UNVERIFIED: Function App '{0}' exists, but its netFrameworkVersion could not " -f $AppName)
+    Write-Note ("  be read, so this run CANNOT tell whether it matches the {0} this package needs. " -f $script:RuntimePlan.Target)
+    Write-Note ("  Nothing will be changed. If it is behind, the deploy still SUCCEEDS and the engine " +
+                "then fails at startup with 'You must install or update .NET to run this application.' " +
+                ("Check it with: az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
+                 $AppName, $ResourceGroup))
 }
 
 if (-not (Confirm-Yes 'Proceed with this deployment?' $true)) {
@@ -1647,8 +1683,17 @@ try {
                              $script:RuntimePlan.Current, $script:RuntimePlan.Target) +
                             'Re-run with -UpgradeRuntimeVersion to reconcile it.')
             }
-            default {
+            'none' {
                 Write-Ok "Function App runtime is $($script:RuntimePlan.Target)."
+            }
+            default {
+                # 'unknown' (and 'create', which cannot legitimately reach an EXISTING app). Reporting
+                # Ok here was the bug: `functionapp create` is the only thing that pins the runtime and
+                # it does not run on this branch, so an unread runtime has been reconciled by nothing.
+                Write-Note ("Function App runtime NOT verified (current value could not be read); this " +
+                            ("package targets {0}. Nothing was changed. Check it with: " -f $script:RuntimePlan.Target) +
+                            ("az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
+                             $AppName, $ResourceGroup))
             }
         }
     } else {

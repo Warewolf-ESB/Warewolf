@@ -447,9 +447,9 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
         /// entry - not by a lease - because channels must outlive the publish that opened them,
         /// which is the entire point.
         /// </summary>
-        internal readonly RabbitMqChannelPool ChannelPool;
+        internal readonly RabbitMqChannelPool? ChannelPool;
 
-        internal CacheEntry(IConnection connection, long nowTicks, RabbitMqChannelPool channelPool)
+        internal CacheEntry(IConnection connection, long nowTicks, RabbitMqChannelPool? channelPool)
         {
             Connection = connection;
             CreatedTicks = nowTicks;

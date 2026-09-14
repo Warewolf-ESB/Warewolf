@@ -7,7 +7,7 @@ description: How to build Warewolf (Compile.ps1) — server, studio, tests, ligh
 
 All builds run through `Compile.ps1` at the repo root. It wraps `dotnet restore` + `dotnet publish` and handles post-processing (native DLL pinning, resource copying, test-host bootstrapping).
 
-**Prerequisites:** .NET 8 SDK, Visual Studio 2022/2026 (MSBuild), `nuget.exe` on PATH or at `C:\Windows\nuget.exe`.
+**Prerequisites:** .NET 10 SDK, Visual Studio 2022/2026 (MSBuild), `nuget.exe` on PATH or at `C:\Windows\nuget.exe`.
 
 ```powershell
 # Build test binaries (most common — required before running tests)

@@ -201,6 +201,12 @@ internal static class StartupOrchestrator
     {
         const string executionId = "StartupOrchestrator-RabbitMqCache";
 
+        // Declared OUTSIDE the try so the catch can dispose it. The constructor starts a sweep Timer,
+        // and a Timer is rooted by the runtime until it is disposed - so a cache abandoned by an
+        // exception between construction and the ApplicationStopping registration below would keep
+        // firing, and holding its connections, for the life of the host.
+        LightweightRabbitMqConnectionCache? cache = null;
+
         try
         {
             // ILogger ALONGSIDE Dev2Logger, not instead of it.
@@ -224,17 +230,22 @@ internal static class StartupOrchestrator
                 return;
             }
 
-            var cache = new LightweightRabbitMqConnectionCache(options);
+            cache = new LightweightRabbitMqConnectionCache(options);
             AmbientRabbitMqConnectionCache.Register(cache);
 
             // Releases every socket, background I/O thread and heartbeat timer on a graceful stop.
             // Clear() first so nothing can acquire from a cache that is being torn down.
+            var registered = cache;
             host.Services.GetRequiredService<IHostApplicationLifetime>()
                 .ApplicationStopping.Register(() =>
                 {
                     AmbientRabbitMqConnectionCache.Clear();
-                    cache.Dispose();
+                    registered.Dispose();
                 });
+
+            // Past the last throwing call, so the catch must no longer dispose it - the shutdown hook
+            // owns it from here.
+            cache = null;
 
             var enabledMessage = $"Startup | Phase=RabbitMqCache | {options}.";
             Dev2Logger.Info(enabledMessage, executionId);
@@ -243,6 +254,12 @@ internal static class StartupOrchestrator
         catch (Exception ex)
         {
             AmbientRabbitMqConnectionCache.Clear();
+
+            // Non-null only when the cache was built but never handed to the shutdown hook. Disposing
+            // it here stops the sweep timer and closes anything it had already opened; the guard is
+            // belt-and-braces, since a cache that fails to tear down must not mask the real failure.
+            try { cache?.Dispose(); } catch { /* reported below as the registration failure */ }
+
             var failedMessage =
                 $"Startup | Phase=RabbitMqCache | registration failed; continuing UNCACHED. " +
                 $"ExceptionType={ex.GetType().Name}, Message={ex.Message}";

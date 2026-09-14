@@ -158,6 +158,17 @@ Highlights:
   Insights' `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` (not the standard name) is
   **auto-read** from the App Insights resource, never prompted. See the env-var
   matrix in `docs/Deployment-Steps.txt`.
+- **`WAREWOLF_RABBITMQ_CACHE`** — the RabbitMQ publish connection cache, and the ONE
+  setting that controls it (all eight knobs live inside its JSON). Written by every
+  engine deploy from `-RabbitMqCacheConfig`, which defaults to
+  `{"enabled":true,"channelPool":false,…}`: connections are reused across
+  `PublishRabbitMQActivity` executions (~6 of the 8 broker round-trips a publish costs),
+  while **channel pooling ships off** pending sign-off on decision 2 of
+  `docs/RabbitMQ-ConnectionCache-Plan.md` — see that plan's 2026-09-14 amendment for the
+  benchmark and what turning it on is worth. Pass `-RabbitMqCacheConfig ''` to omit the
+  setting entirely and leave the engine on the uncached path. Note the **engine's own**
+  default is OFF when the variable is absent, which is what the on-prem server and any
+  hand-made app get; only this script turns it on.
 - **Dry-run parity** — `-DryRun` produces the **same** outputs as a real run except
   it creates/uploads nothing in Azure: files are prepared into a temp staging dir
   (`wwexecutionengine-stage-<AppName>-<stamp>-<pid>-<token>-dryrun`, leaving your publish output

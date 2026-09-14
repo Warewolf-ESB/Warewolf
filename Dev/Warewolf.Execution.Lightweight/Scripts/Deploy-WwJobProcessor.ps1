@@ -1,4 +1,4 @@
-#Requires -Version 7.0
+﻿#Requires -Version 7.0
 <#
 .SYNOPSIS
     Deploys the Warewolf ExecutionEngineJobProcessor — the dedicated Azure Function
@@ -355,13 +355,18 @@ function Resolve-FunctionRuntimePlan {
         CURRENT netFrameworkVersion. Pure — no az calls — so the decision is made once at
         plan time, printed, and then replayed in Phase 1.
 
-        $CurrentNetFrameworkVersion is $null/empty when the app does not exist yet, or when
-        `functionapp show` returned a payload without siteConfig.
+        $CurrentNetFrameworkVersion is $null/empty in TWO very different situations, and
+        -AppExists separates them: the app does not exist yet, or the app DOES exist but
+        `functionapp show` returned a payload whose siteConfig.netFrameworkVersion could not
+        be read. Conflating them made this report success on an app it had never checked.
 
           'create'  - no app yet; `functionapp create` pins the target runtime.
           'none'    - already on the target.
           'upgrade' - mismatch AND -UpgradeRuntimeVersion; Phase 1 runs `config set`.
           'warn'    - mismatch WITHOUT the switch; report loudly, change nothing.
+          'unknown' - app exists, runtime unreadable. Report it, change nothing, and NEVER
+                      claim it is on the target: `functionapp create` does not run for an
+                      existing app, so an unread runtime is an unreconciled one.
 
         'warn' is the default because `config set` RESTARTS the app, and a deploy must not
         restart a running environment on its own inference.
@@ -369,12 +374,14 @@ function Resolve-FunctionRuntimePlan {
     param(
         [string] $CurrentNetFrameworkVersion,
         [switch] $Upgrade,
+        [switch] $AppExists,
         [string] $TargetNetFrameworkVersion = $script:TargetNetFrameworkVersion
     )
     $current = if ([string]::IsNullOrWhiteSpace($CurrentNetFrameworkVersion)) { $null }
                else { $CurrentNetFrameworkVersion.Trim() }
 
-    $action = if (-not $current)                                { 'create'  }
+    $action = if (-not $current -and $AppExists)                { 'unknown' }
+              elseif (-not $current)                            { 'create'  }
               elseif ($current -ieq $TargetNetFrameworkVersion) { 'none'    }
               elseif ($Upgrade)                                 { 'upgrade' }
               else                                              { 'warn'    }
@@ -384,6 +391,7 @@ function Resolve-FunctionRuntimePlan {
         'none'    { "$current — already correct" }
         'upgrade' { "$current -> $TargetNetFrameworkVersion (-UpgradeRuntimeVersion; the app RESTARTS)" }
         'warn'    { "$current, but this package needs $TargetNetFrameworkVersion — NOT changed (pass -UpgradeRuntimeVersion)" }
+        'unknown' { "COULD NOT BE READ; this package needs $TargetNetFrameworkVersion — verify with ``az functionapp config show``" }
     }
 
     [pscustomobject]@{
@@ -531,6 +539,7 @@ if ($kvRequired) {
 # no app, or a payload without siteConfig, both resolve to $null ("will be created").
 $existingNetFx = $null
 $appShowJson   = Invoke-Az @('functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+$appShowFound  = [bool]$appShowJson
 if ($appShowJson) {
     try {
         $appShow    = ($appShowJson | Out-String) | ConvertFrom-Json
@@ -542,7 +551,9 @@ if ($appShowJson) {
     }
     catch { $existingNetFx = $null }
 }
-$script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $existingNetFx -Upgrade:$UpgradeRuntimeVersion
+$script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $existingNetFx `
+                                                 -Upgrade:$UpgradeRuntimeVersion `
+                                                 -AppExists:$appShowFound
 
 # ── Settings summary + single confirmation ─────────────────────────────────────
 Write-Host ''
@@ -596,6 +607,14 @@ if ($script:RuntimePlan.Action -eq 'warn') {
                 '-UpgradeRuntimeVersion to reconcile the app (it restarts), or fix it out of band ' +
                 ("with: az functionapp config set -n {0} -g {1} --net-framework-version {2}" -f
                  $AppName, $ResourceGroup, $script:RuntimePlan.Target))
+}
+elseif ($script:RuntimePlan.Action -eq 'unknown') {
+    Write-Note ("RUNTIME UNVERIFIED: Function App '{0}' exists, but its netFrameworkVersion could not " -f $AppName)
+    Write-Note ("  be read, so this run CANNOT tell whether it matches the {0} this package needs. " -f $script:RuntimePlan.Target)
+    Write-Note ("  Nothing will be changed. If it is behind, the deploy still SUCCEEDS and the worker " +
+                "then fails at startup. Check it with: " +
+                ("az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
+                 $AppName, $ResourceGroup))
 }
 
 if (-not (Confirm-Yes 'Proceed with this deployment?' $true)) {
@@ -687,8 +706,17 @@ try {
                              $script:RuntimePlan.Current, $script:RuntimePlan.Target) +
                             'Re-run with -UpgradeRuntimeVersion to reconcile it.')
             }
-            default {
+            'none' {
                 Write-Ok "Function App runtime is $($script:RuntimePlan.Target)."
+            }
+            default {
+                # 'unknown' (and 'create', which cannot legitimately reach an EXISTING app). Reporting
+                # Ok here was the bug: `functionapp create` is the only thing that pins the runtime and
+                # it does not run on this branch, so an unread runtime has been reconciled by nothing.
+                Write-Note ("Function App runtime NOT verified (current value could not be read); this " +
+                            ("package targets {0}. Nothing was changed. Check it with: " -f $script:RuntimePlan.Target) +
+                            ("az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
+                             $AppName, $ResourceGroup))
             }
         }
     } else {

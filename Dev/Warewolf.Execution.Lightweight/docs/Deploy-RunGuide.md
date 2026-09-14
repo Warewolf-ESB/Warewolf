@@ -392,6 +392,7 @@ path is untouched.
 | `-RabbitMqSecretUri` | string | prompt | Key Vault secret URI for the broker URI, surfaced as an ACA secret. **Consumed by the KEDA scale rule only** — KEDA cannot use a managed identity against RabbitMQ. |
 | `-QueueScalingMode` | `Elastic`\|`Fixed`\|`Warm` | `Elastic` | `Elastic` = `minReplicas 0`. `Fixed`/`Warm` are exception paths and are flagged in the plan output. |
 | `-ContinueOnQueueTriggerError` | switch | off | Keep deploying the remaining triggers when one fails. Off = stop at the first failure. |
+| `-RabbitMqCacheConfig` | JSON string | `{"enabled":true,"channelPool":false,…}` | The **whole** RabbitMQ publish connection cache configuration, written to the `WAREWOLF_RABBITMQ_CACHE` app setting. Connection caching is **on**; **channel pooling is off** pending sign-off on decision 2 of [`RabbitMQ-ConnectionCache-Plan.md`](RabbitMQ-ConnectionCache-Plan.md) (see its 2026-09-14 amendment — turning it on is worth ~19,262 msg/s against 3.3). Pass `''` to omit the setting and leave the engine uncached. The engine's own default is OFF when the variable is absent, so only this script enables it. |
 
 The three targeting parameters are **mutually exclusive**. Everything scale-shaped is
 **derived from the trigger file** so it stays the single source of truth:
