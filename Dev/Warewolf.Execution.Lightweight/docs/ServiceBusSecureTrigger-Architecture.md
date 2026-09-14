@@ -121,6 +121,8 @@ ServiceBusResultFunction  (ordinary HTTP function, [RequireWorkflowPermission(Vi
   is used purely to locate the file to execute.
 - `inputs` (optional) — a string map, passed through identically to how HTTP query-string
   inputs are handled today (`WorkflowFunctionHelper.CreateRequestByName`).
+- **A body that is not this envelope is bound verbatim instead** — see "Non-envelope bodies"
+  below. The envelope is the documented shape, not the only one that works.
 - `correlationId` (optional) — caller-supplied idempotency/polling key. If omitted, the
   trigger falls back to the Service Bus message's native `CorrelationId` property, then
   `MessageId`.
@@ -128,6 +130,66 @@ ServiceBusResultFunction  (ordinary HTTP function, [RequireWorkflowPermission(Vi
 There is no caller-identity field in this contract, on the message body or its
 application properties — trust is decided entirely by arrival on the configured queue,
 before the message is even parsed.
+
+### Non-envelope bodies (fixed 2026-09-14)
+
+A JSON body that carries no `inputs` property — a flat business payload, or anything with
+nested/recordset shape — is handed to the executor **verbatim** as
+`WorkflowExecutionRequest.RawInputPayload` (`ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload`),
+exactly as `Http.WorkflowFunctionHelper.ExtractFromBody` already did for the HTTP routes. So
+this flat body binds the same fifteen variables the equivalent HTTP query string does:
+
+```json
+{ "ForPaymentCycle": "202402", "MandateDRI": "22", "ResultPaymentCycle": "202401", … }
+```
+
+**Why this was not always true.** The trigger previously bound inputs *only* from the envelope.
+A flat body is still valid JSON, so it deserialized without error into a message with
+`Inputs == null`, and the workflow then ran against an **empty datalist** — not rejected as
+malformed, just executed with nothing bound. The failure therefore surfaced as a business
+failure deep inside the workflow, attributed to the workflow rather than to the transport.
+
+What that looks like in practice is a workflow failing on its own missing variables. For
+`ProfilerServices/ProfilerWrapper/RequestForProfiling` it is:
+
+```
+Scalar value { MandateDRI } is NULL: { DebitRunID }
+Scalar value { ResultPaymentCycle } is NULL: { ExtractScheduleId }
+Invalid Calculate
+```
+
+(its `Map Remaining Fields for CE (6)` assign evaluates
+`!~calculation~![[ApplicableMonth]]*1!~~calculation~!`; an empty `ApplicableMonth` leaves the
+calculator the un-parseable expression `*1`, and
+`DsfDotNetMultiAssignActivity.PerformCalcForAtom` throws `ErrorResource.InvalidCalculate`.)
+**`Invalid Calculate` here is the signature of "executed with zero inputs bound" — not a data
+defect, not schema drift, and nothing wrong with the workflow.** Reproduced directly on
+2026-09-14: the same `/Public` route returns `hasErrors:false` with its full query string, and
+exactly this error without it.
+
+> **Not the cause of the 2026-09-14 profiler load-test dead-letters.** Those 4998/5000 messages
+> were rejected **earlier**, as `Malformed`, by a `wwuat3` deployment predating WOLF-8517 — its
+> message contract still required a `workflow` field, so a flat body never reached execution at
+> all (`Reason=Message is missing the required 'workflow' field`, observed live on that
+> deployment). The binding gap documented here is a **separate, latent** defect in the same
+> area: it is what a flat producer would hit once that deployment catches up with this source.
+> Both are payload-contract mismatches; only one of them caused that run.
+
+**Boundary:** parity with HTTP is not complete. The body is still deserialized into
+`ServiceBusWorkflowMessage` first, so a **non-JSON body (e.g. XML) is still dead-lettered as
+`Malformed:BodyNotJson`** and never reaches the fallback, even though the HTTP routes accept
+it. Deliberate, and pinned by `Run_XmlBody_StillDeadLettersAsMalformed`.
+
+This asymmetry also defeated the premise of the RabbitMQ→Service Bus Shovel bridge
+(`ShovelBridge-Architecture.md`), which exists precisely so that **existing RabbitMQ producers
+can trigger the engine unmodified** — such producers publish flat business payloads, never a
+Warewolf envelope.
+
+> **Related trap, same signature.** `Invoke-WwEnginePreWarm.ps1`'s built-in body carries a
+> single `message` input, which only its default workflow (`rabbit/RabbitProcess`) declares.
+> Pointed at any other route it warms a path that fails on the workflow's own missing
+> variables — producing this same `Invalid Calculate` text for an unrelated reason. Pass
+> `-InputParameters` whenever `-WorkflowRoute` is not the default.
 
 ## Result delivery — polling only (no push)
 

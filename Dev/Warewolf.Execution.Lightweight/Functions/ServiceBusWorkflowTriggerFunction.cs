@@ -8,6 +8,7 @@ using Azure.Messaging.ServiceBus;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -144,10 +145,12 @@ public sealed class ServiceBusWorkflowTriggerFunction
         var receivedAt = DateTimeOffset.UtcNow;
         var correlationId = !string.IsNullOrWhiteSpace(message.CorrelationId) ? message.CorrelationId : message.MessageId;
 
+        var body = message.Body.ToString();
+
         ServiceBusWorkflowMessage? payload;
         try
         {
-            payload = JsonConvert.DeserializeObject<ServiceBusWorkflowMessage>(message.Body.ToString());
+            payload = JsonConvert.DeserializeObject<ServiceBusWorkflowMessage>(body);
         }
         catch (JsonException ex)
         {
@@ -262,8 +265,38 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // "Silent-death diagnostic breadcrumb" section.
         _store.RecordClaimStage(correlationId, "ClaimAcquired");
 
-        await ProcessMessageAsync(payload, correlationId, message, messageActions, receivedAt, cancellationToken).ConfigureAwait(false);
+        await ProcessMessageAsync(payload, correlationId, message, messageActions, receivedAt, cancellationToken,
+            ResolveRawInputPayload(body)).ConfigureAwait(false);
     }
+
+    /// <summary>
+    /// Returns the message body when it is NOT the documented <c>{"inputs":{…}}</c> envelope, so
+    /// the caller's original payload can be handed to the executor verbatim as
+    /// <see cref="Models.WorkflowExecutionRequest.RawInputPayload"/>; returns <c>null</c> when the
+    /// envelope is present and <see cref="ServiceBusWorkflowMessage.Inputs"/> already carries the
+    /// inputs.
+    ///
+    /// <para>
+    /// Mirrors <c>Http.WorkflowFunctionHelper.ExtractFromBody</c>, which does exactly this for the
+    /// HTTP routes. Without it this trigger binds inputs ONLY from the envelope: a flat business
+    /// payload deserializes cleanly into a message with <c>Inputs == null</c>, so the workflow runs
+    /// against an empty datalist and fails deep inside itself — not as a malformed message, so the
+    /// failure reads as the workflow's fault rather than the transport's ("Scalar value
+    /// { MandateDRI } is NULL … Invalid Calculate" on the profiler workflow, while the identical
+    /// payload over HTTP succeeds). It also defeats the whole point of the RabbitMQ→Service Bus
+    /// Shovel bridge, whose premise is that existing producers trigger the engine UNMODIFIED
+    /// (see <c>docs/ShovelBridge-Architecture.md</c>).
+    /// </para>
+    ///
+    /// <para>
+    /// Only ever sees a body that already deserialized into a <see cref="ServiceBusWorkflowMessage"/>,
+    /// i.e. a JSON object — <see cref="Run"/> dead-letters anything else as
+    /// <c>Malformed:BodyNotJson</c> before reaching here. Unlike the HTTP routes, this trigger
+    /// therefore still does NOT accept an XML body.
+    /// </para>
+    /// </summary>
+    internal static string? ResolveRawInputPayload(string body)
+        => string.IsNullOrWhiteSpace(body) || JObject.Parse(body)["inputs"] != null ? null : body;
 
     /// <summary>
     /// Everything that happens once a message has been claimed for processing: execute
@@ -283,7 +316,8 @@ public sealed class ServiceBusWorkflowTriggerFunction
         ServiceBusReceivedMessage message,
         ServiceBusMessageActions messageActions,
         DateTimeOffset receivedAt,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        string? rawInputPayload = null)
     {
         var principal = WorkflowClaimsPrincipal.Anonymous();
 
@@ -291,6 +325,8 @@ public sealed class ServiceBusWorkflowTriggerFunction
         var executionRequest = WorkflowFunctionHelper.CreateRequestByName(
             _triggerDefinition.WorkflowName, _config.WorkflowsDirectory, payload.Inputs ?? new Dictionary<string, string>());
         executionRequest.ExecutingPrincipal = principal;
+        // Non-envelope bodies bind verbatim, same as the HTTP routes — see ResolveRawInputPayload.
+        executionRequest.RawInputPayload = rawInputPayload;
 
         WorkflowExecutionResult result;
 

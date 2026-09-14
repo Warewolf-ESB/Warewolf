@@ -91,7 +91,16 @@
     Number of Phase B rounds. Concurrency ramps across them and reaches
     -TargetConcurrency on the last one.
 .PARAMETER MessagePrefix
-    Prefix for the identifiable warm-up messages (default 'WARMUP').
+    Prefix for the identifiable warm-up messages (default 'WARMUP'). Ignored when
+    -InputParameters is supplied.
+.PARAMETER InputParameters
+    The workflow inputs to send, as a hashtable of DataList variable name -> value. REQUIRED
+    whenever -WorkflowRoute points at anything other than the default RabbitProcess: the
+    built-in body carries only 'message', which no other workflow declares, so every call
+    would execute against an empty datalist and fail on the workflow's own missing variables -
+    a real-looking failure that says nothing about whether the engine warmed up. Doing exactly
+    that against the profiler's RequestForProfiling on 2026-09-14 produced 119/119 "Invalid
+    Calculate" failures that were initially read as a broken workflow fixture.
 .PARAMETER TimeoutSec
     Per-call HTTP timeout. Exceeding it is recorded as a TIMEOUT result, not an error.
 .PARAMETER DryRun
@@ -136,6 +145,7 @@ param(
     [int]    $StableThresholdMs  = 5000,
     [int]    $ConcurrentRounds   = 3,
     [string] $MessagePrefix      = 'WARMUP',
+    [hashtable] $InputParameters,
     [int]    $TimeoutSec         = 240,
 
     [switch] $DryRun,
@@ -151,9 +161,30 @@ function Get-WarmupUri {
 }
 
 function Format-WarmupRequestBody {
+    <#
+        Builds the warm-up body. The default shape carries a single 'message' input, which is
+        RabbitProcess's only DataList input - the default -WorkflowRoute.
+
+        -InputParameters exists because that default is WRONG for any other workflow, and wrong
+        SILENTLY: the engine binds whatever it is given and the workflow then fails on its own
+        missing variables, so every call returns a genuine-looking failure that says nothing about
+        the engine's warmth. Pointing -WorkflowRoute at the profiler's RequestForProfiling on
+        2026-09-14 produced exactly that - 119/119 calls failing with "Scalar value { MandateDRI }
+        is NULL ... Invalid Calculate", which is the signature of zero inputs bound, and was
+        initially mistaken for a broken workflow fixture.
+    #>
     [CmdletBinding()]
-    param([Parameter(Mandatory)][string] $MessagePrefix, [Parameter(Mandatory)][string] $Label)
-    @{ inputParameters = @{ message = "$MessagePrefix-$Label" } } | ConvertTo-Json -Compress
+    param(
+        [Parameter(Mandatory)][string] $MessagePrefix,
+        [Parameter(Mandatory)][string] $Label,
+        [hashtable] $InputParameters
+    )
+    $inputs = if ($InputParameters -and $InputParameters.Count -gt 0) {
+        $InputParameters
+    } else {
+        @{ message = "$MessagePrefix-$Label" }
+    }
+    @{ inputParameters = $inputs } | ConvertTo-Json -Compress -Depth 5
 }
 
 # Normalises BOTH outcomes of a warm-up call into one shape, so a transport-level failure
@@ -285,7 +316,7 @@ Write-Host "  Target  : concurrency $TargetConcurrency"
 if ($DryRun) {
     Write-Host "  [DryRun] Phase A: up to $MaxSequential sequential call(s), stop after $StableStreak consecutive < ${StableThresholdMs}ms."
     Write-Host "  [DryRun] Phase B: $ConcurrentRounds round(s), ramping concurrency $($ladder -join ' -> ')."
-    Write-Host "  [DryRun] Sample body: $(Format-WarmupRequestBody -MessagePrefix $MessagePrefix -Label 'seq-1')"
+    Write-Host "  [DryRun] Sample body: $(Format-WarmupRequestBody -MessagePrefix $MessagePrefix -Label 'seq-1' -InputParameters $InputParameters)"
     return
 }
 
@@ -295,7 +326,7 @@ if ($DryRun) {
 # sails past the try/catch. Kept identical in both phases so they behave the same.
 function Invoke-WarmupCall {
     param([string] $Label)
-    $body = Format-WarmupRequestBody -MessagePrefix $MessagePrefix -Label $Label
+    $body = Format-WarmupRequestBody -MessagePrefix $MessagePrefix -Label $Label -InputParameters $InputParameters
     $sw   = [Diagnostics.Stopwatch]::StartNew()
     try {
         $r = Invoke-WebRequest $uri -Method Post -Headers $headers -Body $body `
@@ -338,6 +369,7 @@ Write-Host "-- Phase B: $ConcurrentRounds round(s), ramping concurrency $($ladde
 # scriptblock is the real fix; scoping the preference around the loop is the second line of
 # defence, so this script cannot die on a warm-up outcome.
 $resultFn = ${function:ConvertTo-WarmupResult}.ToString()
+$bodyFn   = ${function:Format-WarmupRequestBody}.ToString()
 $clean = $false
 foreach ($round in 1..$ConcurrentRounds) {
     $concurrency = $ladder[$round - 1]
@@ -347,9 +379,11 @@ foreach ($round in 1..$ConcurrentRounds) {
         1..$n | ForEach-Object -ThrottleLimit $concurrency -Parallel {
             # Functions do not cross into a parallel runspace; re-establish the one we need
             # from its source text so both phases share a single tested implementation.
-            ${function:ConvertTo-WarmupResult} = $using:resultFn
+            ${function:ConvertTo-WarmupResult}   = $using:resultFn
+            ${function:Format-WarmupRequestBody} = $using:bodyFn
             $h  = @{ Authorization = $using:headers.Authorization; 'Content-Type' = 'application/json' }
-            $b  = @{ inputParameters = @{ message = ("$using:MessagePrefix-c$using:round-$_") } } | ConvertTo-Json -Compress
+            $b  = Format-WarmupRequestBody -MessagePrefix $using:MessagePrefix -Label "c$using:round-$_" `
+                                           -InputParameters $using:InputParameters
             $sw = [Diagnostics.Stopwatch]::StartNew()
             try {
                 $r = Invoke-WebRequest $using:uri -Method Post -Headers $h -Body $b `

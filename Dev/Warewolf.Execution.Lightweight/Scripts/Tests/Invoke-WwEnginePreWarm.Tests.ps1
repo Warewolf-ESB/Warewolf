@@ -278,6 +278,28 @@ Describe 'Format-WarmupRequestBody' {
         $obj  = $json | ConvertFrom-Json
         $obj.inputParameters.message | Should -Be 'WARMUP-seq-1'
     }
+
+    # The default body carries ONLY 'message', which is RabbitProcess's sole DataList input.
+    # Aimed at any other workflow it binds nothing that workflow declares, so every warm-up
+    # call fails on the workflow's own missing variables - a real-looking failure that says
+    # nothing about engine warmth. Doing exactly that against the profiler's
+    # RequestForProfiling on 2026-09-14 produced 119/119 "Invalid Calculate" failures that
+    # were initially mistaken for a broken workflow fixture.
+    It 'sends the supplied inputs instead of the default message input' {
+        $json = Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label 'seq-1' `
+                    -InputParameters @{ MandateDRI = '22'; ResultPaymentCycle = '202401' }
+        $obj  = $json | ConvertFrom-Json
+        $obj.inputParameters.MandateDRI         | Should -Be '22'
+        $obj.inputParameters.ResultPaymentCycle | Should -Be '202401'
+        $obj.inputParameters.PSObject.Properties.Name | Should -Not -Contain 'message'
+    }
+
+    It 'falls back to the default message input when -InputParameters is empty or absent' {
+        foreach ($empty in @($null, @{})) {
+            $obj = (Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label 'seq-2' -InputParameters $empty) | ConvertFrom-Json
+            $obj.inputParameters.message | Should -Be 'WARMUP-seq-2'
+        }
+    }
 }
 
 Describe 'Update-LatencyStreak' {

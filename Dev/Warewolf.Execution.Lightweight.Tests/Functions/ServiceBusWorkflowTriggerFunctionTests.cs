@@ -1090,4 +1090,98 @@ public class ServiceBusWorkflowTriggerFunctionTests
         Assert.IsFalse(store.TryGetResult("corr-transient-notfound", out _),
             "No result may be persisted: it would satisfy the dedupe check on redelivery and permanently prevent re-execution.");
     }
+
+    // ── Non-envelope body binding (2026-09-14) ──────────────────────────────────
+    //
+    // The trigger used to bind inputs ONLY from the {"inputs":{...}} envelope. A flat business
+    // payload is still valid JSON, so it deserialized cleanly into Inputs == null and the
+    // workflow ran against an EMPTY DATALIST - executed, not rejected - failing deep inside
+    // itself on its own missing variables. A 5000-message profiler load test dead-lettered
+    // 4998 that way ("Scalar value { MandateDRI } is NULL ... Invalid Calculate"), while the
+    // identical payload over HTTP succeeded, because the HTTP path already had this
+    // raw-body fallback (Http.WorkflowFunctionHelper.ExtractFromBody). It also defeated the
+    // premise of the Shovel bridge, whose whole point is that existing RabbitMQ producers -
+    // which publish flat payloads, never a Warewolf envelope - trigger the engine unmodified.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_FlatBodyWithoutInputsEnvelope_BindsBodyVerbatimAsRawInputPayload()
+    {
+        const string flatBody = "{\"ForPaymentCycle\":\"202402\",\"MandateDRI\":\"22\",\"ResultPaymentCycle\":\"202401\"}";
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var sut = NewSut(executor: executor);
+        var actions = new FakeServiceBusMessageActions();
+
+        await sut.Run(NewMessage(flatBody, correlationId: "corr-flat"), actions, CancellationToken.None);
+
+        Assert.AreEqual(1, executor.CallCount);
+        Assert.AreEqual(flatBody, executor.LastRequest!.RawInputPayload,
+            "A flat payload must reach the executor verbatim, exactly as the HTTP routes deliver it.");
+        Assert.AreEqual(0, executor.LastRequest.InputParameters.Count,
+            "There is no envelope, so nothing binds through InputParameters - the raw payload is the whole input.");
+        Assert.AreEqual(1, actions.CompleteCalls);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_InputsEnvelope_BindsThroughInputParameters_AndSetsNoRawPayload()
+    {
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var sut = NewSut(executor: executor);
+        var actions = new FakeServiceBusMessageActions();
+
+        await sut.Run(
+            NewMessage("{\"inputs\":{\"Name\":\"FromServiceBus\"},\"correlationId\":\"corr-env\"}"),
+            actions,
+            CancellationToken.None);
+
+        Assert.AreEqual(1, executor.CallCount);
+        Assert.IsNull(executor.LastRequest!.RawInputPayload,
+            "The documented envelope must keep binding through InputParameters alone - handing the envelope " +
+            "itself to the executor as a raw payload would try to bind a variable literally named 'inputs'.");
+        Assert.AreEqual("FromServiceBus", executor.LastRequest.InputParameters["Name"]);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_NestedNonEnvelopeBody_ReachesExecutorVerbatim()
+    {
+        // The reason the raw body is passed through rather than re-synthesised from a
+        // Dictionary<string,string>: a dictionary cannot carry a nested object, so recordset
+        // inputs could never bind (see WorkflowExecutionRequest.RawInputPayload).
+        const string nestedBody = "{\"Mandate\":{\"DRI\":\"22\"},\"Rows\":[{\"Id\":\"1\"}]}";
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var sut = NewSut(executor: executor);
+
+        await sut.Run(NewMessage(nestedBody, correlationId: "corr-nested"), new FakeServiceBusMessageActions(), CancellationToken.None);
+
+        Assert.AreEqual(1, executor.CallCount);
+        Assert.AreEqual(nestedBody, executor.LastRequest!.RawInputPayload);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_XmlBody_StillDeadLettersAsMalformed()
+    {
+        // Pins the boundary of this change. The HTTP routes accept an XML payload; this trigger
+        // deserializes the body into ServiceBusWorkflowMessage FIRST, so a non-JSON body never
+        // reaches the raw-payload fallback. Deliberate, and unchanged - asserted so a future
+        // reader does not infer full HTTP parity from the flat-JSON case above.
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("must not execute"));
+        var sut = NewSut(executor: executor);
+        var actions = new FakeServiceBusMessageActions();
+
+        await sut.Run(NewMessage("<DataList><MandateDRI>22</MandateDRI></DataList>"), actions, CancellationToken.None);
+
+        Assert.AreEqual(0, executor.CallCount);
+        Assert.AreEqual("Malformed:BodyNotJson", actions.LastDeadLetterReason);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveRawInputPayload_EmptyBody_ReturnsNull()
+    {
+        Assert.IsNull(ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload(""));
+        Assert.IsNull(ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload("   "));
+    }
 }

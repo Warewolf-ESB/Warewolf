@@ -205,6 +205,14 @@ If an existing RabbitMQ producer uses a different schema, it must be changed to 
 this contract, or an adapter service must sit between the producer and the source
 queue — Shovel itself cannot transform messages.
 
+**This applies to the `ServiceBusWorker` (Model B) path described here, NOT to the in-engine
+trigger.** Since 2026-09-14 `Functions/ServiceBusWorkflowTriggerFunction.cs` (Model A — what
+`wwuat3` runs) binds a **non-envelope body verbatim**, so a producer publishing a flat business
+payload does trigger it unmodified; see `ServiceBusSecureTrigger-Architecture.md`'s "Non-envelope
+bodies". `WorkflowQueueTrigger` has no equivalent fallback, and a flat body reaching it still
+executes the workflow with an empty datalist rather than being rejected — the failure mode
+documented there. Worth closing the same way if this path is used with unmodified producers.
+
 ## Trigger binding configuration
 
 `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to the queue named by the
