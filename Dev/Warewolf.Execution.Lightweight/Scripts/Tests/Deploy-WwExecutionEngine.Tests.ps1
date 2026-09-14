@@ -799,6 +799,28 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Match "Staging 'servicebustrigger.bite'.*QueueName=wwexecution-secure-trigger-queue-e2e.*WorkflowName=profiler/ProfilerMain"
             $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1"
         }
+
+        It 'also applies QueueName as the WAREWOLF_SERVICEBUS_TRIGGER_QUEUE app setting (dotnet-isolated attribute-placeholder regression guard)' {
+            <#
+                On dotnet-isolated, [ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%")] is
+                resolved by the out-of-process Functions Host at function-indexing time - before
+                the isolated worker process (where ConfigureWarewolf's in-memory config injection
+                runs) ever starts. Staging servicebustrigger.bite alone left the function unable to
+                index ("does not resolve to a value"), permanently disabling the trigger even
+                though the file was staged correctly. This pins that the queue name also becomes a
+                real app setting so the host can resolve the placeholder.
+            #>
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName    = 'wwexecution-secure-trigger-queue-e2e'
+            $callArgs.ServiceBusTriggerWorkflowName = 'profiler/ProfilerMain'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE\s*=\s*wwexecution-secure-trigger-queue-e2e'
+        }
+
+        It 'does NOT set WAREWOLF_SERVICEBUS_TRIGGER_QUEUE when neither trigger param is supplied' {
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Not -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'
+        }
     }
 
     Context 'breaking change — required params have no defaults' {

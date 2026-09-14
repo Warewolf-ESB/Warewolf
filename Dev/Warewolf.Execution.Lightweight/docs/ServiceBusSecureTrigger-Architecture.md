@@ -184,17 +184,43 @@ is unrelated to it.
 | `WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES` | WOLF-8512: operator escape hatch overriding `ClaimStaleAfter` directly, bypassing its runtime-resolved default entirely. Normally left unset — see "Failure classification" below for how the default is inferred automatically. |
 | `AzureWebJobs.ServiceBusWorkflowTrigger.Disabled` | Standard Azure Functions convention to disable the trigger entirely (e.g. when no Service Bus namespace is provisioned) with zero code changes. `ServiceBusTriggerDefinition.Load()` (see below) returns `null` without reading its config file when this is set. |
 
-WOLF-8517: the queue name is no longer `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` either. It, and
-the workflow the trigger runs, are sourced SOLELY from `Settings/servicebustrigger.bite`
+WOLF-8517: the workflow the trigger runs is sourced SOLELY from `Settings/servicebustrigger.bite`
 (`ServiceBusTriggerDefinition.cs`) — a plain-JSON, deploy-bundled file (no secret in it, so
 never WFAES-encrypted), loaded once at cold start **before** the host is built. Its
-`QueueName` is injected into configuration under the `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`
-key (`HostBuilderExtensions.ConfigureWarewolf`) so the `[ServiceBusTrigger("%...%")]`
-attribute indirection resolves exactly as it did when that was a real app setting; its
 `WorkflowName` is registered as a DI singleton and consumed directly by
 `ServiceBusWorkflowTriggerFunction` — **the message body no longer names the workflow**
 (see "Message contract" above). A missing file, or either field blank, is fatal — refuses
 to start rather than silently defaulting.
+
+**Correction (2026-09-14) — `QueueName` could NOT drop the app setting; it still needs one.**
+The original WOLF-8517 design (immediately above, kept for history) intended `QueueName` to
+be sourced solely from the file too, injected into configuration via
+`HostBuilderExtensions.ConfigureWarewolf`'s `ConfigureAppConfiguration` callback so the
+`[ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%")]` attribute indirection would
+resolve it "exactly as it did when that was a real app setting." **This does not work on the
+dotnet-isolated worker model and never has.** Attribute placeholders like
+`%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%` are resolved by the out-of-process Functions Host at
+function-indexing time — before the isolated worker process (where `ConfigureWarewolf`'s
+in-memory `IConfiguration` entry lives) is even started. The host only ever sees real Azure
+App Settings (or `local.settings.json` locally), never anything the worker injects into its
+own process. Deployed live against `wwuat3` (`DEV2`) with only the file staged: the function
+failed to index outright —
+```
+Error indexing method 'Functions.ServiceBusWorkflowTrigger'. Microsoft.Azure.WebJobs.Host:
+'%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%' does not resolve to a value.
+The 'ServiceBusWorkflowTrigger' function is in error... failed indexing and will be disabled.
+```
+— silently, with no host-level diagnostic visible unless `APPLICATIONINSIGHTS_CONNECTION_STRING`
+is also set (the app's own `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` does not cover Functions
+Host telemetry). The queue is never consumed and no error surfaces anywhere else.
+
+**Fixed:** `Deploy-WwExecutionEngine.ps1` now ALSO writes `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`
+as a real app setting (from `-ServiceBusTriggerQueueName`) whenever trigger config is
+supplied, in addition to staging `servicebustrigger.bite`. `WorkflowName` is unaffected by
+any of this — it is read via DI inside the worker process, not through an attribute
+placeholder, so the file alone is sufficient for it. The in-memory `ConfigureAppConfiguration`
+injection in `HostBuilderExtensions.cs` is left in place (harmless, just insufficient alone)
+rather than removed, since it costs nothing and doing so is a separate cleanup.
 
 **"Deploy-bundled" means exactly that — baked into the package by
 `Deploy-WwExecutionEngine.ps1`'s `-ServiceBusTriggerQueueName`/`-ServiceBusTriggerWorkflowName`

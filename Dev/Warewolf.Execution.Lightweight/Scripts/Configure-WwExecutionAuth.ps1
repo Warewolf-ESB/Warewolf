@@ -1058,7 +1058,10 @@ function Set-FunctionAppSettings {
     try {
         $utf8NoBom = New-Object System.Text.UTF8Encoding $false
         $fileArgs = foreach ($setting in $Settings) {
-            $tempFile = [System.IO.Path]::GetTempFileName()
+            # .json extension, not GetTempFileName's .tmp: az infers the payload format from
+            # it, and a .tmp-named @file argument reproduces the exact "WAREWOLF_ENTRA_CONFIG
+            # is not valid JSON" abort this function otherwise fixes.
+            $tempFile = Join-Path ([System.IO.Path]::GetTempPath()) ("ww-appsettings-{0}.json" -f [guid]::NewGuid().ToString('N'))
             $tempFiles.Add($tempFile)
             [System.IO.File]::WriteAllText($tempFile, $setting, $utf8NoBom)
             "@$tempFile"

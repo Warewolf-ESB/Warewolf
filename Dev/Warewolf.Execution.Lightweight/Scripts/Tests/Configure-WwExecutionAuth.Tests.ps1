@@ -184,6 +184,22 @@ Describe 'Configure-WwExecutionAuth — Set-FunctionAppSettings (quote-safe app 
         $script:capturedFileArg | Should -Not -BeNullOrEmpty
         Test-Path -LiteralPath $script:capturedFileArg.Substring(1) | Should -BeFalse
     }
+
+    It 'names the temp file with a .json extension, not GetTempFileName''s .tmp (az infers the @file payload format from the extension)' {
+        # Live incident this guards: a .tmp-named @file argument reproduces the exact
+        # "WAREWOLF_ENTRA_CONFIG is not valid JSON" Stage 10c abort this function
+        # otherwise fixes - even though the file's CONTENT is correct.
+        Mock Invoke-AzCli {
+            $script:capturedArgs = @($Arguments)
+        }
+
+        Set-FunctionAppSettings -Name 'my-app' -ResourceGroup 'my-rg' `
+            -Settings @('WAREWOLF_ENTRA_CONFIG={"tenantId":"t"}')
+
+        $fileArg = @($script:capturedArgs | Where-Object { $_ -like '@*' })[0]
+        $fileArg | Should -Not -BeNullOrEmpty
+        [System.IO.Path]::GetExtension($fileArg.Substring(1)) | Should -Be '.json'
+    }
 }
 
 Describe 'Configure-WwExecutionAuth — Get-BalancedJsonSpan / ConvertFrom-AzJson trailing-preamble tolerance' {

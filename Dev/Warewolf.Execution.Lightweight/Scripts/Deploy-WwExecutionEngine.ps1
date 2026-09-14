@@ -1445,6 +1445,19 @@ if (-not [string]::IsNullOrWhiteSpace($RabbitMqCacheConfig)) {
 
     $appSettings['WAREWOLF_RABBITMQ_CACHE'] = $RabbitMqCacheConfig
 }
+
+# QueueName MUST also be a real app setting, not just staged in servicebustrigger.bite: on
+# dotnet-isolated, [ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%")] is resolved by
+# the OUT-OF-PROCESS Functions Host at function-indexing time, before the isolated worker
+# process (where HostBuilderExtensions.ConfigureWarewolf's in-memory config injection runs)
+# ever starts - that injection can never reach the host's own resolution, so the function
+# fails to index ("'%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%' does not resolve to a value") and the
+# trigger is permanently disabled regardless of how correctly servicebustrigger.bite is staged.
+# WorkflowName has no such constraint (read via DI inside the worker process, see
+# ServiceBusWorkflowTriggerFunction), so only QueueName needs this.
+if ($triggerConfigRequired) {
+    $appSettings['WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'] = $ServiceBusTriggerQueueName
+}
 # NOTE: BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
 # SkipFailureToRetrieveSecret (merged into WAREWOLF_SECURITY_FLAGS — WOLF-8516) are
 # deliberately NOT set here (not shown in logs/summary, not created on the Function
