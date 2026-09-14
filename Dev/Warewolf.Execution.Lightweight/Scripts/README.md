@@ -115,7 +115,16 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
 ### Deploy targets
 
 - **`warewolfserver`** — deployed by `pipeline-CLOUD.yml`'s `Deploy_And_Test_Azure_Functions`
-  job on every CI run against `develop`/`7580*`.
+  job on every CI run against `develop`/`7580*`. That job is `checkout: none`, so it runs
+  `Deploy-WwExecutionEngine.ps1` from the **`DeployScripts` pipeline artifact** the `Build`
+  stage stages out of this folder — i.e. the copy belonging to the commit being built.
+  Until 2026-09-14 it instead downloaded a hard-coded
+  `Warewolf-ExecutionEngine-Deployment-Scripts-v2.0.zip` from blob storage, pinning it to a
+  2026-06-26 snapshot of these scripts; every argument added here after that date failed the
+  deploy with `A parameter cannot be found that matches parameter name '<X>'`
+  (WOLF-8512, builds 30660-30666 — see `docs/Deploy-UAT-Redeploy-Spec.md` §15). **Both
+  pipelines now run the built commit's copy of these scripts; do not reintroduce a
+  version-pinned script source.**
 - **`WarewolfServer-UAT`** — deployed by `pipeline-LOADTEST.yml`'s `Deploy_UAT` stage on
   every run of that pipeline, immediately before `Load_Test`. Automated per
   `docs/Deploy-UAT-Redeploy-Spec.md` §10 — previously this app was ONLY updated by manual,

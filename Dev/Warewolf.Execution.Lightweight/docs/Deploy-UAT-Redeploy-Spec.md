@@ -683,6 +683,30 @@ failed with `A parameter cannot be found that matches parameter name 'SyncEntraC
 "8513-remove sync entra config") and `pipeline-CLOUD.yml` in build 30660 on 2026-09-14
 (removed then, mirroring that commit).
 
+**Follow-on (2026-09-14) — removing the argument was not the fix for `pipeline-CLOUD.yml`.**
+The paragraph above is accurate about `-SyncEntraConfig` itself: it never existed in any
+`.ps1`, so `pipeline-LOADTEST.yml` — which runs the script from its own repo checkout —
+genuinely failed for that reason alone. `pipeline-CLOUD.yml` had a **second, independent**
+defect underneath it. Its `Deploy_And_Test_Azure_Functions` job is `checkout: none`, and it
+ran `Deploy-WwExecutionEngine.ps1` out of a hard-coded release zip
+(`Warewolf-ExecutionEngine-Deployment-Scripts-v2.0.zip` on `stwwreleases`) published
+**2026-06-26** — 1369 lines, 51 parameters — while `Scripts/Deploy-WwExecutionEngine.ps1`
+had grown to 2609 lines. So build 30662 still failed on `-SyncEntraConfig`, and once that
+argument was deleted builds 30664/30666 failed on `-ServiceBusTriggerQueueName`, which
+**does** exist in the repo script (line 442). The pin could never self-heal: the `Release`
+stage that publishes the zip runs *after* the `Azure` stage and only on
+`Build.Reason=Manual`, and its auto-detected `ScriptsPackageVersion` **bumps** the version
+whenever `Scripts/` changes — so a refreshed package is published as `v2.1` and the
+hard-coded `v2.0` URL never sees it.
+
+Fixed on 2026-09-14 by deleting the blob-download step and pointing the deploy at
+`$(Agent.BuildDirectory)\DeployScripts\Scripts\Deploy-WwExecutionEngine.ps1` — the
+`DeployScripts` pipeline artifact the `Build` stage already stages from that commit's
+`Scripts/` folder, and which every *other* script step in that job (`Deploy-WwQueueProcessor.ps1`,
+`WwE2E.Common.psm1`, `Publish-WwQueueBurst.ps1`, `Get-WwQueueRunReport.ps1`) was already using.
+**Both pipelines now run this commit's copy of the deployment scripts; never reintroduce a
+version-pinned script source.**
+
 The third row of the table above therefore stands as an **unresolved deploy-time gap**:
 `WAREWOLF_ENTRA_CONFIG` is written only by `Configure-WwExecutionAuth.ps1`, which
 `-SkipAuthProvisioning` skips, so for any app deployed that way it is a **one-time manual
