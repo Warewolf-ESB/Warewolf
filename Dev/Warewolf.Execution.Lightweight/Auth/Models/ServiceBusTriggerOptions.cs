@@ -127,6 +127,54 @@ public sealed class ServiceBusTriggerOptions
     public TimeSpan HeartbeatInterval { get; init; } = TimeSpan.FromSeconds(5);
 
     /// <summary>
+    /// WOLF-8512 (build 30658): how long the instance that holds a claim may go without
+    /// refreshing its liveness heartbeat before that claim is treated as orphaned and taken
+    /// over immediately, WITHOUT waiting out the much longer <see cref="ClaimStaleAfter"/>
+    /// window.
+    ///
+    /// <para>
+    /// <b>Why this exists.</b> <see cref="ClaimStaleAfter"/> is a worst-case backstop
+    /// (<c>functionTimeout</c> + 1 minute = 11 minutes by default), deliberately long enough to
+    /// never cut short a genuinely-still-running execution. But when the claiming worker is
+    /// provably dead, waiting 11 minutes costs several redeliveries: in build 30658 the claims
+    /// on correlation ids ...-000235/-000238 were orphaned at 23:28:22 by a worker crash and
+    /// the first redelivery at 23:33:22 was still refused, because time alone cannot tell
+    /// "dead" from "slow". <c>ServiceBusReplayAndResultStore.TryClaim</c> now consults the
+    /// owner's heartbeat row instead of only the clock.
+    /// </para>
+    ///
+    /// <para>
+    /// <b>Chosen conservatively.</b> A false positive here means two concurrent executions of
+    /// the same message, so the default is six heartbeat intervals (30s at the default
+    /// <see cref="HeartbeatInterval"/>) with a 30-second floor — long enough to ride out a GC
+    /// pause or a slow persistence round-trip. Note that the strongest takeover signal needs no
+    /// timing judgement at all: a heartbeat arriving from a DIFFERENT process id than the one
+    /// that took the claim proves the claiming process is gone. See
+    /// <see cref="Security.ServiceBusReplayAndResultStore"/>'s "Claim staleness" doc.
+    /// </para>
+    /// </summary>
+    public TimeSpan InstanceLivenessTimeout { get; init; } = DefaultInstanceLivenessTimeout;
+
+    /// <summary>
+    /// Default for <see cref="InstanceLivenessTimeout"/>. A property initializer cannot read
+    /// <see cref="HeartbeatInterval"/>, so the scaling rule (six intervals, 30-second floor)
+    /// lives in <see cref="ScaleInstanceLivenessTimeout"/> and is applied by the options factory
+    /// once the real heartbeat interval is known.
+    /// </summary>
+    internal static readonly TimeSpan DefaultInstanceLivenessTimeout = TimeSpan.FromSeconds(30);
+
+    /// <summary>
+    /// Six <paramref name="heartbeatInterval"/>s, floored at
+    /// <see cref="DefaultInstanceLivenessTimeout"/> — so raising the heartbeat interval widens
+    /// the liveness window with it rather than silently making false-positive takeovers likelier.
+    /// </summary>
+    internal static TimeSpan ScaleInstanceLivenessTimeout(TimeSpan heartbeatInterval)
+    {
+        var scaled = TimeSpan.FromTicks(heartbeatInterval.Ticks * 6);
+        return scaled > DefaultInstanceLivenessTimeout ? scaled : DefaultInstanceLivenessTimeout;
+    }
+
+    /// <summary>
     /// WOLF-8512: how long a claim taken by <c>IServiceBusReplayAndResultStore.TryClaim</c> is
     /// honoured before a new delivery is allowed to take it over as abandoned (see
     /// <see cref="Security.ServiceBusReplayAndResultStore"/>'s "Claim staleness" doc comment).
@@ -325,6 +373,11 @@ public sealed class ServiceBusTriggerOptions
             ? TimeSpan.FromSeconds(heartbeatIntervalSeconds.Value)
             : TimeSpan.FromSeconds(5);
 
+        var instanceLivenessTimeoutSeconds = fileOverrides?.InstanceLivenessTimeoutSeconds;
+        var instanceLivenessTimeout = instanceLivenessTimeoutSeconds is > 0
+            ? TimeSpan.FromSeconds(instanceLivenessTimeoutSeconds.Value)
+            : ScaleInstanceLivenessTimeout(heartbeatInterval);
+
         return new ServiceBusTriggerOptions
         {
             ExecutionTimeout = executionTimeout,
@@ -332,6 +385,7 @@ public sealed class ServiceBusTriggerOptions
             SlotWaitTimeout = slotWaitTimeout,
             SettlementTimeout = settlementTimeout,
             HeartbeatInterval = heartbeatInterval,
+            InstanceLivenessTimeout = instanceLivenessTimeout,
             // ClaimStaleAfter intentionally omitted here - its own property initializer already
             // resolves WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES / the host.json
             // functionTimeout chain (see ResolveClaimStaleAfter), so FromEnvironment() and the

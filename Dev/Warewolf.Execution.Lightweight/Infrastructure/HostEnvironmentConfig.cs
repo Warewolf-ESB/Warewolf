@@ -140,6 +140,7 @@ public sealed class HostEnvironmentConfig
         public double? SlotWaitTimeoutSeconds { get; set; }
         public double? SettlementTimeoutSeconds { get; set; }
         public double? HeartbeatIntervalSeconds { get; set; }
+        public double? InstanceLivenessTimeoutSeconds { get; set; }
     }
 
     // ── Properties ───────────────────────────────────────────────────────────────
@@ -303,6 +304,12 @@ public sealed class ServiceBusTriggerFileOverrides
     public double? SettlementTimeoutSeconds { get; private init; }
     public double? HeartbeatIntervalSeconds { get; private init; }
 
+    /// <summary>
+    /// WOLF-8512 (build 30658): overrides <see cref="Auth.Models.ServiceBusTriggerOptions.InstanceLivenessTimeout"/>.
+    /// Left unset, it scales from <c>HeartbeatIntervalSeconds</c> — see that property's doc.
+    /// </summary>
+    public double? InstanceLivenessTimeoutSeconds { get; private init; }
+
     internal static ServiceBusTriggerFileOverrides From(HostEnvironmentConfig.ServiceBusTriggerFileSection? section) =>
         section is null
             ? None
@@ -313,5 +320,6 @@ public sealed class ServiceBusTriggerFileOverrides
                 SlotWaitTimeoutSeconds = section.SlotWaitTimeoutSeconds,
                 SettlementTimeoutSeconds = section.SettlementTimeoutSeconds,
                 HeartbeatIntervalSeconds = section.HeartbeatIntervalSeconds,
+                InstanceLivenessTimeoutSeconds = section.InstanceLivenessTimeoutSeconds,
             };
 }

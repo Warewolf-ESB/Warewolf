@@ -261,7 +261,7 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task Run_ClaimAlreadyHeldByInFlightDelivery_AbandonsWithoutExecutingOrSettling()
+    public async Task Run_ClaimAlreadyHeldByInFlightDelivery_LeavesUnsettledForRedelivery()
     {
         // Simulates a redelivery landing while a first delivery is still mid-execution
         // (claimed, no result saved yet) - the exact race the plain TryGetResult check used
@@ -283,9 +283,14 @@ public class ServiceBusWorkflowTriggerFunctionTests
             "Must settle NEITHER way - an explicit Abandon releases the lock immediately, which (if the first " +
             "attempt is still genuinely executing) can retry-storm the message past MaxDeliveryAttempts before " +
             "the first attempt ever finishes, permanently losing it to Service Bus's own silent dead-letter. " +
-            "Leaving the message unsettled lets its lock expire on Service Bus's own timing instead - " +
-            "host.json's extensions.serviceBus.autoCompleteMessages:false means an unsettled return is never " +
-            "auto-completed either.");
+            "Leaving the message unsettled lets its lock expire on Service Bus's own timing instead. " +
+            "WOLF-8512 (build 30658): that is only true while AutoCompleteMessages is false ON THE " +
+            "[ServiceBusTrigger] ATTRIBUTE - NOT, as this comment previously claimed, because of host.json's " +
+            "extensions.serviceBus.autoCompleteMessages:false, which governs the global options only and is " +
+            "overridden per-function by the dotnet-isolated host. While that override was active this exact " +
+            "return was auto-completed and the message destroyed, and this test still passed - it asserts what " +
+            "the code does, and the code was right. Trigger_OptsOutOfAutoCompleteMessages is what actually " +
+            "guards the premise.");
     }
 
     [TestMethod]
@@ -897,5 +902,192 @@ public class ServiceBusWorkflowTriggerFunctionTests
         gateA.Set();
         gateB.Set();
         await Task.WhenAll(taskA, taskB);
+    }
+
+    // ── WOLF-8512 (build 30658) — the settlement contract ────────────────────────
+    //
+    // Root cause of the message loss in builds 30649-30658. host.json's
+    // extensions.serviceBus.autoCompleteMessages:false configures the GLOBAL ServiceBusOptions
+    // only; under the dotnet-isolated worker the host applies a PER-FUNCTION override that
+    // defaults to true and wins. Build 30658 therefore ran with auto-complete ON - every host
+    // start logged "The 'AutoCompleteMessages' option has been overriden to 'True' value for
+    // 'Functions.ServiceBusWorkflowTrigger' function" - so every deliberate unsettled return
+    // below was auto-completed instead, destroying the message with no retry, no dead-letter,
+    // no result and nothing in the DLQ.
+    //
+    // Nothing else in this file can catch that regression: every other test asserts what the
+    // CODE does, and the code was correct. Only the attribute tells the host how to treat a
+    // return, so only the attribute can be asserted.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void Trigger_OptsOutOfAutoCompleteMessages()
+    {
+        var runMethod = typeof(ServiceBusWorkflowTriggerFunction).GetMethod(nameof(ServiceBusWorkflowTriggerFunction.Run));
+        Assert.IsNotNull(runMethod, "ServiceBusWorkflowTriggerFunction.Run must exist for the trigger to bind at all.");
+
+        var messageParameter = runMethod!.GetParameters()
+            .SingleOrDefault(p => p.ParameterType == typeof(ServiceBusReceivedMessage));
+        Assert.IsNotNull(messageParameter, "Run must take the ServiceBusReceivedMessage that carries the [ServiceBusTrigger] attribute.");
+
+        // Deliberately CustomAttributeData, not GetCustomAttributes: the attribute's CLR
+        // property defaults to false, so an instantiated attribute reads false whether the
+        // argument was written or omitted — a test asserting on the instance passes either way
+        // and guards nothing (verified: removing the argument left such a test green).
+        // NamedArguments carries only what is actually written in source, which is exactly the
+        // distinction that matters, because it is the PRESENCE of the argument that suppresses
+        // the host's per-function override.
+        var triggerData = messageParameter!.GetCustomAttributesData()
+            .SingleOrDefault(a => a.AttributeType == typeof(ServiceBusTriggerAttribute));
+        Assert.IsNotNull(triggerData, "The message parameter must carry exactly one [ServiceBusTrigger].");
+
+        var autoComplete = triggerData!.NamedArguments
+            .Where(a => a.MemberName == nameof(ServiceBusTriggerAttribute.AutoCompleteMessages))
+            .Select(a => (bool?)a.TypedValue.Value)
+            .SingleOrDefault();
+
+        Assert.IsNotNull(
+            autoComplete,
+            "AutoCompleteMessages must be stated EXPLICITLY on the [ServiceBusTrigger] attribute. Omitting it does not mean false: the dotnet-isolated host applies a per-function override that defaults to TRUE and takes precedence over host.json's global extensions.serviceBus.autoCompleteMessages. " +
+            "With it true, every deliberate unsettled return in Run/ProcessMessageAsync is auto-completed and the message is DESTROYED: no retry, no dead-letter, no recorded result, and no DLQ entry to show for it. " +
+            "That is exactly how correlation ids ...-000235/-000238/-000687 were lost in build 30658, each getting precisely two deliveries and then silence despite maxDeliveryCount=10 and lockDuration=PT5M.");
+
+        Assert.IsFalse(
+            autoComplete!.Value,
+            "AutoCompleteMessages must be explicitly FALSE — this trigger settles every message itself and relies on unsettled returns meaning 'redeliver me'.");
+    }
+
+    // ── WOLF-8512 (build 30658) — drain guard ────────────────────────────────────
+    //
+    // Correlation ids ...-000687 and ...-000688 were claimed at 23:29:34.880 on instance
+    // 5ae10c76, 1.1 SECONDS after that instance had already logged "Stopping JobHost". Its
+    // worker was gone by 23:29:43, so both claims leaked with their executions never started -
+    // and a leaked claim blocks every later redelivery until the staleness window expires.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_HostShuttingDown_DoesNotClaim_AndLeavesMessageUnsettled()
+    {
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("must not execute while draining"));
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var message = NewMessage("{\"correlationId\":\"corr-draining\"}", correlationId: "corr-draining");
+
+        using var drained = new CancellationTokenSource();
+        drained.Cancel();
+
+        await sut.Run(message, actions, drained.Token);
+
+        Assert.AreEqual(0, executor.CallCount, "A draining host must not start new work.");
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        Assert.AreEqual(0, actions.AbandonCalls,
+            "Leave the delivery unsettled so its lock expires and it redelivers to a healthy instance (safe because AutoCompleteMessages is false - see Trigger_OptsOutOfAutoCompleteMessages).");
+        Assert.IsTrue(store.TryClaim("corr-draining"),
+            "No claim may have been taken: a later delivery must find the correlation id completely free, not blocked by a claim this drained instance could never honour.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_HostShutsDownImmediatelyAfterClaim_ReleasesClaim()
+    {
+        // Drain can begin in the window between the guard above and TryClaim returning. This
+        // store cancels the host token at the exact moment the claim is taken, which is the
+        // only way to land inside that window deterministically.
+        using var drainOnClaim = new CancellationTokenSource();
+        var inner = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var store = new DrainOnClaimStore(inner, drainOnClaim);
+
+        var executor = new FakeWorkflowExecutor(_ => throw new InvalidOperationException("must not execute while draining"));
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var message = NewMessage("{\"correlationId\":\"corr-drain-race\"}", correlationId: "corr-drain-race");
+
+        await sut.Run(message, actions, drainOnClaim.Token);
+
+        Assert.AreEqual(0, executor.CallCount, "A draining host must not start new work.");
+        Assert.AreEqual(1, store.ReleaseClaimCalls,
+            "The claim was taken and the host then began draining — it must be handed straight back, or it blocks every redelivery until the staleness window expires.");
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        Assert.AreEqual(0, actions.AbandonCalls);
+        Assert.IsTrue(inner.TryClaim("corr-drain-race"),
+            "After the release, a later delivery must find the correlation id free.");
+    }
+
+    /// <summary>
+    /// Decorates the real store, cancelling <paramref name="drain"/> the instant a claim is
+    /// taken — standing in for the host entering drain in the narrow window between the
+    /// pre-claim guard and the claim landing.
+    /// </summary>
+    private sealed class DrainOnClaimStore : IServiceBusReplayAndResultStore
+    {
+        private readonly IServiceBusReplayAndResultStore _inner;
+        private readonly CancellationTokenSource _drain;
+
+        public DrainOnClaimStore(IServiceBusReplayAndResultStore inner, CancellationTokenSource drain)
+        {
+            _inner = inner;
+            _drain = drain;
+        }
+
+        public int ReleaseClaimCalls { get; private set; }
+
+        public bool TryClaim(string correlationId)
+        {
+            var claimed = _inner.TryClaim(correlationId);
+            if (claimed)
+            {
+                _drain.Cancel();
+            }
+
+            return claimed;
+        }
+
+        public void ReleaseClaim(string correlationId)
+        {
+            ReleaseClaimCalls++;
+            _inner.ReleaseClaim(correlationId);
+        }
+
+        public bool TryRegisterJti(string jti) => _inner.TryRegisterJti(jti);
+        public bool TryGetResult(string correlationId, out ServiceBusTriggerResult? result) => _inner.TryGetResult(correlationId, out result);
+        public void SaveResult(ServiceBusTriggerResult result) => _inner.SaveResult(result);
+        public void RecordClaimStage(string correlationId, string stage) => _inner.RecordClaimStage(correlationId, stage);
+        public void RecordInstanceHeartbeat(string instanceId, int inFlightExecutions) => _inner.RecordInstanceHeartbeat(instanceId, inFlightExecutions);
+    }
+
+    // ── WOLF-8512 (build 30658) — "Workflow not found." on a not-ready instance ──
+    //
+    // Correlation id ...-000688 was dead-lettered with "Workflow not found." while 999 sibling
+    // messages ran the very same workflow successfully; build 30649 failed all 1000 this way.
+    // WorkflowExecutor now returns a TRANSIENT failure when the miss is explained by an
+    // unavailable workflows directory (see WorkflowExecutorTransientFailureTests). This test
+    // pins the trigger's half of that contract: a transient not-found must be retried, never
+    // dead-lettered, and must persist NO result — a persisted result would satisfy the
+    // idempotency dedupe check on redelivery and permanently prevent re-execution.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_TransientWorkflowNotFound_ThrowsInsteadOfDeadLettering_NoResultPersisted()
+    {
+        var executor = new FakeWorkflowExecutor(_ => WorkflowExecutionResult.TransientFailure(
+            "Workflow not found: the workflows directory is unavailable or empty on this instance (not yet ready)."));
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var sut = NewSut(executor: executor, store: store);
+        var actions = new FakeServiceBusMessageActions();
+        var message = NewMessage("{}");
+        var payload = new ServiceBusWorkflowMessage { Inputs = new Dictionary<string, string>() };
+
+        await Assert.ThrowsExceptionAsync<InvalidOperationException>(
+            () => sut.ProcessMessageAsync(payload, "corr-transient-notfound", message, actions, DateTimeOffset.UtcNow, CancellationToken.None),
+            "A transient not-found must bubble so the Service Bus extension applies its normal retry/backoff.");
+
+        Assert.AreEqual(0, actions.DeadLetterCalls,
+            "Dead-lettering this is what destroyed correlation id ...-000688 while the same workflow ran fine on 999 other messages.");
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.IsFalse(store.TryGetResult("corr-transient-notfound", out _),
+            "No result may be persisted: it would satisfy the dedupe check on redelivery and permanently prevent re-execution.");
     }
 }

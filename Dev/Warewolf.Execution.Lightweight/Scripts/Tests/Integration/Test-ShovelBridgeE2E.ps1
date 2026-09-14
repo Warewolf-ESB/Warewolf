@@ -282,6 +282,13 @@ param(
     [string] $ExternalShovelDestUri,
     [securestring] $ExternalServiceBusConnectionString,
 
+    # WOLF-8512 (build 30658): supply BOTH to enable the Phase 4d dead-letter reconciliation.
+    # Optional - when either is omitted, Phase 4d reports that it was skipped rather than
+    # failing, so existing callers are unaffected. Requires an authenticated 'az' CLI with
+    # read access to the namespace.
+    [string] $ServiceBusNamespaceName,
+    [string] $ServiceBusResourceGroup,
+
     [int]    $HarnessTimeoutSeconds = 90,
     [switch] $SkipTeardown,
 
@@ -479,6 +486,46 @@ function Test-ServiceBusQueueExists {
             $hint = " (Expected/benign for this script's Send/Listen-only SAS rules, which lack the Manage claim required by the entity-management REST API — this does not by itself indicate a problem. A disableLocalAuth=true drift is a separate possible cause; check with 'az servicebus namespace show --query disableLocalAuth' if the Shovel itself also fails to connect. See docs/ShovelBridge-Architecture.md.)"
         }
         Write-Note "Could not verify destination queue existence via Service Bus management API: $($_.Exception.Message)$hint"
+        return $null
+    }
+}
+
+function Get-WwDeadLetterCount {
+    <#
+        WOLF-8512 (build 30658): reads the destination queue's dead-letter depth via the
+        Azure CLI.
+
+        Why this matters enough to have its own phase: a message that fails terminally is
+        dead-lettered and is therefore COUNTABLE. A message that is destroyed — the failure
+        mode this whole change fixes, where an unsettled return got auto-completed — leaves
+        no trace at all: no result, no DLQ entry, nothing. Builds 30649 through 30658 lost
+        messages exactly that way and the harness could only report "never got a result",
+        which looks identical to "still slow". Reconciling the DLQ delta against the
+        harness's own failure count separates the two definitively.
+
+        Returns $null (never throws) when the count cannot be read — the caller degrades to
+        a note rather than failing the run on a diagnostics gap.
+    #>
+    param(
+        [string] $NamespaceName,
+        [string] $ResourceGroup,
+        [string] $QueueName
+    )
+
+    if (-not $NamespaceName -or -not $ResourceGroup) { return $null }
+
+    try {
+        $raw = az servicebus queue show `
+            --namespace-name $NamespaceName `
+            --resource-group $ResourceGroup `
+            --name $QueueName `
+            --query 'countDetails.deadLetterMessageCount' `
+            -o tsv 2>$null
+        if ($LASTEXITCODE -ne 0) { return $null }
+        $parsed = 0
+        if ([int]::TryParse(($raw | Select-Object -First 1), [ref] $parsed)) { return $parsed }
+        return $null
+    } catch {
         return $null
     }
 }
@@ -1044,6 +1091,15 @@ try {
     # ════════════════════════════════════════════════════════════════════════
     # Phase 4 — Run the harness (publish + verify)
     # ════════════════════════════════════════════════════════════════════════
+    # WOLF-8512 (build 30658): baseline the destination DLQ before anything is published, so
+    # Phase 4d can reconcile the delta this run is responsible for. The queue accumulates
+    # dead-letters across runs (21,461 of them when this was written), so only the delta is
+    # meaningful.
+    $dlqBaseline = Get-WwDeadLetterCount -NamespaceName $ServiceBusNamespaceName -ResourceGroup $ServiceBusResourceGroup -QueueName $DestinationQueueName
+    if ($null -ne $dlqBaseline) {
+        Write-Step "Dead-letter baseline for '$DestinationQueueName': $dlqBaseline (Phase 4d reconciles the delta)"
+    }
+
     Write-Phase 'Phase 4  Publish + verify via E2EHarness'
 
     # Captured before publishing starts so Phase 4c's own dbo.jobs1 query can scope itself to
@@ -1335,6 +1391,50 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
         } catch {
             Write-Note "Phase 4c database verification itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"
         }
+    }
+
+    # ════════════════════════════════════════════════════════════════════════
+    # Phase 4d — Dead-letter reconciliation (WOLF-8512, build 30658)
+    # ════════════════════════════════════════════════════════════════════════
+    # Every message this run publishes must end in exactly one of three observable states:
+    # succeeded (a result + its DB row), dead-lettered (countable here), or still in flight.
+    # A message that is in NONE of them has been destroyed, and that is invisible without
+    # this check — which is precisely how the auto-complete defect survived builds 30649
+    # through 30658 while the harness reported only "never got a result".
+    #
+    # This is reported on pass AND fail: a clean 1000/1000 with a non-zero DLQ delta is
+    # still a finding (messages failed and were retried into success, or something else
+    # dead-lettered), and a failing run with a delta SMALLER than its loss count is the
+    # silent-destruction signature itself.
+    if ($null -ne $dlqBaseline) {
+        Write-Phase 'Phase 4d  Dead-letter reconciliation'
+        $dlqFinal = Get-WwDeadLetterCount -NamespaceName $ServiceBusNamespaceName -ResourceGroup $ServiceBusResourceGroup -QueueName $DestinationQueueName
+        if ($null -eq $dlqFinal) {
+            Write-Note 'Could not read the final dead-letter count — skipping reconciliation (does not affect the test result).'
+        } else {
+            $dlqDelta = $dlqFinal - $dlqBaseline
+            Write-Host "  Dead-letter baseline : $dlqBaseline" -ForegroundColor White
+            Write-Host "  Dead-letter final    : $dlqFinal" -ForegroundColor White
+            Write-Host "  Delta (this run)     : $dlqDelta" -ForegroundColor White
+
+            if ($harnessExitCode -eq 0) {
+                if ($dlqDelta -eq 0) {
+                    Write-Ok "No messages were dead-lettered — all $MessageCount accounted for as successes."
+                } else {
+                    Write-Note "All executions succeeded, but $dlqDelta message(s) still reached the dead-letter queue. Investigate: a message should not be both dead-lettered and successful."
+                }
+            } else {
+                # The harness failed. Whatever it could not account for should be sitting in
+                # the DLQ; anything missing from BOTH was destroyed in flight.
+                if ($dlqDelta -eq 0) {
+                    Write-Note 'The harness reported losses but NOTHING was dead-lettered — the missing messages were destroyed in flight, not failed. This is the WOLF-8512 auto-complete signature: check that ServiceBusWorkflowTriggerFunction still declares AutoCompleteMessages = false, and that the host log line "The ''AutoCompleteMessages'' option has been overriden to ..." reports False.'
+                } else {
+                    Write-Note "The harness reported losses and $dlqDelta message(s) were dead-lettered — those failures are at least accounted for. Inspect the DLQ entries' reason/description for the terminal cause."
+                }
+            }
+        }
+    } else {
+        Write-Note 'Phase 4d dead-letter reconciliation skipped (-ServiceBusNamespaceName / -ServiceBusResourceGroup not supplied, or the baseline read failed).'
     }
 
     if ($harnessExitCode -ne 0) {

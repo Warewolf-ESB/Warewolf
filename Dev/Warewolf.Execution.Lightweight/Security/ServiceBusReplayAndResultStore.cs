@@ -7,6 +7,7 @@
 using System.Collections.Concurrent;
 using Dev2.Common;
 using Hangfire;
+using Hangfire.Storage;
 using Newtonsoft.Json;
 using Warewolf.Driver.Persistence;
 using Warewolf.Execution.Lightweight.Models;
@@ -60,6 +61,19 @@ namespace Warewolf.Execution.Lightweight.Security;
 /// <see cref="Auth.Models.ServiceBusTriggerOptions.ClaimStaleAfter"/>) as abandoned and
 /// lets a new delivery take it over.
 /// </para>
+///
+/// <para>
+/// <b>Liveness-aware takeover (WOLF-8512, build 30658).</b> Waiting out the staleness window
+/// is correct but slow: it is a worst-case bound (11 minutes by default) chosen so it can never
+/// cut short a genuinely-still-running execution, which costs several wasted redeliveries when
+/// the owner is in fact already dead. <see cref="TryClaim"/> therefore also consults the owning
+/// instance's heartbeat row before refusing a claim — see <c>IsClaimOrphaned</c>. The decisive
+/// signal is a heartbeat arriving from a different PROCESS id than the one recorded on the
+/// claim: that proves the claiming worker process was replaced, with no timing guesswork. In
+/// build 30658 the Functions host (and therefore the role instance) survived while the isolated
+/// worker crashed underneath it, so a per-instance check alone would not have caught it.
+/// Anything ambiguous is reported as "still held" — a false takeover means duplicate execution.
+/// </para>
 /// </summary>
 public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultStore
 {
@@ -68,10 +82,22 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     private const string ResultFieldName = "json";
     private const string ClaimHashKeyPrefix = "sbtrigger:claim:";
     private const string ClaimFieldName = "claimedAtUtc";
+    // WOLF-8512 (build 30658): who took the claim. Distinct from the Stage* fields below,
+    // which every later checkpoint overwrites - these two are written once, by TryClaim, and
+    // are what the liveness-aware takeover compares the owner's heartbeat row against.
+    private const string ClaimInstanceIdFieldName = "claimedByInstanceId";
+    private const string ClaimProcessIdFieldName = "claimedByProcessId";
     private const string StageFieldName = "lastStage";
     private const string StageAtFieldName = "lastStageAtUtc";
     private const string StageInstanceIdFieldName = "lastStageInstanceId";
     private const string StageProcessIdFieldName = "lastStageProcessId";
+    // WOLF-8512 (build 30658): ReleaseClaim's tombstone - what the claim had reached when it
+    // was handed back, kept because removing the hash outright erased the whole breadcrumb
+    // trail for every transiently-failed correlation id.
+    private const string ReleasedAtFieldName = "releasedAtUtc";
+    private const string ReleasedStageFieldName = "releasedAtStage";
+    private const string ReleasedByInstanceIdFieldName = "releasedByInstanceId";
+    private const string ReleasedByProcessIdFieldName = "releasedByProcessId";
     private const string InstanceHashKeyPrefix = "sbtrigger:instance:";
     private const string InstanceHeartbeatAtFieldName = "lastHeartbeatUtc";
     private const string InstanceInFlightFieldName = "inFlightExecutions";
@@ -88,10 +114,20 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     /// this codebase already keeps more than one independently-resolved instance-id
     /// constant rather than force a shared dependency between unrelated layers.
     /// </summary>
-    private static readonly string CurrentInstanceId =
+    private static readonly string DefaultInstanceId =
         Environment.GetEnvironmentVariable("WEBSITE_INSTANCE_ID") ?? Environment.MachineName;
 
-    private static readonly string CurrentProcessId = Environment.ProcessId.ToString();
+    private static readonly string DefaultProcessId = Environment.ProcessId.ToString();
+
+    /// <summary>
+    /// This store's view of "who am I". Instance fields rather than statics so tests can drive
+    /// the liveness-aware takeover in <see cref="TryClaim"/> deterministically — a second store
+    /// constructed with a different identity stands in for a different instance/worker process,
+    /// which is otherwise impossible to simulate in one test process.
+    /// </summary>
+    private readonly string _instanceId;
+
+    private readonly string _processId;
 
     private readonly ConcurrentDictionary<string, (int InFlight, DateTimeOffset AtUtc)> _inMemoryInstanceHeartbeats = new(StringComparer.Ordinal);
 
@@ -105,26 +141,42 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     /// </summary>
     internal static readonly TimeSpan DefaultClaimStaleAfter = TimeSpan.FromMinutes(20);
 
+    /// <summary>
+    /// Fallback for <see cref="_instanceLivenessTimeout"/>, matching
+    /// <c>ServiceBusTriggerOptions.DefaultInstanceLivenessTimeout</c>. Production wiring always
+    /// passes the resolved value explicitly.
+    /// </summary>
+    internal static readonly TimeSpan DefaultInstanceLivenessTimeout = TimeSpan.FromSeconds(30);
+
     private readonly bool _usePersistence;
     private readonly Lazy<JobStorage>? _jobStorage;
     private readonly Func<DateTimeOffset> _clock;
     private readonly TimeSpan _claimStaleAfter;
+    private readonly TimeSpan _instanceLivenessTimeout;
 
     private readonly ConcurrentDictionary<string, byte> _inMemoryJti = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, string> _inMemoryResults = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, DateTimeOffset> _inMemoryClaims = new(StringComparer.Ordinal);
     private readonly ConcurrentDictionary<string, (string Stage, DateTimeOffset AtUtc)> _inMemoryClaimStages = new(StringComparer.Ordinal);
 
-    public ServiceBusReplayAndResultStore(TimeSpan? claimStaleAfter = null)
-        : this(() => DateTimeOffset.UtcNow, claimStaleAfter)
+    public ServiceBusReplayAndResultStore(TimeSpan? claimStaleAfter = null, TimeSpan? instanceLivenessTimeout = null)
+        : this(() => DateTimeOffset.UtcNow, claimStaleAfter, instanceLivenessTimeout)
     {
     }
 
     /// <summary>Test seam — injects a controllable clock so claim-staleness tests don't need to sleep for the real TTL. Persistence mode is still resolved from <c>Config.Persistence</c>, same as the public constructor.</summary>
-    internal ServiceBusReplayAndResultStore(Func<DateTimeOffset> clock, TimeSpan? claimStaleAfter = null)
+    internal ServiceBusReplayAndResultStore(
+        Func<DateTimeOffset> clock,
+        TimeSpan? claimStaleAfter = null,
+        TimeSpan? instanceLivenessTimeout = null,
+        string? instanceId = null,
+        string? processId = null)
     {
         _clock = clock;
         _claimStaleAfter = claimStaleAfter ?? DefaultClaimStaleAfter;
+        _instanceLivenessTimeout = instanceLivenessTimeout ?? DefaultInstanceLivenessTimeout;
+        _instanceId = instanceId ?? DefaultInstanceId;
+        _processId = processId ?? DefaultProcessId;
         _usePersistence = Config.Persistence?.Enable ?? false;
         if (_usePersistence)
         {
@@ -140,13 +192,28 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
     {
     }
 
-    /// <summary>Test seam — as above, plus a controllable clock for deterministic stale-claim tests against the Hangfire-backed path.</summary>
-    internal ServiceBusReplayAndResultStore(JobStorage jobStorage, Func<DateTimeOffset> clock, TimeSpan? claimStaleAfter = null)
+    /// <summary>
+    /// Test seam — as above, plus a controllable clock for deterministic stale-claim tests
+    /// against the Hangfire-backed path, and (WOLF-8512, build 30658) an overridable
+    /// instance/process identity so a test can construct a SECOND store that stands in for a
+    /// different instance or a restarted worker process sharing the same storage. That is the
+    /// only way to drive <see cref="TryClaim"/>'s liveness-aware takeover in one test process.
+    /// </summary>
+    internal ServiceBusReplayAndResultStore(
+        JobStorage jobStorage,
+        Func<DateTimeOffset> clock,
+        TimeSpan? claimStaleAfter = null,
+        TimeSpan? instanceLivenessTimeout = null,
+        string? instanceId = null,
+        string? processId = null)
     {
         _usePersistence = true;
         _jobStorage = new Lazy<JobStorage>(() => jobStorage);
         _clock = clock;
         _claimStaleAfter = claimStaleAfter ?? DefaultClaimStaleAfter;
+        _instanceLivenessTimeout = instanceLivenessTimeout ?? DefaultInstanceLivenessTimeout;
+        _instanceId = instanceId ?? DefaultInstanceId;
+        _processId = processId ?? DefaultProcessId;
     }
 
     /// <inheritdoc/>
@@ -286,22 +353,119 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
             if (claimHash != null && claimHash.TryGetValue(ClaimFieldName, out var claimedAtRaw))
             {
                 var claimedAt = DateTimeOffset.Parse(claimedAtRaw, null, System.Globalization.DateTimeStyles.RoundtripKind);
-                if (now - claimedAt <= _claimStaleAfter)
+                if (now - claimedAt <= _claimStaleAfter
+                    && !IsClaimOrphaned(connection, claimHash, correlationId, now))
                 {
-                    // Another delivery already holds the claim and hasn't finished (or
-                    // failed without releasing it) yet, and not long enough ago to treat
-                    // as abandoned.
+                    // Another delivery already holds the claim, hasn't finished (or failed
+                    // without releasing it) yet, not long enough ago to treat as abandoned,
+                    // and its owner still looks alive.
                     return false;
                 }
-                // Else: stale - the attempt that took this claim is presumed dead/hung.
-                // Fall through and overwrite it below; safe because we still hold this
-                // correlation id's distributed lock.
+                // Else: stale by the clock, OR provably orphaned by the liveness check - the
+                // attempt that took this claim is dead. Fall through and overwrite it below;
+                // safe because we still hold this correlation id's distributed lock.
             }
 
             connection.SetRangeInHash(
                 ClaimHashKeyPrefix + correlationId,
-                new[] { new KeyValuePair<string, string>(ClaimFieldName, now.ToString("O")) });
+                new[]
+                {
+                    new KeyValuePair<string, string>(ClaimFieldName, now.ToString("O")),
+                    new KeyValuePair<string, string>(ClaimInstanceIdFieldName, _instanceId),
+                    new KeyValuePair<string, string>(ClaimProcessIdFieldName, _processId),
+                });
             return true;
+        }
+    }
+
+    /// <summary>
+    /// WOLF-8512 (build 30658): decides whether a claim that is NOT yet stale by the clock is
+    /// nonetheless provably orphaned, so the caller can take it over on the very next
+    /// redelivery instead of waiting out <see cref="_claimStaleAfter"/>.
+    ///
+    /// <para>
+    /// Two signals, strongest first:
+    /// </para>
+    /// <list type="number">
+    ///   <item><b>Process replaced.</b> The owning instance is heartbeating, but from a
+    ///         DIFFERENT process id than the one that took the claim. The claiming worker
+    ///         process is therefore gone and its in-flight execution went with it. This needs no
+    ///         timing judgement and cannot false-positive on a slow execution — it is exactly
+    ///         what happened on instances 813073bd and 5ae10c76 in build 30658, where the
+    ///         isolated worker crashed and restarted under a live Functions host (the role
+    ///         instance kept logging, so a per-instance check alone would have missed it).</item>
+    ///   <item><b>Instance gone.</b> The owning instance has not heartbeated within
+    ///         <see cref="_instanceLivenessTimeout"/> — it scaled in or died outright.</item>
+    /// </list>
+    ///
+    /// <para>
+    /// Deliberately conservative: with no owner recorded, or no heartbeat row for that owner at
+    /// all, we cannot distinguish dead from merely quiet, so we report "not orphaned" and let
+    /// the existing <see cref="_claimStaleAfter"/> backstop handle it. A false positive here
+    /// means two concurrent executions of the same message — for the ProfilerMain load test
+    /// that is a duplicate DB row, which the test explicitly asserts against — so "don't know"
+    /// must always mean "leave it alone". Best-effort throughout: any failure reading the
+    /// heartbeat row is treated as "not orphaned".
+    /// </para>
+    /// </summary>
+    private bool IsClaimOrphaned(
+        IStorageConnection connection,
+        IReadOnlyDictionary<string, string> claimHash,
+        string correlationId,
+        DateTimeOffset now)
+    {
+        try
+        {
+            if (!claimHash.TryGetValue(ClaimInstanceIdFieldName, out var ownerInstanceId)
+                || string.IsNullOrWhiteSpace(ownerInstanceId))
+            {
+                // Claim predates this field (or was written by an older engine build) - no
+                // owner to check. Time-based staleness remains the only backstop.
+                return false;
+            }
+
+            var instanceHash = connection.GetAllEntriesFromHash(InstanceHashKeyPrefix + ownerInstanceId);
+            if (instanceHash == null
+                || !instanceHash.TryGetValue(InstanceHeartbeatAtFieldName, out var heartbeatRaw))
+            {
+                // The owner has never heartbeated. Can't tell "died before its first tick"
+                // from "heartbeat service disabled", so don't steal.
+                return false;
+            }
+
+            claimHash.TryGetValue(ClaimProcessIdFieldName, out var claimProcessId);
+            instanceHash.TryGetValue(InstanceProcessIdFieldName, out var livingProcessId);
+
+            if (!string.IsNullOrWhiteSpace(claimProcessId)
+                && !string.IsNullOrWhiteSpace(livingProcessId)
+                && !string.Equals(claimProcessId, livingProcessId, StringComparison.Ordinal))
+            {
+                Dev2Logger.Warn(
+                    $"ServiceBusReplayAndResultStore.TryClaim taking over an orphaned claim: instance '{ownerInstanceId}' is alive but now runs process '{livingProcessId}', while the claim was taken by process '{claimProcessId}' — that worker process is gone.",
+                    correlationId);
+                return true;
+            }
+
+            var lastHeartbeat = DateTimeOffset.Parse(heartbeatRaw, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            if (now - lastHeartbeat > _instanceLivenessTimeout)
+            {
+                Dev2Logger.Warn(
+                    $"ServiceBusReplayAndResultStore.TryClaim taking over an orphaned claim: owning instance '{ownerInstanceId}' last heartbeated at {lastHeartbeat:O}, more than {_instanceLivenessTimeout} ago.",
+                    correlationId);
+                return true;
+            }
+
+            return false;
+        }
+        catch (Exception ex)
+        {
+            // Diagnostic-quality data driving a correctness decision - if it is unreadable,
+            // fail safe to "not orphaned" rather than risk a duplicate execution.
+            Dev2Logger.Warn(
+                "ServiceBusReplayAndResultStore.IsClaimOrphaned could not evaluate claim liveness — treating the claim as still held.",
+                ex,
+                correlationId);
+            return false;
         }
     }
 
@@ -322,9 +486,44 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
         using var connection = _jobStorage!.Value.GetConnection();
         using (connection.AcquireDistributedLock($"sbtrigger:corr-lock:{correlationId}", LockTimeout))
         {
-            using var transaction = connection.CreateWriteTransaction();
-            transaction.RemoveHash(ClaimHashKeyPrefix + correlationId);
-            transaction.Commit();
+            // WOLF-8512 (build 30658): removing the hash outright also destroyed the
+            // RecordClaimStage breadcrumb trail, so a correlation id that failed transiently
+            // and was released left nothing to diagnose - the release erased the evidence of
+            // how far it had got. Capture the last stage first, then re-write it as a
+            // tombstone. Deliberately WITHOUT ClaimFieldName, so TryClaim still sees this
+            // correlation id as unclaimed and a redelivery proceeds normally.
+            var previous = connection.GetAllEntriesFromHash(ClaimHashKeyPrefix + correlationId);
+            var stageAtRelease = previous != null && previous.TryGetValue(StageFieldName, out var stage)
+                ? stage
+                : "(no stage recorded)";
+
+            using (var transaction = connection.CreateWriteTransaction())
+            {
+                transaction.RemoveHash(ClaimHashKeyPrefix + correlationId);
+                transaction.Commit();
+            }
+
+            try
+            {
+                connection.SetRangeInHash(
+                    ClaimHashKeyPrefix + correlationId,
+                    new[]
+                    {
+                        new KeyValuePair<string, string>(ReleasedAtFieldName, _clock().ToString("O")),
+                        new KeyValuePair<string, string>(ReleasedStageFieldName, stageAtRelease),
+                        new KeyValuePair<string, string>(ReleasedByInstanceIdFieldName, _instanceId),
+                        new KeyValuePair<string, string>(ReleasedByProcessIdFieldName, _processId),
+                    });
+            }
+            catch (Exception ex)
+            {
+                // Pure diagnostics - the release itself already committed above, which is the
+                // part correctness depends on.
+                Dev2Logger.Warn(
+                    "ServiceBusReplayAndResultStore.ReleaseClaim could not write the release tombstone — the claim was still released.",
+                    ex,
+                    correlationId);
+            }
         }
     }
 
@@ -361,8 +560,8 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
                     // stage, so a future recurrence can tell whether two stuck correlation ids
                     // died on the SAME instance (see RecordInstanceHeartbeat's doc comment for
                     // the other half of this question).
-                    new KeyValuePair<string, string>(StageInstanceIdFieldName, CurrentInstanceId),
-                    new KeyValuePair<string, string>(StageProcessIdFieldName, CurrentProcessId),
+                    new KeyValuePair<string, string>(StageInstanceIdFieldName, _instanceId),
+                    new KeyValuePair<string, string>(StageProcessIdFieldName, _processId),
                 });
         }
         catch (Exception ex)
@@ -397,7 +596,7 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
                 {
                     new KeyValuePair<string, string>(InstanceHeartbeatAtFieldName, now.ToString("O")),
                     new KeyValuePair<string, string>(InstanceInFlightFieldName, inFlightExecutions.ToString()),
-                    new KeyValuePair<string, string>(InstanceProcessIdFieldName, CurrentProcessId),
+                    new KeyValuePair<string, string>(InstanceProcessIdFieldName, _processId),
                 });
         }
         catch (Exception ex)
@@ -453,6 +652,32 @@ public sealed class ServiceBusReplayAndResultStore : IServiceBusReplayAndResultS
         hash.TryGetValue(StageInstanceIdFieldName, out var instanceId);
         hash.TryGetValue(StageProcessIdFieldName, out var processId);
         return (instanceId, processId);
+    }
+
+    /// <summary>
+    /// Test seam: reads back the tombstone <see cref="ReleaseClaim"/> leaves behind — the stage
+    /// the released claim had reached, and who released it. <c>null</c>s when no claim for
+    /// <paramref name="correlationId"/> has been released (in-memory mode always returns
+    /// <c>null</c>s: the tombstone is only written on the Hangfire-backed path, matching this
+    /// class's other diagnostic-only fields).
+    /// </summary>
+    internal (string? Stage, DateTimeOffset? AtUtc, string? InstanceId) GetReleaseTombstoneForTests(string correlationId)
+    {
+        if (!_usePersistence)
+        {
+            return (null, null, null);
+        }
+
+        using var connection = _jobStorage!.Value.GetConnection();
+        var hash = connection.GetAllEntriesFromHash(ClaimHashKeyPrefix + correlationId);
+        if (hash == null || !hash.TryGetValue(ReleasedAtFieldName, out var atRaw))
+        {
+            return (null, null, null);
+        }
+
+        hash.TryGetValue(ReleasedStageFieldName, out var stage);
+        hash.TryGetValue(ReleasedByInstanceIdFieldName, out var instanceId);
+        return (stage, DateTimeOffset.Parse(atRaw, null, System.Globalization.DateTimeStyles.RoundtripKind), instanceId);
     }
 
     /// <summary>Test seam: reads back what <see cref="RecordInstanceHeartbeat"/> last wrote for <paramref name="instanceId"/> — <c>null</c>s if none was ever recorded.</summary>

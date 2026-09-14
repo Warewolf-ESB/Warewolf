@@ -186,7 +186,29 @@ namespace Warewolf.Execution.Lightweight
 
             if (!File.Exists(request.WorkflowFilePath))
             {
-               // Dev2Logger.Error($"WorkflowExecutor Execute: Workflow not found: {WorkflowIdentifier(request)}", "WorkflowExecutor-Validation");
+                // WOLF-8512 (build 30658): a missing workflow file is NOT automatically a
+                // terminal business outcome, and treating it as one loses messages. The
+                // broker-driven caller (ServiceBusWorkflowTriggerFunction) dead-letters a
+                // non-transient failure with no retry, so correlation id ...-000688 was
+                // destroyed by a "Workflow not found." raised on an instance whose resources
+                // were not yet in place - while 999 sibling messages executed the very same
+                // workflow successfully. Build 30649 is the extreme form of the same bug: all
+                // 1000 messages failed this way against a misconfigured resources directory.
+                //
+                // Distinguish the two cases: if the workflows directory itself is absent or
+                // empty, this instance is not ready (cold start, resources still being staged,
+                // a transiently unavailable content share) and a retry elsewhere will succeed.
+                // Only a populated directory that genuinely lacks this workflow is terminal.
+                if (IsWorkflowsDirectoryUnavailable(request))
+                {
+                    Dev2Logger.Error(
+                        $"WorkflowExecutor Execute: workflow file not found AND its workflows directory is missing/empty - treating as TRANSIENT (instance not ready): {WorkflowIdentifier(request)}",
+                        "WorkflowExecutor-Validation");
+                    return WorkflowExecutionResult.TransientFailure(
+                        "Workflow not found: the workflows directory is unavailable or empty on this instance (not yet ready).");
+                }
+
+                Dev2Logger.Error($"WorkflowExecutor Execute: Workflow not found: {WorkflowIdentifier(request)}", "WorkflowExecutor-Validation");
                 return WorkflowExecutionResult.Failure("Workflow not found.");
             }
 
@@ -318,6 +340,26 @@ namespace Warewolf.Execution.Lightweight
                 };
 
                 result.Errors = CollectErrors(dataObject, executionId);
+
+                // WOLF-8512 (build 30658): an OutOfMemoryException does not always reach the
+                // dedicated catch clause below — when it is raised inside the activity chain it
+                // is captured on the DsfDataObject as ExecutionException instead, and the
+                // execution returns "successfully" with IsSuccess=false and the generic
+                // "Workflow execution failed due to an unexpected error." message. That was
+                // indistinguishable from a real business failure, so the broker-driven caller
+                // dead-lettered it with no retry. Correlation id ...-000343 was lost this way,
+                // in the same second that its neighbour ...-000342 hit a plainly-reported OOM on
+                // the same instance while that instance was logging "Stopping JobHost".
+                // Classify by the exception chain, not by where it happened to surface.
+                if (!result.IsSuccess && IsTransientExecutionException(dataObject.ExecutionException))
+                {
+                    result.IsTransientFailure = true;
+                    Dev2Logger.Error(
+                        $"WorkflowExecutor Execute: execution exception is transient (memory pressure) for workflow: {WorkflowIdentifier(request)} — flagging for broker retry instead of dead-letter.",
+                        dataObject.ExecutionException,
+                        executionId.ToString());
+                }
+
                 ExtractPayload(dataObject, dataList, request, result);
                 if (debugCapturer != null)
                 {
@@ -681,6 +723,123 @@ namespace Warewolf.Execution.Lightweight
             }
 
             return payload.Count > 0 ? payload.ToString(Formatting.None) : null;
+        }
+
+        /// <summary>
+        /// WOLF-8512 (build 30658): does <paramref name="exception"/>, anywhere in its chain,
+        /// indicate memory pressure rather than a workflow/business fault?
+        ///
+        /// <para>
+        /// Walks <see cref="Exception.InnerException"/> and <see cref="AggregateException"/>
+        /// branches because the activity chain wraps freely — the same
+        /// <see cref="OutOfMemoryException"/> that arrives bare at
+        /// <see cref="Execute(WorkflowExecutionRequest)"/>'s dedicated catch clause arrives
+        /// wrapped when it is raised deeper in, and the two must be classified identically.
+        /// </para>
+        ///
+        /// <para>
+        /// Deliberately a NARROW list. Everything matched here is retried by the broker, so a
+        /// wrongly-included type turns a permanent failure into repeated load that still ends in
+        /// the dead-letter queue once the delivery count is exhausted. Only genuine
+        /// memory-exhaustion types qualify; an ordinary workflow error stays terminal.
+        /// </para>
+        /// </summary>
+        internal static bool IsTransientExecutionException(Exception exception)
+        {
+            const int maxDepth = 16;
+            var depth = 0;
+
+            bool Walk(Exception candidate)
+            {
+                if (candidate is null || depth++ > maxDepth)
+                {
+                    return false;
+                }
+
+                // InsufficientMemoryException derives from OutOfMemoryException, so this covers
+                // both; the "Insufficient memory to continue the execution" text observed in
+                // build 30658 is OutOfMemoryException's own message.
+                if (candidate is OutOfMemoryException)
+                {
+                    return true;
+                }
+
+                if (candidate is AggregateException aggregate)
+                {
+                    foreach (var inner in aggregate.InnerExceptions)
+                    {
+                        if (Walk(inner))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return Walk(candidate.InnerException);
+            }
+
+            return Walk(exception);
+        }
+
+        /// <summary>
+        /// WOLF-8512 (build 30658): identifies a workflow for a log line — its name when known,
+        /// otherwise its resolved file path. Previously referenced only from commented-out
+        /// logging, so it never existed as a method; the "Workflow not found." path is now
+        /// logged for real (its silence is why correlation id ...-000688's destruction left no
+        /// trace anywhere in Application Insights) and needs it.
+        /// </summary>
+        internal static string WorkflowIdentifier(WorkflowExecutionRequest request) =>
+            !string.IsNullOrWhiteSpace(request?.WorkflowName)
+                ? $"{request.WorkflowName} (resolved to '{request.WorkflowFilePath}')"
+                : request?.WorkflowFilePath ?? "(no workflow specified)";
+
+        /// <summary>
+        /// WOLF-8512 (build 30658): is this request's workflows directory missing or empty —
+        /// i.e. is "file not found" better explained by "this instance is not ready yet" than
+        /// by "that workflow does not exist"?
+        ///
+        /// <para>
+        /// Used to classify the <c>File.Exists</c> miss in <see cref="Execute(WorkflowExecutionRequest)"/>
+        /// as transient (retry elsewhere) rather than terminal (dead-letter, message destroyed).
+        /// Deliberately conservative in BOTH directions: an unreadable directory counts as
+        /// unavailable (a transient retry is cheap and self-correcting), but a directory that is
+        /// present and contains workflows does not — a genuinely absent workflow must stay
+        /// terminal, or the broker would retry a doomed message until it exhausts its delivery
+        /// count and dead-letters it anyway, having burned the whole budget.
+        /// </para>
+        /// </summary>
+        internal static bool IsWorkflowsDirectoryUnavailable(WorkflowExecutionRequest request)
+        {
+            var directory = request?.WorkflowsDirectory;
+            if (string.IsNullOrWhiteSpace(directory))
+            {
+                // Nothing configured to look in - the request itself is malformed, not the
+                // instance. Terminal; retrying cannot help.
+                return false;
+            }
+
+            try
+            {
+                if (!Directory.Exists(directory))
+                {
+                    return true;
+                }
+
+                // Present but empty of workflows - staging is incomplete (this is the shape
+                // build 30649 hit for all 1000 messages).
+                return !Directory.EnumerateFiles(directory, "*.bite", SearchOption.AllDirectories).Any()
+                    && !Directory.EnumerateFiles(directory, "*.xml", SearchOption.AllDirectories).Any();
+            }
+            catch (Exception ex)
+            {
+                // Cannot even enumerate it (IO error, permissions, a content share that has
+                // gone away mid-flight). That is exactly the "instance not healthy" case.
+                Dev2Logger.Warn(
+                    $"WorkflowExecutor could not inspect workflows directory '{directory}' - treating the workflow-not-found as transient.",
+                    ex,
+                    "WorkflowExecutor-Validation");
+                return true;
+            }
         }
 
         /// <summary>

@@ -62,6 +62,19 @@ namespace Warewolf.Execution.Lightweight.Functions;
 /// </list>
 ///
 /// <para>
+/// <b>Settlement contract (WOLF-8512, build 30658).</b> Every delivery ends in exactly one of
+/// three ways: explicitly completed, explicitly dead-lettered, or deliberately left UNSETTLED so
+/// the Service Bus lock expires and the message redelivers. That third option only works because
+/// <see cref="Run"/>'s <c>[ServiceBusTrigger]</c> attribute sets <c>AutoCompleteMessages = false</c>.
+/// Under the dotnet-isolated worker the host applies a per-function override that defaults to
+/// <c>true</c> and takes precedence over <c>host.json</c>'s global
+/// <c>extensions.serviceBus.autoCompleteMessages</c>; with that override active every unsettled
+/// return is auto-completed, which destroys the message outright — no retry, no dead-letter, no
+/// recorded result, and nothing in the DLQ to show for it. Do not remove that attribute argument,
+/// and do not assume <c>host.json</c> is what enforces it.
+/// </para>
+///
+/// <para>
 /// No Azure Functions HTTP middleware pipeline applies to this trigger — the
 /// EasyAuth/claims/policy middleware chain no-ops for non-HTTP triggers by design, and this
 /// trigger does not opt into any authorization pipeline of its own.
@@ -108,7 +121,22 @@ public sealed class ServiceBusWorkflowTriggerFunction
 
     [Function("ServiceBusWorkflowTrigger")]
     public async Task Run(
-        [ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%", Connection = "ServiceBusConnection")]
+        // WOLF-8512 (build 30658 root cause): AutoCompleteMessages MUST be set here, on the
+        // attribute. host.json's extensions.serviceBus.autoCompleteMessages:false governs the
+        // GLOBAL ServiceBusOptions only; under the dotnet-isolated worker the host applies a
+        // PER-FUNCTION override that defaults to true unless this attribute opts out, and the
+        // per-function value is the one that decides settlement. Build 30658 ran with the
+        // override active - every host start logged "The 'AutoCompleteMessages' option has been
+        // overriden to 'True' value for 'Functions.ServiceBusWorkflowTrigger' function" (31
+        // starts across 19 instances) - so every deliberate unsettled return below was instead
+        // auto-completed, destroying the message: no retry, no dead-letter, no result. That is
+        // exactly how correlation ids ...-000235/-000238/-000687 were lost (each got precisely
+        // two deliveries, then silence, despite maxDeliveryCount=10 and lockDuration=PT5M).
+        // This whole class's settlement design - and ProcessMessageAsync's "throw so Service Bus
+        // retries" paths - are only correct while this stays false.
+        [ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%",
+                           Connection = "ServiceBusConnection",
+                           AutoCompleteMessages = false)]
         ServiceBusReceivedMessage message,
         ServiceBusMessageActions messageActions,
         CancellationToken cancellationToken)
@@ -144,6 +172,23 @@ public sealed class ServiceBusWorkflowTriggerFunction
             correlationId = payload.CorrelationId;
         }
 
+        // ── Drain guard ────────────────────────────────────────────────────────
+        // WOLF-8512 (build 30658): do not take a claim we cannot honour. Correlation ids
+        // ...-000687 and ...-000688 were claimed at 23:29:34.880 on instance 5ae10c76 — 1.1s
+        // AFTER that instance had already logged "Stopping JobHost" — and their worker was
+        // gone by 23:29:43, so both claims leaked with the executions never having started.
+        // The host cancels this token when it enters drain, so checking it here costs nothing
+        // and keeps the claim record honest. Return WITHOUT settling: the lock expires on its
+        // own and the message redelivers to a healthy instance (safe only because
+        // AutoCompleteMessages is false — see Run's attribute).
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _logger.LogInformation(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Host is shutting down (drain) — declining to claim this delivery; leaving it unsettled for redelivery to a healthy instance.",
+                correlationId);
+            return;
+        }
+
         // ── Business-idempotency dedupe ────────────────────────────────────────
         // TryClaim atomically reserves this correlationId for processing so a redelivery
         // landing while the FIRST attempt is still executing (i.e. before it has reached
@@ -172,9 +217,12 @@ public sealed class ServiceBusWorkflowTriggerFunction
             // SaveResult. Service Bus would then dead-letter the message itself, silently,
             // outside this code entirely - permanent message loss with no recorded result.
             // Returning without any settlement leaves the lock to expire on its own natural
-            // timing instead (host.json's extensions.serviceBus.autoCompleteMessages:false
-            // means an unsettled return is never auto-completed either), giving the first
-            // attempt its full lock duration before a genuine redelivery is even possible.
+            // timing instead (this is safe ONLY because the [ServiceBusTrigger] attribute on
+            // Run sets AutoCompleteMessages = false — see the comment there; host.json's
+            // extensions.serviceBus.autoCompleteMessages:false does NOT govern this, and while
+            // the per-function override was true this exact return silently destroyed the
+            // message), giving the first attempt its full lock duration before a genuine
+            // redelivery is even possible.
             // If the first attempt is not merely slow but actually dead or permanently hung
             // (no cancellation path reaches WorkflowExecutor.Execute — see the 1000-message
             // ShovelBridge load test incident of 2026-08-24), this claim would otherwise
@@ -183,6 +231,19 @@ public sealed class ServiceBusWorkflowTriggerFunction
             // later redelivery take the claim over instead.
             _logger.LogInformation(
                 "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Another delivery is already in flight for this correlation id — leaving this delivery unsettled instead of racing a duplicate execution.",
+                correlationId);
+            return;
+        }
+
+        // WOLF-8512: the drain guard above closes the common case, but drain can begin in the
+        // window between that check and TryClaim returning. Re-check now that the claim is
+        // actually held, and hand it straight back if so — a claim leaked here is exactly the
+        // failure that blocks every subsequent redelivery until the staleness window expires.
+        if (cancellationToken.IsCancellationRequested)
+        {
+            _store.ReleaseClaim(correlationId);
+            _logger.LogInformation(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Host began shutting down immediately after the claim was taken — released it and left the delivery unsettled for redelivery.",
                 correlationId);
             return;
         }

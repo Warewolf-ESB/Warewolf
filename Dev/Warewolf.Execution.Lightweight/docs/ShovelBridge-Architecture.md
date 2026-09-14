@@ -235,6 +235,18 @@ override convention — so they can be tuned per environment without editing/rep
 | `-ServiceBusTriggerMaxAutoLockRenewalMinutes` | `AzureFunctionsJobHost__extensions__serviceBus__maxAutoLockRenewalDuration` | `00:05:00` |
 | `-ServiceBusTriggerAutoCompleteMessages` | `AzureFunctionsJobHost__extensions__serviceBus__autoCompleteMessages` | `true` |
 
+> **Caution (WOLF-8512, build 30658).** These `extensions.serviceBus` settings — including
+> `autoCompleteMessages` — configure the **global** `ServiceBusOptions`. Under the dotnet-isolated
+> worker the host also applies a **per-function** `AutoCompleteMessages` override that defaults to
+> `true` and takes precedence, so a function performing its own settlement must declare
+> `AutoCompleteMessages = false` on its `[ServiceBusTrigger]` attribute. Setting it here only is not
+> enough and produces no error: unsettled returns are auto-completed and the messages are destroyed
+> outright — no retry, no dead-letter, no result, nothing in the DLQ. That cost builds 30649–30658
+> between two and five messages per 1000-message run. The in-engine trigger
+> (`ServiceBusWorkflowTriggerFunction`) now declares it on the attribute; see
+> `docs/ServiceBusSecureTrigger-Architecture.md` → "Failure classification" → **C**. `WorkflowQueueTrigger`
+> relies on host auto-completion and does not perform its own settlement, so it is unaffected.
+
 **Reliability caveat.** This override path has confirmed prior art in this repo for
 *other* `host.json` sections — `Logging__*` in `TestRun.ps1` and the engine's Dockerfile —
 but no prior art specifically for the `serviceBus` extension, and one archived note

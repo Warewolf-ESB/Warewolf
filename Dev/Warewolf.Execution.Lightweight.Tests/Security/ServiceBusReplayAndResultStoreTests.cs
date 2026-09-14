@@ -286,6 +286,149 @@ public class ServiceBusReplayAndResultStoreTests
             "A claim older than the staleness threshold must be treated as abandoned and taken over by a new delivery.");
     }
 
+    // ── Liveness-aware takeover (WOLF-8512, build 30658) ────────────────────────
+    //
+    // ClaimStaleAfter is a worst-case backstop (11 minutes by default), long enough that it can
+    // never cut short a genuinely-running execution - but it cannot tell "dead" from "slow". In
+    // build 30658 the claims on ...-000235/-000238 were orphaned by a worker crash at 23:28:22
+    // and the first redelivery at 23:33:22 was still refused, so the messages were never
+    // re-executed. TryClaim now also consults the owning instance's heartbeat row.
+    //
+    // Two stores over ONE shared storage stand in for two instances/worker processes - the only
+    // way to drive this in a single test process.
+
+    private static ServiceBusReplayAndResultStore NewStoreForInstance(
+        Hangfire.JobStorage storage,
+        Func<DateTimeOffset> clock,
+        string instanceId,
+        string processId,
+        TimeSpan? instanceLivenessTimeout = null) =>
+        new(storage,
+            clock,
+            claimStaleAfter: TimeSpan.FromMinutes(11),
+            instanceLivenessTimeout: instanceLivenessTimeout ?? TimeSpan.FromSeconds(30),
+            instanceId: instanceId,
+            processId: processId);
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_OwningWorkerProcessReplaced_TakesOverImmediately()
+    {
+        // The decisive signal, and the one that mattered in build 30658: on instances 813073bd
+        // and 5ae10c76 the Functions HOST survived (the role instance kept logging) while the
+        // isolated WORKER crashed and restarted underneath it. An instance-level liveness check
+        // alone would have missed that entirely; a heartbeat arriving from a different process
+        // id proves the claiming process is gone, with no timing judgement at all.
+        var now = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var clock = now;
+        var storage = new MemoryStorage();
+
+        var deadWorker = NewStoreForInstance(storage, () => clock, "instance-A", "pid-100");
+        Assert.IsTrue(deadWorker.TryClaim("corr-worker-crash"));
+        deadWorker.RecordInstanceHeartbeat("instance-A", 1);
+
+        // The worker process dies and is replaced; the new one heartbeats under the SAME
+        // instance id with a new process id, seconds later - nowhere near ClaimStaleAfter.
+        clock = now + TimeSpan.FromSeconds(5);
+        var restartedWorker = NewStoreForInstance(storage, () => clock, "instance-A", "pid-200");
+        restartedWorker.RecordInstanceHeartbeat("instance-A", 0);
+
+        var redelivery = NewStoreForInstance(storage, () => clock, "instance-B", "pid-300");
+        Assert.IsTrue(redelivery.TryClaim("corr-worker-crash"),
+            "The claim's owning PROCESS has been replaced, so its in-flight execution is gone. The claim must be taken over on the very next redelivery rather than blocking it for the full 11-minute staleness window.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_OwningInstanceHeartbeatStale_TakesOverImmediately()
+    {
+        var now = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var clock = now;
+        var storage = new MemoryStorage();
+
+        var dyingInstance = NewStoreForInstance(storage, () => clock, "instance-A", "pid-100");
+        Assert.IsTrue(dyingInstance.TryClaim("corr-instance-gone"));
+        dyingInstance.RecordInstanceHeartbeat("instance-A", 1);
+
+        // The whole instance goes away (scale-in or outright death) - its heartbeat simply
+        // stops. Advance past the liveness timeout but stay far short of ClaimStaleAfter.
+        clock = now + TimeSpan.FromSeconds(31);
+
+        var redelivery = NewStoreForInstance(storage, () => clock, "instance-B", "pid-300");
+        Assert.IsTrue(redelivery.TryClaim("corr-instance-gone"),
+            "The owning instance stopped heartbeating well inside the staleness window — the claim is orphaned and must be taken over now.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_OwnerStillHeartbeatingHealthily_StillReturnsFalse()
+    {
+        // Symmetry guard, and the one that matters most: a false takeover means TWO concurrent
+        // executions of the same message. For the ProfilerMain load test that is a duplicate
+        // Profiler.ProfilerRecommendation row, which the test explicitly asserts against.
+        var now = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var clock = now;
+        var storage = new MemoryStorage();
+
+        var busyInstance = NewStoreForInstance(storage, () => clock, "instance-A", "pid-100");
+        Assert.IsTrue(busyInstance.TryClaim("corr-slow-but-alive"));
+        busyInstance.RecordInstanceHeartbeat("instance-A", 1);
+
+        // A slow execution: time passes, but the owner keeps heartbeating from the same process.
+        clock = now + TimeSpan.FromMinutes(3);
+        busyInstance.RecordInstanceHeartbeat("instance-A", 1);
+
+        var redelivery = NewStoreForInstance(storage, () => clock, "instance-B", "pid-300");
+        Assert.IsFalse(redelivery.TryClaim("corr-slow-but-alive"),
+            "The owner is alive and running the same process — the execution is merely slow. Stealing the claim here would duplicate the execution.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void TryClaim_OwnerNeverHeartbeated_DoesNotTakeOver()
+    {
+        // Ambiguity must always resolve to "still held": with no heartbeat row at all we cannot
+        // distinguish "died before its first tick" from "heartbeat service not running", so the
+        // ClaimStaleAfter backstop stays the only arbiter.
+        var now = new DateTimeOffset(2026, 1, 1, 0, 0, 0, TimeSpan.Zero);
+        var clock = now;
+        var storage = new MemoryStorage();
+
+        var silentInstance = NewStoreForInstance(storage, () => clock, "instance-A", "pid-100");
+        Assert.IsTrue(silentInstance.TryClaim("corr-no-heartbeat"));
+
+        clock = now + TimeSpan.FromMinutes(5);
+
+        var redelivery = NewStoreForInstance(storage, () => clock, "instance-B", "pid-300");
+        Assert.IsFalse(redelivery.TryClaim("corr-no-heartbeat"),
+            "No heartbeat row means 'unknown', not 'dead'. Falling back to ClaimStaleAfter is the safe answer.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ReleaseClaim_LeavesADiagnosticTombstone_ButStillAllowsReClaiming()
+    {
+        // WOLF-8512 (build 30658): ReleaseClaim used to RemoveHash the claim row outright, which
+        // also destroyed the RecordClaimStage breadcrumb trail — so a correlation id that failed
+        // transiently and was released left nothing to diagnose. The tombstone must not resurrect
+        // the claim itself.
+        var storage = new MemoryStorage();
+        var store = NewStoreForInstance(storage, () => DateTimeOffset.UtcNow, "instance-A", "pid-100");
+
+        Assert.IsTrue(store.TryClaim("corr-tombstone"));
+        store.RecordClaimStage("corr-tombstone", "AboutToExecute");
+        store.ReleaseClaim("corr-tombstone");
+
+        var (stage, atUtc, instanceId) = store.GetReleaseTombstoneForTests("corr-tombstone");
+        Assert.AreEqual("AboutToExecute", stage,
+            "The stage the claim had reached must survive its release — that breadcrumb is the whole diagnostic value, and removing the hash outright used to erase it.");
+        Assert.IsNotNull(atUtc, "The release must be timestamped.");
+        Assert.AreEqual("instance-A", instanceId, "The tombstone must record which instance released the claim.");
+
+        Assert.IsTrue(store.TryClaim("corr-tombstone"),
+            "The release tombstone carries no claim timestamp, so a redelivery must still be able to claim the correlation id normally.");
+    }
+
     [TestMethod]
     [TestCategory("UnitTest")]
     public void TryClaim_StaleClaimTakenOver_ResetsTheClaimTimestampForTheNewAttempt()

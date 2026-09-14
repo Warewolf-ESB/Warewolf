@@ -219,11 +219,20 @@ Settings any more:
 | `maxConcurrentExecutions` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 3. |
 | `slotWaitTimeoutSeconds` | Hard bound on how long a delivery waits for a free execution slot before it is treated as failed (default: same as `executionTimeoutSeconds`). See flow step 3. |
 | `settlementTimeoutSeconds` | WOLF-8512: hard time budget for a single settlement call (`CompleteMessageAsync`/`DeadLetterMessageAsync`), using an independent timeout over `CancellationToken.None` rather than the host invocation's own token (default: 30). See "Failure classification" below. |
+| `heartbeatIntervalSeconds` | How often an in-flight execution refreshes its breadcrumb and this instance refreshes its own liveness heartbeat (default: 5). |
+| `instanceLivenessTimeoutSeconds` | WOLF-8512 (build 30658): how long a claim's owning instance may go without a heartbeat before the claim is treated as orphaned and taken over immediately, without waiting out `ClaimStaleAfter` (default: six heartbeat intervals, floored at 30s). See **D** under "Failure classification" below. |
 
-`host.json` requires `extensions.serviceBus.autoCompleteMessages: false` so the trigger's
-explicit `CompleteMessageAsync` / `DeadLetterMessageAsync` calls (via the injected
-`ServiceBusMessageActions`) take effect instead of the host auto-completing the message on
-successful return.
+### Settlement is governed by the attribute, not `host.json`
+
+The trigger settles every message explicitly via the injected `ServiceBusMessageActions`, and
+deliberately leaves some deliveries unsettled so the lock expires and they redeliver. **That
+behaviour is enabled by `AutoCompleteMessages = false` on the `[ServiceBusTrigger]` attribute.**
+
+`host.json`'s `extensions.serviceBus.autoCompleteMessages: false` is *not* sufficient and is *not*
+what enforces this: it sets the global `ServiceBusOptions`, while the dotnet-isolated host applies a
+per-function override — defaulting to `true` — that takes precedence. Build 30658 ran with the two
+disagreeing and silently destroyed every message that took an unsettled return. See **C** under
+"Failure classification" for the full account and the three guards now in place.
 
 ## Failure classification (WOLF-8512)
 
@@ -263,6 +272,89 @@ times out, the message is simply left unsettled, the lock expires, the message r
 idempotency dedupe check (see flow step 2) finds the already-saved result and completes it then:
 self-healing at the cost of one extra delivery, never a lost or duplicated outcome.
 
+**C — `AutoCompleteMessages` was `true` at runtime, so every unsettled return destroyed its
+message (build 30658, 2026-09-13).** This is the root cause of the losses in builds 30649–30658 and
+it silently negated invariants 1 and 3 below.
+
+`host.json`'s `extensions.serviceBus.autoCompleteMessages: false` configures the **global**
+`ServiceBusOptions` only. Under the dotnet-isolated worker the Functions host additionally applies a
+**per-function** override that defaults to `true` unless the `[ServiceBusTrigger]` attribute sets it,
+and the per-function value is the one that decides settlement. Because the attribute did not set it,
+every host start logged:
+
+```
+The 'AutoCompleteMessages' option has been overriden to 'True' value for 'Functions.ServiceBusWorkflowTrigger' function.
+```
+
+— 31 starts across 19 instances in build 30658 — while the dumped global `ServiceBusOptions` still
+read `"AutoCompleteMessages": false`. The two disagreed and nothing flagged it.
+
+Consequence: the deliberate "return without settling, let the lock expire" path (the claim-conflict
+branch in `Run`) had its message **auto-completed and destroyed** instead — no retry, no dead-letter,
+no result, and *nothing in the DLQ to show for it*. Correlation ids `…-000235`, `…-000238` and
+`…-000687` each received exactly two deliveries and then vanished, despite `maxDeliveryCount=10` and
+`lockDuration=PT5M` on the queue. Because destruction leaves no trace, the harness could only report
+"never got a result", which is indistinguishable from "still slow" — which is why this survived five
+builds.
+
+Fixed by declaring it on the attribute itself:
+
+```csharp
+[ServiceBusTrigger("%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%",
+                   Connection = "ServiceBusConnection",
+                   AutoCompleteMessages = false)]
+```
+
+Guarded three ways, because the failure is invisible at runtime:
+
+- A unit test asserts the attribute's `AutoCompleteMessages` is `false` by reflection.
+- Startup logs the contract next to the host's own override line, so the two can be diffed in App
+  Insights.
+- `Test-ShovelBridgeE2E.ps1` Phase 4d reconciles the destination queue's dead-letter delta against
+  the harness's own failure count. A run that loses messages but dead-letters none is this exact
+  signature, and the phase says so by name.
+
+> `host.json` is deliberately **not** annotated with a comment about this — the file has no comments
+> today and the host's parser is not guaranteed to tolerate them. The attribute and this section are
+> the source of truth.
+
+**D — a claim orphaned by a worker crash blocked redelivery for the full staleness window (build
+30658).** `ClaimStaleAfter` is a worst-case backstop (11 minutes by default), long enough never to
+cut short a genuinely-running execution — but it cannot tell "dead" from "slow", so a claim left by a
+crashed worker refused every redelivery until it expired. `TryClaim` now also consults the owning
+instance's heartbeat row (`IsClaimOrphaned`):
+
+| Signal | Meaning | Takeover |
+|---|---|---|
+| Owner heartbeating under a **different process id** than the claim recorded | the claiming worker process was replaced | immediate — no timing judgement needed |
+| Owner has not heartbeated within `InstanceLivenessTimeout` | the instance scaled in or died | immediate |
+| No owner recorded, or no heartbeat row at all | cannot distinguish dead from quiet | none — fall back to `ClaimStaleAfter` |
+
+The process-id signal is the one that mattered in build 30658: on instances `813073bd` and
+`5ae10c76` the Functions **host** survived (the role instance kept logging) while the isolated
+**worker** crashed underneath it, so an instance-level liveness check alone would have missed it.
+Ambiguity always resolves to "still held" — a false takeover means two concurrent executions of the
+same message, which for the ProfilerMain load test is a duplicate DB row the test explicitly asserts
+against.
+
+**E — transient failures classified as terminal, then dead-lettered with no retry (build 30658).**
+`WorkflowExecutor` flagged `IsTransientFailure` only for an `OutOfMemoryException` caught at the top
+of `Execute`. Two other shapes of the same condition were being treated as permanent business
+outcomes:
+
+- **`"Workflow not found."`** came from a bare `File.Exists` miss. On an instance whose resources
+  were not yet staged this is transient, but it was dead-lettered outright — losing `…-000688` while
+  999 sibling messages ran the same workflow successfully, and failing **all 1000** messages in build
+  30649. Now, a miss whose workflows directory is itself absent, empty, or unreadable returns a
+  *transient* failure; only a populated directory genuinely lacking the workflow stays terminal.
+  (That path's only log line was also commented out, which is why `…-000688`'s destruction left no
+  trace anywhere — it now logs.)
+- **An OOM raised inside the activity chain** is captured as `DsfDataObject.ExecutionException` and
+  surfaced as the generic `"Workflow execution failed due to an unexpected error."`. Classification
+  now walks the exception chain (`IsTransientExecutionException`) rather than depending on where the
+  exception happened to surface. `…-000343` was lost this way, in the same second that `…-000342`
+  hit a plainly-reported OOM on the same instance while that instance was logging `Stopping JobHost`.
+
 ### The three Service Bus signals
 
 | Intent | Action in code | Effect |
@@ -278,6 +370,13 @@ self-healing at the cost of one extra delivery, never a lost or duplicated outco
 2. A terminal failure must **always** call `SaveResult` **before** settling, so a settlement
    timeout is self-healing.
 3. Settlement must never use the host `cancellationToken`.
+4. `AutoCompleteMessages` must stay `false` **on the `[ServiceBusTrigger]` attribute** — not merely
+   in `host.json`, which does not govern it. Invariants 1 and 3 both depend on an unsettled return
+   meaning "redeliver me"; with auto-complete on it means "destroy me" (see **C** above).
+5. A delivery must not take a claim it cannot honour: `Run` declines to claim once the host
+   cancellation token signals drain, and releases the claim if drain begins in the window between
+   that check and the claim being taken. Correlation ids `…-000687`/`…-000688` were claimed 1.1s
+   *after* their instance logged `Stopping JobHost` and leaked when its worker went away.
 
 ### Dead-letter triage sub-reasons
 

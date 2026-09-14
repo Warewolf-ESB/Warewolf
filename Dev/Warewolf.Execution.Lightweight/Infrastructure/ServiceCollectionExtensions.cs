@@ -115,6 +115,19 @@ internal static class ServiceCollectionExtensions
                 $"ServiceBusTriggerOptions.ClaimStaleAfter resolved to {claimStaleAfter} via tier '{claimStaleAfterTier}'",
                 executionId);
 
+            // WOLF-8512 (build 30658): state the settlement contract this trigger depends on,
+            // so it is greppable in App Insights next to the host's own
+            // "The 'AutoCompleteMessages' option has been overriden to ..." line. Build 30658
+            // failed precisely because those two disagreed and nothing said so: the host
+            // per-function override was true while this code assumed false, and every
+            // deliberate unsettled return silently destroyed its message. If the host line
+            // says 'True', ServiceBusWorkflowTriggerFunction's attribute has regressed.
+            Dev2Logger.Info(
+                "ServiceBusWorkflowTrigger settlement contract: AutoCompleteMessages=false is declared on the [ServiceBusTrigger] attribute. " +
+                "Cross-check the host's own \"The 'AutoCompleteMessages' option has been overriden to '<value>' value for 'Functions.ServiceBusWorkflowTrigger' function\" " +
+                "line — it MUST report 'False'. A 'True' there means unsettled returns are being auto-completed and messages are being destroyed silently.",
+                executionId);
+
             // Caps how many workflow executions ServiceBusWorkflowTriggerFunction runs
             // concurrently on this instance (ServiceBusTriggerOptions.MaxConcurrentExecutions).
             // MUST be a DI singleton, not an instance field on the Function class itself:
@@ -256,8 +269,15 @@ internal static class ServiceCollectionExtensions
         // rather than relying on ServiceBusReplayAndResultStore's own DefaultClaimStaleAfter
         // fallback, so the claim-staleness window always tracks the host's actual
         // functionTimeout instead of a fixed constant.
+        // WOLF-8512 (build 30658): InstanceLivenessTimeout is passed alongside it so TryClaim
+        // can take over a provably-orphaned claim on the next redelivery instead of waiting out
+        // the full ClaimStaleAfter backstop — see ServiceBusReplayAndResultStore's
+        // "Liveness-aware takeover" class doc.
         services.AddSingleton<IServiceBusReplayAndResultStore>(sp =>
-            new ServiceBusReplayAndResultStore(sp.GetRequiredService<ServiceBusTriggerOptions>().ClaimStaleAfter));
+        {
+            var options = sp.GetRequiredService<ServiceBusTriggerOptions>();
+            return new ServiceBusReplayAndResultStore(options.ClaimStaleAfter, options.InstanceLivenessTimeout);
+        });
 
         // (POL-08) Hot-reload secure.config + policy loader at runtime.
         services.AddHostedService<SecureConfigWatcher>();
