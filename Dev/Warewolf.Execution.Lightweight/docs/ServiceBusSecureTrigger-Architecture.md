@@ -167,13 +167,21 @@ defect, not schema drift, and nothing wrong with the workflow.** Reproduced dire
 2026-09-14: the same `/Public` route returns `hasErrors:false` with its full query string, and
 exactly this error without it.
 
-> **Not the cause of the 2026-09-14 profiler load-test dead-letters.** Those 4998/5000 messages
-> were rejected **earlier**, as `Malformed`, by a `wwuat3` deployment predating WOLF-8517 — its
-> message contract still required a `workflow` field, so a flat body never reached execution at
-> all (`Reason=Message is missing the required 'workflow' field`, observed live on that
-> deployment). The binding gap documented here is a **separate, latent** defect in the same
-> area: it is what a flat producer would hit once that deployment catches up with this source.
-> Both are payload-contract mismatches; only one of them caused that run.
+> **Not the cause of the 2026-09-14 profiler load-test dead-letters.** A full non-destructive
+> peek-survey of `wwuat3sb/wwexecution-queue`'s 13,828-message DLQ that day found exactly two
+> dead-letter reasons, and **neither is an execution failure**:
+>
+> | Reason | Count | Meaning |
+> |---|---|---|
+> | `MaxDeliveryCountExceeded` | 8,826 | Service Bus's OWN dead-lettering after 10 unsettled delivery attempts — the engine never settled them |
+> | `Malformed:MissingWorkflowField` | 5,002 | rejected before execution by a deployment predating WOLF-8517, whose contract still required a `workflow` field |
+>
+> **`Failed:ExecutionFailed` does not appear at all** — not one queue-path message ever reached
+> a workflow and failed in it. `Invalid Calculate` was only ever observed on the HTTP pre-warm
+> path, where the harness sent no inputs. The binding gap documented here is therefore a
+> **separate, latent** defect in the same area: it is what a flat producer would hit once a
+> deployment catches up with this source, not what caused that run. All three are
+> payload-contract or settlement problems; only the engine build explains those dead-letters.
 
 **Boundary:** parity with HTTP is not complete. The body is still deserialized into
 `ServiceBusWorkflowMessage` first, so a **non-JSON body (e.g. XML) is still dead-lettered as
