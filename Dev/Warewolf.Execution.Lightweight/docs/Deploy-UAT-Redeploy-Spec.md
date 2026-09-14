@@ -668,12 +668,37 @@ none of which the current engine code reads any more.
 
 **Fix applied (2026-09-02):** `Deploy-WwExecutionEngine.ps1` gained the 5
 `-ServiceBusTrigger*` tunable params (staged into `executionengine.settings.json`
-independently of `-KeyVaultName`/`-EncryptResources`) and a `-SyncEntraConfig` switch
-(migrates the legacy Entra settings into `WAREWOLF_ENTRA_CONFIG` once, read-merge-write,
-no-op thereafter — see `Scripts/README.md`'s "WOLF-8516 — reconciling an already-provisioned
-app"). `pipeline-LOADTEST.yml`'s `Deploy_UAT` stage now passes `-KeyVaultName
-WWExecutionEngine -KeyVaultSecretName WWExecutionEngineTestSecret
--ServiceBusTriggerMaxConcurrentExecutions 2 -SyncEntraConfig` alongside its existing params.
+independently of `-KeyVaultName`/`-EncryptResources`). `pipeline-LOADTEST.yml`'s
+`Deploy_UAT` stage now passes `-KeyVaultName WWExecutionEngine -KeyVaultSecretName
+WWExecutionEngineTestSecret -ServiceBusTriggerMaxConcurrentExecutions 2` alongside its
+existing params.
+
+**Correction (2026-09-14) — there is no `-SyncEntraConfig` switch.** This section
+previously recorded a `-SyncEntraConfig` switch on `Deploy-WwExecutionEngine.ps1` that
+migrates the legacy Entra vars into `WAREWOLF_ENTRA_CONFIG`. **It was never implemented**
+(`git log --all -S SyncEntraConfig` matches only the two pipeline YAMLs and this document —
+no `.ps1`, ever). Both pipelines were nonetheless updated to pass it, and both deploys then
+failed with `A parameter cannot be found that matches parameter name 'SyncEntraConfig'`:
+`pipeline-LOADTEST.yml` on 2026-09-02 (removed the same day in `92b6cf194d`
+"8513-remove sync entra config") and `pipeline-CLOUD.yml` in build 30660 on 2026-09-14
+(removed then, mirroring that commit).
+
+The third row of the table above therefore stands as an **unresolved deploy-time gap**:
+`WAREWOLF_ENTRA_CONFIG` is written only by `Configure-WwExecutionAuth.ps1`, which
+`-SkipAuthProvisioning` skips, so for any app deployed that way it is a **one-time manual
+operator step**, in the same category as `Enable-ServiceBusSecureTrigger.ps1`:
+
+```powershell
+az functionapp config appsettings set --name <app> --resource-group DEV2 `
+    --settings 'WAREWOLF_ENTRA_CONFIG={"tenantId":"...","audience":"...","clientId":"..."}'
+```
+
+Done for `WarewolfServer-UAT` on 2026-09-02 and for `warewolfserver` on 2026-09-14.
+`EntraIdentityOptions.FromEnvironment()` (`Auth/Models/EntraIdentityOptions.cs`) reads this
+setting **only** — there is no fallback to the legacy `WAREWOLF_ENTRA_*` vars — so until it is
+set, Entra token validation on that app fails closed while the legacy vars sit there looking
+correct. Implementing the switch for real remains an option; it was deliberately dropped from
+the pipelines rather than built.
 
 **Guardrail for future redeploys:** the same "params-not-carried-forward" risk applies to any
 OTHER app redeployed with `-SkipAuthProvisioning` from before this merge, or to a fresh
