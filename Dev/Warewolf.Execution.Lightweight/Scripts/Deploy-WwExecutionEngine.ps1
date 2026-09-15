@@ -303,7 +303,10 @@ param(
     # "NOT_ALLOWED - access to vhost '...' refused: connection limit (40) is reached" and
     # dead-lettered every message whose instance lost the race. Set this BELOW the broker's
     # connection limit, with headroom for connections that linger up to the cache's
-    # idleTimeout while instances recycle. Left unset (Azure default, effectively unbounded)
+    # idleTimeout while instances recycle. Sampled under sustained load, a cap of 30 plateaus at
+    # 32 of 40 connections and stays there — a margin of EIGHT, so this is near the ceiling rather
+    # than conservative, and the plateau tracks the instance cap rather than message volume
+    # (identical at 5,000 and 15,000 messages). Left unset (Azure default, effectively unbounded)
     # unless supplied. This is a DEPLOY-TIME setting on purpose: set by hand it is silently
     # reverted by the next deploy, exactly as documented for the persistence flag in
     # docs/ShovelBridge-Architecture.md.

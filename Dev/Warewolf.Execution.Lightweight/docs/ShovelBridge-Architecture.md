@@ -1601,6 +1601,29 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     **30 is derived from the broker's limit, not measured.** If the CloudAMQP plan changes, or a
     second publisher shares the vhost, it must be recomputed — the invariant to preserve is
     `instances + recycling-headroom < vhost connection limit`.
+
+    **2026-09-15, measured under sustained load — 30 is near the ceiling, not conservative.** A
+    first reading of `6/40` connections after the 5,000-message run was taken while the queue was
+    already draining and is NOT representative. Sampling every three minutes through a
+    15,000-message run gives the real steady state:
+
+    | elapsed | connections | concurrent instances |
+    |---|---|---|
+    | +2 min  | 13/40 | 29 |
+    | +8 min  | 24/40 | 32 |
+    | +14 min | **32/40** | 30 |
+    | +30 min | **32/40** | 30 |
+
+    Connections plateau at **32 of 40** and stay there for the rest of the run, so the true margin
+    is **8 connections, not 34**. The plateau is a function of the instance cap, NOT of message
+    count — it was identical at 5,000 and 15,000 — so raising `-FunctionAppScaleLimit` towards 40
+    would breach the vhost limit, while raising message volume alone will not.
+
+    Note also that `dcount(cloud_RoleInstance)` over a long window counts instance identities
+    CUMULATIVELY across recycling, not concurrently: the 15,000-message run shows 48 distinct
+    identities over 66 minutes while never exceeding ~32 alive at once. The failing run's 48 were
+    reached in 15 minutes, i.e. genuinely concurrent. Use a short window, or the sampled
+    connection count, when judging whether the cap is holding.
   - **Not yet actioned**: recommendation (2) (`ThreadPool.SetMinThreads()` floor) is implemented in
     `ThreadPoolStartupConfigurator`/`Program.cs` (this same branch, commit `78aa65fe71`) but its own
     deployment/verification status against a live pipeline run is still open — see that commit's own
