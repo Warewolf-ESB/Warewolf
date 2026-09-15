@@ -493,6 +493,59 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $out | Should -Not -Match 'Setting host.json extensions.serviceBus.maxConcurrentCalls'
     }
 
+    It 'does not touch the scale-out limit by default (opt-in only)' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Not -Match 'Setting Function App scale-out limit'
+        $out | Should -Not -Match 'functionAppScaleLimit'
+    }
+
+    It 'applies -FunctionAppScaleLimit by writing siteConfig.functionAppScaleLimit' {
+        # Guards the broker connection budget: one cached connection PER INSTANCE against a
+        # vhost-wide cap, so instance count is the thing that has to be bounded.
+        #
+        # REGRESSION (2026-09-15): this asserted `--functions-scale-limit`, an argument
+        # `az functionapp config set` DOES NOT HAVE. The test passed anyway, because the harness
+        # stubs `az` and so only ever checked the string this script chose to emit — never that
+        # the CLI accepts it. The real deploy failed with "unrecognized arguments". Assert the
+        # generic resource write that classic Consumption actually needs (`az functionapp scale
+        # config set --maximum-instance-count` is Flex-only), and keep the negative assertion so
+        # the dead argument cannot come back.
+        $callArgs = $script:commonArgs.Clone(); $callArgs.FunctionAppScaleLimit = 30
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Scale-out limit\s+: 30 instance\(s\)'
+        $out | Should -Match 'Setting Function App scale-out limit -> 30'
+        $out | Should -Match 'resource update'
+        $out | Should -Match 'properties\.functionAppScaleLimit=30'
+        $out | Should -Not -Match '--functions-scale-limit'
+    }
+
+    It 'does not claim the scale-out limit was verified during a dry run' {
+        # The write is -Mutating, so -DryRun skips it; claiming "verified" there would be a lie,
+        # and read-back against an unwritten value would fail the run outright.
+        $callArgs = $script:commonArgs.Clone(); $callArgs.FunctionAppScaleLimit = 30
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Not -Match 'scale-out limit set to 30 \(verified\)'
+        $out | Should -Match 'Dry-run: scale-out limit not applied, so not verified'
+    }
+
+    It 'records functionAppScaleLimit in the run summary' {
+        $callArgs = $script:commonArgs.Clone(); $callArgs.FunctionAppScaleLimit = 30
+        $null = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $summary = Get-ChildItem -Path $global:logDir -Filter '*.summary.json' |
+                   Sort-Object LastWriteTime -Descending | Select-Object -First 1
+        $summary | Should -Not -BeNullOrEmpty
+        (Get-Content -LiteralPath $summary.FullName -Raw | ConvertFrom-Json).functionAppScaleLimit |
+            Should -Be 30
+    }
+
+    It 'rejects a non-positive -FunctionAppScaleLimit via ValidateRange' {
+        # [nullable[int]] + ValidateRange, matching the other numeric params: a bare [int]
+        # defaults to 0, which is indistinguishable from an explicit 0 and would silently
+        # deploy "scale to zero instances".
+        $callArgs = $script:commonArgs.Clone(); $callArgs.FunctionAppScaleLimit = 0
+        { & $script:DeployScript @callArgs } | Should -Throw
+    }
+
     It 'leaves dynamic concurrency alone by default (opt-in only)' {
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Not -Match 'Setting host.json concurrency.dynamicConcurrencyEnabled'

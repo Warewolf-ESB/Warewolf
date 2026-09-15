@@ -161,6 +161,15 @@
     INERT ON ITS OWN: dynamic concurrency overrides every static concurrency setting in
     host.json, so pair this with -DisableDynamicConcurrency or the cap does nothing.
 
+.PARAMETER FunctionAppScaleLimit
+    OPT-IN.  Caps Consumption-plan scale-out (siteConfig.functionAppScaleLimit), applied to a
+    newly created AND a pre-existing app.  Set it BELOW the message broker's connection limit:
+    the RabbitMQ connection cache is keyed per broker endpoint, so a single-broker workload
+    holds ONE connection PER INSTANCE regardless of the cache's maxConnections — instance count
+    is what spends the broker's budget.  Measured: 48 instances against a 40-connection vhost
+    produced 'NOT_ALLOWED - ... connection limit (40) is reached' and dead-lettered the losers.
+    Leave unset for the Azure default (effectively unbounded).
+
 .PARAMETER DisableDynamicConcurrency
     OPT-IN.  Pins host.json's concurrency.dynamicConcurrencyEnabled to false, creating the
     concurrency block if absent.  REQUIRED for -ServiceBusMaxConcurrentCalls (and the
@@ -283,6 +292,23 @@ param(
     # OPT-IN.  A Function App is created on the correct runtime; one that ALREADY
     # exists keeps whatever it was created with, and changing it restarts the app.
     [switch] $UpgradeRuntimeVersion,
+
+    # OPT-IN. Caps how many instances the Consumption plan may scale out to
+    # (siteConfig.functionAppScaleLimit). Exists because INSTANCE COUNT, not per-instance
+    # configuration, is what consumes a BROKER CONNECTION BUDGET: the RabbitMQ connection
+    # cache is keyed per broker endpoint (RabbitMqCacheKey.For(host, port, user, vhost,
+    # password)), so a single-broker workload holds exactly ONE cached connection PER
+    # INSTANCE no matter what maxConnections says. Measured on wwuat3 2026-09-15: 48
+    # instances against a CloudAMQP vhost capped at 40 connections produced
+    # "NOT_ALLOWED - access to vhost '...' refused: connection limit (40) is reached" and
+    # dead-lettered every message whose instance lost the race. Set this BELOW the broker's
+    # connection limit, with headroom for connections that linger up to the cache's
+    # idleTimeout while instances recycle. Left unset (Azure default, effectively unbounded)
+    # unless supplied. This is a DEPLOY-TIME setting on purpose: set by hand it is silently
+    # reverted by the next deploy, exactly as documented for the persistence flag in
+    # docs/ShovelBridge-Architecture.md.
+    [ValidateRange(1, 1000)]
+    [nullable[int]] $FunctionAppScaleLimit,
 
     # ── Publish source (REQUIRED — folder or .zip) ───────────────────────────
     [string] $PublishPath,
@@ -976,6 +1002,7 @@ function Save-DeploySummary {
         elasticsearch   = $enableEs
         performanceCounters = $enablePerfCounters
         dynamicConcurrency  = (-not $DisableDynamicConcurrency)
+        functionAppScaleLimit = $FunctionAppScaleLimit
         persistence     = $enablePersistence
         persistenceSettings = ($enablePersistence ? $PersistenceSettingsPath : $null)
         persistenceDbSource = ($enablePersistence ? $PersistenceDbSourcePath : $null)
@@ -1604,6 +1631,9 @@ if ($triggerConfigRequired) {
 if ($DisableDynamicConcurrency) {
     Write-Host ("    {0,-28}: {1}" -f 'Dynamic concurrency', 'PINNED OFF -> host.json concurrency.dynamicConcurrencyEnabled=false')
 }
+if ($FunctionAppScaleLimit) {
+    Write-Host ("    {0,-28}: {1}" -f 'Scale-out limit', "$FunctionAppScaleLimit instance(s) -> siteConfig.functionAppScaleLimit")
+}
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)
 Write-Host ("    {0,-28}: {1}" -f 'Run tag', "wwx-test-run=$runId  (rollback targets this tag only)")
 Write-Host ("    {0,-28}: {1}" -f 'DryRun', $DryRun)
@@ -1791,6 +1821,46 @@ try {
             '--https-only', 'true', '--os-type', 'Windows', '--tags'
         ) + $ResourceTags) -Mutating | Out-Null
         Write-Ok 'Function App created.'
+    }
+
+    # 1.3b OPTIONAL scale-out ceiling (-FunctionAppScaleLimit). Applied to BOTH branches
+    # above: a pre-existing app keeps whatever limit it already had, and a freshly created
+    # one defaults to unbounded, so neither is safe to assume. See the parameter's own
+    # comment for why instance count — not maxConnections — is what spends the broker's
+    # connection budget.
+    if ($FunctionAppScaleLimit) {
+        Write-Step "Setting Function App scale-out limit -> $FunctionAppScaleLimit instance(s)"
+        # `az functionapp config set` has NO --functions-scale-limit argument (it fails with
+        # "unrecognized arguments"), and `az functionapp scale config set --maximum-instance-count`
+        # targets FLEX Consumption. On a classic Consumption (Y1) plan the knob is the site's
+        # siteConfig.functionAppScaleLimit property, reached through the generic resource writer.
+        $siteId = Invoke-Az @(
+            'functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup,
+            '--query', 'id', '-o', 'tsv'
+        )
+        Invoke-Az @(
+            'resource', 'update', '--ids', "$siteId/config/web",
+            '--set', "properties.functionAppScaleLimit=$FunctionAppScaleLimit", '-o', 'none'
+        ) -Mutating | Out-Null
+
+        # READ BACK, do not assume — but only on a real run, since the write above is -Mutating
+        # and is skipped under -DryRun. An az argument this CLI version rejects fails loudly, but
+        # a property name it silently ignores does not, and a scale limit that never applied looks
+        # identical to one that did until the broker connection budget blows under load thousands
+        # of messages later.
+        if ($DryRun) {
+            Write-Note "Dry-run: scale-out limit not applied, so not verified."
+        } else {
+            $applied = Invoke-Az @(
+                'functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup,
+                '--query', 'siteConfig.functionAppScaleLimit', '-o', 'tsv'
+            )
+            if ("$applied".Trim() -ne "$FunctionAppScaleLimit") {
+                throw ("Function App scale-out limit did not apply: asked for $FunctionAppScaleLimit, " +
+                       "siteConfig.functionAppScaleLimit reads '$applied'.")
+            }
+            Write-Ok "Function App scale-out limit set to $FunctionAppScaleLimit (verified)."
+        }
     }
 
     # 1.4 Application Insights

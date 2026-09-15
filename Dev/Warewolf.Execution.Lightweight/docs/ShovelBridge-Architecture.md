@@ -1572,6 +1572,35 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     take effect. **`pipeline-LOADTEST.yml`'s `Deploy_UAT` job still passes only
     `-ServiceBusMaxConcurrentCalls 2`, so its cap remains inert until that job also passes
     `-DisableDynamicConcurrency`.**
+  - **2026-09-15, the bottleneck underneath: the BROKER CONNECTION BUDGET is spent by INSTANCE
+    COUNT, not by `maxConnections`.** With concurrency pinned the SQL saturation vanished
+    entirely (10,646 request-limit errors → 0, 46 starvation events → 0), and the next ceiling
+    appeared: result-publishes failing with
+
+    ```
+    NOT_ALLOWED - access to vhost 'bmkzdabu' refused: connection limit (40) is reached
+    ```
+
+    The intuitive fix — lowering `WAREWOLF_RABBITMQ_CACHE`'s `maxConnections` from 4 — **does
+    nothing here, and was rejected on reading the code.** `LightweightRabbitMqConnectionCache`
+    keys its entries by broker endpoint (`RabbitMqCacheKey.For(host, port, user, vhost,
+    password)`), so a single-broker workload only ever has ONE cache entry: `_entries.Count >=
+    MaxConnections` never fires, and `maxConnections` is a *cache-size* ceiling rather than a
+    connection ceiling. Worse, when it does fire, `AcquireCore` falls through to
+    `Uncached(factory)` — which opens a connection anyway — so a lower value can produce *more*
+    sockets, not fewer.
+
+    The measurement matches that reading exactly: **48 distinct engine instances holding 40
+    connections — ~1 per instance** — against a 40-connection vhost. The fix is therefore to
+    bound scale-out: `Deploy-WwExecutionEngine.ps1 -FunctionAppScaleLimit` (Phase 1 step 1.3b),
+    deployed on `wwuat3` at **30**, chosen below 40 with headroom for connections that linger up
+    to the cache's 5-minute `idleTimeout` while instances recycle. 30 instances × the
+    `maxConcurrentExecutions 2` above is 60 concurrent executions, comfortably under the SQL
+    database's own 120-request ceiling, so bounding one does not reintroduce the other.
+
+    **30 is derived from the broker's limit, not measured.** If the CloudAMQP plan changes, or a
+    second publisher shares the vhost, it must be recomputed — the invariant to preserve is
+    `instances + recycling-headroom < vhost connection limit`.
   - **Not yet actioned**: recommendation (2) (`ThreadPool.SetMinThreads()` floor) is implemented in
     `ThreadPoolStartupConfigurator`/`Program.cs` (this same branch, commit `78aa65fe71`) but its own
     deployment/verification status against a live pipeline run is still open — see that commit's own
