@@ -190,3 +190,217 @@ Describe 'Test-ShovelBridgeE2E — Phase 4c dot-source scope clobbering (WOLF-85
         $MessageCount | Should -Be 1000
     }
 }
+
+
+Describe 'Test-ShovelBridgeE2E — Get-WwDrainVerdict (pure, no Azure)' {
+    <#
+        The drain wait's decision logic, split out from its I/O so it can be tested without an
+        Azure subscription. Two behaviours here are load-bearing rather than cosmetic, and both
+        have cost real diagnostic time before:
+
+          * The quiet window must be SUSTAINED. The trigger queue's lock duration is PT5M, so a
+            message whose lock expired is redelivered roughly five minutes later; a verdict that
+            declared "drained" on the first zero reading would end the run inside that gap and
+            report every redelivered message as permanently missing.
+          * An UNREADABLE count is not a zero. If an 'az servicebus queue show' hiccup were read
+            as an empty queue, the run would stop waiting while executions were still in flight.
+    #>
+
+    BeforeAll {
+        $script:TargetScript = Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1'
+        . $script:TargetScript -LoadFunctionsOnly
+        $script:T0 = [datetime]::new(2026, 9, 15, 12, 0, 0, [DateTimeKind]::Utc)
+    }
+
+    It 'is quiet but NOT drained on the first zero reading — the window has not elapsed yet' {
+        $v = Get-WwDrainVerdict -ActiveCount 0 -ScheduledCount 0 -QuietSeconds 360 -QuietSince $null -NowUtc $script:T0
+        $v.IsQuiet      | Should -BeTrue
+        $v.IsDrained    | Should -BeFalse
+        $v.SecondsQuiet | Should -Be 0
+        $v.QuietSince   | Should -Be $script:T0 -Because 'the streak starts now and is carried into the next sample'
+    }
+
+    It 'is still NOT drained one second short of the quiet window' {
+        $v = Get-WwDrainVerdict -ActiveCount 0 -ScheduledCount 0 -QuietSeconds 360 -QuietSince $script:T0 -NowUtc $script:T0.AddSeconds(359)
+        $v.IsDrained    | Should -BeFalse
+        $v.SecondsQuiet | Should -Be 359
+    }
+
+    It 'is drained once the quiet window is exactly reached' {
+        $v = Get-WwDrainVerdict -ActiveCount 0 -ScheduledCount 0 -QuietSeconds 360 -QuietSince $script:T0 -NowUtc $script:T0.AddSeconds(360)
+        $v.IsDrained    | Should -BeTrue
+        $v.SecondsQuiet | Should -Be 360
+    }
+
+    It 'RESETS the quiet streak when messages reappear — the PT5M redelivery case' {
+        # 5 minutes of quiet, then a redelivery lands. Without the reset, the next zero reading
+        # would inherit the old streak and immediately satisfy a 360s window, ending the run
+        # while the redelivered message was still executing.
+        $v = Get-WwDrainVerdict -ActiveCount 3 -ScheduledCount 0 -QuietSeconds 360 -QuietSince $script:T0 -NowUtc $script:T0.AddSeconds(300)
+        $v.IsQuiet      | Should -BeFalse
+        $v.IsDrained    | Should -BeFalse
+        $v.QuietSince   | Should -BeNullOrEmpty -Because 'the streak must restart from scratch, not resume'
+        $v.SecondsQuiet | Should -Be 0
+    }
+
+    It 'counts SCHEDULED messages as not-quiet even when active is zero' {
+        $v = Get-WwDrainVerdict -ActiveCount 0 -ScheduledCount 7 -QuietSeconds 360 -QuietSince $script:T0 -NowUtc $script:T0.AddSeconds(400)
+        $v.IsQuiet   | Should -BeFalse
+        $v.IsDrained | Should -BeFalse
+    }
+
+    It 'treats UNREADABLE counts as not-quiet and never as drained' {
+        $v = Get-WwDrainVerdict -ActiveCount $null -ScheduledCount $null -QuietSeconds 360 -QuietSince $script:T0 -NowUtc $script:T0.AddSeconds(9999)
+        $v.IsReadable | Should -BeFalse
+        $v.IsQuiet    | Should -BeFalse
+        $v.IsDrained  | Should -BeFalse -Because 'an unreadable queue must never be mistaken for an empty one'
+        $v.QuietSince | Should -BeNullOrEmpty
+    }
+
+    It 'treats a half-readable sample (active known, scheduled unknown) as not-quiet' {
+        $v = Get-WwDrainVerdict -ActiveCount 0 -ScheduledCount $null -QuietSeconds 360 -QuietSince $script:T0 -NowUtc $script:T0.AddSeconds(400)
+        $v.IsReadable | Should -BeFalse
+        $v.IsDrained  | Should -BeFalse
+    }
+}
+
+
+Describe 'Test-ShovelBridgeE2E — late-minted result-token parameter validation' {
+    <#
+        GET /Secure/servicebus-result/{id} stays Entra-protected (ServiceBusResultFunction's
+        [RequireWorkflowPermission(View)]; WorkflowAuthorizationMiddleware rejects an
+        unauthenticated /Secure/* request BEFORE policy evaluation, so bypassSecureConfig does
+        not make it anonymous). At 20,000 messages the drain outlives a 60-90 minute token, so
+        the token is minted AFTER the drain instead - selected by passing four credentials in
+        place of -ResultPollAuthToken. These tests pin the guards around that switch.
+
+        All of them assert a THROW, and every one of these throws happens in Phase 0's pure
+        validation block before any Docker/RabbitMQ/Service Bus/SQL/network access - which is
+        also why the "valid combination" case is deliberately NOT tested here: it would proceed
+        into live infrastructure.
+    #>
+
+    BeforeAll {
+        $script:TargetScript = Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1'
+
+        # Minimal arguments that reach the -VerifyWorkflowExecution validation block without
+        # tripping an earlier one. -RabbitMqMode defaults to Container, so no External RabbitMQ
+        # arguments are needed.
+        function script:Invoke-Target {
+            param([hashtable] $Extra)
+            $splat = @{
+                DestinationMode         = 'ExternalServiceBus'
+                ExternalShovelDestUri   = 'amqps://example.invalid:5671/?sasl=plain'
+                VerifyWorkflowExecution = $true
+                EngineBaseUrl           = 'https://engine.invalid'
+                ServiceBusNamespaceName = 'ns'
+                ServiceBusResourceGroup = 'rg'
+            }
+            foreach ($k in $Extra.Keys) { $splat[$k] = $Extra[$k] }
+            & $script:TargetScript @splat
+        }
+
+        function script:New-TestSecureString {
+            param([string] $Value = 'secret')
+            ConvertTo-SecureString $Value -AsPlainText -Force
+        }
+
+        # A syntactically valid 3-segment JWT whose 'exp' is in the past, so
+        # Get-JwtRemainingLifetimeSeconds reports it as already expired.
+        function script:New-ExpiredJwt {
+            $exp = [DateTimeOffset]::UtcNow.AddMinutes(-10).ToUnixTimeSeconds()
+            $json = '{"exp":' + $exp + '}'
+            $payload = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($json)).TrimEnd('=').Replace('+', '-').Replace('/', '_')
+            'eyJhbGciOiJub25lIn0.' + $payload + '.sig'
+        }
+    }
+
+    It 'throws when NEITHER a pre-minted token nor the late-mint credentials are supplied' {
+        { Invoke-Target -Extra @{} } | Should -Throw -ExpectedMessage '*-ResultPollAuthToken is required*'
+    }
+
+    It 'throws, naming what is missing, when the late-mint credential set is incomplete' {
+        $ex = { Invoke-Target -Extra @{ ResultPollTenantId = 'tenant'; ResultPollClientId = 'client' } } |
+            Should -Throw -PassThru
+        $ex.Exception.Message | Should -BeLike '*incomplete*'
+        $ex.Exception.Message | Should -BeLike '*-ResultPollResourceAppId*'
+        $ex.Exception.Message | Should -BeLike '*-ResultPollClientSecret*'
+    }
+
+    It 'throws when BOTH a pre-minted token and the late-mint credentials are supplied' {
+        # Ambiguous input: the two select different Phase 4 shapes, so silently preferring one
+        # would hide which is actually in effect.
+        $extra = @{
+            ResultPollAuthToken     = New-TestSecureString
+            ResultPollTenantId      = 'tenant'
+            ResultPollClientId      = 'client'
+            ResultPollResourceAppId = 'resource'
+            ResultPollClientSecret  = New-TestSecureString
+        }
+        { Invoke-Target -Extra $extra } | Should -Throw -ExpectedMessage '*not both*'
+    }
+
+    It 'throws when late-mint is selected without the Service Bus namespace needed to watch the drain' {
+        $extra = @{
+            ResultPollTenantId      = 'tenant'
+            ResultPollClientId      = 'client'
+            ResultPollResourceAppId = 'resource'
+            ResultPollClientSecret  = New-TestSecureString
+            ServiceBusNamespaceName = ''
+        }
+        { Invoke-Target -Extra $extra } | Should -Throw -ExpectedMessage '*-ServiceBusNamespaceName*'
+    }
+
+    It 'STILL enforces the token-lifetime guard for a pre-minted token (regression pin)' {
+        # The guard is deferred in late-mint mode, not removed - the original path must keep
+        # failing fast on a stale token exactly as before.
+        { Invoke-Target -Extra @{ ResultPollAuthToken = (New-TestSecureString (New-ExpiredJwt)) } } |
+            Should -Throw -ExpectedMessage '*ALREADY EXPIRED*'
+    }
+}
+
+
+Describe 'Test-ShovelBridgeE2E — Get-WwQueueCountDetails / Get-WwDeadLetterCount' {
+
+    BeforeAll {
+        $script:TargetScript = Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1'
+        . $script:TargetScript -LoadFunctionsOnly
+    }
+
+    It 'returns $null (not zero) when the namespace or resource group is absent' {
+        Get-WwQueueCountDetails -NamespaceName '' -ResourceGroup 'rg' -QueueName 'q' | Should -BeNullOrEmpty
+        Get-WwQueueCountDetails -NamespaceName 'ns' -ResourceGroup '' -QueueName 'q' | Should -BeNullOrEmpty
+    }
+
+    It 'parses every countDetails field the drain wait relies on' {
+        function script:az { $global:LASTEXITCODE = 0; '{"activeMessageCount":12,"deadLetterMessageCount":3,"scheduledMessageCount":4,"transferMessageCount":5}' }
+        $counts = Get-WwQueueCountDetails -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q'
+        $counts.Active     | Should -Be 12
+        $counts.DeadLetter | Should -Be 3
+        $counts.Scheduled  | Should -Be 4
+        $counts.Transfer   | Should -Be 5
+    }
+
+    It 'defaults a countDetails field the API omitted to 0 rather than throwing under StrictMode' {
+        function script:az { $global:LASTEXITCODE = 0; '{"activeMessageCount":1}' }
+        $counts = Get-WwQueueCountDetails -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q'
+        $counts.Active    | Should -Be 1
+        $counts.Scheduled | Should -Be 0
+        $counts.Transfer  | Should -Be 0
+    }
+
+    It 'returns $null when the CLI call fails, so a hiccup is never read as an empty queue' {
+        function script:az { $global:LASTEXITCODE = 1; '' }
+        Get-WwQueueCountDetails -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q' | Should -BeNullOrEmpty
+    }
+
+    It 'keeps the original Get-WwDeadLetterCount contract while delegating to the shared reader' {
+        function script:az { $global:LASTEXITCODE = 0; '{"activeMessageCount":0,"deadLetterMessageCount":19459,"scheduledMessageCount":0}' }
+        Get-WwDeadLetterCount -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q' | Should -Be 19459
+    }
+
+    It 'keeps Get-WwDeadLetterCount returning $null on a failed read' {
+        function script:az { $global:LASTEXITCODE = 1; '' }
+        Get-WwDeadLetterCount -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q' | Should -BeNullOrEmpty
+    }
+}

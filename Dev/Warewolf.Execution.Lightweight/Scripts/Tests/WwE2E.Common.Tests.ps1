@@ -156,3 +156,70 @@ Describe 'Run-WwProfilerExactLoad - management URI wiring' -Skip:(-not (Test-Pat
         $script:Text | Should -Match 'wwqp-dlq-'
     }
 }
+
+
+Describe 'Get-E2EEngineToken - separating the caller app from the resource app' {
+    <#
+        -ClientId was added so a DEDICATED DAEMON app can request a token FOR the engine, rather
+        than the engine only ever authenticating as itself. pipeline-LOADTEST.yml needs exactly
+        that shape: the Warewolf-ShovelBridgeE2E-Daemon registration is the client, while the
+        audience must stay the engine's own app id, because that is what the engine validates.
+
+        Every existing caller passes no -ClientId and must keep the original behaviour
+        (client_id == EngineAppId), so that case is pinned here too.
+    #>
+
+    BeforeAll {
+        $script:ModulePath = Join-Path (Split-Path -Parent $PSScriptRoot) 'WwE2E.Common.psm1'
+        Import-Module $script:ModulePath -Force
+    }
+
+    It 'posts the distinct -ClientId while keeping the ENGINE app id as the audience' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Invoke-RestMethod { @{ access_token = 'token-for-daemon' } }
+
+            $token = Get-E2EEngineToken `
+                -TenantId 'ca0cc53b-9af4-4067-bcdf-be9c648450d1' `
+                -ClientId 'dc1182bc-ffc1-4a1d-a414-ab672998eb9a' `
+                -EngineAppId 'e200900a-2d5d-4356-94c0-cd7e33232ce0' `
+                -ClientSecret 'daemon-secret'
+
+            $token | Should -Be 'token-for-daemon'
+            Should -Invoke Invoke-RestMethod -Times 1 -Exactly -ParameterFilter {
+                $Body.client_id -eq 'dc1182bc-ffc1-4a1d-a414-ab672998eb9a' -and
+                $Body.client_secret -eq 'daemon-secret' -and
+                $Body.scope -eq 'api://e200900a-2d5d-4356-94c0-cd7e33232ce0/.default' -and
+                $Body.grant_type -eq 'client_credentials'
+            }
+        }
+    }
+
+    It 'defaults client_id to -EngineAppId when -ClientId is omitted (original behaviour)' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Invoke-RestMethod { @{ access_token = 'token-for-engine' } }
+
+            Get-E2EEngineToken -TenantId 'tenant' -EngineAppId 'engine-app' -ClientSecret 'engine-secret' |
+                Should -Be 'token-for-engine'
+
+            Should -Invoke Invoke-RestMethod -Times 1 -Exactly -ParameterFilter {
+                $Body.client_id -eq 'engine-app' -and $Body.scope -eq 'api://engine-app/.default'
+            }
+        }
+    }
+
+    It 'refuses to read the app''s Easy Auth secret for a DIFFERENT client app' {
+        # MICROSOFT_PROVIDER_AUTHENTICATION_SECRET belongs to the engine app, so using it to
+        # authenticate a separate client would post one app's id with another app's secret and
+        # fail at Entra with an opaque AADSTS7000215. Fail here instead, naming the cause.
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Invoke-E2EAzJson { @() }
+            Mock Invoke-RestMethod { throw 'must never be reached' }
+
+            { Get-E2EEngineToken -TenantId 'tenant' -ClientId 'other-client' -EngineAppId 'engine-app' `
+                -FunctionAppName 'app' -ResourceGroup 'rg' } |
+                Should -Throw -ExpectedMessage '*cannot authenticate a separate client app*'
+
+            Should -Invoke Invoke-RestMethod -Times 0 -Exactly
+        }
+    }
+}

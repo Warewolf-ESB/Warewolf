@@ -164,14 +164,40 @@ internal static class Program
     /// actually execute successfully on the target engine, proving the full
     /// RabbitMQ -> Shovel -> Service Bus -> workflow-execution pipeline end-to-end at that
     /// volume, not just bridge connectivity.
+    ///
+    /// <para><b><c>--phase</c> splits publish from poll.</b> The default, <c>both</c>, is the
+    /// original single-invocation behaviour. At load-test volumes the two must be separable,
+    /// because the result poll hits <c>/secure/servicebus-result/{id}</c> — an ordinary
+    /// Entra-protected HTTP route (see <c>--result-poll-auth-token</c> below) — and a bearer
+    /// token only lives 60–90 minutes, while a 20,000-message drain takes longer than that.
+    /// Polling throughout the drain therefore guarantees the token expires mid-run, and a 401
+    /// is deliberately NOT treated as transient (WOLF-8418 makes 500/401 real denials), so
+    /// every still-pending correlationId would be recorded as a spurious <c>HttpError</c>.
+    /// Splitting lets the caller publish with no token at all, wait for the queue to drain,
+    /// mint a FRESH token, and only then poll — against results that are already durably
+    /// recorded, so the poll resolves in a few sweeps. Requires persistence to be enabled on
+    /// the target engine; with the in-memory fallback a result is only visible on the instance
+    /// that produced it (see <c>ServiceBusReplayAndResultStore</c>).</para>
     /// </summary>
     private static async Task<int> RunWorkflowExecutionModeAsync(Dictionary<string, string> opts, Func<string, string> required)
     {
-        var rabbitMqManagementUri = required("rabbitmq-management-uri").TrimEnd('/');
-        var rabbitMqUsername = required("rabbitmq-username");
-        var rabbitMqPassword = required("rabbitmq-password");
+        var phase = opts.GetValueOrDefault("phase", "both").ToLowerInvariant();
+        if (phase is not ("both" or "publish" or "poll"))
+        {
+            throw new ArgumentException($"Unsupported --phase '{phase}'. Supported: 'both' (default), 'publish', 'poll'.");
+        }
+        var doPublish = phase is "both" or "publish";
+        var doPoll = phase is "both" or "poll";
+
+        // RabbitMQ is only touched by the publish leg, and the poll token only by the poll leg -
+        // demanding either unconditionally would force a caller to supply a credential the run
+        // will never use (and, for --phase poll, to mint the very token this split exists to
+        // avoid minting early).
+        var rabbitMqManagementUri = doPublish ? required("rabbitmq-management-uri").TrimEnd('/') : string.Empty;
+        var rabbitMqUsername = doPublish ? required("rabbitmq-username") : string.Empty;
+        var rabbitMqPassword = doPublish ? required("rabbitmq-password") : string.Empty;
         var rabbitMqVHost = opts.GetValueOrDefault("rabbitmq-vhost", "/");
-        var sourceQueue = required("source-queue");
+        var sourceQueue = doPublish ? required("source-queue") : string.Empty;
         var engineBaseUrl = required("engine-base-url").TrimEnd('/');
         // The trigger no longer validates a per-message caller token (it trusts the
         // configured queue's transport boundary instead - see
@@ -180,7 +206,15 @@ internal static class Program
         // call below hits an ordinary /secure/* HTTP route, which IS still Entra-protected,
         // so that one is required independently rather than defaulting from this.
         var messageAuthToken = opts.GetValueOrDefault("message-auth-token", string.Empty);
-        var resultPollAuthToken = required("result-poll-auth-token");
+        var resultPollAuthToken = doPoll ? required("result-poll-auth-token") : string.Empty;
+        // A generated prefix is fine when this invocation also publishes, but '--phase poll'
+        // must reconcile against the ids a PREVIOUS invocation published: generating a fresh
+        // one there would poll 20,000 ids that were never sent and report every one missing -
+        // a total failure that looks exactly like total message loss.
+        if (!doPublish && !opts.ContainsKey("correlation-id"))
+        {
+            throw new ArgumentException("--correlation-id is required with '--phase poll': it must be the prefix printed by the matching '--phase publish' run, otherwise there is nothing to reconcile against.");
+        }
         var correlationIdPrefix = opts.GetValueOrDefault("correlation-id", Guid.NewGuid().ToString("N"));
         var workflowInputsJson = opts.GetValueOrDefault("workflow-inputs-json", string.Empty);
         var timeoutSeconds = int.Parse(opts.GetValueOrDefault("result-timeout-seconds", "90"));
@@ -204,20 +238,38 @@ internal static class Program
         Console.WriteLine(messageCount == 1
             ? $"CorrelationId: {correlationIds[0]}"
             : $"CorrelationId prefix: {correlationIdPrefix} ({messageCount} messages, '{correlationIds[0]}' .. '{correlationIds[^1]}')");
-        Console.WriteLine($"Publishing {messageCount} workflow-trigger message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
-        if (messageCount > 1 && !string.IsNullOrWhiteSpace(workflowInputsJson) && !WorkflowInputTemplate.HasCorrelationIdPlaceholder(workflowInputsJson))
+
+        if (doPublish)
         {
-            Console.WriteLine($"  WARNING: --workflow-inputs-json has no '{WorkflowInputTemplate.CorrelationIdPlaceholder}' or '{WorkflowInputTemplate.CorrelationGuidPlaceholder}' placeholder, so all {messageCount} messages carry an IDENTICAL inputs map.");
-            Console.WriteLine("           A workflow that keys off the message body (e.g. RabbitProcess -> usp_jobs1_LogStart, which takes an exclusive");
-            Console.WriteLine("           applock on a hash of the content) will serialise every execution behind one lock instead of running concurrently.");
+            Console.WriteLine($"Publishing {messageCount} workflow-trigger message(s) to RabbitMQ queue '{sourceQueue}' (vhost '{rabbitMqVHost}') ...");
+            if (messageCount > 1 && !string.IsNullOrWhiteSpace(workflowInputsJson) && !WorkflowInputTemplate.HasCorrelationIdPlaceholder(workflowInputsJson))
+            {
+                Console.WriteLine($"  WARNING: --workflow-inputs-json has no '{WorkflowInputTemplate.CorrelationIdPlaceholder}' or '{WorkflowInputTemplate.CorrelationGuidPlaceholder}' placeholder, so all {messageCount} messages carry an IDENTICAL inputs map.");
+                Console.WriteLine("           A workflow that keys off the message body (e.g. RabbitProcess -> usp_jobs1_LogStart, which takes an exclusive");
+                Console.WriteLine("           applock on a hash of the content) will serialise every execution behind one lock instead of running concurrently.");
+            }
+
+            var publishStopwatch = Stopwatch.StartNew();
+            await PublishManyWorkflowTriggerMessagesAsync(
+                rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
+                workflowInputsJson, correlationIds, messageAuthToken, publishConcurrency);
+            publishStopwatch.Stop();
+            Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
         }
 
-        var publishStopwatch = Stopwatch.StartNew();
-        await PublishManyWorkflowTriggerMessagesAsync(
-            rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
-            workflowInputsJson, correlationIds, messageAuthToken, publishConcurrency);
-        publishStopwatch.Stop();
-        Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
+        if (!doPoll)
+        {
+            // Machine-readable so the caller can capture the prefix without scraping prose - it
+            // is the only handle the matching '--phase poll' run has on what was published.
+            Console.WriteLine($"CORRELATION_ID_PREFIX={correlationIdPrefix}");
+            Console.WriteLine($"PASS: published {messageCount} message(s); result polling skipped (--phase publish). Poll them with '--phase poll --correlation-id {correlationIdPrefix} --message-count {messageCount}'.");
+            return 0;
+        }
+
+        if (!doPublish)
+        {
+            Console.WriteLine($"Polling {engineBaseUrl} for {messageCount} previously-published result(s) (--phase poll) ...");
+        }
 
         var waitStopwatch = Stopwatch.StartNew();
         var (results, lastTransientErrors) = await WaitForServiceBusResultsAsync(engineBaseUrl, resultPollAuthToken, correlationIds, TimeSpan.FromSeconds(timeoutSeconds));
@@ -369,7 +421,23 @@ internal static class Program
                                                         message on the deployed trigger's queue
                                                         runs the ONE workflow named by its own
                                                         Settings/servicebustrigger.bite
-                [--correlation-id <id>]                default: a freshly generated GUID
+                [--correlation-id <id>]                default: a freshly generated GUID.
+                                                        REQUIRED with --phase poll (must be the
+                                                        prefix the matching --phase publish printed)
+                [--phase <both|publish|poll>]          default: both (original behaviour).
+                                                        'publish' sends the messages and exits
+                                                        without polling (needs no poll token at
+                                                        all); 'poll' skips publishing and only
+                                                        reconciles results. Split them at load-test
+                                                        volumes: the poll token lives 60-90 min but
+                                                        a 20,000-message drain takes longer, and an
+                                                        expired token's 401 is NOT retried, so
+                                                        polling across the drain marks every
+                                                        pending id a spurious HttpError. Publish,
+                                                        wait for the queue to drain, mint a FRESH
+                                                        token, then poll. Needs persistence enabled
+                                                        on the engine, or a result is only visible
+                                                        on the instance that produced it.
                 [--message-auth-token <bearer-token>]  OPTIONAL - the trigger no longer
                                                         validates a per-message caller token
                                                         (trust is the configured queue's
@@ -378,8 +446,8 @@ internal static class Program
                                                         ignores it. When supplied, embedded as
                                                         the message's Authorization property.
                 --engine-base-url <url>                e.g. https://warewolfserver-uat.azurewebsites.net
-                --result-poll-auth-token <token>       REQUIRED - used to call the still
-                                                        Entra-protected GET
+                --result-poll-auth-token <token>       REQUIRED unless --phase publish - used to
+                                                        call the still Entra-protected GET
                                                         /secure/servicebus-result endpoint
                 [--result-timeout-seconds <n>]         default: 90
                 [--message-count <n>]                  default: 1; publishes N workflow-trigger

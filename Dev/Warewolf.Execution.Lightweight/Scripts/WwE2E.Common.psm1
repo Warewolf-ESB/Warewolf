@@ -389,17 +389,36 @@ function Get-E2EEngineToken {
         against the global permission map, because the Public group's server-level Execute is always
         OR'd into the effective permissions - measured: 200 on both 'Hello World' and
         'rabbit/RabbitProcess'.
+
+        -ClientId (optional) SEPARATES THE CALLER FROM THE RESOURCE. By default the engine app
+        authenticates as itself (client_id = -EngineAppId), which is the original behaviour and
+        what every existing caller relies on. Pass -ClientId to authenticate as a DIFFERENT app
+        registration while still requesting a token FOR the engine - the dedicated-daemon shape
+        documented in docs/KB-ClientApps-Configuration.md, used by pipeline-LOADTEST.yml's
+        'Warewolf-ShovelBridgeE2E-Daemon' (client) against the engine's own resource app. The
+        scope always names -EngineAppId, because that is the audience the engine validates; only
+        the client identity changes.
     #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string] $TenantId,
         [Parameter(Mandatory)][string] $EngineAppId,
+        [string] $ClientId,
         [string] $ClientSecret,
         [string] $FunctionAppName,
         [string] $ResourceGroup
     )
 
+    if (-not $ClientId) { $ClientId = $EngineAppId }
+
     if (-not $ClientSecret) {
+        # MICROSOFT_PROVIDER_AUTHENTICATION_SECRET is the ENGINE app's own Easy Auth secret, so it
+        # can only ever authenticate the engine as itself. Reading it for a different -ClientId
+        # would post one app's id with another app's secret and fail at Entra with an opaque
+        # AADSTS7000215 ("Invalid client secret provided") - fail here instead, naming the cause.
+        if ($ClientId -ne $EngineAppId) {
+            throw "Get-E2EEngineToken needs an explicit -ClientSecret when -ClientId ('$ClientId') differs from -EngineAppId ('$EngineAppId'): the Function App's MICROSOFT_PROVIDER_AUTHENTICATION_SECRET belongs to the engine app and cannot authenticate a separate client app."
+        }
         if (-not $FunctionAppName -or -not $ResourceGroup) {
             throw 'Get-E2EEngineToken needs -ClientSecret, or -FunctionAppName + -ResourceGroup to read it.'
         }
@@ -413,7 +432,7 @@ function Get-E2EEngineToken {
 
     $body = @{
         grant_type    = 'client_credentials'
-        client_id     = $EngineAppId
+        client_id     = $ClientId
         client_secret = $ClientSecret
         scope         = "api://$EngineAppId/.default"
     }

@@ -196,6 +196,63 @@
     when -MessageCount > 1) to reach a terminal result before failing. Default: 90. Raise this
     substantially for large -MessageCount values (e.g. 1000) since each execution takes real
     engine processing time and this timeout is shared across all of them.
+
+    NOTE the meaning changes under the late-mint mode below: there the drain is waited out
+    separately (-DrainTimeoutSeconds), so this becomes a budget for the post-drain poll ONLY,
+    against results that are already recorded - it does not need to cover execution time.
+.PARAMETER ResultPollTenantId
+.PARAMETER ResultPollClientId
+.PARAMETER ResultPollResourceAppId
+.PARAMETER ResultPollClientSecret
+    OPT-IN, all four together. Client credentials used to mint the result-poll bearer token
+    LATE - after the trigger queue has drained - instead of taking a pre-minted one via
+    -ResultPollAuthToken. Supply these INSTEAD OF -ResultPollAuthToken; supplying both is an
+    error, and supplying an incomplete set is an error naming what is missing.
+
+    WHY THIS EXISTS. GET /secure/servicebus-result/{correlationId} is an ordinary
+    Entra-protected HTTP route - the Service Bus trigger's "trust the configured queue's
+    transport boundary" relaxation applies to the MESSAGE path only, never to this read path
+    (Functions/ServiceBusResultFunction.cs carries [RequireWorkflowPermission(View)], and
+    Auth/Middleware/WorkflowAuthorizationMiddleware.cs rejects an unauthenticated /Secure/*
+    request BEFORE policy evaluation, so even WAREWOLF_SECURITY_FLAGS bypassSecureConfig=true
+    does not make it anonymous - that flag skips authorization, not authentication). An Entra
+    access token lives 60-90 minutes. A 20,000-message drain takes longer, and the harness
+    treats 401 as terminal rather than transient (WOLF-8418: a 500/401 from this engine is a
+    real denial), so a token minted before publishing expires mid-poll and marks EVERY
+    still-pending correlationId as a spurious HttpError - indistinguishable at a glance from
+    mass message loss.
+
+    Minting after the drain sidesteps that entirely: the token is fresh when polling starts,
+    and because every result is already durably recorded the poll resolves in a few sweeps
+    rather than spanning the whole run.
+
+    REQUIRES PERSISTENCE on the target engine (-EnablePersistence on
+    Deploy-WwExecutionEngine.ps1). With persistence off, ServiceBusReplayAndResultStore falls
+    back to a process-local dictionary, so a result is only visible on the instance that
+    produced it and a deferred poll would 404 on most ids.
+
+    -ResultPollClientId is the CALLER app (e.g. the Warewolf-ShovelBridgeE2E-Daemon
+    registration); -ResultPollResourceAppId is the ENGINE's app registration, i.e. the
+    audience, requested as 'api://<ResourceAppId>/.default'. They are different apps - see
+    Get-E2EEngineToken in WwE2E.Common.psm1.
+.PARAMETER DrainQuietSeconds
+    Only used in the late-mint mode above. How long the trigger queue's active+scheduled
+    message counts must stay at ZERO before the drain is considered finished. Default: 360.
+
+    DO NOT LOWER THIS BELOW ~360 without understanding both reasons it is not merely padding:
+      1. A locked (in-flight) message is NOT counted as active by Service Bus, so a momentary
+         zero can be read while executions are still running.
+      2. The trigger queue's lock duration is PT5M, so a message whose lock expired is
+         redelivered roughly five minutes later. A quiet window shorter than that declares the
+         run finished during the gap and reports the redelivered messages as permanently
+         missing - the exact artefact that made an earlier 5,000-message baseline report 878
+         false losses.
+.PARAMETER DrainTimeoutSeconds
+    Only used in the late-mint mode above. Hard ceiling on the drain wait, after which the run
+    fails with the last observed queue counts rather than hanging until the CI job's own
+    timeout kills it (which would lose every diagnostic this script prints afterwards).
+    Default: 3600. Size it from measured throughput - a 20,000-message run against an engine
+    capped at 2 concurrent executions per instance has been observed to need well over an hour.
 .PARAMETER EnginePrewarmTimeoutSeconds
     Only used when -VerifyWorkflowExecution. -EngineBaseUrl frequently runs on an Azure
     Functions Consumption plan with no 'alwaysOn' (e.g. WarewolfServer-UAT), so it scales to
@@ -325,6 +382,17 @@ param(
     [securestring] $ResultPollAuthToken,
     [int]    $ResultTimeoutSeconds = 90,
     [int]    $EnginePrewarmTimeoutSeconds = 120,
+
+    # ── Late-minted result-poll token (opt-in; for large -MessageCount runs) ──────────
+    # Supplying this credential set switches Phase 4 from ONE harness invocation
+    # (publish+poll together) to THREE steps: publish, wait for the trigger queue to drain,
+    # then mint a fresh token and poll. See -ResultPollClientId for why that matters.
+    [string] $ResultPollTenantId,
+    [string] $ResultPollClientId,
+    [string] $ResultPollResourceAppId,
+    [securestring] $ResultPollClientSecret,
+    [int]    $DrainQuietSeconds = 360,
+    [int]    $DrainTimeoutSeconds = 3600,
 
     # ── Database verification (opt-in) ──────────────────────────────────────
     [securestring] $JobsDbConnectionString,
@@ -512,6 +580,33 @@ function Get-WwDeadLetterCount {
         [string] $QueueName
     )
 
+    $counts = Get-WwQueueCountDetails -NamespaceName $NamespaceName -ResourceGroup $ResourceGroup -QueueName $QueueName
+    if ($null -eq $counts) { return $null }
+    return $counts.DeadLetter
+}
+
+function Get-WwQueueCountDetails {
+    <#
+        Reads a Service Bus queue's whole countDetails block via the Azure CLI, as a plain
+        object with Active/DeadLetter/Scheduled/Transfer members.
+
+        Generalises the single-value read Get-WwDeadLetterCount used to do (that function now
+        delegates here) because the drain wait needs ACTIVE and SCHEDULED depth, not just the
+        dead-letter count, and issuing two separate 'az servicebus queue show' calls to read
+        two fields of the same response would just double the polling cost and let the two
+        readings drift apart.
+
+        Returns $null (never throws) when the counts cannot be read - same degradation contract
+        Get-WwDeadLetterCount has always had. Callers must treat $null as "unknown", NEVER as
+        zero: for the drain wait in particular, reading $null as zero would declare a queue
+        drained because the CLI hiccuped.
+    #>
+    param(
+        [string] $NamespaceName,
+        [string] $ResourceGroup,
+        [string] $QueueName
+    )
+
     if (-not $NamespaceName -or -not $ResourceGroup) { return $null }
 
     try {
@@ -519,14 +614,160 @@ function Get-WwDeadLetterCount {
             --namespace-name $NamespaceName `
             --resource-group $ResourceGroup `
             --name $QueueName `
-            --query 'countDetails.deadLetterMessageCount' `
-            -o tsv 2>$null
+            --query 'countDetails' `
+            -o json 2>$null
         if ($LASTEXITCODE -ne 0) { return $null }
-        $parsed = 0
-        if ([int]::TryParse(($raw | Select-Object -First 1), [ref] $parsed)) { return $parsed }
-        return $null
+        $parsed = ($raw | Out-String) | ConvertFrom-Json
+        if ($null -eq $parsed) { return $null }
+
+        # az returns camelCase; Set-StrictMode makes a missing member throw, so probe rather
+        # than dereference - older api-versions omit the transfer counters entirely.
+        function Get-CountOrZero($obj, [string] $name) {
+            $prop = $obj.PSObject.Properties[$name]
+            if ($null -eq $prop -or $null -eq $prop.Value) { return 0 }
+            $n = 0
+            if ([int]::TryParse([string] $prop.Value, [ref] $n)) { return $n }
+            return 0
+        }
+
+        return [pscustomobject]@{
+            Active     = Get-CountOrZero $parsed 'activeMessageCount'
+            DeadLetter = Get-CountOrZero $parsed 'deadLetterMessageCount'
+            Scheduled  = Get-CountOrZero $parsed 'scheduledMessageCount'
+            Transfer   = Get-CountOrZero $parsed 'transferMessageCount'
+        }
     } catch {
         return $null
+    }
+}
+
+function Get-WwDrainVerdict {
+    <#
+        Pure decision function for the drain wait - given one sampling of the trigger queue's
+        depth, decides whether the queue counts as quiet right now and whether it has been
+        quiet long enough to call the run drained. No Azure access, so it is unit-tested
+        directly (Test-ShovelBridgeE2E.Tests.ps1) rather than only via a live run.
+
+        -ActiveCount/-ScheduledCount are $null when the counts could not be read. That is
+        deliberately treated as NOT QUIET (and resets any quiet streak), because an unreadable
+        queue must never be mistaken for an empty one - the failure mode would be ending the
+        wait early and reporting every still-executing message as lost.
+
+        -QuietSince is the caller's carried state: $null when the last sample was not quiet,
+        otherwise the UTC time the current quiet streak began. It is returned (updated) so the
+        caller can feed it back on the next iteration.
+
+        The quiet window itself is load-bearing, not padding - see -DrainQuietSeconds' help for
+        the two independent reasons (locked messages are not counted active; PT5M lock duration
+        means redeliveries arrive ~5 minutes apart).
+    #>
+    param(
+        $ActiveCount,
+        $ScheduledCount,
+        [Parameter(Mandatory)][int] $QuietSeconds,
+        $QuietSince,
+        [Parameter(Mandatory)][datetime] $NowUtc
+    )
+
+    $readable = ($null -ne $ActiveCount) -and ($null -ne $ScheduledCount)
+    $isQuiet  = $readable -and (([int] $ActiveCount + [int] $ScheduledCount) -eq 0)
+
+    if (-not $isQuiet) {
+        return [pscustomobject]@{
+            IsQuiet      = $false
+            IsDrained    = $false
+            QuietSince   = $null
+            SecondsQuiet = 0
+            IsReadable   = $readable
+        }
+    }
+
+    $since = if ($null -eq $QuietSince) { $NowUtc } else { [datetime] $QuietSince }
+    $secondsQuiet = [int][Math]::Floor(($NowUtc - $since).TotalSeconds)
+
+    return [pscustomobject]@{
+        IsQuiet      = $true
+        IsDrained    = ($secondsQuiet -ge $QuietSeconds)
+        QuietSince   = $since
+        SecondsQuiet = $secondsQuiet
+        IsReadable   = $true
+    }
+}
+
+function Wait-WwTriggerQueueDrain {
+    <#
+        Blocks until the trigger queue has been quiet for -QuietSeconds, or throws once
+        -TimeoutSeconds elapses. Thin loop around Get-WwQueueCountDetails (the I/O) and
+        Get-WwDrainVerdict (the decision), so the logic worth testing has no Azure dependency.
+
+        Throwing on timeout rather than returning false is deliberate: a run that never drained
+        has not produced a result worth polling for, and failing here surfaces the last observed
+        queue depths - which is the diagnostic that says whether messages were still executing,
+        still queued, or already dead-lettered.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $NamespaceName,
+        [Parameter(Mandatory)][string] $ResourceGroup,
+        [Parameter(Mandatory)][string] $QueueName,
+        [Parameter(Mandatory)][int]    $QuietSeconds,
+        [Parameter(Mandatory)][int]    $TimeoutSeconds,
+        [int] $PollIntervalSeconds = 30
+    )
+
+    $deadline   = (Get-Date).ToUniversalTime().AddSeconds($TimeoutSeconds)
+    $quietSince = $null
+    $last       = $null
+    $lastReport = [datetime]::MinValue
+
+    while ($true) {
+        $counts = Get-WwQueueCountDetails -NamespaceName $NamespaceName -ResourceGroup $ResourceGroup -QueueName $QueueName
+        $now    = (Get-Date).ToUniversalTime()
+
+        $activeNow    = $null
+        $scheduledNow = $null
+        if ($null -ne $counts) {
+            $activeNow    = $counts.Active
+            $scheduledNow = $counts.Scheduled
+        }
+
+        $verdict = Get-WwDrainVerdict `
+            -ActiveCount    $activeNow `
+            -ScheduledCount $scheduledNow `
+            -QuietSeconds   $QuietSeconds `
+            -QuietSince     $quietSince `
+            -NowUtc         $now
+
+        $quietSince = $verdict.QuietSince
+        if ($null -ne $counts) { $last = $counts }
+
+        if ($verdict.IsDrained) {
+            Write-Ok "Trigger queue '$QueueName' drained (active+scheduled 0 for $($verdict.SecondsQuiet)s >= ${QuietSeconds}s). Dead-letter depth now: $($last.DeadLetter)."
+            return $last
+        }
+
+        if ($now -ge $deadline) {
+            $detail = 'queue depths were never readable (az servicebus queue show kept failing)'
+            if ($null -ne $last) {
+                $detail = "last observed: active=$($last.Active), scheduled=$($last.Scheduled), deadLetter=$($last.DeadLetter)"
+            }
+            throw "Trigger queue '$QueueName' did not drain within ${TimeoutSeconds}s ($detail). Raise -DrainTimeoutSeconds if the run is simply slower than budgeted, or investigate why messages are not being consumed - a non-zero active count that never falls means the engine is not keeping up (or not listening), while a climbing deadLetter count means they are failing terminally."
+        }
+
+        # One line per minute, not per poll: a 90-minute drain would otherwise bury the rest of
+        # the log, but total silence is indistinguishable from a hang.
+        if (($now - $lastReport).TotalSeconds -ge 60) {
+            $shown = 'unreadable'
+            if ($null -ne $counts) {
+                $shown = "active=$($counts.Active), scheduled=$($counts.Scheduled), deadLetter=$($counts.DeadLetter)"
+            }
+            $quietNote = ''
+            if ($verdict.IsQuiet) { $quietNote = " (quiet for $($verdict.SecondsQuiet)s of ${QuietSeconds}s)" }
+            $remaining = [int][Math]::Max(0, ($deadline - $now).TotalSeconds)
+            Write-Step "Draining '$QueueName': $shown$quietNote - ${remaining}s of budget left"
+            $lastReport = $now
+        }
+
+        Start-Sleep -Seconds $PollIntervalSeconds
     }
 }
 
@@ -632,6 +873,10 @@ if ($RabbitMqMode -eq 'External') {
     }
 }
 
+# Declared unconditionally so the Phase 4 branches can test it under Set-StrictMode even
+# when -VerifyWorkflowExecution was never passed (the validation block below is what sets it).
+$useLateMintedResultToken = $false
+
 if ($VerifyWorkflowExecution) {
     # A live engine must already be listening (Managed Identity) on -DestinationQueueName —
     # the local emulator has no engine attached to it, so this mode only makes sense against
@@ -639,8 +884,35 @@ if ($VerifyWorkflowExecution) {
     if ($DestinationMode -ne 'ExternalServiceBus') {
         throw '-VerifyWorkflowExecution requires -DestinationMode ExternalServiceBus (a live Lightweight engine must already be listening on -DestinationQueueName).'
     }
-    if ($null -eq $ResultPollAuthToken -or $ResultPollAuthToken.Length -eq 0) {
-        throw '-ResultPollAuthToken is required when -VerifyWorkflowExecution (used to poll the still Entra-protected GET /secure/servicebus-result endpoint).'
+    # ── Which way is the result-poll token supplied? ──────────────────────────
+    # Either a pre-minted -ResultPollAuthToken (original behaviour: one harness invocation
+    # publishes and polls together), or the four late-mint credentials (publish, wait for the
+    # drain, mint fresh, then poll). Exactly one of the two - see -ResultPollClientId's help
+    # for why the late-mint path exists at load-test volumes.
+    $lateMintParts = [ordered]@{
+        '-ResultPollTenantId'      = $ResultPollTenantId
+        '-ResultPollClientId'      = $ResultPollClientId
+        '-ResultPollResourceAppId' = $ResultPollResourceAppId
+    }
+    $lateMintSupplied = @($lateMintParts.Values | Where-Object { -not [string]::IsNullOrWhiteSpace($_) }).Count
+    if ($ResultPollClientSecret -and $ResultPollClientSecret.Length -gt 0) { $lateMintSupplied++ }
+    $useLateMintedResultToken = $lateMintSupplied -gt 0
+    $haveStaticResultToken = ($null -ne $ResultPollAuthToken -and $ResultPollAuthToken.Length -gt 0)
+
+    if ($useLateMintedResultToken) {
+        if ($lateMintSupplied -lt 4) {
+            $missing = @($lateMintParts.GetEnumerator() | Where-Object { [string]::IsNullOrWhiteSpace($_.Value) } | ForEach-Object { $_.Key })
+            if (-not $ResultPollClientSecret -or $ResultPollClientSecret.Length -eq 0) { $missing += '-ResultPollClientSecret' }
+            throw "The late-minted result-token credentials are incomplete - missing: $($missing -join ', '). Supply all four (-ResultPollTenantId, -ResultPollClientId, -ResultPollResourceAppId, -ResultPollClientSecret), or none of them and a pre-minted -ResultPollAuthToken instead."
+        }
+        if ($haveStaticResultToken) {
+            throw 'Supply EITHER -ResultPollAuthToken (pre-minted, polled inline) OR the four -ResultPollTenantId/-ResultPollClientId/-ResultPollResourceAppId/-ResultPollClientSecret credentials (minted after the drain) - not both, since the two select different Phase 4 shapes and passing both hides which one is actually in effect.'
+        }
+        if ([string]::IsNullOrWhiteSpace($ServiceBusNamespaceName) -or [string]::IsNullOrWhiteSpace($ServiceBusResourceGroup)) {
+            throw 'The late-minted result-token mode needs -ServiceBusNamespaceName and -ServiceBusResourceGroup: it waits for the trigger queue to drain (reading its active/scheduled depth via the Azure CLI) before minting the token and polling.'
+        }
+    } elseif (-not $haveStaticResultToken) {
+        throw '-ResultPollAuthToken is required when -VerifyWorkflowExecution (used to poll the still Entra-protected GET /secure/servicebus-result endpoint), unless the four late-mint credentials (-ResultPollTenantId/-ResultPollClientId/-ResultPollResourceAppId/-ResultPollClientSecret) are supplied instead.'
     }
     if ([string]::IsNullOrWhiteSpace($EngineBaseUrl)) {
         throw '-EngineBaseUrl is required when -VerifyWorkflowExecution.'
@@ -658,7 +930,15 @@ if ($VerifyWorkflowExecution) {
     # BEFORE Phase 4 starts spending the token's remaining lifetime.
     $setupBufferSeconds = 300
     $requiredLifetimeSeconds = $ResultTimeoutSeconds + $setupBufferSeconds
-    $tokensToCheck = [ordered]@{ '-ResultPollAuthToken' = (ConvertFrom-SecureStringPlain $ResultPollAuthToken) }
+    $tokensToCheck = [ordered]@{}
+    if ($haveStaticResultToken) {
+        $tokensToCheck['-ResultPollAuthToken'] = ConvertFrom-SecureStringPlain $ResultPollAuthToken
+    } else {
+        # Nothing to check yet - the whole point of the late-mint mode is that no result-poll
+        # token exists at this stage. The SAME assertion is applied to the freshly-minted token
+        # in Phase 4, once it has been acquired, so the guard is deferred rather than dropped.
+        Write-Ok 'Result-poll token will be minted after the drain (late-mint mode) - its lifetime is asserted then, not now.'
+    }
     if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) {
         $tokensToCheck['-MessageAuthToken'] = ConvertFrom-SecureStringPlain $MessageAuthToken
     }
@@ -1108,7 +1388,78 @@ try {
     # history" caveat in Resources/rabbit/Provision-ShovelBridgeSchema.sql).
     $runStartUtc = (Get-Date).ToUniversalTime()
 
-    if ($VerifyWorkflowExecution) {
+    if ($VerifyWorkflowExecution -and $useLateMintedResultToken) {
+        # ── Split Phase 4: publish -> drain -> mint -> poll ───────────────────
+        # See -ResultPollClientId's help for why these cannot be one invocation at load-test
+        # volumes. Note $harnessExitCode is set from the POLL leg (or from the publish leg if
+        # that fails first), so Phases 4b-4d downstream read it exactly as before.
+        $publishArgs = @(
+            'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
+            '--mode', 'workflow-execution'
+            '--phase', 'publish'
+            '--rabbitmq-management-uri', $mgmtUri
+            '--rabbitmq-username', $rmqUser
+            '--rabbitmq-password', $rmqPassword
+            '--rabbitmq-vhost', $rmqVHost
+            '--source-queue', $SourceQueueName
+            '--correlation-id', $CorrelationId
+            '--engine-base-url', $EngineBaseUrl
+            '--message-count', $MessageCount
+            '--publish-concurrency', $PublishConcurrency
+        )
+        if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $publishArgs += @('--workflow-inputs-json', $WorkflowInputsJson) }
+        if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) { $publishArgs += @('--message-auth-token', (ConvertFrom-SecureStringPlain $MessageAuthToken)) }
+
+        Write-Step "dotnet run (E2EHarness --phase publish, $MessageCount message(s), no poll token needed)"
+        & dotnet @publishArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
+        $harnessExitCode = $LASTEXITCODE
+
+        if ($harnessExitCode -ne 0) {
+            Write-Note "Publish leg failed (exit $harnessExitCode) - skipping the drain wait and result poll; there is nothing to reconcile."
+        } else {
+            Write-Step "Waiting for trigger queue '$DestinationQueueName' to drain (quiet window ${DrainQuietSeconds}s, budget ${DrainTimeoutSeconds}s)"
+            Wait-WwTriggerQueueDrain `
+                -NamespaceName   $ServiceBusNamespaceName `
+                -ResourceGroup   $ServiceBusResourceGroup `
+                -QueueName       $DestinationQueueName `
+                -QuietSeconds    $DrainQuietSeconds `
+                -TimeoutSeconds  $DrainTimeoutSeconds | Out-Null
+
+            Write-Step "Minting a fresh result-poll token (client '$ResultPollClientId' -> audience 'api://$ResultPollResourceAppId')"
+            Import-Module (Join-Path $PSScriptRoot '..' '..' 'WwE2E.Common.psm1') -Force -ErrorAction Stop
+            $freshPollToken = Get-E2EEngineToken `
+                -TenantId     $ResultPollTenantId `
+                -ClientId     $ResultPollClientId `
+                -EngineAppId  $ResultPollResourceAppId `
+                -ClientSecret (ConvertFrom-SecureStringPlain $ResultPollClientSecret)
+            if ([string]::IsNullOrWhiteSpace($freshPollToken)) {
+                throw "Failed to mint a result-poll token for client '$ResultPollClientId' against audience 'api://$ResultPollResourceAppId'. The messages HAVE been published and executed - re-run with '--phase poll --correlation-id $CorrelationId' once the credential is fixed rather than republishing."
+            }
+
+            # The deferred half of the pre-flight guard above: the token is brand new, so this
+            # should never fire - if it does, the tenant is issuing tokens shorter-lived than
+            # the poll budget and -ResultTimeoutSeconds must come down to match.
+            $freshRemaining = Get-JwtRemainingLifetimeSeconds -Token $freshPollToken
+            if ($null -ne $freshRemaining -and $freshRemaining -lt $ResultTimeoutSeconds) {
+                throw "The freshly-minted result-poll token expires in ${freshRemaining}s, which is less than -ResultTimeoutSeconds $ResultTimeoutSeconds. It would expire mid-poll and mark every still-pending correlationId as a spurious HttpError. Lower -ResultTimeoutSeconds below ${freshRemaining}s, or raise the token lifetime for client '$ResultPollClientId'."
+            }
+            Write-Ok "Minted a fresh result-poll token ($freshRemaining s remaining) - polling now that every result is already recorded."
+
+            $pollArgs = @(
+                'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
+                '--mode', 'workflow-execution'
+                '--phase', 'poll'
+                '--correlation-id', $CorrelationId
+                '--engine-base-url', $EngineBaseUrl
+                '--result-poll-auth-token', $freshPollToken
+                '--result-timeout-seconds', $ResultTimeoutSeconds
+                '--message-count', $MessageCount
+            )
+            Write-Step "dotnet run (E2EHarness --phase poll, $MessageCount correlationId(s))"
+            & dotnet @pollArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
+            $harnessExitCode = $LASTEXITCODE
+        }
+    } elseif ($VerifyWorkflowExecution) {
         $harnessArgs = @(
             'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
             '--mode', 'workflow-execution'
@@ -1140,13 +1491,17 @@ try {
             '--publish-concurrency', $PublishConcurrency
         )
     }
-    Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'
-    # Stream the harness's output live rather than buffering it and dumping it only
-    # after the process exits — at load-test volumes this run can take many minutes
-    # (build + publish + poll up to -ResultTimeoutSeconds), and a silent console during
-    # that window is indistinguishable from a hang.
-    & dotnet @harnessArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
-    $harnessExitCode = $LASTEXITCODE
+    # The late-mint branch above already ran its own publish/poll invocations (and set
+    # $harnessExitCode from them), so there is no single combined command left to run here.
+    if (-not ($VerifyWorkflowExecution -and $useLateMintedResultToken)) {
+        Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'
+        # Stream the harness's output live rather than buffering it and dumping it only
+        # after the process exits — at load-test volumes this run can take many minutes
+        # (build + publish + poll up to -ResultTimeoutSeconds), and a silent console during
+        # that window is indistinguishable from a hang.
+        & dotnet @harnessArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
+        $harnessExitCode = $LASTEXITCODE
+    }
 
     # ════════════════════════════════════════════════════════════════════════
     # Phase 4b — Post-run Shovel/RabbitMQ diagnostics (root-causing message loss)

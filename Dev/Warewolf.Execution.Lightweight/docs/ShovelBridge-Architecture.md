@@ -437,6 +437,54 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
 
 ## Known risks / open work
 
+- **2026-09-15 — the load test now runs 20,000 messages, and three constraints had to move
+  with `MessageCount`.** Raising the count alone would have failed the run for reasons that
+  have nothing to do with the bridge, so `pipeline-LOADTEST.yml` changed in four places, not
+  one.
+  - **The result-poll token cannot survive the drain, so it is now minted AFTER it.** This is
+    the constraint that forced a code change rather than a settings change. `GET
+    /Secure/servicebus-result/{correlationId}` is an ordinary Entra-protected HTTP route —
+    `Functions/ServiceBusResultFunction.cs` carries `[RequireWorkflowPermission(View)]`, and
+    `Auth/Middleware/WorkflowAuthorizationMiddleware.cs` rejects an unauthenticated `/Secure/*`
+    request *before* policy evaluation, so the pipeline's own
+    `WAREWOLF_SECURITY_FLAGS bypassSecureConfig=true` does **not** make it anonymous (that flag
+    skips **authorization**, not **authentication**). Note this is a different path from the
+    message trigger, which genuinely does not validate a caller token any more — the two are
+    easy to conflate and the distinction is the whole reason this was not a one-line change.
+    An Entra access token lives 60–90 minutes; a 20,000-message drain takes ~90 minutes; and
+    the harness deliberately treats `401` as terminal rather than transient (WOLF-8418 — a
+    `500`/`401` from this engine is a real denial). Polling across the drain therefore
+    *guarantees* the token expires mid-run and marks every still-pending correlationId a
+    spurious `HttpError`, which looks exactly like mass message loss.
+    **Fix:** `Program.cs` gained `--phase both|publish|poll` (default `both`, unchanged), and
+    `Test-ShovelBridgeE2E.ps1` gained an opt-in credential set
+    (`-ResultPollTenantId`/`-ResultPollClientId`/`-ResultPollResourceAppId`/`-ResultPollClientSecret`)
+    that switches Phase 4 to **publish → wait for drain → mint → poll**. Publishing needs no
+    token at all. The poll then runs against results that are already recorded, which is why
+    `-ResultTimeoutSeconds` stays at 1800 despite the 20× volume increase. The pre-flight
+    token-lifetime guard is *deferred*, not dropped — it is re-applied to the freshly-minted
+    token. **This depends on persistence being enabled on the target engine**; with the
+    in-memory fallback a result is only visible on the instance that produced it, so a deferred
+    poll would 404 on most ids.
+  - **The drain wait needs a quiet window ≥ ~360s** (`-DrainQuietSeconds`, default 360), for two
+    independent reasons: a locked/in-flight message is **not** counted in `activeMessageCount`,
+    so a momentary zero can be read while executions are still running; and the queue's `PT5M`
+    lock duration means a redelivery arrives ~5 minutes later. A shorter window ends the wait
+    inside that gap and reports redelivered messages as permanently missing — the artefact
+    behind an earlier 5,000-message run's 878 false losses. An **unreadable** count is likewise
+    never treated as zero. Both behaviours are pinned by unit tests against the pure
+    `Get-WwDrainVerdict`.
+  - **`-FunctionAppScaleLimit 30` is now passed** — previously absent from this pipeline
+    entirely, which was survivable at 1,000 messages and is not at 20,000. See the
+    2026-09-15 broker-connection entry below: the budget is spent by **instance count**, and
+    30 is derived from `wwuat3`'s 40-connection vhost, **not measured on
+    `WarewolfServer-UAT`**. If that app's result broker is a different CloudAMQP plan, or a
+    second publisher shares the vhost, recompute it.
+  - **`timeoutInMinutes` 60 → 240**, projected from the 15,000-message/~66-minute figure
+    recorded below (~3.8 msg/s → ~90 min for 20,000). **That projection is from a different
+    app and a different harness**; this pipeline's own throughput at this volume is unmeasured,
+    so the first 20,000-message run is the measurement that confirms or corrects it.
+
 - **Correlation-id / custom property survival across the AMQP 0.9.1 → AMQP 1.0
   translation is an accepted risk** (explicit decision — not spiked further). This is a
   known lossy point in protocol bridging; revisit with a dedicated spike if end-to-end
@@ -568,12 +616,25 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
   `ShovelBridgeE2ETest_ExternalServiceBus` job leaves both at their sequential/original
   defaults since concurrency doesn't matter for one message.
 
+  **`PublishConcurrency` is NOT the pre-warm concurrency** (corrected 2026-09-15). The
+  pipeline's `Invoke-WwEnginePreWarm.ps1` step used to inherit `-TargetConcurrency
+  $(PublishConcurrency)`, which conflated two knobs that drive different systems:
+  `PublishConcurrency` bounds HTTP publishes to RabbitMQ *on the agent*, while the pre-warm
+  drives real workflow **executions** on an engine deployed with `maxConcurrentExecutions 2`.
+  Warming above that cap does not warm faster — `WorkflowExecutor._workflowPool` grows only to
+  the peak concurrency actually seen, capped at `DefaultWorkflowPoolMax` 8 and static
+  (per-process) — it just piles executions onto a cold host, and a warm at concurrency **6**
+  has been observed to OOM the engine outright. The job now carries a separate
+  `PreWarmConcurrency: 2`, matched to the deployed cap.
+
   Wired into CI as the `ShovelBridgeLoadTest_ExternalServiceBus` job in
   `Dev/.azure/pipeline-LOADTEST.yml`, which reuses the exact same
   `-RabbitMqMode External -DestinationMode ExternalServiceBus` setup as
   `ShovelBridgeE2ETest_ExternalServiceBus` above (local choco RabbitMQ, the same
   `WarewolfShovelBridgeTesting` namespace) plus its `-VerifyWorkflowExecution` leg's own
-  Entra daemon-token acquisition, but with `-MessageCount 1000`. It uses its own dedicated
+  Entra daemon-token acquisition, but with `-MessageCount 20000` (raised from 1000 on
+  2026-09-15 — see the "20,000 messages" entry in the log below for the three constraints that
+  had to move with it). It uses its own dedicated
   RabbitMQ-side queue/shovel names (suffixed `-loadtest`) so it never collides with the
   ordinary single-message E2E test's shovel running concurrently on the same broker/agent
   type, but DELIBERATELY reuses the exact same Service Bus verification queue/SAS rule as
