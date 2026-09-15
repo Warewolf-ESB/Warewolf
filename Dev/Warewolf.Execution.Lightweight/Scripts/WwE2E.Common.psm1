@@ -309,6 +309,10 @@ function Get-E2EContainerApps {
             Name        = $_.name
             MinReplicas = Get-Prop $_ @('properties','template','scale','minReplicas')
             MaxReplicas = Get-Prop $_ @('properties','template','scale','maxReplicas')
+            # 'Running' | 'Stopped' | 'Progressing'. A STOPPED app (az containerapp stop) runs no
+            # replicas and no KEDA scaler, so the scale shape alone cannot say whether it is live:
+            # min=0/max=1 reads identically for a stopped app and for an idle-at-zero one.
+            RunningStatus = Get-Prop $_ @('properties','runningStatus')
             # Filter nulls: @($null) is a ONE-ELEMENT array containing $null, so a scale block with no
             # rules would otherwise yield a single null "rule" that throws on first property access.
             Rules       = @(Get-Prop $_ @('properties','template','scale','rules') | Where-Object { $null -ne $_ })
@@ -352,7 +356,7 @@ function Get-E2EQueueConsumers {
             if ($type -ne 'rabbitmq' -or -not $meta) { continue }
             $qn = if ($meta.PSObject.Properties['queueName']) { $meta.queueName } else { $null }
             if ($qn -and ($QueueName -contains $qn)) {
-                $hits.Add([pscustomobject]@{ App = $app.Name; Queue = $qn; MinReplicas = $app.MinReplicas; MaxReplicas = $app.MaxReplicas })
+                $hits.Add([pscustomobject]@{ App = $app.Name; Queue = $qn; MinReplicas = $app.MinReplicas; MaxReplicas = $app.MaxReplicas; RunningStatus = $app.RunningStatus })
             }
         }
     }
@@ -507,20 +511,36 @@ function Initialize-E2ERabbitClient {
     $aspNetRoot = 'C:\Program Files\dotnet\shared\Microsoft.AspNetCore.App'
     $aspNet = $null
     if (Test-Path -LiteralPath $aspNetRoot) {
-        $aspNet = (Get-ChildItem $aspNetRoot -Directory -ErrorAction SilentlyContinue |
-                   Where-Object Name -like '8.*' | Sort-Object Name | Select-Object -Last 1).FullName
+        # Must match the RUNNING runtime's major version, not a hard-coded 8.x: RabbitMQ.Client is
+        # now built for net10.0 and PowerShell 7.6 hosts .NET 10, so loading the 8.x
+        # System.Threading.RateLimiting into that host crashes the process outright (no exception -
+        # the host dies, surfacing only as a non-zero exit code). Prefer the running major, then the
+        # highest available.
+        $runningMajor = [System.Environment]::Version.Major
+        $aspNetDirs = @(Get-ChildItem $aspNetRoot -Directory -ErrorAction SilentlyContinue |
+                        Where-Object { $_.Name -as [version] } |
+                        Sort-Object { [version]$_.Name })
+        $aspNet = ($aspNetDirs | Where-Object { ([version]$_.Name).Major -eq $runningMajor } |
+                   Select-Object -Last 1).FullName
+        if (-not $aspNet) { $aspNet = ($aspNetDirs | Select-Object -Last 1).FullName }
     }
     if (-not $aspNet) {
-        throw ("Microsoft.AspNetCore.App 8.x shared framework not found under '$aspNetRoot'. " +
+        throw ("Microsoft.AspNetCore.App shared framework not found under '$aspNetRoot'. " +
                'It supplies System.Threading.RateLimiting, which RabbitMQ.Client 7.x requires.')
     }
 
     $probeDirs = @($PublishPath, $aspNet)
+    # PURE .NET INSIDE THIS CALLBACK - NO CMDLETS. Join-Path/Test-Path are cmdlets, and invoking a
+    # cmdlet from inside assembly resolution makes PowerShell load more assemblies, which re-enters
+    # this same resolver. At process shutdown that recursion never unwinds: the process dies with
+    # "Stack overflow." AFTER the script has run to completion - manifest written, output produced -
+    # so it surfaced as a publisher that did its whole job and still exited 139/127, losing all
+    # buffered stdout. [IO.Path]::Combine and [IO.File]::Exists touch no cmdlet machinery.
     [System.Runtime.Loader.AssemblyLoadContext]::Default.add_Resolving({
         param($ctx, $name)
         foreach ($d in $probeDirs) {
-            $candidate = Join-Path $d "$($name.Name).dll"
-            if (Test-Path -LiteralPath $candidate) { return $ctx.LoadFromAssemblyPath($candidate) }
+            $candidate = [System.IO.Path]::Combine($d, $name.Name + '.dll')
+            if ([System.IO.File]::Exists($candidate)) { return $ctx.LoadFromAssemblyPath($candidate) }
         }
         return $null
     }.GetNewClosure())
@@ -594,8 +614,33 @@ function New-E2EBrokerSession {
 }
 
 function Close-E2EBrokerSession {
+    <#
+        Closes the connection GRACEFULLY before disposing it.
+
+        THE TRAP: RabbitMQ.Client 7.x buffers BasicPublishAsync. A bare Connection.Dispose() on this
+        async-first client, from a PowerShell host, tears the connection down before that buffer is
+        flushed - so published messages are silently LOST - and crashes the process outright
+        (SIGSEGV/exit 139, no exception to catch). In Publish-WwProfilerExact.ps1 that call sits in a
+        finally block ahead of the manifest write, so the symptom was a publisher that exited
+        non-zero, wrote no manifest, and delivered nothing, while reporting a successful publish.
+
+        CloseAsync flushes and completes the AMQP close handshake first. Its overload is fully
+        qualified because 7.x exposes no parameterless form:
+            CloseAsync(ushort reasonCode, string reasonText, TimeSpan timeout, bool abort, CancellationToken)
+    #>
     param([Parameter(Mandatory)] $Session)
-    if ($Session -and $Session.Connection) { $Session.Connection.Dispose() }
+    if (-not $Session -or -not $Session.Connection) { return }
+
+    try {
+        $Session.Connection.CloseAsync(
+            [uint16]200, 'Goodbye', [TimeSpan]::FromSeconds(30), $false,
+            [Threading.CancellationToken]::None).GetAwaiter().GetResult() | Out-Null
+    } catch {
+        # Already closed, or the broker vanished - fall through to Dispose either way.
+        Write-Verbose "Close-E2EBrokerSession: graceful close failed ($($_.Exception.Message)); disposing."
+    }
+
+    $Session.Connection.Dispose()
 }
 
 function Initialize-E2EQueueTopology {
@@ -1010,6 +1055,91 @@ function Get-E2EEngineDependencies {
                                '-g', $ResourceGroup, '--analytics-query', $q) -AllowFail
 }
 
+function Get-E2EBrokerContextFromUri {
+    <#
+        Splits an AMQP URI into the pieces the MANAGEMENT HTTP API needs: credential and vhost.
+
+        THE VHOST TRAP: in an AMQP URI an empty path means the DEFAULT vhost '/', while '/name'
+        means the vhost 'name'. The management API takes the vhost as a URL path segment, where the
+        default must be sent as '%2F' - a bare '/' there splits the route and 404s. Getting this
+        wrong returns "queue does not exist" against a queue that plainly does.
+    #>
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string] $AmqpUri)
+
+    $u = [uri]$AmqpUri
+    $vhost = $u.AbsolutePath.TrimStart('/')
+    if ([string]::IsNullOrEmpty($vhost)) { $vhost = '/' } else { $vhost = [uri]::UnescapeDataString($vhost) }
+
+    $userInfo = $u.UserInfo
+    if ([string]::IsNullOrEmpty($userInfo)) {
+        throw "AMQP URI carries no credentials; the management API cannot be queried without them."
+    }
+    $parts = $userInfo -split ':', 2
+    $user  = [uri]::UnescapeDataString($parts[0])
+    $pass  = if ($parts.Count -eq 2) { [uri]::UnescapeDataString($parts[1]) } else { '' }
+
+    [pscustomobject]@{
+        VHost      = $vhost
+        UserName   = $user
+        Credential = [pscredential]::new($user, (ConvertTo-SecureString $pass -AsPlainText -Force))
+    }
+}
+
+function Get-E2EQueueDepthHttp {
+    <#
+        Queue depth over the RabbitMQ MANAGEMENT HTTP API, returning the same shape as
+        Get-E2EQueueDepth so call sites are interchangeable.
+
+        WHY THIS EXISTS. Get-E2EQueueDepth opens an AMQP connection, and on .NET 10
+        RabbitMQ.Client 7.0.0 stack-overflows inside its socket reader while that connection is torn
+        down - killing the HOST PROCESS, with no catchable exception. Reading depth that way took
+        down Run-WwProfilerExactLoad.ps1 immediately after its baseline step, before a single
+        message was published. HTTP needs no AMQP connection, so nothing is torn down.
+
+        MESSAGES IS 'messages_ready', NOT 'messages'. This mirrors the AMQP passive declare exactly:
+        ready messages only, excluding unacked in-flight work - which is also precisely what the
+        KEDA rabbitmq scaler reads. Using 'messages' here would quietly change drain semantics.
+
+        A MISSING QUEUE (404) RETURNS Exists=$false, mirroring a failed passive declare. Every OTHER
+        failure THROWS on purpose: a depth probe that reported 0 on error would make a drain loop
+        conclude the queue had emptied and call the run complete.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string] $ManagementUri,
+        [Parameter(Mandatory)][string] $QueueName,
+        [Parameter(Mandatory)][string] $VHost,
+        [Parameter(Mandatory)][pscredential] $Credential,
+        [int] $TimeoutSec = 30
+    )
+
+    $url = '{0}/api/queues/{1}/{2}' -f $ManagementUri.TrimEnd('/'),
+                                      [uri]::EscapeDataString($VHost),
+                                      [uri]::EscapeDataString($QueueName)
+    try {
+        $r = Invoke-RestMethod -Uri $url -Credential $Credential -Method Get `
+                               -TimeoutSec $TimeoutSec -ErrorAction Stop
+    }
+    catch {
+        $status = $null
+        if ($_.Exception.PSObject.Properties.Name -contains 'Response' -and $_.Exception.Response) {
+            $status = [int]$_.Exception.Response.StatusCode
+        }
+        if ($status -eq 404) {
+            return [pscustomobject]@{ Queue = $QueueName; Exists = $false; Messages = 0; Consumers = 0 }
+        }
+        throw "Queue-depth probe failed for '$QueueName' (vhost '$VHost') at $url : $($_.Exception.Message)"
+    }
+
+    [pscustomobject]@{
+        Queue     = $QueueName
+        Exists    = $true
+        Messages  = [int]$r.messages_ready
+        Consumers = [int]$r.consumers
+    }
+}
+
 Export-ModuleMember -Function `
     New-E2EChannel, Invoke-E2EChildScript, `
     Add-E2EResource, Get-E2EResourceLedger, Write-E2EResourceSummary, Reset-E2EResourceLedger, `
@@ -1019,6 +1149,7 @@ Export-ModuleMember -Function `
     Get-E2EEngineToken, Invoke-E2EEngineRoute, Get-E2EWorkflowRoute, `
     Initialize-E2ERabbitClient, New-E2EBrokerSession, Close-E2EBrokerSession, `
     Initialize-E2EQueueTopology, Get-E2EQueueDepth, Test-E2EExchangeExists, `
+    Get-E2EQueueDepthHttp, Get-E2EBrokerContextFromUri, `
     Test-E2EUnackedVisibility, Remove-E2EQueueTopology, Resolve-E2EBrokerUri, `
     Read-E2ETrigger, Test-E2ETriggerSupported, `
     Invoke-E2ELogAnalytics, Get-E2EExecutionStats, Get-E2EStartupEvidence, Get-E2EEngineDependencies

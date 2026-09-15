@@ -145,6 +145,14 @@ param(
     # it. The observed hang was an az extension prompt waiting on stdin for over 30 minutes.
     [ValidateRange(30, 7200)][int] $StepTimeoutSeconds = 900,
 
+    # Payload shape to publish, forwarded to Publish-WwQueueBurst.ps1. Each queue's trigger
+    # declares its own input contract, so one body cannot serve every queue:
+    #   Mandate  - the mandate/collection document (order-success-queue and similar).
+    #   Profiler - the flat 16-field body that profiler.profile.request binds.
+    # Default Mandate, so existing order-success runs behave exactly as before.
+    [ValidateSet('Mandate', 'Profiler')]
+    [string] $BodyShape = 'Mandate',
+
     # Dot-source the pure helpers for unit testing. No Azure, no broker, no database.
     [switch] $LoadFunctionsOnly
 )
@@ -679,12 +687,30 @@ function Get-WwReconciliationBuckets {
     $neither = [System.Collections.Generic.List[object]]::new()
     $wrongOutcome = [System.Collections.Generic.List[object]]::new()
 
-    $publishedTxns = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    # One published-id set PER IDENTIFIER SPACE. $unexpected must compare each observed set
+    # against the space it is actually keyed on (see the two-identifier-spaces note below);
+    # checking a database mandateId against the txn set reports every correctly-reconciled
+    # message as an unpublished stray.
+    $publishedTxns       = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+    $publishedMandateIds = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
 
     foreach ($m in @($Manifest | Where-Object { $_ })) {
         $txn = [string]$m.txn
         [void]$publishedTxns.Add($txn)
-        $inDb  = $db.Contains($txn)
+
+        # TWO IDENTIFIER SPACES, deliberately not interchangeable:
+        #   $db  is keyed on MandateId - the per-message unique field of the published body, read
+        #        back with JSON_VALUE(MessageContent, '$.MandateId').
+        #   $dlq is keyed on txn - carried as the AMQP CorrelationId, which is also what the
+        #        worker's [Txn:...] log prefix and the dead-letter headers use.
+        # Comparing either set against the wrong id silently classifies every message as Neither.
+        #
+        # Null-safe on purpose: deliberate-failure entries are published with an empty body and so
+        # have no mandateId, and a manifest written before this change has none either. Either way
+        # the message cannot be in the database, which is the correct answer rather than a crash.
+        $mandateId = if ($m.PSObject.Properties['mandateId']) { [string]$m.mandateId } else { '' }
+        if ($mandateId) { [void]$publishedMandateIds.Add($mandateId) }
+        $inDb  = $mandateId -and $db.Contains($mandateId)
         $inDlq = $dlq.Contains($txn)
 
         $bucket = if ($inDb -and $inDlq) { 'Both' }
@@ -709,7 +735,14 @@ function Get-WwReconciliationBuckets {
         }
     }
 
-    $unexpected = @(@($db) + @($dlq) | Select-Object -Unique | Where-Object { -not $publishedTxns.Contains($_) })
+    # The @() must wrap the WHOLE pipeline: Select-Object -Unique unwraps a single result to a
+    # scalar, and $b.Unexpected[0] on a bare string yields its first CHARACTER.
+    $unexpected = @(
+        @(
+            @(@($db)  | Where-Object { -not $publishedMandateIds.Contains($_) }) +
+            @(@($dlq) | Where-Object { -not $publishedTxns.Contains($_) })
+        ) | Select-Object -Unique
+    )
 
     [pscustomobject]@{
         Published    = $publishedTxns.Count
@@ -842,8 +875,21 @@ function Get-WwPreflightBlockers {
     # messages, and if it forwards to a stopped or older engine it dead-letters AND acks them. The
     # queue still drains, the run still looks clean, and half the messages never executed.
     foreach ($c in @($Preflight.CompetingConsumers | Where-Object { $_ })) {
+        # A STOPPED Container App runs no replicas and no KEDA scaler, so it cannot take a share of
+        # the queue. Judging contention from min/max replicas alone raised a FALSE blocker against a
+        # deliberately stopped app (2026-09-08: wwqp5-runb-ordersuccessqueu-3879, runningStatus
+        # Stopped, min=0 max=1) - precisely the "looks like a product defect and is not" outcome this
+        # pre-flight exists to prevent, produced by the pre-flight itself.
+        #
+        # Deliberately narrow: ONLY the exact status 'Stopped' is exonerated. 'Running',
+        # 'Progressing', and an absent/unknown status all still block, because this check is the last
+        # thing standing between a split queue and a run that looks clean while half the messages
+        # were dead-lettered by another worker.
+        $runningStatus = $(if ($c.PSObject.Properties['RunningStatus']) { $c.RunningStatus })
+        if ($runningStatus -eq 'Stopped') { continue }
         $blockers.Add("Competing consumer '$($c.App)' is also bound to queue '$($c.Queue)' " +
-                      "(min=$($c.MinReplicas) max=$($c.MaxReplicas)). Stop it or park it at maxReplicas 0.")
+                      "(min=$($c.MinReplicas) max=$($c.MaxReplicas) status=$($runningStatus ?? 'unknown')). " +
+                      'Stop it or park it at maxReplicas 0.')
     }
 
     if ($Preflight.Broker -and -not $Preflight.Broker.QueueExists) {
@@ -1265,6 +1311,13 @@ else {
 $preflight.CompetingConsumers = @(Get-E2EQueueConsumers -ResourceGroup $cfg.ResourceGroup `
                                      -QueueName @($cfg.QueueName) -ExcludeNamePrefix $cfg.WorkerAppName)
 
+# Get-WwPreflightBlockers is pure (it returns strings and prints nothing), so the note belongs here.
+# Exonerating a stopped rival SILENTLY would be its own trap: start it mid-run and the messages split.
+foreach ($c in @($preflight.CompetingConsumers | Where-Object { $_ -and $_.RunningStatus -eq 'Stopped' })) {
+    Write-Note ("'$($c.App)' is bound to queue '$($c.Queue)' but is STOPPED (no replicas, no KEDA " +
+                'scaler) - not treated as contention. Do not start it while this run is in flight.')
+}
+
 # Broker
 Write-Sub 'Queue server'
 if (-not $AmqpUri) {
@@ -1462,7 +1515,8 @@ if ($preWarmEndUtc -and $startUtc -lt $preWarmEndUtc) {
 $publish  = Join-Path $ScriptDir 'Publish-WwQueueBurst.ps1'
 $burst = & $publish -QueueName $cfg.QueueName -SuccessCount $cfg.MessageCount -FailureCount $cfg.FailureCount `
                     -Label $burstLabel -AmqpUri $AmqpUri `
-                    -PublishPath $cfg.WorkerPublishPath -ManifestPath $manifestPath
+                    -PublishPath $cfg.WorkerPublishPath -ManifestPath $manifestPath `
+                    -BodyShape $BodyShape
 
 Write-Ok "Published $($burst.Total) message(s) to '$($burst.Queue)'."
 Write-Kv 'Manifest' $manifestPath
@@ -1483,8 +1537,14 @@ if ($warn) {
 
 $distinctTxn  = @($manifest | ForEach-Object txn  | Select-Object -Unique).Count
 $distinctBody = @($manifest | Where-Object { $_.kind -eq 'success' } | ForEach-Object body | Select-Object -Unique).Count
+# MandateId is the DATABASE reconciliation key, so its uniqueness is reported next to the other two
+# invariants rather than left implicit. Only success messages have one: deliberate failures are
+# published with an empty body.
+$mandateIds      = @($manifest | Where-Object { $_.kind -eq 'success' } | ForEach-Object mandateId | Where-Object { $_ })
+$distinctMandate = @($mandateIds | Select-Object -Unique).Count
 Write-Kv 'This run''s manifest entries' "$($manifest.Count) / $($manifestAll.Count) in file"
 Write-Kv 'Distinct transaction ids'     "$distinctTxn / $($manifest.Count)"
+Write-Kv 'Distinct MandateIds (db key)' "$distinctMandate / $($cfg.MessageCount)" $(if ($distinctMandate -eq $cfg.MessageCount) { 'Gray' } else { 'Red' })
 Write-Kv 'Distinct bodies'              "$distinctBody / $($cfg.MessageCount)"
 
 # ── Phase 7: drain ───────────────────────────────────────────────────────────
@@ -1604,15 +1664,26 @@ if (-not $SkipDatabase) {
     # itself renders by default - converts to NULL. Every timestamp came back empty on the
     # 2026-08-14 run for exactly that reason: 1000 rows returned, and every latency figure blank.
     # The styleless form accepts both separators.
+    # KEYED ON MandateId, not txn. The published body is the production mandate payload, whose
+    # per-message unique field is MandateId (see New-WwBurstBody). The manifest carries the same
+    # value, so this set is comparable with $m.mandateId. The separate manifest 'txn' rides on the
+    # AMQP CorrelationId and is what the DLQ and the worker logs are matched on - do not swap them.
+    #
+    # ISJSON(MessageContent) = 1 IS LOAD-BEARING. The pre-warm writes rows whose MessageContent is
+    # 'WARMUP-seq-1', not JSON, and JSON_VALUE over one of those raises
+    #   JSON text is not properly formatted. Unexpected character 'W' is found at position 0.
+    # which aborts the whole query. The watermark does not reliably exclude them and neither does a
+    # LIKE filter, because the optimiser is free to evaluate JSON_VALUE before either predicate.
     $rows = Invoke-WwSqlQuery -ConnectionString $SqlConnectionString -Query @"
-SELECT JSON_VALUE(MessageContent, '$.txn') AS Txn,
+SELECT JSON_VALUE(MessageContent, '$.MandateId') AS Txn,
        Status,
        TRY_CONVERT(int, AttemptNumber) AS AttemptNumber,
        CONVERT(varchar(33), TRY_CONVERT(datetime2(3), StartedAtUtc),    126) AS StartedAtUtc,
        CONVERT(varchar(33), TRY_CONVERT(datetime2(3), ProcessingAtUtc), 126) AS ProcessingAtUtc,
        CONVERT(varchar(33), TRY_CONVERT(datetime2(3), FinishedAtUtc),   126) AS FinishedAtUtc
 FROM $($cfg.JobTable)
-WHERE $($d.JobIdColumn) > $watermark;
+WHERE $($d.JobIdColumn) > $watermark
+  AND ISJSON(MessageContent) = 1;
 "@
     $dbTxns  = @($rows | ForEach-Object { $_.Txn } | Where-Object { $_ })
     $dupRows = @($dbTxns | Group-Object | Where-Object { $_.Count -gt 1 }).Count

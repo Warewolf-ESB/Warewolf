@@ -64,6 +64,15 @@ param(
 
     [string] $ManifestPath,
 
+    # WHICH PAYLOAD SHAPE TO PUBLISH. Each queue's trigger declares its own input contract, so one
+    # body shape cannot serve every queue:
+    #   Mandate  - the mandate/collection document (order-success-queue and similar).
+    #   Profiler - the FLAT 16-field body that trigger 9923dc51 (profiler.profile.request) binds,
+    #              one property per declared workflow input.
+    # Default stays Mandate so existing order-success runs are unaffected.
+    [ValidateSet('Mandate', 'Profiler')]
+    [string] $BodyShape = 'Mandate',
+
     # Dot-source the pure helpers for unit testing without touching a broker.
     [switch] $LoadFunctionsOnly
 )
@@ -112,22 +121,158 @@ function New-WwBurstTxn {
 
 function New-WwBurstBody {
     <#
-        Distinct JSON content per message, so duplicate EXECUTION is visible in the database rows
-        and not only in the worker logs. orderId carries the index and amount varies with it.
+        The production mandate/collection payload. Distinct JSON content per message, so duplicate
+        EXECUTION is visible in the database rows and not only in the worker logs - here that comes
+        from MandateId (a fresh GUID per message) plus InsertedOn.
+
+        MandateId IS THE RECONCILIATION KEY. Invoke-WwQueueLoadTest.ps1 reads it back out of the
+        stored message with JSON_VALUE(MessageContent, '$.MandateId'), so it must be unique per
+        message and must never be removed from this body. The AMQP CorrelationId carries the
+        separate manifest 'txn' instead (see the publish loop), which is what dead-letter
+        attribution and the worker's [Txn:...] log prefix use. Two identifiers, two purposes:
+        MandateId reconciles against the DATABASE, txn reconciles against the DLQ and the logs.
+
+        -Depth 5 is REQUIRED, not decorative: ConvertTo-Json defaults to depth 2 and would render
+        the nested ClearWinnerStrategy objects as type names instead of JSON.
+
+        [ordered] preserves the field order of the source samples. Nothing depends on the order,
+        but a diff against a captured production message is unreadable without it.
     #>
     [CmdletBinding()]
     param(
-        [Parameter(Mandatory)][string] $Label,
-        [Parameter(Mandatory)][string] $QueueName,
-        [Parameter(Mandatory)][string] $Txn,
-        [Parameter(Mandatory)][int] $Index
+        [Parameter(Mandatory)][string] $MandateId,
+        [ValidateSet('Mandate', 'Profiler')][string] $Shape = 'Mandate'
     )
-    @{
-        orderId = ('{0}-S-{1:d4}' -f $Label, $Index)
-        amount  = (100 + $Index)
-        queue   = $QueueName
-        txn     = $Txn
-    } | ConvertTo-Json -Compress
+
+    # ── Profiler shape ────────────────────────────────────────────────────────────────
+    # A FLAT object with one property per input declared by trigger 9923dc51
+    # (profiler.profile.request -> ProfilerServices\ProfilerWrapper\RequestForProfiling).
+    #
+    # It must be flat and the names must match, because MessageToInputsMapper binds by looking up
+    # each declared input's Value against a TOP-LEVEL property (MessageToInputsMapper.cs:49):
+    #     jObject.Properties().FirstOrDefault(p => p.Name == input.messageValue)
+    # A nested document cannot bind, and the trigger must have MapEntireMessage = false - with true
+    # the mapper puts the raw message into inputs[0] ONLY (MessageToInputsMapper.cs:31-33) and the
+    # other 15 inputs stay unbound, which dead-lettered all 10 messages of 'uat2-nowarm-profiler-1'.
+    #
+    # THE 19-FIELD MANDATE DOCUMENT IS THIS WORKFLOW'S OUTPUT, NOT ITS INPUT. Publishing it here
+    # bound only 4 of the 16 inputs. RequestForProfiling.bite BUILDS the mandate fields from these
+    # inputs - DebitRunID <- [[MandateDRI]], ExtractScheduleId <- [[ResultPaymentCycle]][[DRI]],
+    # SentOn <- [[ResultPresentedOnDate]] - and every mandate-only field is ColumnIODirection="None"
+    # in its DataList, an internal variable that cannot be passed in. The canonical wire document is
+    # proved by ProfilerWrapper\Queue\RequestForProfilingConsume.bite, which reads
+    # [[@RequestData.<Name>]] once per input. Use the Mandate shape only on a queue whose trigger
+    # actually declares those names.
+    #
+    # EVERY VALUE IS A JSON STRING, the numeric-looking ones included, because that is what the
+    # supplied production sample does ("ForPaymentCycle": "202402", "SourcePaymentId": "1234").
+    # Warewolf scalars are strings regardless, so quoting costs nothing and keeps a published body
+    # byte-comparable against a captured one.
+    #
+    # THE DATES, CYCLES AND RUN IDS COME FROM ONE ANCHOR rather than being rolled independently.
+    # They agree in the sample and must keep agreeing: ResultPresentedOnDate 2024-01-22 has day 22,
+    # which is both ResultDebitRunId and MandateDRI; its year-month 202401 is ResultPaymentCycle;
+    # ForPaymentCycle 202402 is the next cycle; ResultDate 2024-01-27 follows presentation. Rolling
+    # them separately produces contradictions the workflow then acts on - ExtractScheduleId is
+    # literally ResultPaymentCycle concatenated with the DRI, so a mismatched pair yields a
+    # schedule id that never existed, which is worse than an obviously wrong value.
+    if ($Shape -eq 'Profiler') {
+        $inv = [System.Globalization.CultureInfo]::InvariantCulture
+
+        # Day 1-28 only. Days 29-31 are absent from some months, and the presented date's day IS
+        # the debit run id, so an impossible date would silently become an impossible DRI.
+        $dri       = Get-Random -Minimum 1 -Maximum 29
+        $presented = (Get-Date '2024-01-01').AddMonths((Get-Random -Minimum 0 -Maximum 24)).AddDays($dri - 1)
+        $resultOn  = $presented.AddDays((Get-Random -Minimum 0 -Maximum 8))
+
+        return [ordered]@{
+            # Declared in the trigger's own input order, which is also the sample's order.
+            ForPaymentCycle       = $presented.AddMonths(1).ToString('yyyyMM', $inv)
+            MandateCanTrack       = @('true', 'false')     | Get-Random   # GetCollectionMethod IsEqual 'false'; lowercased by ProfilerMain
+            MandateDRI            = [string]$dri
+            MandateId             = $MandateId                            # reconciliation key: JSON_VALUE(MessageContent,'$.MandateId')
+            RelatedMandates       = [guid]::NewGuid().ToString().ToUpperInvariant()  # a DIFFERENT mandate's id, per the sample
+            ResultDate            = $resultOn.ToString('yyyy-MM-dd', $inv)
+            ResultDebitRunId      = [string]$dri
+            ResultMethod          = @('DebiCheck', 'DO')    | Get-Random  # TestFramework CSV header: ResultMethod-debicheck/do
+            ResultPaymentCycle    = $presented.ToString('yyyyMM', $inv)
+            ResultPresentedOnDate = $presented.ToString('yyyy-MM-dd', $inv)
+            ResultType            = @('Success', 'Failed')  | Get-Random  # GetCollectionMethod IsEqual 'Success'
+            ScoreThisResult       = 'true'                                # PINNED: the scoring branch is skipped when false (GetMandateDRIs IsEqual 'true')
+            IsFixedExtract        = @('true', 'false')      | Get-Random  # GetTrackingPeriod IsEqual 'true'
+            SourcePaymentId       = (Get-Random -Minimum 1000 -Maximum 10000).ToString($inv)  # 4-digit id, per the sample's "1234"
+            # PINNED EMPTY, and deliberately not randomised. The earlier 'LearningPhase'/'DEFAULT'
+            # domain was taken from the 19-field mandate document - which is this workflow's OUTPUT,
+            # not its input - so it was never evidence about a profiler request. Every actual
+            # request sample has both empty (the known-good /secure/...RequestForProfiling.json call)
+            # or omits them entirely, and that call is the only shape confirmed to execute cleanly.
+            # Empty still BINDS: the property is present, and EmptyIsNull is never enforced at
+            # runtime (TriggerDefinition.cs:90-91 declares it; nothing in the worker or engine reads
+            # it). Restore a non-empty value only against a request sample that actually carries one.
+            RequestType           = ''
+            FASGroup              = ''
+        } | ConvertTo-Json -Compress
+    }
+
+    # Machine-local time, matching the sample values ('09/11/2026 01:58:19.451'), with
+    # milliseconds - the higher resolution also keeps InsertedOn near-unique in its own right.
+    #
+    # InvariantCulture is REQUIRED. In a .NET format string '/' is the culture-specific DATE
+    # SEPARATOR PLACEHOLDER, not a literal: on a machine whose culture separates with '-' this
+    # renders '09-11-2026 04:06:01.657' and the consumer sees the wrong format. Invariant pins the
+    # separator to '/'. (Escaping as 'MM\/dd\/yyyy' also works but is easy to drop in an edit.)
+    $insertedOn = (Get-Date).ToString('MM/dd/yyyy HH:mm:ss.fff',
+                                      [System.Globalization.CultureInfo]::InvariantCulture)
+
+    # ── RANDOMISED per message, structure fixed ──────────────────────────────────────
+    # Every one of the 19 top-level fields and all 7 fields of the single ClearWinnerStrategy
+    # element are always present; only the VALUES vary. Randomising matters for two reasons: the
+    # harness asserts distinct bodies so that duplicate EXECUTION shows up as duplicate database
+    # rows, and identical payloads cannot reveal value-dependent behaviour.
+    #
+    # The string value sets are taken from the two known-good messages supplied by the operator
+    # rather than invented, so every generated value is one that has actually been seen on this
+    # queue. Numerics and dates are randomised inside ranges consistent with those samples.
+    #
+    # MandateId is NOT random here - it is the caller-supplied reconciliation key
+    # (JSON_VALUE(MessageContent,'$.MandateId')) and must stay unique per message.
+    $rndDate = { param($from, $to) (Get-Date '2024-01-01').AddDays((Get-Random -Minimum $from -Maximum $to)) }
+    $presentOn = & $rndDate 30 90
+    $sentOn    = & $rndDate 0 30
+    $extractOn = & $rndDate 0 90
+    $inv       = [System.Globalization.CultureInfo]::InvariantCulture
+
+    [ordered]@{
+        MandateId             = $MandateId
+        InsertedOn            = $insertedOn
+        CollectionMethod      = @('DebitOrder', 'N10')                  | Get-Random
+        DebitRunID            = Get-Random -Minimum 1  -Maximum 100
+        PresentForCollectionOn = $presentOn.ToString('yyyy-MM-dd', $inv)
+        Profile               = @('Weekday', 'Weekend')                 | Get-Random
+        TrackingDays          = Get-Random -Minimum 0  -Maximum 31
+        IsOverride            = Get-Random -Minimum 0  -Maximum 2
+        IsValid               = Get-Random -Minimum 0  -Maximum 2
+        SentOn                = $sentOn.ToString('yyyy-MM-dd', $inv)
+        ApplicableMonth       = Get-Random -Minimum 1  -Maximum 13
+        CollectionMonth       = Get-Random -Minimum 1  -Maximum 13
+        ExtractScheduleId     = $extractOn.ToString('yyyyMMdd', $inv)
+        ForPaymentCycle       = [int]('{0}{1:d2}' -f (Get-Random -Minimum 2024 -Maximum 2027), (Get-Random -Minimum 1 -Maximum 13))
+        FASGroup              = @('', 'DEFAULT')                        | Get-Random
+        ServiceType           = @('TWODAY', '')                         | Get-Random
+        RequestType           = @('', 'LearningPhase')                  | Get-Random
+        RecommendationTypes   = @('LearningPhase', 'InitialsTracking')  | Get-Random
+        ClearWinnerStrategy   = @(
+            [ordered]@{
+                CollectionMethod       = @('DebitOrder', 'N10')         | Get-Random
+                HighestFromDRI         = Get-Random -Minimum 1 -Maximum 32
+                HighestToDRI           = Get-Random -Minimum 1 -Maximum 32
+                PresentForCollectionOn = (& $rndDate 30 90).ToString('yyyy-MM-dd', $inv)
+                Score                  = Get-Random -Minimum 0 -Maximum 10
+                ServiceType            = @('TWODAY', '')                | Get-Random
+                TrackingDays           = Get-Random -Minimum 0 -Maximum 31
+            }
+        )
+    } | ConvertTo-Json -Compress -Depth 5
 }
 
 function New-WwBurstManifest {
@@ -141,24 +286,38 @@ function New-WwBurstManifest {
         [Parameter(Mandatory)][string] $QueueName,
         [Parameter(Mandatory)][string] $Label,
         [int] $SuccessCount = 0,
-        [int] $FailureCount = 0
+        [int] $FailureCount = 0,
+        [ValidateSet('Mandate', 'Profiler')][string] $BodyShape = 'Mandate'
     )
     $slug = Get-WwBurstQueueSlug -QueueName $QueueName
     $list = [System.Collections.Generic.List[object]]::new()
 
     for ($i = 1; $i -le $SuccessCount; $i++) {
-        $txn  = New-WwBurstTxn  -Label $Label -Slug $slug -Kind 'success' -Index $i
-        $body = New-WwBurstBody -Label $Label -QueueName $QueueName -Txn $txn -Index $i
-        $list.Add([pscustomobject]@{ txn = $txn; queue = $QueueName; kind = 'success'; bytes = $body.Length; body = $body })
+        $txn = New-WwBurstTxn -Label $Label -Slug $slug -Kind 'success' -Index $i
+        # Uppercase, unbraced - the form the production samples use.
+        $mandateId = [guid]::NewGuid().ToString().ToUpperInvariant()
+        $body = New-WwBurstBody -MandateId $mandateId -Shape $BodyShape
+        $list.Add([pscustomobject]@{ txn = $txn; mandateId = $mandateId; queue = $QueueName
+                                     kind = 'success'; bytes = $body.Length; body = $body })
     }
     for ($i = 1; $i -le $FailureCount; $i++) {
         $txn = New-WwBurstTxn -Label $Label -Slug $slug -Kind 'failure' -Index $i
-        $list.Add([pscustomobject]@{ txn = $txn; queue = $QueueName; kind = 'failure'; bytes = 0; body = '' })
+        # Deliberate failures are published with an EMPTY body, so they carry no MandateId and can
+        # never appear in the database. They are tracked through txn on the dead-letter queue.
+        $list.Add([pscustomobject]@{ txn = $txn; mandateId = $null; queue = $QueueName
+                                     kind = 'failure'; bytes = 0; body = '' })
     }
 
     $distinct = @($list | ForEach-Object txn | Select-Object -Unique).Count
     if ($distinct -ne $list.Count) {
         throw "Manifest has duplicate transaction ids ($distinct unique of $($list.Count)). Reconciliation would be meaningless."
+    }
+    # MandateId is the DATABASE reconciliation key, so a collision there is just as fatal as a txn
+    # collision - two messages would be indistinguishable in dbo.jobs1.
+    $successIds = @($list | Where-Object { $_.kind -eq 'success' } | ForEach-Object mandateId)
+    $distinctMandates = @($successIds | Select-Object -Unique).Count
+    if ($distinctMandates -ne $successIds.Count) {
+        throw "Manifest has duplicate MandateIds ($distinctMandates unique of $($successIds.Count)). Database reconciliation would be meaningless."
     }
     return , $list.ToArray()
 }
@@ -186,7 +345,7 @@ if (-not $AmqpUri) {
 }
 
 # Built and validated before the connection is even opened.
-$manifest = New-WwBurstManifest -QueueName $QueueName -Label $Label -SuccessCount $SuccessCount -FailureCount $FailureCount
+$manifest = New-WwBurstManifest -QueueName $QueueName -Label $Label -SuccessCount $SuccessCount -FailureCount $FailureCount -BodyShape $BodyShape
 
 Initialize-E2ERabbitClient -PublishPath $PublishPath
 $session = New-E2EBrokerSession -AmqpUri $AmqpUri -ClientName "wwqp-burst-$Label"

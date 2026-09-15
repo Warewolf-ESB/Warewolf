@@ -1,4 +1,4 @@
-#Requires -Version 7.0
+﻿#Requires -Version 7.0
 
 <#
     Pester 5 test suite for Invoke-WwQueueLoadTest.ps1.
@@ -22,10 +22,18 @@ BeforeAll {
     . $script:LoadTestScript -LoadFunctionsOnly
 
     function New-Manifest {
+        # Mirrors New-WwBurstManifest's two IDENTIFIER SPACES, which are deliberately not
+        # interchangeable: the database is keyed on mandateId (JSON_VALUE(MessageContent,
+        # '$.MandateId')) and the dead-letter queue on txn (the AMQP CorrelationId). The fixture
+        # keeps them DISTINCT on purpose - if mandateId simply echoed txn, a test could no longer
+        # catch the key mix-up that silently classifies every message as Neither.
+        #
+        # Deliberate failures are published with an empty body, so they carry NO mandateId and can
+        # never appear in the database - null here, exactly as New-WwBurstManifest writes them.
         param([int] $Success = 0, [int] $Failure = 0, [string] $Prefix = 'T')
         $m = @()
-        for ($i = 1; $i -le $Success; $i++) { $m += [pscustomobject]@{ txn = "$Prefix-S-$i"; kind = 'success' } }
-        for ($i = 1; $i -le $Failure; $i++) { $m += [pscustomobject]@{ txn = "$Prefix-F-$i"; kind = 'failure' } }
+        for ($i = 1; $i -le $Success; $i++) { $m += [pscustomobject]@{ txn = "$Prefix-S-$i"; mandateId = "$Prefix-M-S-$i"; kind = 'success' } }
+        for ($i = 1; $i -le $Failure; $i++) { $m += [pscustomobject]@{ txn = "$Prefix-F-$i"; mandateId = $null;            kind = 'failure' } }
         , $m
     }
 
@@ -687,7 +695,7 @@ Describe 'Get-WwPercentile' {
 Describe 'Get-WwReconciliationBuckets' {
 
     It 'puts a message with a row and no dead-letter in Clean' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 3) -DbTxns @('T-S-1','T-S-2','T-S-3') -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 3) -DbTxns @('T-M-S-1','T-M-S-2','T-M-S-3') -DlqTxns @()
         $b.Clean.Count   | Should -Be 3
         $b.DlqOnly.Count | Should -Be 0
         $b.Both.Count    | Should -Be 0
@@ -702,7 +710,9 @@ Describe 'Get-WwReconciliationBuckets' {
     It 'puts a message with BOTH in Both' {
         # The engine committed and the response was lost. Replaying duplicates committed work, so
         # this must never be collapsed into either of its neighbours.
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-S-1') -DlqTxns @('T-S-1')
+        # The DB hit is keyed on mandateId and the dead-letter hit on txn - the SAME message seen
+        # through both identifier spaces, which is precisely what Both means.
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-M-S-1') -DlqTxns @('T-S-1')
         $b.Both.Count    | Should -Be 1
         $b.Clean.Count   | Should -Be 0
         $b.DlqOnly.Count | Should -Be 0
@@ -710,13 +720,13 @@ Describe 'Get-WwReconciliationBuckets' {
 
     It 'puts a message with no trace at all in Neither' {
         # The failure a drained queue hides, and the only one findable purely by absence.
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 5) -DbTxns @('T-S-1','T-S-2') -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 5) -DbTxns @('T-M-S-1','T-M-S-2') -DlqTxns @()
         $b.Neither.Count | Should -Be 3
     }
 
     It 'always sums the four buckets to the published count' {
         $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 10 -Failure 5) `
-                -DbTxns @('T-S-1','T-S-2','T-S-3') -DlqTxns @('T-S-3','T-F-1','T-F-2')
+                -DbTxns @('T-M-S-1','T-M-S-2','T-M-S-3') -DlqTxns @('T-S-3','T-F-1','T-F-2')
         ($b.Clean.Count + $b.DlqOnly.Count + $b.Both.Count + $b.Neither.Count) | Should -Be $b.Published
         $b.Published | Should -Be 15
     }
@@ -727,12 +737,17 @@ Describe 'Get-WwReconciliationBuckets' {
         $b.WrongOutcome.Count | Should -Be 0
     }
 
-    It 'flags a deliberate failure that succeeded' {
+    It 'flags a deliberate failure that did not dead-letter' {
         # The failure path silently stopped working. Without this the run would report a clean pass.
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Failure 1) -DbTxns @('T-F-1') -DlqTxns @()
+        #
+        # The message is absent from BOTH observed sources, so it scores as Neither rather than
+        # Clean: a deliberate failure is published with an empty body and therefore has no
+        # mandateId, which is the only key the database is searched by. Detection is unaffected -
+        # what matters is that the expectation (DlqOnly) was not met and WrongOutcome says so.
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Failure 1) -DbTxns @() -DlqTxns @()
         $b.WrongOutcome.Count       | Should -Be 1
         $b.WrongOutcome[0].Expected | Should -Be 'DlqOnly'
-        $b.WrongOutcome[0].Actual   | Should -Be 'Clean'
+        $b.WrongOutcome[0].Actual   | Should -Be 'Neither'
     }
 
     It 'flags a valid message that dead-lettered' {
@@ -741,15 +756,34 @@ Describe 'Get-WwReconciliationBuckets' {
         $b.WrongOutcome[0].Expected | Should -Be 'Clean'
     }
 
-    It 'reports observed transaction ids that were never published' {
+    It 'reports observed ids that were never published' {
         # Stale rows above the watermark, or a competing publisher on the same queue.
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-S-1','STRANGER') -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-M-S-1','STRANGER') -DlqTxns @()
         $b.Unexpected.Count | Should -Be 1
         $b.Unexpected[0]    | Should -Be 'STRANGER'
     }
 
-    It 'matches transaction ids case-insensitively' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('t-s-1') -DlqTxns @()
+    It 'does not report a published mandateId as unexpected' {
+        # REGRESSION. Unexpected used to check BOTH observed sets against the txn set alone, so a
+        # database row keyed on mandateId - i.e. every correctly-reconciled message - was reported
+        # as an unpublished stray. A 5000-message run flagged all 5000 of its own rows as stale.
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 3) `
+                -DbTxns @('T-M-S-1','T-M-S-2','T-M-S-3') -DlqTxns @()
+        $b.Clean.Count      | Should -Be 3
+        $b.Unexpected.Count | Should -Be 0
+    }
+
+    It 'still reports a foreign dead-letter txn as unexpected' {
+        # The other identifier space must keep working: the DLQ is keyed on txn, so a txn nobody
+        # published is a competing publisher and must still surface.
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) `
+                -DbTxns @('T-M-S-1') -DlqTxns @('SOMEONE-ELSE')
+        $b.Unexpected.Count | Should -Be 1
+        $b.Unexpected[0]    | Should -Be 'SOMEONE-ELSE'
+    }
+
+    It 'matches identifiers case-insensitively' {
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('t-m-s-1') -DlqTxns @()
         $b.Clean.Count | Should -Be 1
     }
 
@@ -762,13 +796,13 @@ Describe 'Get-WwReconciliationBuckets' {
 Describe 'Get-WwRunVerdict' {
 
     It 'passes a run where every message reached its expected state' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 100) -DbTxns (1..100 | ForEach-Object { "T-S-$_" }) -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 100) -DbTxns (1..100 | ForEach-Object { "T-M-S-$_" }) -DlqTxns @()
         (Get-WwRunVerdict -Buckets $b).Pass | Should -BeTrue
     }
 
     It 'passes a mixed run where the deliberate failures dead-lettered' {
         $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 30 -Failure 5) `
-                -DbTxns (1..30 | ForEach-Object { "T-S-$_" }) -DlqTxns (1..5 | ForEach-Object { "T-F-$_" })
+                -DbTxns (1..30 | ForEach-Object { "T-M-S-$_" }) -DlqTxns (1..5 | ForEach-Object { "T-F-$_" })
         (Get-WwRunVerdict -Buckets $b).Pass | Should -BeTrue
     }
 
@@ -783,33 +817,33 @@ Describe 'Get-WwRunVerdict' {
     }
 
     It 'FAILS when messages were lost' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 10) -DbTxns @('T-S-1') -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 10) -DbTxns @('T-M-S-1') -DlqTxns @()
         $v = Get-WwRunVerdict -Buckets $b
         $v.Pass | Should -BeFalse
         ($v.Reasons -join ' ') | Should -Match 'LOST'
     }
 
     It 'FAILS when a message both committed and dead-lettered' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-S-1') -DlqTxns @('T-S-1')
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-M-S-1') -DlqTxns @('T-S-1')
         $v = Get-WwRunVerdict -Buckets $b
         $v.Pass | Should -BeFalse
         ($v.Reasons -join ' ') | Should -Match 'duplicates committed work'
     }
 
     It 'FAILS on duplicate database rows' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 2) -DbTxns @('T-S-1','T-S-2') -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 2) -DbTxns @('T-M-S-1','T-M-S-2') -DlqTxns @()
         $v = Get-WwRunVerdict -Buckets $b -DuplicateDbRows 1
         $v.Pass | Should -BeFalse
         ($v.Reasons -join ' ') | Should -Match 'executed more than once'
     }
 
     It 'FAILS on deliveries with no terminal outcome' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-S-1') -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-M-S-1') -DlqTxns @()
         (Get-WwRunVerdict -Buckets $b -UnknownOutcome 3).Pass | Should -BeFalse
     }
 
     It 'FAILS when the database was skipped, because "committed" is then unproven' {
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-S-1') -DlqTxns @()
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 1) -DbTxns @('T-M-S-1') -DlqTxns @()
         $v = Get-WwRunVerdict -Buckets $b -DatabaseSkipped
         $v.Pass | Should -BeFalse
         ($v.Reasons -join ' ') | Should -Match 'SKIPPED'
@@ -818,7 +852,7 @@ Describe 'Get-WwRunVerdict' {
     It 'names every failing criterion rather than just the first' {
         # A verdict that says FAIL without naming the reason sends the reader back to the raw logs,
         # which is the work this script exists to avoid.
-        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 10) -DbTxns @('T-S-1') -DlqTxns @('T-S-1')
+        $b = Get-WwReconciliationBuckets -Manifest (New-Manifest -Success 10) -DbTxns @('T-M-S-1') -DlqTxns @('T-S-1')
         $v = Get-WwRunVerdict -Buckets $b -DuplicateDbRows 2 -UnknownOutcome 1
         $v.Reasons.Count | Should -BeGreaterThan 2
     }
@@ -1148,10 +1182,10 @@ Describe 'Get-WwReconciliationBuckets dead-letter attribution' {
     }
 
     It 'reports Both when a row AND a dead-letter exist, because replay would duplicate committed work' {
-        $manifest = @([pscustomobject]@{ txn = 'committed-and-dlq'; kind = 'success' })
+        $manifest = @([pscustomobject]@{ txn = 'committed-and-dlq'; mandateId = 'mandate-committed-and-dlq'; kind = 'success' })
 
         $b = Get-WwReconciliationBuckets -Manifest $manifest `
-                                         -DbTxns @('committed-and-dlq') `
+                                         -DbTxns @('mandate-committed-and-dlq') `
                                          -DlqTxns @('committed-and-dlq')
 
         @($b.Both).Count | Should -Be 1
@@ -1159,14 +1193,14 @@ Describe 'Get-WwReconciliationBuckets dead-letter attribution' {
 
     It 'buckets sum to the published count so no message is silently unclassified' {
         $manifest = @(
-            [pscustomobject]@{ txn = 'a'; kind = 'success' }
-            [pscustomobject]@{ txn = 'b'; kind = 'success' }
-            [pscustomobject]@{ txn = 'c'; kind = 'success' }
-            [pscustomobject]@{ txn = 'd'; kind = 'success' }
+            [pscustomobject]@{ txn = 'a'; mandateId = 'm-a'; kind = 'success' }
+            [pscustomobject]@{ txn = 'b'; mandateId = 'm-b'; kind = 'success' }
+            [pscustomobject]@{ txn = 'c'; mandateId = 'm-c'; kind = 'success' }
+            [pscustomobject]@{ txn = 'd'; mandateId = 'm-d'; kind = 'success' }
         )
 
         $b = Get-WwReconciliationBuckets -Manifest $manifest `
-                                         -DbTxns  @('a', 'c') `
+                                         -DbTxns  @('m-a', 'm-c') `
                                          -DlqTxns @('b', 'c')
 
         $total = @($b.Clean).Count + @($b.DlqOnly).Count + @($b.Both).Count + @($b.Neither).Count

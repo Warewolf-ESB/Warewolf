@@ -123,6 +123,30 @@
     When false, a Listen-scoped SAS authorization rule is created instead and its
     connection string is applied as the plain ServiceBusConnection app setting
     (development only — prefer Managed Identity in production).
+.PARAMETER TriggerPath
+    Server-written queue trigger .bite (or a folder of them) naming the workflow to run and
+    how to map a message onto its inputs. Staged into the deployed package under
+    Settings/triggers and pointed at by the WwTrigger__Path app setting.
+
+    REQUIRED for the shovel-bridge path. Messages forwarded by a RabbitMQ Shovel are the
+    producer's own payloads and carry no {"workflow":...} envelope - the shovel forwards bytes
+    verbatim and cannot add one. Without a trigger the worker runs envelope-only and
+    dead-letters every such message WHILE STILL DRAINING THE QUEUE, so queue depth alone looks
+    identical to success. Omit it only for a worker whose producers emit the envelope contract.
+.PARAMETER TriggerFilter
+    Filter applied when -TriggerPath is a folder. Default: triggers*.bite (same contract as
+    Deploy-WwQueueProcessor.ps1). Ignored when -TriggerPath names a single file.
+.PARAMETER TriggerId
+    Selects one trigger when -TriggerPath resolves to several. Without it a multi-trigger
+    folder is rejected at plan time rather than guessed at.
+.PARAMETER TriggerRoute
+    Engine route for trigger-driven executions: secure (default) or public.
+.PARAMETER StripTriggerCredentials
+    Rewrites the STAGED copy of a plaintext trigger with UserName/Password nulled. This worker
+    never uses a trigger's broker credentials - it consumes from Service Bus, not RabbitMQ - so
+    shipping them into the Function App is avoidable exposure. OPT-IN, because it re-serializes
+    the file and so no longer matches what the Server wrote byte-for-byte; the plan warns when
+    credentials are present and this is off. Silently skipped for encrypted triggers.
 .PARAMETER WwExecutionBaseUrl
     REQUIRED. Execution Engine base URL, e.g. https://WWExecutionEngine.azurewebsites.net.
 .PARAMETER WwExecutionTenantId / WwExecutionResourceAppId / WwExecutionScope
@@ -177,6 +201,12 @@ param(
     [string] $WwExecutionScope,
     [string] $WwExecutionFunctionKey,
     [string] $WwExecutionManagedIdentityClientId,
+    # Queue trigger — supplies the workflow + input mapping for messages with no envelope
+    [string] $TriggerPath,
+    [string] $TriggerFilter = 'triggers*.bite',
+    [string] $TriggerId,
+    [ValidateSet('secure', 'public')] [string] $TriggerRoute = 'secure',
+    [switch] $StripTriggerCredentials,
     # Logging / feature env vars
     [nullable[bool]] $EnableConsoleLogging,
     # Logging output / control
@@ -628,6 +658,77 @@ $appSettings['WwExecution__UseClientSecretFallback'] = 'false'
 # %AppSetting% indirection, but Program.cs now resolves that key from the staged file at
 # cold start rather than from an app setting.
 
+# ── Queue trigger (WwTrigger:*) ────────────────────────────────────────────────
+# Resolved HERE so the plan states the workflow that will actually run, and so the states a
+# trigger can be in fail at PLAN time rather than at app startup - or, worse, silently at
+# runtime, where an unusable trigger dead-letters every message while the queue still drains.
+$script:TriggerFiles        = @()
+$script:TriggerStagePaths   = @()
+$script:TriggerHasCreds     = $false
+$script:TriggerSummary      = 'not configured (envelope-only: every message must name its own workflow)'
+$triggerStageFolder         = 'Settings/triggers'
+
+if (-not [string]::IsNullOrWhiteSpace($TriggerPath)) {
+    if (Test-Path -LiteralPath $TriggerPath -PathType Leaf) {
+        $script:TriggerFiles = @((Resolve-Path -LiteralPath $TriggerPath).Path)
+    }
+    elseif (Test-Path -LiteralPath $TriggerPath -PathType Container) {
+        $script:TriggerFiles = @(
+            Get-ChildItem -LiteralPath $TriggerPath -Filter $TriggerFilter -File |
+                Sort-Object Name | ForEach-Object { $_.FullName })
+        if ($script:TriggerFiles.Count -eq 0) {
+            throw "No trigger files matching '$TriggerFilter' were found in '$TriggerPath'. Refusing to deploy a worker with no trigger."
+        }
+    }
+    else {
+        throw "-TriggerPath not found (neither a file nor a folder): '$TriggerPath'."
+    }
+
+    foreach ($tf in $script:TriggerFiles) {
+        $raw = (Get-Content -LiteralPath $tf -Raw).Trim()
+
+        # A Windows DPAPI blob cannot be decrypted anywhere but the account that wrote it. The
+        # same guard the QueueProcessor applies - see docs/ShovelBridge-Architecture.md.
+        if ($raw.StartsWith('AQAAANCMnd8BFdER')) {
+            throw "Trigger '$tf' is a Windows DPAPI blob. It cannot be decrypted in the Function App - re-stage it as plaintext JSON or WFAES."
+        }
+        # An unsubstituted release token is not valid JSON; the parse error would not say why.
+        if ($raw.Contains('#{')) {
+            throw "Trigger '$tf' still contains an unsubstituted release token ('#{...}'). The release pipeline must substitute it before staging."
+        }
+        if ($raw.StartsWith('WFAES::')) {
+            Write-Note "Trigger '$([System.IO.Path]::GetFileName($tf))' is WFAES-encrypted. The worker is not wired for Key Vault decryption - stage it as plaintext JSON."
+        }
+        elseif ($raw.StartsWith('{')) {
+            try {
+                $parsed = $raw | ConvertFrom-Json
+                if ($parsed.PSObject.Properties.Name -contains 'UserName' -and -not [string]::IsNullOrWhiteSpace($parsed.UserName)) {
+                    $script:TriggerHasCreds = $true
+                }
+            } catch {
+                throw "Trigger '$tf' is not valid JSON: $($_.Exception.Message)"
+            }
+        }
+    }
+
+    if ($script:TriggerFiles.Count -gt 1 -and [string]::IsNullOrWhiteSpace($TriggerId)) {
+        throw ("$($script:TriggerFiles.Count) trigger files matched '$TriggerFilter' under '$TriggerPath'. " +
+               'Pass -TriggerId to say which one this worker serves - refusing to guess, because the wrong ' +
+               'workflow dead-letters every message while the queue still drains.')
+    }
+
+    $script:TriggerStagePaths = @($script:TriggerFiles | ForEach-Object { "$triggerStageFolder/$([System.IO.Path]::GetFileName($_))" })
+
+    # Point at the FILE when there is exactly one: a Server-written trigger is named by its GUID
+    # and would not match the triggers*.bite folder filter.
+    $appSettings['WwTrigger__Path']  = ($script:TriggerFiles.Count -eq 1) ? $script:TriggerStagePaths[0] : $triggerStageFolder
+    $appSettings['WwTrigger__Route'] = $TriggerRoute
+    if ($script:TriggerFiles.Count -gt 1) { $appSettings['WwTrigger__Filter'] = $TriggerFilter }
+    if (-not [string]::IsNullOrWhiteSpace($TriggerId)) { $appSettings['WwTrigger__TriggerId'] = $TriggerId }
+
+    $script:TriggerSummary = "$($script:TriggerFiles.Count) file(s) -> $($appSettings['WwTrigger__Path']) (route=$TriggerRoute)"
+}
+
 # Service Bus trigger binding options — the standard Azure Functions host.json override
 # convention (AzureFunctionsJobHost__extensions__<section>__<setting>). Defaults match
 # host.json's committed values, so an unoverridden deploy behaves identically to today.
@@ -677,6 +778,7 @@ Write-Host ("    {0,-28}: {1}" -f 'Service Bus namespace', "$ServiceBusNamespace
 Write-Host ("    {0,-28}: {1}" -f 'Service Bus queue', "$ServiceBusQueueName (maxDelivery=$maxDeliveryCount, lock=${lockDurationSeconds}s, DLQ on)")
 Write-Host ("    {0,-28}: {1}" -f 'Workflow', "$WorkflowName (Settings/servicebustrigger.bite — WOLF-8517)")
 Write-Host ("    {0,-28}: {1}" -f 'Trigger binding', "maxConcurrentCalls=$triggerMaxConcurrentCalls, prefetchCount=$triggerPrefetchCount, maxAutoLockRenewal=$triggerMaxAutoLockRenewalIso, autoComplete=$triggerAutoCompleteMessages")
+Write-Host ("    {0,-28}: {1}" -f 'Queue trigger', $script:TriggerSummary)
 Write-Host ("    {0,-28}: {1}" -f 'Worker listen auth', ($useMiForServiceBus ? 'Managed Identity (recommended)' : 'SAS connection string (dev only)'))
 Write-Host ("    {0,-28}: {1}" -f 'Shovel Send SAS rule', ($doCreateShovelRule ? "$ShovelSendRuleName (for the RabbitMQ Shovel bridge)" : 'not created'))
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)
@@ -991,6 +1093,40 @@ try {
     # func-publish and zip-deploy branches, since both publish from $StagingDir.
     Set-StagedServiceBusTriggerConfig -StagingDir $StagingDir -QueueName $ServiceBusQueueName -WorkflowName $WorkflowName
     if ($DryRun) { Write-Note "Settings/servicebustrigger.bite would be written into the staging directory (not applied — DryRun): QueueName=$ServiceBusQueueName, WorkflowName=$WorkflowName." } else { Write-Ok "Settings/servicebustrigger.bite staged: QueueName=$ServiceBusQueueName, WorkflowName=$WorkflowName." }
+    # -- Stage the queue trigger INTO the package --------------------------
+    # Must happen before the zip is built: WwTrigger__Path is resolved by the worker against
+    # its own content root, so the trigger has to travel inside the deployed package.
+    if ($script:TriggerFiles.Count -gt 0) {
+        $triggerDest = Join-Path $StagingDir 'Settings/triggers'
+        if ($DryRun) {
+            Write-Host "      [DRYRUN] stage $($script:TriggerFiles.Count) trigger file(s) -> '$triggerDest'" -ForegroundColor DarkGray
+        } else {
+            New-Item -ItemType Directory -Force -Path $triggerDest | Out-Null
+            foreach ($tf in $script:TriggerFiles) {
+                $destFile = Join-Path $triggerDest ([System.IO.Path]::GetFileName($tf))
+                $raw      = (Get-Content -LiteralPath $tf -Raw).Trim()
+
+                if ($StripTriggerCredentials -and $raw.StartsWith('{')) {
+                    # Re-serialized, so no longer byte-identical to what the Server wrote. Only the
+                    # fields this worker actually reads matter (WorkflowName / Inputs /
+                    # MapEntireMessage), and it never authenticates to RabbitMQ.
+                    $obj = $raw | ConvertFrom-Json
+                    foreach ($field in @('UserName', 'Password')) {
+                        if ($obj.PSObject.Properties.Name -contains $field) { $obj.$field = $null }
+                    }
+                    ($obj | ConvertTo-Json -Depth 64) | Set-Content -LiteralPath $destFile -Encoding utf8NoBOM
+                    Write-Ok "Staged $([System.IO.Path]::GetFileName($tf)) (broker credentials stripped)."
+                } else {
+                    Copy-Item -LiteralPath $tf -Destination $destFile -Force
+                    Write-Ok "Staged $([System.IO.Path]::GetFileName($tf))."
+                }
+            }
+        }
+        if ($script:TriggerHasCreds -and -not $StripTriggerCredentials) {
+            Write-Note 'The staged trigger carries plaintext broker credentials this worker never uses.'
+            Write-Note 'Pass -StripTriggerCredentials to null them in the staged copy.'
+        }
+    }
 
     $useFunc = $false
     switch ($PublishMethod) {

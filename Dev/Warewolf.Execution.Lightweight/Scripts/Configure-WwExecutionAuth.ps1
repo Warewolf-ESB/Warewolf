@@ -1755,17 +1755,40 @@ if ($script:PreservedEntraFields.Count -gt 0) {
 } else {
     Write-Host "    no extra WAREWOLF_ENTRA_CONFIG fields to preserve (none stored)" -ForegroundColor DarkGray
 }
-
-$settings = @(
-    "WAREWOLF_ENTRA_CONFIG=$($entraConfigValue | ConvertTo-Json -Compress)",
-    "WAREWOLF_SECURE_CONFIG=$SecureConfigMountPath"
+# A JSON app-setting value MUST be passed through a file, never on the command line. On
+# Windows, az consumes the inner double quotes of `--settings "K={"a":1}"`, so the stored
+# value arrives as {a:1} - not valid JSON. EntraIdentityOptions then cannot bind it and
+# Stage 10 rejects the run with "WAREWOLF_ENTRA_CONFIG is not valid JSON: Unexpected
+# character encountered while parsing value: c. Path 'tenantId'" - hit live on 2026-09-08
+# deploying 'wwuat'. The same defect silently disables WAREWOLF_LOGGING_CONFIG elsewhere,
+# where nothing verifies the value.
+#
+# --settings @file carries the value verbatim. -AsArray matters: ConvertTo-Json unwraps a
+# single-element array into a bare object, which az accepts and then silently no-ops.
+$settingObjects = @(
+    [ordered]@{ name = 'WAREWOLF_ENTRA_CONFIG';  value = ($entraConfigValue | ConvertTo-Json -Compress); slotSetting = $false }
+    [ordered]@{ name = 'WAREWOLF_SECURE_CONFIG'; value = $SecureConfigMountPath;                         slotSetting = $false }
 )
 if ($ClientSecret) {
-    $settings += "$ClientSecretSettingName=$ClientSecret"
+    $settingObjects += [ordered]@{ name = $ClientSecretSettingName; value = $ClientSecret; slotSetting = $false }
 }
 
-Set-FunctionAppSettings -Name $FunctionAppName -ResourceGroup $ResourceGroupName -Settings $settings
-Write-Host "    wrote $($settings.Count) app setting(s)" -ForegroundColor Green
+# .json extension, not GetTempFileName's .tmp: az infers the payload format from it.
+$settingsFile = Join-Path ([System.IO.Path]::GetTempPath()) ("ww-appsettings-{0}.json" -f [guid]::NewGuid().ToString('N'))
+try {
+    Write-TempJson -Path $settingsFile -Json ($settingObjects | ConvertTo-Json -Depth 5 -AsArray)
+    Invoke-AzCli @(
+        'functionapp','config','appsettings','set',
+        '--name',$FunctionAppName,
+        '--resource-group',$ResourceGroupName,
+        '--settings',"@$settingsFile"
+    ) | Out-Null
+}
+finally {
+    # Holds the client secret when one is configured - remove it even if az throws.
+    Remove-Item -LiteralPath $settingsFile -Force -ErrorAction SilentlyContinue
+}
+Write-Host "    wrote $($settingObjects.Count) app setting(s)" -ForegroundColor Green
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Stage 9 — Easy Auth

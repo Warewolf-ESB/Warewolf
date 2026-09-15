@@ -67,13 +67,47 @@ Describe 'New-WwBurstTxn' {
 
 Describe 'New-WwBurstBody' {
 
-    It 'produces valid JSON carrying the txn' {
-        $body = New-WwBurstBody -Label 'R2' -QueueName 'order-success-queue' -Txn 'T-1' -Index 3
-        $o = $body | ConvertFrom-Json
-        $o.txn     | Should -Be 'T-1'
-        $o.queue   | Should -Be 'order-success-queue'
-        $o.orderId | Should -Be 'R2-S-0003'
-        $o.amount  | Should -Be 103
+    It 'produces valid JSON carrying the caller-supplied MandateId' {
+        # MandateId, not txn, is what the body carries: it is the DATABASE reconciliation key, read
+        # back by Invoke-WwQueueLoadTest.ps1 as JSON_VALUE(MessageContent, '$.MandateId'). The txn
+        # rides on the AMQP CorrelationId instead and reconciles the dead-letter queue.
+        $o = New-WwBurstBody -MandateId 'MID-1' | ConvertFrom-Json
+        $o.MandateId | Should -Be 'MID-1'
+    }
+
+    It 'defaults to the 19-field Mandate document' {
+        $o = New-WwBurstBody -MandateId 'MID-1' | ConvertFrom-Json
+        @($o.PSObject.Properties.Name).Count | Should -Be 19
+        $o.PSObject.Properties.Name | Should -Contain 'ClearWinnerStrategy'
+    }
+
+    It 'produces the flat 16-field profiler request for -Shape Profiler' {
+        # The body profiler.profile.request binds (ProfilerServices\ProfilerWrapper\
+        # RequestForProfiling). One field per workflow input, flat - a nested document would not
+        # bind. Pinning the exact field set is what stops an input being dropped silently, which
+        # surfaces only as "Invalid Calculate" deep inside the workflow at run time.
+        $o = New-WwBurstBody -MandateId 'MID-2' -Shape Profiler | ConvertFrom-Json
+        $o.MandateId | Should -Be 'MID-2'
+        @($o.PSObject.Properties.Name) | Should -Be @(
+            'ForPaymentCycle', 'MandateCanTrack', 'MandateDRI', 'MandateId', 'RelatedMandates',
+            'ResultDate', 'ResultDebitRunId', 'ResultMethod', 'ResultPaymentCycle',
+            'ResultPresentedOnDate', 'ResultType', 'ScoreThisResult', 'IsFixedExtract',
+            'SourcePaymentId', 'RequestType', 'FASGroup')
+    }
+
+    It 'pins ScoreThisResult true and leaves RequestType/FASGroup empty on the profiler shape' {
+        # ScoreThisResult=false skips the scoring branch entirely (GetMandateDRIs IsEqual 'true'),
+        # so a randomised value would quietly stop exercising most of the workflow. RequestType and
+        # FASGroup are empty in every confirmed-good request sample.
+        $o = New-WwBurstBody -MandateId 'MID-3' -Shape Profiler | ConvertFrom-Json
+        $o.ScoreThisResult | Should -Be 'true'
+        $o.RequestType     | Should -Be ''
+        $o.FASGroup        | Should -Be ''
+    }
+
+    It 'gives the profiler shape a distinct MandateId per call, so database rows stay attributable' {
+        $ids = 1..20 | ForEach-Object { (New-WwBurstBody -MandateId "MID-$_" -Shape Profiler | ConvertFrom-Json).MandateId }
+        @($ids | Select-Object -Unique).Count | Should -Be 20
     }
 }
 
