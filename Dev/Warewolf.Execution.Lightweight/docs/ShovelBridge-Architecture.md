@@ -1544,6 +1544,34 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     `-ServiceBusMaxConcurrentCalls 2` (matching the live app-setting value above), so a future
     pipeline redeploy of `WarewolfServer-UAT` no longer silently drops this mitigation the way the
     persistence flag did — it's baked into the deploy call itself, not left as a manual follow-up.
+  - **2026-09-15 CORRECTION — that cap was INERT, and so was `MAX_CONCURRENT_EXECUTIONS`.** Azure
+    Functions' **dynamic concurrency overrides every static concurrency setting in `host.json`**,
+    `extensions.serviceBus.maxConcurrentCalls` included, and this engine's checked-in `host.json`
+    ships `concurrency.dynamicConcurrencyEnabled: true`. So every deploy above wrote the cap
+    correctly, loaded it correctly, and then had it ignored by the host. Measured on `wwuat3`
+    during a 5,000-message run carrying **both** `maxConcurrentCalls=2` and
+    `MaxConcurrentExecutions=2`:
+
+    ```
+    Applying status snapshot for function Host.Functions.ServiceBusWorkflowTrigger (Concurrency: 170)
+    ```
+
+    170 against a requested 2. The consequence was not slowness but **failure**: ~170 concurrent
+    executions per instance saturated `WarewolfDevOpsTestDb` (`GP_S_Gen5`, **1 vCore**, whose
+    concurrent-request ceiling is 120) — `The request limit for the database is 120 and has been
+    reached` **×10,646 in two minutes**, split across the workflow's own Dapper calls *and*
+    Hangfire's persistence writes — alongside host CPU 80–95% and 46 × `Possible thread pool
+    starvation detected`. Messages then dead-lettered.
+
+    **Fix:** `Deploy-WwExecutionEngine.ps1` gained an opt-in `-DisableDynamicConcurrency` switch
+    (`Update-HostJsonDynamicConcurrency`, Phase 3 step 3.0d) that pins
+    `concurrency.dynamicConcurrencyEnabled` to `false`, **creating** the block when absent. It is
+    deliberately NOT implied by `-ServiceBusMaxConcurrentCalls` — flipping a host-wide scaling mode
+    as a side effect of a per-binding cap is the kind of unreviewed default change this codebase
+    avoids — but passing the cap without it now emits a plan-time warning that the cap will not
+    take effect. **`pipeline-LOADTEST.yml`'s `Deploy_UAT` job still passes only
+    `-ServiceBusMaxConcurrentCalls 2`, so its cap remains inert until that job also passes
+    `-DisableDynamicConcurrency`.**
   - **Not yet actioned**: recommendation (2) (`ThreadPool.SetMinThreads()` floor) is implemented in
     `ThreadPoolStartupConfigurator`/`Program.cs` (this same branch, commit `78aa65fe71`) but its own
     deployment/verification status against a live pipeline run is still open — see that commit's own

@@ -303,6 +303,43 @@ Describe 'Deploy-WwExecutionEngine — helper functions' {
             } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
         }
     }
+
+    Context 'dynamic-concurrency helper' {
+        # Dynamic concurrency overrides the static cap exercised above, so these two helpers
+        # are only meaningful together — see Update-HostJsonDynamicConcurrency's comment.
+        It 'Update-HostJsonDynamicConcurrency sets dynamicConcurrencyEnabled false and preserves siblings' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "concurrency": { "dynamicConcurrencyEnabled": true, "snapshotPersistenceEnabled": true } }' |
+                Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonDynamicConcurrency -HostJsonPath $hj -Enabled $false | Should -BeTrue
+                $j = Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json
+                $j.concurrency.dynamicConcurrencyEnabled | Should -BeFalse
+                $j.concurrency.snapshotPersistenceEnabled | Should -BeTrue
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+        It 'Update-HostJsonDynamicConcurrency overwrites an already-set value (idempotent)' {
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "concurrency": { "dynamicConcurrencyEnabled": true } }' | Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonDynamicConcurrency -HostJsonPath $hj -Enabled $false | Should -BeTrue
+                (Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json).concurrency.dynamicConcurrencyEnabled | Should -BeFalse
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+        It 'Update-HostJsonDynamicConcurrency CREATES the concurrency block when absent, preserving the rest' {
+            # Deliberately unlike Update-HostJsonServiceBusConcurrency's no-op: an absent
+            # concurrency block means "inherit the host default", and the point of the call is
+            # to pin the value rather than inherit it.
+            $hj = Join-Path ([System.IO.Path]::GetTempPath()) ("hj-" + [guid]::NewGuid() + '.json')
+            '{ "version": "2.0", "functionTimeout": "00:10:00" }' | Set-Content -LiteralPath $hj -Encoding UTF8
+            try {
+                Update-HostJsonDynamicConcurrency -HostJsonPath $hj -Enabled $false | Should -BeTrue
+                $j = Get-Content -LiteralPath $hj -Raw | ConvertFrom-Json
+                $j.concurrency.dynamicConcurrencyEnabled | Should -BeFalse
+                $j.functionTimeout | Should -Be '00:10:00'
+            } finally { Remove-Item -LiteralPath $hj -Force -ErrorAction SilentlyContinue }
+        }
+    }
 }
 
 Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
@@ -454,6 +491,39 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
     It 'skips host.json serviceBus maxConcurrentCalls override by default (opt-in only)' {
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Not -Match 'Setting host.json extensions.serviceBus.maxConcurrentCalls'
+    }
+
+    It 'leaves dynamic concurrency alone by default (opt-in only)' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Not -Match 'Setting host.json concurrency.dynamicConcurrencyEnabled'
+    }
+
+    It 'pins dynamicConcurrencyEnabled to false with -DisableDynamicConcurrency' {
+        $callArgs = $script:commonArgs.Clone(); $callArgs.DisableDynamicConcurrency = $true
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Setting host.json concurrency.dynamicConcurrencyEnabled -> false'
+        $out | Should -Match 'static concurrency caps now apply'
+    }
+
+    It 'WARNS that -ServiceBusMaxConcurrentCalls is inert unless dynamic concurrency is disabled' {
+        # The trap this closes: the cap is written to host.json and then ignored by the host,
+        # so the deploy looks correct while running at the host's own chosen concurrency.
+        '{ "extensions": { "serviceBus": { "autoCompleteMessages": false } } }' |
+            Set-Content (Join-Path $global:pubDir 'host.json')
+        $callArgs = $script:commonArgs.Clone(); $callArgs.ServiceBusMaxConcurrentCalls = 2
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'will NOT take effect'
+        $out | Should -Match '-DisableDynamicConcurrency'
+    }
+
+    It 'does NOT warn when the cap is paired with -DisableDynamicConcurrency' {
+        '{ "extensions": { "serviceBus": { "autoCompleteMessages": false } } }' |
+            Set-Content (Join-Path $global:pubDir 'host.json')
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.ServiceBusMaxConcurrentCalls = 2
+        $callArgs.DisableDynamicConcurrency    = $true
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Not -Match 'will NOT take effect'
     }
 
     It 'sets host.json serviceBus maxConcurrentCalls with -ServiceBusMaxConcurrentCalls' {

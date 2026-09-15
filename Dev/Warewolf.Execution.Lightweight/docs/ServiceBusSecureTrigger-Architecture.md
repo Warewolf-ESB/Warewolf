@@ -312,7 +312,7 @@ Settings any more:
 | `serviceBusTrigger` field | Purpose |
 |---|---|
 | `executionTimeoutSeconds` | Hard time budget for a single workflow execution before it is treated as failed and left for Service Bus's own retry/backoff (default: 300 = 5 minutes). See flow step 4. |
-| `maxConcurrentExecutions` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 3. |
+| `maxConcurrentExecutions` | How many workflow executions this instance runs concurrently; excess deliveries wait for a free slot rather than all starting at once (default: 8). See flow step 3. **Bounds this trigger's own semaphore only — it does not bound how many messages the host dispatches.** While `host.json`'s `concurrency.dynamicConcurrencyEnabled` is `true` the host ignores the static caps and scales the trigger itself (measured 2026-09-15: `Concurrency: 170` against a requested `2`), so deploy with `Deploy-WwExecutionEngine.ps1 -DisableDynamicConcurrency` whenever this value is meant to hold. See `docs/ShovelBridge-Architecture.md`. |
 | `slotWaitTimeoutSeconds` | Hard bound on how long a delivery waits for a free execution slot before it is treated as failed (default: same as `executionTimeoutSeconds`). See flow step 3. |
 | `settlementTimeoutSeconds` | WOLF-8512: hard time budget for a single settlement call (`CompleteMessageAsync`/`DeadLetterMessageAsync`), using an independent timeout over `CancellationToken.None` rather than the host invocation's own token (default: 30). See "Failure classification" below. |
 | `heartbeatIntervalSeconds` | How often an in-flight execution refreshes its breadcrumb and this instance refreshes its own liveness heartbeat (default: 5). |

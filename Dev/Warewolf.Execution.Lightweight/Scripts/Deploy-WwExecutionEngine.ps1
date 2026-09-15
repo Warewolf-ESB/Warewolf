@@ -158,6 +158,17 @@
     Left at the SDK default (unset) unless explicitly supplied.  See WOLF-8512,
     docs/ShovelBridge-Architecture.md.
 
+    INERT ON ITS OWN: dynamic concurrency overrides every static concurrency setting in
+    host.json, so pair this with -DisableDynamicConcurrency or the cap does nothing.
+
+.PARAMETER DisableDynamicConcurrency
+    OPT-IN.  Pins host.json's concurrency.dynamicConcurrencyEnabled to false, creating the
+    concurrency block if absent.  REQUIRED for -ServiceBusMaxConcurrentCalls (and the
+    trigger's own MaxConcurrentExecutions) to actually bound concurrency: with dynamic
+    concurrency on, the Functions host ignores those caps and scales the trigger on its own
+    (measured: Concurrency 170 against a requested 2, saturating the workflow's SQL database).
+    Default: off, i.e. leave whatever host.json ships with.
+
 .PARAMETER ServiceBusTriggerExecutionTimeoutSeconds
 .PARAMETER ServiceBusTriggerMaxConcurrentExecutions
 .PARAMETER ServiceBusTriggerSlotWaitTimeoutSeconds
@@ -431,6 +442,14 @@ param(
     # 3.3 msg/s); the pool is what removes the other two, and they are 99.6% of what is left.
     [string] $RabbitMqCacheConfig = '{"enabled":true,"channelPool":false,"maxChannelsPerConnection":32,"idleTimeout":"00:05:00","maxLifetime":"00:30:00","topologyTtl":"00:00:30","maxConnections":4,"sweepInterval":"00:01:00"}',
     [nullable[int]] $ServiceBusMaxConcurrentCalls,  # opt-in: host.json serviceBus dispatch-concurrency cap (WOLF-8512)
+    # OPT-IN. Pins host.json's concurrency.dynamicConcurrencyEnabled to false. REQUIRED for
+    # -ServiceBusMaxConcurrentCalls to have any effect: dynamic concurrency overrides every
+    # static concurrency setting in host.json (see Update-HostJsonDynamicConcurrency). Not
+    # implied by -ServiceBusMaxConcurrentCalls on purpose — flipping a host-wide scaling mode
+    # as a side effect of a per-binding cap is exactly the kind of unreviewed default change
+    # the -RabbitMqCacheConfig note above warns about — but omitting it alongside that cap
+    # WARNS at plan time.
+    [switch] $DisableDynamicConcurrency,
 
     # ── ServiceBusTrigger tunables (WOLF-8516 — file-only, no env-var fallback) ──
     [nullable[int]] $ServiceBusTriggerExecutionTimeoutSeconds,
@@ -846,6 +865,43 @@ function Update-HostJsonServiceBusConcurrency {
     return $true
 }
 
+function Update-HostJsonDynamicConcurrency {
+    <#
+        Set host.json's concurrency.dynamicConcurrencyEnabled.
+
+        WHY THIS EXISTS. Azure Functions' DYNAMIC CONCURRENCY OVERRIDES EVERY STATIC
+        CONCURRENCY SETTING IN host.json, extensions.serviceBus.maxConcurrentCalls included.
+        While dynamicConcurrencyEnabled is true, -ServiceBusMaxConcurrentCalls is written to
+        the file, loads correctly, and is then ignored by the host — the cap silently does not
+        apply. Measured on wwuat3 2026-09-15: a deploy carrying maxConcurrentCalls=2 AND
+        MaxConcurrentExecutions=2 ran at "Host.Functions.ServiceBusWorkflowTrigger
+        (Concurrency: 170)", which saturated the 1-vCore serverless SQL database behind the
+        workflow ("The request limit for the database is 120 and has been reached" x10,646 in
+        two minutes) and dead-lettered the run.
+
+        Unlike Update-HostJsonServiceBusConcurrency — which no-ops when extensions.serviceBus
+        is absent, because absent there means "this binding is not configured" — a MISSING
+        concurrency block is CREATED. Its absence means "whatever the Functions host defaults
+        to", not "not applicable", and the entire point of this call is to pin the value
+        rather than inherit it. Preserves snapshotPersistenceEnabled and any sibling property.
+    #>
+    param([Parameter(Mandatory)][string] $HostJsonPath, [Parameter(Mandatory)][bool] $Enabled)
+    $json = Get-Content -LiteralPath $HostJsonPath -Raw | ConvertFrom-Json
+    if ($json.PSObject.Properties['concurrency']) {
+        $c = $json.concurrency
+        if ($c.PSObject.Properties['dynamicConcurrencyEnabled']) {
+            $c.dynamicConcurrencyEnabled = $Enabled
+        } else {
+            $c | Add-Member -NotePropertyName 'dynamicConcurrencyEnabled' -NotePropertyValue $Enabled
+        }
+    } else {
+        $json | Add-Member -NotePropertyName 'concurrency' `
+                           -NotePropertyValue ([pscustomobject]@{ dynamicConcurrencyEnabled = $Enabled })
+    }
+    $json | ConvertTo-Json -Depth 20 | Set-Content -LiteralPath $HostJsonPath -Encoding UTF8
+    return $true
+}
+
 function Save-DeploySummary {
     <#
         Write the run summary to $summaryPath — CRASH-SAFELY and INCREMENTALLY.
@@ -919,6 +975,7 @@ function Save-DeploySummary {
         verifyDecryption = [bool]$VerifyDecryption
         elasticsearch   = $enableEs
         performanceCounters = $enablePerfCounters
+        dynamicConcurrency  = (-not $DisableDynamicConcurrency)
         persistence     = $enablePersistence
         persistenceSettings = ($enablePersistence ? $PersistenceSettingsPath : $null)
         persistenceDbSource = ($enablePersistence ? $PersistenceDbSourcePath : $null)
@@ -1544,9 +1601,21 @@ if ($sbtRequired) {
 if ($triggerConfigRequired) {
     Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger queue/workflow', "QueueName=$ServiceBusTriggerQueueName, WorkflowName=$ServiceBusTriggerWorkflowName -> Settings/servicebustrigger.bite")
 }
+if ($DisableDynamicConcurrency) {
+    Write-Host ("    {0,-28}: {1}" -f 'Dynamic concurrency', 'PINNED OFF -> host.json concurrency.dynamicConcurrencyEnabled=false')
+}
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)
 Write-Host ("    {0,-28}: {1}" -f 'Run tag', "wwx-test-run=$runId  (rollback targets this tag only)")
 Write-Host ("    {0,-28}: {1}" -f 'DryRun', $DryRun)
+
+# A static concurrency cap is INERT while dynamic concurrency is on — the host overrides it.
+# Warn rather than silently flip a host-wide scaling mode; see -DisableDynamicConcurrency.
+if ($ServiceBusMaxConcurrentCalls -and -not $DisableDynamicConcurrency) {
+    Write-Host ''
+    Write-Host ("  [!] -ServiceBusMaxConcurrentCalls $ServiceBusMaxConcurrentCalls will NOT take effect: host.json leaves " +
+                'concurrency.dynamicConcurrencyEnabled enabled, and dynamic concurrency overrides every static ' +
+                'concurrency setting in host.json. Pass -DisableDynamicConcurrency to make the cap apply.') -ForegroundColor Yellow
+}
 Write-Host ''
 Write-Host '  ── Environment variables (App Settings) to apply ─────────────────────' -ForegroundColor White
 foreach ($k in $appSettings.Keys) {
@@ -1900,6 +1969,21 @@ try {
             }
         } else {
             Write-Note 'host.json not found in staging dir; skipping maxConcurrentCalls override.'
+        }
+    }
+
+    # 3.0d OPTIONAL host.json dynamic-concurrency pin (-DisableDynamicConcurrency).
+    # Dynamic concurrency OVERRIDES the static cap applied in 3.0c above, so the two are
+    # meaningless together — see Update-HostJsonDynamicConcurrency for the measured 170-vs-2
+    # case that motivated this.
+    if ($DisableDynamicConcurrency) {
+        $hostJsonPath = Join-Path $StagingDir 'host.json'
+        if (Test-Path -LiteralPath $hostJsonPath) {
+            Write-Step 'Setting host.json concurrency.dynamicConcurrencyEnabled -> false'
+            $null = Update-HostJsonDynamicConcurrency -HostJsonPath $hostJsonPath -Enabled $false
+            Write-Ok 'host.json dynamicConcurrencyEnabled set to false (static concurrency caps now apply).'
+        } else {
+            Write-Note 'host.json not found in staging dir; skipping dynamicConcurrencyEnabled pin.'
         }
     }
 
