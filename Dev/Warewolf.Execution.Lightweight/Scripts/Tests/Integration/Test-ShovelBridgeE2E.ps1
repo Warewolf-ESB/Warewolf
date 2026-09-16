@@ -1050,15 +1050,35 @@ Write-Ok "Run ID: $runId (all containers/network are suffixed with this to avoid
 # suite already uses.
 $rmqPasswordSecure = ConvertTo-SecureString $rmqPassword -AsPlainText -Force
 # NOTE: dot-sourcing shares scope with the caller, so ANY parameter of
-# Configure-RabbitMqShovel.ps1 that isn't passed explicitly here reverts to
-# THAT script's own default in this scope — including -ShovelName (its default
-# 'wwexecution-shovel' would silently clobber this script's own $ShovelName
-# otherwise, since it's the one parameter name the two scripts share).
+# Configure-RabbitMqShovel.ps1 that isn't passed explicitly here reverts to THAT
+# script's own default in this scope — merely BINDING an unpassed parameter
+# overwrites a like-named caller variable, whether or not the callee ever reads it.
+#
+# Passing the shared names through one at a time is NOT a general fix, and this
+# comment used to claim -ShovelName was "the one parameter name the two scripts
+# share". It wasn't: -ServiceBusResourceGroup was added to THIS script's param block
+# on 2026-09-14 without anyone noticing Configure-RabbitMqShovel.ps1 already declared
+# one, so it silently became '' here — AFTER Phase 0 had validated it as 'DEV2'.
+# Build 30688 published all 20,000 messages and then died at the Phase 4 drain wait
+# with "Cannot bind argument to parameter 'ResourceGroup' because it is an empty
+# string"; Phase 4d's dead-letter baseline read four lines earlier had already gone
+# silently null, which was the only earlier symptom. Same hazard, same file, as the
+# build 30638 $MessageCount clobber in Phase 4c below.
+#
+# So: save/restore EVERY name the two param blocks share. Test-ShovelBridgeE2E.Tests.ps1
+# pins that set by AST-diffing the two param blocks, so the next parameter either
+# script gains fails a unit test instead of a 20,000-message pipeline run.
+$savedShovelName              = $ShovelName
+$savedServiceBusResourceGroup = $ServiceBusResourceGroup
+$savedLoadFunctionsOnly       = $LoadFunctionsOnly
 . $configureScript -LoadFunctionsOnly `
     -RabbitMqManagementUri $mgmtUri `
     -RabbitMqUsername $rmqUser `
     -RabbitMqPassword $rmqPasswordSecure `
     -ShovelName $ShovelName
+$ShovelName              = $savedShovelName
+$ServiceBusResourceGroup = $savedServiceBusResourceGroup
+$LoadFunctionsOnly       = $savedLoadFunctionsOnly
 
 $containersStarted = [System.Collections.Generic.List[string]]::new()
 
@@ -1583,10 +1603,14 @@ try {
             # binds it to $null in this shared scope, clobbering THIS script's -MessageCount value.
             # That silently turned every reconciliation query below into "TOP ()", which SQL
             # Server rejects with "Incorrect syntax near ')'" (build 30636/30638). Save/restore
-            # around the call rather than trust that an unused param is harmless.
-            $savedMessageCount = $MessageCount
+            # around the call rather than trust that an unused param is harmless, and cover
+            # EVERY shared name (-LoadFunctionsOnly too), not just the one that bit us - the
+            # same AST-diff unit test that pins the Phase 0 dot-source pins this call site.
+            $savedMessageCount      = $MessageCount
+            $savedLoadFunctionsOnly = $LoadFunctionsOnly
             . $loadTestScript -LoadFunctionsOnly
-            $MessageCount = $savedMessageCount
+            $MessageCount      = $savedMessageCount
+            $LoadFunctionsOnly = $savedLoadFunctionsOnly
 
             $jobsDbConnStringPlain = ConvertFrom-SecureStringPlain $JobsDbConnectionString
             $fromUtcSql            = $runStartUtc.ToString('yyyy-MM-ddTHH:mm:ss.fffZ')

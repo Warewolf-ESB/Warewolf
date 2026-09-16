@@ -2332,6 +2332,48 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     already has the shape for this — `-DbVerificationMode` is a `ValidateSet`, so a third mode
     sits alongside `Jobs1`/`ProfilerRecommendation` rather than replacing them.
 
+- **2026-09-15 — build 30688: the 20,000-message run published cleanly and then died in the Phase 4
+  drain wait with `Cannot bind argument to parameter 'ResourceGroup' because it is an empty string`.
+  Same root-cause class as the build 30638 entry above, in the same file, at the *other* dot-source.**
+  - **What it looks like in the log, and why it reads as a pass.** Phase 4's publish leg prints
+    `PASS: published 20000 message(s); result polling skipped (--phase publish)` — that is the
+    *publish* verdict, not the run's. The step then fails at
+    `Test-ShovelBridgeE2E.ps1:1423` before the drain wait, the token mint, the result poll, Phase 4c's
+    `Profiler.ProfilerRecommendation` reconciliation and Phase 4d's dead-letter delta ever run. Nothing
+    about this run was verified; 20,000 messages were left in flight and teardown removed the shovel.
+  - **The 30-second tell.** Phase 4d's dead-letter *baseline* read four lines earlier
+    (`Get-WwDeadLetterCount`) went silently `$null`, so the `Dead-letter baseline for '<queue>': N`
+    line is simply absent from the log. `Get-WwDeadLetterCount` returns `$null` (never `0`) when the
+    namespace or resource group is absent — that is a pinned contract, not a hiccup — so a missing
+    baseline line means the reconciliation inputs are already broken, several minutes before the
+    drain wait announces it.
+  - **Root cause.** Phase 0 dot-sources `Configure-RabbitMqShovel.ps1 -LoadFunctionsOnly` to reuse
+    `Invoke-RabbitMqApi`. Dot-sourcing shares scope, and merely BINDING a parameter the call site did
+    not pass overwrites a like-named caller variable, whether or not the callee ever reads it. The two
+    param blocks share three names — `ShovelName`, `LoadFunctionsOnly` and, since 2026-09-14
+    (`6ba068eaf2`), `ServiceBusResourceGroup`. Only the first two were passed, so `'DEV2'` became `''`
+    in the caller's scope. Note the ordering that made this invisible: Phase 0's own guard at
+    `Test-ShovelBridgeE2E.ps1:911` validates `-ServiceBusResourceGroup` *before* the dot-source, so it
+    passed. `pipeline-LOADTEST.yml` was never at fault — it passes `-ServiceBusResourceGroup
+    '$(ServiceBusResourceGroup)'` and defines it as `DEV2` in the job's own `variables:` block.
+  - **`pipeline-CLOUD.yml` is unaffected.** Its `-VerifyWorkflowExecution` step uses the pre-minted
+    `-ResultPollAuthToken` path and passes no `-ServiceBusResourceGroup`, so it takes neither the
+    late-mint drain wait nor Phase 4d.
+  - **Fixed** by saving and restoring *every* shared name around both dot-sources (Phase 0 and Phase
+    4c), rather than passing the offending one through. Passing them through one at a time is what the
+    old comment did for `-ShovelName` — it claimed that was "the one parameter name the two scripts
+    share", and it stopped being true the moment either param block grew.
+  - **Regression-pinned, self-maintaining**, in `Test-ShovelBridgeE2E.Tests.ps1`: a test AST-diffs the
+    param blocks of `Test-ShovelBridgeE2E.ps1` against both dot-sourced scripts and fails if any shared
+    name is not saved *and* restored at that call site. Verified by reintroducing the defect — the
+    guard failed naming all eight violations; the whole `Scripts/Tests` tree is 840/840 green with the
+    fix in place. The two per-site hazard/fix demonstrations alongside it document the mechanism against
+    the *callee* and so pass in both states by design; the AST guard is the one that pins the fix.
+  - **Standing rule for this file:** any `. <script> -LoadFunctionsOnly` added here must save/restore
+    the intersection of the two param blocks. Twice now the "that parameter is unused, so the
+    dot-source is harmless" assumption has cost a full pipeline run.
+
+
 ## Promotion status
 
 This worker was originally built as a client example and has been promoted to a

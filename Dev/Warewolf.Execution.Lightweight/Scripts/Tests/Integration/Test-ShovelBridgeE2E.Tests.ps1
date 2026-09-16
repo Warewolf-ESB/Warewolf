@@ -157,37 +157,114 @@ Describe 'Test-ShovelBridgeE2E — Get-WwCorrelationGuidStem (pure, no DB)' {
 }
 
 
-Describe 'Test-ShovelBridgeE2E — Phase 4c dot-source scope clobbering (WOLF-8512 regression, build 30636/30638)' {
+Describe 'Test-ShovelBridgeE2E — dot-source scope clobbering (WOLF-8512 regression, builds 30636/30638/30688)' {
     <#
-        Phase 4c dot-sources Invoke-WwQueueLoadTest.ps1 (". `$loadTestScript -LoadFunctionsOnly")
-        purely to reuse its Invoke-WwSqlQuery helper. Dot-sourcing shares scope, and that script's
-        OWN param block declares a [Nullable[int]] $MessageCount with no default - since it isn't
-        passed at that call site, PowerShell binds it to $null in the SHARED scope, clobbering
-        THIS script's -MessageCount value. That turned every Phase 4c reconciliation query into
-        "TOP ()", which SQL Server rejected with "Incorrect syntax near ')'" - the exact failure
-        build 30636/30638 reported. These tests need no Docker/RabbitMQ/SQL/Service Bus: dot-
-        sourcing with -LoadFunctionsOnly loads only the target script's own param block and
-        function definitions before it returns.
+        Test-ShovelBridgeE2E.ps1 dot-sources two other scripts with -LoadFunctionsOnly purely to
+        reuse one helper from each: Configure-RabbitMqShovel.ps1 in Phase 0 (Invoke-RabbitMqApi)
+        and Invoke-WwQueueLoadTest.ps1 in Phase 4c (Invoke-WwSqlQuery). Dot-sourcing shares scope,
+        and merely BINDING a parameter the call site did not pass overwrites a like-named caller
+        variable - whether or not the callee ever reads it.
+
+        That has now shipped twice, from the same file:
+          * build 30636/30638 - Invoke-WwQueueLoadTest.ps1's unbound [Nullable[int]] $MessageCount
+            rebound to $null, turning every Phase 4c reconciliation query into "TOP ()", which SQL
+            Server rejects with "Incorrect syntax near ')'".
+          * build 30688 - Configure-RabbitMqShovel.ps1's unbound [string] $ServiceBusResourceGroup
+            rebound to '', AFTER Phase 0 had already validated it as 'DEV2'. The run published all
+            20,000 messages and then died at the Phase 4 drain wait with "Cannot bind argument to
+            parameter 'ResourceGroup' because it is an empty string".
+
+        The last It is the one that matters going forward: it AST-diffs the param blocks and fails
+        when a newly-shared name is not save/restored, instead of leaving it for a 20,000-message
+        pipeline run to find. The two per-site pairs above it document WHY that rule exists.
+
+        No Docker/RabbitMQ/SQL/Service Bus needed: -LoadFunctionsOnly loads only the target
+        script's own param block and function definitions before it returns.
     #>
 
     BeforeAll {
-        $script:LoadTestScript = Join-Path $PSScriptRoot '..\..\Invoke-WwQueueLoadTest.ps1'
+        $script:TargetScript    = Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1'
+        $script:LoadTestScript  = Join-Path $PSScriptRoot '..\..\Invoke-WwQueueLoadTest.ps1'
+        $script:ConfigureScript = Join-Path $PSScriptRoot '..\..\Configure-RabbitMqShovel.ps1'
+
+        function script:Get-ScriptParameterName {
+            param([Parameter(Mandatory)][string] $Path)
+            $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+                (Resolve-Path -LiteralPath $Path).ProviderPath, [ref] $null, [ref] $null)
+            if ($null -eq $ast.ParamBlock) { return @() }
+            @($ast.ParamBlock.Parameters | ForEach-Object { $_.Name.VariablePath.UserPath })
+        }
+
+        # Runs of spaces/tabs collapsed so the assertions are insensitive to how the '=' in each
+        # save/restore block happens to be column-aligned.
+        $script:TargetSource = (Get-Content -LiteralPath $script:TargetScript -Raw) -replace '[ \t]+', ' '
     }
 
-    It 'demonstrates the hazard: dot-sourcing Invoke-WwQueueLoadTest.ps1 -LoadFunctionsOnly clobbers an existing $MessageCount to $null' {
+    It 'demonstrates the Phase 4c hazard: dot-sourcing Invoke-WwQueueLoadTest.ps1 -LoadFunctionsOnly clobbers an existing $MessageCount to $null' {
         $MessageCount = 1000
         . $script:LoadTestScript -LoadFunctionsOnly
         $MessageCount | Should -BeNullOrEmpty -Because 'Invoke-WwQueueLoadTest.ps1 declares its own unbound [Nullable[int]] $MessageCount, which rebinds in the shared scope'
     }
 
-    It 'confirms the fix: saving and restoring $MessageCount around the dot-source preserves it' {
-        # Mirrors exactly the save/restore now used in Test-ShovelBridgeE2E.ps1 around its own
+    It 'confirms the Phase 4c fix: saving and restoring $MessageCount around the dot-source preserves it' {
+        # Mirrors exactly the save/restore used in Test-ShovelBridgeE2E.ps1 around its own
         # ". $loadTestScript -LoadFunctionsOnly" call.
         $MessageCount = 1000
         $savedMessageCount = $MessageCount
         . $script:LoadTestScript -LoadFunctionsOnly
         $MessageCount = $savedMessageCount
         $MessageCount | Should -Be 1000
+    }
+
+    It 'demonstrates the Phase 0 hazard: dot-sourcing Configure-RabbitMqShovel.ps1 -LoadFunctionsOnly clobbers an existing $ServiceBusResourceGroup to an empty string' {
+        # The build 30688 failure in one assertion. Note -ShovelName IS passed here, exactly as the
+        # real call site passes it - that is what makes this specific to the parameter nobody
+        # noticed the two scripts had started sharing.
+        $ServiceBusResourceGroup = 'DEV2'
+        . $script:ConfigureScript -LoadFunctionsOnly -ShovelName 'wwexecution-shovel-verify-e2e-loadtest'
+        $ServiceBusResourceGroup | Should -BeNullOrEmpty -Because 'Configure-RabbitMqShovel.ps1 declares its own unbound [string] $ServiceBusResourceGroup, which rebinds in the shared scope'
+    }
+
+    It 'confirms the Phase 0 fix: saving and restoring the shared names around the dot-source preserves them' {
+        $ShovelName              = 'wwexecution-shovel-verify-e2e-loadtest'
+        $ServiceBusResourceGroup = 'DEV2'
+
+        $savedShovelName              = $ShovelName
+        $savedServiceBusResourceGroup = $ServiceBusResourceGroup
+        . $script:ConfigureScript -LoadFunctionsOnly -ShovelName $ShovelName
+        $ShovelName              = $savedShovelName
+        $ServiceBusResourceGroup = $savedServiceBusResourceGroup
+
+        $ShovelName              | Should -Be 'wwexecution-shovel-verify-e2e-loadtest'
+        $ServiceBusResourceGroup | Should -Be 'DEV2'
+    }
+
+    It 'pins the rule: every parameter name shared with a dot-sourced script is both saved and restored at that call site' {
+        # The self-maintaining guard. Adding a parameter to EITHER script that collides with one of
+        # Test-ShovelBridgeE2E.ps1's own fails here the moment it is introduced, rather than being
+        # discovered from a pipeline log. -LoadFunctionsOnly is deliberately included in the shared
+        # set: it is passed at both call sites and so is harmless today, but exempting it by hand is
+        # exactly the kind of judgement call that let -ServiceBusResourceGroup through.
+        $targetParams = Get-ScriptParameterName -Path $script:TargetScript
+        $targetParams | Should -Not -BeNullOrEmpty
+
+        $violations = @()
+        foreach ($dep in @(
+            @{ Path = $script:ConfigureScript; Label = 'Configure-RabbitMqShovel.ps1 (Phase 0)' }
+            @{ Path = $script:LoadTestScript;  Label = 'Invoke-WwQueueLoadTest.ps1 (Phase 4c)' }
+        )) {
+            $shared = @(Get-ScriptParameterName -Path $dep.Path | Where-Object { $targetParams -contains $_ })
+            $shared | Should -Not -BeNullOrEmpty -Because "$($dep.Label) shares at least -LoadFunctionsOnly with Test-ShovelBridgeE2E.ps1; an empty set here means the AST diff itself has stopped working"
+
+            foreach ($name in $shared) {
+                $save    = "`$saved$name = `$$name"
+                $restore = "`$$name = `$saved$name"
+                if ($script:TargetSource -notlike "*$save*")    { $violations += "$($dep.Label): -$name is never saved before the dot-source (expected the line '$save')" }
+                if ($script:TargetSource -notlike "*$restore*") { $violations += "$($dep.Label): -$name is never restored after the dot-source (expected the line '$restore')" }
+            }
+        }
+
+        ($violations -join [Environment]::NewLine) | Should -BeNullOrEmpty -Because 'dot-sourcing rebinds EVERY unpassed parameter of the callee in the caller''s scope, so each shared name must be saved before the dot-source and restored after it (builds 30638 and 30688)'
     }
 }
 
