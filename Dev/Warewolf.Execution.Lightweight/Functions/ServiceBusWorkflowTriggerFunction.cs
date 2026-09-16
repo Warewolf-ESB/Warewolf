@@ -50,7 +50,11 @@ namespace Warewolf.Execution.Lightweight.Functions;
 ///         <see cref="Auth.Models.ServiceBusTriggerOptions.SlotWaitTimeout"/> so a slot held by a deadlocked execution cannot block a queued
 ///         delivery forever either, then execute in-process via <see cref="IWorkflowExecutor"/>, bounded by
 ///         <see cref="Auth.Models.ServiceBusTriggerOptions.ExecutionTimeout"/> — either bound expiring is treated as failed the same way an
-///         unexpected exception is (see below), instead of leaving the delivery waiting forever with no result ever recorded. A genuine
+///         unexpected exception is (see below), instead of leaving the delivery waiting forever with no result ever recorded. The two bounds
+///         differ in what happens to the idempotency claim: a SlotWaitTimeout expiry RELEASES it (execution never started), whereas an
+///         ExecutionTimeout expiry RETAINS it, because the un-cancellable execution is still running and a released claim there lets the
+///         redelivery double-execute (WOLF-8512, 2026-09-16 — see ProcessMessageAsync's "Bounded execution time" comment). Host drain during
+///         execution is a third outcome: delivery left unsettled, claim retained, nothing thrown. A genuine
 ///         business/activity failure is dead-lettered (not transient — retrying will not help).
 ///         A <see cref="WorkflowExecutionResult.IsTransientFailure"/> result (e.g. an <see cref="OutOfMemoryException"/> under Consumption-plan
 ///         cold-start memory pressure) is neither persisted nor dead-lettered — it is thrown instead, same as an unexpected exception below.
@@ -373,13 +377,31 @@ public sealed class ServiceBusWorkflowTriggerFunction
 
         // ── Bounded execution time ──────────────────────────────────────────────
         // IWorkflowExecutor.Execute is synchronous with no cancellation seam, so it cannot
-        // be interrupted directly. Run it on the thread pool and race it against a timeout
-        // instead: if it has not finished within ServiceBusTriggerOptions.ExecutionTimeout,
-        // treat the delivery as failed exactly like the unexpected-exception path below
-        // (release the claim, throw so Service Bus's own retry/backoff applies, eventually
-        // dead-lettering once maxDeliveryCount is exhausted) rather than waiting forever
-        // with no result ever recorded (see the 1000-message ShovelBridge load test
-        // incidents of 2026-08-24/25).
+        // be interrupted directly. Run it on the thread pool and race it instead, rather
+        // than waiting forever with no result ever recorded (see the 1000-message
+        // ShovelBridge load test incidents of 2026-08-24/25).
+        //
+        // WOLF-8512 (15,000-message UAT3 run, 2026-09-16): genuine timeout and host drain are
+        // raced SEPARATELY, and NEITHER releases the claim. The previous single
+        // `Task.Delay(ExecutionTimeout, cancellationToken)` conflated the two, and that
+        // conflation produced every duplicate execution in that run:
+        //   * The delay took the host invocation token, so host shutdown CANCELLED it. A
+        //     cancelled Task.Delay completes, and Task.WhenAny cannot tell "elapsed" from
+        //     "cancelled" - so a drain 8 seconds into a delivery reported "exceeded the
+        //     configured timeout (00:05:00)". Instance a7b5698... logged "Stopping JobHost"
+        //     at 08:18:11 and that false timeout at 08:18:12.
+        //   * Releasing the claim while the execution was STILL RUNNING is what actually
+        //     duplicated the work: Execute cannot be cancelled, so the abandoned execution
+        //     ran on to a SUCCESSFUL completion while the redelivery - no longer blocked by
+        //     a claim - executed the same message a second time. All 4 duplicates in that
+        //     run were exactly this, 1:1 with the only 4 timeouts (correlation ids
+        //     S-1953/S-1959 drain-induced, S-1465/S-1466 a genuine 5-minute expiry).
+        // Retaining the claim is safe because a claim whose holder genuinely died is already
+        // reclaimed by InstanceLivenessTimeout (six heartbeats, 30s floor) and, as a
+        // worst-case backstop, ClaimStaleAfter (functionTimeout + 1 minute). The accepted
+        // cost is that a truly hung execution now delays its redelivery to those windows
+        // instead of retrying immediately - tunable via
+        // WAREWOLF_SERVICEBUS_TRIGGER_CLAIM_STALE_AFTER_MINUTES.
         _logger.LogInformation(
             "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | About to call IWorkflowExecutor.Execute — last log point before the no-cancellation-seam call. ElapsedSinceReceivedMs={ElapsedMs} GcTotalMemoryBytes={GcTotalMemoryBytes} ProcessWorkingSetBytes={ProcessWorkingSetBytes}",
             correlationId, _triggerDefinition.WorkflowName, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds, GC.GetTotalMemory(false), Environment.WorkingSet);
@@ -388,6 +410,17 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // stage a future silent death is last recorded at.
         _store.RecordClaimStage(correlationId, $"AboutToExecute (GcTotalMemoryBytes={GC.GetTotalMemory(false)}, ProcessWorkingSetBytes={Environment.WorkingSet})");
         var executionTask = Task.Run(() => _executor.Execute(executionRequest));
+
+        // Set by the drain/timeout branches below to hand ownership of the outcome to the
+        // continuation. Retaining the claim (see the "Bounded execution time" comment) stops the
+        // redelivery double-executing, but on its own it would strand the message: this method
+        // has already thrown, so `result = await executionTask` below is never reached and the
+        // abandoned execution's success would never be persisted - every redelivery would then
+        // find the claim held with no result and leave the delivery unsettled until
+        // maxDeliveryCount dead-lettered a message that had actually succeeded. Persisting from
+        // the continuation is what lets the redelivery take Run's "result already recorded -
+        // completing without re-execution" path instead.
+        var abandoned = 0;
 
         // WOLF-8512 (build 30653 addendum): AboutToExecute/ExecutionReturned only bracket
         // execution - for an execution that runs a while before dying silently, that leaves
@@ -406,24 +439,70 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // execution keeps running and keeps consuming real resources, so the slot it
         // occupies must stay charged against the cap until it genuinely frees up.
         _ = executionTask.ContinueWith(
-            _ =>
+            finished =>
             {
                 _executionConcurrencyLimiter.Release();
                 heartbeatCts.Cancel();
                 heartbeatCts.Dispose();
+                // Only when this method gave up waiting (drain or timeout) - on the normal path
+                // the code below owns persistence and settlement.
+                if (Volatile.Read(ref abandoned) == 1)
+                {
+                    _ = PersistAbandonedOutcomeAsync(finished, correlationId, receivedAt);
+                }
             },
             CancellationToken.None,
             TaskContinuationOptions.ExecuteSynchronously,
             TaskScheduler.Default);
 
-        var winner = await Task.WhenAny(executionTask, Task.Delay(_triggerOptions.ExecutionTimeout, cancellationToken))
-            .ConfigureAwait(false);
-        if (winner != executionTask)
+        // The timeout timer gets its own source so it can be stopped the moment the race
+        // resolves: previously a healthy execution left one live ExecutionTimeout timer per
+        // message behind (15,000 of them across the 2026-09-16 run). drainTask is never
+        // awaited directly - only compared by reference - so its cancellation is never
+        // thrown here, and its registration on the invocation token is released with the
+        // invocation itself.
+        using var timeoutCts = new CancellationTokenSource();
+        var timeoutTask = Task.Delay(_triggerOptions.ExecutionTimeout, timeoutCts.Token);
+        var drainTask = Task.Delay(Timeout.Infinite, cancellationToken);
+        var winner = await Task.WhenAny(executionTask, timeoutTask, drainTask).ConfigureAwait(false);
+        timeoutCts.Cancel();
+
+        // Dead heat: if the execution crossed the finish line while the race was resolving, use
+        // its real result rather than the bound that fired alongside it. This is the 2026-09-16
+        // CFD8EFC2 case exactly - the workflow completed at 08:18:12.186 and the (drain-induced)
+        // timeout fired ~0.8s later, so a genuinely successful execution was reported as a
+        // 5-minute timeout and its message re-executed.
+        if (winner != executionTask && executionTask.IsCompletedSuccessfully)
         {
-            _store.ReleaseClaim(correlationId);
+            winner = executionTask;
+        }
+
+        if (winner == drainTask)
+        {
+            Interlocked.Exchange(ref abandoned, 1);
+            // Mirrors Run's two pre-execution drain guards - leave the delivery unsettled and
+            // let it redeliver to a healthy instance. Unlike those, an execution IS in flight
+            // here, so the claim STAYS: it is the only thing stopping the redelivery from
+            // running this message a second time while this one finishes.
             _logger.LogWarning(
-                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution exceeded the configured timeout ({Timeout}) — leaving message for standard Service Bus retry instead of waiting indefinitely. The abandoned execution keeps running in the background (IWorkflowExecutor.Execute has no cancellation seam) and will release its concurrency slot whenever it eventually finishes.",
-                correlationId, _triggerDefinition.WorkflowName, _triggerOptions.ExecutionTimeout);
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Host began draining while the execution was in flight — leaving the delivery unsettled for redelivery and RETAINING the claim so the redelivery cannot double-execute. The execution keeps running in the background (IWorkflowExecutor.Execute has no cancellation seam). ElapsedSinceReceivedMs={ElapsedMs}",
+                correlationId, _triggerDefinition.WorkflowName, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+            // Deliberately NOT a RecordClaimStage breadcrumb: the claim-stage trail is contracted to
+            // be AboutToExecute followed only by StillExecuting heartbeats (see
+            // ProcessMessage_ExecutionExceedsTimeout_RecordsAboutToExecute_ButNeverExecutionReturned
+            // and ..._HeartbeatStillTicksForTheAbandonedBackgroundExecution), and a terminal marker
+            // there would both break that contract and race the heartbeat. The warning above carries
+            // the same information.
+            return;
+        }
+
+        if (winner == timeoutTask)
+        {
+            Interlocked.Exchange(ref abandoned, 1);
+            _logger.LogWarning(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | Execution exceeded the configured timeout ({Timeout}) — leaving message for standard Service Bus retry instead of waiting indefinitely. The claim is RETAINED so the redelivery cannot double-execute; the abandoned execution keeps running in the background (IWorkflowExecutor.Execute has no cancellation seam) and will release its concurrency slot whenever it eventually finishes. ElapsedSinceReceivedMs={ElapsedMs}",
+                correlationId, _triggerDefinition.WorkflowName, _triggerOptions.ExecutionTimeout, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+            // No RecordClaimStage breadcrumb here either — see the drain branch above.
             throw new TimeoutException(
                 $"Workflow execution for correlationId '{correlationId}' exceeded the configured timeout ({_triggerOptions.ExecutionTimeout}).");
         }
@@ -512,6 +591,69 @@ public sealed class ServiceBusWorkflowTriggerFunction
                     cancellationToken: ct),
                 correlationId,
                 "DeadLetterMessageAsync (execution failed)").ConfigureAwait(false);
+        }
+    }
+
+    /// <summary>
+    /// WOLF-8512 (2026-09-16): persists the outcome of an execution this trigger stopped waiting
+    /// for — a host drain or an <see cref="Auth.Models.ServiceBusTriggerOptions.ExecutionTimeout"/>
+    /// expiry — once it eventually finishes on its own. <see cref="ProcessMessageAsync"/> has
+    /// already returned or thrown by then, so without this the abandoned execution's success is
+    /// never recorded, and the deliberately retained claim would keep every redelivery unsettled
+    /// until <c>maxDeliveryCount</c> dead-lettered a message that had in fact succeeded.
+    ///
+    /// <para>
+    /// Deliberately persists ONLY a success. A persisted Failed result satisfies <see cref="Run"/>'s
+    /// idempotency dedupe, so the redelivery would COMPLETE the message instead of dead-lettering
+    /// it, silently losing the business failure — the same reasoning as the transient-failure
+    /// path's "deliberately do NOT persist a result here" note. An abandoned failure is left to
+    /// redeliver normally.
+    /// </para>
+    ///
+    /// <para>Best-effort, and never throws: it runs on a continuation with nothing to catch it.</para>
+    /// </summary>
+    internal async Task PersistAbandonedOutcomeAsync(
+        Task<WorkflowExecutionResult> finished,
+        string correlationId,
+        DateTimeOffset receivedAt)
+    {
+        try
+        {
+            if (!finished.IsCompletedSuccessfully)
+            {
+                return;
+            }
+
+            var result = finished.Result;
+            if (!result.IsSuccess || result.IsTransientFailure)
+            {
+                return;
+            }
+
+            var outcome = new ServiceBusTriggerResult
+            {
+                CorrelationId  = correlationId,
+                Status         = ServiceBusTriggerStatus.Succeeded,
+                Workflow       = _triggerDefinition.WorkflowName,
+                Caller         = TrustedQueueCaller,
+                Outputs        = await result.ReadPayloadAsync(CancellationToken.None).ConfigureAwait(false),
+                Error          = null,
+                ReceivedAtUtc  = receivedAt,
+                CompletedAtUtc = DateTimeOffset.UtcNow,
+            };
+            _store.SaveResult(outcome);
+            // No RecordClaimStage breadcrumb: this runs on a continuation that races the heartbeat,
+            // whose trail is contracted to hold only AboutToExecute + StillExecuting entries.
+            _logger.LogWarning(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Workflow={Workflow} | An abandoned execution finished successfully after this trigger stopped waiting — result persisted so the redelivery completes the message instead of re-executing it. ElapsedSinceReceivedMs={ElapsedMs}",
+                correlationId, _triggerDefinition.WorkflowName, (DateTimeOffset.UtcNow - receivedAt).TotalMilliseconds);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(
+                ex,
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Failed to persist the outcome of an abandoned execution — the redelivery will re-execute or dead-letter exactly as it did before this path existed.",
+                correlationId);
         }
     }
 

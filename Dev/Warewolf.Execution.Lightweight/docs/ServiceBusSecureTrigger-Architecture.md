@@ -88,9 +88,19 @@ ServiceBusWorkflowTriggerFunction  (Warewolf.Execution.Lightweight, in-process)
       a timed-out execution is abandoned (left running in the background until it finishes on its own),
       not cancelled; its concurrency slot from step 3 is only released once it actually finishes, not
       merely once the timeout fires.
-      ├─ timeout                  → claim released, TimeoutException thrown — SB extension retry/backoff
-      │  applies, eventually dead-lettering once maxDeliveryCount is exhausted instead of the delivery
-      │  waiting forever with no result ever recorded
+      ├─ timeout                  → claim RETAINED, TimeoutException thrown — SB extension retry/backoff
+      │  applies instead of the delivery waiting forever with no result ever recorded. The claim is
+      │  deliberately held (WOLF-8512, 2026-09-16): the abandoned execution is still running and
+      │  usually still succeeds, so releasing it lets the redelivery execute the same message a
+      │  second time — the sole cause of all 4 duplicates in the 15,000-message UAT3 run. When that
+      │  abandoned execution does finish successfully, PersistAbandonedOutcomeAsync records its
+      │  result so the redelivery takes the "already recorded → complete without re-executing" path
+      │  rather than being stranded behind the held claim until maxDeliveryCount dead-letters it.
+      │  A dead holder is still reclaimed by InstanceLivenessTimeout, backstopped by ClaimStaleAfter.
+      ├─ host drain mid-execution → claim RETAINED, nothing thrown, delivery left unsettled for
+      │  redelivery to a healthy instance. Raced SEPARATELY from the timeout above: the delay used to
+      │  take the host invocation token, and because Task.WhenAny cannot distinguish a CANCELLED
+      │  delay from an EXPIRED one, a drain 8s into a delivery was reported as a 5-minute timeout
       ├─ transient failure (IsTransientFailure, e.g. OutOfMemoryException under Consumption-plan
       │  cold-start memory pressure) → thrown, NOT recorded, NOT dead-lettered — SB extension
       │  retry/backoff applies, same as an unexpected exception below
@@ -473,6 +483,16 @@ outcomes:
    cancellation token signals drain, and releases the claim if drain begins in the window between
    that check and the claim being taken. Correlation ids `…-000687`/`…-000688` were claimed 1.1s
    *after* their instance logged `Stopping JobHost` and leaked when its worker went away.
+6. **A claim must never be released while its execution is still running** (WOLF-8512, 2026-09-16).
+   `IWorkflowExecutor.Execute` has no cancellation seam, so an execution this trigger stopped
+   waiting for — drain or `ExecutionTimeout` — keeps running and usually still succeeds. Releasing
+   the claim there lets the redelivery execute the same message a second time; that, and only that,
+   produced all 4 duplicate executions in the 15,000-message UAT3 run of 2026-09-16 (correlation ids
+   `S-1953`/`S-1959` drain-induced, `S-1465`/`S-1466` a genuine 5-minute expiry). Invariant 5's
+   releases are the deliberate exception and stay correct: there, execution has not started.
+   Note the corollary — because the claim is held, the abandoned execution must persist its own
+   outcome when it finishes, or the message is stranded until `maxDeliveryCount` dead-letters work
+   that actually succeeded.
 
 ### Dead-letter triage sub-reasons
 

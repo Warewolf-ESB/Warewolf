@@ -684,8 +684,15 @@ public class ServiceBusWorkflowTriggerFunctionTests
 
     [TestMethod]
     [TestCategory("UnitTest")]
-    public async Task ProcessMessage_ExecutionExceedsTimeout_ThrowsTimeoutException_ReleasesClaim_NoResultPersisted()
+    public async Task ProcessMessage_ExecutionExceedsTimeout_ThrowsTimeoutException_RetainsClaim_NoResultPersisted()
     {
+        // WOLF-8512 (2026-09-16): this test previously asserted the OPPOSITE - that the claim is
+        // RELEASED on timeout - and that released claim was the sole cause of all 4 duplicate
+        // executions in the 15,000-message UAT3 run. IWorkflowExecutor.Execute has no cancellation
+        // seam, so the "timed out" execution is still running and usually still succeeds; letting
+        // the redelivery take the claim runs the same message a second time. The claim is now held
+        // until the abandoned execution finishes (see PersistAbandonedOutcomeAsync) or until
+        // InstanceLivenessTimeout/ClaimStaleAfter reclaim it from a genuinely dead holder.
         // gate is never set during the assertion window below - simulates an execution that
         // hangs (e.g. thread-pool starvation under load), not one that merely errors.
         var gate = new ManualResetEventSlim(false);
@@ -704,12 +711,190 @@ public class ServiceBusWorkflowTriggerFunctionTests
         await Assert.ThrowsExceptionAsync<TimeoutException>(
             () => sut.ProcessMessageAsync(payload, "corr-timeout", message, new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
 
-        Assert.IsTrue(store.TryClaim("corr-timeout"),
-            "The claim must be released on a timeout so a genuine Service Bus redelivery can re-execute.");
+        Assert.IsFalse(store.TryClaim("corr-timeout"),
+            "The claim must be RETAINED on a timeout: the abandoned execution is still running and will usually still succeed, so releasing it here lets the redelivery execute the same message a second time (the 4 duplicates of 2026-09-16).");
         Assert.IsFalse(store.TryGetResult("corr-timeout", out _),
-            "No result should be persisted for an execution that timed out.");
+            "No result should be persisted while the abandoned execution is still running.");
 
         gate.Set(); // let the orphaned background execution finish so it doesn't leak past the test
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_AbandonedExecutionLaterSucceeds_PersistsResult_SoRedeliveryCompletesWithoutReExecuting()
+    {
+        // The end-to-end anti-duplicate assertion. Retaining the claim alone would strand the
+        // message (every redelivery finds the claim held and no result, until maxDeliveryCount
+        // dead-letters work that actually succeeded), so the abandoned execution persists its own
+        // outcome when it finally finishes. The redelivery must then take Run's "result already
+        // recorded - completing without re-execution" path.
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
+        Assert.IsTrue(store.TryClaim("corr-abandoned"), "Simulates Run(...)'s claim before dispatching to this method.");
+
+        await Assert.ThrowsExceptionAsync<TimeoutException>(
+            () => sut.ProcessMessageAsync(new ServiceBusWorkflowMessage(), "corr-abandoned", NewMessage("{}"),
+                                          new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+
+        Assert.AreEqual(1, executor.CallCount);
+
+        // The trigger has thrown; now let the abandoned execution run to completion.
+        gate.Set();
+        Assert.IsTrue(await WaitUntilAsync(() => store.TryGetResult("corr-abandoned", out _)),
+            "The abandoned execution finished successfully, so its result must be persisted for the redelivery.");
+
+        // The redelivery: same correlation id, full Run path.
+        var actions = new FakeServiceBusMessageActions();
+        await sut.Run(NewMessage("{\"correlationId\":\"corr-abandoned\"}", correlationId: "corr-abandoned"), actions, CancellationToken.None);
+
+        Assert.AreEqual(1, executor.CallCount,
+            "THE duplicate-execution regression: the redelivery must complete from the recorded result, never execute the workflow a second time.");
+        Assert.AreEqual(1, actions.CompleteCalls, "The redelivery settles the message it could not settle the first time.");
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_ExecutionStillRunningAfterTimeout_RedeliveryDoesNotExecuteASecondTime()
+    {
+        // The hung case: the abandoned execution never finishes, so no result is ever persisted.
+        // The retained claim must still stop the redelivery re-executing, and the delivery is left
+        // unsettled rather than abandoned (an immediate Abandon would burn maxDeliveryCount in ms).
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMilliseconds(50) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
+        Assert.IsTrue(store.TryClaim("corr-still-running"));
+
+        await Assert.ThrowsExceptionAsync<TimeoutException>(
+            () => sut.ProcessMessageAsync(new ServiceBusWorkflowMessage(), "corr-still-running", NewMessage("{}"),
+                                          new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, CancellationToken.None));
+
+        var actions = new FakeServiceBusMessageActions();
+        await sut.Run(NewMessage("{\"correlationId\":\"corr-still-running\"}", correlationId: "corr-still-running"), actions, CancellationToken.None);
+
+        Assert.AreEqual(1, executor.CallCount,
+            "The first execution is still running — the redelivery must not start a second one.");
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        Assert.AreEqual(0, actions.AbandonCalls);
+
+        gate.Set(); // let the orphaned background execution finish so it doesn't leak past the test
+    }
+
+    // ── WOLF-8512 (2026-09-16) — host drain DURING execution ─────────────────────
+    //
+    // Distinct from the two pre-execution drain guards below: here the execution is already in
+    // flight. Task.Delay(ExecutionTimeout, cancellationToken) used to take the host invocation
+    // token, so drain CANCELLED the delay — and Task.WhenAny cannot tell "elapsed" from
+    // "cancelled", so the trigger reported "exceeded the configured timeout (00:05:00)" eight
+    // seconds into a delivery and released the claim. Instance a7b5698... logged "Stopping
+    // JobHost" at 08:18:11 and that false timeout at 08:18:12, duplicating S-1953 and S-1959.
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_HostDrainsDuringExecution_RetainsClaim_LeavesUnsettled_AndDoesNotThrow()
+    {
+        var started = new ManualResetEventSlim(false);
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            started.Set();
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        // Deliberately long: nothing in this test may depend on ExecutionTimeout elapsing.
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMinutes(5) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
+        var actions = new FakeServiceBusMessageActions();
+        Assert.IsTrue(store.TryClaim("corr-drain-during-exec"));
+
+        using var drain = new CancellationTokenSource();
+        var inFlight = sut.ProcessMessageAsync(new ServiceBusWorkflowMessage(), "corr-drain-during-exec", NewMessage("{}"),
+                                               actions, DateTimeOffset.UtcNow, drain.Token);
+        Assert.IsTrue(started.Wait(TimeSpan.FromSeconds(10)), "The execution should have started before the drain.");
+        drain.Cancel();
+
+        await inFlight; // must return, not throw — drain is not a failure
+
+        Assert.IsFalse(store.TryClaim("corr-drain-during-exec"),
+            "The claim must be RETAINED: the execution is still running on this draining instance, and a released claim lets the redelivery double-execute.");
+        Assert.AreEqual(0, actions.CompleteCalls);
+        Assert.AreEqual(0, actions.DeadLetterCalls);
+        Assert.AreEqual(0, actions.AbandonCalls,
+            "Leave the delivery unsettled so it redelivers to a healthy instance.");
+
+        gate.Set(); // let the orphaned background execution finish so it doesn't leak past the test
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task ProcessMessage_HostDrainsDuringExecution_DoesNotReportATimeoutThatNeverElapsed()
+    {
+        // The false-timeout regression itself. ExecutionTimeout is five minutes and the drain
+        // happens within milliseconds, so a TimeoutException here — or a wait anywhere near the
+        // configured bound — means Task.WhenAny is once again treating a CANCELLED delay as an
+        // EXPIRED one.
+        var started = new ManualResetEventSlim(false);
+        var gate = new ManualResetEventSlim(false);
+        var executor = new FakeWorkflowExecutor(_ =>
+        {
+            started.Set();
+            gate.Wait();
+            return new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" };
+        });
+        var store = new ServiceBusReplayAndResultStore(new MemoryStorage());
+        var triggerOptions = new ServiceBusTriggerOptions { ExecutionTimeout = TimeSpan.FromMinutes(5) };
+        var sut = NewSut(executor: executor, store: store, triggerOptions: triggerOptions);
+        Assert.IsTrue(store.TryClaim("corr-no-false-timeout"));
+
+        using var drain = new CancellationTokenSource();
+        var startedAt = DateTimeOffset.UtcNow;
+        var inFlight = sut.ProcessMessageAsync(new ServiceBusWorkflowMessage(), "corr-no-false-timeout", NewMessage("{}"),
+                                               new FakeServiceBusMessageActions(), DateTimeOffset.UtcNow, drain.Token);
+        Assert.IsTrue(started.Wait(TimeSpan.FromSeconds(10)));
+        drain.Cancel();
+
+        await inFlight; // a TimeoutException here IS the regression
+
+        var elapsed = DateTimeOffset.UtcNow - startedAt;
+        Assert.IsTrue(elapsed < TimeSpan.FromSeconds(30),
+            $"Returned after {elapsed.TotalSeconds:F1}s against a 5-minute ExecutionTimeout — the drain must be recognised as a drain, not waited out as a timeout.");
+
+        gate.Set(); // let the orphaned background execution finish so it doesn't leak past the test
+    }
+
+    /// <summary>
+    /// Polls <paramref name="condition"/> until it holds or the budget expires. Used for the
+    /// abandoned execution's outcome, which is persisted from a continuation after the trigger
+    /// method has already returned, so there is nothing to await directly.
+    /// </summary>
+    private static async Task<bool> WaitUntilAsync(Func<bool> condition, int attempts = 200, int delayMs = 25)
+    {
+        for (var i = 0; i < attempts; i++)
+        {
+            if (condition())
+            {
+                return true;
+            }
+
+            await Task.Delay(delayMs);
+        }
+
+        return condition();
     }
 
     [TestMethod]

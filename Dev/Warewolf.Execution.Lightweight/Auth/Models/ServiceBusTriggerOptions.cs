@@ -37,9 +37,8 @@ public sealed class ServiceBusTriggerOptions
     /// Hard time budget for a single workflow execution
     /// (<c>Functions.ServiceBusWorkflowTriggerFunction</c>'s call into
     /// <c>IWorkflowExecutor.Execute</c>). If execution has not completed within this
-    /// window, the trigger treats it as failed: the claim is released and a
-    /// <see cref="TimeoutException"/> is thrown so Service Bus's own retry/backoff
-    /// applies, exactly like the transient-failure/unexpected-exception paths — the
+    /// window, the trigger treats it as failed: a <see cref="TimeoutException"/> is thrown
+    /// so Service Bus's own retry/backoff applies — the
     /// message eventually dead-letters once <c>maxDeliveryCount</c> is exhausted instead
     /// of never reaching any terminal state (see the 1000-message ShovelBridge load test
     /// incidents of 2026-08-24/25, where a resource-starved Consumption-plan instance left
@@ -49,6 +48,18 @@ public sealed class ServiceBusTriggerOptions
     /// <b>Known limitation.</b> <c>IWorkflowExecutor.Execute</c> takes no
     /// <see cref="CancellationToken"/>, so a timed-out execution is abandoned, not
     /// cancelled — it keeps running in the background until it finishes on its own.
+    /// </para>
+    ///
+    /// <para>
+    /// <b>The claim is deliberately RETAINED on expiry</b> (WOLF-8512, 2026-09-16), unlike
+    /// the transient-failure, unexpected-exception and <see cref="SlotWaitTimeout"/> paths,
+    /// which all release it. Because the abandoned execution is still running and usually
+    /// still succeeds, releasing the claim here let the redelivery execute the same message
+    /// a second time — the sole cause of all 4 duplicate executions in the 15,000-message
+    /// UAT3 run of 2026-09-16. A claim whose holder genuinely died is still reclaimed by
+    /// <see cref="InstanceLivenessTimeout"/> and, as a backstop, <see cref="ClaimStaleAfter"/>;
+    /// the accepted cost is that a truly hung execution delays its redelivery to those
+    /// windows rather than retrying immediately.
     /// </para>
     /// </summary>
     public TimeSpan ExecutionTimeout { get; init; } = TimeSpan.FromMinutes(5);
@@ -75,8 +86,10 @@ public sealed class ServiceBusTriggerOptions
     /// ever reaching the dead-letter queue (see the 1000-message ShovelBridge load test
     /// incidents of 2026-08-24/25, where this exact silent-forever-wait was observed even
     /// after <see cref="ExecutionTimeout"/> and <see cref="MaxConcurrentExecutions"/> were
-    /// both in place). On expiry the claim is released and a <see cref="TimeoutException"/>
-    /// is thrown, same as <see cref="ExecutionTimeout"/> expiring.
+    /// both in place). On expiry the claim IS released and a <see cref="TimeoutException"/>
+    /// is thrown — correct here, and deliberately unlike <see cref="ExecutionTimeout"/>
+    /// expiring, because no execution has started yet, so a redelivery that takes the claim
+    /// cannot be duplicating work already in flight.
     ///
     /// <para>
     /// Defaults to the same value as <see cref="ExecutionTimeout"/>: under healthy load a
