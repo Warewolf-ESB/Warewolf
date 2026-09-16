@@ -58,6 +58,17 @@ Describe 'Deploy-WwJobProcessor — static' {
     }
 }
 
+Describe 'Deploy-WwJobProcessor — Graph /me call sites' {
+
+    It 'reaches the Graph /me endpoint from exactly one place (build 30696 guard)' {
+        # Any NEW `az ad signed-in-user show` outside Resolve-CurrentPrincipal would
+        # reintroduce the service-principal failure that broke the LOADTEST deploy on
+        # the sibling Deploy-WwExecutionEngine.ps1.
+        $src = Get-Content -LiteralPath $script:DeployScript -Raw
+        ([regex]::Matches($src, "'signed-in-user', 'show'")).Count | Should -Be 1
+    }
+}
+
 Describe 'Deploy-WwJobProcessor — helper functions' {
 
     BeforeAll {
@@ -80,6 +91,65 @@ Describe 'Deploy-WwJobProcessor — helper functions' {
         It 'returns the default when null and non-interactive' {
             $NonInteractive = $true
             Resolve-Toggle -Name 't' -Current $null -Default $true | Should -BeTrue
+        }
+    }
+
+    Context 'Resolve-CurrentPrincipal' {
+        <#
+            Mirrors the sibling guard in Deploy-WwExecutionEngine.Tests.ps1. `az ad
+            signed-in-user show` is a Microsoft Graph /me call, valid only for a DELEGATED
+            token; under `az login --service-principal` it fails with "/me request is only
+            valid with delegated authentication flow" - the failure that killed the LOADTEST
+            engine deploy (build 30696). This script carried the identical assumption.
+        #>
+        BeforeEach {
+            $global:azSeen      = [System.Collections.Generic.List[string]]::new()
+            $global:spShowFails = $false
+            $global:accountJson = '{"user":{"name":"dev@x","type":"user"}}'
+            function az {
+                $a = $args; $global:LASTEXITCODE = 0
+                $global:azSeen.Add(($a -join ' '))
+                if ($a[0] -eq 'account' -and $a -contains 'show') {
+                    if (-not $global:accountJson) { $global:LASTEXITCODE = 1; return $null }
+                    return $global:accountJson
+                }
+                if ($a[0] -eq 'ad' -and $a[1] -eq 'sp') {
+                    if ($global:spShowFails) { $global:LASTEXITCODE = 1; return $null }
+                    return 'sp-oid-999'
+                }
+                if ($a[0] -eq 'ad' -and $a[1] -eq 'signed-in-user') { return 'user-oid-111' }
+                return '{}'
+            }
+        }
+
+        AfterEach {
+            Remove-Variable -Name azSeen, spShowFails, accountJson -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'resolves an interactive user through the Graph /me endpoint' {
+            $p = Resolve-CurrentPrincipal
+            $p.ObjectId      | Should -Be 'user-oid-111'
+            $p.PrincipalType | Should -Be 'User'
+        }
+
+        It 'resolves a service principal WITHOUT touching signed-in-user (build 30696)' {
+            $global:accountJson = '{"user":{"name":"appid-abc","type":"servicePrincipal"}}'
+            $p = Resolve-CurrentPrincipal
+            $p.ObjectId      | Should -Be 'sp-oid-999'
+            $p.PrincipalType | Should -Be 'ServicePrincipal'
+            ($global:azSeen -join '|') | Should -Match 'ad sp show --id appid-abc'
+            ($global:azSeen -join '|') | Should -Not -Match 'signed-in-user'
+        }
+
+        It 'returns null when a service principal cannot look itself up in Graph' {
+            $global:accountJson = '{"user":{"name":"appid-abc","type":"servicePrincipal"}}'
+            $global:spShowFails = $true
+            Resolve-CurrentPrincipal | Should -BeNullOrEmpty
+        }
+
+        It 'returns null when there is no az session at all' {
+            $global:accountJson = ''
+            Resolve-CurrentPrincipal | Should -BeNullOrEmpty
         }
     }
 

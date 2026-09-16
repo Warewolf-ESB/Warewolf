@@ -1116,6 +1116,43 @@ function Grant-RoleAssignment {
            $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds))
 }
 
+function Resolve-CurrentPrincipal {
+    <#
+        Object id + RBAC principal type of whoever `az` is currently logged in as,
+        or $null when it cannot be resolved.
+
+        WHY NOT `az ad signed-in-user show`: that is a Microsoft Graph /me call, valid
+        ONLY for a DELEGATED (interactive user) token. Under `az login --service-principal`
+        - how Dev/.azure/pipeline-LOADTEST.yml authenticates its agent - Graph rejects it:
+
+            /me request is only valid with delegated authentication flow.
+
+        which is exactly what failed build 30696, the first run to reach this path after
+        -EncryptResources was switched on. `az account show` reports WHICH KIND of identity
+        holds the session (user.type), so branch on that and look the object id up the way
+        that identity supports.
+
+        Returns $null rather than throwing when the lookup fails (e.g. a service principal
+        without the Graph directory read needed to look ITSELF up, or a managed-identity
+        login whose user.name is not a real appId) - the caller decides whether that is fatal.
+    #>
+    $acctJson = Invoke-Az @('account', 'show', '-o', 'json') -AllowFail
+    if (-not $acctJson) { return $null }
+    $user = ($acctJson -join "`n" | ConvertFrom-Json).user
+    if (-not $user) { return $null }
+
+    if ($user.type -eq 'servicePrincipal') {
+        # user.name is the appId (client id) for an SP login; --id accepts it.
+        $oid = (Invoke-Az @('ad', 'sp', 'show', '--id', $user.name, '--query', 'id', '-o', 'tsv') -AllowFail) -join ''
+        if (-not $oid) { return $null }
+        return @{ ObjectId = $oid.Trim(); PrincipalType = 'ServicePrincipal'; Display = "the service principal '$($user.name)'" }
+    }
+
+    $oid = (Invoke-Az @('ad', 'signed-in-user', 'show', '--query', 'id', '-o', 'tsv') -AllowFail) -join ''
+    if (-not $oid) { return $null }
+    return @{ ObjectId = $oid.Trim(); PrincipalType = 'User'; Display = "the signed-in user ($($user.name))" }
+}
+
 function Resolve-FunctionRuntimePlan {
     <#
         Decide what THIS run does about the Function App's .NET runtime, from the
@@ -2154,13 +2191,46 @@ try {
                              -Scope $vaultId -PrincipalType 'ServicePrincipal' `
                              -Label "the '$AppName' managed identity"
 
-        # ONLY when encrypting now: the operator needs Secrets Officer to read/write the key.
+        # ONLY when encrypting now: whoever DRIVES the deploy must reach the key itself
+        # (the grant above covers the app's runtime identity, not this session's).
+        #
+        # Encrypt-Config.ps1 needs GET on the secret, and SET only when this run also
+        # GENERATES the key. So try the cheap thing first: when the key is already readable
+        # and no new key is being written, the grant below is a no-op - skip it. That matters
+        # because `az role assignment create` needs Microsoft.Authorization/roleAssignments/write
+        # on the vault, which a build service principal normally does NOT hold; without this
+        # probe an ALREADY-ENTITLED CI identity would still fail, just 60s later (six retries)
+        # and with a misleading "Entra replication" message.
         if ($doEncryptResources) {
-            $devOid = if ($DryRun) { '<dryrun-dev-oid>' } else { (Invoke-Az @('ad', 'signed-in-user', 'show', '--query', 'id', '-o', 'tsv')) -join '' }
-            Write-Step 'Assigning RBAC: Key Vault Secrets Officer -> current user (for encryption)'
-            Grant-RoleAssignment -PrincipalId $devOid -Role 'Key Vault Secrets Officer' `
-                                 -Scope $vaultId -PrincipalType 'User' -Label 'the signed-in user'
-            if (-not $DryRun) { Write-Note 'RBAC propagation can take ~1-2 min before the secret can be written.'; Start-Sleep -Seconds 30 }
+            $keyAlreadyReadable = (-not $GenerateNewKey) -and (-not $DryRun) -and
+                [bool](Invoke-Az @('keyvault', 'secret', 'show', '--vault-name', $KeyVaultName, '--name', $KeyVaultSecretName, '-o', 'json') -AllowFail)
+
+            if ($keyAlreadyReadable) {
+                Write-Note ("Key Vault secret '$KeyVaultSecretName' is already readable by the current identity; " +
+                            "skipping the 'Key Vault Secrets Officer' grant (this run reuses the existing key, so nothing is written).")
+            } else {
+                # DryRun keeps its placeholder so the PLANNED grant still shows in the echo.
+                $principal = if ($DryRun) {
+                    @{ ObjectId = '<dryrun-dev-oid>'; PrincipalType = 'User'; Display = 'the signed-in user' }
+                } else {
+                    Resolve-CurrentPrincipal
+                }
+                if (-not $principal) {
+                    throw ("Cannot reach the encryption key: secret '$KeyVaultSecretName' in vault '$KeyVaultName' is not " +
+                           "readable by the current Azure identity, and that identity's object id could not be resolved " +
+                           "(see Resolve-CurrentPrincipal - a service principal cannot use the Graph /me endpoint, and may " +
+                           "also lack the directory read needed to look itself up).`n" +
+                           "Fix: have an admin pre-grant the deploying identity a Key Vault data-plane role on the vault. " +
+                           "'Key Vault Secrets User' is enough to encrypt with an EXISTING key; " +
+                           "'Key Vault Secrets Officer' is required only when the key must also be created or rotated:`n" +
+                           "  az role assignment create --role 'Key Vault Secrets User' --assignee-object-id <object-id> " +
+                           "--assignee-principal-type ServicePrincipal --scope $vaultId")
+                }
+                Write-Step "Assigning RBAC: Key Vault Secrets Officer -> $($principal.Display) (for encryption)"
+                Grant-RoleAssignment -PrincipalId $principal.ObjectId -Role 'Key Vault Secrets Officer' `
+                                     -Scope $vaultId -PrincipalType $principal.PrincipalType -Label $principal.Display
+                if (-not $DryRun) { Write-Note 'RBAC propagation can take ~1-2 min before the secret can be written.'; Start-Sleep -Seconds 30 }
+            }
         }
     }
 

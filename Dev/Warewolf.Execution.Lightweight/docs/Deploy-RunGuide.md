@@ -38,7 +38,8 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 
 - An Azure subscription to deploy into.
 - You must be **logged in** and pointed at the right subscription (see Step 0 below).
-- The signed-in user must hold the roles below — see [Required roles & privileges](#required-roles--privileges).
+- The identity you are logged in as — an interactive **user** *or* a **service principal** (CI) —
+  must hold the roles below; see [Required roles & privileges](#required-roles--privileges).
 
 ### Required roles & privileges
 
@@ -51,7 +52,7 @@ the Key Vault **data-plane** role — every other role below must already be on 
 |---|---|---|---|
 | **Azure RBAC** (control) | **Contributor** at **subscription** scope (or RG scope if the RG already exists) | Always | Creates the resource group, storage, Function App, App Insights, managed identity, app settings, zip-deploy, and Easy Auth. Creating the RG itself needs subscription scope. |
 | **Azure RBAC** (control) | **User Access Administrator** (or **Owner** / **Role Based Access Control Administrator**), scope covering the Key Vault (RG or subscription) | When a Key Vault is in play (`-EncryptResources`, or any `-KeyVaultName`) | The script runs `az role assignment create` (`Microsoft.Authorization/roleAssignments/write`), which **Contributor does not include**. This is the most commonly-missed grant. |
-| **Key Vault** (data) | **Key Vault Secrets Officer** on the vault | When a Key Vault is in play | Reads/writes the AES-key secret. The deploy **auto-assigns this to the signed-in user** — *but only if the user already has User Access Administrator / Owner above.* Pre-grant it manually if not. |
+| **Key Vault** (data) | **Key Vault Secrets User** to encrypt with an **existing** key; **Key Vault Secrets Officer** when the key is also created/rotated | When a Key Vault is in play | Reads (and for a new key, writes) the AES-key secret. The deploy **self-grants Secrets Officer** — *but only if the identity already has User Access Administrator / Owner above.* It **skips that grant entirely when the key is already readable**, which is the normal CI path: a service principal usually cannot self-grant, so pre-grant **Secrets User** and the deploy proceeds without needing RBAC-write. Works for an SP as well as a user — the object id is resolved from `az account show`, not the Graph `/me` endpoint. |
 | **Microsoft Entra** (directory) | **Application Administrator** (or Graph `Application.ReadWrite.All`) | Unless `-SkipAuthProvisioning` | Creates/updates the Entra app registration, service principal, OAuth scope, app roles, and client secret. |
 | **Microsoft Entra** (directory) | Directory **read users** + write user **appRoleAssignments** (covered by Application Administrator + default directory read) | When `UserAssignments` are provided (Stage 6) | Looks up each user by UPN and assigns app roles. Avoidable with `-SkipUserAssignment` / empty `UserAssignments`. |
 
@@ -609,7 +610,7 @@ this run actually created.
 | System-assigned managed identity | When a Key Vault is in play | Enabled on the Function App so the engine can read the key at runtime. |
 | **Key Vault** | **Only with `-EncryptResources`** | RBAC-authorized vault. If a vault is needed but missing and `-EncryptResources` is **off**, the script **throws** (it will not create one). |
 | **AES key (stored as a Key Vault *secret*)** | **Only with `-EncryptResources`, real run** | The "key" is AES-256 material written as a JSON **secret** (`-KeyVaultSecretName`). The script does **not** create a Key Vault *cryptographic key* object — no `az keyvault key create` is ever called. |
-| Key Vault role assignments | When a Key Vault is in play | `Key Vault Secrets User` → Function App identity (always); `Key Vault Secrets Officer` → current user (only when encrypting). |
+| Key Vault role assignments | When a Key Vault is in play | `Key Vault Secrets User` → Function App identity (always); `Key Vault Secrets Officer` → the identity running the deploy (only when encrypting, **and only if the key is not already readable by it** — an already-entitled CI principal triggers no role write at all). |
 | Entra app registration, service principal, OAuth scope, app roles, client secret, Easy Auth config | Unless `-SkipAuthProvisioning` | Provisioned by `Configure-WwExecutionAuth.ps1`. Idempotent — re-runs upgrade in place. |
 | App settings / environment variables | Always | The engine's env-var map (see [§3](#3-parameter-reference)). |
 | `Resources\workflow-index.json` | When workflows are staged | Generated over the staged `Resources` and bundled into the deploy zip. |
@@ -619,7 +620,7 @@ this run actually created.
 | Item | Supplied via | Behaviour if missing |
 |---|---|---|
 | Azure subscription + active `az login` | `az login` (Step 0) | Pre-flight throws: "Not logged in to Azure CLI." |
-| The signed-in user's **roles/privileges** | Admin grants (see [Required roles & privileges](#required-roles--privileges)) | Not self-granted (except the Key Vault data-plane role). Azure returns authorization errors mid-run. |
+| The deploying identity's **roles/privileges** (user or service principal) | Admin grants (see [Required roles & privileges](#required-roles--privileges)) | Not self-granted (except the Key Vault data-plane role, and that only when the key is not already readable). Azure returns authorization errors mid-run. |
 | **Published package** | `-PublishPath` (folder or `.zip`) | Throws — you must `dotnet publish` yourself first; the script never builds. |
 | `secure.config` | `-SecureConfigPath` | Validated (plaintext auto-encrypted; encrypted validated decryptable); throws if unreadable/invalid. |
 | Workflow `.bite` resources | `-WorkflowsSourcePath` | Throws if the path doesn't exist. |

@@ -37,6 +37,13 @@ Describe 'Deploy-WwExecutionEngine — static' {
         $parseErrors | Should -BeNullOrEmpty
     }
 
+    It 'reaches the Graph /me endpoint from exactly one place (build 30696 guard)' {
+        # Any NEW `az ad signed-in-user show` outside Resolve-CurrentPrincipal would
+        # reintroduce the service-principal failure that broke the LOADTEST deploy.
+        $src = Get-Content -LiteralPath $script:DeployScript -Raw
+        ([regex]::Matches($src, "'signed-in-user', 'show'")).Count | Should -Be 1
+    }
+
     It 'rejects an invalid -PublishMethod via ValidateSet' {
         { & $script:DeployScript -PublishMethod 'NotAMethod' -LoadFunctionsOnly } | Should -Throw
     }
@@ -184,6 +191,66 @@ Describe 'Deploy-WwExecutionEngine — helper functions' {
         It 'throws when empty and -NonInteractive' {
             $NonInteractive = $true
             { Read-Required -Name 'AppName' -Current '' } | Should -Throw '*Required value*'
+        }
+    }
+
+    Context 'Resolve-CurrentPrincipal' {
+        <#
+            Build 30696 regression. `az ad signed-in-user show` is a Microsoft Graph /me
+            call, valid only for a DELEGATED token; under the `az login --service-principal`
+            that Dev/.azure/pipeline-LOADTEST.yml performs it fails outright with
+            "/me request is only valid with delegated authentication flow", which killed
+            Phase 3 the first time -EncryptResources reached this path.
+        #>
+        BeforeEach {
+            $global:azSeen      = [System.Collections.Generic.List[string]]::new()
+            $global:spShowFails = $false
+            $global:accountJson = '{"user":{"name":"dev@x","type":"user"}}'
+            function az {
+                $a = $args; $global:LASTEXITCODE = 0
+                $global:azSeen.Add(($a -join ' '))
+                if ($a[0] -eq 'account' -and $a -contains 'show') {
+                    if (-not $global:accountJson) { $global:LASTEXITCODE = 1; return $null }
+                    return $global:accountJson
+                }
+                if ($a[0] -eq 'ad' -and $a[1] -eq 'sp') {
+                    if ($global:spShowFails) { $global:LASTEXITCODE = 1; return $null }
+                    return 'sp-oid-999'
+                }
+                if ($a[0] -eq 'ad' -and $a[1] -eq 'signed-in-user') { return 'user-oid-111' }
+                return '{}'
+            }
+        }
+
+        AfterEach {
+            Remove-Variable -Name azSeen, spShowFails, accountJson -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'resolves an interactive user through the Graph /me endpoint' {
+            $p = Resolve-CurrentPrincipal
+            $p.ObjectId      | Should -Be 'user-oid-111'
+            $p.PrincipalType | Should -Be 'User'
+            ($global:azSeen -join '|') | Should -Match 'signed-in-user'
+        }
+
+        It 'resolves a service principal WITHOUT touching signed-in-user (build 30696)' {
+            $global:accountJson = '{"user":{"name":"appid-abc","type":"servicePrincipal"}}'
+            $p = Resolve-CurrentPrincipal
+            $p.ObjectId      | Should -Be 'sp-oid-999'
+            $p.PrincipalType | Should -Be 'ServicePrincipal'
+            ($global:azSeen -join '|') | Should -Match 'ad sp show --id appid-abc'
+            ($global:azSeen -join '|') | Should -Not -Match 'signed-in-user'
+        }
+
+        It 'returns null when a service principal cannot look itself up in Graph' {
+            $global:accountJson = '{"user":{"name":"appid-abc","type":"servicePrincipal"}}'
+            $global:spShowFails = $true
+            Resolve-CurrentPrincipal | Should -BeNullOrEmpty
+        }
+
+        It 'returns null when there is no az session at all' {
+            $global:accountJson = ''
+            Resolve-CurrentPrincipal | Should -BeNullOrEmpty
         }
     }
 
@@ -821,6 +888,20 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Match "Staging 'executionengine.settings.json'.*keyVaultName=kv-test.*keyVaultSecretName=dp-keyring-v1"
             $out | Should -Match 'Key Vault Secrets User'         # MI gets read access
             $out | Should -Not -Match 'Secrets Officer'           # dev role only when encrypting
+        }
+
+        It 'still plans the Secrets Officer grant when encrypting (probe-skip is a real-run-only shortcut)' {
+            # The "key already readable -> skip the grant" shortcut is gated on
+            # (-not $DryRun): a dry run never probes the vault, so the PLANNED grant must
+            # still appear. Without this, the probe added for build 30696 could silently
+            # swallow the grant for every run, not just entitled ones.
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.EncryptResources   = $true
+            $callArgs.KeyVaultName       = 'kv-test'
+            $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'Key Vault Secrets Officer'
+            $out | Should -Match 'the signed-in user'
         }
 
         It 'rejects an ES source file with the wrong name' {

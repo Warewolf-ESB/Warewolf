@@ -161,7 +161,9 @@ Highlights:
   optional **in-memory** round-trip decrypt (no plaintext on disk). Whenever sources
   are WFAES-encrypted you must still pass `-KeyVaultName`/`-KeyVaultSecretName` on every
   deploy so the engine's managed identity can decrypt them at runtime (the dev
-  *Secrets Officer* role + key generation are added only when `-EncryptResources` is set).
+  *Secrets Officer* role + key generation are added only when `-EncryptResources` is set,
+  and that role grant is **skipped when the deploying identity can already read the key** —
+  so a pre-entitled CI service principal never needs RBAC-write on the vault).
   **The identity running the deploy needs `get` on the secret itself when
   `-EncryptResources` is set** — encryption reads the key material, whereas passing
   `-KeyVaultName`/`-KeyVaultSecretName` alone only wires the engine's *runtime* managed

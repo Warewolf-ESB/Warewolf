@@ -33,9 +33,15 @@ and point the script at that folder (or a .zip of it).
         scope covering the Key Vault — WHEN a Key Vault is in play. The script runs
         'az role assignment create' (Microsoft.Authorization/roleAssignments/write),
         which Contributor does NOT include. Most commonly-missed grant.
-      - Key Vault data plane: Key Vault Secrets Officer on the vault — WHEN a Key
-        Vault is in play. Auto-assigned to the signed-in user, but ONLY if that
-        user already has User Access Administrator / Owner (else pre-grant it).
+      - Key Vault data plane: Key Vault Secrets User on the vault to encrypt with an
+        EXISTING key; Key Vault Secrets Officer when the key is also created/rotated
+        — WHEN a Key Vault is in play. Self-granted (Secrets Officer), but ONLY if the
+        identity already has User Access Administrator / Owner — and the grant is
+        SKIPPED outright when the key is already readable, which is the normal CI
+        path (pre-grant Secrets User to a service principal and no role write is
+        attempted). Applies to a service principal as well as a user: the object id
+        comes from 'az account show', never the Graph /me endpoint, which is invalid
+        for a non-delegated token.
       - Microsoft Entra: Application Administrator (or Graph Application.ReadWrite.All)
         — unless -SkipAuthProvisioning. Plus directory read-users + write user
         appRoleAssignments when UserAssignments are supplied (Stage 6).
