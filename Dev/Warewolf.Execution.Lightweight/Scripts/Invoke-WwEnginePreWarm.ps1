@@ -101,6 +101,14 @@
     a real-looking failure that says nothing about whether the engine warmed up. Doing exactly
     that against the profiler's RequestForProfiling on 2026-09-14 produced 119/119 "Invalid
     Calculate" failures that were initially read as a broken workflow fixture.
+
+    A '{guid}' token in any string value is replaced with a FRESH GUID per call - use it for
+    fields that key an upsert (e.g. the profiler's MandateId, which keys
+    usp_InsertProfilerRecommendation on (MandateId, ForPaymentCycle)) so warm-up calls do not
+    all collapse onto one row. Note this is NOT Test-ShovelBridgeE2E's '{correlationGuid}'
+    message-template token (WorkflowInputTemplate.cs): that one is expanded by the burst
+    publisher and reaches this script as an un-substituted literal, so callers reusing the
+    burst's payload must swap it for '{guid}' themselves.
 .PARAMETER TimeoutSec
     Per-call HTTP timeout. Exceeding it is recorded as a TIMEOUT result, not an error.
 .PARAMETER DryRun
@@ -172,6 +180,17 @@ function Format-WarmupRequestBody {
         2026-09-14 produced exactly that - 119/119 calls failing with "Scalar value { MandateDRI }
         is NULL ... Invalid Calculate", which is the signature of zero inputs bound, and was
         initially mistaken for a broken workflow fixture.
+
+        Any '{guid}' token in an -InputParameters STRING value is replaced with a fresh GUID on
+        every call. This exists for upsert-keyed workflows: the profiler's
+        Profiler.usp_InsertProfilerRecommendation upserts on (MandateId, ForPaymentCycle), so a
+        CONSTANT MandateId across warm-up calls makes every call after the first a no-op
+        AlreadyExists=1 hit on a single hot row - which warms a shorter code path than the burst
+        actually exercises, and serialises the concurrent rounds on that one row.
+
+        MUST stay self-contained (built-ins only, no calls to this script's other helpers): Phase B
+        re-materialises this function from its own source text inside ForEach-Object -Parallel (see
+        $bodyFn below), where nothing else from this scope exists.
     #>
     [CmdletBinding()]
     param(
@@ -180,7 +199,21 @@ function Format-WarmupRequestBody {
         [hashtable] $InputParameters
     )
     $inputs = if ($InputParameters -and $InputParameters.Count -gt 0) {
-        $InputParameters
+        # Expand into a COPY, never the caller's hashtable: $InputParameters crosses the
+        # ForEach-Object -Parallel boundary by reference ($using:), so mutating it in place would
+        # race between runspaces and leak one call's GUID into another call's body.
+        $expanded = @{}
+        foreach ($key in $InputParameters.Keys) {
+            $value = $InputParameters[$key]
+            $expanded[$key] = if ($value -is [string]) {
+                # One NewGuid() per -replace, so repeated tokens in ONE value share a GUID
+                # (same call = same identity) while separate calls each get their own.
+                $value -replace '\{guid\}', [guid]::NewGuid().ToString()
+            } else {
+                $value
+            }
+        }
+        $expanded
     } else {
         @{ message = "$MessagePrefix-$Label" }
     }

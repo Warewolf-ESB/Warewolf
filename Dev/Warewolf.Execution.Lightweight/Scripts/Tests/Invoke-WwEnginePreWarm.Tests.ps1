@@ -300,6 +300,143 @@ Describe 'Format-WarmupRequestBody' {
             $obj.inputParameters.message | Should -Be 'WARMUP-seq-2'
         }
     }
+
+    # ── '{guid}' per-call expansion ────────────────────────────────────────────────
+    # pipeline-LOADTEST.yml reuses the BURST's own VerifyWorkflowInputsJson for the warm-up and
+    # swaps MandateId to '{guid}'. Per-call uniqueness is a correctness requirement, not tidiness:
+    # Profiler.usp_InsertProfilerRecommendation upserts on (MandateId, ForPaymentCycle), so a
+    # constant MandateId makes every call after the first a no-op AlreadyExists=1 hit on one hot
+    # row - warming a shorter code path than the burst exercises, and serialising Phase B on it.
+
+    It 'replaces a {guid} token with a value the workflow can parse as a uniqueidentifier' {
+        $obj = (Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label 'seq-1' `
+                    -InputParameters @{ MandateId = '{guid}' }) | ConvertFrom-Json
+        $parsed = [guid]::Empty
+        [guid]::TryParse($obj.inputParameters.MandateId, [ref]$parsed) |
+            Should -BeTrue -Because 'MandateId reaches a uniqueidentifier column; an un-substituted token fails the parse'
+    }
+
+    It 'issues a DIFFERENT guid on every call' {
+        $inputs = @{ MandateId = '{guid}' }
+        $ids = 1..5 | ForEach-Object {
+            ((Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label "seq-$_" -InputParameters $inputs) |
+                ConvertFrom-Json).inputParameters.MandateId
+        }
+        ($ids | Select-Object -Unique).Count | Should -Be 5
+    }
+
+    # The parallel-safety invariant. $InputParameters reaches Phase B's runspaces by REFERENCE
+    # ($using:), so expanding in place instead of into a copy would race and leak one call's GUID
+    # into another call's body.
+    It 'expands into a copy, leaving the caller''s hashtable untouched' {
+        $inputs = @{ MandateId = '{guid}'; MandateDRI = '22' }
+        $null = Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label 'seq-1' -InputParameters $inputs
+        $inputs['MandateId'] | Should -BeExactly '{guid}' -Because 'a mutated source hashtable would make every later call reuse the first call''s GUID'
+    }
+
+    It 'leaves values without a token, and non-string values, exactly as supplied' {
+        $obj = (Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label 'seq-1' -InputParameters @{
+                    ResultPaymentCycle = '202401'
+                    ScoreThisResult    = 'true'
+                    SourcePaymentId    = 1234
+                    MandateCanTrack    = $false
+                }) | ConvertFrom-Json
+        $obj.inputParameters.ResultPaymentCycle | Should -BeExactly '202401'
+        $obj.inputParameters.ScoreThisResult    | Should -BeExactly 'true'
+        $obj.inputParameters.SourcePaymentId    | Should -Be 1234
+        $obj.inputParameters.MandateCanTrack    | Should -BeFalse
+    }
+
+    It 'gives repeated tokens in ONE value the same guid, so a single call keeps one identity' {
+        $obj = (Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label 'seq-1' `
+                    -InputParameters @{ Pair = '{guid}|{guid}' }) | ConvertFrom-Json
+        $left, $right = $obj.inputParameters.Pair.Split('|')
+        $left | Should -BeExactly $right
+    }
+
+    # Guards the whole 16-field contract the pipeline actually sends, not just the token: the
+    # defect this suite now covers was the warm-up binding NONE of these (build 30690's
+    # "Scalar value { MandateDRI } is NULL: { DebitRunID }" on all 14 Phase A calls).
+    It 'binds every field of a RequestForProfiling-shaped payload' {
+        $inputs = @{
+            ForPaymentCycle = '202402'; MandateCanTrack = 'false'; MandateDRI = '22'
+            MandateId = '{guid}'; RelatedMandates = '5B9800B6-2183-EB11-A812-000D3ABE1AD1'
+            ResultDate = '2024-01-27'; ResultDebitRunId = '22'; ResultMethod = 'DebiCheck'
+            ResultPaymentCycle = '202401'; ResultPresentedOnDate = '2024-01-22'
+            ResultType = 'Success'; ScoreThisResult = 'true'; IsFixedExtract = 'false'
+            SourcePaymentId = '1234'; RequestType = ''; FASGroup = ''
+        }
+        $obj = (Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label 'seq-1' -InputParameters $inputs) | ConvertFrom-Json
+        @($obj.inputParameters.PSObject.Properties.Name).Count | Should -Be 16
+        $obj.inputParameters.MandateDRI         | Should -BeExactly '22'
+        $obj.inputParameters.ResultPaymentCycle | Should -BeExactly '202401'
+        $obj.inputParameters.PSObject.Properties.Name | Should -Not -Contain 'message'
+    }
+}
+
+# ---------------------------------------------------------------------------
+# Phase B re-materialises Format-WarmupRequestBody from its OWN SOURCE TEXT inside
+# ForEach-Object -Parallel (${function:Format-WarmupRequestBody} = $using:bodyFn), where no
+# other function from the script scope exists. So the moment that function calls a sibling
+# helper, every Phase B call throws CommandNotFoundException - and because Phase B records
+# failures as results rather than errors, it would surface as a uniformly failing warm-up
+# rather than as a broken script. Asserted structurally because it cannot be caught by
+# exercising the function directly in this runspace, where the siblings DO exist.
+# ---------------------------------------------------------------------------
+Describe 'Format-WarmupRequestBody — parallel self-containment (AST)' {
+    BeforeAll {
+        . $script:PreWarmScript -LoadFunctionsOnly
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+            $script:PreWarmScript, [ref]$null, [ref]$null)
+
+        $script:BodyFnAst = $ast.FindAll({
+            param($n)
+            $n -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+            $n.Name -eq 'Format-WarmupRequestBody'
+        }, $true) | Select-Object -First 1
+
+        # Every other helper the script defines - none of these may be called from inside it.
+        $script:SiblingNames = @($ast.FindAll({
+            param($n)
+            $n -is [System.Management.Automation.Language.FunctionDefinitionAst]
+        }, $true) | ForEach-Object Name | Where-Object { $_ -ne 'Format-WarmupRequestBody' })
+    }
+
+    It 'is defined in the script (guards against a rename breaking this assertion)' {
+        $script:BodyFnAst | Should -Not -BeNullOrEmpty
+        $script:SiblingNames.Count | Should -BeGreaterThan 0
+    }
+
+    It 'calls none of the script''s other helper functions' {
+        $called = @($script:BodyFnAst.FindAll({
+            param($n) $n -is [System.Management.Automation.Language.CommandAst]
+        }, $true) | ForEach-Object { $_.GetCommandName() } | Where-Object { $_ })
+
+        foreach ($name in $called) {
+            $script:SiblingNames | Should -Not -Contain $name `
+                -Because "Phase B re-materialises this function alone, so calling '$name' would throw CommandNotFoundException in every parallel warm-up call"
+        }
+    }
+
+    It 'still produces a correct body when re-materialised from source text alone' {
+        # Reproduces Phase B's own mechanism end to end, in a runspace where the siblings
+        # genuinely are absent.
+        $bodyFn = ${function:Format-WarmupRequestBody}.ToString()
+        $inputs = @{ MandateId = '{guid}'; MandateDRI = '22' }
+
+        $ids = 1..6 | ForEach-Object -Parallel {
+            ${function:Format-WarmupRequestBody} = $using:bodyFn
+            $json = Format-WarmupRequestBody -MessagePrefix 'WARMUP' -Label "c1-$_" -InputParameters $using:inputs
+            $obj  = $json | ConvertFrom-Json
+            if ($obj.inputParameters.MandateDRI -ne '22') { throw 'MandateDRI was not bound in the parallel runspace' }
+            $obj.inputParameters.MandateId
+        } -ThrottleLimit 6
+
+        @($ids).Count                      | Should -Be 6
+        ($ids | Select-Object -Unique).Count | Should -Be 6 -Because 'a shared-state leak across runspaces would repeat a GUID'
+        $ids | Should -Not -Contain '{guid}'
+        $inputs['MandateId']               | Should -BeExactly '{guid}'
+    }
 }
 
 Describe 'Update-LatencyStreak' {

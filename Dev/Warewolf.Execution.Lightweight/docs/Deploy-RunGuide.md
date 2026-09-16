@@ -101,6 +101,26 @@ az rest --method POST `
 
 - `-EncryptResources` / `-VerifyDecryption` re-encrypt sources from plain/DPAPI to WFAES. **DPAPI-encrypted
   `.bite` sources can only be re-encrypted on the machine that originally created them.**
+- **CI callers: `-EncryptResources` needs `get` on the AES secret; `-KeyVaultName` alone does not.**
+  Passing `-KeyVaultName`/`-KeyVaultSecretName` without the switch only wires the engine's *runtime*
+  managed identity, so a service principal can deploy successfully for months and then fail the first
+  time encryption is enabled. A CI principal usually cannot self-grant (that needs the *User Access
+  Administrator* row above), so pre-grant **Key Vault Secrets User** — or *Secrets Officer* if the run
+  also passes `-GenerateNewKey` — on the vault.
+- **`-VerifyDecryption` is all-or-nothing across the whole `Resources/` folder.** It round-trips
+  every encrypted value against the engine's key in memory and fails the deploy if *any one* of them
+  fails; there is no per-file scope. Pair it with `-EncryptResources` when you own every source in
+  the staged set — it turns a missing vault grant or a wrong `-KeyVaultSecretName` into a clear
+  deploy-time failure. Leave it **off** when the publish output also carries committed sources your
+  deploy never exercises, or one stale blob (encrypted under an older or different key) will fail an
+  otherwise-healthy deploy. `pipeline-LOADTEST.yml` is in the second category and omits it by design.
+- **Leaving `-EncryptResources` on every run is safe**, despite the "encrypt once" guidance:
+  `Encrypt-Config.ps1` skips files that already carry the `WFAES::` prefix — by prefix check, so
+  those files are never decrypted and a stale blob among them is harmless here. This is what lets a
+  pipeline generate a credential-bearing source at stage time in plaintext — keeping the secret out of
+  git — and have the deploy encrypt it before upload; `pipeline-LOADTEST.yml` does exactly that for
+  `RequestForProfiling`'s CloudAMQP publish source. Just keep DPAPI sources out of the staged set, per
+  the point above.
 
 **Verify your toolchain**
 

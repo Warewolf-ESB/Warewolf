@@ -2373,6 +2373,127 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     the intersection of the two param blocks. Twice now the "that parameter is unused, so the
     dot-source is harmless" assumption has cost a full pipeline run.
 
+- **2026-09-16 — build 30690: two unrelated defects, both from the 2026-09-14 switch to
+  `RequestForProfiling`. The pre-warm bound ZERO inputs, and the workflow's publish source was
+  never deployed at all — which is why rows appeared in the database while
+  `collectionv2.profilerrecommendation.request` stayed empty.** This also resolves the
+  "Unresolved" question left open in the 2026-09-13 entry above.
+  - **Defect 1 — the pre-warm sent `{"inputParameters":{"message":...}}` to a workflow that does not
+    declare `message` as an Input.** All 14 Phase A calls and every Phase B round failed with
+    `Scalar value { MandateDRI } is NULL: { DebitRunID }` / `ResultPaymentCycle is NULL`.
+    `pipeline-LOADTEST.yml` never passed `-InputParameters`, so `Format-WarmupRequestBody` fell
+    through to its default body — and `message` is `rabbit/RabbitProcess`'s only input, whereas
+    `RequestForProfiling` declares **16** and carries `message` as `ColumnIODirection="None"`.
+    Every call therefore executed against an empty datalist.
+  - **`DebitRunID` and `ExtractScheduleId` in those messages are red herrings.** Both are INTERNAL
+    (`None`) variables, null *downstream* of the null Inputs — not inputs that were missing from the
+    payload. The burst's own `VerifyWorkflowInputsJson` was correct all along and matches the 16
+    declared Inputs exactly.
+  - **The guard already existed and was documented; it was simply never wired up.**
+    `Invoke-WwEnginePreWarm.ps1` has described `-InputParameters` as REQUIRED for any non-
+    `RabbitProcess` route since the identical 2026-09-14 incident (119/119 failures read at the time
+    as a broken workflow fixture). The route was repointed that same day without it.
+  - **Fixed** by deriving the warm-up payload from `$(VerifyWorkflowInputsJson)` — the burst's own
+    payload, so the two cannot drift again — with `MandateId` swapped to `{guid}`, a new per-CALL
+    token in `Format-WarmupRequestBody`. `{correlationGuid}` cannot be reused here: it is a
+    `Test-ShovelBridgeE2E` message-template token expanded by the burst publisher, and reaches the
+    warm-up as a literal that fails the `uniqueidentifier` parse. Per-call uniqueness is a
+    correctness requirement, not tidiness — `Profiler.usp_InsertProfilerRecommendation` upserts on
+    `(MandateId, ForPaymentCycle)`, so a constant MandateId makes every call after the first a
+    no-op `AlreadyExists=1` hit on one hot row, warming a *shorter* code path than the burst
+    exercises and serialising Phase B on that row.
+  - **The expansion writes into a COPY, and that is load-bearing.** `$InputParameters` crosses the
+    `ForEach-Object -Parallel` boundary by reference (`$using:`), so expanding in place would race
+    across runspaces and leak one call's GUID into another's body. Related standing constraint:
+    Phase B re-materialises `Format-WarmupRequestBody` **from its own source text**
+    (`${function:…} = $using:bodyFn`), so that function may never call a sibling helper — it would
+    throw `CommandNotFoundException` in every parallel call, and surface as a uniformly failing
+    warm-up rather than as a broken script. Both are now pinned in
+    `Tests/Invoke-WwEnginePreWarm.Tests.ps1` (46/46 green), the second by an AST guard; all three
+    mutations — no expansion, in-place expansion, and a sibling call — were verified to fail the
+    suite.
+  - **Defect 2 — `RabbitMQSourceResourceId 0b142714-8f6d-41b7-9832-2aefa8c731ec` existed nowhere
+    under `Resources/`.** The only copy in this repo is a QueueProcessor **unit-test fixture**
+    (`Warewolf.Execution.QueueProcessor.Tests/TestResources/sources/`), `IsValid="false"` and
+    pointing at the same dead 2020-era ngrok endpoint the 2026-09-13 entry above noted for
+    `ProfilerRabbitMQSource`. So the engine had no source to resolve and the publish never opened a
+    connection.
+  - **Why the run still looked healthy — and why this hid for two days.** The nested `ProfilerMain`
+    call's DB writes land via `ProfilerDBSource`/`NewSqlServerSource`, and
+    `-DbVerificationMode 'ProfilerRecommendation'` checks *only* those rows. Note also that the
+    wrapper's nested `RabbitProcess` call does **not** publish either — `RabbitProcess.bite` holds
+    only Assign/ForEach/SqlServerDatabase activities — so this activity is the **only** publisher in
+    the whole chain, contrary to the "nests ProfilerMain *and* RabbitProcess" reading in the
+    pipeline's own comments.
+  - **The staging step's dependency-closure claim was incomplete.** It enumerated `ProfilerMain`,
+    `RabbitProcess` and the jobs1/jobs2 SQL source, but not the publish activity's own RabbitMQ
+    source. Re-run the closure by diffing every referenced `ResourceID`/`SourceId` against every
+    root ID present — the same discipline the profiler folder's own comment already prescribes, and
+    which `SourceId` attributes evidently need to be included in.
+  - **Fixed** by GENERATING the source at stage time rather than committing it: a live broker
+    credential must not enter git. It is emitted with a plaintext `ConnectionString` and converted
+    to WFAES by a new `-EncryptResources:$true` on the deploy, so no plaintext credential is
+    uploaded. `RabbitMQSource`'s XElement ctor accepts either form
+    (`CanBeDecrypted() ? Decrypt() : conString`, where `CanBeDecrypted` recognises the `WFAES::`
+    prefix through `DPAPIWrapper`'s AES hook), so the plaintext form works at stage time and the
+    encrypted form at runtime. **Never DPAPI here** — a blob encrypted on the agent can never
+    decrypt in Azure, which is exactly why `NewSqlServerSource (Local Backup).bite` is excluded from
+    staging.
+  - **The destination is CLOUDAMQP, not the self-hosted ngrok-tunnelled broker.** The two brokers sit
+    at opposite ends of this pipeline and are easy to conflate: the start-of-run 20,000-message burst
+    is published to the self-hosted broker (`rabbitmq.warewolf.online`, over its rotating ngrok TCP
+    tunnel) and shovelled into Service Bus, while each execution publishes its *result* to
+    `collectionv2.profilerrecommendation.request` on CloudAMQP (`ostrich-01.lmq.cloudamqp.com:5672`,
+    user and vhost both `bmkzdabu`). The `-FunctionAppScaleLimit 30` entry above already documents
+    CloudAMQP as the publish target and derives that cap from its vhost connection limit — so that
+    budget was always predicated on this leg working. Its measured 32/40 plateau came from the
+    sibling `wwuat3` app, the one whose deployment *does* carry this source; on
+    `WarewolfServer-UAT` the publish had never opened a single connection.
+  - **Port 5672, not 5671:** `RabbitMQSource` exposes only
+    `HostName`/`Port`/`UserName`/`Password`/`VirtualHost` and has no TLS option, so the plaintext
+    AMQP port is required. LavinMQ (CloudAMQP migrated this instance silently) is fine for a plain
+    AMQP 0-9-1 publish; what LavinMQ could not do — amqp10 Shovel *destinations* — is why it was
+    abandoned as the shovel source, an unrelated leg.
+  - **Staged as `ProfilerRabbitMQSource.bite`, matching the authoritative profiler tree's own source
+    name — deliberately NOT the test fixture's `Warewolf DevOps RabbitMQ Source`.** That name belongs
+    to a *different*, pre-existing source (ID `1a82a341-…`) for the **self-hosted** dev broker, which
+    `pipeline-CLOUD.yml` downloads into its own `Resources/`. Reusing it would imply the two point at
+    the same broker when they are opposite ends of this pipeline. The fixture the ID was recovered
+    from carries the misleading name; don't copy it back. (File location is a readability choice
+    either way — sources resolve by `ResourceID`, and `BuildFileIndex` scans `*.bite` recursively.)
+  - **No queue provisioning is needed.** `PublishRabbitMQActivity` self-provisions: it
+    passive-declares the exchange and queue and, on the broker's 404, declares and binds them on a
+    fresh channel (a failed passive declare closes the channel server-side).
+  - **Two operator prerequisites, neither of which the code can supply.** A secret pipeline
+    variable `CLOUDAMQP_SHOVEL_PASSWORD` on the *Load Tests* pipeline (the `bmkzdabu` instance
+    password — distinct from `ExternalRabbitMqPassword`, which is the self-hosted broker's
+    `testuser`; the name matches the environment-variable convention
+    `Run-ShovelBridgeE2E-DevOpsRabbit.ps1` already reads), and **GET on the
+    `WWExecutionEngineTestSecret` secret in the `WWExecutionEngine` vault for the pipeline's service
+    principal** — passing `-KeyVaultName`/`-KeyVaultSecretName` alone previously only wired the
+    engine's *runtime* managed identity and never required the SP to read the key itself.
+  - **`-EncryptResources` is safe to leave on permanently**, despite the script's "Encrypt ONCE"
+    guidance: `Encrypt-Config.ps1` skips files already carrying the `WFAES::` prefix *by prefix
+    check, without decrypting them*, so the already-encrypted sources are untouched rather than
+    double-encrypted, and the only DPAPI source in the repo is excluded from staging. (Verified
+    across the whole staged set: `ProfilerDBSource`, `NewSqlServerSource` and the six root sources
+    the build output ships are all WFAES; only the generated source is plaintext.)
+  - **`-VerifyDecryption` was deliberately NOT enabled, and that is worth understanding before
+    anyone "completes" this.** `Encrypt-Config.ps1 -VerifyOnly` decrypts *every* encrypted value in
+    the folder and exits 1 on any single failure, and `Invoke-EncryptAndVerify` always targets the
+    whole `Resources` folder — there is no per-file verify switch. The publish output ships six
+    committed WFAES sources this pipeline never exercises, and `Azure Exchange Source.bite` is
+    *already known* to be a stale blob encrypted under a different vault key (`dp-keyring-v1`,
+    2026-04-27, never re-encrypted — see `Dev/.azure/devops-download-bite-exchange-spec.md`).
+    Enabling verification would couple every deploy here to the health of unrelated sources. The
+    encryption pass still fails on a genuine encrypt error, which is the signal that matters for the
+    source added here.
+  - **Still unverified at the time of writing:** that messages actually arrive on
+    `collectionv2.profilerrecommendation.request`. Phase 4c still asserts only the database, so this
+    leg remains unasserted by the harness — the gap the 2026-09-13 entry above opened. Note its
+    trap before closing it: a verification consumer must be non-destructive (a depth/message-count
+    read), because a second consumer on that queue steals messages from the real one.
+
 
 ## Promotion status
 
