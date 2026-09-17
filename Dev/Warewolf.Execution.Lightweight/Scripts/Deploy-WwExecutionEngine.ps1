@@ -1112,8 +1112,13 @@ function Grant-RoleAssignment {
         }
     }
     throw (("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). " +
-            "If the identity was only just created, re-running the deploy usually succeeds.") -f
-           $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds))
+            "If the identity was only just created, re-running the deploy usually succeeds. If it keeps " +
+            "failing, the caller likely lacks permission to write role assignments at this scope " +
+            "(Contributor alone excludes Microsoft.Authorization/*/Write) - grant a role such as 'Role " +
+            "Based Access Control Administrator' scoped to at least this resource, or run the assignment " +
+            "directly once you have that permission:`n" +
+            "  az role assignment create --assignee-object-id {5} --assignee-principal-type {6} --role '{0}' --scope '{1}'") -f
+           $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds), $PrincipalId, $PrincipalType)
 }
 
 function Resolve-CurrentPrincipal {

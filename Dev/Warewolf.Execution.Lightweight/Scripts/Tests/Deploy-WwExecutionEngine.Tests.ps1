@@ -95,6 +95,23 @@ Describe 'Deploy-WwExecutionEngine — static' {
         $msg | Should -Not -Match '\{[0-4]\}'
     }
 
+    It 'includes a ready-to-run az role assignment command in the failure message' {
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        function az { $global:LASTEXITCODE = 1; '' }
+        $err = { Grant-RoleAssignment -PrincipalId 'pid-1' -Role 'Key Vault Secrets User' `
+                                       -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                                       -PrincipalType ServicePrincipal -MaxAttempts 1 -DelaySeconds 0 } |
+            Should -Throw -PassThru
+        $msg = $err.Exception.Message
+        $msg | Should -Match ([regex]::Escape('az role assignment create'))
+        $msg | Should -Match ([regex]::Escape('--assignee-object-id pid-1'))
+        $msg | Should -Match ([regex]::Escape('--assignee-principal-type ServicePrincipal'))
+        $msg | Should -Match ([regex]::Escape("--role 'Key Vault Secrets User'"))
+        $msg | Should -Match ([regex]::Escape("--scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1'"))
+        $msg | Should -Not -Match '\{[0-9]\}'
+    }
+
     It 'retries the Key Vault role grant for at least 2 minutes before giving up (build 30715 regression)' {
         # The 60s budget (6 attempts x 10s) that failed in build 30715 proved too
         # short for Entra replication lag on a freshly-created managed identity.
