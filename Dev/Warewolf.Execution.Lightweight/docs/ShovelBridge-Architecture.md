@@ -2493,6 +2493,60 @@ Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked
     leg remains unasserted by the harness — the gap the 2026-09-13 entry above opened. Note its
     trap before closing it: a verification consumer must be non-destructive (a depth/message-count
     read), because a second consumer on that queue steals messages from the real one.
+- **2026-09-17 — build 30698's three dead-letters were SQL command timeouts, and the database is
+  the run's real ceiling.** The 20,000-message run (`warewolfserver-uat`, App Insights
+  `warewolfserver-uat-ai`, namespace `WarewolfShovelBridgeTesting` / queue
+  `wwexecution-secure-trigger-queue-e2e`) lost exactly three messages, all
+  `SQL Error [Number=-2] Execution Timeout Expired` against `warewolf-dev2-mcgeaj`:
+  `…-008058` and `…-008408` on `Profiler.usp_GetProfilerRecommendation` at ~31s, and `…-003181`
+  on `Profiler.usp_ScoreMandateCollectionDates` at ~129s. Notes for the next investigation:
+  - **`WarewolfDevOpsTestDb` ran at avg 99.8% / max 100% `cpu_percent` for the whole 70 minutes**
+    (`workers_percent` only ~43%, `log_write_percent` ~6% — pure CPU). The ~4.6 msg/s of both the
+    15k and 20k runs is that one vCore. **Check this metric before blaming the engine.** The
+    database was scaled `GP_S_Gen5` **1 → 4 vCores** on 2026-09-17 (min capacity 0.5 and
+    `autoPauseDelay` 60 unchanged), which supersedes the "1 vCore" figure in the 2026-09-15 entry
+    above; that entry's concurrent-request ceiling of 120 was a property of the 1-vCore tier.
+  - **A SQL activity with `CommandTimeout="{x:Null}"` silently runs at SqlCommand's 30s default**
+    (`DatabaseServiceExecution.MssqlCreateCommand` only assigns `cmd.CommandTimeout` when the
+    activity supplies one; the `WOLF-8512 DB diagnostics` trace line reports the effective value
+    per call). The 2026-09-16 bumps covered four resources and left the rest of
+    `Resources/profiler/` at the default — including the proc that caused two of the three losses.
+    **All 14 `DsfSqlServerDatabaseActivity` nodes under `Resources/profiler/` are now at 120s**
+    (the 12 left at the default, plus the 2 the 2026-09-16 bumps had already covered)
+    and `ProfilerResourceCommandTimeoutTests` fails the build if a new one ships without a
+    timeout or below that floor. `Resources/rabbit/RabbitProcess2.bite`'s three
+    `dbo.usp_jobs2_*` activities were bumped to 120s too — `70a3fbc7d1` had bumped its sibling
+    `RabbitProcess.bite` (`dbo.usp_jobs1_*`) and missed it. That file did **not** execute in
+    build 30698: the run's `dbo.usp_jobs2_LogStart` (22029) / `usp_jobs2_LogFinished` (21987)
+    calls, and the absence of any `usp_jobs2_LogProcessing` call, identify
+    `ProfilerServices/ProfilerWrapper/RequestForProfiling.bite` — which carries only those two
+    activities, both already at 120 — as the caller. **23 SQL activities ship under
+    `Resources/`; 22 are now at 120s.** The lone exception is
+    `tools/sql server database/Fidelity_SqlServerDatabase.bite` (`dbo.FidelityPing`), a tool
+    fidelity fixture rather than a production workflow, left at the default deliberately so its
+    fidelity baseline is not disturbed.
+  - **A failed workflow is dead-lettered on the FIRST delivery; `maxDeliveryCount: 10` never
+    applies to it.** `ServiceBusWorkflowTriggerFunction.ProcessMessageAsync` retries (by throwing)
+    only when `WorkflowExecutionResult.IsTransientFailure`, which `WorkflowExecutor` sets **only
+    for memory pressure**. Classifying a SQL timeout as transient so the broker retries it was
+    designed and then **deliberately held**: `Profiler.usp_ScoreMandateCollectionDates` is **not
+    idempotent** — its first `MERGE … WHEN MATCHED` does `Score = … Score + 1` — so re-running a
+    message that failed *after* scoring committed double-counts that mandate. (A failure *inside*
+    scoring is safe: `MssqlReadData` commits only after the reader succeeds, so a command timeout
+    rolls the MERGE back.) `usp_GetProfilerRecommendation` is a pure read and
+    `usp_InsertProfilerRecommendation` is a guarded insert keyed on `(MandateId, ForPaymentCycle)`
+    returning `AlreadyExists=1`, so both are safe to re-run. **Make the scoring proc idempotent
+    before enabling broker retry.**
+  - **Reading the dead-letter reason without touching the DLQ** (it holds ~21.5k older messages,
+    and `PeekMessagesAsync` access-violates under pwsh 7.6/.NET 10): the Failed count in
+    `traces | where message has 'ServiceBusTriggerOutcome'` equals the DLQ delta, and each
+    dead-letter emits exactly one `POST http://127.0.0.1:<port>/Settlement/Deadletter` trace.
+    Note `az monitor app-insights query` mangles complex KQL through shell quoting — POST the
+    query as a JSON body to `https://management.azure.com{resourceId}/query?api-version=2018-04-20`.
+  - **A `Failed` outcome does not imply lost business data.** Phase 4c recorded all 20000
+    `Profiler.ProfilerRecommendation` rows (0 missing, 0 duplicate) alongside the three
+    dead-letters; only `…-003181` left a gap, the single missing `Profiler.MandateScores` row
+    (19999/20000). Reconcile both tables before calling a dead-letter data loss.
 
 
 ## Promotion status
