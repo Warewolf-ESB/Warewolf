@@ -8,6 +8,10 @@
 secure.config
 # Local backups created by Dev\.azure\Set-PipelineJobs.ps1
 /Dev/.azure/.pipeline-backups/
+# Local run output from Warewolf.Execution.Lightweight/Scripts deploy/rollback/auth tooling —
+# operator artifacts, not source.
+/Dev/Warewolf.Execution.Lightweight/Scripts/logs/
+/Dev/Warewolf.Execution.Lightweight/Scripts/rollback-*.summary.json
 *.force
 *.usi
 *.uws
