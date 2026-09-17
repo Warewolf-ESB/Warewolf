@@ -1082,8 +1082,8 @@ function Grant-RoleAssignment {
         [ValidateSet('ServicePrincipal', 'User', 'Group')]
         [string] $PrincipalType = 'ServicePrincipal',
         [string] $Label,
-        [int]    $MaxAttempts   = 6,
-        [int]    $DelaySeconds  = 10
+        [int]    $MaxAttempts   = 10,
+        [int]    $DelaySeconds  = 15
     )
     $what = if ($Label) { $Label } else { "$PrincipalType $PrincipalId" }
     $azArgs = @('role', 'assignment', 'create',
@@ -1111,8 +1111,8 @@ function Grant-RoleAssignment {
             Start-Sleep -Seconds $DelaySeconds
         }
     }
-    throw ("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). " +
-           "If the identity was only just created, re-running the deploy usually succeeds." -f
+    throw (("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). " +
+            "If the identity was only just created, re-running the deploy usually succeeds.") -f
            $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds))
 }
 

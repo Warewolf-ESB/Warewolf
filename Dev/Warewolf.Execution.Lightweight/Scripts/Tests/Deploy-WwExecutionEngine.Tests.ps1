@@ -76,6 +76,39 @@ Describe 'Deploy-WwExecutionEngine — static' {
             Should -Contain 'User'
     }
 
+    It 'throws a fully-substituted error when the role assignment never replicates (build 30715 regression)' {
+        # REGRESSION (build 30715). `-f` binds tighter than `+` in PowerShell, so
+        # ("A" + "B" -f args) only formats "B" (which has no {n} tokens, so args
+        # were silently dropped) and concatenates "A" unformatted - the thrown
+        # message showed literal '{0}' .. '{4}' instead of the role/scope/attempts.
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        function az { $global:LASTEXITCODE = 1; '' }
+        $err = { Grant-RoleAssignment -PrincipalId 'pid-1' -Role 'Key Vault Secrets User' `
+                                       -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                                       -Label 'the test identity' -MaxAttempts 1 -DelaySeconds 0 } |
+            Should -Throw -PassThru
+        $msg = $err.Exception.Message
+        $msg | Should -Match ([regex]::Escape('Key Vault Secrets User'))
+        $msg | Should -Match ([regex]::Escape('kv1'))
+        $msg | Should -Match '1 attempts'
+        $msg | Should -Not -Match '\{[0-4]\}'
+    }
+
+    It 'retries the Key Vault role grant for at least 2 minutes before giving up (build 30715 regression)' {
+        # The 60s budget (6 attempts x 10s) that failed in build 30715 proved too
+        # short for Entra replication lag on a freshly-created managed identity.
+        $ast  = [System.Management.Automation.Language.Parser]::ParseFile($script:DeployScript, [ref]$null, [ref]$null)
+        $func = $ast.Find({ $args[0] -is [System.Management.Automation.Language.FunctionDefinitionAst] -and
+                             $args[0].Name -eq 'Grant-RoleAssignment' }, $true)
+        $params       = $func.Body.ParamBlock.Parameters
+        $maxAttempts  = ($params | Where-Object { $_.Name.VariablePath.UserPath -eq 'MaxAttempts' }).DefaultValue.Value
+        $delaySeconds = ($params | Where-Object { $_.Name.VariablePath.UserPath -eq 'DelaySeconds' }).DefaultValue.Value
+        $maxAttempts  | Should -Be 10
+        $delaySeconds | Should -Be 15
+        ($maxAttempts * $delaySeconds) | Should -BeGreaterOrEqual 120
+    }
+
     It 'defines its helper functions under -LoadFunctionsOnly without running a phase' {
         $out = (. $script:DeployScript -LoadFunctionsOnly) 6>&1 | Out-String
         $out | Should -Not -Match 'Phase 0  Pre-flight'
