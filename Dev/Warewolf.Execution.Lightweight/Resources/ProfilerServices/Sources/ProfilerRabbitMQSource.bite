@@ -1,0 +1,9 @@
+
+<Source ID="0b142714-8f6d-41b7-9832-2aefa8c731ec" Name="ProfilerRabbitMQSource" ResourceType="RabbitMQSource" IsValid="false" ConnectionString="HostName=#{WarewolfGenericRabbitMQSourceHost};Port=5672;UserName=#{WarewolfGenericRabbitMQUserName};Password=#{WarewolfGenericRabbitMQPassword};VirtualHost=#{WarewolfGenericRabbitMQSourceVirtualHost}" Type="RabbitMQSource" ServerVersion="2.4.3.75" ServerID="bca0d6f6-44f9-4eca-8950-28aa1844b592">
+  <DisplayName>ProfilerRabbitMQSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>RabbitMQSource</TypeOf>
+  <VersionInfo DateTimeStamp="2020-07-21T16:44:44.7793072+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="0b142714-8f6d-41b7-9832-2aefa8c731ec" VersionId="86105649-e13c-43d0-86a4-b7eab1353e3b" />
+</Source>

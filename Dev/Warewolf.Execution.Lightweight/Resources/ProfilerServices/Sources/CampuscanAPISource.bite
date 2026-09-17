@@ -1,0 +1,9 @@
+
+<Source ID="b0c4c12b-98da-4d83-995a-a737ffc6d200" Name="CampuscanAPISource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=#{WarewolfGenericHelperAPISourceHost};DefaultQuery=;AuthenticationType=Anonymous;" Type="WebSource" ServerVersion="2.4.3.75" ServerID="bca0d6f6-44f9-4eca-8950-28aa1844b592">
+  <DisplayName>CampuscanAPISource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2020-07-24T11:22:52.7466568+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="b0c4c12b-98da-4d83-995a-a737ffc6d200" VersionId="9bca2291-257f-4b4e-ad54-468c40052327" />
+</Source>

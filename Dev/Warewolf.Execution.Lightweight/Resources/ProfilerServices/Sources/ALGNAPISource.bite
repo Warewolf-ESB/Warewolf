@@ -1,0 +1,9 @@
+
+<Source ID="1230f2db-d1d6-4102-a5b7-0d95918a2281" Name="ALGNAPISource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=#{WarewolfGenericCollectionAPISourceHost};DefaultQuery=;AuthenticationType=Anonymous;" Type="WebSource" ServerVersion="2.4.3.75" ServerID="bca0d6f6-44f9-4eca-8950-28aa1844b592">
+  <DisplayName>ALGNAPISource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2020-07-27T09:45:06.4401021+05:30" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="2" ResourceId="1230f2db-d1d6-4102-a5b7-0d95918a2281" VersionId="2058d770-fd43-4e7a-b811-0b42b4b6509d" />
+</Source>

@@ -97,8 +97,8 @@ if ($Mode -eq 'Deploy') {
     }
 }
 
-$ScoreMandateCollectionDatesPath = Join-Path $PSScriptRoot '..\Resources\profiler\usp_ScoreMandateCollectionDates.bite'
-$GetMandateScoredResultsPath     = Join-Path $PSScriptRoot '..\Resources\profiler\usp_GetMandateScoredResults.bite'
+$ScoreMandateCollectionDatesPath = Join-Path $PSScriptRoot '..\Resources\ProfilerServices\Profiler\V2\Private\DAL\usp_ScoreMandateCollectionDates.bite'
+$GetMandateScoredResultsPath     = Join-Path $PSScriptRoot '..\Resources\ProfilerServices\Profiler\V2\Private\DAL\usp_GetMandateScoredResults.bite'
 $RabbitProcessPath               = Join-Path $PSScriptRoot '..\Resources\rabbit\RabbitProcess.bite'
 $RequestForProfilingPath         = Join-Path $PSScriptRoot '..\Resources\ProfilerServices\ProfilerWrapper\RequestForProfiling.bite'
 

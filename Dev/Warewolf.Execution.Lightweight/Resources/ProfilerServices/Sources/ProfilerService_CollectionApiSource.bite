@@ -1,0 +1,9 @@
+
+<Source ID="63ff351f-145d-4fc4-8c89-322c3059fde1" Name="ProfilerService_CollectionApiSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=#{WarewolfGenericCollectionAPISourceHost};DefaultQuery=sms;AuthenticationType=Anonymous;" Type="WebSource" ServerVersion="2.6.3.28" ServerID="0144162b-c8a9-46a9-aa12-1773873364e6">
+  <DisplayName>ProfilerService_CollectionApiSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2021-03-30T11:22:04.1726427+05:30" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="4" ResourceId="2866639a-ffe7-4ce3-940c-2cf505da604d" VersionId="8266639a-ffe7-4ce3-940c-2cf505da604d" />
+</Source>

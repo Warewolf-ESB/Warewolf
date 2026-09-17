@@ -1,0 +1,9 @@
+
+<Source ID="8b21d17f-5567-4e72-9d34-9b8543238e0b" Name="JourneyEmailSource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=#{WarewolfCollectionsNewJourneyEmailSourceHost}" Type="WebSource" ServerVersion="2.8.10.3" ServerID="ed81d9e6-a179-4316-b619-788611a69e9c">
+  <DisplayName>JourneyEmailSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2025-09-17T16:57:56.0490153+05:30" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="4" ResourceId="8b21d17f-5567-4e72-9d34-9b8543238e0b" VersionId="8b21d17f-5567-4e72-9d34-9b8543238e0b" />
+</Source>

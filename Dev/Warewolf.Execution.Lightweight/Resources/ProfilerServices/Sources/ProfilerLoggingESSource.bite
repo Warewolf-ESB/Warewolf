@@ -1,0 +1,9 @@
+
+<Source ID="284eb3b7-025b-4ba5-ae90-1a5b87eb55e7" Name="ProfilerLoggingESSource" ResourceType="ElasticsearchSource" IsValid="false" ConnectionString="HostName=#{WarewolfGenericESLoggingSourceHost};Port=#{WarewolfGenericESLoggingSourcePortNo};SearchIndex=#{WarewolfProfilerServicesESLoggingSourceIndex};AuthenticationType=Anonymous" Type="ElasticsearchSource" ServerVersion="2.4.5.22" ServerID="70d66964-dc5b-4a40-be57-a67ce3cda205">
+  <DisplayName>ProfilerLoggingESSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>ElasticsearchSource</TypeOf>
+  <VersionInfo DateTimeStamp="2020-06-05T13:47:35.957642+05:30" Reason="Save" User="Unknown" VersionNumber="1" ResourceId="be594800-39c4-43fe-8049-7f5b97190d90" VersionId="463a289d-f3d2-4252-be84-67cd64ae098f" />
+</Source>

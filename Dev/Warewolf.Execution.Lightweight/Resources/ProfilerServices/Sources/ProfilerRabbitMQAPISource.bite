@@ -1,0 +1,9 @@
+
+<Source ID="9046dc17-bbe4-47cb-9545-e0a575db1286" Name="ProfilerRabbitMQAPISource" ResourceType="WebSource" IsValid="false" ConnectionString="Address=#{WarewolfGenericRabbitMQAPISourceHost}api/exchanges/#{WarewolfGenericRabbitMQSourceVirtualHost}/;DefaultQuery=;AuthenticationType=Anonymous;" Type="WebSource" ServerVersion="2.4.3.75" ServerID="bca0d6f6-44f9-4eca-8950-28aa1844b592">
+  <DisplayName>ProfilerRabbitMQAPISource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <TypeOf>WebSource</TypeOf>
+  <VersionInfo DateTimeStamp="2020-07-27T10:06:39.4388068+05:30" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="2" ResourceId="9046dc17-bbe4-47cb-9545-e0a575db1286" VersionId="18047a7e-2cdb-4fc5-a825-f5e8a2c69be8" />
+</Source>

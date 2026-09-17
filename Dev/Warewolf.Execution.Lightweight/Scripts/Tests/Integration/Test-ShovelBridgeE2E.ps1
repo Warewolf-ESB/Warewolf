@@ -288,8 +288,9 @@
     _LogProcessing/_LogFinished. Reconciles per message on the unique MessageContent
     ('<prefix><correlationId>'), using -JobsDbMessageContentPrefix.
 
-    'ProfilerRecommendation' — Profiler.ProfilerRecommendation, written by profiler/ProfilerMain
-    via Profiler.usp_InsertProfilerRecommendation (see Resources/profiler/Provision-ProfilerSchema.sql).
+    'ProfilerRecommendation' — Profiler.ProfilerRecommendation, written by
+    ProfilerServices/Profiler/V2/API/ProfilerMain via Profiler.usp_InsertProfilerRecommendation
+    (see Resources/ProfilerServices/Provision-ProfilerSchema.sql).
     ProfilerMain writes nothing to dbo.jobs1, so the default mode would report
     'usp_jobs1_Summary returned no rows' for every run. Reconciles per message on MandateId,
     which the pipeline templates as '{correlationGuid}' so each message carries a distinct,
