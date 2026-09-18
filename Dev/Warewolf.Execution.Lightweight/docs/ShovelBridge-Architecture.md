@@ -295,6 +295,54 @@ Two scripts under `Scripts/`, run in order:
 Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked-summary
 + transcript conventions (see `Scripts/README.md`).
 
+### `-SourceHost` is dialled by the broker, not by the deploying agent
+
+The shovel's `src-uri` is opened **by the RabbitMQ node itself**, from inside its own
+container — so it must be an address that node can reach, which in every deployment so far
+means `localhost`. A broker's *public* name is usually not one: `rabbitmq.warewolf.online`
+publishes only 443 (management), and AMQP reaches it by a separate tunnel.
+
+Configuring a shovel with the public name therefore produces a bridge that looks configured
+and carries nothing:
+
+| Symptom | Where to see it |
+|---|---|
+| Shovel stays in `state: "starting"`, restarting on `reconnect-delay` | `GET /api/shovels/{vhost}` — the status timestamp keeps advancing and `src_uri`/`dest_uri` are never reported |
+| Source queue has `consumers: 0` and never drains | `GET /api/queues/{vhost}/{queue}` |
+| **No connection at all** for that shovel | `GET /api/connections` — a healthy shovel appears as `peer_host 127.0.0.1` with `client_properties.connection_name = "Shovel <name>"` |
+
+That last row is the one-command diagnosis, and it separates the two legs: **no connection
+means the SOURCE leg failed** (this problem), whereas a connected shovel that still will not
+run is a DESTINATION problem — normally the `advanced.config` TLS-hostname-check or the
+missing `cacertfile` described under "Security". Do not reach for the cacert workaround for a
+shovel that never connected to its own broker.
+
+Observed on 2026-09-18 against `wwprofilerlw`, where the deploy pipeline passed
+`-SourceHost 'rabbitmq.warewolf.online'`. `Configure-RabbitMqShovel.ps1`'s Phase 3 only
+*warns* when the shovel never reaches `running`, and nothing ran after it, so the build
+reported success over a bridge that could not carry a message.
+
+### Prove the bridge after configuring it
+
+A deploy pipeline that ends at `Configure-RabbitMqShovel.ps1` has proven only that the
+parameter was accepted. Two steps close that gap, and
+`Dev/.azure/ProfilerService-CI-UAT-LightweightExecutionEngine.yml` runs both, failing the
+build on either:
+
+1. **Assert the shovel reached `running`** (`GET /api/shovels/{vhost}`, `flow` counts as
+   running — it is a healthy substate, connected on both ends and throttled by RabbitMQ's own
+   flow control). Cheap, and it names the right leg when the bridge was never established.
+2. **Send a message across it** — `Scripts/Test-WwShovelBridgeDelivery.ps1`. A drained source
+   queue is not by itself proof: the shovel drains it whether Service Bus accepts the message
+   or not, and the trigger drains Service Bus whether the workflow succeeded or was
+   dead-lettered. So that script asserts the drain, that `deadLetterMessageCount` did not
+   rise, and that `activeMessageCount` returned to 0 — and `Test-WwSinkDelivery.ps1` on the
+   same correlation token then proves the workflow actually ran.
+
+Note that a fix to the checked-out `Configure-RabbitMqShovel.ps1` does **not** reach a
+pipeline that runs the script from a published release zip; a verification step in the
+pipeline itself does.
+
 ## Security
 
 - The Shovel's destination credential is a **queue-scoped, Send-only** SAS rule —
