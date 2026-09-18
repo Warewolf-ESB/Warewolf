@@ -1103,7 +1103,11 @@ function Grant-RoleAssignment {
         [string] $PrincipalType = 'ServicePrincipal',
         [string] $Label,
         [int]    $MaxAttempts   = 10,
-        [int]    $DelaySeconds  = 15
+        [int]    $DelaySeconds  = 15,
+        # Call-site-specific remedy appended to the failure message. The generic advice below
+        # only knows to ask for RBAC-write; a caller that has a cheaper way out (e.g. a Key
+        # Vault DATA-PLANE pre-grant, which needs no roleAssignments/write at all) says so here.
+        [string] $RemediationHint
     )
     $what = if ($Label) { $Label } else { "$PrincipalType $PrincipalId" }
     $azArgs = @('role', 'assignment', 'create',
@@ -1164,8 +1168,9 @@ function Grant-RoleAssignment {
         "failing, the caller likely lacks permission to write role assignments at this scope " +
         "(Contributor alone excludes Microsoft.Authorization/*/Write)."
     }
+    if ($RemediationHint) { $advice = "$advice`n`n$RemediationHint" }
     throw (("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). Last az CLI error:`n{7}`n`n" +
-            "{8} Grant a role such as 'Role Based Access Control Administrator' scoped to at least " +
+            "{8}`n`nGrant a role such as 'Role Based Access Control Administrator' scoped to at least " +
             "this resource, or run the assignment directly once you have that permission:`n" +
             "  az role assignment create --assignee-object-id {5} --assignee-principal-type {6} --role '{0}' --scope '{1}'") -f
            $Role, $Scope, $what, $attemptsMade, (($attemptsMade - 1) * $DelaySeconds), $PrincipalId, $PrincipalType, $lastError, $advice)
@@ -2260,9 +2265,16 @@ try {
             $keyAlreadyReadable = (-not $GenerateNewKey) -and (-not $DryRun) -and
                 [bool](Invoke-Az @('keyvault', 'secret', 'show', '--vault-name', $KeyVaultName, '--name', $KeyVaultSecretName, '-o', 'json') -AllowFail)
 
+            # LEAST PRIVILEGE (build 30735): Officer's WRITE is only needed when this run also
+            # GENERATES the key - exactly the condition that passes -GenerateKeys to
+            # Encrypt-Config.ps1 below. Encrypting with an EXISTING key is a plain secret GET,
+            # which 'Key Vault Secrets User' covers. Asking for Officer regardless made the
+            # printed remediation command over-privileged for the common CI case.
+            $devRole = if ($GenerateNewKey) { 'Key Vault Secrets Officer' } else { 'Key Vault Secrets User' }
+
             if ($keyAlreadyReadable) {
                 Write-Note ("Key Vault secret '$KeyVaultSecretName' is already readable by the current identity; " +
-                            "skipping the 'Key Vault Secrets Officer' grant (this run reuses the existing key, so nothing is written).")
+                            "skipping the '$devRole' grant (this run reuses the existing key, so nothing is written).")
             } else {
                 # DryRun keeps its placeholder so the PLANNED grant still shows in the echo.
                 $principal = if ($DryRun) {
@@ -2281,9 +2293,14 @@ try {
                            "  az role assignment create --role 'Key Vault Secrets User' --assignee-object-id <object-id> " +
                            "--assignee-principal-type ServicePrincipal --scope $vaultId")
                 }
-                Write-Step "Assigning RBAC: Key Vault Secrets Officer -> $($principal.Display) (for encryption)"
-                Grant-RoleAssignment -PrincipalId $principal.ObjectId -Role 'Key Vault Secrets Officer' `
-                                     -Scope $vaultId -PrincipalType $principal.PrincipalType -Label $principal.Display
+                Write-Step "Assigning RBAC: $devRole -> $($principal.Display) (for encryption)"
+                Grant-RoleAssignment -PrincipalId $principal.ObjectId -Role $devRole `
+                                     -Scope $vaultId -PrincipalType $principal.PrincipalType -Label $principal.Display `
+                                     -RemediationHint (
+                    "This grant is only needed because the deploying identity cannot READ the encryption key. " +
+                    "A Key Vault DATA-PLANE pre-grant avoids it entirely and needs no roleAssignments/write from " +
+                    "the deploy: have an admin run the command below once, after which this run's probe finds the " +
+                    "key readable and the grant is skipped on every subsequent deploy.")
                 if (-not $DryRun) { Write-Note 'RBAC propagation can take ~1-2 min before the secret can be written.'; Start-Sleep -Seconds 30 }
             }
         }

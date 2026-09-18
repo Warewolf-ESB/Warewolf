@@ -223,6 +223,49 @@ Describe 'Deploy-WwExecutionEngine — static' {
         Remove-Variable -Name azCalls -Scope Global -ErrorAction SilentlyContinue
     }
 
+    It 'surfaces the data-plane pre-grant as the remedy when the self-grant is denied (build 30735)' {
+        # REGRESSION (build 30735). The deploying service principal held only Contributor, so it
+        # could not READ the AES key and then could not self-grant either. The generic advice only
+        # offers 'get RBAC-write', but the real remedy is a Key Vault DATA-PLANE pre-grant, which
+        # needs no roleAssignments/write at all and makes the deploy skip this grant thereafter.
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        function az {
+            if ($args[2] -eq 'list') { $global:LASTEXITCODE = 0; '[]'; return }
+            $global:LASTEXITCODE = 1
+            "ERROR: (AuthorizationFailed) does not have authorization to perform action " +
+            "'Microsoft.Authorization/roleAssignments/write' over scope '/x'."
+        }
+        $err = { Grant-RoleAssignment -PrincipalId 'sp-1' -Role 'Key Vault Secrets User' `
+                                      -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                                      -PrincipalType ServicePrincipal -MaxAttempts 1 -DelaySeconds 0 `
+                                      -RemediationHint 'A Key Vault DATA-PLANE pre-grant avoids it entirely.' } |
+            Should -Throw -PassThru
+        $msg = $err.Exception.Message
+        $msg | Should -Match ([regex]::Escape('DATA-PLANE pre-grant'))
+        # The generic remedy and the ready-to-run command must survive alongside the hint.
+        $msg | Should -Match 'PERMISSION error'
+        $msg | Should -Match ([regex]::Escape('az role assignment create'))
+        $msg | Should -Not -Match '\{[0-9]\}'
+    }
+
+    It 'omits the hint section when no -RemediationHint is passed' {
+        # The managed-identity call site passes none; its message must not pick up
+        # Key-Vault-specific advice.
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        function az {
+            if ($args[2] -eq 'list') { $global:LASTEXITCODE = 0; '[]'; return }
+            $global:LASTEXITCODE = 1
+            'ERROR: (AuthorizationFailed) roleAssignments/write denied.'
+        }
+        $err = { Grant-RoleAssignment -PrincipalId 'sp-1' -Role 'Key Vault Secrets User' `
+                                      -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                                      -PrincipalType ServicePrincipal -MaxAttempts 1 -DelaySeconds 0 } |
+            Should -Throw -PassThru
+        $err.Exception.Message | Should -Not -Match 'DATA-PLANE'
+    }
+
     It 'retries the Key Vault role grant for at least 2 minutes before giving up (build 30715 regression)' {
         # The 60s budget (6 attempts x 10s) that failed in build 30715 proved too
         # short for Entra replication lag on a freshly-created managed identity.
@@ -915,6 +958,42 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $out | Should -Match 'Verify decryption\s*: yes \(in-memory\)'
     }
 
+    It 'asks for Secrets User, not Officer, when the key already exists (build 30735)' {
+        # REGRESSION (build 30735). The dev-side grant always asked for 'Key Vault Secrets
+        # Officer'. Officer's WRITE is only needed when this run GENERATES the key; encrypting
+        # with an EXISTING key is a plain secret GET, covered by 'Key Vault Secrets User'.
+        # Asking for Officer regardless printed an over-privileged remediation command.
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.EncryptResources   = $true
+        $callArgs.KeyVaultName       = 'kv-test'
+        $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Assigning RBAC: Key Vault Secrets User -> .*\(for encryption\)'
+        $out | Should -Not -Match 'Assigning RBAC: Key Vault Secrets Officer'
+    }
+
+    It 'asks for Secrets Officer when this run generates the key' {
+        # Vault absent -> the script creates it and sets GenerateNewKey, so Encrypt-Config.ps1
+        # will WRITE a key and Officer is genuinely required. Guards the least-privilege change
+        # against swinging too far.
+        function az {
+            $a = $args; $global:LASTEXITCODE = 0
+            if ($a[0] -eq 'account'     -and $a -contains 'show')   { return '{"id":"sub-123","tenantId":"tid-456","user":{"name":"dev@x"},"name":"My Sub"}' }
+            if ($a[0] -eq 'group'       -and $a -contains 'exists') { return 'true' }
+            if ($a[0] -eq 'storage'     -and $a -contains 'show')   { return '{"name":"st"}' }
+            if ($a[0] -eq 'functionapp' -and $a -contains 'show')   { return '{"name":"app"}' }
+            # The vault itself is ABSENT (both the 'show' probe and the secret read fail).
+            if ($a[0] -eq 'keyvault'    -and $a -contains 'show')   { $global:LASTEXITCODE = 1; return $null }
+            return '{}'
+        }
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.EncryptResources   = $true
+        $callArgs.KeyVaultName       = 'kv-test'
+        $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Assigning RBAC: Key Vault Secrets Officer -> .*\(for encryption\)'
+    }
+
     Context 'publish source (folder / zip)' {
         It 'builds the dry-run preview from a folder publish path' {
             $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
@@ -1057,17 +1136,20 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Not -Match 'Secrets Officer'           # dev role only when encrypting
         }
 
-        It 'still plans the Secrets Officer grant when encrypting (probe-skip is a real-run-only shortcut)' {
+        It 'still plans the dev-side grant when encrypting (probe-skip is a real-run-only shortcut)' {
             # The "key already readable -> skip the grant" shortcut is gated on
             # (-not $DryRun): a dry run never probes the vault, so the PLANNED grant must
             # still appear. Without this, the probe added for build 30696 could silently
             # swallow the grant for every run, not just entitled ones.
+            # WHICH role is planned is deliberately not asserted here - that is the
+            # least-privilege pair above ('asks for Secrets User/Officer ...'). This test
+            # owns one invariant only: a grant is still planned under -DryRun.
             $callArgs = $script:commonArgs.Clone()
             $callArgs.EncryptResources   = $true
             $callArgs.KeyVaultName       = 'kv-test'
             $callArgs.KeyVaultSecretName = 'dp-keyring-v1'
             $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
-            $out | Should -Match 'Key Vault Secrets Officer'
+            $out | Should -Match 'Assigning RBAC: Key Vault Secrets (User|Officer) ->'
             $out | Should -Match 'the signed-in user'
         }
 

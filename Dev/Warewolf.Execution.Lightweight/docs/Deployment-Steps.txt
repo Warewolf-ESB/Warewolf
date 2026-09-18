@@ -41,7 +41,9 @@ and point the script at that folder (or a .zip of it).
         first attempt instead of retrying for 150s.
       - Key Vault data plane: Key Vault Secrets User on the vault to encrypt with an
         EXISTING key; Key Vault Secrets Officer when the key is also created/rotated
-        — WHEN a Key Vault is in play. Self-granted (Secrets Officer), but ONLY if the
+        — WHEN a Key Vault is in play. Self-granted at the level actually needed
+        (Secrets User when reusing an existing key, Secrets Officer only when this run
+        also generates one), but ONLY if the
         identity already has User Access Administrator / Owner — and the grant is
         SKIPPED outright when the key is already readable, which is the normal CI
         path (pre-grant Secrets User to a service principal and no role write is
