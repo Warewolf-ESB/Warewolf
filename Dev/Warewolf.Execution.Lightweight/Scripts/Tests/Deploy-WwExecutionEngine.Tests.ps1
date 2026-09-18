@@ -1691,3 +1691,246 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
         }
     }
 }
+
+Describe 'Deploy-WwExecutionEngine — Function App storage wiring (create + reconcile)' {
+
+    <#
+        `--storage-account` is honoured ONLY by `functionapp create`. An app created by an
+        earlier run therefore keeps whatever storage it was born with, and Phase 1's
+        "app already exists" branch reconciled none of it — the same shape of hole the
+        .NET runtime check above exists to close.
+
+        BUILD 30739 (2026-09-18). `wwprofilerlw` had been created against storage account
+        `stwwprofilerlw`, which a later cleanup sweep deleted. The deploy plan printed
+        `StorageAccount : wwprofilerlwsa` and `[+] Storage account 'wwprofilerlwsa' already
+        exists.` — both true, both about an account the app had never pointed at. Phase 4 then
+        died inside Kudu with `500 ... System.IO.IOException: The network path was not found.`
+        (the content share could not be mounted; on a Consumption Y1 plan that share is
+        mandatory). These tests pin the decision and what Phase 1 does with it.
+    #>
+
+    Context 'Get-StorageAccountNameFromConnectionString' {
+
+        BeforeAll { . $script:DeployScript -LoadFunctionsOnly }
+
+        It 'pulls AccountName out of a real AzureWebJobsStorage value' {
+            Get-StorageAccountNameFromConnectionString 'DefaultEndpointsProtocol=https;EndpointSuffix=core.windows.net;AccountName=stwwprofilerlw;AccountKey=abc==' |
+                Should -Be 'stwwprofilerlw'
+        }
+
+        It 'does not depend on key order or casing (az promises neither)' {
+            Get-StorageAccountNameFromConnectionString 'accountname=wwprofilerlwsa;DefaultEndpointsProtocol=https' |
+                Should -Be 'wwprofilerlwsa'
+        }
+
+        It 'returns $null — never a bogus name — for a value carrying no AccountName' {
+            # "could not be determined" and "differs" are different findings; a SAS-based or
+            # identity-based connection string must not be read as an account name.
+            Get-StorageAccountNameFromConnectionString 'BlobEndpoint=https://x.blob.core.windows.net/;SharedAccessSignature=sv=2022' |
+                Should -BeNullOrEmpty
+            Get-StorageAccountNameFromConnectionString ''    | Should -BeNullOrEmpty
+            Get-StorageAccountNameFromConnectionString $null | Should -BeNullOrEmpty
+        }
+    }
+
+    Context 'Get-ContentShareName' {
+
+        BeforeAll { . $script:DeployScript -LoadFunctionsOnly }
+
+        It 'is deterministic and share-name legal' {
+            $n = Get-ContentShareName -AppName 'wwprofilerlw'
+            $n | Should -Be 'wwprofilerlw-content'
+            $n | Should -Match '^[a-z0-9][a-z0-9-]{1,61}[a-z0-9]$'
+        }
+
+        It 'strips illegal characters and stays within 63 chars' {
+            $n = Get-ContentShareName -AppName ('WW_Profiler.LW' + ('x' * 80))
+            $n.Length        | Should -BeLessOrEqual 63
+            $n               | Should -Match '^[a-z0-9-]+$'
+            $n.EndsWith('-') | Should -BeFalse
+        }
+    }
+
+    Context 'Resolve-FunctionStoragePlan (pure decision)' {
+
+        BeforeAll { . $script:DeployScript -LoadFunctionsOnly }
+
+        It 'plans a create when the app does not exist yet' {
+            $p = Resolve-FunctionStoragePlan -CurrentAccountName $null -TargetStorageAccount 'wwprofilerlwsa'
+            $p.Action | Should -Be 'create'
+            $p.Target | Should -Be 'wwprofilerlwsa'
+        }
+
+        It 'RECONCILES when the app points at an account that no longer exists (build 30739)' {
+            $p = Resolve-FunctionStoragePlan -CurrentAccountName 'stwwprofilerlw' `
+                                             -TargetStorageAccount 'wwprofilerlwsa' `
+                                             -AppExists -CurrentAccountExists $false
+            $p.Action  | Should -Be 'reconcile'
+            $p.Current | Should -Be 'stwwprofilerlw'
+            $p.Message | Should -Match 'DOES NOT EXIST'
+        }
+
+        It 'REPORTS but never silently repoints an app whose account exists (no state orphaning)' {
+            $p = Resolve-FunctionStoragePlan -CurrentAccountName 'stwwshared' `
+                                             -TargetStorageAccount 'wwprofilerlwsa' `
+                                             -AppExists -CurrentAccountExists $true
+            $p.Action  | Should -Be 'mismatch'
+            $p.Message | Should -Match 'NOT changed'
+        }
+
+        It 'plans nothing when the app already points at -StorageAccount (case/whitespace tolerant)' {
+            (Resolve-FunctionStoragePlan -CurrentAccountName ' WWProfilerLWSA ' `
+                                         -TargetStorageAccount 'wwprofilerlwsa' -AppExists).Action |
+                Should -Be 'none'
+        }
+
+        It 'reports UNKNOWN — never a reconcile — when the app exists but its setting is unreadable' {
+            # An unreadable AzureWebJobsStorage is not evidence of a missing account, and
+            # repointing on that inference would move a working app off its own storage.
+            $p = Resolve-FunctionStoragePlan -CurrentAccountName '   ' -TargetStorageAccount 'wwprofilerlwsa' -AppExists
+            $p.Action  | Should -Be 'unknown'
+            $p.Current | Should -BeNullOrEmpty
+            $p.Message | Should -Match 'COULD NOT BE READ'
+        }
+
+        It 'treats "existence not checked" ($null) as unknown, not as a missing account' {
+            # $null and $false are different answers: conflating them turns every unchecked
+            # account into a spurious repoint.
+            (Resolve-FunctionStoragePlan -CurrentAccountName 'stwwshared' `
+                                         -TargetStorageAccount 'wwprofilerlwsa' `
+                                         -AppExists -CurrentAccountExists $null).Action |
+                Should -Be 'unknown'
+        }
+    }
+
+    Context 'end-to-end (DryRun)' {
+
+        BeforeEach {
+            # Shim models the three states that matter: no app; an app on a storage account
+            # that exists; an app on one that does not. `storage account show` is the
+            # existence probe, so it must fail for the orphaned account and only for it.
+            $global:appExists      = $true
+            $global:appStorage     = 'stwwprofilerlw'
+            $global:missingStorage = @('stwwprofilerlw')
+            function az {
+                $a = $args; $global:LASTEXITCODE = 0
+                if ($a[0] -eq 'account'     -and $a -contains 'show')   { return '{"id":"sub-123","tenantId":"tid-456","user":{"name":"dev@x"},"name":"My Sub"}' }
+                if ($a[0] -eq 'group'       -and $a -contains 'exists') { return 'true' }
+                if ($a[0] -eq 'storage'     -and $a -contains 'show-connection-string') {
+                    return 'DefaultEndpointsProtocol=https;AccountName=wwprofilerlwsa;AccountKey=k=='
+                }
+                if ($a[0] -eq 'storage'     -and $a -contains 'account' -and $a -contains 'show') {
+                    $i = [array]::IndexOf($a, '--name')
+                    $name = ($i -ge 0) ? $a[$i + 1] : ''
+                    if ($global:missingStorage -contains $name) { $global:LASTEXITCODE = 1; return $null }
+                    return ('{"name":"' + $name + '"}')
+                }
+                if ($a[0] -eq 'functionapp' -and $a -contains 'appsettings' -and $a -contains 'list') {
+                    if (-not $global:appStorage) { return '' }
+                    return ('DefaultEndpointsProtocol=https;AccountName=' + $global:appStorage + ';AccountKey=k==')
+                }
+                if ($a[0] -eq 'functionapp' -and $a -contains 'show') {
+                    if (-not $global:appExists) { $global:LASTEXITCODE = 1; return $null }
+                    return '{"name":"app","siteConfig":{"netFrameworkVersion":"v10.0"}}'
+                }
+                if ($a[0] -eq 'keyvault' -and $a -contains 'secret' -and $a -contains 'show') { $global:LASTEXITCODE = 1; return $null }
+                return '{}'
+            }
+
+            $global:pubDir = Join-Path ([System.IO.Path]::GetTempPath()) ("wwpub-" + [guid]::NewGuid())
+            New-Item -ItemType Directory -Path $global:pubDir -Force | Out-Null
+            '{ "logging": { "logLevel": { "default": "Information" } } }' | Set-Content (Join-Path $global:pubDir 'host.json')
+            $global:logDir = Join-Path ([System.IO.Path]::GetTempPath()) ("wwlog-" + [guid]::NewGuid())
+            $script:appName = 'wwst-' + [guid]::NewGuid().ToString('N').Substring(0, 8)
+
+            $script:commonArgs = @{
+                SubscriptionId      = 'sub-123'
+                TenantId            = 'tid-456'
+                ResourceGroup       = 'DEV2'
+                Location            = 'southafricanorth'
+                StorageAccount      = 'wwprofilerlwsa'
+                AppName             = $script:appName
+                PublishPath         = $global:pubDir
+                LogDir              = $global:logDir
+                EncryptResources    = $false
+                EnableAppInsights   = $false
+                EnableElasticsearch = $false
+                NonInteractive      = $true
+                DryRun              = $true
+            }
+        }
+
+        AfterEach {
+            if ($global:pubDir -and (Test-Path -LiteralPath $global:pubDir)) { Remove-Item -LiteralPath $global:pubDir -Recurse -Force }
+            if ($global:logDir -and (Test-Path -LiteralPath $global:logDir)) { Remove-Item -LiteralPath $global:logDir -Recurse -Force }
+            Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter "wwexecutionengine-stage-$($script:appName)-*" -ErrorAction SilentlyContinue |
+                ForEach-Object { Remove-Item -LiteralPath $_.FullName -Recurse -Force -ErrorAction SilentlyContinue }
+        }
+
+        AfterAll {
+            Remove-Variable -Name appExists      -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name appStorage     -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name missingStorage -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name pubDir         -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name logDir         -Scope Global -ErrorAction SilentlyContinue
+        }
+
+        It 'repoints an orphaned app BEFORE Phase 4, and says so before the confirmation (build 30739)' {
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+
+            $out | Should -Match 'STORAGE ORPHANED'
+            $out | Should -Match "points at storage account 'stwwprofilerlw', which does not exist"
+            $out | Should -Match '\[DRYRUN\] az storage share-rm create .*--name .*-content'
+            # Phase 3 ALSO runs `functionapp config appsettings set` (the env-var apply), so the
+            # bare command matches on every run. The reconcile is identifiable only by the
+            # settings file it hands az: ww-storage-* vs Phase 3's ww-appsettings-*.
+            $out | Should -Match '\[DRYRUN\] az functionapp config appsettings set .*ww-storage-'
+            $out | Should -Match 'Dry-run complete'
+        }
+
+        It 'states the storage decision in the Phase 0.5 plan' {
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Match "Storage wiring\s+: 'stwwprofilerlw' DOES NOT EXIST"
+        }
+
+        It 'does NOT repoint an app whose storage account exists — only reports the mismatch' {
+            $global:appStorage = 'stwwshared'; $global:missingStorage = @()
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+
+            $out | Should -Match 'STORAGE MISMATCH'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config appsettings set .*ww-storage-'
+            $out | Should -Not -Match '\[DRYRUN\] az storage share-rm create'
+            $out | Should -Not -Match 'STORAGE ORPHANED'
+        }
+
+        It 'does nothing when the existing app already uses -StorageAccount' {
+            $global:appStorage = 'wwprofilerlwsa'; $global:missingStorage = @()
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+
+            $out | Should -Match "Function App storage is 'wwprofilerlwsa'"
+            $out | Should -Not -Match 'STORAGE ORPHANED'
+            $out | Should -Not -Match 'STORAGE MISMATCH'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config appsettings set .*ww-storage-'
+        }
+
+        It 'leaves the CREATE path alone — a new app is still born on -StorageAccount' {
+            # Regression guard: the reconcile lives on the "already exists" branch only, and
+            # `functionapp create` must remain the thing that wires a brand-new app.
+            $global:appExists = $false
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+
+            $out | Should -Match '\[DRYRUN\] az functionapp create .*--storage-account wwprofilerlwsa'
+            $out | Should -Not -Match 'STORAGE ORPHANED'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config appsettings set .*ww-storage-'
+        }
+
+        It 'records the storage decision in the summary for the operator' {
+            (& $script:DeployScript @commonArgs) 6>&1 | Out-Null
+            $summary = Get-ChildItem -Path $global:logDir -Filter '*.summary.json' | Select-Object -First 1
+            $json = Get-Content $summary.FullName -Raw | ConvertFrom-Json
+            $json.storage.target | Should -Be 'wwprofilerlwsa'
+            $json.storage.before | Should -Be 'stwwprofilerlw'
+            $json.storage.action | Should -Be 'reconcile'
+        }
+    }
+}

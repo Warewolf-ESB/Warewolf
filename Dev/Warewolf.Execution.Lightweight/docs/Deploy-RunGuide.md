@@ -281,7 +281,7 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 | `-TenantId` | string | from `az account show` | Microsoft Entra tenant GUID. |
 | `-ResourceGroup` | string | **required** | Resource group to create / use. |
 | `-Location` | string | **required** | Azure region, e.g. `southafricanorth`. |
-| `-StorageAccount` | string | **required** | Storage account name (3–24 lowercase chars). |
+| `-StorageAccount` | string | **required** | Storage account name (3–24 lowercase chars). `--storage-account` binds only at **create**, so this does not by itself move an app that already exists: Phase 0.5 reads the app's `AzureWebJobsStorage` and prints a `Storage wiring` line, and Phase 1 **repoints** the app only when the account it names **no longer exists** (an orphaned app cannot be deployed to at all — Kudu fails to mount the content share and returns `500 ... The network path was not found.`, build 30739). A different account that *does* exist is reported as `STORAGE MISMATCH` and left alone. |
 | `-AppName` | string | **required** | Function App name (globally unique). |
 | `-UpgradeRuntimeVersion` | switch | off | Reconcile an **existing** app's runtime to `netFrameworkVersion v10.0`. A *new* app is always created on .NET 10; an app created by an earlier run keeps its original runtime, and a v8.0 host loading the `net10.0` package fails at startup with *"You must install or update .NET to run this application."* Off by default because the change **restarts the app** — without it the mismatch is reported in the Phase 0.5 plan and warned about in Phase 1, but nothing is changed. |
 

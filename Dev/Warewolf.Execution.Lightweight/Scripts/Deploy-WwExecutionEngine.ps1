@@ -526,6 +526,9 @@ $script:TargetFunctionsVersion    = '4'       # `functionapp create --functions-
 $script:RuntimePlan = [pscustomobject]@{
     Current = $null; Target = $script:TargetNetFrameworkVersion; Action = 'create'; Message = '(not yet resolved)'
 }
+$script:StoragePlan = [pscustomobject]@{
+    Current = $null; Target = $null; Action = 'create'; Message = '(not yet resolved)'
+}
 
 # ════════════════════════════════════════════════════════════════════════════
 # Helpers
@@ -996,6 +999,15 @@ function Save-DeploySummary {
             netFrameworkBefore = $script:RuntimePlan.Current
             action             = $script:RuntimePlan.Action
         }
+        # What this run did about the app's STORAGE wiring. `--storage-account` only binds at
+        # create time, so 'mismatch'/'unknown' here means the deployed app is NOT using
+        # storageAccount above - the difference between a deploy that works and a Phase 4
+        # Kudu 500 (build 30739).
+        storage         = [ordered]@{
+            target = $StorageAccount
+            before = $script:StoragePlan.Current
+            action = $script:StoragePlan.Action
+        }
         appInsightsName = ($enableAppInsights ? $AppInsightsName : $null)
         appInsightsConnectionString = $aiConnMasked
         endpoint        = $baseUrl
@@ -1268,6 +1280,117 @@ function Resolve-FunctionRuntimePlan {
     [pscustomobject]@{
         Current = $current
         Target  = $TargetNetFrameworkVersion
+        Action  = $action
+        Message = $message
+    }
+}
+
+function Get-StorageAccountNameFromConnectionString {
+    <#
+        Pull the AccountName out of an Azure Storage connection string.
+
+        Deliberately tolerant: the value read back from an App Setting is a
+        semicolon-delimited bag whose key order is not guaranteed, may carry a
+        SAS instead of a key, and may be absent entirely. Anything that is not a
+        connection string carrying an AccountName yields $null - "could not be
+        determined", which the planner treats very differently from "differs".
+    #>
+    param([string] $ConnectionString)
+
+    if ([string]::IsNullOrWhiteSpace($ConnectionString)) { return $null }
+    $m = [regex]::Match($ConnectionString, '(?i)(?:^|;)\s*AccountName\s*=\s*([^;]+)')
+    if (-not $m.Success) { return $null }
+    $name = $m.Groups[1].Value.Trim()
+    if ([string]::IsNullOrWhiteSpace($name)) { return $null }
+    return $name
+}
+
+function Get-ContentShareName {
+    <#
+        Deterministic Azure Files share name for a Function App's WEBSITE_CONTENTSHARE.
+
+        Share names are lowercase alphanumerics and single hyphens, 3-63 chars, with no
+        leading/trailing hyphen. `functionapp create` invents `<appname><randomhex>`; a
+        deterministic name is preferred here so a repeated reconcile reuses the same share
+        instead of littering the account with one share per run.
+    #>
+    param([Parameter(Mandatory)][string] $AppName)
+
+    $base = ($AppName.ToLowerInvariant() -replace '[^a-z0-9-]', '') -replace '-{2,}', '-'
+    $name = "$base-content".Trim('-')
+    if ($name.Length -gt 63) { $name = $name.Substring(0, 63).TrimEnd('-') }
+    return $name
+}
+
+function Resolve-FunctionStoragePlan {
+    <#
+        Decide what THIS run does about an EXISTING Function App's storage wiring.
+        Pure - no az calls - so the decision is made once at plan time (Phase 0.5),
+        printed, and then replayed in Phase 1. Same shape as
+        Resolve-FunctionRuntimePlan, and it exists for the same reason: `--storage-account`
+        is only honoured by `functionapp create`, so the "app already exists" branch
+        reconciled NOTHING about storage and a drifted app sailed through Phase 1.
+
+        WHY THIS EXISTS (build 30739, 2026-09-18). `wwprofilerlw` had been created against a
+        storage account named `stwwprofilerlw` that was later deleted by a cleanup sweep. The
+        deploy plan printed `StorageAccount : wwprofilerlwsa` and `[+] Storage account
+        'wwprofilerlwsa' already exists.` - both true, both irrelevant, because the app had
+        never pointed at it. Five minutes later Phase 4 died inside Kudu with an opaque
+        `500 ... System.IO.IOException: The network path was not found.` raised from
+        `FileSystemHelpers.EnsureDirectoryIgnoreAccessExceptions` - i.e. the content share
+        could not be mounted. On a Consumption (Y1) plan the content share is mandatory, so
+        an app whose storage account is gone cannot be deployed to at all.
+
+          Action 'create'    - no app yet; `functionapp create --storage-account` wires it.
+          Action 'none'      - already points at -StorageAccount.
+          Action 'reconcile' - app points at an account that DOES NOT EXIST. The app is
+                               unusable as-is, so Phase 1 repoints AzureWebJobsStorage +
+                               WEBSITE_CONTENTAZUREFILECONNECTIONSTRING at -StorageAccount and
+                               ensures a content share. Nothing is lost: the account it named
+                               is gone.
+          Action 'mismatch'  - app points at a DIFFERENT account that EXISTS. Report loudly,
+                               change nothing. Repointing here would orphan a live app's
+                               state (host locks, timers, the content share holding the
+                               deployed package) on an inference, and cross-RG/shared storage
+                               is a legitimate pattern this script already tolerates for the
+                               account itself.
+          Action 'unknown'   - the app exists but AzureWebJobsStorage could not be read.
+                               Report it and change nothing; never claim it is fine.
+
+        -CurrentAccountExists is deliberately [object] (a nullable boolean): $null means
+        "not checked" (which only happens when the name matched the target, or could not be
+        read), and conflating that with $false is what would turn 'none' into a spurious
+        'reconcile'.
+    #>
+    param(
+        [string] $CurrentAccountName,
+        [string] $TargetStorageAccount,
+        [switch] $AppExists,
+        [object] $CurrentAccountExists = $null
+    )
+
+    $current = if ([string]::IsNullOrWhiteSpace($CurrentAccountName)) { $null }
+               else { $CurrentAccountName.Trim() }
+
+    $action =
+        if (-not $AppExists)                                  { 'create'    }
+        elseif (-not $current)                                { 'unknown'   }
+        elseif ($current -ieq $TargetStorageAccount)          { 'none'      }
+        elseif ($CurrentAccountExists -eq $false)             { 'reconcile' }
+        elseif ($CurrentAccountExists -eq $true)              { 'mismatch'  }
+        else                                                  { 'unknown'   }
+
+    $message = switch ($action) {
+        'create'    { "will be created against '$TargetStorageAccount'" }
+        'none'      { "'$current' - already correct" }
+        'reconcile' { "'$current' DOES NOT EXIST (orphaned app) -> repointing at '$TargetStorageAccount' + fresh content share" }
+        'mismatch'  { "'$current' (exists) differs from -StorageAccount '$TargetStorageAccount' - NOT changed; pass -StorageAccount '$current' if that is the intended account" }
+        'unknown'   { "COULD NOT BE READ; this run targets '$TargetStorageAccount' - verify with ``az functionapp config appsettings list --query ""[?name=='AzureWebJobsStorage']""``" }
+    }
+
+    [pscustomobject]@{
+        Current = $current
+        Target  = $TargetStorageAccount
         Action  = $action
         Message = $message
     }
@@ -1678,6 +1801,36 @@ $script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $e
                                                  -Upgrade:$UpgradeRuntimeVersion `
                                                  -AppExists:$appShowFound
 
+# ── Storage wiring decision (resolved HERE so the plan can state it, applied in Phase 1) ──
+# `--storage-account` is honoured ONLY by `functionapp create`, so an app that ALREADY
+# exists keeps whatever storage it was born with and Phase 1 reconciled none of it. Both
+# calls below are READS, so they run under -DryRun too and the plan tells the truth. Not
+# reading this is what let build 30739 sail through Phase 0.5/1 announcing a storage
+# account the app had never pointed at, and then die in Phase 4 inside Kudu with an
+# unmappable content share. See Resolve-FunctionStoragePlan for the full incident note.
+$existingStorageAccountName  = $null
+$currentStorageAccountExists = $null
+if ($appShowFound) {
+    $awjsValue = Invoke-Az @(
+        'functionapp', 'config', 'appsettings', 'list',
+        '--name', $AppName, '--resource-group', $ResourceGroup,
+        '--query', "[?name=='AzureWebJobsStorage'].value | [0]", '-o', 'tsv'
+    ) -AllowFail
+    $existingStorageAccountName = Get-StorageAccountNameFromConnectionString (($awjsValue | Out-String).Trim())
+
+    if ($existingStorageAccountName -and ($existingStorageAccountName -ine $StorageAccount)) {
+        # Storage account names are globally unique, so a subscription-wide lookup by name is
+        # the right existence test - the account may legitimately live in another resource
+        # group (the same cross-RG sharing pattern Phase 1.2 already tolerates).
+        $currentStorageAccountExists = [bool](
+            Invoke-Az @('storage', 'account', 'show', '--name', $existingStorageAccountName, '-o', 'json') -AllowFail)
+    }
+}
+$script:StoragePlan = Resolve-FunctionStoragePlan -CurrentAccountName $existingStorageAccountName `
+                                                  -TargetStorageAccount $StorageAccount `
+                                                  -AppExists:$appShowFound `
+                                                  -CurrentAccountExists $currentStorageAccountExists
+
 # ── Settings summary + single confirmation (item 8) ────────────────────────────
 Write-Host ''
 Write-Host '  ── Resolved deployment settings ──────────────────────────────────────' -ForegroundColor White
@@ -1686,6 +1839,7 @@ Write-Host ("    {0,-28}: {1}" -f 'TenantId', $TenantId)
 Write-Host ("    {0,-28}: {1}" -f 'ResourceGroup', $ResourceGroup)
 Write-Host ("    {0,-28}: {1}" -f 'Location', $Location)
 Write-Host ("    {0,-28}: {1}" -f 'StorageAccount', $StorageAccount)
+Write-Host ("    {0,-28}: {1}" -f 'Storage wiring', $script:StoragePlan.Message)
 Write-Host ("    {0,-28}: {1}" -f 'AppName', $AppName)
 Write-Host ("    {0,-28}: {1}" -f 'Runtime', ("{0} {1} (Functions v{2}) — {3}" -f
     $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion, $script:RuntimePlan.Message))
@@ -1778,6 +1932,29 @@ elseif ($script:RuntimePlan.Action -eq 'unknown') {
                 "then fails at startup with 'You must install or update .NET to run this application.' " +
                 ("Check it with: az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
                  $AppName, $ResourceGroup))
+}
+
+# Same reasoning, for storage: a Consumption app whose storage account is gone cannot be
+# deployed to AT ALL — Kudu fails to mount the content share and returns a 500 that names
+# neither storage nor this script. Say so before the confirmation, not in Phase 4.
+if ($script:StoragePlan.Action -eq 'reconcile') {
+    Write-Note ("STORAGE ORPHANED: Function App '{0}' points at storage account '{1}', which does not exist. " -f
+                $AppName, $script:StoragePlan.Current)
+    Write-Note ("  Phase 1 will repoint AzureWebJobsStorage + WEBSITE_CONTENTAZUREFILECONNECTIONSTRING at " +
+                ("'{0}' and ensure a content share. Nothing is lost - the account it names is gone." -f $StorageAccount))
+}
+elseif ($script:StoragePlan.Action -eq 'mismatch') {
+    Write-Note ("STORAGE MISMATCH: Function App '{0}' uses storage account '{1}', not the -StorageAccount " -f
+                $AppName, $script:StoragePlan.Current)
+    Write-Note ("  '{0}' this run names. Nothing will be changed: '{1}' EXISTS, and repointing a live app " -f
+                $StorageAccount, $script:StoragePlan.Current)
+    Write-Note ("  would orphan its host locks, timers and deployed package. Re-run with " +
+                ("-StorageAccount '{0}' if that is the intended account." -f $script:StoragePlan.Current))
+}
+elseif ($script:StoragePlan.Action -eq 'unknown' -and $script:StoragePlan.Current -eq $null -and $appShowFound) {
+    Write-Note ("STORAGE UNVERIFIED: Function App '{0}' exists, but its AzureWebJobsStorage setting could not " -f $AppName)
+    Write-Note ("  be read, so this run CANNOT tell whether it uses '{0}'. Nothing will be changed. " -f $StorageAccount)
+    Write-Note ("  Check it with: az functionapp config appsettings list -n {0} -g {1} " -f $AppName, $ResourceGroup)
 }
 
 if (-not (Confirm-Yes 'Proceed with this deployment?' $true)) {
@@ -1906,6 +2083,68 @@ try {
                             ("package targets {0}. Nothing was changed. Check it with: " -f $script:RuntimePlan.Target) +
                             ("az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
                              $AppName, $ResourceGroup))
+            }
+        }
+
+        # 1.3a Storage wiring — replay the Phase 0.5 decision. `functionapp create` is the only
+        # thing that honours --storage-account and it does NOT run on this branch, so without
+        # this an app whose storage account was deleted stays broken and fails five minutes
+        # later, deep inside Kudu, with a 500 that names neither storage nor this script
+        # (build 30739). Reconcile only the case that is unambiguously broken.
+        switch ($script:StoragePlan.Action) {
+            'reconcile' {
+                Write-Step ("Repointing Function App storage '{0}' -> '{1}' (the named account no longer exists)" -f
+                            $script:StoragePlan.Current, $StorageAccount)
+                $stConn = ((Invoke-Az @(
+                    'storage', 'account', 'show-connection-string',
+                    '--name', $StorageAccount, '--resource-group', $ResourceGroup,
+                    '--query', 'connectionString', '-o', 'tsv'
+                )) | Out-String).Trim()
+                if (-not $stConn) {
+                    throw ("Could not read a connection string for storage account '$StorageAccount', so '$AppName' " +
+                           "cannot be repointed off the missing account '$($script:StoragePlan.Current)'.")
+                }
+
+                # A Consumption (Y1) app MUST be able to mount a content share; the one the app
+                # names lives on the account that is gone, so a share has to exist on the new one.
+                $contentShare = Get-ContentShareName -AppName $AppName
+                Invoke-Az @(
+                    'storage', 'share-rm', 'create',
+                    '--name', $contentShare, '--storage-account', $StorageAccount,
+                    '--resource-group', $ResourceGroup, '-o', 'none'
+                ) -Mutating -AllowFail | Out-Null
+
+                # WOLF-8512: a connection string carries '=' and ';' and az.cmd is a batch file.
+                # The @file form is the only quoting-proof way to set it — same reason
+                # ProfilerService-CI-UAT-LightweightExecutionEngine.yml sets its own flags that way.
+                $stSettingsFile = Join-Path ([System.IO.Path]::GetTempPath()) "ww-storage-$AppName-$runId.json"
+                $stPayload = @(
+                    @{ name = 'AzureWebJobsStorage';                      value = $stConn }
+                    @{ name = 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'; value = $stConn }
+                    @{ name = 'WEBSITE_CONTENTSHARE';                     value = $contentShare }
+                ) | ConvertTo-Json -Depth 3
+                Set-Content -LiteralPath $stSettingsFile -Value $stPayload -Encoding utf8
+                try {
+                    Invoke-Az @(
+                        'functionapp', 'config', 'appsettings', 'set',
+                        '--name', $AppName, '--resource-group', $ResourceGroup,
+                        '--settings', "@$stSettingsFile", '-o', 'none'
+                    ) -Mutating | Out-Null
+                }
+                finally { Remove-Item -LiteralPath $stSettingsFile -Force -ErrorAction SilentlyContinue }
+
+                Write-Ok "Function App storage repointed at '$StorageAccount' (content share '$contentShare')."
+            }
+            'none' {
+                Write-Ok "Function App storage is '$StorageAccount'."
+            }
+            'mismatch' {
+                Write-Note ("Function App storage $($script:StoragePlan.Message). Nothing was changed: repointing a " +
+                            'LIVE account would orphan this app''s host locks, timers and deployed package.')
+            }
+            default {
+                # 'unknown' (and 'create', which cannot legitimately reach an EXISTING app).
+                Write-Note ("Function App storage $($script:StoragePlan.Message)")
             }
         }
     } else {
@@ -2889,6 +3128,9 @@ try {
     }
     Write-Host '     UPDATED' -ForegroundColor Cyan
     Write-Host "       Function App settings: $($appSettings.Count) applied to $AppName" -ForegroundColor Cyan
+    if ($script:StoragePlan.Action -eq 'reconcile') {
+        Write-Host "       Storage wiring on $AppName repointed off the missing '$($script:StoragePlan.Current)' -> '$StorageAccount'" -ForegroundColor Cyan
+    }
     if (-not $SkipAuthProvisioning) { Write-Host "       Easy Auth + Entra app roles on $AppName" -ForegroundColor Cyan }
     Write-Host ''
     Write-Host '     ENDPOINTS' -ForegroundColor Blue

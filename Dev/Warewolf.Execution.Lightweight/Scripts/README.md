@@ -88,6 +88,27 @@ yourself and point `-PublishPath` at that folder (or a `.zip` of it).
 > opt-in). Requires an az CLI that knows the stack — verify with
 > `az functionapp list-runtimes --os windows --query "[?runtime=='dotnet-isolated'].version"`.
 
+> **Storage wiring.** `--storage-account` binds **only at create**, exactly like the runtime
+> above, so an app that already exists keeps whatever storage account it was born with and
+> `-StorageAccount` says nothing about it. Every run reads the app's `AzureWebJobsStorage` at
+> Phase 0.5 and prints a **`Storage wiring`** line; Phase 1 then acts on it:
+>
+> | Finding | What Phase 1 does |
+> |---|---|
+> | app already points at `-StorageAccount` | nothing |
+> | app points at an account that **does not exist** | **repoints** `AzureWebJobsStorage` + `WEBSITE_CONTENTAZUREFILECONNECTIONSTRING` at `-StorageAccount` and ensures a content share |
+> | app points at a **different account that exists** | reports `STORAGE MISMATCH`, changes nothing (repointing a live app would orphan its host locks, timers and deployed package — re-run with `-StorageAccount <that account>` if it is the intended one) |
+> | `AzureWebJobsStorage` unreadable | reports `STORAGE UNVERIFIED`, changes nothing |
+>
+> Build 30739 is why: `wwprofilerlw` had been created against `stwwprofilerlw`, which a later
+> cleanup sweep deleted. The plan printed `StorageAccount : wwprofilerlwsa` and
+> `[+] Storage account 'wwprofilerlwsa' already exists.` — both true, both about an account the
+> app had never used — and Phase 4 then died inside Kudu with
+> `500 ... System.IO.IOException: The network path was not found.` On a Consumption (Y1) plan
+> the content share is mandatory, so an app whose storage account is gone cannot be deployed to
+> at all. The decision is also recorded in the run summary under `storage`
+> (`target` / `before` / `action`).
+
 ```powershell
 az login
 
