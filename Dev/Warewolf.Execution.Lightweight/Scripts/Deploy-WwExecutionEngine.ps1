@@ -640,6 +640,11 @@ function Invoke-Az {
           -Mutating  : changes cloud state; skipped (echoed) under -DryRun.
           -AllowFail : non-zero exit returns $null instead of throwing (probes).
         Logged/echoed args are secret-redacted via Format-AzArgsForLog.
+
+        On an -AllowFail failure the real az output is also stashed in
+        $script:LastAzErrorOutput so a caller that only sees the $null return
+        (e.g. a retry loop) can still surface the actual cause instead of
+        guessing at one.
     #>
     param(
         [Parameter(Mandatory)][string[]] $Args,
@@ -652,7 +657,10 @@ function Invoke-Az {
     }
     $out = & az @Args 2>&1
     if ($LASTEXITCODE -ne 0) {
-        if ($AllowFail) { return $null }
+        if ($AllowFail) {
+            $script:LastAzErrorOutput = ($out | Out-String).Trim()
+            return $null
+        }
         throw "az CLI failed ($LASTEXITCODE): az $(Format-AzArgsForLog $Args)`n$($out | Out-String)"
     }
     return $out
@@ -1098,6 +1106,7 @@ function Grant-RoleAssignment {
         return
     }
 
+    $script:LastAzErrorOutput = $null
     for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
         $res = Invoke-Az $azArgs -Mutating -AllowFail
         if ($res) {
@@ -1105,20 +1114,21 @@ function Grant-RoleAssignment {
                       $(if ($attempt -gt 1) { " (attempt $attempt)" } else { '' }))
             return
         }
+        $lastError = if ($script:LastAzErrorOutput) { $script:LastAzErrorOutput } else { '(az produced no output)' }
         if ($attempt -lt $MaxAttempts) {
-            Write-Note ("Role assignment attempt {0}/{1} failed - Entra replication lag; retrying in {2}s." -f
-                        $attempt, $MaxAttempts, $DelaySeconds)
+            Write-Note ("Role assignment attempt {0}/{1} failed - {2}; retrying in {3}s." -f
+                        $attempt, $MaxAttempts, $lastError, $DelaySeconds)
             Start-Sleep -Seconds $DelaySeconds
         }
     }
-    throw (("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). " +
+    throw (("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). Last az CLI error:`n{7}`n`n" +
             "If the identity was only just created, re-running the deploy usually succeeds. If it keeps " +
             "failing, the caller likely lacks permission to write role assignments at this scope " +
             "(Contributor alone excludes Microsoft.Authorization/*/Write) - grant a role such as 'Role " +
             "Based Access Control Administrator' scoped to at least this resource, or run the assignment " +
             "directly once you have that permission:`n" +
             "  az role assignment create --assignee-object-id {5} --assignee-principal-type {6} --role '{0}' --scope '{1}'") -f
-           $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds), $PrincipalId, $PrincipalType)
+           $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds), $PrincipalId, $PrincipalType, $lastError)
 }
 
 function Resolve-CurrentPrincipal {

@@ -112,6 +112,23 @@ Describe 'Deploy-WwExecutionEngine — static' {
         $msg | Should -Not -Match '\{[0-9]\}'
     }
 
+    It 'surfaces the real az CLI error instead of always assuming Entra replication lag (build 30726/30727 regression)' {
+        # REGRESSION (build 30726/30727). The retry loop used to log a hardcoded
+        # "Entra replication lag" guess on every failed attempt and never looked at
+        # what az actually said, so a persistent non-replication failure (e.g. a
+        # Graph-layer permission error) was misdiagnosed as transient lag build after
+        # build. Grant-RoleAssignment must surface the real az output instead.
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        function az { $global:LASTEXITCODE = 1; 'ERROR: AADSTS500011: insufficient privileges to complete the operation.' }
+        $err = { Grant-RoleAssignment -PrincipalId 'pid-1' -Role 'Key Vault Secrets User' `
+                                       -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                                       -PrincipalType ServicePrincipal -MaxAttempts 1 -DelaySeconds 0 } |
+            Should -Throw -PassThru
+        $msg = $err.Exception.Message
+        $msg | Should -Match ([regex]::Escape('AADSTS500011'))
+    }
+
     It 'retries the Key Vault role grant for at least 2 minutes before giving up (build 30715 regression)' {
         # The 60s budget (6 attempts x 10s) that failed in build 30715 proved too
         # short for Entra replication lag on a freshly-created managed identity.
@@ -317,6 +334,12 @@ Describe 'Deploy-WwExecutionEngine — helper functions' {
         It 'returns null on failure when -AllowFail is set' {
             $DryRun = $false; $script:azExit = 1
             Invoke-Az -Args @('functionapp', 'show') -AllowFail | Should -BeNullOrEmpty
+        }
+        It 'captures the real az error text for a caller to inspect when -AllowFail is set' {
+            $DryRun = $false; $script:azExit = 1
+            $script:azOut = 'ERROR: AADSTS500011: insufficient privileges to complete the operation.'
+            Invoke-Az -Args @('functionapp', 'show') -AllowFail | Should -BeNullOrEmpty
+            $script:LastAzErrorOutput | Should -Match ([regex]::Escape('AADSTS500011'))
         }
         It 'throws on failure when -AllowFail is not set' {
             $DryRun = $false; $script:azExit = 1
