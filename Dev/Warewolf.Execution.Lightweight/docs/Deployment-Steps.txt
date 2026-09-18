@@ -30,9 +30,15 @@ and point the script at that folder (or a .zip of it).
       - Azure RBAC: Contributor at SUBSCRIPTION scope (or RG scope if the RG
         already exists) — always. Creating the RG itself needs subscription scope.
       - Azure RBAC: User Access Administrator (or Owner / RBAC Administrator),
-        scope covering the Key Vault — WHEN a Key Vault is in play. The script runs
-        'az role assignment create' (Microsoft.Authorization/roleAssignments/write),
-        which Contributor does NOT include. Most commonly-missed grant.
+        scope covering the Key Vault — WHEN a Key Vault is in play AND a grant is
+        actually missing. The script runs 'az role assignment create'
+        (Microsoft.Authorization/roleAssignments/write), which Contributor does NOT
+        include. Most commonly-missed grant. Since build 30731 every grant is probed
+        first ('az role assignment list' needs only roleAssignments/read, which
+        Contributor has) and skipped when the principal already holds the role, so a
+        RE-DEPLOY of an app whose managed identity was granted on an earlier run
+        needs no RBAC-write at all. A genuine AuthorizationFailed now fails on the
+        first attempt instead of retrying for 150s.
       - Key Vault data plane: Key Vault Secrets User on the vault to encrypt with an
         EXISTING key; Key Vault Secrets Officer when the key is also created/rotated
         — WHEN a Key Vault is in play. Self-granted (Secrets Officer), but ONLY if the

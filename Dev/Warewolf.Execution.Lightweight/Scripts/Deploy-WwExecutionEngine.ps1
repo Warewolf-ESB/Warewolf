@@ -1082,6 +1082,18 @@ function Grant-RoleAssignment {
         is what Deploy-WwQueueProcessor.ps1's Assert-RoleAssigned already does.
 
         The write itself can still fail transiently, hence the retry.
+
+        WHY THE PROBE FIRST (build 30731): `role assignment create` is a PUT and needs
+        Microsoft.Authorization/roleAssignments/write, which a build service principal normally does
+        NOT hold - Contributor excludes Microsoft.Authorization/*/Write. Re-deploying an app whose
+        identity ALREADY holds the role therefore failed on a grant it did not need. Reading the
+        assignments back first needs only roleAssignments/read (Contributor has it), so the common
+        re-deploy path never touches the write at all. It also stops every deploy minting another
+        duplicate assignment on the same vault.
+
+        WHY IT STOPS EARLY ON AuthorizationFailed: that denial is deterministic, not replication
+        lag - all ten attempts return it unchanged, so retrying only delays the same failure by
+        150s and buries the cause under nine identical log lines.
     #>
     param(
         [Parameter(Mandatory)][string] $PrincipalId,
@@ -1106,8 +1118,26 @@ function Grant-RoleAssignment {
         return
     }
 
+    # Already held? Then the write below is a no-op the caller may not be allowed to make.
+    # NB: filter principalId client-side. `--assignee` round-trips through Microsoft Graph and
+    # returns rows for a DIFFERENT principal when the object id does not resolve there - exactly
+    # the case a freshly enabled managed identity is in.
+    $existing = Invoke-Az @('role', 'assignment', 'list',
+                            '--scope', $Scope, '--role', $Role, '--include-inherited',
+                            '--query', "[?principalId=='$PrincipalId']", '-o', 'json') -AllowFail
+    if ($existing) {
+        $existingJson = ($existing | Out-String).Trim()
+        if ($existingJson -and $existingJson -ne '[]') {
+            Write-Ok "'$Role' is already held by $what; skipping the grant."
+            return
+        }
+    }
+
     $script:LastAzErrorOutput = $null
+    $permanentDenial = $false
+    $attemptsMade    = 0
     for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
+        $attemptsMade = $attempt
         $res = Invoke-Az $azArgs -Mutating -AllowFail
         if ($res) {
             Write-Ok ("Granted '{0}' to {1}{2}." -f $Role, $what,
@@ -1115,20 +1145,30 @@ function Grant-RoleAssignment {
             return
         }
         $lastError = if ($script:LastAzErrorOutput) { $script:LastAzErrorOutput } else { '(az produced no output)' }
+        if ($lastError -match 'AuthorizationFailed' -or $lastError -match 'roleAssignments/write') {
+            $permanentDenial = $true
+            break
+        }
         if ($attempt -lt $MaxAttempts) {
             Write-Note ("Role assignment attempt {0}/{1} failed - {2}; retrying in {3}s." -f
                         $attempt, $MaxAttempts, $lastError, $DelaySeconds)
             Start-Sleep -Seconds $DelaySeconds
         }
     }
+    $advice = if ($permanentDenial) {
+        "This is a PERMISSION error, not Entra replication lag - every attempt returns the same " +
+        "denial, so the remaining attempts were skipped. The caller cannot write role assignments " +
+        "at this scope (Contributor alone excludes Microsoft.Authorization/*/Write)."
+    } else {
+        "If the identity was only just created, re-running the deploy usually succeeds. If it keeps " +
+        "failing, the caller likely lacks permission to write role assignments at this scope " +
+        "(Contributor alone excludes Microsoft.Authorization/*/Write)."
+    }
     throw (("Failed to grant '{0}' on '{1}' to {2} after {3} attempts ({4}s). Last az CLI error:`n{7}`n`n" +
-            "If the identity was only just created, re-running the deploy usually succeeds. If it keeps " +
-            "failing, the caller likely lacks permission to write role assignments at this scope " +
-            "(Contributor alone excludes Microsoft.Authorization/*/Write) - grant a role such as 'Role " +
-            "Based Access Control Administrator' scoped to at least this resource, or run the assignment " +
-            "directly once you have that permission:`n" +
+            "{8} Grant a role such as 'Role Based Access Control Administrator' scoped to at least " +
+            "this resource, or run the assignment directly once you have that permission:`n" +
             "  az role assignment create --assignee-object-id {5} --assignee-principal-type {6} --role '{0}' --scope '{1}'") -f
-           $Role, $Scope, $what, $MaxAttempts, ($MaxAttempts * $DelaySeconds), $PrincipalId, $PrincipalType, $lastError)
+           $Role, $Scope, $what, $attemptsMade, (($attemptsMade - 1) * $DelaySeconds), $PrincipalId, $PrincipalType, $lastError, $advice)
 }
 
 function Resolve-CurrentPrincipal {

@@ -129,6 +129,100 @@ Describe 'Deploy-WwExecutionEngine — static' {
         $msg | Should -Match ([regex]::Escape('AADSTS500011'))
     }
 
+    It 'skips the grant when the principal already holds the role (build 30731 regression)' {
+        # REGRESSION (build 30731). Re-deploying 'wwprofilerlw' died granting 'Key Vault Secrets
+        # User' to a managed identity that ALREADY held it: `role assignment create` is a PUT
+        # needing Microsoft.Authorization/roleAssignments/write, which the build service principal
+        # does not hold. Probe first - reading assignments back needs only roleAssignments/read.
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        $global:azCalls = @()
+        function az {
+            $global:azCalls += , @($args)
+            $global:LASTEXITCODE = 0
+            if ($args[2] -eq 'list') { '[{"principalId":"pid-1","roleDefinitionName":"Key Vault Secrets User"}]' }
+            else { '{}' }
+        }
+        { Grant-RoleAssignment -PrincipalId 'pid-1' -Role 'Key Vault Secrets User' `
+                               -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                               -PrincipalType ServicePrincipal -MaxAttempts 10 -DelaySeconds 0 } |
+            Should -Not -Throw
+        @($global:azCalls | Where-Object { $_[2] -eq 'create' }).Count | Should -Be 0
+        @($global:azCalls | Where-Object { $_[2] -eq 'list' }).Count   | Should -Be 1
+        # The probe must filter principalId client-side: `--assignee` resolves through Graph and
+        # returns another principal's rows when the object id has not replicated there.
+        $probe = @($global:azCalls | Where-Object { $_[2] -eq 'list' })[0]
+        $probe | Should -Not -Contain '--assignee'
+        $probe | Should -Contain "[?principalId=='pid-1']"
+        Remove-Variable -Name azCalls -Scope Global -ErrorAction SilentlyContinue
+    }
+
+    It 'still grants when the probe finds no existing assignment' {
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        $global:azCalls = @()
+        function az {
+            $global:azCalls += , @($args)
+            $global:LASTEXITCODE = 0
+            if ($args[2] -eq 'list') { '[]' } else { '{}' }
+        }
+        { Grant-RoleAssignment -PrincipalId 'pid-1' -Role 'Key Vault Secrets User' `
+                               -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                               -PrincipalType ServicePrincipal -MaxAttempts 10 -DelaySeconds 0 } |
+            Should -Not -Throw
+        @($global:azCalls | Where-Object { $_[2] -eq 'create' }).Count | Should -Be 1
+        Remove-Variable -Name azCalls -Scope Global -ErrorAction SilentlyContinue
+    }
+
+    It 'fails fast on AuthorizationFailed instead of retrying (build 30731 regression)' {
+        # REGRESSION (build 30731). AuthorizationFailed on roleAssignments/write is deterministic,
+        # not Entra replication lag: all 10 attempts returned it unchanged, wasting 150s and
+        # burying the cause under nine identical "retrying" lines. Stop at the first one.
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        $global:azCalls = @()
+        function az {
+            $global:azCalls += , @($args)
+            if ($args[2] -eq 'list') { $global:LASTEXITCODE = 0; '[]'; return }
+            $global:LASTEXITCODE = 1
+            "ERROR: (AuthorizationFailed) The client '***' with object id '326ac627' does not have " +
+            "authorization to perform action 'Microsoft.Authorization/roleAssignments/write' over scope '/x'."
+        }
+        $err = { Grant-RoleAssignment -PrincipalId 'pid-1' -Role 'Key Vault Secrets User' `
+                                      -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                                      -PrincipalType ServicePrincipal -MaxAttempts 10 -DelaySeconds 0 } |
+            Should -Throw -PassThru
+        @($global:azCalls | Where-Object { $_[2] -eq 'create' }).Count | Should -Be 1
+        $msg = $err.Exception.Message
+        $msg | Should -Match ([regex]::Escape('AuthorizationFailed'))
+        $msg | Should -Match 'PERMISSION error'
+        # The ready-to-run remediation command must survive the new advice branch.
+        $msg | Should -Match ([regex]::Escape('az role assignment create'))
+        $msg | Should -Match ([regex]::Escape('--assignee-object-id pid-1'))
+        $msg | Should -Not -Match '\{[0-9]\}'
+        Remove-Variable -Name azCalls -Scope Global -ErrorAction SilentlyContinue
+    }
+
+    It 'still retries a transient non-authorization failure' {
+        # Guards the fail-fast matcher against being too broad - replication lag must keep its
+        # full retry budget.
+        . $script:DeployScript -LoadFunctionsOnly
+        $DryRun = $false
+        $global:azCalls = @()
+        function az {
+            $global:azCalls += , @($args)
+            if ($args[2] -eq 'list') { $global:LASTEXITCODE = 0; '[]'; return }
+            $global:LASTEXITCODE = 1
+            "Cannot find user or service principal in graph database for 'pid-1'"
+        }
+        { Grant-RoleAssignment -PrincipalId 'pid-1' -Role 'Key Vault Secrets User' `
+                               -Scope '/subscriptions/sub/resourceGroups/DEV2/providers/Microsoft.KeyVault/vaults/kv1' `
+                               -PrincipalType ServicePrincipal -MaxAttempts 3 -DelaySeconds 0 } |
+            Should -Throw
+        @($global:azCalls | Where-Object { $_[2] -eq 'create' }).Count | Should -Be 3
+        Remove-Variable -Name azCalls -Scope Global -ErrorAction SilentlyContinue
+    }
+
     It 'retries the Key Vault role grant for at least 2 minutes before giving up (build 30715 regression)' {
         # The 60s budget (6 attempts x 10s) that failed in build 30715 proved too
         # short for Entra replication lag on a freshly-created managed identity.
