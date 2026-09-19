@@ -164,3 +164,86 @@ Describe 'Enable-ServiceBusSecureTrigger — Set-FunctionAppSettingsViaFile (quo
         Test-Path -LiteralPath $script:capturedFileArg.Substring(1) | Should -BeFalse
     }
 }
+
+Describe 'Enable-ServiceBusSecureTrigger — profiler pipeline wiring' {
+
+    <#
+        Build 30756 (2026-09-18) is the regression these tests exist for. Every ShovelBridge leg
+        passed and the delivery smoke test still failed after 301s, because nothing had ever
+        granted wwprofilerlw's managed identity 'Azure Service Bus Data Receiver' or set
+        ServiceBusConnection__fullyQualifiedNamespace — this script's job, and it was documented
+        as a manual operator step that a newly-stood-up rig simply never got.
+
+        These assert the PIPELINE wiring, not the script: that the step still exists, and that the
+        queue name and lock duration are driven off the SAME variables the deploy and the shovel
+        destination use. That last one is the quiet failure mode — the script's own output warns
+        that a -TriggerQueueName mismatch means "the trigger listens on a queue this run's RBAC
+        grant doesn't cover", which fails exactly as silently as the bug being fixed.
+
+        Deliberately text assertions rather than a YAML parse: no YAML module is assumed to be
+        present, and these run offline like the rest of this suite.
+    #>
+
+    BeforeAll {
+        $repoRoot = Split-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) -Parent
+        $script:PipelinePath = Join-Path $repoRoot '.azure' 'ProfilerService-CI-UAT-LightweightExecutionEngine.yml'
+        $script:Pipeline = Get-Content -LiteralPath $script:PipelinePath -Raw
+    }
+
+    It 'the profiler pipeline exists where these tests expect it' {
+        Test-Path -LiteralPath $script:PipelinePath | Should -BeTrue
+    }
+
+    It 'invokes Enable-ServiceBusSecureTrigger.ps1' {
+        $script:Pipeline | Should -Match 'StagedSecureTriggerScriptPath'
+        $script:Pipeline | Should -Match "displayName: 'Enable Service Bus Secure Trigger"
+    }
+
+    It 'resolves the script out of the published scripts package' {
+        $script:Pipeline | Should -Match "Filter 'Enable-ServiceBusSecureTrigger\.ps1'"
+    }
+
+    It 'stages host.json from the engine package so the delivery-budget invariant can be checked' {
+        # Get-EstimatedClaimStaleAfter reads "$PSScriptRoot\..\host.json" and throws without it;
+        # the published scripts zip ships none and extracts flat.
+        $script:Pipeline | Should -Match "displayName: 'Stage secure-trigger enabler \+ engine host\.json'"
+        $script:Pipeline | Should -Match 'ZipFile\]::OpenRead\(.\$\(EngineZipPath\)'
+    }
+
+    It 'passes the SAME queue-name variable the engine deploy stages into servicebustrigger.bite' {
+        $script:Pipeline | Should -Match "-TriggerQueueName '\`$\(ProfilerServiceBusTriggerQueueName\)'"
+        $script:Pipeline | Should -Match "-ServiceBusTriggerQueueName '\`$\(ProfilerServiceBusTriggerQueueName\)'"
+    }
+
+    It 'passes the SAME lock duration the queue-provisioning step converges the queue onto' {
+        $script:Pipeline | Should -Match "-LockDuration '\`$\(ProfilerServiceBusTriggerQueueLockDuration\)'"
+    }
+
+    It 'runs non-interactively' {
+        # The script prompts for confirmation otherwise, and Read-Host on a hosted agent hangs
+        # until the job times out rather than failing.
+        $script:Pipeline | Should -Match '-NonInteractive'
+    }
+
+    It 'runs as AzureCLI@2, not a bare pwsh step' {
+        # AzureCLI@2 scopes its login to a per-task AZURE_CONFIG_DIR, so a plain pwsh step has no
+        # az account at all — the same trap that broke the shovel step in build 30747.
+        $enableStep = [regex]::Match($script:Pipeline, "(?s)- task: AzureCLI@2\r?\n\s+displayName: 'Enable Service Bus Secure Trigger.*?(?=\r?\n  - |\r?\n  # )").Value
+        $enableStep | Should -Not -BeNullOrEmpty
+        $enableStep | Should -Match 'scriptType: pscore'
+    }
+
+    It 'enables the trigger BEFORE the delivery smoke test that depends on it' {
+        $enableAt = $script:Pipeline.IndexOf("displayName: 'Enable Service Bus Secure Trigger")
+        $smokeAt  = $script:Pipeline.IndexOf("displayName: 'Smoke Test: ShovelBridge Delivery")
+        $enableAt | Should -BeGreaterThan 0
+        $smokeAt  | Should -BeGreaterThan 0
+        $enableAt | Should -BeLessThan $smokeAt
+    }
+
+    It 'verifies the app setting and the role assignment after running the script' {
+        # The two values that ARE the fix; a silent no-op costs a 301s smoke-test timeout to find.
+        $script:Pipeline | Should -Match 'ServiceBusConnection__fullyQualifiedNamespace'
+        $script:Pipeline | Should -Match "roles -notcontains 'Azure Service Bus Data Receiver'"
+    }
+}

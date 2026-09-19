@@ -343,6 +343,43 @@ Note that a fix to the checked-out `Configure-RabbitMqShovel.ps1` does **not** r
 pipeline that runs the script from a published release zip; a verification step in the
 pipeline itself does.
 
+### A proven bridge still needs a listening engine
+
+Step 2 above is what caught the *next* failure, one the shovel had nothing to do with. On
+2026-09-18 (build 30756) every bridge leg passed — the shovel reached `running`, the source
+queue drained on the first poll, and the message landed on Service Bus in under a second —
+and then `Test-WwShovelBridgeDelivery.ps1` polled for 301s watching `activeMessageCount` sit
+at `1`. Nothing was consuming the destination queue:
+
+| Checked on `wwprofilerlw` | State |
+|---|---|
+| `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` | set (staged at deploy time) |
+| `ServiceBusConnection__fullyQualifiedNamespace` | **absent** |
+| *Azure Service Bus Data Receiver* on the namespace, for the app's MI | **no assignment at all** |
+
+Both missing pieces are what `Enable-ServiceBusSecureTrigger.ps1` exists to apply, and it had
+never been run against that rig — it was documented as a manual, one-time operator step, so a
+newly-stood-up rig arrives with the trigger code deployed, its queue name configured, and no
+way to bind or authorize a listener. The queue name being present is exactly what makes this
+misleading: the deploy genuinely staged the trigger's own config, so the app *looks*
+configured.
+
+The profiler pipeline therefore now runs `Enable-ServiceBusSecureTrigger.ps1` itself, right
+after it provisions the trigger queue and Send-only SAS rule, and verifies both the app
+setting and the role assignment afterwards rather than trusting the script's own report. Two
+consequences worth knowing before copying the pattern to another rig:
+
+- **The grant needs a privilege the deploy does not have.** Contributor excludes
+  `Microsoft.Authorization/roleAssignments/write`. That pipeline's service principal holds
+  `Role Based Access Control Administrator` on the DEV2 resource group, ABAC-conditioned
+  (v2.0) to the *Azure Service Bus Data Receiver* role definition
+  (`4f6d3b9b-027b-4f4c-9142-0e5a2a2247e0`) and nothing else.
+- **The script cannot run straight out of the release zip.** It reads `../host.json` to check
+  the WOLF-8512 delivery-budget invariant, and the published scripts package ships no
+  `host.json` and extracts flat, so it throws in Phase 0 before doing anything. The pipeline
+  stages `host.json` *out of the engine package being deployed* — the timeout the app will
+  actually run with — and copies the script one level beneath it.
+
 ## Security
 
 - The Shovel's destination credential is a **queue-scoped, Send-only** SAS rule —

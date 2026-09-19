@@ -7,12 +7,22 @@
     identity the Service Bus Data Receiver role, and sets the app settings the trigger binding
     requires.
 
-    ⚠ THIS SCRIPT IS NOT RUN AUTOMATICALLY BY ANY CI JOB OR OTHER SCRIPT IN THIS REPO. ⚠
-    It is a deliberately separate, reviewed operator step because it mutates a live Function
-    App's authentication/authorization surface. Run it yourself (ideally with -DryRun first)
-    against your own target app — never assume it has already been run against a shared
-    deployment (e.g. WarewolfServer-UAT in DEV2) without checking
-    `az functionapp config appsettings list` first.
+    ⚠ EXACTLY ONE CI JOB RUNS THIS SCRIPT; FOR EVERY OTHER APP IT IS A MANUAL OPERATOR STEP. ⚠
+    Dev/.azure/ProfilerService-CI-UAT-LightweightExecutionEngine.yml runs it against
+    'wwprofilerlw' on every deploy ("Enable Service Bus Secure Trigger" step, added after build
+    30756 spent 301s watching a bridged message sit unconsumed because neither the RBAC grant nor
+    the app setting had ever been applied to that rig). pipeline-CLOUD.yml ('warewolfserver') and
+    pipeline-LOADTEST.yml ('WarewolfServer-UAT') deliberately still do NOT — it mutates a live
+    Function App's authentication/authorization surface, so automating it per-app is a reviewed
+    decision, not a default. For any app other than wwprofilerlw, run it yourself (ideally with
+    -DryRun first) — never assume it has already been run against a shared deployment without
+    checking `az functionapp config appsettings list` first.
+
+    PRIVILEGE NOTE: Phase 2 writes a role assignment, which Contributor cannot do
+    (Microsoft.Authorization/roleAssignments/write is excluded from it). The profiler pipeline's
+    service principal was therefore granted 'Role Based Access Control Administrator' on the DEV2
+    resource group, condition-constrained (ABAC v2.0) to the 'Azure Service Bus Data Receiver'
+    role definition and nothing else. Any other automation of this script needs the equivalent.
 
 .DESCRIPTION
     Without this step, a freshly-deployed Lightweight engine Function App has the

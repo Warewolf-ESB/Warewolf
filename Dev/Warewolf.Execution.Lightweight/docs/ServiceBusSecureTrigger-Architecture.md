@@ -697,9 +697,14 @@ transport-only trust model) for anyone deprovisioning or re-auditing these objec
   only.
 - Any change to `Warewolf.Execution.ServiceBusWorker` (Model B) — kept as-is, fully
   additive alongside it.
-- Automatic/CI-driven provisioning of the trigger queue and RBAC role —
-  `Enable-ServiceBusSecureTrigger.ps1` (see above) exists for this but is a deliberately
-  separate, human-reviewed step, not run by any script or pipeline automatically.
+- Automatic/CI-driven provisioning of the trigger queue and RBAC role, *except* for the
+  profiler rig — `Enable-ServiceBusSecureTrigger.ps1` (see above) is run on every deploy by
+  `Dev/.azure/ProfilerService-CI-UAT-LightweightExecutionEngine.yml` against `wwprofilerlw`,
+  and by nothing else. For `warewolfserver` and `WarewolfServer-UAT` it remains a deliberately
+  separate, human-reviewed step. Automating it for a given app costs a privilege grant as well
+  as a pipeline step: Contributor cannot write role assignments, so the profiler pipeline's
+  service principal holds `Role Based Access Control Administrator` on the DEV2 resource group,
+  ABAC-conditioned to the "Azure Service Bus Data Receiver" role definition and nothing else.
 - Automatic/CI-driven provisioning of who holds "Azure Service Bus Data Sender" on the
   configured queue/namespace — this is now the trigger's entire authorization boundary
   (see "The one trust boundary" above) and is deliberately left to the operator to scope

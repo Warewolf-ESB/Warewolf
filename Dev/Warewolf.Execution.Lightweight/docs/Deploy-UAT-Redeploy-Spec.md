@@ -710,7 +710,9 @@ version-pinned script source.**
 The third row of the table above therefore stands as an **unresolved deploy-time gap**:
 `WAREWOLF_ENTRA_CONFIG` is written only by `Configure-WwExecutionAuth.ps1`, which
 `-SkipAuthProvisioning` skips, so for any app deployed that way it is a **one-time manual
-operator step**, in the same category as `Enable-ServiceBusSecureTrigger.ps1`:
+operator step**, in the same category `Enable-ServiceBusSecureTrigger.ps1` occupies for these
+two apps (the profiler pipeline now runs that one automatically against `wwprofilerlw`; nothing
+automates `WAREWOLF_ENTRA_CONFIG` for any app):
 
 ```powershell
 az functionapp config appsettings set --name <app> --resource-group DEV2 `
