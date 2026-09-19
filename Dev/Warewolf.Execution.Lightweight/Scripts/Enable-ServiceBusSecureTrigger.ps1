@@ -152,7 +152,18 @@ function Invoke-Az {
     if ($LASTEXITCODE -ne 0 -and -not $AllowFail) {
         throw "az $rendered failed (exit $LASTEXITCODE): $($output -join [Environment]::NewLine)"
     }
-    return $output
+    # '2>&1' is kept so the throw above can quote stderr, but stderr MUST NOT reach the returned
+    # VALUE: every value-reading caller below pipes this straight into ConvertFrom-Json. az writes
+    # warnings to stderr, and 'role assignment list --assignee <guid>' emits
+    #   WARNING: Failed to query <guid> by invoking Graph API. If you don't have permission to
+    #   query Graph API, please specify --assignee-object-id and --assignee-principal-type.
+    # whenever the caller cannot read Microsoft Graph - which a pipeline service principal signed
+    # in with --allow-no-subscriptions cannot. az still EXITS 0 there (it falls back to treating
+    # the GUID as an object id), so the command succeeds and only the parse dies: build 30759
+    # failed Phase 2 on "Unexpected character encountered while parsing value: W" - the W of
+    # WARNING. Merged stderr arrives as ErrorRecords, so dropping those leaves stdout intact.
+    # Same split, same reason, as Deploy-WwQueueProcessor.ps1's Invoke-Az.
+    return @($output | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] })
 }
 
 function Set-FunctionAppSettingsViaFile {
@@ -349,7 +360,12 @@ if (Test-AzExists @('servicebus', 'queue', 'show', '--name', $TriggerQueueName, 
 Write-Phase 'Phase 2  RBAC — Azure Service Bus Data Receiver (the trigger''s ENTIRE trust boundary)'
 
 $namespaceScope = "/subscriptions/$($acct.id)/resourceGroups/$ServiceBusNamespaceResourceGroup/providers/Microsoft.ServiceBus/namespaces/$ServiceBusNamespace"
-$existingAssignment = Invoke-Az -AllowFail @('role', 'assignment', 'list', '--assignee', $principalId, '--scope', $namespaceScope, '-o', 'json') | Out-String | ConvertFrom-Json
+# -AllowFail: a probe that cannot list assignments (no reader rights on the scope) must fall
+# through to the grant below rather than claim the role is already there. Invoke-Az returns
+# NOTHING in that case - stderr is filtered out of its value - and ConvertFrom-Json cannot
+# bind an empty string, so the emptiness is checked here instead of being parsed.
+$assignmentJson = (Invoke-Az -AllowFail @('role', 'assignment', 'list', '--assignee', $principalId, '--scope', $namespaceScope, '-o', 'json') | Out-String).Trim()
+$existingAssignment = if ($assignmentJson) { $assignmentJson | ConvertFrom-Json } else { @() }
 $hasReceiverRole = @($existingAssignment) | Where-Object { $_.roleDefinitionName -eq 'Azure Service Bus Data Receiver' }
 
 if ($hasReceiverRole) {

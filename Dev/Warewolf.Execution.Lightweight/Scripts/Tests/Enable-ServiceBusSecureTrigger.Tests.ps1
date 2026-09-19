@@ -165,6 +165,95 @@ Describe 'Enable-ServiceBusSecureTrigger — Set-FunctionAppSettingsViaFile (quo
     }
 }
 
+Describe 'Enable-ServiceBusSecureTrigger — Invoke-Az stream separation' {
+
+    <#
+        Build 30759 (2026-09-19) died in Phase 2 with
+
+            ConvertFrom-Json : Conversion from JSON failed with error: Unexpected character
+            encountered while parsing value: W.
+
+        The W is the W of WARNING. The pipeline service principal signs in with
+        --allow-no-subscriptions and cannot read Microsoft Graph, so
+        `az role assignment list --assignee <guid>` writes
+
+            WARNING: Failed to query <guid> by invoking Graph API. If you don't have permission
+            to query Graph API, please specify --assignee-object-id and --assignee-principal-type.
+
+        to stderr, falls back to treating the GUID as an object id, and EXITS 0. The command
+        succeeded; only the parse died, because Invoke-Az's '2>&1' merged that warning line into
+        the value it returned and the caller piped it straight into ConvertFrom-Json.
+
+        stderr may inform the FAILURE MESSAGE. It must never reach the VALUE. Same split, and the
+        same reason, as Deploy-WwQueueProcessor.ps1's own Invoke-Az.
+    #>
+
+    BeforeAll {
+        . $script:TriggerScript @script:LoadArgs
+
+        # Stand-in for the az CLI: a shimming FUNCTION resolves ahead of the az application in
+        # PowerShell's command lookup, and Write-Error emits the same ErrorRecord objects that
+        # '2>&1' wraps a native command's stderr lines in - which is the behaviour under test.
+        function az {
+            foreach ($line in $global:azStderr) { Write-Error $line }
+            foreach ($line in $global:azStdout) { Write-Output $line }
+            $global:LASTEXITCODE = $global:azExit
+        }
+    }
+
+    BeforeEach {
+        $global:azStderr = @()
+        $global:azStdout = @()
+        $global:azExit   = 0
+    }
+
+    AfterAll {
+        Remove-Variable -Name azStderr, azStdout, azExit -Scope Global -ErrorAction SilentlyContinue
+    }
+
+    It 'returns stdout only when az warns on stderr and still exits 0 (the build 30759 failure)' {
+        $global:azStderr = @("WARNING: Failed to query 192ff2c9-7cc6-4575-9249-265523987e70 by invoking Graph API. If you don't have permission to query Graph API, please specify --assignee-object-id and --assignee-principal-type.")
+        $global:azStdout = @('[', '  {', '    "roleDefinitionName": "Azure Service Bus Data Receiver"', '  }', ']')
+
+        $result = Invoke-Az -AllowFail @('role', 'assignment', 'list', '--assignee', '192ff2c9-7cc6-4575-9249-265523987e70', '-o', 'json')
+
+        @($result | Where-Object { $_ -is [System.Management.Automation.ErrorRecord] }) | Should -BeNullOrEmpty
+        $parsed = $result | Out-String | ConvertFrom-Json
+        @($parsed)[0].roleDefinitionName | Should -Be 'Azure Service Bus Data Receiver'
+    }
+
+    It 'keeps the stderr text in the failure message when az exits non-zero' {
+        $global:azStderr = @('ERROR: (AuthorizationFailed) The client does not have authorization to perform action.')
+        $global:azExit   = 1
+
+        { Invoke-Az @('role', 'assignment', 'create', '--role', 'Azure Service Bus Data Receiver') } |
+            Should -Throw '*AuthorizationFailed*'
+    }
+
+    It 'yields no value at all - not the stderr text - when an -AllowFail probe fails' {
+        # Otherwise the Phase 2 probe would treat an error message as an assignment list.
+        $global:azStderr = @('ERROR: (AuthorizationFailed) The client does not have authorization to perform action.')
+        $global:azExit   = 1
+
+        $result = Invoke-Az -AllowFail @('role', 'assignment', 'list', '--assignee', 'x', '-o', 'json')
+
+        @($result).Count | Should -Be 0
+    }
+
+    It 'drops stderr from the value it returns (static guard)' {
+        $content = Get-Content -Raw -LiteralPath $script:TriggerScript
+        $content | Should -Match 'Where-Object \{ \$_ -isnot \[System\.Management\.Automation\.ErrorRecord\] \}'
+    }
+
+    It 'never pipes an Invoke-Az result straight into ConvertFrom-Json on an -AllowFail probe' {
+        # An -AllowFail probe can now legitimately return nothing, and ConvertFrom-Json cannot
+        # bind an empty string - the emptiness must be tested, not parsed.
+        $content = Get-Content -Raw -LiteralPath $script:TriggerScript
+        $content | Should -Not -Match 'Invoke-Az -AllowFail[^\r\n]*\| ConvertFrom-Json'
+        $content | Should -Match '\$existingAssignment = if \(\$assignmentJson\)'
+    }
+}
+
 Describe 'Enable-ServiceBusSecureTrigger — profiler pipeline wiring' {
 
     <#

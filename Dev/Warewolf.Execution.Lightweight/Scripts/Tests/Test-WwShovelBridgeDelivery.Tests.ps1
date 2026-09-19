@@ -335,3 +335,56 @@ Describe 'Test-WwShovelBridgeDelivery — end to end, shimmed' {
         $global:apiCalls.Count | Should -Be 0
     }
 }
+Describe 'Test-WwShovelBridgeDelivery — Get-ServiceBusQueueCounts (az stderr must not reach the parse)' {
+
+    <#
+        Same failure mode that killed build 30759 inside Enable-ServiceBusSecureTrigger.ps1: az
+        writes warnings to stderr, '2>&1' merges them into the captured value as ErrorRecords,
+        and one warning line ahead of the JSON makes ConvertFrom-Json fail with "Unexpected
+        character encountered while parsing value: W". `az servicebus queue show` warns for its
+        own reasons (extension notices, deprecations), and this read is what decides whether the
+        bridge delivered - a parse failure here reports as a broken bridge.
+    #>
+
+    BeforeAll {
+        . $script:BridgeScript -LoadFunctionsOnly
+
+        function az {
+            # -ErrorAction Continue, deliberately: a NATIVE command's stderr line is never a
+            # terminating error no matter what $ErrorActionPreference says, but Write-Error
+            # inside a function honours it - and this script leaves the preference at 'Stop'
+            # around its az call. Without this the shim would throw where az merely warns.
+            foreach ($line in $global:sbStderr) { Write-Error $line -ErrorAction Continue }
+            if ($global:sbStdout) { Write-Output $global:sbStdout }
+            $global:LASTEXITCODE = $global:sbExit
+        }
+    }
+
+    BeforeEach {
+        $global:sbStderr = @()
+        $global:sbStdout = (@{ countDetails = @{ activeMessageCount = 3; deadLetterMessageCount = 1 } } | ConvertTo-Json -Depth 5)
+        $global:sbExit   = 0
+    }
+
+    AfterAll {
+        Remove-Variable -Name sbStderr, sbStdout, sbExit -Scope Global -ErrorAction SilentlyContinue
+    }
+
+    It 'parses the counts when az prefixes the JSON with a warning on stderr' {
+        $global:sbStderr = @('WARNING: The behavior of this command has been altered by the following extension: servicebus')
+
+        $counts = Get-ServiceBusQueueCounts -Namespace 'wwprofilerlwsb' -Queue 'wwprofilerlw-trigger-queue' -Group 'DEV2'
+
+        $counts.Active     | Should -Be 3
+        $counts.DeadLetter | Should -Be 1
+    }
+
+    It 'still quotes the stderr text when az exits non-zero' {
+        $global:sbStderr = @('ERROR: (ResourceNotFound) The Messaging Entity could not be found.')
+        $global:sbStdout = ''
+        $global:sbExit   = 1
+
+        { Get-ServiceBusQueueCounts -Namespace 'wwprofilerlwsb' -Queue 'nope' -Group 'DEV2' } |
+            Should -Throw '*ResourceNotFound*'
+    }
+}

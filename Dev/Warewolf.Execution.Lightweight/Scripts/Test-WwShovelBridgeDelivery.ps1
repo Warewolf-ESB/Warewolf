@@ -346,7 +346,7 @@ function Get-ServiceBusQueueCounts {
     if ([string]::IsNullOrWhiteSpace($Namespace) -or [string]::IsNullOrWhiteSpace($Queue) -or
         [string]::IsNullOrWhiteSpace($Group)) { return $null }
 
-    $json = & az servicebus queue show --name $Queue --namespace-name $Namespace --resource-group $Group -o json 2>&1
+    $raw = & az servicebus queue show --name $Queue --namespace-name $Namespace --resource-group $Group -o json 2>&1
 
     # Read through Get-Variable, not $LASTEXITCODE directly: it is an automatic
     # variable that does not EXIST until the session has run a native command,
@@ -357,9 +357,16 @@ function Get-ServiceBusQueueCounts {
     if ($null -eq $exit) { $exit = 0 }
     if ($exit -ne 0) {
         throw ("ShovelBridge verification could not read Service Bus queue '$Queue' on '$Namespace' " +
-               "(exit $exit): $json. This step must run under an az-authenticated context " +
+               "(exit $exit): $raw. This step must run under an az-authenticated context " +
                '(AzureCLI@2, not a bare pwsh step).')
     }
+    # '2>&1' above is kept for the throw's sake, but stderr MUST NOT reach the value being
+    # parsed: az writes warnings to stderr, merged stderr arrives as ErrorRecords, and a
+    # single warning line ahead of the JSON makes ConvertFrom-Json fail with "Unexpected
+    # character encountered while parsing value: W". That is exactly how build 30759 died
+    # inside Enable-ServiceBusSecureTrigger.ps1, whose Invoke-Az now splits the streams the
+    # same way.
+    $json = @($raw | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] })
     $parsed = ($json | Out-String) | ConvertFrom-Json
     return [pscustomobject]@{
         Active     = [int]$parsed.countDetails.activeMessageCount
