@@ -295,6 +295,64 @@ Two scripts under `Scripts/`, run in order:
 Both scripts follow the repo's params-first/prompt-if-missing, `-DryRun`, masked-summary
 + transcript conventions (see `Scripts/README.md`).
 
+### The source queue needs an EXCHANGE and a BINDING, not just a queue
+
+Declaring the RabbitMQ source queue is **not** enough to make it publishable, and the gap is
+silent in both directions.
+
+Warewolf's own producer publishes to an exchange **named after the queue** with an **empty**
+routing key — `Channel.BasicPublish(queueName, "", ...)` in
+`Dev2.Activities/Activities/RabbitMQ/Publish/PublishRabbitMQActivity.cs:312` — and declares the
+matching direct exchange, queue and `""` binding alongside it (`:344-377`). The load-test
+publishers (`Publish-WwProfilerExact.ps1`, `Publish-WwQueueBurst.ps1`) mirror that shape
+deliberately, so that what they exercise is what production does.
+
+A queue created with the management API's `PUT /api/queues/{vhost}/{queue}` has only the implicit
+**default-exchange** binding (`source: "", routing_key: "<queue>"`). Publishing to it the way the
+activity does therefore targets an exchange that does not exist:
+
+* RabbitMQ answers `404 NOT_FOUND` at the **channel** level and closes the channel.
+* With `mandatory=false` and no publisher confirms, the client surfaces nothing — `BasicPublishAsync`
+  returns normally.
+* The publisher counts the message as sent and writes it into its manifest.
+
+Measured on 2026-09-19 against `wwprofilerlw.servicebus.trigger.request`: a 20,000-message run
+reported `published 20000` while the broker's own `message_stats.publish` counter for that queue
+stayed at **2**; a retry reported `published 311 of 20000` at 13.5 msg/s as the dead channel
+throttled it. Nothing in the harness, the shovel or Service Bus showed an error, because nothing
+had gone wrong anywhere except in a publish that was never routable.
+
+**Diagnosis in one call** — a missing exchange answers immediately:
+
+```
+POST {mgmt}/api/exchanges/{vhost}/{queue}/publish
+  -> 404 {"error":"not_found","reason":"exchange_not_found"}
+```
+
+**The three objects, and how they are now guaranteed:**
+
+| Object | Shape | Created by |
+|---|---|---|
+| Queue | durable | pipeline step *Ensure RabbitMQ source queue topology exists*; `Confirm-E2EQueueTopology` |
+| Exchange | **direct**, named after the queue, durable | same |
+| Binding | exchange → queue, routing key **`''`** | same |
+
+* The **pipeline** declares all three and then re-reads the bindings, failing the build if the
+  named-exchange binding is absent — a half-built topology must not reach the shovel steps, where
+  it is indistinguishable from a broker that accepts messages and loses them.
+* The **publishers** call `Confirm-E2EQueueTopology` (WwE2E.Common.psm1) before their first
+  publish, creating only what is missing — an existing object is never redeclared, because
+  redeclaring a durable queue as non-durable fails `PRECONDITION_FAILED` and kills the channel.
+  `-SkipTopologyEnsure` opts out.
+* `Publish-WwProfilerExact.ps1` additionally **proves** the burst when given
+  `-RabbitMqManagementUri`: it reads `message_stats.publish` before and after and asserts the delta
+  equals what it sent (`Wait-E2EPublishDelta`). That counter is polled, not read once — the
+  management stats database refreshes on an interval (`collect_statistics_interval`, 5s default),
+  so a fast burst read back instantly reports a counter that has not moved yet.
+
+Note the binding cannot be probed passively over AMQP, so it is asserted on every run rather than
+checked. `QueueBind` with an identical source/destination/routing-key is idempotent.
+
 ### `-SourceHost` is dialled by the broker, not by the deploying agent
 
 The shovel's `src-uri` is opened **by the RabbitMQ node itself**, from inside its own

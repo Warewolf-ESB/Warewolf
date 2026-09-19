@@ -143,3 +143,44 @@ Describe 'Publish-WwProfilerExact.ps1 parameter guards' {
             Should -Throw '*-ResultPath is required*'
     }
 }
+
+Describe 'Publish-WwProfilerExact.ps1 topology and proof plumbing' {
+
+    It 'forwards -SkipTopologyEnsure to the child process' {
+        # The child does the publishing, so an opt-out that stayed in the launcher would silently
+        # ensure the topology anyway.
+        $bound = @{
+            Url = 'https://e/w.json?MandateId=1'; QueueName = 'q'; Label = 'L'
+            SkipTopologyEnsure = [switch]$true
+        }
+        $args = Get-WwProfilerExactChildArgs -ScriptPath 'C:\s.ps1' -BoundParameters $bound -ResultPath 'C:\r.json'
+        $args | Should -Contain '-SkipTopologyEnsure'
+    }
+
+    It 'passes -RabbitMqManagementUri through the generic walk, which the child ignores' {
+        # The PROOF itself is taken in the LAUNCHER, not in the child: the child writes its result
+        # file BEFORE tearing the connection down (it is expected to crash there), and the counter
+        # must be read only after that teardown has flushed the client's buffered publishes. The
+        # child receiving the value is harmless - it simply never uses it.
+        $bound = @{
+            Url = 'https://e/w.json?MandateId=1'; QueueName = 'q'; Label = 'L'
+            RabbitMqManagementUri = 'https://rabbitmq.warewolf.online'
+        }
+        $args = Get-WwProfilerExactChildArgs -ScriptPath 'C:\s.ps1' -BoundParameters $bound -ResultPath 'C:\r.json'
+        # It is forwarded by the generic bound-parameter walk; the child simply ignores it.
+        $args | Should -Contain '-RabbitMqManagementUri'
+    }
+
+    It 'still never forwards the internal plumbing switches' {
+        $bound = @{
+            Url = 'https://e/w.json?MandateId=1'; QueueName = 'q'; Label = 'L'
+            SkipTopologyEnsure = [switch]$true
+            AsChildProcess = [switch]$true
+            LoadFunctionsOnly = [switch]$true
+        }
+        $args = Get-WwProfilerExactChildArgs -ScriptPath 'C:\s.ps1' -BoundParameters $bound -ResultPath 'C:\r.json'
+        $args | Should -Not -Contain '-LoadFunctionsOnly'
+        # -AsChildProcess is appended exactly once by the launcher itself, never copied from bound.
+        (@($args | Where-Object { $_ -eq '-AsChildProcess' })).Count | Should -Be 1
+    }
+}

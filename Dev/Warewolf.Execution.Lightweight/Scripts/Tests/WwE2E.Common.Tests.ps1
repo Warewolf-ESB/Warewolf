@@ -223,3 +223,198 @@ Describe 'Get-E2EEngineToken - separating the caller app from the resource app' 
         }
     }
 }
+
+Describe 'Get-E2EQueueTopologyPlan' {
+
+    # The three objects a Warewolf queue-trigger needs are exchange (named after the queue), queue,
+    # and a binding between them with an EMPTY routing key, because PublishRabbitMQActivity publishes
+    # BasicPublish(exchange: <queueName>, routingKey: "").
+
+    It 'plans nothing but the binding when the exchange and queue both exist' {
+        $plan = Get-E2EQueueTopologyPlan -ExchangeExists $true -QueueExists $true
+        $plan.DeclareExchange | Should -BeFalse
+        $plan.DeclareQueue    | Should -BeFalse
+        $plan.Actions         | Should -Be @('bind')
+    }
+
+    It 'ALWAYS plans the binding, because AMQP cannot passively probe for one' {
+        # An exchange+queue WITHOUT the binding silently discards every publish, and nothing in the
+        # protocol can tell us whether the binding is there - so it is asserted every time. QueueBind
+        # with identical source/destination/routing-key is idempotent.
+        foreach ($ex in @($true, $false)) {
+            foreach ($q in @($true, $false)) {
+                (Get-E2EQueueTopologyPlan -ExchangeExists $ex -QueueExists $q).Bind | Should -BeTrue
+            }
+        }
+    }
+
+    It 'plans the exchange when only the queue exists - the pipeline PUT /api/queues case' {
+        # This is the exact shape that broke wwprofilerlw on 2026-09-19: the pipeline declared the
+        # queue over the management API, which creates only the default-exchange binding.
+        $plan = Get-E2EQueueTopologyPlan -ExchangeExists $false -QueueExists $true
+        $plan.DeclareExchange | Should -BeTrue
+        $plan.DeclareQueue    | Should -BeFalse
+        $plan.Actions         | Should -Be @('declare-exchange', 'bind')
+    }
+
+    It 'plans all three, in dependency order, on a bare broker' {
+        $plan = Get-E2EQueueTopologyPlan -ExchangeExists $false -QueueExists $false
+        $plan.Actions | Should -Be @('declare-exchange', 'declare-queue', 'bind')
+    }
+
+    It 'never plans a redeclare of an existing object' {
+        # Redeclaring an existing durable queue as non-durable fails PRECONDITION_FAILED and closes
+        # the channel, so "it already exists" must mean "leave it alone", not "declare it again".
+        $plan = Get-E2EQueueTopologyPlan -ExchangeExists $true -QueueExists $true
+        $plan.Actions | Should -Not -Contain 'declare-exchange'
+        $plan.Actions | Should -Not -Contain 'declare-queue'
+    }
+}
+
+Describe 'Assert-E2EPublishDelta' {
+
+    It 'returns the delta when the broker counted exactly what was sent' {
+        Assert-E2EPublishDelta -Before 2 -After 20002 -Expected 20000 -QueueName 'q' | Should -Be 20000
+    }
+
+    It 'accepts a first publish against a queue whose counter starts at 0' {
+        Assert-E2EPublishDelta -Before 0 -After 5 -Expected 5 -QueueName 'q' | Should -Be 5
+    }
+
+    It 'throws, naming the exchange, when the broker counted FEWER than were sent' {
+        # The 2026-09-19 signature: 20000 "published" by the client, broker counter unmoved, because
+        # every message was addressed to an exchange that did not exist.
+        { Assert-E2EPublishDelta -Before 2 -After 2 -Expected 20000 -QueueName 'trigger-queue' } |
+            Should -Throw -ExpectedMessage '*rose by only 0*'
+    }
+
+    It 'points at the topology as the fix rather than suggesting a retry' {
+        { Assert-E2EPublishDelta -Before 0 -After 0 -Expected 10 -QueueName 'trigger-queue' } |
+            Should -Throw -ExpectedMessage "*exchange 'trigger-queue' (direct) must exist and be bound*"
+    }
+
+    It 'throws when the broker counted MORE than were sent, so reconciliation is not trusted' {
+        # A concurrent publisher makes per-message reconciliation against this run's manifest unsound.
+        { Assert-E2EPublishDelta -Before 0 -After 12 -Expected 10 -QueueName 'q' } |
+            Should -Throw -ExpectedMessage '*Something else published to the queue*'
+    }
+
+    It 'refuses to pass when either read is missing rather than assuming 0' {
+        # $null means the queue was absent on that read; treating it as 0 would let a deleted queue
+        # report a clean publish.
+        { Assert-E2EPublishDelta -Before $null -After 10 -Expected 10 -QueueName 'q' } |
+            Should -Throw -ExpectedMessage '*unproven*'
+        { Assert-E2EPublishDelta -Before 0 -After $null -Expected 10 -QueueName 'q' } |
+            Should -Throw -ExpectedMessage '*unproven*'
+    }
+}
+
+Describe 'Get-E2EQueuePublishCount' {
+
+    It 'reads message_stats.publish' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Invoke-RestMethod { [pscustomobject]@{ message_stats = [pscustomobject]@{ publish = 20007 } } }
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            Get-E2EQueuePublishCount -ManagementUri 'https://b' -QueueName 'q' -VHost '/' -Credential $cred |
+                Should -Be 20007
+        }
+    }
+
+    It 'reports 0 for a queue that has never seen a message' {
+        # RabbitMQ omits message_stats entirely until the first publish; that is 0, not an error.
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Invoke-RestMethod { [pscustomobject]@{ name = 'q' } }
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            Get-E2EQueuePublishCount -ManagementUri 'https://b' -QueueName 'q' -VHost '/' -Credential $cred |
+                Should -Be 0
+        }
+    }
+
+    It 'returns $null for a MISSING queue, distinguishing it from "nothing published yet"' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            $ex = New-Object System.Exception 'not found'
+            $ex | Add-Member -NotePropertyName Response -NotePropertyValue ([pscustomobject]@{ StatusCode = 404 }) -Force
+            Mock Invoke-RestMethod { throw $ex }
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            Get-E2EQueuePublishCount -ManagementUri 'https://b' -QueueName 'gone' -VHost '/' -Credential $cred |
+                Should -BeNullOrEmpty
+        }
+    }
+
+    It 'THROWS on any non-404, so a broken probe cannot read as a clean publish' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            $ex = New-Object System.Exception 'server exploded'
+            $ex | Add-Member -NotePropertyName Response -NotePropertyValue ([pscustomobject]@{ StatusCode = 500 }) -Force
+            Mock Invoke-RestMethod { throw $ex }
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            { Get-E2EQueuePublishCount -ManagementUri 'https://b' -QueueName 'q' -VHost '/' -Credential $cred } |
+                Should -Throw -ExpectedMessage '*Publish-counter probe failed*'
+        }
+    }
+}
+
+Describe 'Wait-E2EPublishDelta' {
+
+    # REGRESSION: message_stats is served from the management STATS database, refreshed on an
+    # interval (collect_statistics_interval, 5s by default) rather than synchronously with the
+    # publish. A single read taken as the publisher exits sees a counter that has not moved yet.
+    # Measured 2026-09-19: a 3-message publish read back 0, while the queue already held all 3 four
+    # seconds later. A 20k burst hides it (publishing alone takes ~32s), which is what would have
+    # made this a rare and baffling false failure instead of an obvious one.
+
+    It 'waits out the stats-collection lag and passes once the counter catches up' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            $script:reads = 0
+            Mock Get-E2EQueuePublishCount {
+                $script:reads++
+                if ($script:reads -lt 3) { return [long]0 } else { return [long]3 }
+            }
+            Mock Start-Sleep { }
+
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            Wait-E2EPublishDelta -ManagementUri 'https://b' -QueueName 'q' -VHost '/' -Credential $cred `
+                -Before 0 -Expected 3 -TimeoutSeconds 30 -PollSeconds 1 | Should -Be 3
+
+            $script:reads | Should -BeGreaterThan 1
+        }
+    }
+
+    It 'costs a single read when the counter is already up to date' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Get-E2EQueuePublishCount { [long]20002 }
+            Mock Start-Sleep { }
+
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            Wait-E2EPublishDelta -ManagementUri 'https://b' -QueueName 'q' -VHost '/' -Credential $cred `
+                -Before 2 -Expected 20000 | Should -Be 20000
+
+            Should -Invoke Get-E2EQueuePublishCount -Times 1 -Exactly
+            Should -Invoke Start-Sleep -Times 0 -Exactly
+        }
+    }
+
+    It 'still throws the CANONICAL shortfall message when the counter never moves' {
+        # A timeout must not degrade into a timeout-flavoured error: the actionable cause is the
+        # topology, and Assert-E2EPublishDelta owns that wording.
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Get-E2EQueuePublishCount { [long]0 }
+            Mock Start-Sleep { }
+
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            { Wait-E2EPublishDelta -ManagementUri 'https://b' -QueueName 'trigger-queue' -VHost '/' `
+                -Credential $cred -Before 0 -Expected 20000 -TimeoutSeconds 1 -PollSeconds 1 } |
+                Should -Throw -ExpectedMessage '*rose by only 0*'
+        }
+    }
+
+    It 'stops waiting as soon as the delta is satisfied, even if it overshoots later' {
+        InModuleScope -ModuleName 'WwE2E.Common' {
+            Mock Get-E2EQueuePublishCount { [long]5 }
+            Mock Start-Sleep { }
+
+            $cred = [pscredential]::new('u', (ConvertTo-SecureString 'p' -AsPlainText -Force))
+            Wait-E2EPublishDelta -ManagementUri 'https://b' -QueueName 'q' -VHost '/' -Credential $cred `
+                -Before 0 -Expected 5 -TimeoutSeconds 30 -PollSeconds 1 | Should -Be 5
+        }
+    }
+}

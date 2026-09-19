@@ -20,10 +20,14 @@
 
     WHERE MESSAGES ARE PUBLISHED
     To the exchange NAMED AFTER THE QUEUE with an EMPTY routing key, matching what
-    PublishRabbitMQActivity does. The exchange, queue and binding must already exist - this script
-    does not create them (Initialize-E2EQueueTopology does). An exchange and queue WITHOUT the
-    binding silently discard every message, so a missing binding looks exactly like a broker that
-    accepted the publish and lost it.
+    PublishRabbitMQActivity does. An exchange and queue WITHOUT the binding silently discard every
+    message, and a MISSING exchange is worse still: RabbitMQ answers 404 on the channel, and with
+    mandatory=false and no publisher confirms nothing surfaces it - BasicPublishAsync returns and
+    $published increments for messages the broker never received. Measured 2026-09-19 on a queue a
+    pipeline had declared with PUT /api/queues/... : 20000 "published", broker counter unmoved at 2.
+
+    So the exchange/queue/binding are now ENSURED before the first publish (Confirm-E2EQueueTopology;
+    -SkipTopologyEnsure opts out), rather than assumed to have been created by someone else.
 
 .PARAMETER SuccessCount
     Messages with a valid JSON body. Each gets distinct content, so duplicate execution is
@@ -72,6 +76,10 @@ param(
     # Default stays Mandate so existing order-success runs are unaffected.
     [ValidateSet('Mandate', 'Profiler')]
     [string] $BodyShape = 'Mandate',
+
+    # Skip the pre-publish exchange/queue/binding assertion. The default is to ensure it, because
+    # the failure it closes is silent by nature - see WHERE MESSAGES ARE PUBLISHED above.
+    [switch] $SkipTopologyEnsure,
 
     # Dot-source the pure helpers for unit testing without touching a broker.
     [switch] $LoadFunctionsOnly
@@ -349,6 +357,13 @@ $manifest = New-WwBurstManifest -QueueName $QueueName -Label $Label -SuccessCoun
 
 Initialize-E2ERabbitClient -PublishPath $PublishPath
 $session = New-E2EBrokerSession -AmqpUri $AmqpUri -ClientName "wwqp-burst-$Label"
+
+# BEFORE THE FIRST PUBLISH: this script publishes through exchange = queue name, and that exchange
+# and its '' binding are silently required (see the header). Existing objects are never redeclared.
+if (-not $SkipTopologyEnsure) {
+    $topology = Confirm-E2EQueueTopology -Session $session -QueueName $QueueName -Durable $true
+    Write-Verbose "topology: $($topology.Summary)"
+}
 
 $publishedUtc = (Get-Date).ToUniversalTime()
 $published    = 0

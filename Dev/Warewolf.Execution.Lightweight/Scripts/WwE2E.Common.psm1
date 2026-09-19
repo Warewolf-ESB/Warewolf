@@ -712,6 +712,232 @@ function Initialize-E2EQueueTopology {
     }
 }
 
+function Get-E2EQueueTopologyPlan {
+    <#
+        PURE. Given what a probe found, decides which of the three objects a Warewolf queue-trigger
+        topology needs must still be created. No broker call, so Pester can exercise every branch.
+
+        THE BINDING IS ALWAYS IN THE PLAN, even when the exchange and queue both already exist.
+        AMQP offers no passive "does this binding exist" probe, and an exchange+queue WITHOUT the
+        binding is the failure this helper exists to prevent: the broker accepts every publish and
+        silently discards it (measured 2026-09-19 on wwprofilerlw.servicebus.trigger.request -
+        20000 messages "published", broker publish counter unmoved at 2). QueueBind with identical
+        source/destination/routing-key is idempotent, so re-binding costs one round trip and cannot
+        do harm.
+
+        DECLARES ARE SKIPPED FOR OBJECTS THAT EXIST, and that is not an optimisation: redeclaring an
+        existing durable queue as non-durable (or the reverse) fails with PRECONDITION_FAILED and
+        closes the channel, which would turn a healthy rig into a broken one.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][bool] $ExchangeExists,
+        [Parameter(Mandatory)][bool] $QueueExists
+    )
+
+    $actions = [System.Collections.Generic.List[string]]::new()
+    if (-not $ExchangeExists) { $actions.Add('declare-exchange') }
+    if (-not $QueueExists)    { $actions.Add('declare-queue') }
+    $actions.Add('bind')
+
+    $summary = if ($ExchangeExists -and $QueueExists) {
+        'exchange and queue present; binding asserted'
+    } else {
+        "creating: $($actions -join ', ')"
+    }
+
+    [pscustomobject]@{
+        DeclareExchange = -not $ExchangeExists
+        DeclareQueue    = -not $QueueExists
+        Bind            = $true
+        Actions         = $actions.ToArray()
+        Summary         = $summary
+    }
+}
+
+function Confirm-E2EQueueTopology {
+    <#
+        Probes the exchange/queue a Warewolf queue-trigger needs, creates whatever is missing, and
+        always asserts the binding. Returns the plan that was applied.
+
+        WHY PUBLISHERS CALL THIS. PublishRabbitMQActivity publishes BasicPublish(exchange: <queue>,
+        routingKey: "") - Dev2.Activities/Activities/RabbitMQ/Publish/PublishRabbitMQActivity.cs:312
+        - and the load-test publishers mirror that shape deliberately. A queue declared WITHOUT its
+        same-named exchange (for example by a pipeline PUT /api/queues/...) therefore cannot be
+        reached by them at all: the publish targets a non-existent exchange, RabbitMQ answers 404 on
+        the channel, and with mandatory=false and no publisher confirms nothing surfaces it.
+
+        -Durable defaults to $true here, NOT to Initialize-E2EQueueTopology's $false: these are the
+        durable bridge/trigger queues a pipeline provisions, and objects that vanish on a broker
+        restart would strand a load run mid-flight. Existing objects are never redeclared, so this
+        default can only ever apply to something this call is creating.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)] $Session,
+        [Parameter(Mandatory)][string] $QueueName,
+        [bool] $Durable = $true
+    )
+
+    $exchangeExists = [bool](Test-E2EExchangeExists -Session $Session -ExchangeName $QueueName)
+    $queueExists    = [bool](Get-E2EQueueDepth -Session $Session -QueueName $QueueName).Exists
+    $plan = Get-E2EQueueTopologyPlan -ExchangeExists $exchangeExists -QueueExists $queueExists
+
+    # A FRESH channel: both probes above passive-declare, and a passive declare that misses closes
+    # the channel it ran on. Applying the plan on the session's own channel would work only while
+    # nothing was missing - i.e. exactly when there is nothing to apply.
+    $ct = $Session.Ct
+    $ch = New-E2EChannel -Connection $Session.Connection -CancellationToken $ct
+    try {
+        if ($plan.DeclareExchange) {
+            $ch.ExchangeDeclareAsync($QueueName, 'direct', $Durable, $false, $null, $false, $false, $ct).GetAwaiter().GetResult() | Out-Null
+        }
+        if ($plan.DeclareQueue) {
+            $ch.QueueDeclareAsync($QueueName, $Durable, $false, $false, $null, $false, $false, $ct).GetAwaiter().GetResult() | Out-Null
+        }
+        $ch.QueueBindAsync($QueueName, $QueueName, '', $null, $false, $ct).GetAwaiter().GetResult() | Out-Null
+    }
+    finally {
+        try { $ch.Dispose() } catch { }
+    }
+
+    [pscustomobject]@{
+        Queue           = $QueueName
+        Exchange        = $QueueName
+        RoutingKey      = ''
+        ExchangeExisted = $exchangeExists
+        QueueExisted    = $queueExists
+        Actions         = $plan.Actions
+        Summary         = $plan.Summary
+    }
+}
+
+function Get-E2EQueuePublishCount {
+    <#
+        The broker's own LIFETIME publish counter for a queue (message_stats.publish), read over the
+        management HTTP API.
+
+        THIS IS THE ONLY TRUSTWORTHY PROOF THAT A PUBLISH LANDED. A publisher's own loop counter says
+        only that BasicPublishAsync returned, which it does even when the target exchange does not
+        exist; queue DEPTH says nothing either once a consumer (a shovel) drains concurrently. The
+        counter is monotonic and survives the drain, so before/after deltas are exact.
+
+        A queue that has never seen a message carries no message_stats object at all - reported here
+        as 0, not as an error. A MISSING QUEUE returns $null, so callers can tell "no queue" from
+        "queue with nothing published yet".
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string] $ManagementUri,
+        [Parameter(Mandatory)][string] $QueueName,
+        [Parameter(Mandatory)][string] $VHost,
+        [Parameter(Mandatory)][pscredential] $Credential,
+        [int] $TimeoutSec = 30
+    )
+
+    $url = '{0}/api/queues/{1}/{2}' -f $ManagementUri.TrimEnd('/'),
+                                      [uri]::EscapeDataString($VHost),
+                                      [uri]::EscapeDataString($QueueName)
+    try {
+        $r = Invoke-RestMethod -Uri $url -Credential $Credential -Method Get -TimeoutSec $TimeoutSec -ErrorAction Stop
+    }
+    catch {
+        $status = $null
+        if ($_.Exception.PSObject.Properties.Name -contains 'Response' -and $_.Exception.Response) {
+            $status = [int]$_.Exception.Response.StatusCode
+        }
+        if ($status -eq 404) { return $null }
+        throw "Publish-counter probe failed for '$QueueName' (vhost '$VHost') at $url : $($_.Exception.Message)"
+    }
+
+    if ($r.PSObject.Properties.Name -notcontains 'message_stats') { return [long]0 }
+    if ($r.message_stats.PSObject.Properties.Name -notcontains 'publish') { return [long]0 }
+    return [long]$r.message_stats.publish
+}
+
+function Assert-E2EPublishDelta {
+    <#
+        PURE. Compares the broker's publish-counter delta against what a publisher claims it sent,
+        and throws an actionable error when they disagree.
+
+        The message names the exchange deliberately: every real occurrence of this mismatch has been
+        a missing exchange or binding, and the fix is a topology declare, not a retry.
+
+        A delta LARGER than expected is reported too - it means something else published to the same
+        queue during the run, which makes any per-message reconciliation that follows unsound.
+    #>
+    [CmdletBinding()]
+    param(
+        [AllowNull()][System.Nullable[long]] $Before,
+        [AllowNull()][System.Nullable[long]] $After,
+        [Parameter(Mandatory)][int] $Expected,
+        [Parameter(Mandatory)][string] $QueueName
+    )
+
+    if ($null -eq $Before -or $null -eq $After) {
+        throw ("Could not read the broker's publish counter for '$QueueName' (the queue was absent on one of the " +
+               'two reads), so the publish is unproven. Re-run with the queue present, or omit -RabbitMqManagementUri.')
+    }
+
+    $delta = [long]$After - [long]$Before
+    if ($delta -eq $Expected) { return $delta }
+
+    if ($delta -lt $Expected) {
+        throw ("Publish PROOF FAILED for '$QueueName': this run sent $Expected message(s) but the broker's publish " +
+               "counter rose by only $delta. Messages addressed to a non-existent exchange are accepted by the " +
+               "client and dropped, so check the topology - exchange '$QueueName' (direct) must exist and be bound " +
+               "to queue '$QueueName' with an EMPTY routing key. Re-run without -SkipTopologyEnsure to create it.")
+    }
+
+    throw ("Publish PROOF FAILED for '$QueueName': the broker's publish counter rose by $delta but this run sent " +
+           "$Expected. Something else published to the queue during the run, so per-message reconciliation against " +
+           "this run's manifest cannot be trusted.")
+}
+
+function Wait-E2EPublishDelta {
+    <#
+        Polls the broker's publish counter until it accounts for everything a publisher sent, then
+        hands the result to Assert-E2EPublishDelta.
+
+        WHY POLLING, AND NOT ONE READ. message_stats is served from RabbitMQ's management STATS
+        database, which is refreshed on an interval (collect_statistics_interval, 5s by default) -
+        not synchronously with the publish. A single read taken the instant a publisher exits
+        therefore reports a counter that has not moved yet, and a fast burst fails a proof it
+        actually passed: measured 2026-09-19, a 3-message publish read back 0 while the queue
+        already held all 3 (ready=3, publish=3 four seconds later). A long run hides this - the 20k
+        burst takes ~32s to publish, by which time the collector has caught up - which is exactly
+        what would have made it a rare, baffling failure rather than an obvious one.
+
+        Returns as soon as the delta matches, so the common case costs one read. On timeout it calls
+        Assert-E2EPublishDelta with the last reading, so a genuine shortfall still produces the
+        canonical, actionable message rather than a timeout message.
+    #>
+    [CmdletBinding()]
+    param(
+        [Parameter(Mandatory)][string] $ManagementUri,
+        [Parameter(Mandatory)][string] $QueueName,
+        [Parameter(Mandatory)][string] $VHost,
+        [Parameter(Mandatory)][pscredential] $Credential,
+        [AllowNull()][System.Nullable[long]] $Before,
+        [Parameter(Mandatory)][int] $Expected,
+        [int] $TimeoutSeconds = 60,
+        [int] $PollSeconds = 3
+    )
+
+    $deadline = (Get-Date).AddSeconds($TimeoutSeconds)
+    $after = $null
+    while ($true) {
+        $after = Get-E2EQueuePublishCount -ManagementUri $ManagementUri -QueueName $QueueName `
+                    -VHost $VHost -Credential $Credential
+        if ($null -ne $Before -and $null -ne $after -and ([long]$after - [long]$Before) -ge $Expected) { break }
+        if ((Get-Date) -ge $deadline) { break }
+        Start-Sleep -Seconds $PollSeconds
+    }
+
+    # One authority for the verdict and its wording, whether we got here by match or by timeout.
+    return Assert-E2EPublishDelta -Before $Before -After $after -Expected $Expected -QueueName $QueueName
+}
+
 function Get-E2EQueueDepth {
     <#
         Passive queue declare -> ready-message and consumer counts, or $null when the queue is absent.
@@ -1168,6 +1394,8 @@ Export-ModuleMember -Function `
     Get-E2EEngineToken, Invoke-E2EEngineRoute, Get-E2EWorkflowRoute, `
     Initialize-E2ERabbitClient, New-E2EBrokerSession, Close-E2EBrokerSession, `
     Initialize-E2EQueueTopology, Get-E2EQueueDepth, Test-E2EExchangeExists, `
+    Get-E2EQueueTopologyPlan, Confirm-E2EQueueTopology, Get-E2EQueuePublishCount, Assert-E2EPublishDelta, `
+    Wait-E2EPublishDelta, `
     Get-E2EQueueDepthHttp, Get-E2EBrokerContextFromUri, `
     Test-E2EUnackedVisibility, Remove-E2EQueueTopology, Resolve-E2EBrokerUri, `
     Read-E2ETrigger, Test-E2ETriggerSupported, `

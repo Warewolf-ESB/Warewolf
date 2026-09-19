@@ -22,6 +22,19 @@
     empty routing key, persistent BasicProperties with the txn as CorrelationId) and the manifest
     uses the same schema, so the load-test reconciliation can read it.
 
+    THE EXCHANGE IS NOT OPTIONAL, AND ITS ABSENCE USED TO BE SILENT. Publishing to exchange =
+    <queue name> is fidelity to PublishRabbitMQActivity (Dev2.Activities/Activities/RabbitMQ/Publish/
+    PublishRabbitMQActivity.cs:312), which is the producer this burst stands in for - but it means a
+    queue declared WITHOUT its same-named direct exchange and '' binding cannot be reached at all.
+    RabbitMQ answers 404 on the channel, and with mandatory=false and no publisher confirms nothing
+    surfaces it: BasicPublishAsync returns, $published increments, and a manifest is written for
+    messages the broker never received. Measured 2026-09-19 against a queue a pipeline had declared
+    with PUT /api/queues/... - "published 20000", broker publish counter unmoved at 2.
+
+    So this script now CREATES the topology it needs (Confirm-E2EQueueTopology; -SkipTopologyEnsure
+    opts out) and, when -RabbitMqManagementUri is supplied, PROVES the publish against the broker's
+    own message_stats.publish counter rather than its own loop count.
+
     SAFE TO CALL DIRECTLY. RabbitMQ.Client 7.0.0 on .NET 10 reliably stack-overflows tearing down
     the AMQP connection - an uncatchable StackOverflowException that kills the hosting process
     outright, even after every message published cleanly. A plain invocation of this script is
@@ -50,6 +63,14 @@ param(
     [ValidateSet('Unique', 'Fixed')][string] $MandateIdMode = 'Unique',
     [string] $SourceBitePath,
     [string] $PublishPath,
+
+    # Topology + proof. Both default to the SAFE behaviour (ensure, and prove when the management
+    # URI is known) because the failure they close is silent by nature - see the header.
+    [switch] $SkipTopologyEnsure,
+    # Optional: the RabbitMQ MANAGEMENT base URI (e.g. https://rabbitmq.warewolf.online). Supplying
+    # it turns on the publish proof. Read in the LAUNCHER, over HTTP only, so it never drags
+    # RabbitMQ.Client into the parent process.
+    [string] $RabbitMqManagementUri,
 
     # Internal re-invocation plumbing - see SAFE TO CALL DIRECTLY above. Never pass these by hand.
     [switch] $AsChildProcess,
@@ -147,6 +168,26 @@ foreach ($required in @(
 # ═════════════════════════════════════════════════════════════════════════════
 if (-not $AsChildProcess) {
     $tmpResult = Join-Path ([System.IO.Path]::GetTempPath()) "wwprofilerexact-$([guid]::NewGuid().ToString('N')).json"
+
+    # THE PROOF IS TAKEN IN THE LAUNCHER, NOT THE CHILD, for two reasons. The child writes its
+    # result file BEFORE tearing the connection down (it is expected to crash there), so a check
+    # placed after the publish loop would be skipped on exactly the runs that crash; and the
+    # counter must be read AFTER the client's buffered publishes have flushed, which only the
+    # connection close guarantees. The launcher reads plain HTTP, so it stays RabbitMQ.Client-free.
+    $proofCtx = $null
+    if ($RabbitMqManagementUri) {
+        Import-Module (Join-Path $ScriptDir 'WwE2E.Common.psm1') -Force
+        $amqpForProof = Resolve-E2EBrokerUri -SourceBitePath $SourceBitePath
+        if (-not $amqpForProof) { throw "Could not resolve the broker URI from '$SourceBitePath' for the publish proof." }
+        $brokerCtx = Get-E2EBrokerContextFromUri -AmqpUri $amqpForProof
+        $proofCtx = [pscustomobject]@{
+            VHost      = $brokerCtx.VHost
+            Credential = $brokerCtx.Credential
+            Before     = Get-E2EQueuePublishCount -ManagementUri $RabbitMqManagementUri -QueueName $QueueName `
+                            -VHost $brokerCtx.VHost -Credential $brokerCtx.Credential
+        }
+    }
+
     try {
         $childArgs = Get-WwProfilerExactChildArgs -ScriptPath $PSCommandPath -BoundParameters $PSBoundParameters -ResultPath $tmpResult
 
@@ -155,7 +196,19 @@ if (-not $AsChildProcess) {
         # ~200-frame native stack trace to the caller's console for a run that fully succeeded.
         # Captured output is only surfaced below if the result file - the real signal - is missing.
         $childOutput = & pwsh @childArgs 2>&1 | Out-String
-        return Get-WwProfilerExactChildResult -ResultPath $tmpResult
+        $result = Get-WwProfilerExactChildResult -ResultPath $tmpResult
+
+        if ($proofCtx) {
+            # POLLED, not read once: message_stats comes from the management stats database, which
+            # refreshes on an interval rather than synchronously with the publish - see
+            # Wait-E2EPublishDelta for the measurement that proves it.
+            $delta = Wait-E2EPublishDelta -ManagementUri $RabbitMqManagementUri -QueueName $QueueName `
+                        -VHost $proofCtx.VHost -Credential $proofCtx.Credential `
+                        -Before $proofCtx.Before -Expected ([int]$result.Total)
+            $result | Add-Member -NotePropertyName 'PublishProofDelta' -NotePropertyValue $delta -Force
+        }
+
+        return $result
     }
     catch {
         throw "$($_.Exception.Message)`n`nChild process output:`n$childOutput"
@@ -219,6 +272,15 @@ if (-not $amqp) { throw "Could not resolve the broker URI from '$SourceBitePath'
 
 Initialize-E2ERabbitClient -PublishPath $PublishPath
 $session      = New-E2EBrokerSession -AmqpUri $amqp -ClientName "wwqp-exact-$Label"
+
+# BEFORE THE FIRST PUBLISH, not after a failure: the exchange/binding this script publishes through
+# must exist, and their absence is silent (see the header). Existing objects are never redeclared,
+# so this cannot disturb a rig that is already correct.
+if (-not $SkipTopologyEnsure) {
+    $topology = Confirm-E2EQueueTopology -Session $session -QueueName $QueueName -Durable $true
+    Write-Verbose "topology: $($topology.Summary)"
+}
+
 $publishedUtc = (Get-Date).ToUniversalTime()
 $published    = 0
 try {

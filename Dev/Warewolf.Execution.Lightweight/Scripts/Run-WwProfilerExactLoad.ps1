@@ -357,9 +357,14 @@ $publishStart = (Get-Date).ToUniversalTime()
 # Its returned object is already trustworthy, but this script still reconciles against the
 # manifest below rather than that object, since the manifest is what Step 5 depends on regardless.
 $pubScript = Join-Path $ScriptDir 'Publish-WwProfilerExact.ps1'
+# -RabbitMqManagementUri is forwarded so the publisher PROVES the burst against the broker's own
+# message_stats.publish counter instead of its own loop count. Without it a publish to a missing
+# exchange is counted as sent and manifested, and the run measures a drain that never had anything
+# to drain (2026-09-19: "published 20000", broker counter unmoved at 2, 311 of 20000 on the retry).
 & $pubScript -Url $Url -QueueName $QueueName -Label $label -Count $Count `
     -MandateIdMode 'Unique' -ManifestPath $manifest -ScriptDir $ScriptDir `
-    -SourceBitePath $SourceBitePath -PublishPath $PublishPath | Out-Null
+    -SourceBitePath $SourceBitePath -PublishPath $PublishPath `
+    -RabbitMqManagementUri $RabbitMqManagementUri | Out-Null
 
 if (-not (Test-Path -LiteralPath $manifest)) {
     throw "The publisher wrote no manifest at '$manifest' - treat the run as having published nothing."
