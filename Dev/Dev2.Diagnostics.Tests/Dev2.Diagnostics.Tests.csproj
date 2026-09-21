@@ -49,6 +49,7 @@
     <Compile Include="Debug\TestDebugMessageRepoTests.cs" />
     <Compile Include="Debug\RemoteDebugMessageRepoTests.cs" />
     <Compile Include="Dev2LoggerTests.cs" />
+    <Compile Include="EnvironmentVariablesTests.cs" />
     <Compile Include="DebugMessageRepoTests.cs" />
     <Compile Include="ExtensionsTests.cs" />
     <Compile Include="Debug\WebDebugMessageRepoTests.cs" />

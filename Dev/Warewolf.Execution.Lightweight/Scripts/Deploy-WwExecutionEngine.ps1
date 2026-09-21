@@ -162,13 +162,48 @@
     host.json, so pair this with -DisableDynamicConcurrency or the cap does nothing.
 
 .PARAMETER FunctionAppScaleLimit
-    OPT-IN.  Caps Consumption-plan scale-out (siteConfig.functionAppScaleLimit), applied to a
-    newly created AND a pre-existing app.  Set it BELOW the message broker's connection limit:
+    OPT-IN.  Caps CLASSIC Consumption-plan scale-out (siteConfig.functionAppScaleLimit), applied
+    to a newly created AND a pre-existing app.  Set it BELOW the message broker's connection limit:
     the RabbitMQ connection cache is keyed per broker endpoint, so a single-broker workload
     holds ONE connection PER INSTANCE regardless of the cache's maxConnections — instance count
     is what spends the broker's budget.  Measured: 48 instances against a 40-connection vhost
     produced 'NOT_ALLOWED - ... connection limit (40) is reached' and dead-lettered the losers.
     Leave unset for the Azure default (effectively unbounded).
+
+    CLASSIC ONLY.  Flex Consumption has no siteConfig.functionAppScaleLimit; its equivalent is
+    -FlexMaximumInstanceCount, so combining this with -HostingPlan Flex fails at plan time
+    rather than silently applying nothing.
+
+.PARAMETER HostingPlan
+    Which Azure Functions hosting model to CREATE the app on.  'Consumption' (default) is the
+    classic Y1 dynamic plan every deployment before 2026-09-21 used.  'Flex' is Flex Consumption
+    (sku FlexConsumption), which is a DIFFERENT RESOURCE SHAPE, not a tier of the same plan:
+
+      * It has no shared App Service Plan object — instance memory and the scale ceiling are
+        per-APP properties set at create time (-FlexInstanceMemoryMB / -FlexMaximumInstanceCount).
+      * It has no Azure Files content share, so WEBSITE_CONTENTAZUREFILECONNECTIONSTRING /
+        WEBSITE_CONTENTSHARE are neither set nor reconciled — the package lives in a deployment
+        storage container instead.
+      * An EXISTING app cannot be converted between the two: `functionapp create` fixes the SKU,
+        so switching a live app means deleting and recreating it, which mints a NEW managed
+        identity and therefore drops every RBAC grant made to the old one (Key Vault Secrets
+        User, Azure Service Bus Data Receiver, ...).  This script does NOT delete anything — it
+        reports the mismatch and leaves the app alone.
+
+.PARAMETER FlexInstanceMemoryMB
+    Flex Consumption instance size in MB (see https://aka.ms/flex-instance-sizes).  Ignored
+    unless -HostingPlan Flex.  Default 2048.
+
+.PARAMETER FlexMaximumInstanceCount
+    Flex Consumption scale ceiling — the Flex equivalent of -FunctionAppScaleLimit, applied via
+    `az functionapp scale config set --maximum-instance-count` (which is Flex-only; the classic
+    plan rejects it).  The SAME broker-connection-budget reasoning in -FunctionAppScaleLimit
+    applies: instance count is what spends the budget.  Ignored unless -HostingPlan Flex.
+
+.PARAMETER FlexDeploymentStorageContainerName
+    OPT-IN.  Names the blob container Flex Consumption deploys the package into.  Left unset,
+    the Azure CLI picks its own default container on -StorageAccount, which is what we want
+    unless a specific container is mandated.  Ignored unless -HostingPlan Flex.
 
 .PARAMETER DisableDynamicConcurrency
     OPT-IN.  Pins host.json's concurrency.dynamicConcurrencyEnabled to false, creating the
@@ -312,6 +347,28 @@ param(
     # docs/ShovelBridge-Architecture.md.
     [ValidateRange(1, 1000)]
     [nullable[int]] $FunctionAppScaleLimit,
+
+    # ── Hosting model ────────────────────────────────────────────────────────
+    # Flex Consumption is a different RESOURCE SHAPE, not a tier of the classic plan: no shared
+    # App Service Plan object, no Azure Files content share, and instance size / scale ceiling
+    # are per-app properties pinned by `functionapp create`. Because the SKU is fixed at create
+    # time, an existing app is NEVER converted here — Phase 1 reports the mismatch and leaves it
+    # alone, since the only route between them is delete-and-recreate, and that mints a new
+    # managed identity (dropping every RBAC grant the old identity held).
+    [ValidateSet('Consumption', 'Flex')]
+    [string] $HostingPlan = 'Consumption',
+
+    # Flex instance size. https://aka.ms/flex-instance-sizes
+    [ValidateSet(512, 2048, 4096)]
+    [int] $FlexInstanceMemoryMB = 2048,
+
+    # The Flex equivalent of -FunctionAppScaleLimit; same broker-connection-budget reasoning
+    # applies (one cached connection per INSTANCE), so size it below the vhost's limit.
+    [ValidateRange(1, 1000)]
+    [nullable[int]] $FlexMaximumInstanceCount,
+
+    # Left unset, the CLI picks its own default container on -StorageAccount.
+    [string] $FlexDeploymentStorageContainerName,
 
     # ── Publish source (REQUIRED — folder or .zip) ───────────────────────────
     [string] $PublishPath,
@@ -520,6 +577,11 @@ $script:TargetFunctionsRuntime    = 'dotnet-isolated'
 $script:TargetRuntimeVersion      = '10'      # `functionapp create --runtime-version`
 $script:TargetNetFrameworkVersion = 'v10.0'   # `siteConfig.netFrameworkVersion` on an existing app
 $script:TargetFunctionsVersion    = '4'       # `functionapp create --functions-version`
+
+# The app setting Config.GetDirectory reads FIRST when resolving the engine's data directory
+# (Dev2.Common/Config.cs -> GlobalConstants.ServerPathKey). Named here rather than inline so the
+# string cannot drift from the constant it has to match; see where it is set for why Flex needs it.
+$script:LinuxBasePathSettingName  = 'webServerBasePath'
 
 # Resolved for real in Phase 0.5. Seeded here so Save-DeploySummary is StrictMode-safe no
 # matter how early a run dies (the summary is the rollback's record of intent).
@@ -1511,6 +1573,21 @@ $sbtRequired = @($sbtOverrides.Values | Where-Object { $null -ne $_ }).Count -gt
 # Required together or not at all: ServiceBusTriggerDefinition.Load() refuses to start an
 # enabled trigger with either field blank, so failing at plan time is cheaper than
 # discovering it at cold start.
+# ── Hosting-model cross-checks (fail at plan time, not four phases in) ────────
+# siteConfig.functionAppScaleLimit simply does not exist on Flex Consumption: the write would
+# be accepted and ignored, and a scale ceiling that never applied looks identical to one that
+# did until the broker's connection budget blows thousands of messages later — the precise
+# failure mode -FunctionAppScaleLimit exists to prevent.
+if ($HostingPlan -eq 'Flex' -and $FunctionAppScaleLimit) {
+    throw ("-FunctionAppScaleLimit is a CLASSIC Consumption setting (siteConfig.functionAppScaleLimit) and has no " +
+           "effect on Flex Consumption. Use -FlexMaximumInstanceCount $FunctionAppScaleLimit instead, which is " +
+           'applied via `az functionapp scale config set --maximum-instance-count`.')
+}
+if ($HostingPlan -ne 'Flex' -and $FlexMaximumInstanceCount) {
+    throw ("-FlexMaximumInstanceCount requires -HostingPlan Flex (`az functionapp scale config set` targets Flex " +
+           "Consumption only). On the classic plan use -FunctionAppScaleLimit $FlexMaximumInstanceCount instead.")
+}
+
 $triggerConfigProvided = @(@($ServiceBusTriggerQueueName, $ServiceBusTriggerWorkflowName) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
 if ($triggerConfigProvided.Count -eq 1) {
     throw "-ServiceBusTriggerQueueName and -ServiceBusTriggerWorkflowName must be supplied together (or neither) — got only $(if ([string]::IsNullOrWhiteSpace($ServiceBusTriggerQueueName)) { '-ServiceBusTriggerWorkflowName' } else { '-ServiceBusTriggerQueueName' }). ServiceBusTriggerDefinition.Load() refuses to start an enabled trigger with either field blank."
@@ -1765,6 +1842,22 @@ if (-not [string]::IsNullOrWhiteSpace($RabbitMqCacheConfig)) {
 if ($triggerConfigRequired) {
     $appSettings['WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'] = $ServiceBusTriggerQueueName
 }
+
+# Flex Consumption is LINUX, and on Linux the engine's data directory resolves from
+# CommonApplicationData to '/usr/share/Warewolf' — a path that EXISTS but is NOT writable in
+# the container. Config.GetDirectory now probes writability and falls through to temp, but
+# pinning the base path here keeps the engine off that fallback entirely and, more importantly,
+# makes the choice EXPLICIT and REPRODUCIBLE: set by hand it is silently reverted by the next
+# deploy, exactly as documented for the persistence flag in docs/ShovelBridge-Architecture.md.
+# '/tmp' rather than '/home': /home is Azure Files-backed shared storage, so 30 instances
+# writing logs into it would add network round-trips to a path on the execution hot path, while
+# /tmp is instance-local. Nothing here needs to survive an instance recycle.
+# Verified live on wwuat3 2026-09-21: without this the parameterless PublishRabbitMQActivity
+# ctor throws (UnauthorizedAccessException -> XamlObjectWriterException) and EVERY message
+# dead-letters; with it, a smoke message executes FINISHED/200.
+if ($HostingPlan -eq 'Flex') {
+    $appSettings[$script:LinuxBasePathSettingName] = '/tmp'
+}
 # NOTE: BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
 # SkipFailureToRetrieveSecret (merged into WAREWOLF_SECURITY_FLAGS — WOLF-8516) are
 # deliberately NOT set here (not shown in logs/summary, not created on the Function
@@ -1887,6 +1980,16 @@ if ($DisableDynamicConcurrency) {
 }
 if ($FunctionAppScaleLimit) {
     Write-Host ("    {0,-28}: {1}" -f 'Scale-out limit', "$FunctionAppScaleLimit instance(s) -> siteConfig.functionAppScaleLimit")
+}
+if ($HostingPlan -eq 'Flex') {
+    $flexCeiling = if ($FlexMaximumInstanceCount) { ", max $FlexMaximumInstanceCount instance(s)" } else { '' }
+    $hostingPlanSummary = "Flex Consumption ($FlexInstanceMemoryMB MB/instance$flexCeiling)"
+} else {
+    $hostingPlanSummary = 'Consumption (classic Y1)'
+}
+Write-Host ("    {0,-28}: {1}" -f 'Hosting plan', $hostingPlanSummary)
+if ($HostingPlan -eq 'Flex' -and $FlexDeploymentStorageContainerName) {
+    Write-Host ("    {0,-28}: {1}" -f 'Flex deployment container', $FlexDeploymentStorageContainerName)
 }
 Write-Host ("    {0,-28}: {1}" -f 'LogDir', $LogDir)
 Write-Host ("    {0,-28}: {1}" -f 'Run tag', "wwx-test-run=$runId  (rollback targets this tag only)")
@@ -2107,22 +2210,28 @@ try {
 
                 # A Consumption (Y1) app MUST be able to mount a content share; the one the app
                 # names lives on the account that is gone, so a share has to exist on the new one.
-                $contentShare = Get-ContentShareName -AppName $AppName
-                Invoke-Az @(
-                    'storage', 'share-rm', 'create',
-                    '--name', $contentShare, '--storage-account', $StorageAccount,
-                    '--resource-group', $ResourceGroup, '-o', 'none'
-                ) -Mutating -AllowFail | Out-Null
+                # Flex Consumption has NO content share at all — it deploys from a blob container —
+                # so creating one and naming it in WEBSITE_CONTENTSHARE would be meaningless there.
+                $contentShare = $null
+                if ($HostingPlan -ne 'Flex') {
+                    $contentShare = Get-ContentShareName -AppName $AppName
+                    Invoke-Az @(
+                        'storage', 'share-rm', 'create',
+                        '--name', $contentShare, '--storage-account', $StorageAccount,
+                        '--resource-group', $ResourceGroup, '-o', 'none'
+                    ) -Mutating -AllowFail | Out-Null
+                }
 
                 # WOLF-8512: a connection string carries '=' and ';' and az.cmd is a batch file.
                 # The @file form is the only quoting-proof way to set it — same reason
                 # ProfilerService-CI-UAT-LightweightExecutionEngine.yml sets its own flags that way.
                 $stSettingsFile = Join-Path ([System.IO.Path]::GetTempPath()) "ww-storage-$AppName-$runId.json"
-                $stPayload = @(
-                    @{ name = 'AzureWebJobsStorage';                      value = $stConn }
-                    @{ name = 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'; value = $stConn }
-                    @{ name = 'WEBSITE_CONTENTSHARE';                     value = $contentShare }
-                ) | ConvertTo-Json -Depth 3
+                $stSettings = @(@{ name = 'AzureWebJobsStorage'; value = $stConn })
+                if ($HostingPlan -ne 'Flex') {
+                    $stSettings += @{ name = 'WEBSITE_CONTENTAZUREFILECONNECTIONSTRING'; value = $stConn }
+                    $stSettings += @{ name = 'WEBSITE_CONTENTSHARE';                     value = $contentShare }
+                }
+                $stPayload = $stSettings | ConvertTo-Json -Depth 3 -AsArray
                 Set-Content -LiteralPath $stSettingsFile -Value $stPayload -Encoding utf8
                 try {
                     Invoke-Az @(
@@ -2133,7 +2242,8 @@ try {
                 }
                 finally { Remove-Item -LiteralPath $stSettingsFile -Force -ErrorAction SilentlyContinue }
 
-                Write-Ok "Function App storage repointed at '$StorageAccount' (content share '$contentShare')."
+                Write-Ok ("Function App storage repointed at '$StorageAccount'" +
+                          ($contentShare ? " (content share '$contentShare')." : ' (Flex: no content share).'))
             }
             'none' {
                 Write-Ok "Function App storage is '$StorageAccount'."
@@ -2149,17 +2259,46 @@ try {
         }
     } else {
         $created['functionApp'] = $true   # intent recorded BEFORE creating
-        Write-Step ("Creating Function App '{0}' (Consumption Y1, {1} {2}, Functions v{3})" -f
-                    $AppName, $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion)
-        Invoke-Az (@(
-            'functionapp', 'create',
-            '--name', $AppName, '--resource-group', $ResourceGroup, '--consumption-plan-location', $Location,
-            '--storage-account', $StorageAccount, '--runtime', $script:TargetFunctionsRuntime,
-            '--runtime-version', $script:TargetRuntimeVersion,
-            '--functions-version', $script:TargetFunctionsVersion,
-            '--https-only', 'true', '--os-type', 'Windows', '--tags'
-        ) + $ResourceTags) -Mutating | Out-Null
-        Write-Ok 'Function App created.'
+        if ($HostingPlan -eq 'Flex') {
+            Write-Step ("Creating Function App '{0}' (Flex Consumption, {1} MB/instance, {2} {3}, Functions v{4})" -f
+                        $AppName, $FlexInstanceMemoryMB, $script:TargetFunctionsRuntime,
+                        $script:TargetRuntimeVersion, $script:TargetFunctionsVersion)
+            # Flex takes --flexconsumption-location in place of --consumption-plan-location, pins
+            # instance size at create time, and is LINUX-ONLY — passing --os-type Windows here is
+            # rejected outright, which is why the classic branch's flag is absent rather than
+            # parameterised. Deployment storage defaults to a CLI-chosen container on
+            # --storage-account unless -FlexDeploymentStorageContainerName names one.
+            $flexArgs = @(
+                'functionapp', 'create',
+                '--name', $AppName, '--resource-group', $ResourceGroup,
+                '--flexconsumption-location', $Location,
+                '--storage-account', $StorageAccount, '--runtime', $script:TargetFunctionsRuntime,
+                '--runtime-version', $script:TargetRuntimeVersion,
+                '--functions-version', $script:TargetFunctionsVersion,
+                '--instance-memory', $FlexInstanceMemoryMB,
+                '--https-only', 'true'
+            )
+            if ($FlexMaximumInstanceCount) {
+                $flexArgs += @('--maximum-instance-count', $FlexMaximumInstanceCount)
+            }
+            if ($FlexDeploymentStorageContainerName) {
+                $flexArgs += @('--deployment-storage-container-name', $FlexDeploymentStorageContainerName)
+            }
+            Invoke-Az ($flexArgs + @('--tags') + $ResourceTags) -Mutating | Out-Null
+            Write-Ok 'Function App created (Flex Consumption).'
+        } else {
+            Write-Step ("Creating Function App '{0}' (Consumption Y1, {1} {2}, Functions v{3})" -f
+                        $AppName, $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion)
+            Invoke-Az (@(
+                'functionapp', 'create',
+                '--name', $AppName, '--resource-group', $ResourceGroup, '--consumption-plan-location', $Location,
+                '--storage-account', $StorageAccount, '--runtime', $script:TargetFunctionsRuntime,
+                '--runtime-version', $script:TargetRuntimeVersion,
+                '--functions-version', $script:TargetFunctionsVersion,
+                '--https-only', 'true', '--os-type', 'Windows', '--tags'
+            ) + $ResourceTags) -Mutating | Out-Null
+            Write-Ok 'Function App created.'
+        }
     }
 
     # 1.3b OPTIONAL scale-out ceiling (-FunctionAppScaleLimit). Applied to BOTH branches
@@ -2167,6 +2306,40 @@ try {
     # one defaults to unbounded, so neither is safe to assume. See the parameter's own
     # comment for why instance count — not maxConnections — is what spends the broker's
     # connection budget.
+    # 1.3b-flex The Flex equivalent. `az functionapp scale config set --maximum-instance-count` is
+    # Flex-ONLY (the classic plan rejects it, which is why the branch above uses the generic
+    # resource writer instead). Applied on BOTH the created and pre-existing branches for the same
+    # reason: a pre-existing app keeps whatever ceiling it already had.
+    if ($HostingPlan -eq 'Flex' -and $FlexMaximumInstanceCount) {
+        Write-Step "Setting Flex scale ceiling -> $FlexMaximumInstanceCount instance(s)"
+        Invoke-Az @(
+            'functionapp', 'scale', 'config', 'set',
+            '--name', $AppName, '--resource-group', $ResourceGroup,
+            '--maximum-instance-count', $FlexMaximumInstanceCount, '-o', 'none'
+        ) -Mutating | Out-Null
+
+        # READ BACK for the same reason the classic branch does: a ceiling that never applied is
+        # indistinguishable from one that did until the broker connection budget blows under load.
+        if ($DryRun) {
+            Write-Note 'Dry-run: Flex scale ceiling not applied, so not verified.'
+        } else {
+            # Read back through `scale config show`, NOT `functionapp show --query
+            # functionAppConfig...`: the latter returns EMPTY on az 2.x (the property is not
+            # projected into that response), which failed a deploy whose ceiling had in fact
+            # applied correctly — verified live on wwuat3 2026-09-21.
+            $appliedFlex = Invoke-Az @(
+                'functionapp', 'scale', 'config', 'show',
+                '--name', $AppName, '--resource-group', $ResourceGroup,
+                '--query', 'maximumInstanceCount', '-o', 'tsv'
+            )
+            if ("$appliedFlex".Trim() -ne "$FlexMaximumInstanceCount") {
+                throw ("Flex scale ceiling did not apply: asked for $FlexMaximumInstanceCount, " +
+                       "functionAppConfig.scaleAndConcurrency.maximumInstanceCount reads '$appliedFlex'.")
+            }
+            Write-Ok "Flex scale ceiling set to $FlexMaximumInstanceCount (verified)."
+        }
+    }
+
     if ($FunctionAppScaleLimit) {
         Write-Step "Setting Function App scale-out limit -> $FunctionAppScaleLimit instance(s)"
         # `az functionapp config set` has NO --functions-scale-limit argument (it fails with
