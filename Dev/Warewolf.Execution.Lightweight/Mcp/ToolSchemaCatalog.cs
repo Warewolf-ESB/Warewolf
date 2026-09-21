@@ -101,7 +101,7 @@ internal static class ToolSchemaCatalog
             ["Decision"] = """
                 {
                   "fields": {
-                    "displaytext": "string, optional — the decision node's label (Constants.DISPLAYTEXT).",
+                    "displaytext": "string, optional — the decision node's label (Constants.DISPLAYTEXT). When absent, null or blank the label falls back to displayname, then the cell's label, then \"Decision\".",
                     "truearmtext": "string, optional — label shown on the true-branch edge (Constants.TRUEARMTEXT).",
                     "falsearmtext": "string, optional — label shown on the false-branch edge (Constants.FALSEARMTEXT).",
                     "expression": "string, required — the decision condition, serialized from a Dev2DecisionStack via Conditions.ToWebModel() (Constants.EXPRESSION). It is a JSON *string*, not a nested object, shaped {\"TheStack\":[{\"Col1\":\"[[var]]\",\"Col2\":\"comparand\",\"Col3\":\"\",\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsContains\"}],\"TotalDecisions\":1,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\"}. Col1 is the left operand, Col2 the right (Col3 is the upper bound for IsBetween/NotBetween, so PopulatedColumnCount is 1, 2 or 3). Mode is \"AND\" or \"OR\" and matches the `and` field.",
@@ -677,7 +677,7 @@ internal static class ToolSchemaCatalog
                     "webrequest_timeoutseconds": "number, optional — request timeout in seconds (Constants.WEBREQUEST_TIMEOUTSECONDS).",
                     "webrequest_timeouttext": "string, optional — human-readable timeout description (Constants.WEBREQUEST_TIMEOUTTEXT).",
                     "webrequest_url": "string, required — the request URL (Constants.WEBREQUEST_URL).",
-                    "webrequest_headers": "array, optional — HTTP headers, or a JSON-encoded string of them (Constants.WEBREQUEST_HEADERS).",
+                    "webrequest_headers": "string, optional — HTTP headers as 'Name:value' entries separated by newlines or ';' (Constants.WEBREQUEST_HEADERS). Omit it, or leave it empty, to send none. A JSON array is rejected: this activity reads a single string, unlike the GET/POST/PUT/DELETE Web Method tools.",
                     "webrequest_postdata": "string, optional — request body for verbs that carry one (POST/PUT/PATCH); ignored for GET/DELETE. Omitted or empty sends an empty body (Constants.WEBREQUEST_POSTDATA).",
                     "webrequest_result": "string, optional — output variable for the response (Constants.WEBREQUEST_RESULT)."
                   },

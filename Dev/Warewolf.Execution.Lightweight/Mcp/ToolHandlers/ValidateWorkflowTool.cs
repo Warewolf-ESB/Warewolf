@@ -248,6 +248,7 @@ internal static class ValidateWorkflowTool
             }
 
             ValidateCollectionFields(cell, entry, index, errors);
+            ValidateStringFields(cell, entry, index, errors);
 
             foreach (var message in FindOutputMappingShapeErrors(cell.data, entry))
             {
@@ -327,7 +328,10 @@ internal static class ValidateWorkflowTool
             ["POST Web Method"] = new[] { Constants.WEBMETHOD_HEADERS, Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
             ["PUT Web Method"] = new[] { Constants.WEBMETHOD_HEADERS, Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
             ["DELETE Web Method"] = new[] { Constants.WEBMETHOD_HEADERS, Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
-            ["Web Request"] = new[] { Constants.WEBREQUEST_HEADERS },
+            // "Web Request" is deliberately absent: its headers are a plain string, not a collection
+            // (see _stringFieldsByToolName). Requiring a JSON array here rejected the "" the activity
+            // actually wants, and saving "[]" to satisfy it made every execution fail with
+            // "Index was outside the bounds of the array."
             ["SQL Server Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
             ["PostgreSQL Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
             ["MySQL Database"] = new[] { Constants.WEBMETHOD_INPUTS, Constants.WEBMETHOD_OUTPUTS },
@@ -362,6 +366,43 @@ internal static class ValidateWorkflowTool
                     + $"{DescribeUnusableValue(raw)} cannot be read as either and would be discarded silently.",
                     $"/cells/{index}/data/{key}"));
             }
+        }
+    }
+
+    /// <summary>
+    /// Fields that look like collections but which the activity reads as a single string.
+    /// <c>DsfWebGetRequestWithTimeoutActivity.Headers</c> is evaluated as one string and split on
+    /// newlines and ';' at run time (<c>Name:value</c> per entry). A non-string value would be
+    /// stringified by <c>CommonHelper.TryGetString</c> and sent as literal JSON text.
+    /// </summary>
+    static readonly IReadOnlyDictionary<string, string[]> _stringFieldsByToolName =
+        new Dictionary<string, string[]>(StringComparer.OrdinalIgnoreCase)
+        {
+            ["Web Request"] = new[] { Constants.WEBREQUEST_HEADERS },
+        };
+
+    /// <summary>
+    /// Reports an error for any string field on <paramref name="node"/> whose value is not a
+    /// string. Absent, null and empty are all fine: empty is the activity's own default.
+    /// </summary>
+    static void ValidateStringFields(Cell node, ToolCatalog.Entry entry, int index, List<ValidationIssue> errors)
+    {
+        if (node.data is null || !_stringFieldsByToolName.TryGetValue(entry.Name, out var keys))
+        {
+            return;
+        }
+
+        foreach (var key in keys)
+        {
+            if (!node.data.TryGetValue(key, out var raw) || raw is null || raw is string)
+            {
+                continue;
+            }
+
+            errors.Add(ValidationIssue.Error(
+                $"cell '{node.id}' field '{key}' must be a string ('Name:value' entries separated by newlines or ';'); "
+                + $"{DescribeUnusableValue(raw)} would be sent as literal text.",
+                $"/cells/{index}/data/{key}"));
         }
     }
 
