@@ -28,6 +28,7 @@ using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Activities;
 using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Exchange;
@@ -693,6 +694,87 @@ namespace Dev2.Tests.Activities.ActivityTests
                 "The round-tripped FlowDecision must keep its True arm. " + xaml);
             StringAssert.Contains(xaml, "FlowDecision.False",
                 "The round-tripped FlowDecision must keep its False arm. " + xaml);
+        }
+
+        // ─────────────────────────────────────────────────────────────────
+        // ForEach whose loop body is a Sequence (what X6ToWorkflowConverter builds for a
+        // multi-step body). The steps used to come out as flat forEachParentId siblings of an
+        // empty Sequence cell, so the diagram showed an empty "Data Action" box and reading the
+        // graph back kept only that empty Sequence, dropping every step.
+        // ─────────────────────────────────────────────────────────────────
+
+        static DsfForEachActivity ForEachWithSequenceBody(params string[] stepNames)
+        {
+            var body = new DsfSequenceActivity { DisplayName = "Data Action", UniqueID = Guid.NewGuid().ToString() };
+            foreach (var name in stepNames)
+            {
+                body.Activities.Add(new DsfDotNetMultiAssignActivity { DisplayName = name, UniqueID = Guid.NewGuid().ToString() });
+            }
+
+            return new DsfForEachActivity
+            {
+                DisplayName = "Loop",
+                UniqueID = Guid.NewGuid().ToString(),
+                DataFunc = new ActivityFunc<string, bool> { DisplayName = "Data Action", Handler = body }
+            };
+        }
+
+        [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
+        public void Convert_ForEachWithSequenceBody_NestsStepsInsideTheSequence()
+        {
+            var forEach = ForEachWithSequenceBody("StepOne", "StepTwo");
+            var bodyId = ((DsfSequenceActivity)forEach.DataFunc.Handler).UniqueID;
+
+            var model = Convert(new Flowchart { StartNode = new FlowStep { Action = forEach } });
+
+            var loop = model.Nodes.Find(n => n.id == forEach.UniqueID);
+            Assert.IsNotNull(loop, "The For Each cell must be emitted.");
+
+            var sequence = model.Nodes.Find(n => n.label == "Data Action");
+            Assert.IsNotNull(sequence, "The body Sequence cell must be emitted.");
+            Assert.AreEqual(bodyId, sequence.id, "The body Sequence must keep its UniqueID as its cell id.");
+            Assert.AreEqual(true, sequence.data[Constants.ISNESTED_INFOREACH],
+                "The body Sequence stays the For Each's single nested cell.");
+            Assert.AreEqual(loop.id, sequence.data[Constants.PARENTID_FOREACH]);
+
+            foreach (var (name, index) in new[] { ("StepOne", 0), ("StepTwo", 1) })
+            {
+                var step = model.Nodes.Find(n => n.label == name);
+                Assert.IsNotNull(step, $"Step '{name}' must be emitted.");
+                Assert.AreEqual(true, step.data[Constants.ISNESTED], $"'{name}' must be nested in the Sequence.");
+                Assert.AreEqual(sequence.id, step.data[Constants.PARENTID], $"'{name}' must point at the Sequence, not the loop.");
+                Assert.AreEqual(index, System.Convert.ToInt32(step.data[Constants.SEQUENCE_NESTED_ACTIVITY_INDEX]));
+                Assert.IsFalse(step.data.ContainsKey(Constants.PARENTID_FOREACH),
+                    $"'{name}' must not also be tagged as a sibling of the Sequence under the For Each.");
+            }
+        }
+
+        [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
+        public void RoundTrip_ForEachWithSequenceBody_KeepsEveryStep()
+        {
+            var loadModel = Convert(new Flowchart { StartNode = new FlowStep { Action = ForEachWithSequenceBody("StepOne", "StepTwo") } });
+
+            // Mirror the web client's load-model -> save-model merge (see the decision round trip above).
+            foreach (var edge in loadModel.Edges)
+            {
+                edge.shape = "edge";
+            }
+            var saveModel = new X6WorkflowSaveModel { ResourceName = "ForEachRoundTrip", Cells = new List<Cell>(loadModel.Nodes) };
+            saveModel.Cells.AddRange(loadModel.Edges);
+
+            var xaml = new X6ToWorkflowConverter().X6JsonToWorkflow(JsonConvert.SerializeObject(saveModel)).ToString();
+
+            var dataFunc = System.Xml.Linq.XDocument.Parse(xaml).Descendants()
+                .First(e => e.Name.LocalName == "DsfForEachActivity.DataFunc");
+            var body = dataFunc.Descendants()
+                .Select(e => (string)e.Attribute("DisplayName"))
+                .Where(n => !string.IsNullOrEmpty(n))
+                .ToList();
+
+            CollectionAssert.Contains(body, "StepOne", "The round-tripped loop body lost its first step. " + xaml);
+            CollectionAssert.Contains(body, "StepTwo", "The round-tripped loop body lost its second step. " + xaml);
+            Assert.AreEqual(1, dataFunc.Descendants().Count(e => e.Name.LocalName == "DsfSequenceActivity"),
+                "The body must round-trip to one Sequence, not gain a wrapper per save. " + xaml);
         }
 
         // ─────────────────────────────────────────────────────────────────

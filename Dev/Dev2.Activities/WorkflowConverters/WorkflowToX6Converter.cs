@@ -523,8 +523,11 @@ namespace Dev2.Activities.WF
             var nestedActivity = forEachActivity.DataFunc?.Handler;
             if (nestedActivity == null) return;
 
-            // Generate a unique node ID for the nested activity
-            var nestedNodeId = CommonHelper.GenerateNodeId();
+            // Reuse the activity's persisted UniqueID when it has one, so the body's node id is stable
+            // across repeated ConvertToX6Json calls — see the matching comment in ProcessActivity.
+            var nestedNodeId = nestedActivity is IDev2Activity { UniqueID: { Length: > 0 } uniqueId }
+                ? uniqueId
+                : CommonHelper.GenerateNodeId();
             activityNodeMap[nestedActivity] = nestedNodeId;
 
             // Create the nested activity node
@@ -537,6 +540,17 @@ namespace Dev2.Activities.WF
             // Add the nested node to the graph
             graphData.Nodes.Add(nestedNode);
             graphData.ActivityNodeMap[nestedActivity] = nestedNode;
+
+            // A multi-step loop body is a Sequence (X6ToWorkflowConverter wraps one on the way in).
+            // Its steps must be nested in that Sequence, exactly as for a top-level Sequence, rather
+            // than tagged as siblings of it: the Sequence cell carries no step collection of its own,
+            // so flat forEachParentId siblings leave it empty, and reading the graph back keeps only
+            // the first For Each-tagged cell (the empty Sequence) and drops every step.
+            if (nestedActivity is DsfSequenceActivity bodySequence)
+            {
+                ProcessSequenceNestedActivities(bodySequence, nestedNodeId, graphData, activityNodeMap);
+                return;
+            }
 
             // Recursively process any further nested activities (e.g., if the nested activity is itself a container)
             ProcessNestedActivityChildren(nestedActivity, graphData, activityNodeMap, forEachNodeId);

@@ -253,6 +253,11 @@ namespace Dev2.Activities.WF
 
                         // Set the nested activity as the handler
                         forEach.DataFunc.Handler = nestedActivity;
+
+                        // FilterTopLevelNodes kept this node out of activityMap, so the later
+                        // isNested/parentId embedding passes (a Sequence body's steps) could not find it
+                        // and would fill a different instance than the handler, losing the body's steps.
+                        activityMap[nestedNode.id] = nestedActivity;
                     }
                 }
             }
