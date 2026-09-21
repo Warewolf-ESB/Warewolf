@@ -815,6 +815,83 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             Should -Be 30
     }
 
+    It 'defaults to the classic Consumption plan and never emits Flex-only arguments' {
+        # Every caller written before Flex support existed must keep getting a Y1 app.
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Match 'Hosting plan\s+: Consumption \(classic Y1\)'
+        $out | Should -Not -Match '--flexconsumption-location'
+        $out | Should -Not -Match '--instance-memory'
+        $out | Should -Not -Match 'scale config set'
+    }
+
+    It 'states the Flex hosting decision in the Phase 0.5 plan' {
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.HostingPlan = 'Flex'
+        $callArgs.FlexInstanceMemoryMB = 4096
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Hosting plan\s+: Flex Consumption \(4096 MB/instance'
+    }
+
+    It 'applies -FlexMaximumInstanceCount via the Flex-only scale config command' {
+        # `az functionapp scale config set --maximum-instance-count` is Flex-ONLY; the classic
+        # branch must keep using the generic resource writer instead (asserted above).
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.HostingPlan = 'Flex'
+        $callArgs.FlexMaximumInstanceCount = 30
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'Setting Flex scale ceiling -> 30'
+        $out | Should -Match 'scale config set'
+        $out | Should -Match '--maximum-instance-count 30'
+        $out | Should -Not -Match 'properties\.functionAppScaleLimit'
+        # Read-back must go through `scale config show`. REGRESSION (2026-09-21): it queried
+        # `functionapp show --query functionAppConfig.scaleAndConcurrency.maximumInstanceCount`,
+        # which returns EMPTY on az 2.x, so a correctly-applied ceiling threw and failed the
+        # deploy mid-Phase-1 against a freshly created app.
+        $out | Should -Not -Match 'functionAppConfig\.scaleAndConcurrency'
+    }
+
+    It 'does not claim the Flex scale ceiling was verified during a dry run' {
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.HostingPlan = 'Flex'
+        $callArgs.FlexMaximumInstanceCount = 30
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Not -Match 'Flex scale ceiling set to 30 \(verified\)'
+        $out | Should -Match 'Dry-run: Flex scale ceiling not applied, so not verified'
+    }
+
+    It 'pins a writable Linux data directory on Flex, and only on Flex' {
+        # Flex is Linux, where the engine's data directory resolves to '/usr/share/Warewolf' —
+        # a path that exists but is not writable in the container. Without this setting the
+        # parameterless PublishRabbitMQActivity ctor throws and EVERY message dead-letters
+        # (verified live on wwuat3 2026-09-21). Set by hand it would be silently reverted by the
+        # next deploy, so it has to be part of the managed app settings.
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.HostingPlan = 'Flex'
+        $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+        $out | Should -Match 'webServerBasePath\s+= /tmp'
+
+        # Classic Consumption is Windows and resolves a writable ProgramData path on its own;
+        # forcing /tmp there would move the engine's data directory for no reason.
+        $classic = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $classic | Should -Not -Match 'webServerBasePath'
+    }
+
+    It 'rejects -FunctionAppScaleLimit combined with -HostingPlan Flex' {
+        # siteConfig.functionAppScaleLimit does not exist on Flex: the write would be silently
+        # ignored, and an unapplied ceiling is indistinguishable from an applied one until the
+        # broker connection budget blows under load.
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.HostingPlan = 'Flex'
+        $callArgs.FunctionAppScaleLimit = 30
+        { & $script:DeployScript @callArgs } | Should -Throw '*-FlexMaximumInstanceCount 30 instead*'
+    }
+
+    It 'rejects -FlexMaximumInstanceCount without -HostingPlan Flex' {
+        $callArgs = $script:commonArgs.Clone()
+        $callArgs.FlexMaximumInstanceCount = 30
+        { & $script:DeployScript @callArgs } | Should -Throw '*requires -HostingPlan Flex*'
+    }
+
     It 'rejects a non-positive -FunctionAppScaleLimit via ValidateRange' {
         # [nullable[int]] + ValidateRange, matching the other numeric params: a bare [int]
         # defaults to 0, which is indistinguishable from an explicit 0 and would silently
@@ -1632,6 +1709,29 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
             $global:appExists = $false
             $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
             $out | Should -Match 'Runtime\s+: dotnet-isolated 10 \(Functions v4\)'
+        }
+
+        It 'creates a Flex Consumption app with --flexconsumption-location and --instance-memory' {
+            # Flex pins instance size at create time and takes --flexconsumption-location in place
+            # of --consumption-plan-location. It is also LINUX-ONLY, so --os-type Windows (which
+            # the classic branch passes) must not appear or the create is rejected outright.
+            $global:appExists = $false
+            $out = (& $script:DeployScript @commonArgs -HostingPlan Flex -FlexInstanceMemoryMB 4096) 6>&1 | Out-String
+            $out | Should -Match '\[DRYRUN\] az functionapp create .*--flexconsumption-location'
+            $out | Should -Match '--instance-memory 4096'
+            $out | Should -Match 'Flex Consumption, 4096 MB/instance'
+            $out | Should -Not -Match '--consumption-plan-location'
+            $out | Should -Not -Match '--os-type Windows'
+        }
+
+        It 'still creates a classic Y1 app with --consumption-plan-location by default' {
+            # Regression guard: every pre-Flex caller must keep getting a Windows Y1 app.
+            $global:appExists = $false
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Match '\[DRYRUN\] az functionapp create .*--consumption-plan-location'
+            $out | Should -Match '--os-type Windows'
+            $out | Should -Not -Match '--flexconsumption-location'
+            $out | Should -Not -Match '--instance-memory'
         }
 
         It 'upgrades an existing v8.0 app when -UpgradeRuntimeVersion is passed' {

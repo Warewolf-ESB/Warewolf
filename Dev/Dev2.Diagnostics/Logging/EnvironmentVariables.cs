@@ -140,7 +140,18 @@ namespace Dev2.Common
                     {
                         Directory.CreateDirectory(DataPath);
                     }
-                    catch (IOException) { }
+                    // UnauthorizedAccessException is NOT an IOException, so catching only the
+                    // latter let an unwritable data directory escape this getter entirely. On
+                    // Linux that is the common case, not an edge case: CreateDirectory on a
+                    // read-only path raises UnauthorizedAccessException ("Access to the path
+                    // '/usr/share/Warewolf' is denied"). Observed 2026-09-21 on wwuat3, where it
+                    // propagated out of FetchCurrentServerLog..ctor while ResourceCatalog.Instance
+                    // was building its management services, and so broke the XAML parse of every
+                    // workflow containing a PublishRabbitMQActivity.
+                    // Returning the unusable path (as the IOException arm already did) keeps this
+                    // a best-effort getter: callers that genuinely need to write still fail, but
+                    // merely ASKING for the path can no longer take the process down.
+                    catch (Exception e) when (e is IOException || e is UnauthorizedAccessException) { }
                 }
                 return DataPath;
             }

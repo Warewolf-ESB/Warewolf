@@ -76,6 +76,23 @@ namespace Dev2.Common
                 }
             }
 
+            // EXISTENCE IS NOT WRITABILITY, and the tier above only proves the former.
+            // On Linux, CommonApplicationData resolves to '/usr/share', which already exists —
+            // so SpecialFolderOption.Create returns it happily — but is NOT writable in a
+            // container. Every later Directory.CreateDirectory underneath it then throws
+            // UnauthorizedAccessException, far from here and long after this decision was made.
+            // Observed 2026-09-21 on wwuat3 (Azure Functions Flex Consumption, Linux):
+            // '/usr/share/Warewolf' denied, cascading through EnvironmentVariables.AppDataPath ->
+            // FetchCurrentServerLog..ctor -> ResourceCatalog.Instance -> the parameterless
+            // PublishRabbitMQActivity ctor, which failed the XAML parse of every workflow using
+            // that activity and dead-lettered an entire load-test run.
+            // Probing here is what lets the temp fallback below actually do its job; without it
+            // that fallback is unreachable whenever the special folder merely exists.
+            if (!string.IsNullOrEmpty(path) && Path.IsPathFullyQualified(path) && !CanCreateWarewolfDirectory(path))
+            {
+                path = null;
+            }
+
             // Ultimate fallback: temp directory (always writable, e.g. in CI containers)
             if (string.IsNullOrEmpty(path) || !Path.IsPathFullyQualified(path))
             {
@@ -83,6 +100,27 @@ namespace Dev2.Common
             }
 
             return Path.Combine(path, GlobalConstants.Warewolf);
+        }
+
+        /// <summary>
+        /// True when the Warewolf data directory can be created under <paramref name="basePath"/>.
+        /// Creating it is the probe — a permissions check that does not attempt the actual write
+        /// would still be guessing, and the directory has to exist for any caller to use it anyway.
+        /// Idempotent: CreateDirectory on an existing directory succeeds.
+        /// </summary>
+        private static bool CanCreateWarewolfDirectory(string basePath)
+        {
+            try
+            {
+                Directory.CreateDirectory(Path.Combine(basePath, GlobalConstants.Warewolf));
+                return true;
+            }
+            catch (Exception)
+            {
+                // Unwritable for ANY reason (UnauthorizedAccessException on Linux, IOException,
+                // a path too long, ...) means this tier cannot serve as the data directory.
+                return false;
+            }
         }
 
         public static ServerSettings Server;
