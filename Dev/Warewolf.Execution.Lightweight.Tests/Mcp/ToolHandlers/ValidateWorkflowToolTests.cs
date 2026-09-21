@@ -197,6 +197,84 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 "an absent collection field must not raise a collection error");
         }
 
+        // ── Web Request headers: a string, not a collection ─────────────────
+        //
+        // DsfWebGetRequestWithTimeoutActivity.Headers is one string, Eval'd and split on newlines
+        // and ';' at run time. It was once listed as a JSON-array field, which rejected the "" the
+        // activity stores by default and pushed callers to save "[]" — which validated, saved, and
+        // then failed every execution ("Index was outside the bounds of the array").
+
+        static Cell WebRequestNode(Dictionary<string, object> extra)
+        {
+            var data = new Dictionary<string, object>
+            {
+                ["displayname"] = "GET",
+                ["webrequest_method"] = "GET",
+                ["webrequest_url"] = "https://example.com/"
+            };
+            foreach (var kv in extra)
+            {
+                data[kv.Key] = kv.Value;
+            }
+            return MakeNode("web1", "dsfwebgetrequestwithtimeoutactivity", data);
+        }
+
+        [DataTestMethod]
+        [TestCategory("UnitTest")]
+        [DataRow("")]
+        [DataRow("Accept:application/json")]
+        [DataRow("Accept:application/json;X-Trace:1")]
+        public void Handle_WebRequestHeadersAsString_ReportsNoHeadersError(string headers)
+        {
+            var body = BodyOf("WebReqHeadersOk", MakeStartNode(),
+                WebRequestNode(new Dictionary<string, object> { ["webrequest_headers"] = headers }),
+                MakeEdge("e1", "start", "web1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("webrequest_headers")),
+                "a string is what the activity reads; got: " + string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_WebRequestHeadersAbsentOrNull_ReportsNoHeadersError()
+        {
+            var absent = BodyOf("WebReqNoHeaders", MakeStartNode(), WebRequestNode(new Dictionary<string, object>()),
+                MakeEdge("e1", "start", "web1"));
+            var nullHeaders = BodyOf("WebReqNullHeaders", MakeStartNode(),
+                WebRequestNode(new Dictionary<string, object> { ["webrequest_headers"] = null }),
+                MakeEdge("e1", "start", "web1"));
+
+            foreach (var body in new[] { absent, nullHeaders })
+            {
+                var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+                Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("webrequest_headers")),
+                    string.Join("; ", result.Errors.Select(e => e.Message)));
+            }
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_WebRequestHeadersAsJsonArray_ReturnsInvalid_NamingCellAndField()
+        {
+            // An array would be stringified by TryGetString and sent as literal JSON text.
+            var headers = JArray.Parse("[{\"Name\":\"Accept\",\"Value\":\"*/*\"}]");
+            var body = BodyOf("WebReqArrayHeaders", MakeStartNode(),
+                WebRequestNode(new Dictionary<string, object> { ["webrequest_headers"] = headers }),
+                MakeEdge("e1", "start", "web1"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Valid);
+            var issue = result.Errors.SingleOrDefault(e => e.Message.Contains("'webrequest_headers'"));
+            Assert.IsNotNull(issue, "expected an error naming the field; got: " + string.Join("; ", result.Errors.Select(e => e.Message)));
+            StringAssert.Contains(issue.Message, "web1");
+            StringAssert.Contains(issue.Message, "must be a string");
+            Assert.AreEqual("/cells/1/data/webrequest_headers", issue.Path);
+        }
+
         // ── envelope name legality (F9) ──────────────────────────────────────
 
         /// <summary>

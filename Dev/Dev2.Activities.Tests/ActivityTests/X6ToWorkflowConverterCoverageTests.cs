@@ -564,6 +564,99 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.IsTrue(xaml.Contains("OnFalse"), "The False branch's target activity should be present in the XAML.");
         }
 
+        /// <summary>
+        /// Regression test: a Decision whose <c>displaytext</c> is absent, null or blank must still
+        /// convert. WorkflowToX6Converter writes an unnamed FlowDecision back with
+        /// <c>"displaytext": null</c>, and CreateFlowDecisionActivity used to return null for it,
+        /// which surfaced as "Could not convert node ... into an activity" — so a workflow returned by
+        /// get_workflow_definition (bodyEditable: true) could not be saved again by edit_workflow.
+        /// The label falls back to displayname, then the cell's label, then "Decision".
+        /// </summary>
+        [DataTestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        [DataRow("null displaytext", "Is x == 42")]
+        [DataRow("blank displaytext", "Is x == 42")]
+        [DataRow("no displaytext, has displayname", "Is x == 42")]
+        [DataRow("no displaytext, cell label only", "Is x == 42")]
+        [DataRow("no name anywhere", "Decision")]
+        public void X6JsonToWorkflow_FlowDecisionWithoutDisplayText_ConvertsAndWiresBothBranches(string scenario, string expectedName)
+        {
+            var startId = Guid.NewGuid().ToString();
+            var decisionId = Guid.NewGuid().ToString();
+            var trueId = Guid.NewGuid().ToString();
+            var falseId = Guid.NewGuid().ToString();
+
+            var start = MakeStartNode();
+            start.id = startId;
+
+            var decisionData = new Dictionary<string, object>
+            {
+                ["type"] = Constants.FLOWDECISION,
+                [Constants.EXPRESSION] = "[[x]] = 42",
+                [Constants.PROPERTY_UNIQUEID] = decisionId
+            };
+            if (scenario == "null displaytext") { decisionData[Constants.DISPLAYTEXT] = null; decisionData[Constants.DISPLAYNAME] = expectedName; }
+            if (scenario == "blank displaytext") { decisionData[Constants.DISPLAYTEXT] = "  "; decisionData[Constants.DISPLAYNAME] = expectedName; }
+            if (scenario == "no displaytext, has displayname") decisionData[Constants.DISPLAYNAME] = expectedName;
+
+            var decision = new Cell
+            {
+                id = decisionId,
+                label = scenario == "no displaytext, cell label only" ? expectedName : null,
+                data = decisionData
+            };
+
+            var trueBranch = MakeNode("DsfDotNetMultiAssignActivity", "OnTrue",
+                new Dictionary<string, object>
+                {
+                    ["fields"] = JsonConvert.SerializeObject(new[] { new { FieldName = "[[r]]", FieldValue = "true-branch" } })
+                });
+            trueBranch.id = trueId;
+
+            var falseBranch = MakeNode("DsfDotNetMultiAssignActivity", "OnFalse",
+                new Dictionary<string, object>
+                {
+                    ["fields"] = JsonConvert.SerializeObject(new[] { new { FieldName = "[[r]]", FieldValue = "false-branch" } })
+                });
+            falseBranch.id = falseId;
+
+            var edgeToDecision = new Cell { id = Guid.NewGuid().ToString(), shape = "edge", Source = new Connector(startId), Target = new Connector(decisionId) };
+            var edgeTrue = new Cell
+            {
+                id = Guid.NewGuid().ToString(), shape = "edge", label = "true",
+                Source = new Connector(decisionId), Target = new Connector(trueId),
+                data = new Dictionary<string, object> { [Constants.ISDECISIONARM] = true, [Constants.ISTRUEARM] = true }
+            };
+            var edgeFalse = new Cell
+            {
+                id = Guid.NewGuid().ToString(), shape = "edge", label = "false",
+                Source = new Connector(decisionId), Target = new Connector(falseId),
+                data = new Dictionary<string, object> { [Constants.ISDECISIONARM] = true, [Constants.ISTRUEARM] = false }
+            };
+
+            var xaml = Convert("UnnamedDecisionFlow", start, decision, trueBranch, falseBranch, edgeToDecision, edgeTrue, edgeFalse).ToString();
+
+            Assert.IsTrue(xaml.Contains("FlowDecision.True"), $"[{scenario}] True branch should be wired.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("FlowDecision.False"), $"[{scenario}] False branch should be wired.\n" + xaml);
+            Assert.IsTrue(xaml.Contains($"DisplayName=\"{expectedName}\""),
+                $"[{scenario}] the decision should be labelled \"{expectedName}\".\n" + xaml);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_LegacyDecisionWithNullDisplayText_DoesNotThrow()
+        {
+            // CreateDecisionActivity had the same blank-displaytext guard as the FlowDecision factory.
+            var decision = MakeNode("DsfDecision", "Is A == 1",
+                new Dictionary<string, object>
+                {
+                    [Constants.DISPLAYTEXT] = null,
+                    [Constants.EXPRESSION]  = DecisionStack("Is A == 1")
+                });
+
+            var result = Convert("LegacyNullDisplayText", MakeStartNode(), decision);
+
+            Assert.IsTrue(result.Length > 0);
+        }
+
         [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
         public void X6JsonToWorkflow_MalformedJson_Throws()
         {

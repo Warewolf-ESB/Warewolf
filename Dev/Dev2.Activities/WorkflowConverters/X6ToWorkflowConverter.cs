@@ -805,13 +805,36 @@ namespace Dev2.Activities.WF
         /// <returns>DsfFlowDecisionActivity</returns>
         private static DsfFlowDecisionActivity CreateFlowDecisionActivity(Cell node)
         {
-            if (!node.data.TryGetString(Constants.DISPLAYTEXT, out var displayName)
-                || string.IsNullOrWhiteSpace(displayName))
-                return null;
-
             var activity = new DsfFlowDecisionActivity();
             activity.FromX6Json(node);
+            if (!HasDisplayText(node))
+                activity.DisplayName = DecisionDisplayName(node);
             return activity;
+        }
+
+        /// <summary>
+        /// The label for a Decision node whose <c>displaytext</c> is absent, null or blank.
+        ///
+        /// A Decision's display text is cosmetic, and a FlowDecision with no name is legitimate:
+        /// WorkflowToX6Converter writes such a node back with <c>"displaytext": null</c>. These
+        /// factories used to return null for it, which X6JsonToActivityBuilder reports as "Could not
+        /// convert node ... into an activity" — so a workflow the engine itself returned from
+        /// get_workflow_definition could not be saved again by edit_workflow. Fall back to the
+        /// other places a caller may have put the name, then to a constant, so a blank label never
+        /// blocks a save.
+        /// </summary>
+        private static bool HasDisplayText(Cell node) =>
+            node.data.TryGetString(Constants.DISPLAYTEXT, out var text) && !string.IsNullOrWhiteSpace(text);
+
+        private static string DecisionDisplayName(Cell node)
+        {
+            foreach (var key in new[] { Constants.DISPLAYNAME, "displayName" })
+            {
+                if (node.data.TryGetString(key, out var name) && !string.IsNullOrWhiteSpace(name))
+                    return name;
+            }
+
+            return !string.IsNullOrWhiteSpace(node.label) ? node.label : "Decision";
         }
 
         /// <summary>
@@ -821,12 +844,10 @@ namespace Dev2.Activities.WF
         /// <returns>DsfDecision</returns>
         private static DsfDecision CreateDecisionActivity(Cell node)
         {
-            if (!node.data.TryGetString(Constants.DISPLAYTEXT, out var displayName)
-                || string.IsNullOrWhiteSpace(displayName))
-                return null;
-
             var activity = new DsfDecision();
             activity.FromX6Json(node);
+            if (!HasDisplayText(node))
+                activity.DisplayName = DecisionDisplayName(node);
             return activity;
         }
 
