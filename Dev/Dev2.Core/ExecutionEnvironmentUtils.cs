@@ -64,19 +64,64 @@ namespace Dev2
 
         private static void TryAddPropToOutput(enDev2ColumnArgumentDirection requestIODirection, int update, IExecutionEnvironment environment, JObject outputObj, JProperty prop)
         {
-            if (prop.Value != null && prop.Value.Type == JTokenType.Object)
+            if (prop.Value == null || prop.Value.Type != JTokenType.Object)
             {
-                var val = prop.Value as JObject;
-                var jProperty = val?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
-                if (jProperty != null)
+                return;
+            }
+
+            var val = prop.Value as JObject;
+            var jProperty = val?.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+            if (jProperty != null)
+            {
+                var propValue = jProperty.Value;
+                if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection) && (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection))
                 {
-                    var propValue = jProperty.Value;
-                    if (Enum.TryParse(propValue.ToString(), true, out enDev2ColumnArgumentDirection ioDirection) && (ioDirection == enDev2ColumnArgumentDirection.Both || ioDirection == requestIODirection))
-                    {
-                        AddPropToOutput(requestIODirection, update, environment, outputObj, prop, val);
-                    }
+                    AddPropToOutput(requestIODirection, update, environment, outputObj, prop, val);
+                }
+
+                return;
+            }
+
+            // A recordset whose ELEMENT carries no ColumnIODirection of its own is still an
+            // output when any of its FIELDS declares one: a recordset is legitimately allowed to
+            // be part-input, part-output, so the element-level attribute cannot be the only
+            // signal. Without this, such a recordset was dropped from the response silently.
+            if (IsRecordsetShaped(val) && HasFieldInDirection(val, requestIODirection))
+            {
+                AddRecordsetsToOutput(environment, prop.Name, val, outputObj, requestIODirection, update);
+            }
+        }
+
+        /// <summary>
+        /// True when a DataList entry has at least one CHILD ELEMENT — i.e. it is a recordset
+        /// rather than a scalar. Attribute ("@name") and text ("#cdata-section") properties are
+        /// the serialized form of the element's own attributes/content, not fields.
+        /// </summary>
+        static bool IsRecordsetShaped(JObject val) =>
+            val != null && val.Properties().Any(IsFieldProperty);
+
+        static bool IsFieldProperty(JProperty property) =>
+            !string.IsNullOrEmpty(property.Name) && property.Name[0] != '@' && property.Name[0] != '#';
+
+        static bool HasFieldInDirection(JObject val, enDev2ColumnArgumentDirection requestIODirection)
+        {
+            foreach (var field in val.Properties().Where(IsFieldProperty))
+            {
+                if (!(field.Value is JObject fieldObj))
+                {
+                    continue;
+                }
+
+                var direction = fieldObj.Properties().FirstOrDefault(property => property.Name == "@ColumnIODirection");
+                if (direction != null
+                    && Enum.TryParse(direction.Value.ToString(), true, out enDev2ColumnArgumentDirection fieldDirection)
+                    && (fieldDirection == enDev2ColumnArgumentDirection.Both || fieldDirection == requestIODirection))
+                {
+                    return true;
                 }
             }
+
+            return false;
         }
 
         private static void AddPropToOutput(enDev2ColumnArgumentDirection requestIODirection, int update, IExecutionEnvironment environment, JObject outputObj, JProperty prop, JObject val)
@@ -89,7 +134,12 @@ namespace Dev2
             }
             else
             {
-                if (prop.Value.Count() > 3)
+                // Recordset-or-scalar is decided by whether the entry HAS FIELDS, not by counting
+                // its serialized properties: the old "more than 3 properties" heuristic assumed
+                // every element carried exactly Description/IsEditable/ColumnIODirection, so a
+                // recordset written without those three was misread as a scalar (and a scalar
+                // carrying a fourth attribute was misread as a recordset).
+                if (IsRecordsetShaped(val))
                 {
                     AddRecordsetsToOutput(environment, objName, val, outputObj, requestIODirection, update);
                 }

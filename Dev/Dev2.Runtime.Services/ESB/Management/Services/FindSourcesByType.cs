@@ -225,8 +225,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             AuthenticationType = res.AuthenticationType,
             UserName = res.UserName,
             Password = removePassword ? "" : res.Password,
+            ApiKeyName = res.ApiKeyName,
+            ApiKeyValue = removePassword ? "" : res.ApiKeyValue,
             Response = res.Response,
-            
+
             // ResourceBase properties
             ResourceID = res.ResourceID,
             ResourceName = res.ResourceName,

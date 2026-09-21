@@ -21,6 +21,21 @@ namespace Dev2.Runtime.ServiceModel.Data
         Anonymous,
         Public,
         Password,
-        API_Key
+        API_Key,
+        /// <summary>Web sources: the key is appended to every request's query string as <c>?{ApiKeyName}={ApiKeyValue}</c>.</summary>
+        ApiKeyQuery,
+        /// <summary>Web sources: the key is sent on every request as the header <c>{ApiKeyName}: {ApiKeyValue}</c>.</summary>
+        ApiKeyHeader,
+        /// <summary>Web sources: every request carries <c>Authorization: Bearer {ApiKeyValue}</c>.</summary>
+        Bearer
+    }
+
+    public static class AuthenticationTypeExtensions
+    {
+        /// <summary>True for the Web source types that send <c>ApiKeyValue</c> with each request.</summary>
+        public static bool CarriesApiKey(this AuthenticationType authenticationType) =>
+            authenticationType == AuthenticationType.ApiKeyQuery ||
+            authenticationType == AuthenticationType.ApiKeyHeader ||
+            authenticationType == AuthenticationType.Bearer;
     }
 }

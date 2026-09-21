@@ -55,11 +55,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 var dbSourcePass = webSource != null && !TestDbSourceService.IsNotMasked(src.Password) ? webSource.Password : src.Password;
 
+                var apiKeyValue = webSource != null && !TestDbSourceService.IsNotMasked(src.ApiKeyValue) ? webSource.ApiKeyValue : src.ApiKeyValue;
+
                 var res = new WebSource
                 {
                     AuthenticationType = src.AuthenticationType,
                     Address = src.HostName,
                     Password = dbSourcePass,
+                    ApiKeyName = src.ApiKeyName,
+                    ApiKeyValue = apiKeyValue,
                     UserName = src.UserName,
                     ResourceID = src.Id,
                     DefaultQuery = src.DefaultQuery,

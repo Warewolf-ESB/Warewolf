@@ -145,9 +145,11 @@ internal static class SourceCatalog
         {
             new Field("Address", FieldKind.String, true, false, null, "Base URL, e.g. https://api.example.com."),
             new Field("DefaultQuery", FieldKind.String, false, false, "", "Default query string/path appended to Address when the calling tool's own querystring is omitted."),
-            new Field("AuthenticationType", FieldKind.String, false, false, "Anonymous", "\"Anonymous\" or \"User\"."),
+            new Field("AuthenticationType", FieldKind.String, false, false, "Anonymous", "\"Anonymous\", \"User\" (HTTP Basic), \"ApiKeyQuery\" (?{ApiKeyName}={ApiKeyValue} on every request), \"ApiKeyHeader\" ({ApiKeyName}: {ApiKeyValue} header on every request) or \"Bearer\" (Authorization: Bearer {ApiKeyValue} on every request)."),
             new Field("UserName", FieldKind.String, false, false, null, "Required when AuthenticationType is \"User\"."),
             new Field("Password", FieldKind.String, false, true, null, "Required when AuthenticationType is \"User\". Use ${secret-name} — never a literal secret."),
+            new Field("ApiKeyName", FieldKind.String, false, false, null, "Required when AuthenticationType is \"ApiKeyQuery\" or \"ApiKeyHeader\": the query parameter (e.g. api_key, key) or header (e.g. X-Api-Key) that carries the key."),
+            new Field("ApiKeyValue", FieldKind.String, false, true, null, "Required when AuthenticationType is \"ApiKeyQuery\", \"ApiKeyHeader\" or \"Bearer\": the key or bearer token (without the \"Bearer \" prefix). Use ${secret-name} — never a literal secret."),
         }),
     };
 

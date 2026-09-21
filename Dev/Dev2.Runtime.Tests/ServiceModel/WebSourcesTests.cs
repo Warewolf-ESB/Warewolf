@@ -308,6 +308,100 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.AreEqual(Guid.Empty, result.ResourceID);
         }
 
+        static WebSource KeySource(AuthenticationType type, string name, string value) =>
+            new WebSource { Address = "https://api.example.com", AuthenticationType = type, ApiKeyName = name, ApiKeyValue = value };
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_AppendApiKeyQuery_NoQuery_AddsQuestionMark()
+        {
+            var source = KeySource(AuthenticationType.ApiKeyQuery, "api_key", "abc");
+            Assert.AreEqual("https://api.example.com/v1/x?api_key=abc", WebSources.AppendApiKeyQuery(source, "https://api.example.com/v1/x"));
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_AppendApiKeyQuery_ExistingQuery_AddsAmpersand()
+        {
+            var source = KeySource(AuthenticationType.ApiKeyQuery, "key", "abc");
+            Assert.AreEqual("https://api.example.com/x?q=1&key=abc", WebSources.AppendApiKeyQuery(source, "https://api.example.com/x?q=1"));
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_AppendApiKeyQuery_TrailingSeparator_NotDoubled()
+        {
+            var source = KeySource(AuthenticationType.ApiKeyQuery, "key", "abc");
+            Assert.AreEqual("https://api.example.com/x?key=abc", WebSources.AppendApiKeyQuery(source, "https://api.example.com/x?"));
+            Assert.AreEqual("https://api.example.com/x?q=1&key=abc", WebSources.AppendApiKeyQuery(source, "https://api.example.com/x?q=1&"));
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_AppendApiKeyQuery_KeepsFragmentLast_AndEscapesValue()
+        {
+            var source = KeySource(AuthenticationType.ApiKeyQuery, "key", "a b&c");
+            Assert.AreEqual("https://api.example.com/x?key=a%20b%26c#top", WebSources.AppendApiKeyQuery(source, "https://api.example.com/x#top"));
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_AppendApiKeyQuery_OtherAuthTypes_LeaveAddressUnchanged()
+        {
+            const string address = "https://api.example.com/x";
+            Assert.AreEqual(address, WebSources.AppendApiKeyQuery(KeySource(AuthenticationType.ApiKeyHeader, "key", "abc"), address));
+            Assert.AreEqual(address, WebSources.AppendApiKeyQuery(KeySource(AuthenticationType.Bearer, null, "abc"), address));
+            Assert.AreEqual(address, WebSources.AppendApiKeyQuery(KeySource(AuthenticationType.Anonymous, "key", "abc"), address));
+            Assert.AreEqual(address, WebSources.AppendApiKeyQuery(KeySource(AuthenticationType.ApiKeyQuery, "key", ""), address));
+            Assert.AreEqual(address, WebSources.AppendApiKeyQuery(null, address));
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_RedactApiKey_MasksTheKeyInTheAddress()
+        {
+            var source = KeySource(AuthenticationType.ApiKeyQuery, "key", "s3cr3t value");
+            var address = WebSources.AppendApiKeyQuery(source, "https://api.example.com/x?q=1");
+
+            var redacted = WebSources.RedactApiKey(source, address);
+
+            Assert.AreEqual("https://api.example.com/x?q=1&key=***", redacted);
+            StringAssert.DoesNotMatch(redacted, new System.Text.RegularExpressions.Regex("s3cr3t"));
+            Assert.AreEqual("https://api.example.com/x", WebSources.RedactApiKey(KeySource(AuthenticationType.Bearer, null, "tok"), "https://api.example.com/x"));
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_ApiKeyHeaders_ByAuthType()
+        {
+            CollectionAssert.AreEqual(new[] { "X-Api-Key: abc" }, WebSources.ApiKeyHeaders(KeySource(AuthenticationType.ApiKeyHeader, "X-Api-Key", "abc")).ToArray());
+            CollectionAssert.AreEqual(new[] { "Authorization: Bearer tok" }, WebSources.ApiKeyHeaders(KeySource(AuthenticationType.Bearer, null, "tok")).ToArray());
+            Assert.AreEqual(0, WebSources.ApiKeyHeaders(KeySource(AuthenticationType.ApiKeyQuery, "key", "abc")).Count());
+            Assert.AreEqual(0, WebSources.ApiKeyHeaders(KeySource(AuthenticationType.Anonymous, "key", "abc")).Count());
+            Assert.AreEqual(0, WebSources.ApiKeyHeaders(null).Count());
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSources_WithApiKeyHeaders_ToolHeadersFirstThenSourceKey()
+        {
+            var merged = WebSources.WithApiKeyHeaders(KeySource(AuthenticationType.Bearer, null, "tok"), new[] { "Accept: application/json" }).ToArray();
+            CollectionAssert.AreEqual(new[] { "Accept: application/json", "Authorization: Bearer tok" }, merged);
+            Assert.AreEqual(1, WebSources.WithApiKeyHeaders(KeySource(AuthenticationType.Bearer, null, "tok"), null).Count());
+        }
+
+        [TestMethod]
+        [TestCategory(nameof(WebSources))]
+        public void WebSource_ApiKeyFields_RoundTripThroughToXml()
+        {
+            var source = KeySource(AuthenticationType.ApiKeyHeader, "X-Api-Key", "abc");
+            source.ResourceName = "KeyRoundTrip";
+            var copy = new WebSource(source.ToXml());
+            Assert.AreEqual(AuthenticationType.ApiKeyHeader, copy.AuthenticationType);
+            Assert.AreEqual("X-Api-Key", copy.ApiKeyName);
+            Assert.AreEqual("abc", copy.ApiKeyValue);
+        }
+
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory(nameof(WebSources))]

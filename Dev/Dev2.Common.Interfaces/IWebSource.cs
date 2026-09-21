@@ -23,6 +23,16 @@ namespace Dev2.Common.Interfaces
         string UserName { get; set; }
         string Password { get; set; }
         /// <summary>
+        /// The query-string parameter (e.g. "api_key") or header (e.g. "X-Api-Key") that carries
+        /// <see cref="ApiKeyValue"/>. Used by <c>ApiKeyQuery</c> and <c>ApiKeyHeader</c>; unused by <c>Bearer</c>.
+        /// </summary>
+        string ApiKeyName { get; set; }
+        /// <summary>
+        /// The credential sent with every request by <c>ApiKeyQuery</c>, <c>ApiKeyHeader</c> and <c>Bearer</c>
+        /// sources. For <c>Bearer</c> it is the bare token; "Bearer " is added when it is sent.
+        /// </summary>
+        string ApiKeyValue { get; set; }
+        /// <summary>
         /// This must NEVER be persisted - here for JSON transport only!
         /// </summary>
         string Response { get; set; }

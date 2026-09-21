@@ -49,6 +49,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         Path = res.GetSavePath(),
                         UserName = res.UserName,
                         Password = res.Password,
+                        ApiKeyName = res.ApiKeyName,
+                        ApiKeyValue = res.ApiKeyValue,
                         AuthenticationType = res.AuthenticationType,
                         DefaultQuery = res.DefaultQuery,
                         HostName = res.Address

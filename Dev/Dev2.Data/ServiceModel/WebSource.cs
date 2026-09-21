@@ -66,6 +66,9 @@ namespace Dev2.Runtime.ServiceModel.Data
         public string UserName { get; set; }
         public string Password { get; set; }
 
+        public string ApiKeyName { get; set; }
+        public string ApiKeyValue { get; set; }
+
         /// <summary>
         /// This must NEVER be persisted - here for JSON transport only!
         /// </summary>
@@ -95,7 +98,9 @@ namespace Dev2.Runtime.ServiceModel.Data
                 { "DefaultQuery", string.Empty },
                 { "AuthenticationType", string.Empty },
                 { "UserName", string.Empty },
-                { "Password", string.Empty }
+                { "Password", string.Empty },
+                { "ApiKeyName", string.Empty },
+                { "ApiKeyValue", string.Empty }
             };
 
             var conString = xml.AttributeSafe("ConnectionString");
@@ -106,6 +111,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             DefaultQuery = properties["DefaultQuery"];
             UserName = properties["UserName"];
             Password = properties["Password"];
+            ApiKeyName = properties["ApiKeyName"];
+            ApiKeyValue = properties["ApiKeyValue"];
 
             AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
@@ -125,6 +132,17 @@ namespace Dev2.Runtime.ServiceModel.Data
                     connectionString,
                     $"UserName={UserName}",
                     $"Password={Password}"
+                    );
+            }
+
+            // Written only for the credential-carrying types, so existing sources' connection strings
+            // are unchanged.
+            if (AuthenticationType.CarriesApiKey())
+            {
+                connectionString = string.Join(";",
+                    connectionString,
+                    $"ApiKeyName={ApiKeyName}",
+                    $"ApiKeyValue={ApiKeyValue}"
                     );
             }
 

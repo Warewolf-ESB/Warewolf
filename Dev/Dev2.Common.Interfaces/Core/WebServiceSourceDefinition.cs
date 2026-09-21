@@ -30,6 +30,8 @@ namespace Dev2.Common.Interfaces.Core
             Id = db.ResourceID;
             Name = db.ResourceName;
             Password = db.Password;
+            ApiKeyName = db.ApiKeyName;
+            ApiKeyValue = db.ApiKeyValue;
             HostName = db.Address;
             Path = db.GetSavePath();
             UserName = db.UserName;
@@ -52,6 +54,8 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(Name, other.Name);
             equals &= string.Equals(UserName, other.UserName);
             equals &= string.Equals(Password, other.Password);
+            equals &= string.Equals(ApiKeyName, other.ApiKeyName);
+            equals &= string.Equals(ApiKeyValue, other.ApiKeyValue);
             equals &= AuthenticationType == other.AuthenticationType;
             equals &= string.Equals(DefaultQuery, other.DefaultQuery);
 
@@ -75,6 +79,8 @@ namespace Dev2.Common.Interfaces.Core
             equals &= string.Equals(Name, other.Name);
             equals &= string.Equals(UserName, other.UserName);
             equals &= string.Equals(Password, other.Password);
+            equals &= string.Equals(ApiKeyName, other.ApiKeyName);
+            equals &= string.Equals(ApiKeyValue, other.ApiKeyValue);
             equals &= AuthenticationType == other.AuthenticationType;
             equals &= string.Equals(DefaultQuery, other.DefaultQuery);
 
@@ -105,6 +111,8 @@ namespace Dev2.Common.Interfaces.Core
                 var hashCode = HostName?.GetHashCode() ?? 0;
                 hashCode = (hashCode * 397) ^ (UserName?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (Password?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ApiKeyName?.GetHashCode() ?? 0);
+                hashCode = (hashCode * 397) ^ (ApiKeyValue?.GetHashCode() ?? 0);
                 hashCode = (hashCode * 397) ^ (int)AuthenticationType;
                 hashCode = (hashCode * 397) ^ (DefaultQuery?.GetHashCode() ?? 0);
                 return hashCode;
@@ -118,6 +126,8 @@ namespace Dev2.Common.Interfaces.Core
         public string HostName { get; set; }
         public string UserName { get; set; }
         public string Password { get; set; }
+        public string ApiKeyName { get; set; }
+        public string ApiKeyValue { get; set; }
         public AuthenticationType AuthenticationType { get; set; }
         public string DefaultQuery { get; set; }
         public string Name { get; set; }

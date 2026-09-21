@@ -71,13 +71,23 @@ namespace Warewolf.Studio.Views
 
         public void SetAuthenticationType(AuthenticationType authenticationType)
         {
-            if (authenticationType == AuthenticationType.Anonymous)
+            switch (authenticationType)
             {
-                AnonymousRadioButton.IsChecked = true;
-            }
-            else
-            {
-                UserRadioButton.IsChecked = true;
+                case AuthenticationType.Anonymous:
+                    AnonymousRadioButton.IsChecked = true;
+                    break;
+                case AuthenticationType.ApiKeyQuery:
+                    ApiKeyQueryRadioButton.IsChecked = true;
+                    break;
+                case AuthenticationType.ApiKeyHeader:
+                    ApiKeyHeaderRadioButton.IsChecked = true;
+                    break;
+                case AuthenticationType.Bearer:
+                    BearerRadioButton.IsChecked = true;
+                    break;
+                default:
+                    UserRadioButton.IsChecked = true;
+                    break;
             }
         }
 

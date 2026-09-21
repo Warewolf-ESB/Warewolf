@@ -201,6 +201,62 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsTrue(result.IsSuccess, "errors: " + string.Join("; ", result.Errors ?? new List<string>()));
         }
 
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void CreateWorkflow_ThenExecute_RecordsetOutput_AppearsInThePayload()
+        {
+            // End-to-end cover for the "recordset outputs are silently dropped" defect: the
+            // envelope writer has to declare the recordset element with its own direction
+            // attributes, AND ExecutionEnvironmentUtils has to recognise a recordset by its
+            // fields — either half missing and the payload comes back without `rows` at all.
+            var hostConfig = HostConfig();
+            var createResult = CreateWorkflowTool.Handle(hostConfig, new StubAuthPolicyLoader { IsConfigEffective = false }, null,
+                "RecordsetOut",
+                System.Text.Json.JsonSerializer.SerializeToElement(new
+                {
+                    inputs = Array.Empty<object>(),
+                    outputs = new[] { new { name = "rows", kind = "recordset", fields = new[] { "v" } } },
+                }),
+                StartPlusRecordsetAssignBody("RecordsetOut"));
+
+            Assert.IsTrue(createResult.Created);
+
+            var filePath = Path.Combine(_root, "RecordsetOut.bite");
+            Environment.SetEnvironmentVariable("WAREWOLF_LICENSE_CHECK_ENABLED", "false");
+            var result = new WorkflowExecutor(new NullExecutionLogger()).Execute(filePath, new Dictionary<string, string>());
+
+            Assert.IsTrue(result.IsSuccess, "errors: " + string.Join("; ", result.Errors ?? new List<string>()));
+
+            var payload = result.ReadPayloadAsync().GetAwaiter().GetResult();
+            StringAssert.Contains(payload, "rows", "the recordset must reach the response payload");
+            StringAssert.Contains(payload, "hello", "the recordset's row value must reach the response payload");
+        }
+
+        static JsonElement StartPlusRecordsetAssignBody(string resourceName)
+        {
+            var fields = new JArray(new JObject { ["FieldName"] = "[[rows().v]]", ["FieldValue"] = "hello", ["IndexNumber"] = 1 });
+            var graph = new X6WorkflowSaveModel
+            {
+                ResourceName = resourceName,
+                Cells = new List<Cell>
+                {
+                    new() { id = "start", shape = "rect", data = new Dictionary<string, object> { ["type"] = Constants.START } },
+                    new()
+                    {
+                        id = "assign1", shape = "rect",
+                        data = new Dictionary<string, object>
+                        {
+                            ["type"] = "dsfdotnetmultiassignactivity",
+                            ["displayName"] = "Assign",
+                            ["fields"] = fields,
+                        }
+                    },
+                    new() { id = "e1", shape = "edge", data = new Dictionary<string, object>(), Source = new Connector("start"), Target = new Connector("assign1") }
+                }
+            };
+            return JsonDocument.Parse(JsonConvert.SerializeObject(graph)).RootElement;
+        }
+
         // ── Layer 2: WorkflowExecutor/ActivityParser stay defensive for a hand-crafted/legacy
         //    resource that bypasses validate_workflow entirely (e.g. authored by another tool,
         //    or a pre-fix resource still on disk from before this change). ─────────────────────

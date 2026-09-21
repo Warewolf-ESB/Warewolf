@@ -477,6 +477,95 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public async Task Handle_Web_ApiKeyQuery_RoundTripsThroughWebSource_AndResolvesSecret()
+        {
+            var resolver = new FakeSecretResolver().With("giphy-key", "k-123");
+
+            var result = await Handle(HostConfig(), OpenPolicy, null, "WebApiKeyQuery", "Web",
+                ConfigOf(new { Address = "https://api.giphy.com", AuthenticationType = "ApiKeyQuery", ApiKeyName = "api_key", ApiKeyValue = "${giphy-key}" }),
+                resolver);
+
+            CollectionAssert.Contains(result.ResolvedSecretFields.ToList(), "ApiKeyValue");
+
+            var webSource = new WebSource(XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebApiKeyQuery.bite"))).Root!);
+            Assert.AreEqual(AuthenticationType.ApiKeyQuery, webSource.AuthenticationType);
+            Assert.AreEqual("api_key", webSource.ApiKeyName);
+            Assert.AreEqual("k-123", webSource.ApiKeyValue);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_Web_ApiKeyHeader_RoundTripsThroughWebSource()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "WebApiKeyHeader", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "ApiKeyHeader", ApiKeyName = "X-Api-Key", ApiKeyValue = "abc" }));
+
+            var webSource = new WebSource(XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebApiKeyHeader.bite"))).Root!);
+            Assert.AreEqual(AuthenticationType.ApiKeyHeader, webSource.AuthenticationType);
+            Assert.AreEqual("X-Api-Key", webSource.ApiKeyName);
+            Assert.AreEqual("abc", webSource.ApiKeyValue);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_Web_Bearer_NeedsNoKeyName_AndRoundTrips()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "WebBearer", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "Bearer", ApiKeyValue = "tok" }));
+
+            var webSource = new WebSource(XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebBearer.bite"))).Root!);
+            Assert.AreEqual(AuthenticationType.Bearer, webSource.AuthenticationType);
+            Assert.AreEqual("tok", webSource.ApiKeyValue);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public async Task Handle_Web_ApiKeyQueryWithoutName_Throws()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "NewSource", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "ApiKeyQuery", ApiKeyValue = "abc" }));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public async Task Handle_Web_ApiKeyWithoutValue_Throws()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "NewSource", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "Bearer" }));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public async Task Handle_Web_ApiKeyHeaderNameWithColon_Throws()
+        {
+            // A ':' or line break in a header name would let the value inject further headers.
+            await Handle(HostConfig(), OpenPolicy, null, "NewSource", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "ApiKeyHeader", ApiKeyName = "X-A: b", ApiKeyValue = "abc" }));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public async Task Handle_Web_ApiKeyValueWithLineBreak_Throws()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "NewSource", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "Bearer", ApiKeyValue = "abc\r\nX-Evil: 1" }));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public async Task Handle_Web_UnknownAuthenticationType_Throws()
+        {
+            await Handle(HostConfig(), OpenPolicy, null, "NewSource", "Web",
+                ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "Kerberos" }));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public async Task Handle_Web_WrittenFile_HasWebSourceResourceTypeAndNoServerType()
         {
             await Handle(HostConfig(), OpenPolicy, null, "WebShape", "Web", ConfigOf(new { Address = "https://api.example.com" }));

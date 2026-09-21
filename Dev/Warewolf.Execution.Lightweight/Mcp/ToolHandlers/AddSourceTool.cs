@@ -105,7 +105,7 @@ internal static class AddSourceTool
             "required-ness depend on sourceType (e.g. SqlDatabase: Server*, DatabaseName*, Port, AuthenticationType [Windows|User], UserID, Password, " +
             "ConnectionTimeout, TrustServerCertificate — * = required; Redis: HostName*, Port, AuthenticationType [Anonymous|Password], Password; " +
             "Email: Host*, Port, UserName, Password, EnableSsl, Timeout; RabbitMQ: HostName*, Port, UserName, Password, VirtualHost; " +
-            "Web: Address*, DefaultQuery, AuthenticationType [Anonymous|User], UserName, Password [required when AuthenticationType is User]). " +
+            "Web: Address*, DefaultQuery, AuthenticationType [Anonymous|User|ApiKeyQuery|ApiKeyHeader|Bearer], UserName, Password [required when AuthenticationType is User], ApiKeyName [required for ApiKeyQuery and ApiKeyHeader], ApiKeyValue [required for ApiKeyQuery, ApiKeyHeader and Bearer]). " +
             "IMPORTANT — for any password/secret-shaped field, do not put the literal secret in this JSON. Instead set its value to " +
             "\"${secret-name}\", where secret-name is a secret already staged in this server's Key Vault (e.g. via `az keyvault secret set`) " +
             "ahead of time — the server fetches the real value itself when saving and never echoes it back. (Only on a Key-Vault-less local " +
@@ -316,13 +316,65 @@ internal static class AddSourceTool
                 break;
 
             case "Web":
-                if (string.Equals(values.GetValueOrDefault("AuthenticationType"), "User", StringComparison.OrdinalIgnoreCase) &&
-                    string.IsNullOrEmpty(values.GetValueOrDefault("Password")))
-                {
-                    throw new McpException("`config.Password` is required when `config.AuthenticationType` is \"User\".");
-                }
-
+                ApplyWebAuthRequirements(values);
                 break;
+        }
+    }
+
+    static readonly string[] WebAuthenticationTypes = { "Anonymous", "User", "ApiKeyQuery", "ApiKeyHeader", "Bearer" };
+    static readonly Regex ApiKeyNamePattern = new(@"^[A-Za-z0-9_.\-]+$", RegexOptions.Compiled);
+
+    static void ApplyWebAuthRequirements(IReadOnlyDictionary<string, string?> values)
+    {
+        var authType = values.GetValueOrDefault("AuthenticationType");
+        if (string.IsNullOrEmpty(authType))
+        {
+            authType = "Anonymous";
+        }
+
+        if (!WebAuthenticationTypes.Contains(authType, StringComparer.OrdinalIgnoreCase))
+        {
+            throw new McpException(
+                $"`config.AuthenticationType` \"{authType}\" is not supported for a Web source. Use one of: {string.Join(", ", WebAuthenticationTypes)}.");
+        }
+
+        if (string.Equals(authType, "User", StringComparison.OrdinalIgnoreCase) &&
+            string.IsNullOrEmpty(values.GetValueOrDefault("Password")))
+        {
+            throw new McpException("`config.Password` is required when `config.AuthenticationType` is \"User\".");
+        }
+
+        var carriesKey = authType.StartsWith("ApiKey", StringComparison.OrdinalIgnoreCase) ||
+                         string.Equals(authType, "Bearer", StringComparison.OrdinalIgnoreCase);
+        if (!carriesKey)
+        {
+            return;
+        }
+
+        var keyValue = values.GetValueOrDefault("ApiKeyValue");
+        if (string.IsNullOrEmpty(keyValue))
+        {
+            throw new McpException($"`config.ApiKeyValue` is required when `config.AuthenticationType` is \"{authType}\".");
+        }
+
+        // The value ends up in a request header or URL: control characters would allow header injection.
+        if (keyValue.Any(char.IsControl))
+        {
+            throw new McpException("`config.ApiKeyValue` must not contain control characters (including line breaks).");
+        }
+
+        if (!string.Equals(authType, "Bearer", StringComparison.OrdinalIgnoreCase))
+        {
+            var keyName = values.GetValueOrDefault("ApiKeyName");
+            if (string.IsNullOrEmpty(keyName))
+            {
+                throw new McpException($"`config.ApiKeyName` is required when `config.AuthenticationType` is \"{authType}\".");
+            }
+
+            if (!ApiKeyNamePattern.IsMatch(keyName))
+            {
+                throw new McpException("`config.ApiKeyName` may only contain letters, digits, '-', '_' and '.'.");
+            }
         }
     }
 
@@ -445,6 +497,14 @@ internal static class AddSourceTool
                 {
                     parts.Add($"UserName={Get("UserName")}");
                     parts.Add($"Password={Get("Password")}");
+                }
+
+                // Mirrors WebSource.ToXml(): the key fields follow, for the key-carrying types only.
+                if (authType.StartsWith("ApiKey", StringComparison.OrdinalIgnoreCase) ||
+                    string.Equals(authType, "Bearer", StringComparison.OrdinalIgnoreCase))
+                {
+                    parts.Add($"ApiKeyName={Get("ApiKeyName")}");
+                    parts.Add($"ApiKeyValue={Get("ApiKeyValue")}");
                 }
 
                 return string.Join(";", parts).EscapeString();

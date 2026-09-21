@@ -180,10 +180,26 @@ internal static class EnvelopeBiteWriter
 
     static XElement BuildRecordsetElement(RecordsetEntry recordset)
     {
-        var element = new XElement(recordset.Name);
+        // The recordset element carries its OWN Description/IsEditable/ColumnIODirection, not just
+        // its fields': ExecutionEnvironmentUtils.GetJsonForEnvironmentWithColumnIoDirection reads
+        // the direction off the element itself when deciding whether a DataList entry belongs in
+        // the response, so a recordset declared with bare fields was silently dropped from every
+        // execution's outputs. The element's direction is the union of its fields' — a recordset
+        // that is input-only in one field and output-only in another is "Both" at the element
+        // level, and the per-field attributes below still decide which fields are emitted.
+        var anyInput = recordset.Fields.Values.Any(field => field.IsInput);
+        var anyOutput = recordset.Fields.Values.Any(field => field.IsOutput);
+
+        var element = new XElement(recordset.Name,
+            new XAttribute("Description", string.Empty),
+            new XAttribute("IsEditable", "True"),
+            new XAttribute("ColumnIODirection", Direction(anyInput, anyOutput)));
+
         foreach (var field in recordset.Fields)
         {
             element.Add(new XElement(field.Key,
+                new XAttribute("Description", string.Empty),
+                new XAttribute("IsEditable", "True"),
                 new XAttribute("ColumnIODirection", Direction(field.Value.IsInput, field.Value.IsOutput))));
         }
 
@@ -207,12 +223,20 @@ internal static class EnvelopeBiteWriter
     /// <summary>One recordset field element, declared both-directions — see
     /// <see cref="BuildScalarVariableElement"/>'s remarks (F5).</summary>
     internal static XElement BuildRecordsetFieldElement(string fieldName) =>
-        new(fieldName, new XAttribute("ColumnIODirection", "Both"));
+        new(fieldName,
+            new XAttribute("Description", string.Empty),
+            new XAttribute("IsEditable", "True"),
+            new XAttribute("ColumnIODirection", "Both"));
 
     /// <summary>A brand-new recordset element declaring exactly one field — see
-    /// <see cref="BuildScalarVariableElement"/>'s remarks (F5).</summary>
+    /// <see cref="BuildScalarVariableElement"/>'s remarks (F5). Carries the element's own
+    /// direction attributes for the same reason <see cref="BuildRecordsetElement"/> does.</summary>
     internal static XElement BuildRecordsetVariableElement(string recordsetName, string fieldName) =>
-        new(recordsetName, BuildRecordsetFieldElement(fieldName));
+        new(recordsetName,
+            new XAttribute("Description", string.Empty),
+            new XAttribute("IsEditable", "True"),
+            new XAttribute("ColumnIODirection", "Both"),
+            BuildRecordsetFieldElement(fieldName));
 
     static void ParseArray(
         JsonElement envelope,

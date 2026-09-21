@@ -77,9 +77,9 @@
                        Margin="0,-3,0,-3"
                        x:Name="Authentication"
                        Text="{x:Static languages:Core.AuthenticationTypeLabel}"/>
-            <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,-3,0,0">
-                <RadioButton Margin="{StaticResource ControlBorderRight}" 
-                             x:Name="AnonymousRadioButton" 
+            <WrapPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Margin="0,-3,0,0">
+                <RadioButton Margin="{StaticResource ControlBorderRight}"
+                             x:Name="AnonymousRadioButton"
                              ToolTip="{x:Static languages:Tooltips.AnonymousAuthenticationToolTip}" 
                              VerticalAlignment="Center" 
                              HorizontalAlignment="Left" 
@@ -90,18 +90,74 @@
                         <core:HelpSetter Text="{x:Static languages:HelpText.WindowsAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
-                <RadioButton x:Name="UserRadioButton" 
-                             ToolTip="{x:Static languages:Tooltips.UserAuthenticationToolTip}" 
-                             VerticalAlignment="Center" 
-                             HorizontalAlignment="Left" 
-                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter}, 
-                                    ConverterParameter={x:Static serviceModel:AuthenticationType.User}}" 
+                <RadioButton x:Name="UserRadioButton"
+                             Margin="{StaticResource ControlBorderRight}"
+                             ToolTip="{x:Static languages:Tooltips.UserAuthenticationToolTip}"
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter},
+                                    ConverterParameter={x:Static serviceModel:AuthenticationType.User}}"
                              Content="User">
                     <i:Interaction.Behaviors>
                         <core:HelpSetter Text="{x:Static languages:HelpText.UserAuthenticationHelp}" DataContext="{Binding}" />
                     </i:Interaction.Behaviors>
                 </RadioButton>
-            </StackPanel>
+                <RadioButton x:Name="ApiKeyQueryRadioButton"
+                             Margin="{StaticResource ControlBorderRight}"
+                             ToolTip="Send an API key with every request as a query-string parameter, e.g. ?api_key=..."
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter},
+                                    ConverterParameter={x:Static serviceModel:AuthenticationType.ApiKeyQuery}}"
+                             Content="API key (query)"/>
+                <RadioButton x:Name="ApiKeyHeaderRadioButton"
+                             Margin="{StaticResource ControlBorderRight}"
+                             ToolTip="Send an API key with every request as a header, e.g. X-Api-Key: ..."
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter},
+                                    ConverterParameter={x:Static serviceModel:AuthenticationType.ApiKeyHeader}}"
+                             Content="API key (header)"/>
+                <RadioButton x:Name="BearerRadioButton"
+                             ToolTip="Send a bearer token with every request as Authorization: Bearer ..."
+                             VerticalAlignment="Center"
+                             HorizontalAlignment="Left"
+                             IsChecked="{Binding Path=AuthenticationType, Mode=TwoWay, Converter={StaticResource EnumToBoolConverter},
+                                    ConverterParameter={x:Static serviceModel:AuthenticationType.Bearer}}"
+                             Content="Bearer"/>
+            </WrapPanel>
+        </Grid>
+        <Grid x:Name="ApiKeyContainer"
+              Grid.Row="2"
+              Margin="0,-3,0,6"
+              Visibility="{Binding Path=ApiKeyAuthenticationSelected,Converter={StaticResource BoolToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="{Binding ElementName=Authentication, Path=ActualWidth}"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Row="0" Grid.Column="0"
+                       Text="Key name"
+                       Visibility="{Binding Path=ApiKeyNameRequired,Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBox x:Name="ApiKeyNameTextBox"
+                     Grid.Row="0"
+                     Grid.Column="1"
+                     ToolTip="The query parameter (e.g. api_key) or header (e.g. X-Api-Key) that carries the key"
+                     Visibility="{Binding Path=ApiKeyNameRequired,Converter={StaticResource BoolToVisibilityConverter}}"
+                     Text="{Binding ApiKeyName,UpdateSourceTrigger=LostFocus}"/>
+            <TextBlock Grid.Row="1"
+                       Grid.Column="0"
+                       Margin="{StaticResource ControlBorderTop}"
+                       Text="Key / token"/>
+            <customControls:PasswordBoxUserControl x:Name="ApiKeyValueTextBox"
+                         Grid.Column="1"
+                         Grid.Row="1"
+                         ToolTip="The API key or bearer token. It is stored encrypted, like a password."
+                         Margin="{StaticResource ControlBorderTop}"
+                         Text="{Binding Path=ApiKeyValue, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
         </Grid>
         <Grid x:Name="UserNamePasswordContainer" 
               Grid.Row="2" 

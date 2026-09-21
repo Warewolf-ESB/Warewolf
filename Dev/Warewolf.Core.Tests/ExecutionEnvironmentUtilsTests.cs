@@ -336,6 +336,77 @@ namespace Dev2.Tests
         }
 
         [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        public void ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment_WhenRecordsetElementHasNoColumnIoDirection_ShouldStillReturnRecordset()
+        {
+            //------------Setup for test--------------------------
+            // The shape EnvelopeBiteWriter used to emit: the fields carry the direction, the
+            // recordset element itself carries nothing. Such a recordset was silently dropped.
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList>" +
+                                    "<results>" +
+                                    "<input ColumnIODirection=\"Output\" />" +
+                                    "<match ColumnIODirection=\"Output\" />" +
+                                    "</results>" +
+                                    "</DataList>";
+            dataObj.Environment.Assign("[[results().input]]", "Strawberry", 0);
+            dataObj.Environment.Assign("[[results().match]]", "98", 0);
+            //------------Execute Test---------------------------
+            var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(actual, "results");
+            StringAssert.Contains(actual, "\"input\": \"Strawberry\"");
+            StringAssert.Contains(actual, "\"match\": 98");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        public void ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment_WhenRecordsetIsPartInputPartOutput_ShouldReturnOnlyOutputFields()
+        {
+            //------------Setup for test--------------------------
+            // No element-level direction, and the two fields disagree — the recordset reaches the
+            // output because ONE field is an output, and only that field is emitted.
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList>" +
+                                    "<rows>" +
+                                    "<given ColumnIODirection=\"Input\" />" +
+                                    "<computed ColumnIODirection=\"Output\" />" +
+                                    "</rows>" +
+                                    "</DataList>";
+            dataObj.Environment.Assign("[[rows().given]]", "Banana", 0);
+            dataObj.Environment.Assign("[[rows().computed]]", "3", 0);
+            //------------Execute Test---------------------------
+            var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(actual, "rows");
+            StringAssert.Contains(actual, "\"computed\": 3");
+            Assert.IsFalse(actual.Contains("\"given\": \"Banana\""));
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(ExecutionEnvironmentUtils))]
+        public void ExecutionEnvironmentUtils_GetJsonOutputFromEnvironment_WhenRecordsetHasOneFieldAndFullAttributes_ShouldNotBeReadAsScalar()
+        {
+            //------------Setup for test--------------------------
+            // A single-field recordset serializes to exactly 4 properties, which the old
+            // "more than 3" heuristic passed only by accident; with fewer attributes it failed.
+            var dataObj = new DsfDataObject(string.Empty, Guid.NewGuid());
+            const string dataList = "<DataList>" +
+                                    "<items ColumnIODirection=\"Output\">" +
+                                    "<value ColumnIODirection=\"Output\" />" +
+                                    "</items>" +
+                                    "</DataList>";
+            dataObj.Environment.Assign("[[items().value]]", "Cherry", 0);
+            //------------Execute Test---------------------------
+            var actual = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObj, dataList, 0);
+            //------------Assert Results-------------------------
+            StringAssert.Contains(actual, "\"value\": \"Cherry\"");
+        }
+
+        [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory(nameof(ExecutionEnvironmentUtils))]
         public void ExecutionEnvironmentUtils_GetJsonForEnvironmentWithColumnIoDirection_WhenEmptyDataList_ShouldReturnEmptyJson()

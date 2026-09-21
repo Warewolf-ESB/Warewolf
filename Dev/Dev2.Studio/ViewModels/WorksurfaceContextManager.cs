@@ -1209,6 +1209,8 @@ namespace Dev2.Studio.ViewModels
                 Id = db.ResourceID,
                 Name = db.ResourceName,
                 Password = db.Password,
+                ApiKeyName = db.ApiKeyName,
+                ApiKeyValue = db.ApiKeyValue,
                 HostName = db.Address,
                 Path = resourceModel.GetSavePath(),
                 UserName = db.UserName

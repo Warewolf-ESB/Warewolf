@@ -52,7 +52,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         DefaultQuery = src.DefaultQuery,
                         AuthenticationType = src.AuthenticationType,
                         UserName = src.UserName,
-                        Password = src.Password
+                        Password = src.Password,
+                        ApiKeyName = src.ApiKeyName,
+                        ApiKeyValue = src.ApiKeyValue
                     };
                 }
                 else
@@ -64,6 +66,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                         AuthenticationType = src.AuthenticationType,
                         UserName = src.UserName,
                         Password = TestDbSourceService.IsNotMasked(src.Password) ? src.Password : webSource.Password,
+                        ApiKeyName = src.ApiKeyName,
+                        ApiKeyValue = TestDbSourceService.IsNotMasked(src.ApiKeyValue) ? src.ApiKeyValue : webSource.ApiKeyValue,
                     };
                 }
 

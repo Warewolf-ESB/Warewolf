@@ -81,7 +81,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                         DefaultQuery = src.Source.DefaultQuery,
                         AuthenticationType = src.Source.AuthenticationType,
                         UserName = src.Source.UserName,
-                        Password = src.Source.Password
+                        Password = src.Source.Password,
+                        ApiKeyName = src.Source.ApiKeyName,
+                        ApiKeyValue = src.Source.ApiKeyValue
                     }
                 };
 

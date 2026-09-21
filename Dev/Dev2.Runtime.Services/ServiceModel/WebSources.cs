@@ -189,6 +189,8 @@ namespace Dev2.Runtime.ServiceModel
             try
             {
                 ValidateSource(source);
+                var apiKeyHeaders = ApiKeyHeaders(source).ToList();
+                headers = WithApiKeyHeaders(source, headers).ToList();
                 client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password, source.Client, headers);
                 var address = GetAddress(source, relativeUrl);
                 var contentType = client.Headers[HttpRequestHeader.ContentType];
@@ -203,13 +205,13 @@ namespace Dev2.Runtime.ServiceModel
                     var formDataBoundary = contentType.Split('=').Last();
                     var bytesData = isFormDataChecked ? GetMultipartFormData(formDataParameters, formDataBoundary) : GetFormUrlEncodedData(formDataParameters, formDataBoundary);
                     
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout, apiKeyHeaders);
                 }
 
                 if (isManualChecked && contentType != null && (contentType.ToLowerInvariant().Contains("multipart") || contentType.ToLowerInvariant().Contains("x-www")))
                 {
                     var bytesData = ConvertToHttpNewLine(ref data);
-                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout);
+                    return PerformMultipartWebRequest(webRequestFactory, client, address, bytesData, timeout, apiKeyHeaders);
                 }
 
                 if (method == WebRequestMethod.Post)
@@ -347,12 +349,83 @@ namespace Dev2.Runtime.ServiceModel
                 }
                 return relativeUri;
             }
-            if (!string.IsNullOrEmpty(source.Address) && relativeUri.Contains(source.Address))
-            {
-                return relativeUri;
-            }
-            return $"{source.Address}{relativeUri}";
+            var address = !string.IsNullOrEmpty(source.Address) && relativeUri.Contains(source.Address)
+                ? relativeUri
+                : $"{source.Address}{relativeUri}";
+            return AppendApiKeyQuery(source, address);
         }
+
+        /// <summary>
+        /// Adds <c>?{ApiKeyName}={ApiKeyValue}</c> (or <c>&amp;</c> when the address already has a query) for
+        /// <see cref="AuthenticationType.ApiKeyQuery"/> sources, ahead of any <c>#fragment</c>. Every request
+        /// path builds its URL through <see cref="GetAddress"/>, so this is applied once, whatever the
+        /// method and whatever query the calling tool supplied.
+        /// </summary>
+        public static string AppendApiKeyQuery(IWebSource source, string address)
+        {
+            if (source?.AuthenticationType != AuthenticationType.ApiKeyQuery ||
+                string.IsNullOrEmpty(source.ApiKeyName) || string.IsNullOrEmpty(source.ApiKeyValue))
+            {
+                return address;
+            }
+
+            var pair = $"{Uri.EscapeDataString(source.ApiKeyName)}={Uri.EscapeDataString(source.ApiKeyValue)}";
+            var fragmentAt = address.IndexOf('#');
+            var beforeFragment = fragmentAt < 0 ? address : address.Substring(0, fragmentAt);
+            var fragment = fragmentAt < 0 ? string.Empty : address.Substring(fragmentAt);
+
+            string separator;
+            if (!beforeFragment.Contains("?"))
+            {
+                separator = "?";
+            }
+            else
+            {
+                separator = beforeFragment.EndsWith("?") || beforeFragment.EndsWith("&") ? string.Empty : "&";
+            }
+
+            return beforeFragment + separator + pair + fragment;
+        }
+
+        /// <summary>
+        /// <paramref name="address"/> with an <see cref="AuthenticationType.ApiKeyQuery"/> source's key masked,
+        /// for logging: <see cref="GetAddress"/> puts the real key in the URL, and logs must never carry it.
+        /// </summary>
+        public static string RedactApiKey(IWebSource source, string address)
+        {
+            if (source?.AuthenticationType != AuthenticationType.ApiKeyQuery || string.IsNullOrEmpty(source.ApiKeyValue) || string.IsNullOrEmpty(address))
+            {
+                return address;
+            }
+
+            return address.Replace(Uri.EscapeDataString(source.ApiKeyValue), "***");
+        }
+
+        /// <summary>
+        /// The "Name: value" header lines a source adds to every request: <c>ApiKeyHeader</c> sends
+        /// <c>{ApiKeyName}: {ApiKeyValue}</c>, <c>Bearer</c> sends <c>Authorization: Bearer {ApiKeyValue}</c>.
+        /// </summary>
+        public static IEnumerable<string> ApiKeyHeaders(IWebSource source)
+        {
+            if (source == null || string.IsNullOrEmpty(source.ApiKeyValue))
+            {
+                return Enumerable.Empty<string>();
+            }
+
+            switch (source.AuthenticationType)
+            {
+                case AuthenticationType.ApiKeyHeader when !string.IsNullOrEmpty(source.ApiKeyName):
+                    return new[] { $"{source.ApiKeyName}: {source.ApiKeyValue}" };
+                case AuthenticationType.Bearer:
+                    return new[] { $"Authorization: Bearer {source.ApiKeyValue}" };
+                default:
+                    return Enumerable.Empty<string>();
+            }
+        }
+
+        /// <summary>The calling tool's headers followed by the source's key header, so the source's credential wins.</summary>
+        public static IEnumerable<string> WithApiKeyHeaders(IWebSource source, IEnumerable<string> headers) =>
+            (headers ?? Enumerable.Empty<string>()).Concat(ApiKeyHeaders(source));
 
         public static byte[] Execute(IWebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, out errors, null);
         public static byte[] Execute(IWebSource source, WebRequestMethod method, string relativeUri, byte[] data, out ErrorResultTO errors, string[] headers)
@@ -362,7 +435,7 @@ namespace Dev2.Runtime.ServiceModel
 
         static byte[] Execute(IWebSource source, string relativeUri, WebRequestMethod method, IEnumerable<string> headers, byte[] data, out ErrorResultTO errors)
         {
-            var client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password,source.Client, headers);
+            var client = CreateWebClient(source.AuthenticationType, source.UserName, source.Password,source.Client, WithApiKeyHeaders(source, headers));
 
             var address = GetAddress(source, relativeUri);
             errors = new ErrorResultTO();
@@ -590,11 +663,12 @@ namespace Dev2.Runtime.ServiceModel
                 try
                 {
                     // Add headers
-                    if (headers != null)
+                    var allHeaders = WithApiKeyHeaders(source, headers).ToArray();
+                    if (allHeaders.Length > 0)
                     {
-                        Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Adding {headers.Length} header(s)", GlobalConstants.WarewolfInfo);
-                        
-                        foreach (var header in headers)
+                        Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Adding {allHeaders.Length} header(s)", GlobalConstants.WarewolfInfo);
+
+                        foreach (var header in allHeaders)
                         {
                             if (string.IsNullOrEmpty(header) || header == ":")
                             {
@@ -616,7 +690,7 @@ namespace Dev2.Runtime.ServiceModel
                     }
                     
                     var address = GetAddress(source, relativeUri);
-                    Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Executing {method} to: {address}", GlobalConstants.WarewolfInfo);
+                    Dev2Logger.Info($"WebSources.ExecuteWithHttpClientV2 - Executing {method} to: {RedactApiKey(source, address)}", GlobalConstants.WarewolfInfo);
                     
                     string result;
                     switch (method)
@@ -669,11 +743,12 @@ namespace Dev2.Runtime.ServiceModel
                 wrapper.SetTimeout(TimeSpan.FromSeconds(options.Timeout));
             }
             
-            if (options.Headers != null)
+            var allHeaders = WithApiKeyHeaders(options.Source, options.Headers).ToList();
+            if (allHeaders.Count > 0)
             {
-                Dev2Logger.Info($"WebSources - Adding {options.Headers.Count()} header(s)", GlobalConstants.WarewolfInfo);
-                
-                foreach (var header in options.Headers)
+                Dev2Logger.Info($"WebSources - Adding {allHeaders.Count} header(s)", GlobalConstants.WarewolfInfo);
+
+                foreach (var header in allHeaders)
                 {
                     if (string.IsNullOrEmpty(header) || header == ":")
                     {
@@ -701,7 +776,7 @@ namespace Dev2.Runtime.ServiceModel
         {
             var address = GetAddress(options.Source, options.Query);
             
-            Dev2Logger.Info($"WebSources - Executing POST to: {address}", GlobalConstants.WarewolfInfo);
+            Dev2Logger.Info($"WebSources - Executing POST to: {RedactApiKey(options.Source, address)}", GlobalConstants.WarewolfInfo);
             
             if (options.IsFormDataChecked)
             {

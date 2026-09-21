@@ -41,6 +41,8 @@ namespace Warewolf.Studio.ViewModels
         string _hostName;
         string _userName;
         string _password;
+        string _apiKeyName;
+        string _apiKeyValue;
         string _defaultQuery;
         string _testMessage;
         string _testDefault;
@@ -72,6 +74,8 @@ namespace Warewolf.Studio.ViewModels
             _defaultQuery = string.Empty;
             _userName = string.Empty;
             _password = string.Empty;
+            _apiKeyName = string.Empty;
+            _apiKeyValue = string.Empty;
             HeaderText = Resources.Languages.Core.WebserviceNewHeaderLabel;
             Header = Resources.Languages.Core.WebserviceNewHeaderLabel;
             TestCommand = new DelegateCommand(TestConnection, CanTest);
@@ -177,6 +181,14 @@ namespace Warewolf.Studio.ViewModels
             {
                 return !string.IsNullOrEmpty(UserName) && !string.IsNullOrEmpty(Password);
             }
+            if (AuthenticationType == AuthenticationType.ApiKeyQuery || AuthenticationType == AuthenticationType.ApiKeyHeader)
+            {
+                return !string.IsNullOrEmpty(ApiKeyName) && !string.IsNullOrEmpty(ApiKeyValue);
+            }
+            if (AuthenticationType == AuthenticationType.Bearer)
+            {
+                return !string.IsNullOrEmpty(ApiKeyValue);
+            }
             return true;
         }
 
@@ -194,6 +206,8 @@ namespace Warewolf.Studio.ViewModels
             DefaultQuery = source.DefaultQuery;
             HostName = source.HostName;
             Password = source.Password;
+            ApiKeyName = source.ApiKeyName;
+            ApiKeyValue = source.ApiKeyValue;
             SelectedGuid = source.Id;            
         }
 
@@ -214,6 +228,18 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public bool UserAuthenticationSelected => AuthenticationType == AuthenticationType.User;
+
+        public bool ApiKeyQuerySelected => AuthenticationType == AuthenticationType.ApiKeyQuery;
+
+        public bool ApiKeyHeaderSelected => AuthenticationType == AuthenticationType.ApiKeyHeader;
+
+        public bool BearerSelected => AuthenticationType == AuthenticationType.Bearer;
+
+        /// <summary>The key's name (query parameter or header) is asked for by both API-key types, but not by Bearer.</summary>
+        public bool ApiKeyNameRequired => ApiKeyQuerySelected || ApiKeyHeaderSelected;
+
+        /// <summary>Every credential-carrying type asks for the key/token itself.</summary>
+        public bool ApiKeyAuthenticationSelected => AuthenticationType.CarriesApiKey();
 
         void SaveConnection()
         {
@@ -289,6 +315,8 @@ namespace Warewolf.Studio.ViewModels
             AuthenticationType = AuthenticationType,
             HostName = HostName,
             Password = Password,
+            ApiKeyName = ApiKeyName,
+            ApiKeyValue = ApiKeyValue,
             UserName = UserName,
             Name = ResourceName,
             DefaultQuery = DefaultQuery,
@@ -304,6 +332,8 @@ namespace Warewolf.Studio.ViewModels
                     AuthenticationType = AuthenticationType,
                     HostName = HostName,
                     Password = Password,
+                    ApiKeyName = ApiKeyName,
+                    ApiKeyValue = ApiKeyValue,
                     UserName = UserName,
                     DefaultQuery = DefaultQuery,
                     Name = ResourceName,
@@ -316,6 +346,8 @@ namespace Warewolf.Studio.ViewModels
                 _webServiceSource.AuthenticationType = AuthenticationType;
                 _webServiceSource.DefaultQuery = DefaultQuery;
                 _webServiceSource.Password = Password;
+                _webServiceSource.ApiKeyName = ApiKeyName;
+                _webServiceSource.ApiKeyValue = ApiKeyValue;
                 _webServiceSource.HostName = HostName;
                 _webServiceSource.UserName = UserName;
                 return _webServiceSource;
@@ -337,6 +369,8 @@ namespace Warewolf.Studio.ViewModels
                 AuthenticationType = AuthenticationType,
                 DefaultQuery = DefaultQuery,
                 Password = Password,
+                ApiKeyName = ApiKeyName,
+                ApiKeyValue = ApiKeyValue,
                 UserName = UserName,
                 Id = Item.Id,
                 Path = Item.Path
@@ -378,6 +412,11 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => AuthenticationType);
                     OnPropertyChanged(() => Header);
                     OnPropertyChanged(() => UserAuthenticationSelected);
+                    OnPropertyChanged(() => ApiKeyQuerySelected);
+                    OnPropertyChanged(() => ApiKeyHeaderSelected);
+                    OnPropertyChanged(() => BearerSelected);
+                    OnPropertyChanged(() => ApiKeyNameRequired);
+                    OnPropertyChanged(() => ApiKeyAuthenticationSelected);
                     ResetTestValue();
                 }
             }
@@ -446,6 +485,34 @@ namespace Warewolf.Studio.ViewModels
                 {
                     _password = value;
                     OnPropertyChanged(() => Password);
+                    ResetTestValue();
+                }
+            }
+        }
+
+        public string ApiKeyName
+        {
+            get => _apiKeyName;
+            set
+            {
+                if (value != _apiKeyName)
+                {
+                    _apiKeyName = value;
+                    OnPropertyChanged(() => ApiKeyName);
+                    ResetTestValue();
+                }
+            }
+        }
+
+        public string ApiKeyValue
+        {
+            get => _apiKeyValue;
+            set
+            {
+                if (value != _apiKeyValue)
+                {
+                    _apiKeyValue = value;
+                    OnPropertyChanged(() => ApiKeyValue);
                     ResetTestValue();
                 }
             }
@@ -542,7 +609,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public bool IsEmpty => string.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password);
+        public bool IsEmpty => string.IsNullOrEmpty(HostName) && AuthenticationType == AuthenticationType.Anonymous && string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password) && string.IsNullOrEmpty(ApiKeyName) && string.IsNullOrEmpty(ApiKeyValue);
 
         protected override void OnDispose()
         {
