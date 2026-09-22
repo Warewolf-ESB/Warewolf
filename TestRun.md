@@ -87,6 +87,14 @@ Switches: `-StartFTPServer`, `-StartFTPSServer`, `-StartSFTPServer`,
 `-StartRabbitMQServer`, `-StartRedisServer`, `-StartExchangeConnector`,
 `-StartMSSQLServer ""`.
 
+`-StartSFTPServer` stands up a local server on `localhost:2222` (`dev2` /
+`Q/ulw&]`, same account every other local dep server uses, with a writable
+`upload` folder) that the `sftp://localhost:2222/upload/...` rows in the
+FileAndFolder `.feature` files connect to — same pattern as
+`-StartFTPServer`'s `ftp://localhost:21/...`. On `-Runtime Windows` (the
+hosted `windows-2022` default) it's a chroot-jailed Windows OpenSSH `sftp-server`
+user; on `-Runtime Linux` it's an `atmoz/sftp` container.
+
 ### Run a job under the lightweight execution engine
 
 ```powershell

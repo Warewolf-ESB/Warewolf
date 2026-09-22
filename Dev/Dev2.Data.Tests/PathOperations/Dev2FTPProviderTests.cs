@@ -585,6 +585,36 @@ namespace Dev2.Data.Tests.PathOperations
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_ExtractPort_ExplicitPort_ReturnsThatPort()
+        {
+            var port = Dev2FTPProvider.ExtractPort("sftp://localhost:2222/upload/copied.txt", 22);
+
+            Assert.AreEqual(2222, port);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_ExtractPort_NoPort_ReturnsDefault()
+        {
+            var port = Dev2FTPProvider.ExtractPort("sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/copied.txt", 22);
+
+            Assert.AreEqual(22, port);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_ExtractPort_InvalidPath_ReturnsDefault()
+        {
+            var port = Dev2FTPProvider.ExtractPort(string.Empty, 22);
+
+            Assert.AreEqual(22, port);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory(nameof(Dev2FTPProvider))]
         public void Dev2FTPProvider_ListFilesInDirectory_ExpectedException()
         {
             const string path = "path";

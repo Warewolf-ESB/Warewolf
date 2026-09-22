@@ -211,6 +211,21 @@ namespace Dev2.Data.PathOperations
 
         public string PathSeperator() => @"/";
 
+        // SFTP has no well-known-scheme registration in System.Uri, so unlike
+        // BuildFtpClient's uri.Port (which resolves to ftp's registered default
+        // of 21 even with no ":port" in the text), an sftp:// URI with no explicit
+        // port parses to uri.Port == -1. Exposed as public static so it's testable
+        // without touching the private, [ExcludeFromCodeCoverage] Implementation
+        // class that owns the real (connecting) SftpClient construction.
+        public static int ExtractPort(string path, int defaultPort)
+        {
+            if (Uri.TryCreate(path, UriKind.RelativeOrAbsolute, out Uri uri) && uri.IsAbsoluteUri && uri.Port > 0)
+            {
+                return uri.Port;
+            }
+            return defaultPort;
+        }
+
         static bool IsDirectory(string part) => Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
 
         static bool IsFile(string part) => !IsDirectory(part);
@@ -374,7 +389,7 @@ namespace Dev2.Data.PathOperations
                     var keyFiles = new[] { keyFile };
                     methods.Add(new PrivateKeyAuthenticationMethod(path.Username, keyFiles));
                 }
-                var con = new ConnectionInfo(hostName, 22, path.Username, methods.ToArray());
+                var con = new ConnectionInfo(hostName, ExtractPort(path.Path, 22), path.Username, methods.ToArray());
                 var sftp = new SftpClient(con) { OperationTimeout = new TimeSpan(0, 0, 0, SftpTimeoutSeconds) };
 
                 try

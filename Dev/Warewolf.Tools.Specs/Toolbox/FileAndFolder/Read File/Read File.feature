@@ -25,8 +25,8 @@ Scenario Outline: Read File at location
 	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]]  | Guid   | NO           |                      |
 	| 3  | FTP        | [[path]] | ftp://localhost:21/FORREADFILETESTING/filetoread.txt              | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
 	| 4  | FTPS       | [[path]] | ftps://localhost:1010/FORTESTING/filetodele.txt                      | dev2          | Q/ulw&]      | [[result]]  | Guid   | NO           |                      |
-	| 5  | SFTP       | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread.txt             | dev2          | Q/ulw&] | [[result]] | Guid   | NO           |                      |
-	| 6  | SFTP PK    | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread1.txt            | dev2          | Q/ulw&] | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| 5  | SFTP       | [[path]] | sftp://localhost:2222/upload/filetoread.txt             | dev2          | Q/ulw&] | [[result]] | Guid   | NO           |                      |
+	| 6  | SFTP PK    | [[path]] | sftp://localhost:2222/upload/filetoread1.txt            | dev2          | Q/ulw&] | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Read File at locationNull
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -41,8 +41,8 @@ Scenario Outline: Read File at locationNull
 	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]] | Guid   | NO           |                      |
 	| 3  | FTP        | [[path]] | ftp://localhost:21/FORREADFILETESTING/filetoread.txt                            | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 4  | FTPS       | [[path]] | ftps://localhost:1010/FORREADFILETESTING/filetodele.txt                           | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 5  | SFTP       | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread.txt                         | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
-	| 6  | SFTP PK    | [[path]] | sftp://7wsjpaum4pjhc.southafricanorth.azurecontainer.io/upload/filetoread1.txt                        | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+	| 5  | SFTP       | [[path]] | sftp://localhost:2222/upload/filetoread.txt                         | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
+	| 6  | SFTP PK    | [[path]] | sftp://localhost:2222/upload/filetoread1.txt                        | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
 
 	
 Scenario Outline: Read File validation

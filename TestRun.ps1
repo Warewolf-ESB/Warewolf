@@ -861,35 +861,60 @@ function Start-HostSFTPServer {
         if ($cap -and $cap.State -ne 'Installed') {
             Add-WindowsCapability -Online -Name $cap.Name | Out-Null
         }
-        # Provision the test user if missing. Hosted windows-2022 agents
-        # enforce password complexity that rejects 'ftppass'; try the legacy
-        # password first to keep atmoz/sftp-equivalent creds for tests, then
-        # fall back to a policy-compliant value if rejected.
-        if (-not (Get-LocalUser -Name 'ftpuser' -ErrorAction SilentlyContinue)) {
+        # Same account/password every other local dep server uses (Start-HostFTPServer,
+        # the FTPS server) so every .feature file's sftp:// rows only need their host
+        # swapped, not their credential columns too. Hosted windows-2022 agents enforce
+        # password complexity; 'Q/ulw&]' (upper+lower+symbol, 8 chars) already satisfies
+        # the default 3-of-4-categories policy, but keep a fallback in case a stricter
+        # policy is ever applied.
+        if (-not (Get-LocalUser -Name 'dev2' -ErrorAction SilentlyContinue)) {
             $created = $false
-            foreach ($candidate in 'ftppass','Ftppass!2026') {
+            foreach ($candidate in 'Q/ulw&]','Q/ulw&]2026') {
                 try {
                     $pw = ConvertTo-SecureString $candidate -AsPlainText -Force
-                    New-LocalUser -Name 'ftpuser' -Password $pw `
+                    New-LocalUser -Name 'dev2' -Password $pw `
                         -PasswordNeverExpires -AccountNeverExpires `
                         -UserMayNotChangePassword -ErrorAction Stop | Out-Null
                     $created = $true
                     break
                 } catch [Microsoft.PowerShell.Commands.InvalidPasswordException] {
-                    Write-Warn "Password policy rejected '$candidate' for ftpuser; trying next"
+                    Write-Warn "Password policy rejected candidate for dev2; trying next"
                 }
             }
-            if (-not $created) { Write-Warn "Could not create ftpuser; SFTP auth will fail" }
+            if (-not $created) { Write-Warn "Could not create dev2; SFTP auth will fail" }
         }
+
+        # Chroot dev2 into a sandbox so `sftp://localhost:2222/upload/...` (no drive
+        # letter) resolves, mirroring atmoz/sftp's own default chroot+upload-folder
+        # layout. Per Microsoft's Win32-OpenSSH SFTP troubleshooting guidance, the
+        # chroot root must be owned by SYSTEM/Administrators with NO write access for
+        # the sftp user, and the user needs a writeable directory *inside* it:
+        # https://learn.microsoft.com/en-us/troubleshoot/windows-server/system-management-components/troubleshoot-sftp-issues-using-openssh
+        $sftpRoot   = Join-Path (Get-FTPSandboxRoot) 'sftp_home\dev2'
+        $uploadDir  = Join-Path $sftpRoot 'upload'
+        if (!(Test-Path $uploadDir)) { New-Item -ItemType Directory -Force -Path $uploadDir | Out-Null }
+        icacls $sftpRoot /inheritance:r | Out-Null
+        icacls $sftpRoot /setowner 'Administrators' | Out-Null
+        icacls $sftpRoot /grant:r 'SYSTEM:(OI)(CI)F' 'Administrators:(OI)(CI)F' 'dev2:(OI)(CI)RX' | Out-Null
+        icacls $uploadDir /grant 'dev2:(OI)(CI)M' | Out-Null
+
         $cfg = "$env:ProgramData\ssh\sshd_config"
         if (Test-Path $cfg) {
             $body = Get-Content $cfg -Raw
-            $body = $body -replace '(?m)^\s*#?\s*Port\s+\d+\s*$',          'Port 2222'
-            $body = $body -replace '(?m)^\s*#?\s*PasswordAuthentication.*$', 'PasswordAuthentication yes'
-            Set-Content -LiteralPath $cfg -Value $body -Encoding ascii
         } else {
-            "Port 2222`nPasswordAuthentication yes`nSubsystem sftp sftp-server.exe" | Out-File -LiteralPath $cfg -Encoding ascii -Force
+            $body = "Port 2222`nPasswordAuthentication yes`nSubsystem sftp sftp-server.exe`n"
         }
+        $body = $body -replace '(?m)^\s*#?\s*Port\s+\d+\s*$',          'Port 2222'
+        $body = $body -replace '(?m)^\s*#?\s*PasswordAuthentication.*$', 'PasswordAuthentication yes'
+        if ($body -notmatch '(?m)^\s*Subsystem\s+sftp\s') {
+            $body += "`nSubsystem sftp sftp-server.exe`n"
+        }
+        # Strip any Match block from a previous run before appending a fresh one -
+        # Match blocks must be last in sshd_config and this keeps re-runs idempotent.
+        $body = $body -replace '(?ms)^Match User dev2.*?(?=^Match |\z)', ''
+        $body = $body.TrimEnd() + "`n`nMatch User dev2`n    ChrootDirectory `"$sftpRoot`"`n    ForceCommand internal-sftp`n"
+        Set-Content -LiteralPath $cfg -Value $body -Encoding ascii
+
         New-NetFirewallRule -DisplayName 'OpenSSH-Server-2222' -Direction Inbound -Action Allow -Protocol TCP -LocalPort 2222 -ErrorAction SilentlyContinue | Out-Null
         Set-Service -Name sshd       -StartupType Automatic
         Set-Service -Name 'ssh-agent' -StartupType Automatic -ErrorAction SilentlyContinue
@@ -897,8 +922,10 @@ function Start-HostSFTPServer {
         Start-Sleep -Seconds 2
         return
     }
-    docker run -d --name sftpserver -p 2222:22 atmoz/sftp ftpuser:ftppass:1001 | Out-Null
+    docker run -d --name sftpserver -p 2222:22 atmoz/sftp "dev2:Q/ulw&]:1001" | Out-Null
     Start-Sleep -Seconds 3
+    docker exec sftpserver mkdir -p /home/dev2/upload 2>$null | Out-Null
+    docker exec sftpserver chmod 777 /home/dev2/upload 2>$null | Out-Null
 }
 function Stop-HostSFTPServer {
     # Capture the SFTP server's logs before teardown so they ship in the
