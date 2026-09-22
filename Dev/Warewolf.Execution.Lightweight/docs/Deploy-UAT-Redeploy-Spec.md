@@ -36,8 +36,8 @@ upgrade, not just a package push.
 | Property | Value | Note |
 |---|---|---|
 | App name / RG | `WarewolfServer-UAT` / `DEV2` | |
-| App Service Plan | `ASP-Warewolf-a36c`, **SKU `Y1` (Dynamic/Consumption)** | lives in RG **`Warewolf`**, not `DEV2` |
-| OS | Windows (`reserved: false`) | |
+| App Service Plan | `ASP-Warewolf-a36c`, **SKU `Y1` (Dynamic/Consumption)** | lives in RG **`Warewolf`**, not `DEV2`. **Superseded 2026-09-22 — see §16**: the app now runs on Flex Consumption, with no shared plan. |
+| OS | Windows (`reserved: false`) | **Superseded 2026-09-22 — see §16**: now Linux. |
 | Runtime | `netFrameworkVersion: v8.0`, `FUNCTIONS_WORKER_RUNTIME: dotnet-isolated`, `FUNCTIONS_EXTENSION_VERSION: ~4` | **must become v10.0** |
 | `alwaysOn` | `false` | not supported on Consumption |
 | `httpsOnly` | **`false`** | see risk R5 |
@@ -128,8 +128,8 @@ free-limit-exhausted `WarewolfEntraTestDb` on 2026-08-19 — see
 |---|---|---|---|
 | **R1** | ~~.NET 10 isolated support on Azure Functions v4 / Windows Consumption is unconfirmed.~~ **RESOLVED 2026-09-13** — `az functionapp list-runtimes --os windows` advertises `dotnet-isolated` version `10` for Functions v4 (az CLI 2.87.0). | ~~Blocker~~ | Closed. `Deploy-WwExecutionEngine.ps1` now creates on `--runtime-version 10`, and `-UpgradeRuntimeVersion` reconciles an app that already exists on `v8.0`. Still re-run the §5.2 check on the machine you deploy from: an older az CLI rejects `--runtime-version 10` outright. |
 | **R2** | `WEBSITE_USE_PLACEHOLDER_DOTNETISOLATED=1` pins a version-specific cold-start placeholder. | App may fail to start or silently run the wrong runtime. | Set to `0` for the first .NET 10 deploy; restore to `1` only once confirmed working. |
-| **R3** | Consumption (`Y1`) plan: no `alwaysOn`, cold starts, capped scale-out. | Load-test noise — the post-login timeouts and pool exhaustion already seen may be partly this. | Decide explicitly whether UAT stays on `Y1`. Changing tier affects **other apps on the shared plan in RG `Warewolf`** — do not change it casually. |
-| **R4** | Plan is shared and lives in a **different resource group**. | A plan-level change hits unrelated apps. | Treat the plan as read-only for this deploy. |
+| **R3** | ~~Consumption (`Y1`) plan: no `alwaysOn`, cold starts, capped scale-out.~~ **SUPERSEDED 2026-09-22** — the app moved to Flex Consumption (see §16); it no longer sits on `Y1` or on the shared plan at all. | ~~Load-test noise~~ | Closed by the §16 migration. Flex has its own cold-start/scale characteristics (no `alwaysOn` there either) — re-baseline load-test noise expectations post-migration rather than assuming §3's original analysis still holds. |
+| **R4** | ~~Plan is shared and lives in a **different resource group**.~~ **SUPERSEDED 2026-09-22** — Flex Consumption has no shared App Service Plan object; each app gets its own dedicated resource (see §16). | ~~A plan-level change hits unrelated apps.~~ | Closed. `ASP-Warewolf-a36c` (RG `Warewolf`) still hosts `WarewolfInvoicing` and `WarewolfUsageAPI` — it was **not** deleted as part of this migration and remains read-only/out of scope for this app's deploys going forward. |
 | **R5** | `httpsOnly: false`. | Security weakness, pre-existing. | Flag to the team; do not silently change it as part of this deploy — it may be load-bearing for an existing caller. |
 | **R6** | Deploy replaces app settings if the orchestrator is run without care. | Broken auth / wrong queue / lost secrets. | Back up settings first; diff after deploy (§6.5). |
 | **R7** | `Warewolf.Execution.Lightweight.csproj` only copies its bundled `Resources\` folder to the build/publish output in **Debug** config — a `-c Release` publish (§5.3) has **no `Resources` folder at all** unless `-WorkflowsSourcePath` is passed to the orchestrator. | **Confirmed root cause of the 2026-08-13 load-test hang**: 29,782 `FileNotFoundException: Could not find file 'C:\home\site\wwwroot\Resources'` in App Insights (`warewolfserver-uat-ai`), then every workflow execution failed instantly and the load test hung polling for results that never arrived. | **Mandatory:** stage the resources (§5.4) and pass `-WorkflowsSourcePath` to every dry-run and deploy (§6.2/§6.4); confirm it in the plan phase (§6.3). |
@@ -732,3 +732,45 @@ OTHER app redeployed with `-SkipAuthProvisioning` from before this merge, or to 
 self-healing across a redeploy the way an App-Setting-only value would be for two of the
 three (see table). Add a Phase 0.5 plan-review check for "Key Vault" and "ServiceBusTrigger
 tunables" specifically for this app, the same way §6.3 / §14 already check other settings.
+
+## 16. Migration to Flex Consumption, 4 GB/instance (2026-09-22)
+
+`pipeline-LOADTEST.yml`'s `Deploy_UAT` stage (and `pipeline-CLOUD.yml`'s equivalent job for
+`warewolfserver`) now deploy onto **Flex Consumption** (`-HostingPlan Flex
+-FlexInstanceMemoryMB 4096`) instead of the classic Consumption (`Y1`) plan documented in §2/§4
+above. `Deploy-WwExecutionEngine.ps1` already supported this (`-HostingPlan`,
+`-FlexInstanceMemoryMB`, `-FlexMaximumInstanceCount` — see its own parameter help and
+`Scripts/Tests/Deploy-WwExecutionEngine.Tests.ps1`); this entry records the one-time operator
+migration, not a script change.
+
+**Why delete-and-recreate was unavoidable.** Flex Consumption is a different resource shape
+(`sku FlexConsumption`), not a tier of the classic plan — no shared App Service Plan object, no
+Azure Files content share, Linux-only. `functionapp create` fixes the SKU at creation time, so an
+existing Windows `Y1` app cannot be converted in place; `Deploy-WwExecutionEngine.ps1` detects the
+mismatch and deliberately does nothing rather than attempt it (see its `-HostingPlan` doc comment).
+
+**Pre-flight, verified against the live subscription before migrating:**
+- `southafricanorth` is a supported Flex Consumption region (`az functionapp
+  list-flexconsumption-locations`).
+- `ASP-Warewolf-a36c` (RG `Warewolf`, still `Y1`) is shared by **four** apps:
+  `WarewolfServer`, `WarewolfServer-UAT`, `WarewolfInvoicing`, `WarewolfUsageAPI`. Only the first
+  two moved; the plan itself was **not** deleted and still serves the other two — R4 above is
+  closed, not because the plan went away, but because this app no longer depends on it.
+- Managed-identity RBAC captured immediately before deleting the old app, for re-granting to the
+  new identity after recreation (every principal is fresh — `functionapp create` mints a new one):
+  - `warewolfserver`: **Key Vault Secrets User** on vault `WWExecutionEngine`; **Storage Blob/
+    Queue/Table Data Contributor** on storage account `warewolf` (RG `DEV2`).
+  - `WarewolfServer-UAT`: **Key Vault Secrets User** on vault `WWExecutionEngine`; **Azure
+    Service Bus Data Receiver** on namespace `WarewolfShovelBridgeTesting` (RG `DEV2`).
+- Both apps carry a `WAREWOLF_ENTRA_CONFIG` app setting (§15) that neither pipeline reproduces
+  (`-SkipAuthProvisioning`). Back it up (§5.1-style) before deleting and re-apply it, and
+  reconfigure Easy Auth platform config (`az webapp auth ...`), after the app is recreated —
+  otherwise Entra token validation fails closed exactly as §15's third table row describes.
+
+**Follow-on risk this reintroduces, not yet closed:** R3's replacement question — Flex
+Consumption's own cold-start/scale-out behaviour under this pipeline's load-test burst — is
+unmeasured as of this entry. Don't assume it matches, or improves on, the `Y1` baseline §3/§14
+were tuned against; re-run the load test and re-check the concurrency/scale-limit settings
+(`-ServiceBusMaxConcurrentCalls`, `-FlexMaximumInstanceCount`) against observed behaviour before
+trusting historical thresholds (e.g. the `FlexMaximumInstanceCount 30` carried over from
+`-FunctionAppScaleLimit 30`) on the new platform.
