@@ -82,6 +82,29 @@ Describe 'Enable-ServiceBusSecureTrigger — static' {
     }
 }
 
+Describe 'Enable-ServiceBusSecureTrigger — Get-FunctionAppStateDisplay (Flex Consumption has no ''state'')' {
+
+    BeforeAll {
+        . $script:TriggerScript @script:LoadArgs
+    }
+
+    It 'returns the state value for a classic app shape' {
+        $app = [PSCustomObject]@{ state = 'Running'; identity = [PSCustomObject]@{} }
+        Get-FunctionAppStateDisplay -App $app | Should -Be 'Running'
+    }
+
+    It 'does not throw and returns a fallback for a Flex app shape with no state property (build 30775 regression guard)' {
+        # Matches az functionapp show's actual top-level shape for wwprofilerlw (Flex
+        # Consumption), captured live 2026-09-22: id/identity/kind/location/name/properties/
+        # resourceGroup/tags/type - no 'state'. Under Set-StrictMode -Version Latest (line 128
+        # of the script under test), $App.state on an object like this throws
+        # PropertyNotFoundException rather than returning $null.
+        $app = [PSCustomObject]@{ id = '/subscriptions/x'; identity = [PSCustomObject]@{}; kind = 'functionapp,linux' }
+        { Get-FunctionAppStateDisplay -App $app } | Should -Not -Throw
+        Get-FunctionAppStateDisplay -App $app | Should -Match 'Flex Consumption'
+    }
+}
+
 Describe 'Enable-ServiceBusSecureTrigger — Set-FunctionAppSettingsViaFile (quote-safe app settings write)' {
 
     BeforeAll {

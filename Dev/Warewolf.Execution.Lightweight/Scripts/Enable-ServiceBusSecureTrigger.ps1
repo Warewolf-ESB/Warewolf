@@ -274,6 +274,21 @@ function Assert-DeliveryBudgetExceedsClaimStaleAfter {
     Write-Ok "Delivery budget check: MaxDeliveryCount ($MaxDeliveryCount) x LockDuration ($lockDurationSpan) = $deliveryBudget > estimated ClaimStaleAfter ($ClaimStaleAfter)."
 }
 
+function Get-FunctionAppStateDisplay {
+    <#
+        `az functionapp show` on a Flex Consumption app has no top-level 'state' property at
+        all (confirmed live against wwprofilerlw, 2026-09-22: id/identity/kind/location/name/
+        properties/resourceGroup/tags/type only - classic Windows Consumption apps have 'state'
+        in addition). Under this script's Set-StrictMode -Version Latest, reading $App.state
+        directly throws PropertyNotFoundException instead of returning $null, which killed
+        Phase 0 outright on the first Flex deploy (build 30775). This is log-line-only - nothing
+        downstream reads the return value - so the fix is just a strict-mode-safe read.
+    #>
+    param($App)
+    if ($App.PSObject.Properties.Match('state').Count -gt 0) { return $App.state }
+    return '<not reported by az functionapp show — Flex Consumption>'
+}
+
 # Dot-source hook for the Pester suite: define the helper functions above and stop, without
 # touching Azure or emitting a phase banner. Mirrors Configure-WwExecutionAuth.ps1's and
 # Deploy-WwExecutionEngine.ps1's -LoadFunctionsOnly.
@@ -291,7 +306,7 @@ Write-Ok "Azure: $($acct.name) ($($acct.id))"
 
 $app = Invoke-Az @('functionapp', 'show', '--name', $FunctionAppName, '--resource-group', $ResourceGroup, '-o', 'json') | Out-String | ConvertFrom-Json
 if (-not $app) { throw "Function App '$FunctionAppName' not found in resource group '$ResourceGroup'." }
-Write-Ok "Function App '$FunctionAppName' found (state: $($app.state))."
+Write-Ok "Function App '$FunctionAppName' found (state: $(Get-FunctionAppStateDisplay $app))."
 
 $identity = $app.identity
 if (-not $identity -or -not $identity.principalId -or $identity.type -notmatch 'SystemAssigned') {

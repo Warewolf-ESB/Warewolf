@@ -13,6 +13,12 @@ const string executionId = "Program-Startup";
 
 try
 {
+    // Set before anything else in cold start, unconditionally: Microsoft.Data.SqlClient's
+    // alias-lookup registry read (AliasRegistryLookup) throws on Linux the moment the FIRST
+    // SqlConnection opens, and the switch is cached internally after SqlClient's first read of
+    // it — see SqlClientCompatibilityConfigurator's own doc comment for the incident this guards.
+    SqlClientCompatibilityConfigurator.Configure();
+
     // ── Step 1: Load configuration ───────────────────────────────────────────
     var config = HostEnvironmentConfig.Load();
     var loggingConfig = LoggingConfiguration.FromEnvironment();
