@@ -190,6 +190,19 @@
         User, Azure Service Bus Data Receiver, ...).  This script does NOT delete anything — it
         reports the mismatch and leaves the app alone.
 
+    The -PublishPath package must target the matching OS: a win-x64 package for 'Consumption'
+    (created with --os-type Windows) and a linux-x64 package for 'Flex' (Linux-only).  The
+    package's runtime is read from its deps.json at plan time and a mismatch fails there - see
+    -SkipPackageRuntimeCheck.
+
+.PARAMETER SkipPackageRuntimeCheck
+    OPT-OUT.  Skips the plan-time check that the -PublishPath package's runtime identifier
+    (runtimeTarget in Warewolf.Execution.Lightweight.deps.json) matches -HostingPlan: win-x64
+    for Consumption, linux-x64 for Flex.  A mismatched package deploys without any error but
+    the host can never start the worker, so the check exists to catch that before Phase 1.
+    Use this only for an unusual package the check misjudges; the plan states that it was
+    skipped.
+
 .PARAMETER FlexInstanceMemoryMB
     Flex Consumption instance size in MB (see https://aka.ms/flex-instance-sizes).  Ignored
     unless -HostingPlan Flex.  Default 2048.
@@ -369,6 +382,10 @@ param(
 
     # Left unset, the CLI picks its own default container on -StorageAccount.
     [string] $FlexDeploymentStorageContainerName,
+
+    # Opt-out of the plan-time "package runtime matches -HostingPlan" check (win-x64 for
+    # Consumption, linux-x64 for Flex). Printed in the plan when used.
+    [switch] $SkipPackageRuntimeCheck,
 
     # ── Publish source (REQUIRED — folder or .zip) ───────────────────────────
     [string] $PublishPath,
@@ -1287,6 +1304,45 @@ function Resolve-CurrentPrincipal {
     return @{ ObjectId = $oid.Trim(); PrincipalType = 'User'; Display = "the signed-in user ($($user.name))" }
 }
 
+function Get-WwPackageRuntimeIdentifier {
+    <#
+        Returns the runtime identifier an engine publish output was built for - 'win-x64',
+        'linux-x64', ... - read from runtimeTarget.name in Warewolf.Execution.Lightweight.deps.json
+        (".NETCoreApp,Version=v10.0/linux-x64"). Returns $null for a portable (RID-less) publish,
+        which runs on either OS, and when no readable deps.json is found.
+
+        Accepts the package folder OR the .zip: a zip is read in place (entry at the root, or one
+        folder down for a zip that wraps its contents), so this works at plan time, before the
+        zip is extracted.
+    #>
+    param([Parameter(Mandatory)] [string] $Path)
+
+    $depsName = 'Warewolf.Execution.Lightweight.deps.json'
+    $json = $null
+    $item = Get-Item -LiteralPath $Path -ErrorAction Stop
+    if ($item.PSIsContainer) {
+        $deps = Join-Path $item.FullName $depsName
+        if (Test-Path -LiteralPath $deps) { $json = Get-Content -LiteralPath $deps -Raw }
+    } else {
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        $zip = [System.IO.Compression.ZipFile]::OpenRead($item.FullName)
+        try {
+            $entry = $zip.Entries | Where-Object { $_.FullName -eq $depsName } | Select-Object -First 1
+            if (-not $entry) {
+                $entry = $zip.Entries | Where-Object { $_.Name -eq $depsName -and ($_.FullName -split '[\\/]').Count -eq 2 } | Select-Object -First 1
+            }
+            if ($entry) {
+                $reader = [System.IO.StreamReader]::new($entry.Open())
+                try { $json = $reader.ReadToEnd() } finally { $reader.Dispose() }
+            }
+        } finally { $zip.Dispose() }
+    }
+    if (-not $json) { return $null }
+    try { $target = ($json | ConvertFrom-Json).runtimeTarget.name } catch { return $null }
+    if ($target -and $target -match '/(?<rid>[^/]+)$') { return $Matches['rid'] }
+    return $null
+}
+
 function Resolve-FunctionRuntimePlan {
     <#
         Decide what THIS run does about the Function App's .NET runtime, from the
@@ -1586,6 +1642,27 @@ if ($HostingPlan -eq 'Flex' -and $FunctionAppScaleLimit) {
 if ($HostingPlan -ne 'Flex' -and $FlexMaximumInstanceCount) {
     throw ("-FlexMaximumInstanceCount requires -HostingPlan Flex (`az functionapp scale config set` targets Flex " +
            "Consumption only). On the classic plan use -FunctionAppScaleLimit $FlexMaximumInstanceCount instead.")
+}
+# The package must target the OS the plan runs on: Flex Consumption is Linux-only, and the
+# classic branch creates the app with --os-type Windows. A mismatched package deploys with no
+# error at all - the host just never starts the worker - so it is caught here instead. The
+# release page ships both (AzureFunctionsPackage-linux-x64-<ver>.zip / -win-x64-<ver>.zip).
+$expectedRidPrefix = if ($HostingPlan -eq 'Flex') { 'linux-' } else { 'win-' }
+if ($SkipPackageRuntimeCheck) {
+    $script:PackageRuntimeMessage = 'check SKIPPED (-SkipPackageRuntimeCheck)'
+} else {
+    $packageRid = Get-WwPackageRuntimeIdentifier -Path $PublishPath
+    if (-not $packageRid) {
+        $script:PackageRuntimeMessage = 'portable / not stated in deps.json - not checked against -HostingPlan'
+        Write-Note "PublishPath package states no runtime identifier (portable publish, or no deps.json); it is not checked against -HostingPlan $HostingPlan."
+    } elseif (-not $packageRid.StartsWith($expectedRidPrefix, [System.StringComparison]::OrdinalIgnoreCase)) {
+        $wantedPackage = if ($HostingPlan -eq 'Flex') { 'AzureFunctionsPackage-linux-x64-<ver>.zip' } else { 'AzureFunctionsPackage-win-x64-<ver>.zip' }
+        $planOs = if ($HostingPlan -eq 'Flex') { 'Linux-only Flex Consumption' } else { 'classic Consumption, created as a Windows app' }
+        throw ("-PublishPath is a $packageRid package, but -HostingPlan $HostingPlan is $planOs. Deploy the " +
+               "${expectedRidPrefix}x64 package instead ($wantedPackage), or pass -SkipPackageRuntimeCheck if this package is known to be correct.")
+    } else {
+        $script:PackageRuntimeMessage = "$packageRid (matches -HostingPlan $HostingPlan)"
+    }
 }
 
 $triggerConfigProvided = @(@($ServiceBusTriggerQueueName, $ServiceBusTriggerWorkflowName) | Where-Object { -not [string]::IsNullOrWhiteSpace($_) })
@@ -1938,6 +2015,7 @@ Write-Host ("    {0,-28}: {1}" -f 'Runtime', ("{0} {1} (Functions v{2}) — {3}"
     $script:TargetFunctionsRuntime, $script:TargetRuntimeVersion, $script:TargetFunctionsVersion, $script:RuntimePlan.Message))
 Write-Host ("    {0,-28}: {1}" -f 'PublishPath', $PublishPath)
 Write-Host ("    {0,-28}: {1}" -f 'PublishDir', ($publishIsZip ? "$PublishDir  (extracted from zip)" : $PublishDir))
+Write-Host ("    {0,-28}: {1}" -f 'Package runtime', $script:PackageRuntimeMessage)
 Write-Host ("    {0,-28}: {1}" -f 'PublishMethod', $PublishMethod)
 Write-Host ("    {0,-28}: {1}" -f 'App Insights', ($enableAppInsights ? "enabled ($AppInsightsName)" : 'disabled'))
 Write-Host ("    {0,-28}: {1}" -f 'Auth provisioning', ($SkipAuthProvisioning ? 'skipped' : 'enabled'))

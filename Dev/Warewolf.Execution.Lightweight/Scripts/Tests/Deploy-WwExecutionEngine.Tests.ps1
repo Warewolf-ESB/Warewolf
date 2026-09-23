@@ -360,6 +360,50 @@ Describe 'Deploy-WwExecutionEngine — helper functions' {
         . $script:DeployScript -LoadFunctionsOnly
     }
 
+    Context 'Get-WwPackageRuntimeIdentifier' {
+        BeforeEach {
+            $script:pkg = Join-Path ([System.IO.Path]::GetTempPath()) ("wwrid-" + [guid]::NewGuid())
+            New-Item -ItemType Directory -Path $script:pkg -Force | Out-Null
+            'x' | Set-Content -LiteralPath (Join-Path $script:pkg 'host.json')
+        }
+        AfterEach {
+            Remove-Item -LiteralPath $script:pkg -Recurse -Force -ErrorAction SilentlyContinue
+            Remove-Item -LiteralPath "$($script:pkg).zip" -Force -ErrorAction SilentlyContinue
+        }
+        BeforeAll {
+            function script:Write-Deps([string]$Dir, [string]$Target) {
+                @{ runtimeTarget = @{ name = $Target } } | ConvertTo-Json |
+                    Set-Content -LiteralPath (Join-Path $Dir 'Warewolf.Execution.Lightweight.deps.json')
+            }
+        }
+
+        It 'reads the RID from a package folder' {
+            script:Write-Deps $script:pkg '.NETCoreApp,Version=v10.0/linux-x64'
+            Get-WwPackageRuntimeIdentifier -Path $script:pkg | Should -Be 'linux-x64'
+        }
+
+        It 'reads the RID from a .zip whose contents sit at the root' {
+            script:Write-Deps $script:pkg '.NETCoreApp,Version=v10.0/win-x64'
+            Compress-Archive -Path (Join-Path $script:pkg '*') -DestinationPath "$($script:pkg).zip" -Force
+            Get-WwPackageRuntimeIdentifier -Path "$($script:pkg).zip" | Should -Be 'win-x64'
+        }
+
+        It 'reads the RID from a .zip that wraps its contents in one folder' {
+            script:Write-Deps $script:pkg '.NETCoreApp,Version=v10.0/linux-x64'
+            Compress-Archive -Path $script:pkg -DestinationPath "$($script:pkg).zip" -Force
+            Get-WwPackageRuntimeIdentifier -Path "$($script:pkg).zip" | Should -Be 'linux-x64'
+        }
+
+        It 'returns $null for a portable (RID-less) publish' {
+            script:Write-Deps $script:pkg '.NETCoreApp,Version=v10.0'
+            Get-WwPackageRuntimeIdentifier -Path $script:pkg | Should -BeNullOrEmpty
+        }
+
+        It 'returns $null when the package has no deps.json' {
+            Get-WwPackageRuntimeIdentifier -Path $script:pkg | Should -BeNullOrEmpty
+        }
+    }
+
     Context 'Test-CommandExists' {
         It 'returns true for a command that exists' { Test-CommandExists 'Get-Command' | Should -BeTrue }
         It 'returns false for a command that does not exist' { Test-CommandExists 'definitely_not_a_real_command_4f2a' | Should -BeFalse }
@@ -890,6 +934,63 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $callArgs = $script:commonArgs.Clone()
         $callArgs.FlexMaximumInstanceCount = 30
         { & $script:DeployScript @callArgs } | Should -Throw '*requires -HostingPlan Flex*'
+    }
+
+    Context 'package runtime must match -HostingPlan' {
+        # A mismatched package deploys with no error at all - the host just never starts the
+        # worker - so the plan has to catch it. The runtime comes from the package's deps.json.
+        BeforeAll {
+            function script:Set-PackageRid([string]$Dir, [string]$Rid) {
+                $target = if ($Rid) { ".NETCoreApp,Version=v10.0/$Rid" } else { '.NETCoreApp,Version=v10.0' }
+                @{ runtimeTarget = @{ name = $target } } | ConvertTo-Json |
+                    Set-Content -LiteralPath (Join-Path $Dir 'Warewolf.Execution.Lightweight.deps.json')
+            }
+        }
+
+        It 'rejects a win-x64 package on Flex Consumption' {
+            script:Set-PackageRid $global:pubDir 'win-x64'
+            $callArgs = $script:commonArgs.Clone(); $callArgs.HostingPlan = 'Flex'
+            { & $script:DeployScript @callArgs } | Should -Throw '*win-x64 package*Linux-only Flex*linux-x64*'
+        }
+
+        It 'rejects a linux-x64 package on classic (Windows) Consumption' {
+            script:Set-PackageRid $global:pubDir 'linux-x64'
+            { & $script:DeployScript @commonArgs } | Should -Throw '*linux-x64 package*Windows app*win-x64*'
+        }
+
+        It 'accepts a linux-x64 package on Flex, reading it from a .zip without extracting first' {
+            script:Set-PackageRid $global:pubDir 'linux-x64'
+            $zipPath = "$($global:pubDir).zip"
+            Compress-Archive -Path (Join-Path $global:pubDir '*') -DestinationPath $zipPath -Force
+            try {
+                $callArgs = $script:commonArgs.Clone(); $callArgs.HostingPlan = 'Flex'; $callArgs.PublishPath = $zipPath
+                $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+                $out | Should -Match 'Package runtime\s+: linux-x64 \(matches -HostingPlan Flex\)'
+            } finally {
+                Remove-Item -LiteralPath $zipPath -Force -ErrorAction SilentlyContinue
+            }
+        }
+
+        It 'accepts a win-x64 package on classic Consumption' {
+            script:Set-PackageRid $global:pubDir 'win-x64'
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Match 'Package runtime\s+: win-x64 \(matches -HostingPlan Consumption\)'
+        }
+
+        It 'lets a portable (RID-less) package through on either plan, with a note' {
+            script:Set-PackageRid $global:pubDir $null
+            $callArgs = $script:commonArgs.Clone(); $callArgs.HostingPlan = 'Flex'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'states no runtime identifier'
+            $out | Should -Match 'Package runtime\s+: portable'
+        }
+
+        It 'skips the check with -SkipPackageRuntimeCheck, and says so in the plan' {
+            script:Set-PackageRid $global:pubDir 'win-x64'
+            $callArgs = $script:commonArgs.Clone(); $callArgs.HostingPlan = 'Flex'; $callArgs.SkipPackageRuntimeCheck = $true
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'Package runtime\s+: check SKIPPED \(-SkipPackageRuntimeCheck\)'
+        }
     }
 
     It 'rejects a non-positive -FunctionAppScaleLimit via ValidateRange' {

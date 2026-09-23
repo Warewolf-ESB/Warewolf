@@ -42,7 +42,7 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 "Params first, prompt if missing." REQUIRED targeting params have **no defaults** (`ResourceGroup`, `Location`, `StorageAccount`, `AppName`); `SubscriptionId`/`TenantId` resolve from `az account show`.
 
 - **Phase 0 — Pre-flight:** az CLI + login, resolve subscription/tenant.
-- **Phase 0.5 — PLAN:** resolve every decision (targeting, publish source, feature toggles, all env-var values, secure.config classification, encryption/Key Vault, Elasticsearch), print a masked summary, and ask **once** to proceed before anything is created/changed.
+- **Phase 0.5 — PLAN:** the `-PublishPath` package must match `-HostingPlan` — win-x64 for `Consumption` (a Windows app), linux-x64 for `Flex` (Linux-only); the release page ships both zips. The package's `deps.json` runtime is checked here and a mismatch throws (`-SkipPackageRuntimeCheck` opts out). Also: resolve every decision (targeting, publish source, feature toggles, all env-var values, secure.config classification, encryption/Key Vault, Elasticsearch), print a masked summary, and ask **once** to proceed before anything is created/changed.
 - **Phase 1 — Infra:** resource group, storage, Function App, App Insights.
 - **Phase 2 — Auth:** Entra ID + Easy Auth (`Configure-WwExecutionAuth.ps1`).
 - **Phase 3 — Stage:** secure.config (validate / auto-encrypt plaintext), workflow resources (+ optional WFAES encryption), Elasticsearch source (+ WFAES encryption), environment variables.
