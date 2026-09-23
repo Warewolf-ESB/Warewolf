@@ -551,10 +551,11 @@ namespace Warewolf.Execution.QueueProcessor.Tests
         [TestCategory("UnitTest")]
         public void Options_SourcesPath_DefaultsToSourcesUnderSettings()
         {
-            var options = new QueueProcessorOptions { SettingsPath = @"X:\app\Settings" };
+            var settings = NonExistentRootedPath("app", "Settings");
+            var options = new QueueProcessorOptions { SettingsPath = settings };
 
-            Assert.AreEqual(@"X:\app\Settings\sources", options.SourcesPath);
-            Assert.AreEqual(@"X:\app\Settings\triggers", options.TriggersPath);
+            Assert.AreEqual(Path.Combine(settings, "sources"), options.SourcesPath);
+            Assert.AreEqual(Path.Combine(settings, "triggers"), options.TriggersPath);
         }
 
         [TestMethod]
@@ -575,16 +576,23 @@ namespace Warewolf.Execution.QueueProcessor.Tests
         [TestCategory("UnitTest")]
         public void Options_AbsoluteSubPath_OverridesTheSettingsRoot()
         {
+            var elsewhereTriggers = NonExistentRootedPath("elsewhere", "triggers");
+            var elsewhereSources = NonExistentRootedPath("elsewhere", "sources");
             var options = new QueueProcessorOptions
             {
-                SettingsPath = @"X:\app\Settings",
-                TriggersSubPath = @"Y:\elsewhere\triggers",
-                SourcesSubPath = @"Y:\elsewhere\sources",
+                SettingsPath = NonExistentRootedPath("app", "Settings"),
+                TriggersSubPath = elsewhereTriggers,
+                SourcesSubPath = elsewhereSources,
             };
 
-            Assert.AreEqual(@"Y:\elsewhere\triggers", options.TriggersPath);
-            Assert.AreEqual(@"Y:\elsewhere\sources", options.SourcesPath);
+            Assert.AreEqual(elsewhereTriggers, options.TriggersPath);
+            Assert.AreEqual(elsewhereSources, options.SourcesPath);
         }
+
+        // Rooted on every OS (a drive-letter literal is not rooted on Linux) and never created,
+        // so ResolveSubPath's case-tolerance probe returns the joined path unchanged.
+        static string NonExistentRootedPath(params string[] parts) =>
+            Path.Combine([Path.GetTempPath(), "ww-options-" + Guid.NewGuid().ToString("N"), .. parts]);
 
         [TestMethod]
         [TestCategory("UnitTest")]

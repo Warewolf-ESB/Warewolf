@@ -135,6 +135,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_BlankSourceType_Throws()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync();
             await Handle(HostConfig(), OpenPolicy, null, "ExistingSource", "   ", ConfigOf(new { HostName = "localhost" }));
         }
@@ -144,6 +145,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_UnsupportedSourceType_Throws()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync();
             await Handle(HostConfig(), OpenPolicy, null, "ExistingSource", "MongoDb", ConfigOf(new { HostName = "localhost" }));
         }
@@ -161,6 +163,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_ConfigNotAnObject_Throws()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync();
             await Handle(HostConfig(), OpenPolicy, null, "ExistingSource", "Redis", JsonSerializer.SerializeToElement("not-an-object"));
         }
@@ -170,6 +173,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_UnrecognisedConfigField_Throws()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync();
             await Handle(HostConfig(), OpenPolicy, null, "ExistingSource", "Redis", ConfigOf(new { HostName = "localhost", NotAField = "x" }));
         }
@@ -179,6 +183,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_MissingRequiredField_Throws()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync();
             // Redis requires HostName.
             await Handle(HostConfig(), OpenPolicy, null, "ExistingSource", "Redis", ConfigOf(new { Port = 6379 }));
@@ -189,6 +194,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_SqlDatabase_UserAuthWithoutPassword_Throws()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync();
             await Handle(HostConfig(), OpenPolicy, null, "ExistingSource", "SqlDatabase",
                 ConfigOf(new { Server = "localhost", DatabaseName = "db", AuthenticationType = "User", UserID = "sa" }));
@@ -199,6 +205,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_SecureConfigEffective_NoContributePermission_ThrowsPermissionDenied()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("NoPermission");
 
             var loader = new StubAuthPolicyLoader
@@ -217,6 +224,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [ExpectedException(typeof(McpException))]
         public async Task Handle_UnresolvedSecretPlaceholder_Throws()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync();
             await Handle(HostConfig(), OpenPolicy, null, "ExistingSource", "Redis",
                 ConfigOf(new { HostName = "localhost", AuthenticationType = "Password", Password = "${does-not-exist}" }));
@@ -226,6 +234,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_SecretPlaceholder_ResolvesViaResolver_AndIsReportedByName()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("SecretSource");
             var resolver = new FakeSecretResolver().With("redis-pwd", "s3cr3t-value");
 
@@ -246,6 +255,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_ValidConfig_OverwritesFile_ReturnsUpdatedTrue()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("ExistingRedisSource");
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "ExistingRedisSource", "Redis", ConfigOf(new { HostName = "otherhost" }));
@@ -260,6 +270,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_SecureConfigEffective_WithContributePermission_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("Allowed");
 
             var loader = new StubAuthPolicyLoader
@@ -280,6 +291,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_PreservesSourceId_AndIncrementsVersionNumber()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var path = await SeedExistingSourceAsync("VersionedSource");
             var originalId = XElement.Load(path).Attribute("ID")!.Value;
 
@@ -294,6 +306,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_CanChangeSourceType_AcrossEdit()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("RetypedSource", "Redis", new { HostName = "localhost" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "RetypedSource", "SqlDatabase",
@@ -311,6 +324,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_WrittenFile_ContainsExpectedSourceShape_AndEncryptedConnectionString()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("ShapedSource", "SqlDatabase", new { Server = "myserver", DatabaseName = "mydb" });
 
             await Handle(HostConfig(), OpenPolicy, null, "ShapedSource", "SqlDatabase",
@@ -339,6 +353,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Response_NeverContainsConnectionStringOrSecret()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("SecretiveSource", "Email", new { Host = "smtp.example.com", UserName = "bot", Password = "oldliteral" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "SecretiveSource", "Email",
@@ -355,6 +370,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_MySqlDatabase_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("MySqlSource", "MySqlDatabase", new { Server = "db.local", DatabaseName = "app", UserID = "root", Password = "pw" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "MySqlSource", "MySqlDatabase",
@@ -367,6 +383,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_PostgreSQL_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("PgSource", "PostgreSQL", new { Server = "db.local", DatabaseName = "app", UserID = "postgres", Password = "pw" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "PgSource", "PostgreSQL",
@@ -379,6 +396,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Oracle_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("OracleSource", "Oracle", new { Server = "db.local", UserID = "sys", Password = "pw" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "OracleSource", "Oracle",
@@ -391,6 +409,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_ODBC_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("OdbcSource", "ODBC", new { DatabaseName = "MyDsn" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "OdbcSource", "ODBC", ConfigOf(new { DatabaseName = "MyDsn2" }));
@@ -402,6 +421,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_RabbitMQ_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("RabbitSource", "RabbitMQ", new { HostName = "broker.local", UserName = "guest", Password = "guest" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "RabbitSource", "RabbitMQ",
@@ -414,6 +434,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Email_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await SeedExistingSourceAsync("EmailSource", "Email", new { Host = "smtp.local", UserName = "bot", Password = "pw" });
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "EmailSource", "Email",
@@ -430,6 +451,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_EditedSource_IsImmediatelyReflectedByLightweightSourceLoader_EvenIfAlreadyLoadedOnce()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var path = await SeedExistingSourceAsync("WebToEdit", "Web", new { Address = "https://old-host.example.com" });
             var resourceId = Guid.Parse(XDocument.Parse(File.ReadAllText(path)).Root!.Attribute("ID")!.Value);
 

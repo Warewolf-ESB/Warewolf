@@ -101,7 +101,9 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
         [TestMethod]
         [TestCategory("UnitTest")]
         [ExpectedException(typeof(McpException))]
-        public void ValidateTestName_ContainingInvalidFileNameChar_Throws() => TestCatalog.ValidateTestName("Bad:Name");
+        // NUL is the one Path.GetInvalidFileNameChars() entry (besides '/') common to every OS;
+        // ':' is only invalid on Windows.
+        public void ValidateTestName_ContainingInvalidFileNameChar_Throws() => TestCatalog.ValidateTestName("Bad\0Name");
 
         [TestMethod]
         [TestCategory("UnitTest")]

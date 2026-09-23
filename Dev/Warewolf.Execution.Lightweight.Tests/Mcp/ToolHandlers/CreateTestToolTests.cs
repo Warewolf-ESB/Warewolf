@@ -301,6 +301,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_SecretPlaceholderPassword_ResolvesAndEncrypts_NeverPlaintextOnDisk()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var name = CreateFixtureWorkflow("SecretPasswordWf");
             var resolver = new FakeSecretResolver().With("db-pwd", "s3cr3t-literal-value");
             var test = TestOf(new { testName = "HasSecret", password = "${db-pwd}" });

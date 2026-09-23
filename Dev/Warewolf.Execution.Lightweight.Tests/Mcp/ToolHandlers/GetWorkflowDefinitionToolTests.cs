@@ -273,20 +273,21 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public void Handle_RealWorkflow_UsesNonPassActivity_BodyEditableFalseWithReason()
         {
-            var source = FindBite("Resources - Release", "Resources", "Hello World.bite");
+            // EngineResources is the test project's copy of the engine's Resources folder.
+            var source = FindBite("EngineResources", "hangfiredemo", "Manual Resumption Tool Example.bite");
             if (source is null)
             {
-                Assert.Inconclusive("Hello World.bite not found relative to the test assembly's base directory.");
+                Assert.Inconclusive("Manual Resumption Tool Example.bite not found relative to the test assembly's base directory.");
                 return;
             }
 
-            var destination = Path.Combine(_root, "Hello World.bite");
+            var destination = Path.Combine(_root, "Manual Resumption Tool Example.bite");
             File.Copy(source, destination);
 
-            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Hello World");
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Manual Resumption Tool Example");
 
             Assert.IsFalse(result.BodyEditable,
-                "Hello World.bite uses 'Assign', fidelity Status=PassBothFailedIdentically (not Pass); expected bodyEditable:false.");
+                "Manual Resumption Tool Example.bite uses 'Manual Resumption', fidelity Status=PassBothFailedIdentically (not Pass); expected bodyEditable:false.");
             Assert.IsNotNull(result.NonEditableReason);
             Assert.IsNull(result.Body);
         }

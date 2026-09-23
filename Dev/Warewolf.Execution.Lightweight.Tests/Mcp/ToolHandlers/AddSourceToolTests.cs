@@ -214,6 +214,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_SecretPlaceholder_ResolvesViaResolver_AndIsReportedByName()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var resolver = new FakeSecretResolver().With("redis-pwd", "s3cr3t-value");
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "SecretSource", "Redis",
@@ -231,6 +232,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_SecretResolver_IsNeverCalledWithLiteralConfigValue()
         {
+            PlatformGuards.RequireWindowsDpapi();
             // The resolver only ever receives the placeholder NAME, never the literal value a
             // caller might mistakenly put in `config` — guards against a resolver accidentally
             // being handed something that looks like a secret.
@@ -268,6 +270,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_ValidConfig_WritesFile_ReturnsCreatedTrue()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "NewRedisSource", "Redis", ConfigOf(new { HostName = "localhost" }));
 
             Assert.AreEqual("NewRedisSource", result.Name);
@@ -280,6 +283,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_SecureConfigEffective_WithContributePermission_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var loader = new StubAuthPolicyLoader
             {
                 IsConfigEffective = true,
@@ -298,6 +302,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_WrittenFile_ContainsExpectedSourceShape_AndEncryptedConnectionString()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await Handle(HostConfig(), OpenPolicy, null, "ShapedSource", "SqlDatabase",
                 ConfigOf(new { Server = "myserver", DatabaseName = "mydb" }));
 
@@ -325,6 +330,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Response_NeverContainsConnectionStringOrSecret()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "SecretiveSource", "Email",
                 ConfigOf(new { Host = "smtp.example.com", UserName = "bot", Password = "hunter2literal" }));
 
@@ -339,6 +345,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_MySqlDatabase_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "MySqlSource", "MySqlDatabase",
                 ConfigOf(new { Server = "db.local", DatabaseName = "app", UserID = "root", Password = "pw" }));
 
@@ -350,6 +357,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_PostgreSQL_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "PgSource", "PostgreSQL",
                 ConfigOf(new { Server = "db.local", DatabaseName = "app", UserID = "postgres", Password = "pw" }));
 
@@ -360,6 +368,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Oracle_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "OracleSource", "Oracle",
                 ConfigOf(new { Server = "db.local", UserID = "sys", Password = "pw" }));
 
@@ -370,6 +379,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_ODBC_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "OdbcSource", "ODBC",
                 ConfigOf(new { DatabaseName = "MyDsn" }));
 
@@ -380,6 +390,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_RabbitMQ_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "RabbitSource", "RabbitMQ",
                 ConfigOf(new { HostName = "broker.local", UserName = "guest", Password = "guest" }));
 
@@ -390,6 +401,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Email_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "EmailSource", "Email",
                 ConfigOf(new { Host = "smtp.local", UserName = "bot", Password = "pw" }));
 
@@ -411,6 +423,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Web_Succeeds()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var result = await Handle(HostConfig(), OpenPolicy, null, "WebSource1", "Web",
                 ConfigOf(new { Address = "https://api.example.com" }));
 
@@ -448,6 +461,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Web_AnonymousAuth_RoundTripsThroughWebSource_DefaultsToAnonymous()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await Handle(HostConfig(), OpenPolicy, null, "WebRoundTrip", "Web",
                 ConfigOf(new { Address = "https://api.example.com/base", DefaultQuery = "?x=1" }));
 
@@ -463,6 +477,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Web_UserAuth_RoundTripsThroughWebSource_PreservesCredentials()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await Handle(HostConfig(), OpenPolicy, null, "WebUserAuth", "Web",
                 ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "User", UserName = "bob", Password = "s3cret" }));
 
@@ -479,6 +494,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Web_ApiKeyQuery_RoundTripsThroughWebSource_AndResolvesSecret()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var resolver = new FakeSecretResolver().With("giphy-key", "k-123");
 
             var result = await Handle(HostConfig(), OpenPolicy, null, "WebApiKeyQuery", "Web",
@@ -497,6 +513,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Web_ApiKeyHeader_RoundTripsThroughWebSource()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await Handle(HostConfig(), OpenPolicy, null, "WebApiKeyHeader", "Web",
                 ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "ApiKeyHeader", ApiKeyName = "X-Api-Key", ApiKeyValue = "abc" }));
 
@@ -510,6 +527,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Web_Bearer_NeedsNoKeyName_AndRoundTrips()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await Handle(HostConfig(), OpenPolicy, null, "WebBearer", "Web",
                 ConfigOf(new { Address = "https://api.example.com", AuthenticationType = "Bearer", ApiKeyValue = "tok" }));
 
@@ -568,6 +586,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_Web_WrittenFile_HasWebSourceResourceTypeAndNoServerType()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await Handle(HostConfig(), OpenPolicy, null, "WebShape", "Web", ConfigOf(new { Address = "https://api.example.com" }));
 
             var source = XDocument.Parse(File.ReadAllText(Path.Combine(_root, "WebShape.bite"))).Root!;
@@ -585,6 +604,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public async Task Handle_SourceIsImmediatelyResolvableByLightweightSourceLoader_EvenIfDirectoryWasAlreadyIndexed()
         {
+            PlatformGuards.RequireWindowsDpapi();
             // Simulate a warm instance that already resolved some other source in _root before
             // this call — e.g. an earlier workflow execution — materializing the directory's index.
             LightweightSourceLoader.Instance.EnsureIndexed(_root);

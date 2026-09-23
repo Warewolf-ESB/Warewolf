@@ -557,6 +557,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
         [TestCategory("UnitTest")]
         public async Task AddSource_HappyPath()
         {
+            PlatformGuards.RequireWindowsDpapi();
             var function = NewFunctions();
             var payload = JsonSerializer.Serialize(new { name = "NewSrc", sourceType = "Redis", config = new { HostName = "localhost" } });
             var (ctx, req) = NewRequest("add_source", payload);
@@ -573,6 +574,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
         [TestCategory("UnitTest")]
         public async Task EditSource_HappyPath()
         {
+            PlatformGuards.RequireWindowsDpapi();
             await AddSourceTool.Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false },
                 new FakeSecretResolver(), Principal("Developers"), "ExistingSrc", "Redis",
                 JsonSerializer.SerializeToElement(new { HostName = "localhost" }));
