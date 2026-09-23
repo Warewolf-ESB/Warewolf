@@ -528,6 +528,74 @@ Describe 'Deploy-WwExecutionEngine — helper functions' {
         }
     }
 
+    Context 'Invoke-Az transient retry (WwAzCli.psm1)' {
+        <#
+            Build 30801 failed Phase 1 on ONE ARM front-door 503. Invoke-Az now retries a transient
+            failure before its throw / -AllowFail contract applies, and must still fail fast on a
+            real error so an -AllowFail existence probe of a missing resource stays instant.
+        #>
+        BeforeAll {
+            $script:outage503 = "ERROR: Service Unavailable(<!DOCTYPE html><html><body><h2>Our services aren't available right now</h2></body></html>)"
+        }
+        BeforeEach {
+            $script:AzRetryDelaySeconds = @(0)
+            # One scripted @{ Exit; Out } per call; the last step repeats.
+            $script:azSteps = @(@{ Exit = 0; Out = '{}' }); $script:azCalls = 0
+            function az {
+                $step = $script:azSteps[[Math]::Min($script:azCalls, $script:azSteps.Count - 1)]
+                $script:azCalls++
+                $global:LASTEXITCODE = $step.Exit
+                $step.Out
+            }
+        }
+        AfterAll { $script:AzRetryDelaySeconds = @(3, 7, 15, 30) }
+
+        It 'retries a read that hits the ARM outage page and returns its eventual output' {
+            $DryRun = $false
+            $script:azSteps = @(@{ Exit = 1; Out = $script:outage503 }, @{ Exit = 0; Out = '{"name":"app"}' })
+            $out = (Invoke-Az -Args @('functionapp', 'show') 6>$null)
+            $out | Should -Be '{"name":"app"}'
+            $script:azCalls | Should -Be 2
+        }
+
+        It 'retries a mutating call too (the build-30801 failure was a write)' {
+            $DryRun = $false
+            $script:azSteps = @(@{ Exit = 1; Out = $script:outage503 }, @{ Exit = 0; Out = $null })
+            { Invoke-Az -Args @('functionapp', 'config', 'appsettings', 'set') -Mutating 6>$null } | Should -Not -Throw
+            $script:azCalls | Should -Be 2
+        }
+
+        It 'throws after 5 attempts on a persistent outage, naming the attempt count and the real cause' {
+            $DryRun = $false
+            $script:azSteps = @(@{ Exit = 1; Out = $script:outage503 })
+            { Invoke-Az -Args @('functionapp', 'show') 6>$null } | Should -Throw "*after 5 attempt(s)*aren't available right now*"
+            $script:azCalls | Should -Be 5
+        }
+
+        It 'does NOT retry an -AllowFail probe of a missing resource (still returns $null at once)' {
+            $DryRun = $false
+            $script:azSteps = @(@{ Exit = 3; Out = "ERROR: (ResourceNotFound) The Resource 'Microsoft.Web/sites/x' was not found." })
+            Invoke-Az -Args @('functionapp', 'show') -AllowFail | Should -BeNullOrEmpty
+            $script:azCalls | Should -Be 1
+            $script:LastAzErrorOutput | Should -Match 'ResourceNotFound'
+        }
+
+        It 'returns $null from -AllowFail only after exhausting retries on a persistent outage' {
+            $DryRun = $false
+            $script:azSteps = @(@{ Exit = 1; Out = $script:outage503 })
+            Invoke-Az -Args @('functionapp', 'show') -AllowFail 6>$null | Should -BeNullOrEmpty
+            $script:azCalls | Should -Be 5
+            $script:LastAzErrorOutput | Should -Match "aren't available right now"
+        }
+
+        It 'skips a mutating call under -DryRun before any retry is attempted' {
+            $DryRun = $true
+            $script:azSteps = @(@{ Exit = 1; Out = $script:outage503 })
+            Invoke-Az -Args @('group', 'create') -Mutating 6>$null | Should -BeNullOrEmpty
+            $script:azCalls | Should -Be 0
+        }
+    }
+
     Context 'secure.config classification + crypto round-trip' {
         BeforeAll {
             $script:scDir = Join-Path ([System.IO.Path]::GetTempPath()) ("wwsc-" + [guid]::NewGuid())
@@ -1740,20 +1808,120 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
         }
     }
 
+    Context 'Resolve-FunctionRuntimePlan on Flex (pure decision)' {
+
+        <#
+            Flex keeps the runtime in functionAppConfig.runtime as '10.0' (no leading 'v'), and it is
+            read and reconciled with `az functionapp runtime config show/set`. Build 30801 (the first
+            deploy onto an EXISTING Flex app) reported it 'unknown' and pointed the operator at
+            `functionapp config show`, which reads a meaningless 'v4.0' on Flex.
+        #>
+
+        BeforeAll { . $script:DeployScript -LoadFunctionsOnly }
+
+        It 'targets 10.0 and plans nothing when a Flex app is already on it' {
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '10.0' -AppExists -HostingPlan Flex
+            $p.Target | Should -Be '10.0'
+            $p.Action | Should -Be 'none'
+        }
+
+        It 'WARNS on a Flex mismatch without -UpgradeRuntimeVersion, naming the Flex fix command' {
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '8.0' -AppExists -HostingPlan Flex -AppName 'a' -ResourceGroup 'g'
+            $p.Action     | Should -Be 'warn'
+            $p.FixCommand | Should -Be 'az functionapp runtime config set -n a -g g --runtime-version 10.0'
+        }
+
+        It 'upgrades a Flex mismatch only with -UpgradeRuntimeVersion' {
+            (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '8.0' -AppExists -Upgrade -HostingPlan Flex).Action |
+                Should -Be 'upgrade'
+        }
+
+        It 'treats v10.0 and 10.0 as the same version (no spurious upgrade/restart)' {
+            (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion 'v10.0' -AppExists -Upgrade -HostingPlan Flex).Action |
+                Should -Be 'none'
+            (Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion '10.0' -AppExists -Upgrade).Action |
+                Should -Be 'none'
+        }
+
+        It 'points an unreadable Flex runtime at `runtime config show`, never `config show`' {
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $null -AppExists -HostingPlan Flex -AppName 'a' -ResourceGroup 'g'
+            $p.Action       | Should -Be 'unknown'
+            $p.CheckCommand | Should -Be 'az functionapp runtime config show -n a -g g'
+            $p.Message      | Should -Match 'runtime config show'
+        }
+
+        It 'keeps the classic check/fix commands on Consumption' {
+            $p = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion 'v8.0' -AppExists -AppName 'a' -ResourceGroup 'g'
+            $p.CheckCommand | Should -Be 'az functionapp config show -n a -g g --query netFrameworkVersion'
+            $p.FixCommand   | Should -Be 'az functionapp config set -n a -g g --net-framework-version v10.0'
+        }
+    }
+
+    Context 'Get-WwExistingRuntimeVersion (pure payload parsing)' {
+
+        BeforeAll { . $script:DeployScript -LoadFunctionsOnly }
+
+        It 'reads siteConfig.netFrameworkVersion from a flattened classic payload' {
+            $r = Get-WwExistingRuntimeVersion -AppShowJson '{"name":"app","siteConfig":{"netFrameworkVersion":"v8.0"}}'
+            $r.Version | Should -Be 'v8.0'
+            $r.Source  | Should -Be 'siteConfig'
+        }
+
+        It 'reads siteConfig nested under properties (ARM shape)' {
+            $r = Get-WwExistingRuntimeVersion -AppShowJson '{"name":"app","properties":{"siteConfig":{"netFrameworkVersion":"v10.0"}}}'
+            $r.Version | Should -Be 'v10.0'
+            $r.Source  | Should -Be 'siteConfig'
+        }
+
+        It 'reads functionAppConfig.runtime from the Flex ARM payload, ignoring its null netFrameworkVersion' {
+            # The live WarewolfServer-UAT shape (az 2.83, 2026-09-23).
+            $json = '{"name":"WarewolfServer-UAT","kind":"functionapp,linux","properties":{"siteConfig":{"netFrameworkVersion":null},' +
+                    '"functionAppConfig":{"runtime":{"name":"dotnet-isolated","version":"10.0"}}}}'
+            $r = Get-WwExistingRuntimeVersion -AppShowJson $json
+            $r.Version | Should -Be '10.0'
+            $r.Source  | Should -Be 'functionAppConfig'
+        }
+
+        It 'returns $null when the payload carries neither' {
+            Get-WwExistingRuntimeVersion -AppShowJson '{"name":"app"}' | Should -BeNullOrEmpty
+            Get-WwExistingRuntimeVersion -AppShowJson '{"name":"app","properties":{"siteConfig":{"netFrameworkVersion":null}}}' |
+                Should -BeNullOrEmpty
+        }
+
+        It 'returns $null for unreadable input rather than throwing' {
+            Get-WwExistingRuntimeVersion -AppShowJson 'ERROR: not json {' | Should -BeNullOrEmpty
+            Get-WwExistingRuntimeVersion -AppShowJson ''                  | Should -BeNullOrEmpty
+            Get-WwExistingRuntimeVersion -AppShowJson '[1,2]'             | Should -BeNullOrEmpty
+        }
+    }
+
     Context 'end-to-end (DryRun)' {
 
         BeforeEach {
             # Shim distinguishes "app absent" from "app present on <netFx>". The Phase 0.5 probe
             # and the Phase 1 existence check both go through `functionapp show`.
-            $global:appExists = $true
-            $global:appNetFx  = 'v8.0'
+            $global:appExists       = $true
+            $global:appNetFx        = 'v8.0'
+            $global:appFlexPayload  = $false
+            $global:appFlexRuntime  = $null
+            $global:flexRuntimeShow = $null
             function az {
                 $a = $args; $global:LASTEXITCODE = 0
                 if ($a[0] -eq 'account'     -and $a -contains 'show')   { return '{"id":"sub-123","tenantId":"tid-456","user":{"name":"dev@x"},"name":"My Sub"}' }
                 if ($a[0] -eq 'group'       -and $a -contains 'exists') { return 'true' }
                 if ($a[0] -eq 'storage'     -and $a -contains 'show')   { return '{"name":"st"}' }
+                if ($a[0] -eq 'functionapp' -and $a[1] -eq 'runtime' -and $a -contains 'show') {
+                    # Flex-only `runtime config show`; $global:flexRuntimeShow = $null means it fails.
+                    if ($null -eq $global:flexRuntimeShow) { $global:LASTEXITCODE = 1; return 'ERROR: (ResourceNotFound) not a Flex app' }
+                    return ('{"name":"dotnet-isolated","version":"' + $global:flexRuntimeShow + '"}')
+                }
                 if ($a[0] -eq 'functionapp' -and $a -contains 'show')   {
                     if (-not $global:appExists) { $global:LASTEXITCODE = 1; return $null }
+                    if ($global:appFlexPayload) {
+                        # The ARM shape az returns for a Flex app: nested under properties, null netFrameworkVersion.
+                        $fac = if ($global:appFlexRuntime) { ',"functionAppConfig":{"runtime":{"name":"dotnet-isolated","version":"' + $global:appFlexRuntime + '"}}' } else { '' }
+                        return ('{"name":"app","properties":{"siteConfig":{"netFrameworkVersion":null}' + $fac + '}}')
+                    }
                     if ($null -eq $global:appNetFx) { return '{"name":"app"}' }   # payload with no siteConfig
                     return ('{"name":"app","siteConfig":{"netFrameworkVersion":"' + $global:appNetFx + '"}}')
                 }
@@ -1794,6 +1962,9 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
         AfterAll {
             Remove-Variable -Name appExists -Scope Global -ErrorAction SilentlyContinue
             Remove-Variable -Name appNetFx  -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name appFlexPayload  -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name appFlexRuntime  -Scope Global -ErrorAction SilentlyContinue
+            Remove-Variable -Name flexRuntimeShow -Scope Global -ErrorAction SilentlyContinue
             Remove-Variable -Name pubDir    -Scope Global -ErrorAction SilentlyContinue
             Remove-Variable -Name logDir    -Scope Global -ErrorAction SilentlyContinue
         }
@@ -1889,6 +2060,50 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
             $json.runtime.netFrameworkTarget | Should -Be 'v10.0'
             $json.runtime.netFrameworkBefore | Should -Be 'v8.0'
             $json.runtime.action             | Should -Be 'warn'
+        }
+
+        It 'reads an EXISTING Flex app''s runtime from functionAppConfig and plans nothing (build 30801)' {
+            $global:appExists = $true; $global:appFlexPayload = $true; $global:appFlexRuntime = '10.0'
+            $out = (& $script:DeployScript @commonArgs -HostingPlan Flex) 6>&1 | Out-String
+            $out | Should -Not -Match 'RUNTIME UNVERIFIED'
+            $out | Should -Match '10\.0 — already correct'
+            $out | Should -Match 'Function App runtime is 10\.0'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp (runtime )?config set'
+        }
+
+        It 'warns on an existing Flex app behind the target, naming the Flex fix command, and changes nothing' {
+            $global:appExists = $true; $global:appFlexPayload = $true; $global:appFlexRuntime = '8.0'
+            $out = (& $script:DeployScript @commonArgs -HostingPlan Flex) 6>&1 | Out-String
+            $out | Should -Match 'RUNTIME MISMATCH'
+            $out | Should -Match 'az functionapp runtime config set -n \S+ -g DEV2 --runtime-version 10\.0'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp (runtime )?config set'
+        }
+
+        It 'upgrades an existing Flex app with `runtime config set`, never --net-framework-version' {
+            $global:appExists = $true; $global:appFlexPayload = $true; $global:appFlexRuntime = '8.0'
+            $out = (& $script:DeployScript @commonArgs -HostingPlan Flex -UpgradeRuntimeVersion) 6>&1 | Out-String
+            $out | Should -Match '\[DRYRUN\] az functionapp runtime config set .*--runtime-version 10\.0'
+            $out | Should -Not -Match '--net-framework-version'
+            $out | Should -Match 'Upgrading Function App runtime 8\.0 -> 10\.0'
+        }
+
+        It 'falls back to `runtime config show` when the Flex payload has no functionAppConfig' {
+            $global:appExists = $true; $global:appFlexPayload = $true; $global:appFlexRuntime = $null
+            $global:flexRuntimeShow = '10.0'
+            $out = (& $script:DeployScript @commonArgs -HostingPlan Flex) 6>&1 | Out-String
+            $out | Should -Not -Match 'RUNTIME UNVERIFIED'
+            $out | Should -Match 'Function App runtime is 10\.0'
+        }
+
+        It 'reports an unreadable Flex runtime as UNVERIFIED and points at `runtime config show`' {
+            $global:appExists = $true; $global:appFlexPayload = $true; $global:appFlexRuntime = $null
+            $global:flexRuntimeShow = $null
+            $out = (& $script:DeployScript @commonArgs -HostingPlan Flex) 6>&1 | Out-String
+            $out | Should -Match 'RUNTIME UNVERIFIED'
+            $out | Should -Match 'Check it with: az functionapp runtime config show -n \S+ -g DEV2'
+            # `config show` reads a meaningless 'v4.0' on Flex - it must not be the advice.
+            $out | Should -Not -Match '--query netFrameworkVersion'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp (runtime )?config set'
         }
     }
 }

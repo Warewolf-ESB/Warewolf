@@ -114,6 +114,9 @@ $AppSettingsToRemove = @(
 # Helpers  (deliberately mirror the configure script for consistency)
 # ──────────────────────────────────────────────────────────────────────────────
 
+# Shared transient-retry policy (Invoke-WwAzWithRetry) - one pattern for every deploy script.
+Import-Module (Join-Path $PSScriptRoot 'WwAzCli.psm1') -Force
+
 function Format-AzArgsForLog {
     param([Parameter(Mandatory)][string[]] $Arguments)
 
@@ -137,37 +140,19 @@ function Invoke-AzCli {
         [Parameter(Mandatory)][string[]] $Arguments,
         [int] $MaxAttempts = 5
     )
-
     $printable = Format-AzArgsForLog -Arguments $Arguments
     Write-Host "    > az $printable" -ForegroundColor DarkGray
 
-    # Same transient-error retry policy as Configure-WwExecutionAuth.ps1.
-    $transientPattern = (@(
-        'Connection aborted','ConnectionResetError','10054','10053','10060',
-        'Read timed out','ReadTimeoutError','ConnectTimeoutError',
-        'SSLEOFError','SSL.*EOF occurred in violation','Max retries exceeded',
-        'temporary failure in name resolution','Could not resolve host','getaddrinfo failed',
-        'TooManyRequests','"code":\s*"429"',' 429 ',
-        ' 500 Internal',' 502 Bad Gateway',' 503 ','ServiceUnavailable',
-        ' 504 Gateway','GatewayTimeout','BadGateway'
-    ) -join '|')
-
-    $delays = @(3, 7, 15, 30)
-
-    for ($attempt = 1; $attempt -le $MaxAttempts; $attempt++) {
-        $output = & az @Arguments 2>&1
-        if ($LASTEXITCODE -eq 0) { return $output }
-
-        $asString = ($output | Out-String)
-        if (($asString -match $transientPattern) -and ($attempt -lt $MaxAttempts)) {
-            $wait = $delays[[Math]::Min($attempt - 1, $delays.Length - 1)]
-            Write-Host ("    transient error (attempt {0}/{1}) - retrying in {2}s" -f
-                $attempt, $MaxAttempts, $wait) -ForegroundColor DarkYellow
-            Start-Sleep -Seconds $wait
-            continue
-        }
-        throw "az CLI failed ($LASTEXITCODE) running ``az $printable``:`n$asString"
+    # Retry-on-transient lives in WwAzCli.psm1 (ARM 5xx / outage page, throttling, connection
+    # resets). Real errors (BadRequest, Forbidden, NotFound, Conflict, validation) are not retried.
+    $result = Invoke-WwAzWithRetry -Invoke { & az @Arguments 2>&1 } -MaxAttempts $MaxAttempts -OnRetry {
+        param($attempt, $max, $wait)
+        Write-Host ("    transient error (attempt {0}/{1}) - retrying in {2}s" -f $attempt, $max, $wait) -ForegroundColor DarkYellow
     }
+    if ($result.ExitCode -eq 0) { return $result.Output }
+
+    # Non-transient OR ran out of retries - throw with full context.
+    throw "az CLI failed ($($result.ExitCode)) running ``az $printable``:`n$($result.Output | Out-String)"
 }
 
 function ConvertFrom-AzJson {

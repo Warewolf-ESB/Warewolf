@@ -654,6 +654,7 @@ $requiredSiblings = [ordered]@{
     'Configure-WwExecutionAuth.ps1'  = 'Entra + Easy Auth provisioning; also writes the auth output this script reads'
     'Setup-ApplicationInsights.ps1'  = 'App Insights provisioning (this wrapper always passes -EnableAppInsights)'
     'Encrypt-Config.ps1'             = 'secure.config validation/encryption, and the QueueProcessor -EncryptStagedSettings pass'
+    'WwAzCli.psm1'                   = 'the shared az transient-retry policy imported by the engine, auth and App Insights scripts'
 }
 $missing = @($requiredSiblings.GetEnumerator() |
              Where-Object { -not (Test-Path -LiteralPath (Join-Path $ScriptDir $_.Key)) } |

@@ -43,10 +43,48 @@ param(
     [string]$Location = "eastus",
 
     [Parameter(Mandatory = $false)]
-    [string]$AppInsightsName = "$FunctionAppName-ai"
+    [string]$AppInsightsName = "$FunctionAppName-ai",
+
+    # Waits (seconds) between retries of a TRANSIENT az failure - see WwAzCli.psm1. Not part of
+    # the documented surface: the tests pass @(0) so a retry does not sleep.
+    [Parameter(DontShow)]
+    [int[]]$RetryDelaySeconds = @(3, 7, 15, 30)
 )
 
 $ErrorActionPreference = "Stop"
+
+Import-Module (Join-Path $PSScriptRoot 'WwAzCli.psm1') -Force
+
+function Invoke-AiAz {
+    <#
+        Runs one az command, retrying it while the failure is transient (an ARM outage page,
+        throttling, a connection reset). Build 30801 failed this script on a one-off ARM 503.
+        Returns az's stdout and leaves $LASTEXITCODE at the final exit code, so every caller
+        keeps its existing `$LASTEXITCODE -ne 0` check and message. On success, az's stderr
+        (warnings) is echoed rather than returned, so it cannot corrupt a `-o tsv` value.
+        Arguments are never echoed: one of them is the App Insights connection string.
+    #>
+    param(
+        [Parameter(Mandatory)][string[]] $Arguments,
+        # Do not echo the failure output (a probe whose "not found" is an expected answer).
+        [switch] $Quiet
+    )
+    $result = Invoke-WwAzWithRetry -Invoke { & az @Arguments 2>&1 } -DelaySeconds $RetryDelaySeconds -OnRetry {
+        param($attempt, $max, $wait)
+        Write-Host ("   ⚠️  transient Azure error (attempt {0}/{1}) - retrying in {2}s" -f $attempt, $max, $wait) -ForegroundColor DarkYellow
+    }
+    if ($result.ExitCode -ne 0) {
+        # Surface the real cause (az's stderr used to reach the console directly) without failing
+        # here - the caller prints its own message and exits.
+        if (-not $Quiet) { $result.Output | ForEach-Object { Write-Host "   $_" -ForegroundColor DarkGray } }
+        $global:LASTEXITCODE = $result.ExitCode
+        return $null
+    }
+    $result.Output | Where-Object { $_ -is [System.Management.Automation.ErrorRecord] } |
+        ForEach-Object { Write-Host "   $_" -ForegroundColor DarkGray }
+    $global:LASTEXITCODE = 0
+    return @($result.Output | Where-Object { $_ -isnot [System.Management.Automation.ErrorRecord] })
+}
 
 Write-Host "════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
 Write-Host "  Application Insights Setup for Warewolf Execution Lightweight" -ForegroundColor Cyan
@@ -60,12 +98,12 @@ Write-Host ""
 Write-Host "[Step 1/6] Verifying Azure CLI..." -ForegroundColor Yellow
 
 try {
-    $null = az account show 2>&1
+    $null = Invoke-AiAz -Arguments @('account', 'show') -Quiet
     if ($LASTEXITCODE -ne 0) {
         Write-Host "❌ Not logged in to Azure CLI. Please run: az login" -ForegroundColor Red
         exit 1
     }
-    $subscription = az account show --query name -o tsv
+    $subscription = Invoke-AiAz -Arguments @('account', 'show', '--query', 'name', '-o', 'tsv')
     Write-Host "✅ Logged in to Azure subscription: $subscription" -ForegroundColor Green
 }
 catch {
@@ -81,7 +119,7 @@ Write-Host ""
 
 Write-Host "[Step 2/6] Verifying resource group..." -ForegroundColor Yellow
 
-$rgExists = az group exists --name $ResourceGroup
+$rgExists = Invoke-AiAz -Arguments @('group', 'exists', '--name', $ResourceGroup)
 if ($rgExists -eq "false") {
     Write-Host "❌ Resource group '$ResourceGroup' does not exist." -ForegroundColor Red
     Write-Host "   Create it with: az group create --name $ResourceGroup --location $Location" -ForegroundColor Yellow
@@ -97,20 +135,18 @@ Write-Host ""
 
 Write-Host "[Step 3/6] Checking Application Insights resource..." -ForegroundColor Yellow
 
-$aiExists = az monitor app-insights component show `
-    --app $AppInsightsName `
-    --resource-group $ResourceGroup `
-    2>&1
+# -Quiet: "not found" is the expected answer for a first run, not an error worth printing.
+$aiExists = Invoke-AiAz -Quiet -Arguments @(
+    'monitor', 'app-insights', 'component', 'show',
+    '--app', $AppInsightsName, '--resource-group', $ResourceGroup)
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "📦 Application Insights '$AppInsightsName' not found. Creating..." -ForegroundColor Yellow
 
-    az monitor app-insights component create `
-        --app $AppInsightsName `
-        --location $Location `
-        --resource-group $ResourceGroup `
-        --application-type web `
-        --kind web | Out-Null
+    Invoke-AiAz -Arguments @(
+        'monitor', 'app-insights', 'component', 'create',
+        '--app', $AppInsightsName, '--location', $Location, '--resource-group', $ResourceGroup,
+        '--application-type', 'web', '--kind', 'web') | Out-Null
 
     if ($LASTEXITCODE -eq 0) {
         Write-Host "✅ Application Insights resource created successfully" -ForegroundColor Green
@@ -132,11 +168,10 @@ Write-Host ""
 
 Write-Host "[Step 4/6] Retrieving Application Insights connection string..." -ForegroundColor Yellow
 
-$connectionString = az monitor app-insights component show `
-    --app $AppInsightsName `
-    --resource-group $ResourceGroup `
-    --query connectionString `
-    --output tsv
+$connectionString = (Invoke-AiAz -Arguments @(
+    'monitor', 'app-insights', 'component', 'show',
+    '--app', $AppInsightsName, '--resource-group', $ResourceGroup,
+    '--query', 'connectionString', '--output', 'tsv') | Out-String).Trim()
 
 if ([string]::IsNullOrWhiteSpace($connectionString)) {
     Write-Host "❌ Failed to retrieve connection string" -ForegroundColor Red
@@ -160,11 +195,11 @@ Write-Host "[Step 5/6] Configuring Function App..." -ForegroundColor Yellow
 # pipeline (a separate process the worker cannot switch off), so it is intentionally
 # NOT set here — ENABLEAPPLICATIONINSIGHTS remains the single authoritative switch.
 Write-Host "   → Setting WAREWOLF_APPINSIGHTS_CONNECTION_STRING..." -ForegroundColor Gray
-az functionapp config appsettings set `
-    --name $FunctionAppName `
-    --resource-group $ResourceGroup `
-    --settings "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$connectionString" `
-    --output none
+Invoke-AiAz -Arguments @(
+    'functionapp', 'config', 'appsettings', 'set',
+    '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
+    '--settings', "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$connectionString",
+    '--output', 'none') | Out-Null
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Failed to set connection string" -ForegroundColor Red
@@ -177,11 +212,11 @@ if ($LASTEXITCODE -ne 0) {
 # setting is a whole-value overwrite, so read-merge-write: fetch whatever
 # Deploy-WwExecutionEngine.ps1 already wrote, flip appInsights to true, preserve the rest.
 Write-Host "   → Setting WAREWOLF_LOGGING_CONFIG.appInsights=true..." -ForegroundColor Gray
-$existingLoggingConfigRaw = az functionapp config appsettings list `
-    --name $FunctionAppName `
-    --resource-group $ResourceGroup `
-    --query "[?name=='WAREWOLF_LOGGING_CONFIG'].value | [0]" `
-    --output tsv
+$existingLoggingConfigRaw = (Invoke-AiAz -Arguments @(
+    'functionapp', 'config', 'appsettings', 'list',
+    '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
+    '--query', "[?name=='WAREWOLF_LOGGING_CONFIG'].value | [0]",
+    '--output', 'tsv') | Out-String).Trim()
 
 $loggingConfigValue = [ordered]@{}
 if ($existingLoggingConfigRaw -and $existingLoggingConfigRaw -ne 'None') {
@@ -194,11 +229,11 @@ if ($existingLoggingConfigRaw -and $existingLoggingConfigRaw -ne 'None') {
 }
 $loggingConfigValue['appInsights'] = $true
 
-az functionapp config appsettings set `
-    --name $FunctionAppName `
-    --resource-group $ResourceGroup `
-    --settings "WAREWOLF_LOGGING_CONFIG=$($loggingConfigValue | ConvertTo-Json -Compress)" `
-    --output none
+Invoke-AiAz -Arguments @(
+    'functionapp', 'config', 'appsettings', 'set',
+    '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
+    '--settings', "WAREWOLF_LOGGING_CONFIG=$($loggingConfigValue | ConvertTo-Json -Compress)",
+    '--output', 'none') | Out-Null
 
 if ($LASTEXITCODE -ne 0) {
     Write-Host "❌ Failed to enable Application Insights logging" -ForegroundColor Red
@@ -214,11 +249,12 @@ Write-Host ""
 
 Write-Host "[Step 6/6] Verifying configuration..." -ForegroundColor Yellow
 
-$settings = az functionapp config appsettings list `
-    --name $FunctionAppName `
-    --resource-group $ResourceGroup `
-    --query "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='WAREWOLF_LOGGING_CONFIG']" `
-    --output json | ConvertFrom-Json
+$settingsJson = Invoke-AiAz -Arguments @(
+    'functionapp', 'config', 'appsettings', 'list',
+    '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
+    '--query', "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='WAREWOLF_LOGGING_CONFIG']",
+    '--output', 'json') | Out-String
+$settings = if ([string]::IsNullOrWhiteSpace($settingsJson)) { @() } else { $settingsJson | ConvertFrom-Json }
 
 $aiConnectionSet = $settings | Where-Object { $_.name -eq "WAREWOLF_APPINSIGHTS_CONNECTION_STRING" }
 $loggingConfigSet = $settings | Where-Object { $_.name -eq "WAREWOLF_LOGGING_CONFIG" }

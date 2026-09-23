@@ -287,6 +287,10 @@
     application."  Changing it RESTARTS the app, which is why it is not automatic:
     without this switch a mismatch is reported in the Phase 0.5 plan and warned
     about in Phase 1, but nothing is changed.
+    On -HostingPlan Flex the runtime lives in functionAppConfig.runtime instead
+    (version '10.0'); it is read with `az functionapp runtime config show` and
+    reconciled with `az functionapp runtime config set --runtime-version 10.0`,
+    then read back.
 
 .PARAMETER LogDir
     Directory for the transcript + summary.  Default: <PublishDir>\..\deploy-logs.
@@ -592,7 +596,8 @@ $ErrorActionPreference = 'Stop'
 # carry the same three constants; all four projects target net10.0, so they move together.
 $script:TargetFunctionsRuntime    = 'dotnet-isolated'
 $script:TargetRuntimeVersion      = '10'      # `functionapp create --runtime-version`
-$script:TargetNetFrameworkVersion = 'v10.0'   # `siteConfig.netFrameworkVersion` on an existing app
+$script:TargetNetFrameworkVersion = 'v10.0'   # `siteConfig.netFrameworkVersion` on an existing (classic) app
+$script:TargetFlexRuntimeVersion  = '10.0'    # `functionAppConfig.runtime.version` on an existing Flex app
 $script:TargetFunctionsVersion    = '4'       # `functionapp create --functions-version`
 
 # The app setting Config.GetDirectory reads FIRST when resolving the engine's data directory
@@ -716,6 +721,13 @@ function Format-AzArgsForLog {
     return ($rendered -join ' ')
 }
 
+# Shared transient-retry policy (Invoke-WwAzWithRetry). Imported here, before -LoadFunctionsOnly
+# returns, so the helper functions work when the tests dot-source this script.
+Import-Module (Join-Path $PSScriptRoot 'WwAzCli.psm1') -Force
+if (-not (Get-Variable -Name AzRetryDelaySeconds -Scope Script -ErrorAction SilentlyContinue)) {
+    $script:AzRetryDelaySeconds = @(3, 7, 15, 30)
+}
+
 function Invoke-Az {
     <#
         Thin wrapper over the az CLI.
@@ -727,6 +739,12 @@ function Invoke-Az {
         $script:LastAzErrorOutput so a caller that only sees the $null return
         (e.g. a retry loop) can still surface the actual cause instead of
         guessing at one.
+
+        A TRANSIENT failure (ARM 5xx/outage page, throttling, connection reset -
+        see WwAzCli.psm1) is retried with backoff before any of the above applies,
+        reads and writes alike: build 30801 failed Phase 1 on a one-off ARM 503.
+        Real errors (NotFound, Conflict, Forbidden, validation) are not retried, so
+        an -AllowFail probe of a missing resource still returns $null at once.
     #>
     param(
         [Parameter(Mandatory)][string[]] $Args,
@@ -737,13 +755,19 @@ function Invoke-Az {
         Write-Host "      [DRYRUN] az $(Format-AzArgsForLog $Args)" -ForegroundColor DarkGray
         return $null
     }
-    $out = & az @Args 2>&1
-    if ($LASTEXITCODE -ne 0) {
+    # $Args is re-bound inside a script block (its own automatic $args), so capture it first.
+    $azArgs = $Args
+    $result = Invoke-WwAzWithRetry -Invoke { & az @azArgs 2>&1 } -DelaySeconds $script:AzRetryDelaySeconds -OnRetry {
+        param($attempt, $max, $wait)
+        Write-Host ("      transient az error (attempt {0}/{1}) - retrying in {2}s" -f $attempt, $max, $wait) -ForegroundColor DarkYellow
+    }
+    $out = $result.Output
+    if ($result.ExitCode -ne 0) {
         if ($AllowFail) {
             $script:LastAzErrorOutput = ($out | Out-String).Trim()
             return $null
         }
-        throw "az CLI failed ($LASTEXITCODE): az $(Format-AzArgsForLog $Args)`n$($out | Out-String)"
+        throw "az CLI failed ($($result.ExitCode)) after $($result.Attempts) attempt(s): az $(Format-AzArgsForLog $Args)`n$($out | Out-String)"
     }
     return $out
 }
@@ -1074,7 +1098,8 @@ function Save-DeploySummary {
             runtime            = $script:TargetFunctionsRuntime
             runtimeVersion     = $script:TargetRuntimeVersion
             functionsVersion   = $script:TargetFunctionsVersion
-            netFrameworkTarget = $script:TargetNetFrameworkVersion
+            # On Flex these hold functionAppConfig.runtime.version ('10.0'), not a netFrameworkVersion.
+            netFrameworkTarget = $script:RuntimePlan.Target
             netFrameworkBefore = $script:RuntimePlan.Current
             action             = $script:RuntimePlan.Action
         }
@@ -1343,6 +1368,52 @@ function Get-WwPackageRuntimeIdentifier {
     return $null
 }
 
+function Get-WwExistingRuntimeVersion {
+    <#
+        Reads an existing Function App's .NET runtime out of a `functionapp show` JSON payload.
+        Pure - no az calls.  Returns [pscustomobject]@{ Version; Source } or $null.
+
+        The two hosting plans put it in different places, and az returns them in different shapes
+        (verified live, az 2.83, 2026-09-23):
+          classic Consumption  flattened payload      siteConfig.netFrameworkVersion = 'v8.0'
+          Flex Consumption     ARM shape (properties) properties.functionAppConfig.runtime.version = '10.0'
+                               - and its siteConfig.netFrameworkVersion is null, so reading only
+                               siteConfig reported every existing Flex app as 'unknown' (build 30801).
+        Both the top level and `properties` are searched for each.  Source is 'functionAppConfig'
+        (Flex) or 'siteConfig' (classic).  $null when neither holds a value, or the JSON is unreadable.
+    #>
+    param([AllowNull()][AllowEmptyString()][string] $AppShowJson)
+
+    if ([string]::IsNullOrWhiteSpace($AppShowJson)) { return $null }
+    try { $app = $AppShowJson | ConvertFrom-Json -ErrorAction Stop } catch { return $null }
+    if ($null -eq $app -or $app -isnot [pscustomobject]) { return $null }
+
+    function Get-WwJsonPath([object] $Node, [string[]] $Path) {
+        foreach ($name in $Path) {
+            if ($null -eq $Node -or $Node -isnot [pscustomobject]) { return $null }
+            $prop = $Node.PSObject.Properties[$name]
+            if (-not $prop) { return $null }
+            $Node = $prop.Value
+        }
+        return $Node
+    }
+
+    $roots = @($app, (Get-WwJsonPath $app @('properties'))) | Where-Object { $null -ne $_ }
+    foreach ($root in $roots) {
+        $flex = Get-WwJsonPath $root @('functionAppConfig', 'runtime', 'version')
+        if (-not [string]::IsNullOrWhiteSpace([string]$flex)) {
+            return [pscustomobject]@{ Version = ([string]$flex).Trim(); Source = 'functionAppConfig' }
+        }
+    }
+    foreach ($root in $roots) {
+        $netFx = Get-WwJsonPath $root @('siteConfig', 'netFrameworkVersion')
+        if (-not [string]::IsNullOrWhiteSpace([string]$netFx)) {
+            return [pscustomobject]@{ Version = ([string]$netFx).Trim(); Source = 'siteConfig' }
+        }
+    }
+    return $null
+}
+
 function Resolve-FunctionRuntimePlan {
     <#
         Decide what THIS run does about the Function App's .NET runtime, from the
@@ -1371,35 +1442,63 @@ function Resolve-FunctionRuntimePlan {
         restart is not something a deploy should do to a running environment on its own
         inference.  The cost of the warning path is explicit — the run continues and the
         engine will fail at startup — so the message has to say exactly that.
+
+        -HostingPlan picks the target's FORMAT: 'v10.0' (siteConfig.netFrameworkVersion) on
+        classic Consumption, '10.0' (functionAppConfig.runtime.version) on Flex.  Versions are
+        compared with a leading 'v' ignored, so either spelling of the same version matches.
+        CheckCommand is the az command an operator should run to see the real value - on Flex
+        `functionapp config show` reports a meaningless 'v4.0', so it must not be suggested there.
     #>
     param(
         [string] $CurrentNetFrameworkVersion,
         [switch] $Upgrade,
         [switch] $AppExists,
-        [string] $TargetNetFrameworkVersion = $script:TargetNetFrameworkVersion
+        [ValidateSet('Consumption', 'Flex')]
+        [string] $HostingPlan = 'Consumption',
+        [string] $TargetNetFrameworkVersion,
+        [string] $AppName = '<app>',
+        [string] $ResourceGroup = '<rg>'
     )
+    if (-not $TargetNetFrameworkVersion) {
+        $TargetNetFrameworkVersion = if ($HostingPlan -eq 'Flex') { $script:TargetFlexRuntimeVersion } else { $script:TargetNetFrameworkVersion }
+    }
     $current = if ([string]::IsNullOrWhiteSpace($CurrentNetFrameworkVersion)) { $null }
                else { $CurrentNetFrameworkVersion.Trim() }
+    $normalise = { param($v) ([string]$v).Trim().TrimStart('v', 'V') }
 
     $action = if (-not $current -and $AppExists)                        { 'unknown' }
               elseif (-not $current)                                    { 'create'  }
-              elseif ($current -ieq $TargetNetFrameworkVersion)         { 'none'    }
+              elseif ((& $normalise $current) -ieq (& $normalise $TargetNetFrameworkVersion)) { 'none' }
               elseif ($Upgrade)                                         { 'upgrade' }
               else                                                      { 'warn'    }
+
+    $checkCommand = if ($HostingPlan -eq 'Flex') {
+        "az functionapp runtime config show -n $AppName -g $ResourceGroup"
+    } else {
+        "az functionapp config show -n $AppName -g $ResourceGroup --query netFrameworkVersion"
+    }
+    $fixCommand = if ($HostingPlan -eq 'Flex') {
+        "az functionapp runtime config set -n $AppName -g $ResourceGroup --runtime-version $TargetNetFrameworkVersion"
+    } else {
+        "az functionapp config set -n $AppName -g $ResourceGroup --net-framework-version $TargetNetFrameworkVersion"
+    }
 
     $message = switch ($action) {
         'create'  { "will be created on $script:TargetFunctionsRuntime $script:TargetRuntimeVersion ($TargetNetFrameworkVersion, Functions v$script:TargetFunctionsVersion)" }
         'none'    { "$current — already correct" }
         'upgrade' { "$current -> $TargetNetFrameworkVersion (-UpgradeRuntimeVersion; the app RESTARTS)" }
         'warn'    { "$current, but this package needs $TargetNetFrameworkVersion — NOT changed (pass -UpgradeRuntimeVersion)" }
-        'unknown' { "COULD NOT BE READ; this package needs $TargetNetFrameworkVersion — verify with ``az functionapp config show``" }
+        'unknown' { "COULD NOT BE READ; this package needs $TargetNetFrameworkVersion — verify with ``$checkCommand``" }
     }
 
     [pscustomobject]@{
-        Current = $current
-        Target  = $TargetNetFrameworkVersion
-        Action  = $action
-        Message = $message
+        Current      = $current
+        Target       = $TargetNetFrameworkVersion
+        Action       = $action
+        Message      = $message
+        HostingPlan  = $HostingPlan
+        CheckCommand = $checkCommand
+        FixCommand   = $fixCommand
     }
 }
 
@@ -1953,23 +2052,42 @@ if ($HostingPlan -eq 'Flex') {
 # no app, or a payload without siteConfig, both resolve to $null — but they are NOT the same
 # decision, so whether the app exists is tracked separately and passed to the planner. A
 # payload we could not read the runtime out of yields 'unknown', never a silent "it's fine".
+#
+# The runtime's location depends on the plan - see Get-WwExistingRuntimeVersion. On Flex the
+# payload is only a first source: when it does not carry functionAppConfig.runtime, ask the
+# Flex-only `runtime config show` (the same "use the Flex command" rule as the scale ceiling).
 $existingNetFx = $null
 $appShowJson   = Invoke-Az @('functionapp', 'show', '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
 $appShowFound  = [bool]$appShowJson
 if ($appShowJson) {
-    try {
-        $appShow    = ($appShowJson | Out-String) | ConvertFrom-Json
-        $siteConfig = $appShow.PSObject.Properties['siteConfig']
-        if ($siteConfig -and $siteConfig.Value) {
-            $netFxProp = $siteConfig.Value.PSObject.Properties['netFrameworkVersion']
-            if ($netFxProp) { $existingNetFx = [string]$netFxProp.Value }
+    $existingRuntime = Get-WwExistingRuntimeVersion -AppShowJson ($appShowJson | Out-String)
+    if ($HostingPlan -eq 'Flex') {
+        if ($existingRuntime -and $existingRuntime.Source -eq 'functionAppConfig') {
+            $existingNetFx = $existingRuntime.Version
+        } else {
+            $flexRuntimeJson = Invoke-Az @('functionapp', 'runtime', 'config', 'show',
+                                           '--name', $AppName, '--resource-group', $ResourceGroup, '-o', 'json') -AllowFail
+            if ($flexRuntimeJson) {
+                try {
+                    $flexRuntime = ($flexRuntimeJson | Out-String) | ConvertFrom-Json -ErrorAction Stop
+                    $verProp = if ($flexRuntime -is [pscustomobject]) { $flexRuntime.PSObject.Properties['version'] }
+                    if ($verProp -and -not [string]::IsNullOrWhiteSpace([string]$verProp.Value)) {
+                        $existingNetFx = ([string]$verProp.Value).Trim()
+                    }
+                }
+                catch { $existingNetFx = $null }
+            }
         }
     }
-    catch { $existingNetFx = $null }
+    elseif ($existingRuntime) {
+        $existingNetFx = $existingRuntime.Version
+    }
 }
 $script:RuntimePlan = Resolve-FunctionRuntimePlan -CurrentNetFrameworkVersion $existingNetFx `
                                                  -Upgrade:$UpgradeRuntimeVersion `
-                                                 -AppExists:$appShowFound
+                                                 -AppExists:$appShowFound `
+                                                 -HostingPlan $HostingPlan `
+                                                 -AppName $AppName -ResourceGroup $ResourceGroup
 
 # ── Storage wiring decision (resolved HERE so the plan can state it, applied in Phase 1) ──
 # `--storage-account` is honoured ONLY by `functionapp create`, so an app that ALREADY
@@ -2103,16 +2221,15 @@ if ($script:RuntimePlan.Action -eq 'warn') {
     Write-Note ("  The deploy will SUCCEED and the engine will then fail at startup with " +
                 "'You must install or update .NET to run this application.' Re-run with " +
                 '-UpgradeRuntimeVersion to reconcile the app (it restarts), or fix it out of band ' +
-                ("with: az functionapp config set -n {0} -g {1} --net-framework-version {2}" -f
-                 $AppName, $ResourceGroup, $script:RuntimePlan.Target))
+                "with: $($script:RuntimePlan.FixCommand)")
 }
 elseif ($script:RuntimePlan.Action -eq 'unknown') {
-    Write-Note ("RUNTIME UNVERIFIED: Function App '{0}' exists, but its netFrameworkVersion could not " -f $AppName)
+    $runtimeField = if ($HostingPlan -eq 'Flex') { 'runtime version (functionAppConfig.runtime)' } else { 'netFrameworkVersion' }
+    Write-Note ("RUNTIME UNVERIFIED: Function App '{0}' exists, but its {1} could not " -f $AppName, $runtimeField)
     Write-Note ("  be read, so this run CANNOT tell whether it matches the {0} this package needs. " -f $script:RuntimePlan.Target)
     Write-Note ("  Nothing will be changed. If it is behind, the deploy still SUCCEEDS and the engine " +
                 "then fails at startup with 'You must install or update .NET to run this application.' " +
-                ("Check it with: az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
-                 $AppName, $ResourceGroup))
+                "Check it with: $($script:RuntimePlan.CheckCommand)")
 }
 
 # Same reasoning, for storage: a Consumption app whose storage account is gone cannot be
@@ -2241,12 +2358,38 @@ try {
             'upgrade' {
                 Write-Step ("Upgrading Function App runtime {0} -> {1} (the app restarts)" -f
                             $script:RuntimePlan.Current, $script:RuntimePlan.Target)
-                Invoke-Az @(
-                    'functionapp', 'config', 'set',
-                    '--name', $AppName, '--resource-group', $ResourceGroup,
-                    '--net-framework-version', $script:RuntimePlan.Target, '-o', 'none'
-                ) -Mutating | Out-Null
-                Write-Ok "Function App runtime set to $($script:RuntimePlan.Target)."
+                if ($HostingPlan -eq 'Flex') {
+                    # Flex keeps the runtime in functionAppConfig.runtime; `config set
+                    # --net-framework-version` writes siteConfig, which Flex ignores.
+                    Invoke-Az @(
+                        'functionapp', 'runtime', 'config', 'set',
+                        '--name', $AppName, '--resource-group', $ResourceGroup,
+                        '--runtime-version', $script:RuntimePlan.Target, '-o', 'none'
+                    ) -Mutating | Out-Null
+                    if ($DryRun) {
+                        Write-Note 'Dry-run: Flex runtime not changed, so not verified.'
+                    } else {
+                        # READ BACK, as the Flex scale ceiling does: a runtime that never applied looks
+                        # exactly like one that did until the engine fails to start.
+                        $appliedRuntime = Invoke-Az @(
+                            'functionapp', 'runtime', 'config', 'show',
+                            '--name', $AppName, '--resource-group', $ResourceGroup,
+                            '--query', 'version', '-o', 'tsv'
+                        )
+                        if ("$appliedRuntime".Trim() -ne $script:RuntimePlan.Target) {
+                            throw ("Flex runtime did not apply: asked for $($script:RuntimePlan.Target), " +
+                                   "functionAppConfig.runtime.version reads '$appliedRuntime'.")
+                        }
+                        Write-Ok "Function App runtime set to $($script:RuntimePlan.Target) (verified)."
+                    }
+                } else {
+                    Invoke-Az @(
+                        'functionapp', 'config', 'set',
+                        '--name', $AppName, '--resource-group', $ResourceGroup,
+                        '--net-framework-version', $script:RuntimePlan.Target, '-o', 'none'
+                    ) -Mutating | Out-Null
+                    Write-Ok "Function App runtime set to $($script:RuntimePlan.Target)."
+                }
             }
             'warn' {
                 Write-Note (("Function App runtime left at {0}; this package targets {1}. " -f
@@ -2262,8 +2405,7 @@ try {
                 # it does not run on this branch, so an unread runtime has been reconciled by nothing.
                 Write-Note ("Function App runtime NOT verified (current value could not be read); this " +
                             ("package targets {0}. Nothing was changed. Check it with: " -f $script:RuntimePlan.Target) +
-                            ("az functionapp config show -n {0} -g {1} --query netFrameworkVersion" -f
-                             $AppName, $ResourceGroup))
+                            $script:RuntimePlan.CheckCommand)
             }
         }
 
