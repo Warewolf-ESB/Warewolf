@@ -609,6 +609,24 @@ RBAC roles (e.g. on Key Vault).
 Sets the validity period of any new client secret.  Range: 1–2 years
 (Entra cap).  Combine with `-RotateSecret` to force rotation on every run.
 
+## `WAREWOLF_ENTRA_CONFIG` drift repair
+
+```powershell
+./Configure-WwExecutionAuth.ps1 -RepairEntraConfigOnly -NonInteractive `
+    -SubscriptionId <id> -TenantId <id> -ResourceGroupName <rg> -FunctionAppName <app>
+```
+
+Re-applies just the `WAREWOLF_ENTRA_CONFIG` app setting from an **existing** Entra app
+registration and exits — none of Stages 2–7 or 9–11 run, so it never creates an app
+registration, rotates the client secret, changes app roles/user assignments, or touches
+Easy Auth. Throws if no matching registration exists.
+
+`WAREWOLF_ENTRA_CONFIG` is an ordinary Function App setting, so a delete+recreate of the
+app (e.g. a hosting-plan migration) wipes it even though the Entra registration it names
+is untouched. `Deploy-WwExecutionEngine.ps1`'s Phase 2 calls this mode automatically when
+`-SkipAuthProvisioning` is set and the live setting is found missing — see
+`Dev/Warewolf.Execution.Lightweight/docs/Deploy-UAT-Redeploy-Spec.md` §17.
+
 ---
 
 ## CFG-03 — `secure.config` CI/CD deployment

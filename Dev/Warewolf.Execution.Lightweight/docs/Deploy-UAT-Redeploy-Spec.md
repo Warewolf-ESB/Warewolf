@@ -707,31 +707,71 @@ Fixed on 2026-09-14 by deleting the blob-download step and pointing the deploy a
 **Both pipelines now run this commit's copy of the deployment scripts; never reintroduce a
 version-pinned script source.**
 
-The third row of the table above therefore stands as an **unresolved deploy-time gap**:
+The third row of the table above was an **unresolved deploy-time gap** until §17:
 `WAREWOLF_ENTRA_CONFIG` is written only by `Configure-WwExecutionAuth.ps1`, which
-`-SkipAuthProvisioning` skips, so for any app deployed that way it is a **one-time manual
-operator step**, in the same category `Enable-ServiceBusSecureTrigger.ps1` occupies for these
-two apps (the profiler pipeline now runs that one automatically against `wwprofilerlw`; nothing
-automates `WAREWOLF_ENTRA_CONFIG` for any app):
+`-SkipAuthProvisioning` skips, so for any app deployed that way it used to be a **one-time
+manual operator step**, in the same category `Enable-ServiceBusSecureTrigger.ps1` occupies for
+these two apps (the profiler pipeline now runs that one automatically against `wwprofilerlw`).
+As of §17, `Deploy-WwExecutionEngine.ps1` itself now detects a missing `WAREWOLF_ENTRA_CONFIG`
+under `-SkipAuthProvisioning` and repairs it automatically — the manual command below is now a
+fallback for out-of-pipeline use, not a required step:
 
 ```powershell
 az functionapp config appsettings set --name <app> --resource-group DEV2 `
     --settings 'WAREWOLF_ENTRA_CONFIG={"tenantId":"...","audience":"...","clientId":"..."}'
 ```
 
-Done for `WarewolfServer-UAT` on 2026-09-02 and for `warewolfserver` on 2026-09-14.
+Done manually for `WarewolfServer-UAT` on 2026-09-02 and for `warewolfserver` on 2026-09-14,
+before the automatic repair existed.
 `EntraIdentityOptions.FromEnvironment()` (`Auth/Models/EntraIdentityOptions.cs`) reads this
 setting **only** — there is no fallback to the legacy `WAREWOLF_ENTRA_*` vars — so until it is
 set, Entra token validation on that app fails closed while the legacy vars sit there looking
-correct. Implementing the switch for real remains an option; it was deliberately dropped from
-the pipelines rather than built.
+correct.
 
-**Guardrail for future redeploys:** the same "params-not-carried-forward" risk applies to any
-OTHER app redeployed with `-SkipAuthProvisioning` from before this merge, or to a fresh
-`-KeyVaultName`/`-ServiceBusTrigger*` value that changes later — these three settings are not
-self-healing across a redeploy the way an App-Setting-only value would be for two of the
-three (see table). Add a Phase 0.5 plan-review check for "Key Vault" and "ServiceBusTrigger
-tunables" specifically for this app, the same way §6.3 / §14 already check other settings.
+**Guardrail for future redeploys:** the same "params-not-carried-forward" risk still applies to
+the OTHER two settings in the table — `-KeyVaultName`/`-ServiceBusTrigger*` values — which are
+staged file content, not an App Setting, and are **not** covered by §17's repair (only
+`WAREWOLF_ENTRA_CONFIG` is App-Setting-only and therefore both driftable-on-recreate and
+cheaply self-healable this way). Add a Phase 0.5 plan-review check for "Key Vault" and
+"ServiceBusTrigger tunables" specifically for this app, the same way §6.3 / §14 already check
+other settings.
+
+## 17. Automatic repair of `WAREWOLF_ENTRA_CONFIG` drift under `-SkipAuthProvisioning` (2026-09-23)
+
+**What broke:** build 30802 (`pipeline-CLOUD.yml`, job `ShovelBridgeE2ETest_ExternalServiceBus`,
+step "Run ShovelBridge E2E test (VerifyWorkflowExecution mode, warewolfserver)") failed —
+`GET https://warewolfserver.azurewebsites.net/secure/servicebus-result/{correlationId}` returned
+401 `{"error":"unauthorized","message":"Authentication required."}`. The same build's "Probe the
+engine route directly (diagnostic)" step (log 74, 15:57 UTC) had already caught it:
+`WAREWOLF_ENTRA_AUDIENCE`/`_TENANT_ID`/`_CLIENT_ID` all read `(not set)` on the live app, i.e.
+`WAREWOLF_ENTRA_CONFIG` itself was gone. Root cause: §16's Flex Consumption migration deletes and
+recreates `warewolfserver`, which wipes every app setting including `WAREWOLF_ENTRA_CONFIG` — and
+§16's own "back it up and re-apply it" manual step (line 765-768 above) was not carried out before
+this redeploy, exactly the failure mode §16 already flagged as a risk.
+
+**Fix:** rather than relying on that manual step being remembered every time an app deployed with
+`-SkipAuthProvisioning` gets recreated, `Deploy-WwExecutionEngine.ps1`'s Phase 2 now probes the
+live `WAREWOLF_ENTRA_CONFIG` app setting whenever `-SkipAuthProvisioning` is passed. If it's
+missing or empty, it invokes `Configure-WwExecutionAuth.ps1 -RepairEntraConfigOnly`, a new mode
+that:
+- looks up the **existing** Entra app registration by `-EntraAppDisplayName` and throws if none is
+  found (it never creates one — that would defeat the point of `-SkipAuthProvisioning`);
+- re-applies `WAREWOLF_ENTRA_CONFIG` via the same read-merge-write (`Merge-EntraConfigJson`) and
+  `@file`-based write Stage 8 already used, so any extra field already stored in the setting is
+  still preserved;
+- does **not** rotate the client secret, touch app roles or user assignments, or reconfigure Easy
+  Auth, and does **not** write `WAREWOLF_SECURE_CONFIG` or the client-secret app setting — those
+  stay exactly as `-SkipAuthProvisioning` already left them.
+
+If `WAREWOLF_ENTRA_CONFIG` is already present, Phase 2 logs that no repair was needed and behaves
+exactly as before this change. See `Configure-WwExecutionAuth.ps1`'s `-RepairEntraConfigOnly` doc
+comment for the full parameter contract.
+
+**Still manual:** Easy Auth's own platform configuration (`az webapp auth ...`) is a separate,
+non-App-Setting control-plane resource that a delete+recreate also wipes; this fix does not touch
+it. Nothing in build 30802's failure pointed at Easy Auth being broken (the 401 came from the
+engine's own bearer-token parser, `EntraAuthOptions.IsEnabled`, not from an Easy Auth redirect), so
+reprovisioning it automatically was left out of scope here.
 
 ## 16. Migration to Flex Consumption, 4 GB/instance (2026-09-22)
 

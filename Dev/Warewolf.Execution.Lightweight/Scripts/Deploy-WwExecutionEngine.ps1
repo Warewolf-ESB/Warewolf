@@ -2210,6 +2210,8 @@ if ($enableAppInsights) {
 }
 if (-not $SkipAuthProvisioning) {
     Write-Host '    WAREWOLF_ENTRA_CONFIG (tenantId/audience/clientId) = (set by Configure-WwExecutionAuth.ps1 — WOLF-8516)'
+} else {
+    Write-Host '    WAREWOLF_ENTRA_CONFIG (tenantId/audience/clientId) = (checked for drift in Phase 2; repaired via -RepairEntraConfigOnly if missing)'
 }
 Write-Host ''
 
@@ -2634,8 +2636,40 @@ try {
     $script:DeployLastPhase = 'Phase 2  Auth provisioning'
 
     if ($SkipAuthProvisioning) {
-        Write-Note 'Auth provisioning skipped (-SkipAuthProvisioning).'
         $created['entraApp'] = $false
+
+        # Auth provisioning itself is skipped, but WAREWOLF_ENTRA_CONFIG is an ordinary
+        # Function App setting - it is silently wiped whenever the app is deleted and
+        # recreated (e.g. a hosting-plan migration) even though the Entra app
+        # registration it names is completely unaffected. Detect that drift and repair
+        # just this one setting, without rotating secrets, touching app roles/user
+        # assignments, or reconfiguring Easy Auth (see Configure-WwExecutionAuth.ps1's
+        # -RepairEntraConfigOnly doc comment for the full rationale).
+        $liveAppSettingsJson = Invoke-Az @('functionapp','config','appsettings','list','--name',$AppName,'--resource-group',$ResourceGroup,'-o','json') -AllowFail
+        $liveEntraConfig = $null
+        if ($liveAppSettingsJson) {
+            try {
+                $liveEntraConfig = (($liveAppSettingsJson | Out-String | ConvertFrom-Json) |
+                    Where-Object { $_.name -eq 'WAREWOLF_ENTRA_CONFIG' } | Select-Object -First 1).value
+            } catch {
+                Write-Note "Could not parse live app settings while checking for WAREWOLF_ENTRA_CONFIG drift: $($_.Exception.Message)"
+            }
+        }
+
+        if ([string]::IsNullOrWhiteSpace($liveEntraConfig)) {
+            Write-Note 'Auth provisioning skipped (-SkipAuthProvisioning), but WAREWOLF_ENTRA_CONFIG is missing on the live app - repairing it now.'
+            Invoke-ChildScript -Path $ConfigureAuthScript -Label 'Configure-WwExecutionAuth.ps1 (-RepairEntraConfigOnly)' -Parameters @{
+                SubscriptionId         = $SubscriptionId
+                TenantId               = $TenantId
+                ResourceGroupName      = $ResourceGroup
+                FunctionAppName        = $AppName
+                RepairEntraConfigOnly  = $true
+                NonInteractive         = $true
+            }
+            if (-not $DryRun) { Write-Ok 'WAREWOLF_ENTRA_CONFIG repaired.' }
+        } else {
+            Write-Note 'Auth provisioning skipped (-SkipAuthProvisioning); WAREWOLF_ENTRA_CONFIG already present.'
+        }
     } else {
         # PROBE BEFORE PROVISIONING. Configure-WwExecutionAuth.ps1 is idempotent and happily REUSES an
         # existing registration, so "auth provisioning ran" never meant "this run created the app".

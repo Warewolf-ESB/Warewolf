@@ -64,6 +64,23 @@
   the script.  Default is 1.  Maximum 2 (Entra cap).  Pair with
   -RotateSecret to force rotation on every run.
 
+.PARAMETER RepairEntraConfigOnly
+  Drift-repair mode. Re-applies the WAREWOLF_ENTRA_CONFIG app setting from an
+  EXISTING Entra app registration (looked up by -EntraAppDisplayName) and exits —
+  Stages 2-7 and 9-11 never run, so nothing else is created, rotated, or
+  reconfigured: no new app registration, no client-secret rotation, no app-role or
+  user-assignment changes, no Easy Auth writes. WAREWOLF_SECURE_CONFIG and the
+  client-secret app setting are left untouched. Throws if no matching app
+  registration exists (this mode never creates one). Never prompts — the same
+  required parameters as -NonInteractive apply.
+
+  Intended for CI redeploys that pass -SkipAuthProvisioning to
+  Deploy-WwExecutionEngine.ps1: WAREWOLF_ENTRA_CONFIG is an ordinary Function App
+  setting, so it is silently wiped whenever the app is deleted and recreated (e.g.
+  a hosting-plan migration) even though the Entra app registration itself is
+  unaffected. This mode repairs just that one setting without re-running the full
+  (and non-idempotent-feeling, from a CI redeploy's perspective) provisioning flow.
+
 .PRESCRIPT-LAYOUT  (PRV-16)
   This file is intentionally a single self-contained script so it can be
   uploaded to Azure Cloud Shell or a deployment runner without fighting a
@@ -83,6 +100,8 @@
   ./Scripts/Configure-WwExecutionAuth.ps1 -RotateSecret
   ./Scripts/Configure-WwExecutionAuth.ps1 -SkipUserAssignment
   ./Scripts/Configure-WwExecutionAuth.ps1 -WhatIfOnly
+  ./Scripts/Configure-WwExecutionAuth.ps1 -RepairEntraConfigOnly -NonInteractive `
+      -SubscriptionId <id> -TenantId <id> -ResourceGroupName <rg> -FunctionAppName <app>
 #>
 
 [CmdletBinding()]
@@ -110,6 +129,10 @@ param(
     [switch]    $DryRun,
     # PRV-17: prefer MI over additional client-secret rotation.
     [switch]    $UseManagedIdentity,
+
+    # Drift-repair mode: re-apply WAREWOLF_ENTRA_CONFIG from an existing Entra app
+    # registration and exit. See .PARAMETER RepairEntraConfigOnly above.
+    [switch]    $RepairEntraConfigOnly,
 
     # When set, Stage 4 replaces ALL app roles with the desired set (disable
     # then re-PATCH) without prompting.  In interactive mode the operator is
@@ -496,6 +519,124 @@ function Merge-EntraConfigJson {
     $merged['audience'] = $Audience
     $merged['clientId'] = $ClientId
     return $merged
+}
+
+function Invoke-EntraConfigRepair {
+    <#
+        -RepairEntraConfigOnly's entire implementation. Re-applies WAREWOLF_ENTRA_CONFIG
+        from an EXISTING Entra app registration (found by -EntraAppDisplayName) and writes
+        just that one app setting - WAREWOLF_SECURE_CONFIG and the client-secret setting
+        are left untouched, and nothing here rotates a secret, changes app roles/user
+        assignments, or reconfigures Easy Auth. Throws if the function app or the Entra
+        app registration do not already exist (this mode never creates either).
+
+        Returns the resolved ClientId (string) on success.
+    #>
+    param(
+        [Parameter(Mandatory)][string] $SubscriptionId,
+        [Parameter(Mandatory)][string] $TenantId,
+        [Parameter(Mandatory)][string] $ResourceGroupName,
+        [Parameter(Mandatory)][string] $FunctionAppName,
+        [Parameter(Mandatory)][string] $EntraAppDisplayName,
+        [Parameter(Mandatory)][string] $OutputPath
+    )
+
+    Write-Host ""
+    Write-Host "═══ Repair WAREWOLF_ENTRA_CONFIG only (-RepairEntraConfigOnly) ═════" -ForegroundColor Cyan
+    Write-Host "    Resource group:  $ResourceGroupName"
+    Write-Host "    Function app:    $FunctionAppName"
+    Write-Host "    Entra app:       $EntraAppDisplayName"
+    Write-Host ""
+
+    Invoke-AzCli @('account','set','--subscription',$SubscriptionId) | Out-Null
+
+    if (-not (Test-FunctionAppExists -Name $FunctionAppName -ResourceGroup $ResourceGroupName)) {
+        throw "Function app '$FunctionAppName' was not found in resource group '$ResourceGroupName'."
+    }
+
+    # Read-only lookup - unlike Stage 1, this mode never creates a registration and
+    # never re-asserts the redirect URI; it only needs the existing app's appId.
+    $app = Invoke-AzCli @(
+        'ad','app','list','--display-name',$EntraAppDisplayName,'--query','[0]','-o','json'
+    ) | ConvertFrom-AzJson
+    if ($null -eq $app) {
+        throw ("-RepairEntraConfigOnly requires an existing Entra app registration named " +
+               "'$EntraAppDisplayName'; none was found. Run without -RepairEntraConfigOnly to " +
+               "provision one, or pass the correct -EntraAppDisplayName.")
+    }
+    $clientId = $app.appId
+    Write-Host "    found existing appId $clientId" -ForegroundColor Green
+
+    # Same read-merge-write as Stage 8, scoped to WAREWOLF_ENTRA_CONFIG alone -
+    # WAREWOLF_SECURE_CONFIG and the client-secret setting are left untouched.
+    $existingEntraConfigRaw = Get-FunctionAppSetting `
+        -Name $FunctionAppName -ResourceGroup $ResourceGroupName -SettingName 'WAREWOLF_ENTRA_CONFIG'
+    $entraConfigValue = Merge-EntraConfigJson `
+        -ExistingJson $existingEntraConfigRaw -TenantId $TenantId -Audience "api://$clientId" -ClientId $clientId
+    $script:PreservedEntraFields = @(
+        $entraConfigValue.Keys | Where-Object { $_ -notin @('tenantId', 'audience', 'clientId') }
+    )
+
+    $settingsFile = Join-Path ([System.IO.Path]::GetTempPath()) ("ww-appsettings-{0}.json" -f [guid]::NewGuid().ToString('N'))
+    try {
+        Write-TempJson -Path $settingsFile -Json (@(
+            [ordered]@{ name = 'WAREWOLF_ENTRA_CONFIG'; value = ($entraConfigValue | ConvertTo-Json -Compress); slotSetting = $false }
+        ) | ConvertTo-Json -Depth 5 -AsArray)
+        Invoke-AzCli @(
+            'functionapp','config','appsettings','set',
+            '--name',$FunctionAppName,
+            '--resource-group',$ResourceGroupName,
+            '--settings',"@$settingsFile"
+        ) | Out-Null
+    } finally {
+        Remove-Item -LiteralPath $settingsFile -Force -ErrorAction SilentlyContinue
+    }
+    Write-Host "    wrote WAREWOLF_ENTRA_CONFIG (WAREWOLF_SECURE_CONFIG and the client-secret setting were not touched)" -ForegroundColor Green
+
+    # Minimal verification - only the setting this mode is responsible for.
+    $verifyErrors = New-Object 'System.Collections.Generic.List[string]'
+    $liveEntraConfigRaw = Get-FunctionAppSetting `
+        -Name $FunctionAppName -ResourceGroup $ResourceGroupName -SettingName 'WAREWOLF_ENTRA_CONFIG'
+    if (-not $liveEntraConfigRaw) {
+        $verifyErrors.Add('WAREWOLF_ENTRA_CONFIG is missing immediately after being written')
+    } else {
+        try {
+            $liveEntraConfig = $liveEntraConfigRaw | ConvertFrom-Json
+            foreach ($field in @('tenantId', 'audience', 'clientId')) {
+                if ([string]::IsNullOrWhiteSpace($liveEntraConfig.$field)) {
+                    $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG.$field is missing or empty")
+                }
+            }
+        } catch {
+            $verifyErrors.Add("WAREWOLF_ENTRA_CONFIG is not valid JSON: $($_.Exception.Message)")
+        }
+    }
+    if ($verifyErrors.Count -gt 0) {
+        Write-Host "    VERIFICATION FAILED:" -ForegroundColor Red
+        foreach ($e in $verifyErrors) { Write-Host "      - $e" -ForegroundColor Red }
+        throw "Repair verification failed with $($verifyErrors.Count) issue(s) - see above."
+    }
+
+    $summary = [pscustomobject]@{
+        Timestamp           = (Get-Date).ToString('o')
+        Mode                = 'RepairEntraConfigOnly'
+        SubscriptionId      = $SubscriptionId
+        TenantId            = $TenantId
+        ResourceGroup       = $ResourceGroupName
+        FunctionAppName     = $FunctionAppName
+        EntraAppDisplayName = $EntraAppDisplayName
+        ClientId            = $clientId
+        Audience            = "api://$clientId"
+        PreservedFields     = @($script:PreservedEntraFields)
+    }
+    $summary | ConvertTo-Json -Depth 6 | Set-Content -Path $OutputPath -Encoding UTF8
+
+    Write-Host ""
+    Write-Host "═══ Done (repair-only) ══════════════════════════════════════════" -ForegroundColor Cyan
+    Write-Host "    WAREWOLF_ENTRA_CONFIG repaired for ClientId $clientId" -ForegroundColor Green
+    Write-Host ""
+
+    return $clientId
 }
 
 function Get-DeepValue {
@@ -1094,6 +1235,29 @@ function Resolve-AssignmentUser {
 # Test hook: stop here when only the helper functions are wanted (Pester), BEFORE
 # any interactive prompt or cloud/Graph action below.
 if ($LoadFunctionsOnly) { return }
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Repair-only path (-RepairEntraConfigOnly)  -- self-contained, never prompts,
+# runs none of Stage 0's create-or-upgrade logic and none of Stages 2-12 below.
+# ──────────────────────────────────────────────────────────────────────────────
+if ($RepairEntraConfigOnly) {
+    foreach ($r in @(
+        @{ Name = 'SubscriptionId';    Value = $SubscriptionId    },
+        @{ Name = 'TenantId';          Value = $TenantId          },
+        @{ Name = 'ResourceGroupName'; Value = $ResourceGroupName },
+        @{ Name = 'FunctionAppName';   Value = $FunctionAppName   }
+    )) {
+        if (Test-IsPlaceholder $r.Value) {
+            throw "-RepairEntraConfigOnly requires -$($r.Name); it never prompts interactively."
+        }
+    }
+    if (Test-IsPlaceholder $EntraAppDisplayName) { $EntraAppDisplayName = "$FunctionAppName-auth" }
+
+    Invoke-EntraConfigRepair -SubscriptionId $SubscriptionId -TenantId $TenantId `
+        -ResourceGroupName $ResourceGroupName -FunctionAppName $FunctionAppName `
+        -EntraAppDisplayName $EntraAppDisplayName -OutputPath $OutputPath | Out-Null
+    return
+}
 
 # ──────────────────────────────────────────────────────────────────────────────
 # Interactive configuration  -- runs unless -NonInteractive is passed.

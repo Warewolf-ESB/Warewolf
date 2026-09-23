@@ -114,6 +114,7 @@
     <Compile Include="Wrappers\FileInfoWrapperTests.cs" />
     <Compile Include="Wrappers\FilePathWrapperTests.cs" />
     <Compile Include="Wrappers\WrapperFactoriesTests.cs" />
+    <Compile Include="Wrappers\IonicZipFileWrapperTests.cs" />
     <Compile Include="ExtensionMethodsTest.cs" />
     <Compile Include="MapperTests.cs" />
     <Compile Include="MapperBranchCoverageTests.cs" />

@@ -8,7 +8,6 @@ using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using netDumbster.smtp;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -46,9 +45,6 @@ namespace Warewolf.Tools.Specs.Toolbox.Exchange
             scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
             scenarioContext.TryGetValue("to", out string to);
             scenarioContext.TryGetValue("isHtml", out string isHtml);
-
-            var server = SimpleSmtpServer.Start(25);
-            scenarioContext.Add("server", server);
 
             var resourceName = Guid.NewGuid();
             var resourceID = Guid.NewGuid();
@@ -134,9 +130,6 @@ namespace Warewolf.Tools.Specs.Toolbox.Exchange
             scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
             scenarioContext.TryGetValue("to", out string to);
             scenarioContext.TryGetValue("isHtml", out string isHtml);
-
-            var server = SimpleSmtpServer.Start(25);
-            scenarioContext.Add("server", server);
 
             var resourceID = Guid.NewGuid();
             var resourceName = Guid.NewGuid();

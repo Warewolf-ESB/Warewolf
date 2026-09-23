@@ -9,6 +9,8 @@ namespace Dev2.Common.Interfaces.Wrappers
 {
     public interface IZipEntry
     {
+        string FileName { get; }
+        bool IsDirectory { get; }
         void Extract(string extractFromPath, FileOverwrite overwrite);
     }
 

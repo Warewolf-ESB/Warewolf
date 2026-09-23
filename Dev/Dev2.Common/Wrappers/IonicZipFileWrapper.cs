@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -68,8 +69,17 @@ namespace Dev2.Common.Wrappers
             _zipEntry = zipEntry;
         }
 
+        public string FileName => _zipEntry.FileName;
+        public bool IsDirectory => _zipEntry.IsDirectory;
+
         public void Extract(string extractFromPath, FileOverwrite overwrite)
         {
+            if (!OperatingSystem.IsWindows())
+            {
+                ExtractCrossPlatform(extractFromPath, overwrite);
+                return;
+            }
+
             if (overwrite == FileOverwrite.Yes)
             {
                 _zipEntry.Extract(extractFromPath, ExtractExistingFileAction.OverwriteSilently);
@@ -81,6 +91,44 @@ namespace Dev2.Common.Wrappers
                     _zipEntry.Extract(extractFromPath, ExtractExistingFileAction.DoNotOverwrite);
                 }
             }
+        }
+
+        // DotNetZip.Original's ZipEntry.Extract(string baseDirectory, ...) unconditionally rewrites
+        // the computed output path with `.Replace("/", "\\")` (Ionic.Zip.ZipEntry.ValidateOutput),
+        // turning a Linux path like "/tmp/Temp/ZIP9/file.txt" into the single-component filename
+        // "\tmp\Temp\ZIP9\file.txt" (backslash isn't a separator on Linux). Path.GetDirectoryName on
+        // that then returns "", and Directory.CreateDirectory("") throws
+        // ArgumentException("The value cannot be an empty string.", "path"). Unfixed as of the
+        // latest package version (2025.2.15), so on non-Windows we build the target path ourselves
+        // and extract via the stream overload, which bypasses that broken path-building entirely.
+        void ExtractCrossPlatform(string baseDir, FileOverwrite overwrite)
+        {
+            var relative = _zipEntry.FileName.Replace('\\', '/').TrimStart('/');
+            var targetPath = Path.Combine(baseDir, relative.Replace('/', Path.DirectorySeparatorChar));
+
+            if (_zipEntry.IsDirectory || _zipEntry.FileName.EndsWith("/", StringComparison.Ordinal))
+            {
+                Directory.CreateDirectory(targetPath);
+                return;
+            }
+
+            var directoryName = Path.GetDirectoryName(targetPath);
+            if (!string.IsNullOrEmpty(directoryName))
+            {
+                Directory.CreateDirectory(directoryName);
+            }
+
+            if (File.Exists(targetPath))
+            {
+                if (overwrite == FileOverwrite.No)
+                {
+                    return;
+                }
+                File.Delete(targetPath);
+            }
+
+            using var fileStream = new FileStream(targetPath, FileMode.Create, FileAccess.Write);
+            _zipEntry.Extract(fileStream);
         }
     }
 }

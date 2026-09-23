@@ -51,13 +51,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Email
             scenarioContext.TryGetValue("to", out string to);
             scenarioContext.TryGetValue("isHtml", out bool isHtml);
 
-            var server = SimpleSmtpServer.Start(25);
+            var server = SimpleSmtpServer.Start(2525);
             scenarioContext.Add("server", server);
 
             var selectedEmailSource = new EmailSource
             {
                 Host = "localhost",
-                Port = 25,
+                Port = 2525,
                 UserName = "",
                 Password = "",
                 ResourceName = Guid.NewGuid().ToString(),

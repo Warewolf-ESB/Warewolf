@@ -363,3 +363,151 @@ Describe 'Configure-WwExecutionAuth — Merge-EntraConfigJson (Stage 8 read-merg
         $reparsed.otherField  | Should -Be 'keep-me'
     }
 }
+
+Describe 'Configure-WwExecutionAuth — Invoke-EntraConfigRepair (-RepairEntraConfigOnly)' {
+    <#
+        Drift-repair path: WAREWOLF_ENTRA_CONFIG is an ordinary Function App setting, so a
+        delete+recreate of the app (e.g. a Flex Consumption migration) wipes it even though
+        the Entra app registration it names is untouched - reproduced live on 'warewolfserver'
+        (build 30802, 2026-09-23: ShovelBridge E2E 401 'Authentication required'). This mode
+        re-applies just that one setting from the EXISTING registration - no secret rotation,
+        no app-role/user-assignment changes, no Easy Auth writes, and it never creates a new
+        app registration. These tests drive Invoke-EntraConfigRepair directly (dot-sourced via
+        -LoadFunctionsOnly) against a single dispatching Invoke-AzCli mock, the same pattern
+        Deploy-WwExecutionEngine.Tests.ps1 uses for its `az` shim.
+    #>
+
+    BeforeAll {
+        . $script:AuthScript -LoadFunctionsOnly
+    }
+
+    BeforeEach {
+        $script:functionAppExists = $true
+        $script:entraApp          = @{ appId = '11111111-1111-1111-1111-111111111111'; id = 'objid-1' }
+        $script:liveAppSettings   = @()
+        $script:azCallLog         = New-Object 'System.Collections.Generic.List[string[]]'
+        $script:capturedSetFileContent = $null
+
+        Mock Invoke-AzCli {
+            $a = @($Arguments)
+            $script:azCallLog.Add($a)
+
+            if ($a[0] -eq 'account' -and $a -contains 'set') { return $null }
+
+            if ($a[0] -eq 'functionapp' -and $a -contains 'show') {
+                if (-not $script:functionAppExists) { throw 'az CLI failed (3): functionapp not found' }
+                return '{"name":"warewolfserver"}'
+            }
+
+            if ($a[0] -eq 'ad' -and $a[1] -eq 'app' -and $a[2] -eq 'list') {
+                if ($null -eq $script:entraApp) { return 'null' }
+                return ($script:entraApp | ConvertTo-Json -Compress)
+            }
+
+            if ($a[0] -eq 'functionapp' -and $a -contains 'appsettings' -and $a -contains 'list') {
+                return (@($script:liveAppSettings) | ConvertTo-Json -Depth 5 -AsArray)
+            }
+
+            if ($a[0] -eq 'functionapp' -and $a -contains 'appsettings' -and $a -contains 'set') {
+                $fileArg = @($a | Where-Object { $_ -like '@*' })[0]
+                $content = Get-Content -Raw -LiteralPath $fileArg.Substring(1)
+                $script:capturedSetFileContent = $content
+                $written = @($content | ConvertFrom-Json)
+                foreach ($w in $written) {
+                    $script:liveAppSettings = @($script:liveAppSettings | Where-Object { $_.name -ne $w.name }) + $w
+                }
+                return $null
+            }
+
+            return $null
+        }
+    }
+
+    It 'writes only WAREWOLF_ENTRA_CONFIG, and never rotates the secret or touches Easy Auth' {
+        $tmpOut = Join-Path ([System.IO.Path]::GetTempPath()) ("repair-out-{0}.json" -f [guid]::NewGuid())
+        try {
+            $clientId = Invoke-EntraConfigRepair -SubscriptionId 'sub-1' -TenantId 'tenant-1' `
+                -ResourceGroupName 'DEV2' -FunctionAppName 'warewolfserver' `
+                -EntraAppDisplayName 'warewolfserver-auth' -OutputPath $tmpOut
+
+            $clientId | Should -Be $script:entraApp.appId
+
+            $written = @($script:capturedSetFileContent | ConvertFrom-Json)
+            $written.Count | Should -Be 1
+            $written[0].name | Should -Be 'WAREWOLF_ENTRA_CONFIG'
+            ($written[0].value | ConvertFrom-Json).clientId | Should -Be $script:entraApp.appId
+
+            # Never a secret rotation or Easy Auth call.
+            @($script:azCallLog | Where-Object { $_[0] -eq 'ad' -and $_ -contains 'credential' }).Count | Should -Be 0
+            @($script:azCallLog | Where-Object { $_[0] -eq 'webapp' -and $_ -contains 'auth' }).Count  | Should -Be 0
+            # Never creates a new app registration.
+            @($script:azCallLog | Where-Object { $_[0] -eq 'ad' -and $_ -contains 'create' }).Count    | Should -Be 0
+        } finally {
+            Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'throws when no matching Entra app registration exists, and never creates one' {
+        $script:entraApp = $null
+        $tmpOut = Join-Path ([System.IO.Path]::GetTempPath()) ("repair-out-{0}.json" -f [guid]::NewGuid())
+        try {
+            { Invoke-EntraConfigRepair -SubscriptionId 'sub-1' -TenantId 'tenant-1' `
+                -ResourceGroupName 'DEV2' -FunctionAppName 'warewolfserver' `
+                -EntraAppDisplayName 'warewolfserver-auth' -OutputPath $tmpOut } |
+                Should -Throw '*requires an existing Entra app registration*'
+
+            @($script:azCallLog | Where-Object { $_[0] -eq 'ad' -and $_ -contains 'create' }).Count | Should -Be 0
+            @($script:azCallLog | Where-Object { $_[0] -eq 'functionapp' -and $_ -contains 'appsettings' -and $_ -contains 'set' }).Count | Should -Be 0
+        } finally {
+            Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'throws when the function app itself does not exist' {
+        $script:functionAppExists = $false
+        $tmpOut = Join-Path ([System.IO.Path]::GetTempPath()) ("repair-out-{0}.json" -f [guid]::NewGuid())
+        try {
+            { Invoke-EntraConfigRepair -SubscriptionId 'sub-1' -TenantId 'tenant-1' `
+                -ResourceGroupName 'DEV2' -FunctionAppName 'ghost-app' `
+                -EntraAppDisplayName 'ghost-app-auth' -OutputPath $tmpOut } |
+                Should -Throw "*'ghost-app' was not found*"
+        } finally {
+            Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'preserves an unrelated field already stored in WAREWOLF_ENTRA_CONFIG (read-merge-write)' {
+        $script:liveAppSettings = @(
+            @{ name = 'WAREWOLF_ENTRA_CONFIG'; value = '{"tenantId":"old-t","audience":"api://old","clientId":"old-c","otherField":"keep-me"}' }
+        )
+        $tmpOut = Join-Path ([System.IO.Path]::GetTempPath()) ("repair-out-{0}.json" -f [guid]::NewGuid())
+        try {
+            Invoke-EntraConfigRepair -SubscriptionId 'sub-1' -TenantId 'tenant-1' `
+                -ResourceGroupName 'DEV2' -FunctionAppName 'warewolfserver' `
+                -EntraAppDisplayName 'warewolfserver-auth' -OutputPath $tmpOut | Out-Null
+
+            $written = @($script:capturedSetFileContent | ConvertFrom-Json)[0]
+            $writtenValue = $written.value | ConvertFrom-Json
+            $writtenValue.otherField | Should -Be 'keep-me'
+            $writtenValue.tenantId   | Should -Be 'tenant-1'
+            $writtenValue.clientId   | Should -Be $script:entraApp.appId
+        } finally {
+            Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'writes a repair-mode summary to -OutputPath' {
+        $tmpOut = Join-Path ([System.IO.Path]::GetTempPath()) ("repair-out-{0}.json" -f [guid]::NewGuid())
+        try {
+            Invoke-EntraConfigRepair -SubscriptionId 'sub-1' -TenantId 'tenant-1' `
+                -ResourceGroupName 'DEV2' -FunctionAppName 'warewolfserver' `
+                -EntraAppDisplayName 'warewolfserver-auth' -OutputPath $tmpOut | Out-Null
+
+            $summary = Get-Content -Raw -LiteralPath $tmpOut | ConvertFrom-Json
+            $summary.Mode     | Should -Be 'RepairEntraConfigOnly'
+            $summary.ClientId | Should -Be $script:entraApp.appId
+        } finally {
+            Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
+        }
+    }
+}

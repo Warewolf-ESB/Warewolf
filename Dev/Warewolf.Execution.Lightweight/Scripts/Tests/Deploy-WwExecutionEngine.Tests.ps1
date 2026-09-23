@@ -1136,6 +1136,55 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
         $out | Should -Match 'Auth provisioning skipped'
     }
 
+    Context 'WAREWOLF_ENTRA_CONFIG drift repair under -SkipAuthProvisioning' {
+        <#
+            WAREWOLF_ENTRA_CONFIG is an ordinary Function App setting - a delete+recreate of the
+            app (e.g. a Flex Consumption migration) wipes it even though the Entra app
+            registration it names is untouched. Reproduced live on 'warewolfserver' (build 30802,
+            2026-09-23): -SkipAuthProvisioning skips Phase 2 entirely, so nothing used to notice
+            or repair the missing setting until a /secure/* call 401'd. Phase 2 now probes the
+            live setting under -SkipAuthProvisioning and repairs it via Configure-WwExecutionAuth.ps1
+            -RepairEntraConfigOnly when it's missing - see that script's own repair-mode tests for
+            what the repair itself does and does not touch.
+        #>
+
+        It 'repairs WAREWOLF_ENTRA_CONFIG when it is missing on the live app (the baseline az shim returns none)' {
+            $callArgs = $script:commonArgs.Clone(); $callArgs.SkipAuthProvisioning = $true
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'WAREWOLF_ENTRA_CONFIG is missing on the live app - repairing it now'
+            $out | Should -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'.*-RepairEntraConfigOnly"
+        }
+
+        It 'does NOT repair when WAREWOLF_ENTRA_CONFIG is already present on the live app' {
+            function az {
+                $a = $args; $global:LASTEXITCODE = 0
+                if ($a[0] -eq 'account'     -and $a -contains 'show')   { return '{"id":"sub-123","tenantId":"tid-456","user":{"name":"dev@x"},"name":"My Sub"}' }
+                if ($a[0] -eq 'group'       -and $a -contains 'exists') { return 'true' }
+                if ($a[0] -eq 'storage'     -and $a -contains 'show')   { return '{"name":"st"}' }
+                if ($a[0] -eq 'functionapp' -and $a -contains 'show')   { return '{"name":"app"}' }
+                if ($a[0] -eq 'keyvault'    -and $a -contains 'secret' -and $a -contains 'show') { $global:LASTEXITCODE = 1; return $null }
+                if ($a[0] -eq 'functionapp' -and $a -contains 'appsettings' -and $a -contains 'list') {
+                    return '[{"name":"WAREWOLF_ENTRA_CONFIG","value":"{\"tenantId\":\"t\",\"audience\":\"api://a\",\"clientId\":\"a\"}"}]'
+                }
+                return '{}'
+            }
+            $callArgs = $script:commonArgs.Clone(); $callArgs.SkipAuthProvisioning = $true
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'WAREWOLF_ENTRA_CONFIG already present'
+            # The Phase 0.5 plan line always mentions -RepairEntraConfigOnly as a possibility under
+            # -SkipAuthProvisioning (see the other test) - what must NOT happen here is Phase 2
+            # actually invoking it.
+            $out | Should -Not -Match "repairing it now"
+            $out | Should -Not -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'"
+        }
+
+        It 'never probes for drift when auth provisioning is NOT skipped (unchanged full Phase 2)' {
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Not -Match 'RepairEntraConfigOnly'
+            $out | Should -Not -Match 'checking for WAREWOLF_ENTRA_CONFIG drift'
+        }
+    }
+
     It 'fixes ASPNETCORE_ENVIRONMENT to Production' {
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Match 'ASPNETCORE_ENVIRONMENT\s*= Production'

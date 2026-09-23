@@ -12,10 +12,12 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 
@@ -40,32 +42,66 @@ namespace Warewolf.Security.Specs
 
         // ── Background ────────────────────────────────────────────────────────────
 
+        // This Background step runs before EVERY scenario in the feature, not just the first --
+        // so it can land at any point during a long run. The Lightweight engine's Azure Functions
+        // WebJobs Script host periodically does a "Host lock lease acquired" -> "Restarting host."
+        // self-restart (see TestRun.ps1's Wait-ForLightweightEngineStable for the full history);
+        // a probe that happens to land mid-restart gets a transient 503 (host swapping generations,
+        // new worker channel not yet reachable) or a connection failure, even though the engine is
+        // otherwise healthy a few seconds later. TestRun.ps1 already waits out this same window once
+        // before the whole test run starts, but cannot see a restart recurring mid-run (observed in
+        // captured CI logs recurring in ~10s waves) -- only a per-probe retry here can. A single-shot
+        // probe turned every such transient hit into an immediate scenario failure; retrying tolerates
+        // one restart wave (worst case ~10s here) without masking a genuinely down server for the
+        // whole scenario.
+        const int MaxProbeAttempts = 5;
+        static readonly TimeSpan[] ProbeRetryDelays = { TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(4) };
+
         [Given(@"the lightweight Warewolf server is running")]
         public void GivenTheLightweightWarewolfServerIsRunning()
         {
             using var probe = new HttpClient(new HttpClientHandler { AllowAutoRedirect = false });
-            HttpResponseMessage response = null;
-            try
+            var attemptErrors = new List<string>();
+
+            for (var attempt = 1; attempt <= MaxProbeAttempts; attempt++)
             {
-                response = probe.GetAsync($"{BaseUrl}/public/apis.json").Result;
-                // A 200 or 401 both confirm the server is up and routing requests.
-                if (response.StatusCode != HttpStatusCode.OK &&
-                    response.StatusCode != HttpStatusCode.Unauthorized)
+                var isLastAttempt = attempt == MaxProbeAttempts;
+                HttpResponseMessage response = null;
+                try
                 {
-                    Assert.Fail(
-                        $"Lightweight Warewolf server at {BaseUrl} returned unexpected status " +
-                        $"{(int)response.StatusCode} during probe. Ensure the server is running.");
+                    response = probe.GetAsync($"{BaseUrl}/public/apis.json").Result;
+                    // A 200 or 401 both confirm the server is up and routing requests.
+                    if (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Unauthorized)
+                    {
+                        return;
+                    }
+
+                    attemptErrors.Add($"attempt {attempt}: HTTP {(int)response.StatusCode}");
+                    if (isLastAttempt)
+                    {
+                        Assert.Fail(
+                            $"Lightweight Warewolf server at {BaseUrl} never returned 200/401 during probe " +
+                            $"after {MaxProbeAttempts} attempts. Ensure the server is running. " +
+                            $"Attempts: {string.Join("; ", attemptErrors)}");
+                    }
                 }
-            }
-            catch (Exception ex) when (!(ex is AssertFailedException))
-            {
-                Assert.Fail(
-                    $"Cannot reach lightweight Warewolf server at {BaseUrl}. " +
-                    $"Ensure the server is running before executing EasyAuthMiddleware specs. {ex.Message}");
-            }
-            finally
-            {
-                response?.Dispose();
+                catch (Exception ex) when (!(ex is AssertFailedException))
+                {
+                    attemptErrors.Add($"attempt {attempt}: {ex.Message}");
+                    if (isLastAttempt)
+                    {
+                        Assert.Fail(
+                            $"Cannot reach lightweight Warewolf server at {BaseUrl} after {MaxProbeAttempts} attempts. " +
+                            $"Ensure the server is running before executing EasyAuthMiddleware specs. " +
+                            $"Attempts: {string.Join("; ", attemptErrors)}");
+                    }
+                }
+                finally
+                {
+                    response?.Dispose();
+                }
+
+                Thread.Sleep(ProbeRetryDelays[attempt - 1]);
             }
         }
 

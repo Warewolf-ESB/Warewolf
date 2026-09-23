@@ -114,7 +114,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var normalizedError = result.ErrorMessage.Replace("\r\n", "\n");
             var startsWithExpectedWindows = normalizedError.StartsWith("Unsuccessful () low level call on HEAD: /\n Exception: No such host is known. (ddd:9300)\n\n# Audit trail of this API call:\n - [1] BadRequest: Node: http://ddd:9300/ Took: ");
             var startsWithExpectedLinux = normalizedError.StartsWith("Unsuccessful () low level call on HEAD: /\n Exception: Name or service not known (ddd:9300)\n\n# Audit trail of this API call:\n - [1] BadRequest: Node: http://ddd:9300/ Took: ");
-            Assert.IsTrue(startsWithExpectedWindows || startsWithExpectedLinux, normalizedError);
+            // Hosted Linux CI agents can also surface a transient EAI_AGAIN resolver failure
+            // (DNS server busy/unreachable) instead of the definitive EAI_NONAME "host not found"
+            // for the same bogus host - accept it as an equivalent unreachable-host outcome.
+            var startsWithExpectedLinuxTransient = normalizedError.StartsWith("Unsuccessful () low level call on HEAD: /\n Exception: Resource temporarily unavailable (ddd:9300)\n\n# Audit trail of this API call:\n - [1] BadRequest: Node: http://ddd:9300/ Took: ");
+            Assert.IsTrue(startsWithExpectedWindows || startsWithExpectedLinux || startsWithExpectedLinuxTransient, normalizedError);
         }
     }
 }

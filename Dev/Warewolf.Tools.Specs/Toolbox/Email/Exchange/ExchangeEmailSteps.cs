@@ -3,7 +3,6 @@ using Dev2.Data.Util;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using netDumbster.smtp;
 using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -49,9 +48,6 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             scenarioContext.TryGetValue("password", out string password);
             scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
             scenarioContext.TryGetValue("to", out string to);
-
-            var server = SimpleSmtpServer.Start(25);
-            scenarioContext.Add("server", server);
 
             var resourceName = Guid.NewGuid();
             var resourceID = Guid.NewGuid();
@@ -127,9 +123,6 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             scenarioContext.TryGetValue("password", out string password);
             scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
             scenarioContext.TryGetValue("to", out string to);
-
-            var server = SimpleSmtpServer.Start(25);
-            scenarioContext.Add("server", server);
 
             var resourceID = Guid.NewGuid();
             var resourceName = Guid.NewGuid();

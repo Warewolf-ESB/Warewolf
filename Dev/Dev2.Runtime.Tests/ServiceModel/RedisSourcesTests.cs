@@ -170,8 +170,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
             Assert.IsFalse(result.IsValid);
             StringAssert.StartsWith(result.ErrorMessage, "Exceeded timeout of 00:00:10");
             var dnsError = result.ErrorMessage.Substring("Exceeded timeout of 00:00:10".Length).TrimStart('\r', '\n');
+            // Hosted Linux CI agents can also surface a transient EAI_AGAIN resolver failure
+            // (DNS server busy/unreachable) instead of the definitive EAI_NONAME "host not found"
+            // for the same bogus host - accept it as an equivalent unreachable-host outcome.
             Assert.IsTrue(
-                dnsError == "No such host is known." || dnsError == "Name or service not known",
+                dnsError == "No such host is known." || dnsError == "Name or service not known" || dnsError == "Resource temporarily unavailable",
                 $"Unexpected DNS error text: '{dnsError}'");
         }
     }

@@ -50,6 +50,12 @@ namespace Dev2.Runtime.Tests.Coverage
         [TestMethod, Owner(Owner), TestCategory(Cat)]
         public void ToXml_RoundTrip()
         {
+            if (!OperatingSystem.IsWindows())
+            {
+                Assert.Inconclusive("Requires Windows DPAPI (DpapiWrapper.Encrypt with no AES hook registered).");
+                return;
+            }
+
             var id = Guid.NewGuid();
             var s = new ChatbotSource
             {
