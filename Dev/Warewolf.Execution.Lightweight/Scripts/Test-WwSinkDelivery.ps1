@@ -33,6 +33,18 @@
     currently absent (consumers = 0, and the load-test pipeline targets its own
     '-loadtest'-suffixed queues), which is what makes the trade acceptable here.
 
+    A CAPPED QUEUE DEFEATS A DEPTH DELTA. The sink carries a CloudAMQP policy of
+    max-length 20000. Once the 20k load test of 2026-09-19 filled it, every
+    publish trimmed one message off the head and the depth stayed at exactly
+    20000 — builds 30775, 30778 and 30797 all failed with "depth 20000 before the
+    run, 20000 now" while the workflow, the engine and the bridge were healthy.
+    So the before-read (-ReportBaselineOnly) also records the queue's cumulative
+    message_stats.publish counter, and the after-run poll accepts a rise in
+    EITHER signal. The counter is backlog- and cap-independent; the depth is kept
+    because the counter comes from the stats database and can lag it by a
+    collection interval. When only depth is available and the queue sits at its
+    cap, the failure says so instead of blaming the publish.
+
     SO THE TOKEN SEARCH IS KEPT, as an opportunistic upgrade rather than the
     assertion: when the queue is at or below -PeekThreshold, the head window
     covers the whole queue, the search is meaningful, and a hit upgrades the
@@ -64,6 +76,12 @@
     returned by an earlier -ReportDepthOnly call. A negative value means the
     before-read never happened, and is rejected rather than assumed to be 0 —
     defaulting it would turn a broken pre-step into a silent pass.
+.PARAMETER PublishedBefore
+    OPTIONAL. The queue's message_stats.publish counter captured before the run,
+    as returned by an earlier -ReportBaselineOnly call. A rise in it counts as
+    delivery even when the depth cannot move (a full max-length queue). Negative
+    (the default, and what -ReportBaselineOnly returns when the broker reports no
+    counter) means depth alone is asserted.
 .PARAMETER CorrelationToken
     OPTIONAL. The run-scoped token expected in the message payload (the smoke
     test's MandateId). When omitted, only the depth delta is asserted.
@@ -73,19 +91,25 @@
     Bounded window to wait for the delta. Defaults: 90 / 5.
 .PARAMETER ReportDepthOnly
     Reads the queue depth, writes it to the pipeline as the only object on the
-    success stream, and exits. This is the "before" half of the assertion.
+    success stream, and exits. Kept for callers that only pass -DepthBefore;
+    prefer -ReportBaselineOnly.
+.PARAMETER ReportBaselineOnly
+    Reads the queue once and writes { Depth; Published } to the pipeline as the
+    only object on the success stream, then exits. This is the "before" half of
+    the assertion: pass .Depth as -DepthBefore and .Published as -PublishedBefore.
 .PARAMETER LoadFunctionsOnly
     Test hook — define helpers then return, performing no broker call.
 
 .EXAMPLE
     # Before the run
-    $before = ./Test-WwSinkDelivery.ps1 -ReportDepthOnly -ManagementUri $u -QueueName $q `
+    $before = ./Test-WwSinkDelivery.ps1 -ReportBaselineOnly -ManagementUri $u -QueueName $q `
                   -VHost $v -Username $user -Password $pw
 
 .EXAMPLE
     # After the run
     ./Test-WwSinkDelivery.ps1 -ManagementUri $u -QueueName $q -VHost $v -Username $user `
-        -Password $pw -DepthBefore $before -CorrelationToken $mandateId
+        -Password $pw -DepthBefore $before.Depth -PublishedBefore $before.Published `
+        -CorrelationToken $mandateId
 
 .NOTES
     Non-destructive against the broker: GET /api/queues/... and, at most, a
@@ -114,13 +138,15 @@ param(
     [string] $VHost = '/',
 
     [int] $DepthBefore = -1,
+    [long] $PublishedBefore = -1,
     [string] $CorrelationToken,
     [int] $PeekThreshold = 200,
     [int] $TimeoutSeconds = 90,
     [int] $PollIntervalSeconds = 5,
 
     [switch] $ReportDepthOnly,
-    [switch] $LoadFunctionsOnly          # test hook — define helpers then return
+    [switch] $ReportBaselineOnly,
+    [switch] $LoadFunctionsOnly         # test hook — define helpers then return
 )
 
 Set-StrictMode -Version Latest
@@ -177,11 +203,47 @@ function Invoke-RabbitMqApi {
     }
 }
 
+function Get-OptionalProperty {
+    <# $Object.$Name, or $null when it is absent — StrictMode Latest throws on a
+       missing property, and every field below is broker- and state-dependent. #>
+    param($Object, [Parameter(Mandatory)][string] $Name)
+    if ($null -eq $Object -or $Object.PSObject.Properties.Name -notcontains $Name) { return $null }
+    return $Object.$Name
+}
+
+function Get-QueueState {
+    <# One read of the queue: Depth (ready + unacknowledged), Published (the
+       cumulative message_stats.publish counter, -1 when the broker reports none —
+       it is absent on a queue with no traffic since the stats were last reset),
+       and MaxLength (the effective length cap, -1 when uncapped).
+
+       Published is what makes a CAPPED queue verifiable. With max-length set
+       (policy or x-max-length argument) and overflow drop-head, a full queue's
+       depth never moves: every publish trims one off the head. The sink hit
+       exactly that — max-length 20000 by CloudAMQP policy, filled by the 20k
+       load test on 2026-09-19 — and builds 30775/30778/30797 all read
+       "depth 20000 before the run, 20000 now". The counter keeps counting. #>
+    param([Parameter(Mandatory)][string] $VHostName, [Parameter(Mandatory)][string] $Name)
+    $q = Invoke-RabbitMqApi -Path "/api/queues/$(Get-VHostForApi $VHostName)/$([Uri]::EscapeDataString($Name))"
+
+    $published = Get-OptionalProperty (Get-OptionalProperty $q 'message_stats') 'publish'
+
+    $caps = @(
+        (Get-OptionalProperty (Get-OptionalProperty $q 'effective_policy_definition') 'max-length'),
+        (Get-OptionalProperty (Get-OptionalProperty $q 'arguments') 'x-max-length')
+    ) | Where-Object { $null -ne $_ } | ForEach-Object { [long] $_ }
+
+    return [pscustomobject]@{
+        Depth     = [int] $q.messages
+        Published = if ($null -ne $published) { [long] $published } else { [long] -1 }
+        MaxLength = if (@($caps).Count -gt 0) { [long] (@($caps) | Measure-Object -Minimum).Minimum } else { [long] -1 }
+    }
+}
+
 function Get-QueueDepth {
     <# Total messages on the queue (ready + unacknowledged). #>
     param([Parameter(Mandatory)][string] $VHostName, [Parameter(Mandatory)][string] $Name)
-    $q = Invoke-RabbitMqApi -Path "/api/queues/$(Get-VHostForApi $VHostName)/$([Uri]::EscapeDataString($Name))"
-    return [int] $q.messages
+    return (Get-QueueState -VHostName $VHostName -Name $Name).Depth
 }
 
 function Get-QueueHeadMessages {
@@ -218,16 +280,24 @@ function Get-QueueHeadMessages {
 }
 
 function Wait-ForSinkDelivery {
-    <# Polls until the queue is at least one message deeper than $Before, then
-       (only when the head window covers the whole queue) tries to attribute the
-       new message to this run. Throws when no delta appears in the window.
+    <# Polls until the queue shows this run's publish — its depth is at least one
+       above $Before, OR (when a $PublishedBefore baseline was captured) its
+       cumulative publish counter is at least one above that — then (only when the
+       head window covers the whole queue) tries to attribute the new message to
+       this run. Throws when neither moves in the window.
 
-       Returns a summary object: Delivered / Attributable / DepthBefore /
-       DepthAfter / Peeked / Polls. #>
+       Either signal is accepted, not just the counter, because the counter comes
+       from the management stats database (collect_statistics_interval, 5s
+       default) and can lag a depth rise that has already happened. Both carry
+       the same non-attributability caveat (see .DESCRIPTION).
+
+       Returns a summary object: Delivered / Attributable / Signal / DepthBefore /
+       DepthAfter / PublishedBefore / PublishedAfter / Peeked / Polls. #>
     param(
         [Parameter(Mandatory)][string] $VHostName,
         [Parameter(Mandatory)][string] $Name,
         [Parameter(Mandatory)][int]    $Before,
+        [long] $PublishedBefore = -1,
         [string] $Token,
         [int] $Threshold = 200,
         [int] $Timeout = 90,
@@ -236,8 +306,9 @@ function Wait-ForSinkDelivery {
 
     $deadline     = (Get-Date).AddSeconds($Timeout)
     $polls        = 0
-    $depth        = $Before
+    $state        = $null
     $delivered    = $false
+    $signal       = $null
     $attributable = $false
     $peeked       = 0
 
@@ -245,19 +316,56 @@ function Wait-ForSinkDelivery {
     # window is — a timeout of 0 must still produce a verdict, not zero reads.
     do {
         $polls++
-        $depth = Get-QueueDepth -VHostName $VHostName -Name $Name
-        if ($depth -ge ($Before + 1)) { $delivered = $true; break }
+        $state = Get-QueueState -VHostName $VHostName -Name $Name
+        if ($PublishedBefore -ge 0 -and $state.Published -ge ($PublishedBefore + 1)) {
+            $delivered = $true; $signal = 'PublishCounter'; break
+        }
+        if ($state.Depth -ge ($Before + 1)) { $delivered = $true; $signal = 'Depth'; break }
         if ((Get-Date) -ge $deadline) { break }
         Start-Sleep -Seconds $Interval
     } while ($true)
 
+    $depth = $state.Depth
+
     if (-not $delivered) {
-        throw ("Sink verification FAILED: queue '$Name' did not grow within ${Timeout}s " +
-               "(depth $Before before the run, $depth now, $polls read(s)). The workflow's " +
-               'trailing RabbitMQ Publish did not deliver.')
+        $detail = "depth $Before before the run, $depth now"
+        if ($PublishedBefore -ge 0) {
+            $detail += "; published counter $PublishedBefore before, $(if ($state.Published -ge 0) { $state.Published } else { 'not reported' }) now"
+        }
+        $message = "Sink verification FAILED: queue '$Name' did not grow within ${Timeout}s ($detail, $polls read(s))."
+
+        $atCap = $state.MaxLength -gt 0 -and $depth -ge $state.MaxLength
+        $counterUsable = $PublishedBefore -ge 0 -and $state.Published -ge 0
+
+        if ($counterUsable -and $state.Published -lt $PublishedBefore) {
+            # A counter that went BACKWARDS was reset (broker restart, or stats
+            # database reset), so "no rise" proves nothing either way.
+            $message += (' The publish counter went backwards, so the broker''s stats were reset ' +
+                         'during the run; delivery cannot be determined from it.')
+        }
+        elseif ($counterUsable) {
+            $message += " The workflow's trailing RabbitMQ Publish did not deliver."
+        }
+        elseif ($atCap) {
+            # Depth-only, on a full capped queue: the depth CANNOT grow, so the
+            # usual "did not deliver" would be an unfounded accusation.
+            $message += (" The queue is at its max-length of $($state.MaxLength), so its depth " +
+                         'cannot grow: each publish drops a message off the head. Delivery cannot ' +
+                         'be verified from depth - capture -PublishedBefore with -ReportBaselineOnly, ' +
+                         'or drain the queue below its cap.')
+        }
+        else {
+            $message += " The workflow's trailing RabbitMQ Publish did not deliver."
+        }
+        throw $message
     }
 
-    Write-Ok "Sink delivered: depth $Before -> $depth after $polls read(s)."
+    if ($signal -eq 'PublishCounter') {
+        Write-Ok ("Sink delivered: published counter $PublishedBefore -> $($state.Published) " +
+                  "(depth $Before -> $depth) after $polls read(s).")
+    } else {
+        Write-Ok "Sink delivered: depth $Before -> $depth after $polls read(s)."
+    }
 
     if ([string]::IsNullOrWhiteSpace($Token)) {
         Write-Note 'No correlation token supplied — asserted on the depth delta alone.'
@@ -288,12 +396,15 @@ function Wait-ForSinkDelivery {
     }
 
     return [pscustomobject]@{
-        Delivered    = $true
-        Attributable = $attributable
-        DepthBefore  = $Before
-        DepthAfter   = $depth
-        Peeked       = $peeked
-        Polls        = $polls
+        Delivered       = $true
+        Attributable    = $attributable
+        Signal          = $signal
+        DepthBefore     = $Before
+        DepthAfter      = $depth
+        PublishedBefore = $PublishedBefore
+        PublishedAfter  = $state.Published
+        Peeked          = $peeked
+        Polls           = $polls
     }
 }
 
@@ -325,6 +436,18 @@ if ($ReportDepthOnly) {
     return $depth
 }
 
+if ($ReportBaselineOnly) {
+    $state = Get-QueueState -VHostName $VHost -Name $QueueName
+    Write-Step ("Sink '$QueueName' before the run: depth $($state.Depth), published counter " +
+                "$(if ($state.Published -ge 0) { $state.Published } else { 'not reported' })" +
+                "$(if ($state.MaxLength -gt 0) { ", max-length $($state.MaxLength)" })")
+    if ($state.MaxLength -gt 0 -and $state.Depth -ge $state.MaxLength -and $state.Published -lt 0) {
+        Write-Note ('The queue is at its max-length and the broker reports no publish counter - ' +
+                    'the after-run check will have no signal that can move.')
+    }
+    return [pscustomobject]@{ Depth = $state.Depth; Published = $state.Published }
+}
+
 # A negative DepthBefore means the pre-run step never published one. Assuming 0
 # would make any pre-existing message look like this run's delivery.
 if ($DepthBefore -lt 0) {
@@ -332,8 +455,9 @@ if ($DepthBefore -lt 0) {
            'not run or failed before publishing its value, so a delta cannot be computed.')
 }
 
-Write-Step "Verifying delivery to '$QueueName' (vhost '$VHost'), depth before the run: $DepthBefore"
+Write-Step ("Verifying delivery to '$QueueName' (vhost '$VHost'), depth before the run: $DepthBefore" +
+            "$(if ($PublishedBefore -ge 0) { ", published counter before the run: $PublishedBefore" })")
 
 Wait-ForSinkDelivery -VHostName $VHost -Name $QueueName -Before $DepthBefore `
-    -Token $CorrelationToken -Threshold $PeekThreshold `
+    -PublishedBefore $PublishedBefore -Token $CorrelationToken -Threshold $PeekThreshold `
     -Timeout $TimeoutSeconds -Interval $PollIntervalSeconds

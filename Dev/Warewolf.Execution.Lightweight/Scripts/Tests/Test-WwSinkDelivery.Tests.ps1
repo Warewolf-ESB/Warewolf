@@ -76,7 +76,15 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
     BeforeEach {
         # Successive Get-QueueDepth results; the last value repeats once exhausted.
         $global:depthSequence = @(101)
-        $global:depthIndex    = 0
+        # Successive message_stats.publish values, indexed alongside depthSequence.
+        # $null (the default) omits message_stats entirely, as a broker with no
+        # traffic since its last stats reset does.
+        $global:publishedSequence = $null
+        $global:queueIndex    = 0
+        # Length cap, reported as policy (effective_policy_definition.max-length)
+        # or as a queue argument (arguments.x-max-length). $null = uncapped.
+        $global:policyMaxLength   = $null
+        $global:argumentMaxLength = $null
         $global:headMessages  = @()
         $global:apiCalls      = [System.Collections.ArrayList]::new()
         $global:failOnGet     = $false
@@ -91,9 +99,21 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
                 return $global:headMessages
             }
             if ($Uri -match '/api/queues/') {
-                $i = [Math]::Min($global:depthIndex, $global:depthSequence.Count - 1)
-                $global:depthIndex++
-                return [pscustomobject]@{ messages = $global:depthSequence[$i] }
+                $i = $global:queueIndex
+                $global:queueIndex++
+                $q = [ordered]@{ messages = $global:depthSequence[[Math]::Min($i, $global:depthSequence.Count - 1)] }
+                if ($null -ne $global:publishedSequence) {
+                    $q.message_stats = [pscustomobject]@{
+                        publish = $global:publishedSequence[[Math]::Min($i, $global:publishedSequence.Count - 1)]
+                    }
+                }
+                if ($null -ne $global:policyMaxLength) {
+                    $q.effective_policy_definition = [pscustomobject]@{ 'max-length' = $global:policyMaxLength }
+                }
+                if ($null -ne $global:argumentMaxLength) {
+                    $q.arguments = [pscustomobject]@{ 'x-max-length' = $global:argumentMaxLength }
+                }
+                return [pscustomobject]$q
             }
             throw "Unhandled Uri in test shim: $Uri"
         }
@@ -109,7 +129,8 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
     }
 
     AfterAll {
-        Remove-Variable -Name depthSequence, depthIndex, headMessages, apiCalls, failOnGet `
+        Remove-Variable -Name depthSequence, publishedSequence, queueIndex, policyMaxLength, `
+            argumentMaxLength, headMessages, apiCalls, failOnGet `
             -Scope Global -ErrorAction SilentlyContinue
     }
 
@@ -241,6 +262,107 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
         It 'encodes the vhost into the queue URI' {
             & $script:SinkScript @commonArgs -ReportDepthOnly | Out-Null
             $global:apiCalls[0].Uri | Should -Match '/api/queues/bmkzdabu/collectionv2\.profilerrecommendation\.request$'
+        }
+    }
+
+    Context 'capped queue — the publish counter (builds 30775 / 30778 / 30797)' {
+        # The sink has a CloudAMQP policy of max-length 20000. Once full, each
+        # publish drops a message off the head and the depth never moves — the
+        # three builds above all read "depth 20000 before the run, 20000 now" over
+        # a healthy engine. These cases pin the depth AT the cap throughout.
+
+        BeforeEach {
+            $global:depthSequence   = @(20000)
+            $global:policyMaxLength = 20000
+        }
+
+        It 'confirms delivery from the publish counter while the depth stays at the cap' {
+            $global:publishedSequence = @(500001)
+            $r = & $script:SinkScript @commonArgs -DepthBefore 20000 -PublishedBefore 500000 -TimeoutSeconds 0
+            $r.Delivered      | Should -BeTrue
+            $r.Signal         | Should -Be 'PublishCounter'
+            $r.DepthAfter     | Should -Be 20000
+            $r.PublishedAfter | Should -Be 500001
+        }
+
+        It 'keeps polling while the counter lags the stats collection interval' {
+            $global:publishedSequence = @(500000, 500000, 500001)
+            $r = & $script:SinkScript @commonArgs -DepthBefore 20000 -PublishedBefore 500000 -TimeoutSeconds 30
+            $r.Delivered | Should -BeTrue
+            $r.Polls     | Should -Be 3
+        }
+
+        It 'still accepts a depth rise when the counter has not caught up yet' {
+            $global:policyMaxLength   = $null
+            $global:depthSequence     = @(101)
+            $global:publishedSequence = @(500000)
+            $r = & $script:SinkScript @commonArgs -DepthBefore 100 -PublishedBefore 500000 -TimeoutSeconds 0
+            $r.Delivered | Should -BeTrue
+            $r.Signal    | Should -Be 'Depth'
+        }
+
+        It 'blames the publish, naming both counters, when the counter does not move' {
+            $global:publishedSequence = @(500000)
+            { & $script:SinkScript @commonArgs -DepthBefore 20000 -PublishedBefore 500000 -TimeoutSeconds 0 } |
+                Should -Throw '*published counter 500000 before, 500000 now*trailing RabbitMQ Publish did not deliver*'
+        }
+
+        It 'falls back to depth when the broker stops reporting the counter' {
+            $global:policyMaxLength = $null
+            $global:depthSequence   = @(101)
+            # publishedSequence stays $null: no message_stats on the after-run read.
+            $r = & $script:SinkScript @commonArgs -DepthBefore 100 -PublishedBefore 500000 -TimeoutSeconds 0
+            $r.Delivered      | Should -BeTrue
+            $r.Signal         | Should -Be 'Depth'
+            $r.PublishedAfter | Should -Be -1
+        }
+
+        It 'says the queue is full, rather than blaming the publish, when only depth is available' {
+            $err = { & $script:SinkScript @commonArgs -DepthBefore 20000 -TimeoutSeconds 0 } |
+                       Should -Throw -PassThru
+            $err.Exception.Message | Should -Match 'max-length of 20000'
+            $err.Exception.Message | Should -Match 'ReportBaselineOnly'
+            $err.Exception.Message | Should -Not -Match 'did not deliver'
+        }
+
+        It 'recognises a cap set as an x-max-length queue argument, not only by policy' {
+            $global:policyMaxLength   = $null
+            $global:argumentMaxLength = 20000
+            { & $script:SinkScript @commonArgs -DepthBefore 20000 -TimeoutSeconds 0 } |
+                Should -Throw '*max-length of 20000*'
+        }
+
+        It 'reports a counter that went backwards as a stats reset, not a failed publish' {
+            $global:publishedSequence = @(12)
+            $err = { & $script:SinkScript @commonArgs -DepthBefore 20000 -PublishedBefore 500000 -TimeoutSeconds 0 } |
+                       Should -Throw -PassThru
+            $err.Exception.Message | Should -Match 'stats were reset'
+            $err.Exception.Message | Should -Not -Match 'did not deliver'
+        }
+    }
+
+    Context '-ReportBaselineOnly' {
+
+        It 'returns depth and publish counter as the only object on the success stream' {
+            $global:depthSequence     = @(20000)
+            $global:publishedSequence = @(500000)
+            $b = @(& $script:SinkScript @commonArgs -ReportBaselineOnly)
+            $b.Count        | Should -Be 1
+            $b[0].Depth     | Should -Be 20000
+            $b[0].Published | Should -Be 500000
+        }
+
+        It 'returns Published -1 when the broker reports no message_stats' {
+            $global:depthSequence = @(7)
+            $b = & $script:SinkScript @commonArgs -ReportBaselineOnly
+            $b.Depth     | Should -Be 7
+            $b.Published | Should -Be -1
+        }
+
+        It 'reads the queue once and never peeks' {
+            & $script:SinkScript @commonArgs -ReportBaselineOnly | Out-Null
+            $global:apiCalls.Count | Should -Be 1
+            ($global:apiCalls | Where-Object { $_.Uri -match '/get$' }).Count | Should -Be 0
         }
     }
 }
