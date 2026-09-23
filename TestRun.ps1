@@ -1802,6 +1802,7 @@ function Stop-HostMSSQLServer { docker rm -f sqlserver 2>$null | Out-Null }
 $script:_serverProcess   = $null
 $script:_coverageProcess = $null
 $script:_azuriteProcess  = $null
+$script:_azuriteOwnsStorage = $false   # AzureWebJobsStorage was set by Start-Azurite, not the caller
 $script:_sessionId       = ""
 
 function Ensure-DotnetCoverage {
@@ -1870,8 +1871,26 @@ function Start-Azurite {
     # takes the standard, heavily-used blob-lease coordinator path instead.
     # Start a real (emulated) storage backend here so CI takes that same,
     # well-tested path rather than the rare in-memory fallback.
+    #
+    # Only a caller-supplied AzureWebJobsStorage (e.g. a real storage account)
+    # skips startup. A value this function set itself points at *our* Azurite,
+    # which Stop-Engine kills on a mid-run engine restart; skipping on it left
+    # every retry after the first pointed at a dead 127.0.0.1:10000 (CI build
+    # 30791 "Other Specs": "Connection refused (127.0.0.1:10000)" -> storage
+    # health check Unhealthy -> "Restarting host." -> "already exists" on all
+    # 7 attempts).
+    if ($script:_azuriteOwnsStorage) {
+        if ($script:_azuriteProcess -and -not $script:_azuriteProcess.HasExited) {
+            Write-Host "Azurite (started by this script) is still running; reusing it."
+            return
+        }
+        Write-Host "Azurite started by this script is no longer running; starting a new instance."
+        Remove-Item Env:AzureWebJobsStorage -ErrorAction SilentlyContinue
+        $script:_azuriteOwnsStorage = $false
+        $script:_azuriteProcess = $null
+    }
     if ($env:AzureWebJobsStorage) {
-        Write-Host "AzureWebJobsStorage already set; skipping Azurite startup."
+        Write-Host "AzureWebJobsStorage already set by the caller; skipping Azurite startup."
         return
     }
     $azurite = Resolve-AzuriteExe
@@ -1882,9 +1901,15 @@ function Start-Azurite {
     $dataDir = Join-Path ([System.IO.Path]::GetTempPath()) ("azurite-" + [guid]::NewGuid().ToString("N"))
     New-Item -ItemType Directory -Force -Path $dataDir | Out-Null
     Write-Host "Starting Azurite from $azurite (data dir: $dataDir)"
-    $azuriteOut = Join-Path $dataDir 'azurite.log'
-    $azuriteErr = Join-Path $dataDir 'azurite.err.log'
-    $script:_azuriteProcess = Start-HiddenProcess @{ FilePath = $azurite; ArgumentList = @("--silent", "--location", $dataDir, "--debug", (Join-Path $dataDir 'azurite-debug.log')); RedirectStandardOutput = $azuriteOut; RedirectStandardError = $azuriteErr }
+    # Logs go beside warewolf-server.log (not in the temp data dir) so the
+    # pipeline's TestResults upload carries them; earlier instances' logs are
+    # kept as azurite(N).log etc. rather than overwritten.
+    $logDir     = Get-EngineLogDir
+    $azuriteOut = Join-Path $logDir 'azurite.log'
+    $azuriteErr = Join-Path $logDir 'azurite.err.log'
+    $azuriteDbg = Join-Path $logDir 'azurite-debug.log'
+    foreach ($l in @($azuriteOut, $azuriteErr, $azuriteDbg)) { Move-ToNumberedLog $l }
+    $script:_azuriteProcess = Start-HiddenProcess @{ FilePath = $azurite; ArgumentList = @("--silent", "--location", $dataDir, "--debug", $azuriteDbg); RedirectStandardOutput = $azuriteOut; RedirectStandardError = $azuriteErr }
     $deadline = (Get-Date).AddSeconds(30)
     $up = $false
     while ((Get-Date) -lt $deadline) {
@@ -1907,6 +1932,30 @@ function Start-Azurite {
     }
     Write-Host "Azurite ready on port 10000 (blob)."
     $env:AzureWebJobsStorage = 'UseDevelopmentStorage=true'
+    $script:_azuriteOwnsStorage = $true
+}
+
+# Directory for engine-side logs (warewolf-server*.log, azurite*.log); the
+# pipeline uploads it as the job's _ServerLogs artifact.
+function Get-EngineLogDir {
+    $dir = if ($TestResultsDir) { $TestResultsDir } else { Join-Path $PWD 'TestResults' }
+    if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Force -Path $dir | Out-Null }
+    return $dir
+}
+
+# Renames an existing log to "<name>(N)<ext>" (first free N) so the next
+# writer starts a fresh file instead of truncating it. Start-Process
+# -RedirectStandardOutput truncates its target, so without this every engine
+# restart erased the previous generation's log -- CI build 30791 kept only
+# the last of 7 attempts, hiding why the first one failed.
+function Move-ToNumberedLog([string]$Path) {
+    if (-not (Test-Path -LiteralPath $Path)) { return }
+    $dir  = Split-Path -Parent $Path
+    $base = [System.IO.Path]::GetFileNameWithoutExtension($Path)
+    $ext  = [System.IO.Path]::GetExtension($Path)
+    $n = 1
+    while (Test-Path -LiteralPath (Join-Path $dir "$base($n)$ext")) { $n++ }
+    Move-Item -LiteralPath $Path -Destination (Join-Path $dir "$base($n)$ext")
 }
 
 function Wait-ForEngine {
@@ -2194,10 +2243,13 @@ function Start-LightweightExecution {
     # Capture engine stdout/stderr to a log so a 500 from /Secure/<slug>
     # leaves a trail. PublishBuildArtifacts in pipeline.yml uploads
     # $TestResultsPath\warewolf-server.log when the test step finishes.
-    $logBase = if ($TestResultsDir) { $TestResultsDir } else { Join-Path $PWD 'TestResults' }
-    if (-not (Test-Path $logBase)) { New-Item -ItemType Directory -Force -Path $logBase | Out-Null }
+    # A mid-run engine restart (retry loop) re-enters here after Stop-Engine,
+    # so the previous generation's logs are no longer held open and are kept
+    # as warewolf-server(N).log etc. instead of being truncated.
+    $logBase = Get-EngineLogDir
     $stdoutLog = Join-Path $logBase 'warewolf-server.log'
     $stderrLog = Join-Path $logBase 'warewolf-server.err.log'
+    foreach ($l in @($stdoutLog, $stderrLog, (Join-Path $logBase 'warewolf-engine-init.log'))) { Move-ToNumberedLog $l }
     # Diagnostic snapshot: record the resolved engine inputs to a separate
     # file (Start-Process -RedirectStandardOutput truncates $stdoutLog when
     # the process opens it, so we can't share that file with the header).
@@ -2338,7 +2390,15 @@ function Stop-Engine {
     if ($script:_azuriteProcess -and -not $script:_azuriteProcess.HasExited) {
         $script:_azuriteProcess | Stop-Process -Force -ErrorAction SilentlyContinue
     }
-    Get-Process -Name "func"                           -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
+    # The Azurite behind our own AzureWebJobsStorage value is gone now; drop the
+    # value so the next Start-LightweightExecution starts a fresh Azurite
+    # instead of pointing the engine at a dead endpoint.
+    if ($script:_azuriteOwnsStorage) {
+        Remove-Item Env:AzureWebJobsStorage -ErrorAction SilentlyContinue
+        $script:_azuriteOwnsStorage = $false
+        $script:_azuriteProcess = $null
+    }
+    Get-Process -Name "func"                          -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "Warewolf Server"                -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "Warewolf.Execution.Lightweight" -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
     Get-Process -Name "azurite"                        -ErrorAction SilentlyContinue | Stop-Process -Force -ErrorAction SilentlyContinue
@@ -3208,9 +3268,10 @@ try {
                 Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
             }
             # Roll prior RunTests / coverage artifacts. warewolf-server.log is
-            # held open by the engine for the full TestRun.ps1 invocation, so
-            # rotating it here would fail with a file-in-use error; let it
-            # accumulate across retries instead.
+            # held open by the running engine, so it is not rotated here; it
+            # accumulates across retries, and Start-LightweightExecution keeps
+            # each engine generation's log as warewolf-server(N).log when the
+            # retry loop restarts the engine.
             if (Test-Path "$TestResultsPath\RunTests.ps1")          { Move-Item "$TestResultsPath\RunTests.ps1"          "$TestResultsPath\RunTests($loop).ps1" }
             if (Test-Path "$TestResultsPath\Snapshot.coverage")     { Move-Item "$TestResultsPath\Snapshot.coverage"     "$TestResultsPath\Snapshot($loop).coverage" }
             if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") { Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($loop).coverage" }

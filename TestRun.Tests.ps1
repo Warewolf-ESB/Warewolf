@@ -10,7 +10,8 @@
     Focus: what lets the CI test jobs run on ubuntu-latest agents - the pipeline.yml catalog
     parser accepting '/' coverage paths, native-tool path conversion, the Windows-only host
     switches being skipped (not fatal) off Windows, -WindowStyle only being passed on Windows,
-    and the shared FTP / MSSQL fixture definitions that the native and docker paths both use.
+    the shared FTP / MSSQL fixture definitions that the native and docker paths both use, and
+    the Lightweight engine's Azurite / log handling across mid-run engine restarts.
     Entirely offline: no docker, no dotnet, no network.
 #>
 
@@ -162,5 +163,110 @@ Describe 'Shared dependency fixtures (native and docker paths)' {
         $dockerPart | Should -Match 'Get-MssqlSeedBatches'
         $dockerPart | Should -Match 'Get-MssqlBacpacPath'
         $dockerPart | Should -Match 'mssql-tools18/bin/sqlcmd'
+    }
+}
+
+Describe 'Move-ToNumberedLog' {
+    BeforeAll { script:Import-TestRunFunction 'Move-ToNumberedLog' }
+    BeforeEach {
+        $script:logDir = Join-Path ([System.IO.Path]::GetTempPath()) ("logs-" + [Guid]::NewGuid().ToString('N'))
+        New-Item -ItemType Directory -Path $script:logDir | Out-Null
+    }
+    AfterEach { Remove-Item -LiteralPath $script:logDir -Recurse -Force -ErrorAction SilentlyContinue }
+
+    It 'keeps each engine generation as name(N).ext instead of letting the next start truncate it' {
+        $log = Join-Path $script:logDir 'warewolf-server.log'
+        'first'  | Set-Content -LiteralPath $log
+        Move-ToNumberedLog $log
+        'second' | Set-Content -LiteralPath $log
+        Move-ToNumberedLog $log
+
+        Test-Path -LiteralPath $log | Should -BeFalse
+        Get-Content -LiteralPath (Join-Path $script:logDir 'warewolf-server(1).log') | Should -Be 'first'
+        Get-Content -LiteralPath (Join-Path $script:logDir 'warewolf-server(2).log') | Should -Be 'second'
+    }
+
+    It 'does nothing when the log does not exist yet (first engine start)' {
+        Move-ToNumberedLog (Join-Path $script:logDir 'warewolf-server.log')
+        @(Get-ChildItem -LiteralPath $script:logDir).Count | Should -Be 0
+    }
+}
+
+# CI build 30791 "Other Specs": Stop-Engine killed the Azurite that Start-Azurite had started,
+# but AzureWebJobsStorage stayed set, so every retry's Start-Azurite skipped ("already set") and
+# the engine ran against a dead 127.0.0.1:10000 on all 7 attempts.
+Describe 'Azurite ownership of AzureWebJobsStorage across engine restarts' {
+    BeforeAll {
+        script:Import-TestRunFunction 'Start-Azurite', 'Stop-Engine', 'Start-HiddenProcess'
+        function script:Write-Warn([string]$m) { }
+        function script:Resolve-AzuriteExe { $null }   # no Azurite: exercises the skip/fallback decisions only
+    }
+    BeforeEach {
+        $script:savedStorage = $env:AzureWebJobsStorage
+        $script:_sessionId = ''
+        $script:_coverageProcess = $null
+        $script:_serverProcess = $null
+        Mock Get-Process { }   # keep Stop-Engine's by-name sweep off real processes
+        Mock Start-HiddenProcess { }
+    }
+    AfterEach {
+        if ($script:savedStorage) { $env:AzureWebJobsStorage = $script:savedStorage }
+        else { Remove-Item Env:AzureWebJobsStorage -ErrorAction SilentlyContinue }
+    }
+
+    It 'Start-Azurite does not skip on its own stale value once its Azurite has exited' {
+        $script:_azuriteOwnsStorage = $true
+        $script:_azuriteProcess = [pscustomobject]@{ HasExited = $true }
+        $env:AzureWebJobsStorage = 'UseDevelopmentStorage=true'
+        Mock Resolve-AzuriteExe { $null }
+
+        Start-Azurite
+
+        Should -Invoke Resolve-AzuriteExe -Times 1 -Exactly   # went on to (re)start Azurite
+        $env:AzureWebJobsStorage | Should -BeNullOrEmpty      # fallback leaves no dead endpoint behind
+        $script:_azuriteOwnsStorage | Should -BeFalse
+    }
+
+    It 'Start-Azurite respects a caller-supplied AzureWebJobsStorage' {
+        $script:_azuriteOwnsStorage = $false
+        $env:AzureWebJobsStorage = 'DefaultEndpointsProtocol=https;AccountName=real'
+        Mock Resolve-AzuriteExe { $null }
+
+        Start-Azurite
+
+        Should -Invoke Resolve-AzuriteExe -Times 0 -Exactly
+        $env:AzureWebJobsStorage | Should -Be 'DefaultEndpointsProtocol=https;AccountName=real'
+    }
+
+    It 'Start-Azurite reuses its own Azurite while it is still running' {
+        $script:_azuriteOwnsStorage = $true
+        $script:_azuriteProcess = [pscustomobject]@{ HasExited = $false }
+        $env:AzureWebJobsStorage = 'UseDevelopmentStorage=true'
+
+        Start-Azurite
+
+        Should -Invoke Start-HiddenProcess -Times 0 -Exactly
+        $env:AzureWebJobsStorage | Should -Be 'UseDevelopmentStorage=true'
+        $script:_azuriteOwnsStorage | Should -BeTrue
+    }
+
+    It 'Stop-Engine clears the AzureWebJobsStorage value that pointed at the Azurite it killed' {
+        $script:_azuriteOwnsStorage = $true
+        $script:_azuriteProcess = $null
+        $env:AzureWebJobsStorage = 'UseDevelopmentStorage=true'
+
+        Stop-Engine
+
+        $env:AzureWebJobsStorage | Should -BeNullOrEmpty
+        $script:_azuriteOwnsStorage | Should -BeFalse
+    }
+
+    It 'Stop-Engine leaves a caller-supplied AzureWebJobsStorage alone' {
+        $script:_azuriteOwnsStorage = $false
+        $env:AzureWebJobsStorage = 'DefaultEndpointsProtocol=https;AccountName=real'
+
+        Stop-Engine
+
+        $env:AzureWebJobsStorage | Should -Be 'DefaultEndpointsProtocol=https;AccountName=real'
     }
 }
