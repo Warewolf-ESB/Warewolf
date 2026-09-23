@@ -149,6 +149,33 @@ function Write-Done($m) { Write-Host "    OK  $m" -ForegroundColor Green }
 function Write-Warn($m) { Write-Host "    !!  $m" -ForegroundColor Yellow }
 # Surfaces on the Azure DevOps run summary (TF_BUILD is set on every agent)
 # without aborting the script; a plain warning locally.
+# Start-Process -WindowStyle is Windows-only (pwsh on Linux rejects it), so every
+# detached helper process is launched through here rather than passing it inline.
+# -OnWindows exists so TestRun.Tests.ps1 can exercise the Linux branch ($IsWindows is
+# read-only in pwsh).
+function Start-HiddenProcess([hashtable]$StartArgs, [bool]$OnWindows = $IsWindows) {
+    $StartArgs.PassThru = $true
+    if ($OnWindows) { $StartArgs.WindowStyle = 'Hidden' }
+    return Start-Process @StartArgs
+}
+
+# PowerShell cmdlets accept '\' on every OS, but paths handed to native tools
+# (dotnet test --results-directory/--settings, dotnet-coverage --output) are taken
+# literally, and on Linux '\' is a filename character.
+function ConvertTo-NativeToolPath([string]$Path, [bool]$OnWindows = $IsWindows) {
+    if ($OnWindows) { return $Path }
+    return $Path -replace '\\', '/'
+}
+
+# Host-setup switches with no Linux equivalent, returned so direct mode can warn and
+# skip them: -CreateUNCPath would otherwise reach New-SmbShare (absent on Linux) and
+# abort before any test runs - the UNC rows themselves report Inconclusive off Windows
+# (Warewolf.Tools.Specs CommonSteps). -UseRegionalSettings / -CreateLocalSchedulerAdmin
+# are already gated behind -LegacyWindowsDeps, so they only need the warning.
+function Get-UnsupportedHostSwitches([string[]]$Requested, [bool]$OnWindows = $IsWindows) {
+    if ($OnWindows) { return @() }
+    return @($Requested | Where-Object { $_ -in @('CreateUNCPath', 'UseRegionalSettings', 'CreateLocalSchedulerAdmin') })
+}
 function Write-PipelineError($m) {
     Write-Warn $m
     if ($env:TF_BUILD) { Write-Host "##vso[task.logissue type=error]$m" }
@@ -478,6 +505,26 @@ function Get-FTPSandboxRoot {
     throw "No writable sandbox root found (tried C:\, %LOCALAPPDATA%\Warewolf-TestRun, %TEMP%)."
 }
 
+# Subdirs every FileAndFolder .feature file references under ftp://localhost:21/, shared by
+# the native (pyftpdlib) and docker (pure-ftpd) paths below. Neither server auto-creates
+# parent directories on STOR, so a missing FOR*TESTING folder turns a legitimate write into a
+# 550-failure and the spec reports "Failure". '/' separators: Join-Path accepts them on
+# Windows, and the docker path hands them to mkdir inside a Linux container.
+$script:FtpTestSubdirs = @(
+    'FORCOPYFILETESTING',
+    'FORCREATEFILETESTING',
+    'FORDELETEFILETESTING',
+    'FOREADFOLDERTTESTING',
+    'FORFILERENAMETESTING',
+    'FORMOVEFILETESTING',
+    'FORREADFILETESTING',
+    'FORREADFOLDERTESTING',
+    'FORTESTING',
+    'FORTESTING/emptydir',
+    'FORUNZIPTESTING',
+    'FORWRITEFILETESTING',
+    'FORZIPTESTING'
+)
 function Start-HostFTPServer {
     if ($LegacyWindowsDeps) {
         # Native pyftpdlib path (Windows runtime).
@@ -490,21 +537,7 @@ function Start-HostFTPServer {
         # ftp://localhost:21/. pyftpdlib does not auto-create parent
         # directories on STOR, so a missing FOR*TESTING folder turns a
         # legitimate write into a 550-failure and the spec reports "Failure".
-        foreach ($sub in
-            'FORCOPYFILETESTING',
-            'FORCREATEFILETESTING',
-            'FORDELETEFILETESTING',
-            'FOREADFOLDERTTESTING',
-            'FORFILERENAMETESTING',
-            'FORMOVEFILETESTING',
-            'FORREADFILETESTING',
-            'FORREADFOLDERTESTING',
-            'FORTESTING',
-            'FORTESTING\emptydir',
-            'FORUNZIPTESTING',
-            'FORWRITEFILETESTING',
-            'FORZIPTESTING'
-        ) {
+        foreach ($sub in $script:FtpTestSubdirs) {
             $d = Join-Path $ftpHomeBase $sub
             if (!(Test-Path $d)) { mkdir $d | Out-Null }
         }
@@ -578,7 +611,9 @@ if __name__ == '__main__':
         stilliard/pure-ftpd | Out-Null
     if ($LASTEXITCODE -ne 0) { Write-PipelineError "docker run ftpserver failed (exit $LASTEXITCODE); ftp:// rows will fail" }
     Start-Sleep -Seconds 3
-    docker exec ftpserver mkdir -p /home/ftpusers/dev2/FORCOPYFILETESTING 2>$null | Out-Null
+    foreach ($sub in $script:FtpTestSubdirs) {
+        docker exec ftpserver mkdir -p "/home/ftpusers/dev2/$sub" 2>$null | Out-Null
+    }
     docker exec ftpserver chmod -R 777 /home/ftpusers/dev2 2>$null | Out-Null
 }
 
@@ -1533,7 +1568,9 @@ function Resolve-SqlPackage {
         $cmd = Get-Command $name -ErrorAction SilentlyContinue
         if ($cmd) { return $cmd.Source }
     }
-    $candidates = @("$env:USERPROFILE\.dotnet\tools\SqlPackage.exe")
+    $userHome = if ($env:USERPROFILE) { $env:USERPROFILE } else { $HOME }
+    $toolsDir = Join-Path (Join-Path $userHome '.dotnet') 'tools'
+    $candidates = @((Join-Path $toolsDir 'SqlPackage.exe'), (Join-Path $toolsDir 'sqlpackage'))
     foreach ($root in @("$env:ProgramFiles\Microsoft SQL Server", "${env:ProgramFiles(x86)}\Microsoft SQL Server")) {
         if ($root -and (Test-Path $root)) {
             $candidates += (Get-ChildItem (Join-Path $root '*\DAC\bin\SqlPackage.exe') -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName })
@@ -1543,13 +1580,73 @@ function Resolve-SqlPackage {
 
     Write-Host "SqlPackage not found; installing microsoft.sqlpackage global tool..."
     & dotnet tool install --global microsoft.sqlpackage --ignore-failed-sources 2>&1 | Write-Host
-    $toolsDir = Join-Path $env:USERPROFILE '.dotnet\tools'
-    if ((Test-Path $toolsDir) -and ($env:PATH -notlike "*$toolsDir*")) { $env:PATH = "$toolsDir;$env:PATH" }
-    $exe = Join-Path $toolsDir 'SqlPackage.exe'
-    if (Test-Path $exe) { return $exe }
-    $cmd = Get-Command SqlPackage -ErrorAction SilentlyContinue
-    if ($cmd) { return $cmd.Source }
+    if ((Test-Path $toolsDir) -and ($env:PATH -notlike "*$toolsDir*")) { $env:PATH = $toolsDir + [System.IO.Path]::PathSeparator + $env:PATH }
+    foreach ($c in $candidates) { if (Test-Path $c) { return $c } }
+    foreach ($name in 'SqlPackage', 'sqlpackage') {
+        $cmd = Get-Command $name -ErrorAction SilentlyContinue
+        if ($cmd) { return $cmd.Source }
+    }
     return $null
+}
+
+# The Dev2TestingDB fixture the SQL tests expect, shared by Start-HostMSSQLServer's native
+# Windows path and its docker path so the two can never drift. Each entry is one sqlcmd
+# batch (CREATE/ALTER PROCEDURE must be alone in its batch); Database is the -d to use.
+$script:MssqlTestUserPassword = 'Ex@mple!23Secure#PWD'
+function Get-MssqlLoginBatches {
+    $loginPwd = $script:MssqlTestUserPassword
+    @(
+        # Create/repair the exact SQL login the tests use (idempotent across retries).
+        # ALTER fixes a stale password if the login already exists.
+        "IF SUSER_ID('testUser') IS NULL CREATE LOGIN [testUser] WITH PASSWORD = '$loginPwd', CHECK_POLICY = OFF ELSE ALTER LOGIN [testUser] WITH PASSWORD = '$loginPwd', CHECK_POLICY = OFF",
+        "ALTER SERVER ROLE [sysadmin] ADD MEMBER [testUser]"
+    )
+}
+# Sentinel query: 1 when the full fixture (bak or bacpac) is already present, so retries
+# (RetryCount) do not re-import. Pr_GeneralTestColumnData only exists in the full fixture.
+$script:MssqlFullFixtureProbe = "SET NOCOUNT ON; SELECT CASE WHEN DB_ID('Dev2TestingDB') IS NOT NULL AND OBJECT_ID('Dev2TestingDB.dbo.Pr_GeneralTestColumnData') IS NOT NULL THEN 1 ELSE 0 END"
+function Get-MssqlBacpacPath {
+    @(
+        (Join-Path $PSScriptRoot 'dev2testingdb.bacpac'),
+        (Join-Path (Join-Path (Join-Path $PSScriptRoot 'Dev') '.azure') 'dev2testingdb.bacpac'),
+        'C:\Builds\mssql-connector-testing\dev2testingdb.bacpac'
+    ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+}
+function Get-MssqlSeedBatches {
+    # Deterministic seeding (always runs, fully idempotent). Guarantees the schema the
+    # MSSQL metadata tests assert exists even when no .bak/.bacpac could be provisioned.
+    # Column types/nullability/identity mirror the canonical fixture:
+    #   dbo.City       -> 3 cols, CityID int NOT identity
+    #   Warewolf.City  -> 4 cols, CityID int IDENTITY, nullable nchar(10) TestCol
+    #   dbo.Country    -> extra table so total table count exceeds 2
+    # (GetDatabaseTables_Execute_ValidDatabaseSource asserts Items.Count > 2 while
+    # still finding exactly two [City] tables.) IF NOT EXISTS guards leave any
+    # restored/imported objects untouched.
+    @(
+        [pscustomobject]@{ Database = 'master'; Sql = "IF DB_ID('Dev2TestingDB') IS NULL CREATE DATABASE [Dev2TestingDB]" },
+        [pscustomobject]@{ Database = 'Dev2TestingDB'; Sql =
+            "IF SCHEMA_ID('Warewolf') IS NULL EXEC('CREATE SCHEMA Warewolf'); " +
+            "IF OBJECT_ID('dbo.City') IS NULL CREATE TABLE dbo.City (CityID int NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL); " +
+            "IF OBJECT_ID('Warewolf.City') IS NULL CREATE TABLE Warewolf.City (CityID int IDENTITY(1,1) NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL, TestCol nchar(10) NULL); " +
+            "IF OBJECT_ID('dbo.Country') IS NULL CREATE TABLE dbo.Country (CountryID int NOT NULL, Description varchar(50) NOT NULL); " +
+            "IF OBJECT_ID('dbo.FidelityBulkTarget') IS NULL CREATE TABLE dbo.FidelityBulkTarget (Id varchar(20) NOT NULL, Description varchar(50) NOT NULL);" },
+        # dbo.FidelityPing: a parameterless stored procedure for RoundTripFidelityTests' "SQL
+        # Server Database" fixture (FidelityFixtureGenerator.WriteMssqlSource) to call. Needs its
+        # own batch - CREATE/ALTER PROCEDURE must be the only statement in a sqlcmd -Q batch.
+        [pscustomobject]@{ Database = 'Dev2TestingDB'; Sql = "CREATE OR ALTER PROCEDURE dbo.FidelityPing AS BEGIN SET NOCOUNT ON; SELECT 1 AS Result; END" },
+        # dbo.FidelityBulkTarget (created in the seed batch above) is the destination for
+        # RoundTripFidelityTests' "SQL Bulk Insert" fixture
+        # (FidelityFixtureGenerator.BuildSqlBulkInsertStep). Deliberately all-varchar, NOT NULL and
+        # non-identity so the fixture exercises the activity's round trip rather than
+        # DsfSqlBulkInsertActivity's identity/nullable throw-branches.
+        #
+        # Emptied on every seed because that fixture INSERTs on each sweep - it is the only .bite
+        # fixture that writes outside its temp sandbox - so an unbounded table would make repeat runs
+        # on the same agent progressively slower. Nothing else reads it, so this is free. Its own
+        # batch for the same reason FidelityPing needs one: the table does not exist at compile time
+        # of the batch that creates it.
+        [pscustomobject]@{ Database = 'Dev2TestingDB'; Sql = "TRUNCATE TABLE dbo.FidelityBulkTarget" }
+    )
 }
 
 function Start-HostMSSQLServer([string]$BakFile) {
@@ -1566,7 +1663,7 @@ function Start-HostMSSQLServer([string]$BakFile) {
     # Continue so transient connection probes during provisioning never abort the job.
     $ErrorActionPreference = 'Continue'
     if ($LegacyWindowsDeps -or ($env:OS -eq 'Windows_NT')) {
-        $sqlPwd = 'Ex@mple!23Secure#PWD'
+        $sqlPwd = $script:MssqlTestUserPassword
 
         Write-Host "Installing SQL Server 2022 (native)..."
         choco install sql-server-2022 -y --no-progress
@@ -1593,10 +1690,7 @@ function Start-HostMSSQLServer([string]$BakFile) {
             Start-Sleep -Seconds 2
         }
 
-        # Create/repair the exact SQL login the tests use (idempotent across retries).
-        # ALTER fixes a stale password if the login already exists.
-        sqlcmd -S "localhost" -E -Q "IF SUSER_ID('testUser') IS NULL CREATE LOGIN [testUser] WITH PASSWORD = '$sqlPwd', CHECK_POLICY = OFF ELSE ALTER LOGIN [testUser] WITH PASSWORD = '$sqlPwd', CHECK_POLICY = OFF"
-        sqlcmd -S "localhost" -E -Q "ALTER SERVER ROLE [sysadmin] ADD MEMBER [testUser]"
+        foreach ($batch in Get-MssqlLoginBatches) { sqlcmd -S "localhost" -E -Q $batch }
 
         # Provision the canonical Dev2TestingDB fixture. Preference order:
         #   1. an explicit -StartMSSQLServer <path-to-.bak>            (full DB, real data)
@@ -1621,14 +1715,10 @@ function Start-HostMSSQLServer([string]$BakFile) {
         # every SqlBulkInsertSpecFlowTestTable*), 50 stored procedures (incl.
         # Pr_GeneralTestColumnData) and the fn_diagramobjects function. Idempotent: Pr_General-
         # TestColumnData acts as a sentinel so re-runs (RetryCount) don't re-import.
-        $probe = sqlcmd -S "localhost" -E -h -1 -W -Q "SET NOCOUNT ON; SELECT CASE WHEN DB_ID('Dev2TestingDB') IS NOT NULL AND OBJECT_ID('Dev2TestingDB.dbo.Pr_GeneralTestColumnData') IS NOT NULL THEN 1 ELSE 0 END" 2>$null
+        $probe = sqlcmd -S "localhost" -E -h -1 -W -Q $script:MssqlFullFixtureProbe 2>$null
         $probeVal = $probe | Where-Object { $_ -and $_.Trim() -ne '' } | Select-Object -Last 1
         if (-not ($probeVal -and $probeVal.Trim() -eq '1')) {
-            $bacpac = @(
-                (Join-Path $PSScriptRoot 'dev2testingdb.bacpac'),
-                (Join-Path $PSScriptRoot 'Dev\.azure\dev2testingdb.bacpac'),
-                'C:\Builds\mssql-connector-testing\dev2testingdb.bacpac'
-            ) | Where-Object { Test-Path $_ } | Select-Object -First 1
+            $bacpac = Get-MssqlBacpacPath
             if ($bacpac) {
                 $sqlPackage = Resolve-SqlPackage
                 if ($sqlPackage) {
@@ -1646,54 +1736,62 @@ function Start-HostMSSQLServer([string]$BakFile) {
             }
         }
 
-        # Deterministic seeding (always runs, fully idempotent). Guarantees the schema the
-        # MSSQL metadata tests assert exists even when no .bak/.bacpac could be provisioned.
-        # Column types/nullability/identity mirror the canonical fixture:
-        #   dbo.City       -> 3 cols, CityID int NOT identity
-        #   Warewolf.City  -> 4 cols, CityID int IDENTITY, nullable nchar(10) TestCol
-        #   dbo.Country    -> extra table so total table count exceeds 2
-        # (GetDatabaseTables_Execute_ValidDatabaseSource asserts Items.Count > 2 while
-        # still finding exactly two [City] tables.) IF NOT EXISTS guards leave any
-        # restored/imported objects untouched.
-        sqlcmd -S "localhost" -E -Q "IF DB_ID('Dev2TestingDB') IS NULL CREATE DATABASE [Dev2TestingDB]"
-        $seedSql = "USE Dev2TestingDB; " +
-            "IF SCHEMA_ID('Warewolf') IS NULL EXEC('CREATE SCHEMA Warewolf'); " +
-            "IF OBJECT_ID('dbo.City') IS NULL CREATE TABLE dbo.City (CityID int NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL); " +
-            "IF OBJECT_ID('Warewolf.City') IS NULL CREATE TABLE Warewolf.City (CityID int IDENTITY(1,1) NOT NULL, Description varchar(50) NOT NULL, CountryID int NOT NULL, TestCol nchar(10) NULL); " +
-            "IF OBJECT_ID('dbo.Country') IS NULL CREATE TABLE dbo.Country (CountryID int NOT NULL, Description varchar(50) NOT NULL); " +
-            "IF OBJECT_ID('dbo.FidelityBulkTarget') IS NULL CREATE TABLE dbo.FidelityBulkTarget (Id varchar(20) NOT NULL, Description varchar(50) NOT NULL);"
-        sqlcmd -S "localhost" -E -Q $seedSql
-        # dbo.FidelityPing: a parameterless stored procedure for RoundTripFidelityTests' "SQL
-        # Server Database" fixture (FidelityFixtureGenerator.WriteMssqlSource) to call. Needs its
-        # own batch — CREATE/ALTER PROCEDURE must be the only statement in a sqlcmd -Q batch.
-        sqlcmd -S "localhost" -E -d Dev2TestingDB -Q "CREATE OR ALTER PROCEDURE dbo.FidelityPing AS BEGIN SET NOCOUNT ON; SELECT 1 AS Result; END"
-        # dbo.FidelityBulkTarget (created in the seed batch above) is the destination for
-        # RoundTripFidelityTests' "SQL Bulk Insert" fixture
-        # (FidelityFixtureGenerator.BuildSqlBulkInsertStep). Deliberately all-varchar, NOT NULL and
-        # non-identity so the fixture exercises the activity's round trip rather than
-        # DsfSqlBulkInsertActivity's identity/nullable throw-branches.
-        #
-        # Emptied on every seed because that fixture INSERTs on each sweep - it is the only .bite
-        # fixture that writes outside its temp sandbox - so an unbounded table would make repeat runs
-        # on the same agent progressively slower. Nothing else reads it, so this is free. Its own
-        # batch for the same reason FidelityPing needs one: the table does not exist at compile time
-        # of the batch that creates it.
-        sqlcmd -S "localhost" -E -d Dev2TestingDB -Q "TRUNCATE TABLE dbo.FidelityBulkTarget"
+        # Deterministic seeding - see Get-MssqlSeedBatches.
+        foreach ($batch in Get-MssqlSeedBatches) { sqlcmd -S "localhost" -E -d $batch.Database -Q $batch.Sql }
 
         Write-Host "Verifying testUser can connect to Dev2TestingDB over TCP..."
         sqlcmd -S "localhost,1433" -U testUser -P $sqlPwd -d Dev2TestingDB -Q "SET NOCOUNT ON; SELECT TABLE_SCHEMA + '.' + TABLE_NAME FROM INFORMATION_SCHEMA.TABLES"
         return
     }
+    # Docker path (Linux hosts, e.g. ubuntu-latest CI agents). Provisions the SAME fixture as
+    # the native path above - testUser login, Dev2TestingDB from the committed bacpac, and the
+    # deterministic seed - via sqlcmd inside the container. 2022 images ship only mssql-tools18,
+    # whose sqlcmd needs -C (trust the container's self-signed certificate).
+    $saPwd = 'Test123456!'
+    docker rm -f sqlserver 2>$null | Out-Null
     docker run -d --name sqlserver `
-        -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Test123456!" -p 1433:1433 `
-        mcr.microsoft.com/mssql/server:2019-latest | Out-Null
+        -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$saPwd" -p 1433:1433 `
+        mcr.microsoft.com/mssql/server:2022-latest | Out-Null
+    $sqlcmd = '/opt/mssql-tools18/bin/sqlcmd'
+    function Invoke-ContainerSql([string]$Sql, [string]$Database = 'master') {
+        docker exec sqlserver $sqlcmd -C -S localhost -U SA -P $saPwd -d $Database -h -1 -W -Q $Sql
+    }
     Write-Host "Waiting for SQL Server..."
-    for ($i = 1; $i -le 30; $i++) {
-        docker exec sqlserver /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P "Test123456!" -Q "SELECT 1" *> $null
-        if ($LASTEXITCODE -eq 0) { Write-Host "SQL Server ready"; return }
+    $ready = $false
+    for ($i = 1; $i -le 40; $i++) {
+        Invoke-ContainerSql "SELECT 1" *> $null
+        if ($LASTEXITCODE -eq 0) { $ready = $true; break }
         Start-Sleep -Seconds 3
     }
-    Write-Warn "SQL Server did not become ready within 90s"
+    if (-not $ready) {
+        Write-Warn "SQL Server did not become ready within 120s"
+        docker logs --tail 40 sqlserver 2>&1 | Write-Host
+        return
+    }
+    Write-Host "SQL Server ready"
+
+    foreach ($batch in Get-MssqlLoginBatches) { Invoke-ContainerSql $batch | Out-Null }
+
+    $probeVal = Invoke-ContainerSql $script:MssqlFullFixtureProbe | Where-Object { $_ -and $_.Trim() -ne '' } | Select-Object -Last 1
+    if (-not ($probeVal -and $probeVal.Trim() -eq '1')) {
+        $bacpac = Get-MssqlBacpacPath
+        $sqlPackage = if ($bacpac) { Resolve-SqlPackage } else { $null }
+        if ($bacpac -and $sqlPackage) {
+            Write-Host "Importing full Dev2TestingDB fixture from $bacpac via $sqlPackage..."
+            Invoke-ContainerSql "IF DB_ID('Dev2TestingDB') IS NOT NULL BEGIN ALTER DATABASE [Dev2TestingDB] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [Dev2TestingDB]; END" | Out-Null
+            & $sqlPackage /Action:Import /SourceFile:"$bacpac" /TargetServerName:"localhost,1433" /TargetDatabaseName:"Dev2TestingDB" /TargetUser:"SA" /TargetPassword:"$saPwd" /TargetTrustServerCertificate:True 2>&1 | Write-Host
+            Invoke-ContainerSql "EXEC sp_change_users_login 'AUTO_FIX', 'testUser'" 'Dev2TestingDB' | Out-Null
+        } elseif (-not $bacpac) {
+            Write-Warn "dev2testingdb.bacpac not found next to TestRun.ps1 or under Dev/.azure; falling back to the minimal seed."
+        } else {
+            Write-Warn "SqlPackage unavailable; the full SQL fixture could not be imported. Falling back to the minimal seed (SQL integration / bulk-insert tests will fail)."
+        }
+    }
+
+    foreach ($batch in Get-MssqlSeedBatches) { Invoke-ContainerSql $batch.Sql $batch.Database | Out-Null }
+
+    Write-Host "Verifying testUser can connect to Dev2TestingDB..."
+    docker exec sqlserver $sqlcmd -C -S localhost -U testUser -P $script:MssqlTestUserPassword -d Dev2TestingDB -Q "SET NOCOUNT ON; SELECT COUNT(*) AS Tables FROM INFORMATION_SCHEMA.TABLES"
 }
 function Stop-HostMSSQLServer { docker rm -f sqlserver 2>$null | Out-Null }
 
@@ -1710,9 +1808,11 @@ function Ensure-DotnetCoverage {
     if (Get-Command dotnet-coverage -ErrorAction SilentlyContinue) { return }
     Write-Host "Installing dotnet-coverage (global tool)..."
     & dotnet tool install --global dotnet-coverage --ignore-failed-sources 2>&1 | Write-Host
-    $toolsDir = Join-Path $env:USERPROFILE '.dotnet\tools'
+    # USERPROFILE is unset on Linux; HOME is its equivalent there.
+    $userHome = if ($env:USERPROFILE) { $env:USERPROFILE } else { $HOME }
+    $toolsDir = Join-Path (Join-Path $userHome '.dotnet') 'tools'
     if ((Test-Path $toolsDir) -and ($env:PATH -notlike "*$toolsDir*")) {
-        $env:PATH = "$toolsDir;$env:PATH"
+        $env:PATH = $toolsDir + [System.IO.Path]::PathSeparator + $env:PATH
     }
     if (-not (Get-Command dotnet-coverage -ErrorAction SilentlyContinue)) {
         throw "dotnet-coverage not available after install attempt; check that the .NET tools dir is on PATH ($toolsDir)."
@@ -1784,7 +1884,7 @@ function Start-Azurite {
     Write-Host "Starting Azurite from $azurite (data dir: $dataDir)"
     $azuriteOut = Join-Path $dataDir 'azurite.log'
     $azuriteErr = Join-Path $dataDir 'azurite.err.log'
-    $script:_azuriteProcess = Start-Process $azurite -ArgumentList @("--silent", "--location", $dataDir, "--debug", (Join-Path $dataDir 'azurite-debug.log')) -PassThru -WindowStyle Hidden -RedirectStandardOutput $azuriteOut -RedirectStandardError $azuriteErr
+    $script:_azuriteProcess = Start-HiddenProcess @{ FilePath = $azurite; ArgumentList = @("--silent", "--location", $dataDir, "--debug", (Join-Path $dataDir 'azurite-debug.log')); RedirectStandardOutput = $azuriteOut; RedirectStandardError = $azuriteErr }
     $deadline = (Get-Date).AddSeconds(30)
     $up = $false
     while ((Get-Date) -lt $deadline) {
@@ -1968,13 +2068,15 @@ function Start-LightweightExecution {
     # that holds 'Examples\Control Flow - Decision.bite' (a known
     # security-spec target) and point the engine at it via $env:WorkflowsDirectory.
     if (-not $env:WorkflowsDirectory) {
+        # '/' separators: this value reaches the engine as an env var, and on Linux .NET
+        # treats '\' as a filename character (Windows accepts either).
         $candidates = @(
-            (Join-Path $runDir 'Resources - ServerTests\Resources'),
-            (Join-Path $runDir 'Resources - Release\Resources'),
+            (Join-Path $runDir 'Resources - ServerTests/Resources'),
+            (Join-Path $runDir 'Resources - Release/Resources'),
             (Join-Path $runDir 'Resources')
         )
         foreach ($c in $candidates) {
-            if (Test-Path (Join-Path $c 'Examples\Control Flow - Decision.bite')) {
+            if (Test-Path (Join-Path $c 'Examples/Control Flow - Decision.bite')) {
                 $env:WorkflowsDirectory = $c
                 Write-Host "WorkflowsDirectory resolved to: $c"
                 break
@@ -2173,11 +2275,11 @@ function Start-LightweightExecution {
         $collectArgs = @("collect", "--session-id", $sid, "--output", $outFile, "--output-format", "cobertura") + $includeArgs + @("--", $func, "start", "--port", "7071", "--verbose")
         Ensure-DotnetCoverage
         Push-Location $runDir
-        $script:_coverageProcess = Start-Process "dotnet-coverage" -ArgumentList $collectArgs -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
+        $script:_coverageProcess = Start-HiddenProcess @{ FilePath = "dotnet-coverage"; ArgumentList = $collectArgs; RedirectStandardOutput = $stdoutLog; RedirectStandardError = $stderrLog }
         Pop-Location
     } else {
         Push-Location $runDir
-        $script:_serverProcess = Start-Process $func -ArgumentList @("start", "--port", "7071", "--verbose") -PassThru -WindowStyle Hidden -RedirectStandardOutput $stdoutLog -RedirectStandardError $stderrLog
+        $script:_serverProcess = Start-HiddenProcess @{ FilePath = $func; ArgumentList = @("start", "--port", "7071", "--verbose"); RedirectStandardOutput = $stdoutLog; RedirectStandardError = $stderrLog }
         Pop-Location
     }
     Wait-ForEngine -Port 7071 -MaxSeconds 180
@@ -2211,11 +2313,19 @@ function Start-WarewolfServer {
 function Stop-Engine {
     if ($script:_sessionId) {
         Write-Host "Shutting down dotnet-coverage session $($script:_sessionId)..."
-        # cmd /c swallows non-zero exit + stderr so a shutdown timeout
-        # ("The operation has timed out.") doesn't bubble up under
-        # ErrorActionPreference=Stop and fail the whole step after the
-        # tests have already run and passed.
-        cmd /c "dotnet-coverage shutdown $($script:_sessionId) >nul 2>nul"
+        # A shutdown timeout ("The operation has timed out.") must not bubble up
+        # under ErrorActionPreference=Stop and fail the whole step after the tests
+        # have already run and passed, so output and the exit code are swallowed.
+        # Called directly rather than via cmd /c, which does not exist on Linux.
+        $prevEAP = $ErrorActionPreference
+        try {
+            $ErrorActionPreference = 'Continue'
+            & dotnet-coverage shutdown $script:_sessionId *> $null
+        } catch {
+            Write-Warn "dotnet-coverage shutdown failed: $($_.Exception.Message)"
+        } finally {
+            $ErrorActionPreference = $prevEAP
+        }
         $global:LASTEXITCODE = 0
         Start-Sleep -Seconds 5
     }
@@ -2910,9 +3020,17 @@ if ($catalogMode) {
 if ($PreTestRunScript -and $Coverage.IsPresent -and -not $PreTestRunScript.Contains("-Coverage"))   { $PreTestRunScript += " -Coverage" }
 if ($PostTestRunScript -and $Coverage.IsPresent -and -not $PostTestRunScript.Contains("-Coverage")) { $PostTestRunScript += " -Coverage" }
 
-$TestResultsPath = if ($TestResultsDir) { $TestResultsDir } else { ".\TestResults" }
+$TestResultsPath = ConvertTo-NativeToolPath $(if ($TestResultsDir) { $TestResultsDir } else { Join-Path '.' 'TestResults' })
 if (Test-Path $TestResultsPath) { Remove-Item -Force -Recurse $TestResultsPath }
 New-Item -ItemType Directory $TestResultsPath -ErrorAction SilentlyContinue | Out-Null
+
+# Copied first: inside the Where-Object scriptblock $PSBoundParameters is that block's own.
+$boundParams = $PSBoundParameters
+$requestedSwitches = @($boundParams.Keys | Where-Object { $boundParams[$_] -is [switch] -and $boundParams[$_].IsPresent })
+foreach ($winOnly in Get-UnsupportedHostSwitches $requestedSwitches) {
+    Write-Warn "-$winOnly is Windows-only; skipped on this host."
+    if ($winOnly -eq 'CreateUNCPath') { $CreateUNCPath = [switch]$false }
+}
 
 # Test runner: vstest.console.exe on Windows; `dotnet test` natively on a Linux
 # host (vstest.console.exe is a .NET Framework tool, and Compile.ps1 does not
@@ -3037,7 +3155,7 @@ if ($STA.IsPresent -or $Sequential.IsPresent) {
 <?xml version="1.0" encoding="utf-8"?>
 <RunSettings>
 $rcBlock$msBlock$covInline</RunSettings>
-"@ | Out-File -LiteralPath "$TestResultsPath\vstest.runsettings" -Encoding utf8 -Force
+"@ | Out-File -LiteralPath (Join-Path $TestResultsPath 'vstest.runsettings') -Encoding utf8 -Force
 }
 
 # SUT start
@@ -3106,7 +3224,7 @@ try {
                 if (Test-Path $autoCov) { $effectiveCovSettings = $autoCov }
             }
             $settingsFile = if ($STA.IsPresent -or $Sequential.IsPresent) {
-                "$TestResultsPath\vstest.runsettings"
+                (Join-Path $TestResultsPath 'vstest.runsettings')
             } elseif ($effectiveCovSettings -and (Test-Path $effectiveCovSettings)) {
                 $effectiveCovSettings
             } else { "" }
@@ -3219,7 +3337,7 @@ if ($Coverage.IsPresent) {
         if (-not (Get-Command dotnet-coverage -ErrorAction SilentlyContinue)) {
             dotnet tool install --global dotnet-coverage --ignore-failed-sources 2>&1 | Write-Host
         }
-        $cobertura = "$TestResultsPath\Cobertura.xml"
+        $cobertura = Join-Path $TestResultsPath 'Cobertura.xml'
         $mergeArgs = @('merge') + ($snaps | ForEach-Object { $_.FullName }) + @('--output', $cobertura, '--output-format', 'cobertura', '--nologo')
         & dotnet-coverage @mergeArgs
         if ($LASTEXITCODE -ne 0) { Write-Warn "dotnet-coverage merge exited $LASTEXITCODE" }

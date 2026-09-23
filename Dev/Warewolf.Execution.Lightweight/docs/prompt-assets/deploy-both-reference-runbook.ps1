@@ -85,7 +85,7 @@ $EngineAi      = "$EngineApp-ai"                     # the orchestrator's own de
 # FIX 2: NOT an operator choice - Configure-WwExecutionAuth auto-derives it.
 $EngineAuthApp = "$EngineApp-auth"                   # expected; verified against the auth output below
 
-$EnginePublish = "$Stage\apps\AzureFunctionsPackage-3.0.2.110.zip" # zip or directory
+$EnginePublish = "$Stage\apps\AzureFunctionsPackage-win-x64-3.0.2.110.zip" # zip or directory; linux-x64 package for -HostingPlan Flex
 $QpPublish     = "$Stage\apps\Warewolf-QueueProcessor-3.0.2.110"   # directory only; a zip must be extracted first
 $QpPrefix      = '<queue processor app name prefix>'
 $ImageRepo     = '<queue processor image repository name>'

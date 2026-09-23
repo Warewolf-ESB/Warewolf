@@ -74,6 +74,7 @@ When you change/add **unit tests** (or the code they cover):
 
 1. **Run the affected tests locally until green.** Start any needed dependency first — a `TestRun.ps1 -Start*` flag, a local container (`docker run -d --name redis -p 6379:6379 redis:7-alpine`), a local service, or the in-process harness (`LightweightInProcessHost`). State which setup you used.
 2. **Confirm `Dev/.azure/pipeline.yml` provides the same dependencies.** Check the CI job that runs those tests starts the same dependency and routes the tests to it — matching `-Start*` flags, `TestCategory` filters/exclusions, `-ServerType`, and host/port. If the pipeline wouldn't satisfy what the local run needed, adjust the categorisation or job so a local pass implies a pipeline pass.
+3. **CI runs every test job on `ubuntu-latest`** against linux-x64 binaries (cross-compiled on `windows-2022`; deps are Docker containers). A local Windows pass does not imply a CI pass for anything OS-sensitive — paths, culture, `cmd.exe`, the registry. Windows-only coverage is **not** run in CI: UNC rows (Inconclusive off Windows), `GatherSystemInformation`, `CreateWindowsServerSource`, and the `RoundTripFidelity` sweep. Only `Duplicate_Test_Check` and `MergeCoverage` stay on Windows. `TestRun.ps1`'s own Linux-host support is covered by `TestRun.Tests.ps1` (Pester, repo root, offline).
 
 ## Unit-test best practices
 

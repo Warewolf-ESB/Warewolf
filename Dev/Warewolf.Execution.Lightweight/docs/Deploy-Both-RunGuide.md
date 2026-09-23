@@ -61,7 +61,8 @@ G:\Deployment\
 │    Generate-WorkflowIndex.ps1               optional (engine disk-scans without it)
 │    Rollback-WwExecutionEngine.ps1           needed only to tear down
 ├─ apps\
-│    AzureFunctionsPackage-<ver>.zip          engine build output (folder or .zip)
+│    AzureFunctionsPackage-<rid>-<ver>.zip    engine build output (folder or .zip); <rid> = win-x64 for
+│                                             -HostingPlan Consumption, linux-x64 for -HostingPlan Flex
 │    Warewolf-QueueProcessor-<ver>.zip        worker build output (folder or .zip)
 ├─ build\
 │    Dockerfile                               ← from the QueueProcessor SOURCE, not the Scripts zip
@@ -171,7 +172,7 @@ block is derived from it:
 
 ```powershell
 $Stage         = 'G:\Deployment'                                     # everything below derives from this
-$EnginePublish = 'G:\Deployment\apps\AzureFunctionsPackage-3.0.2.110.zip'
+$EnginePublish = 'G:\Deployment\apps\AzureFunctionsPackage-win-x64-3.0.2.110.zip'   # linux-x64 for -HostingPlan Flex
 $QpPublish     = 'G:\Deployment\apps\Warewolf-QueueProcessor-3.0.2.110.zip'
 $DockerFile    = 'G:\Deployment\build\Dockerfile'
 ```

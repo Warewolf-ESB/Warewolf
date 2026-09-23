@@ -7,7 +7,7 @@ description: How to build Warewolf (Compile.ps1) — server, studio, tests, ligh
 
 All builds run through `Compile.ps1` at the repo root. It wraps `dotnet restore` + `dotnet publish` and handles post-processing (native DLL pinning, resource copying, test-host bootstrapping).
 
-**Prerequisites:** .NET 10 SDK, Visual Studio 2022/2026 (MSBuild), `nuget.exe` on PATH or at `C:\Windows\nuget.exe`. On a **Linux host** only PowerShell 7+ and the .NET 10 SDK are needed (`pwsh ./Compile.ps1 -ServerTests -Runtime linux-x64`, output in case-sensitive `Bin/ServerTests`) — a Windows host can also cross-compile with `-Runtime linux-x64`, which is what the pipeline's `Linux_Pilot` stage does on `windows-2022` (hosted Linux agents lack the disk); `chmod +x` the ELF files after unpacking on Linux.
+**Prerequisites:** .NET 10 SDK, Visual Studio 2022/2026 (MSBuild), `nuget.exe` on PATH or at `C:\Windows\nuget.exe`. On a **Linux host** only PowerShell 7+ and the .NET 10 SDK are needed (`pwsh ./Compile.ps1 -ServerTests -Runtime linux-x64`, output in case-sensitive `Bin/ServerTests`) — a Windows host can also cross-compile with `-Runtime linux-x64`, which is what the pipeline's `Compile` job does on `windows-2022` (hosted Linux agents lack the disk) before every Test job runs the output on `ubuntu-latest`; ship it as a tarball and `chmod +x` the ELF files after unpacking on Linux.
 
 ```powershell
 # Build test binaries (most common — required before running tests)

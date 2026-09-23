@@ -59,7 +59,7 @@ $AppName          = '<your-function-app-name>'   # engine app, globally unique
 
 # ── Engine inputs (already-published package + config files) ─────────────────
 $ScriptsDir              = '<path>\ExecutionEngine\Scripts'
-$PublishPath             = '<path>\ExecutionEngine\AzureFunctionsPackage-<version>.zip'  # folder or .zip
+$PublishPath             = '<path>\ExecutionEngine\AzureFunctionsPackage-win-x64-<version>.zip'  # folder or .zip; linux-x64 package for -HostingPlan Flex
 $AuthConfigPath          = "$ScriptsDir\Deploy-WwExecutionEngine.authconfig.json"
 $SecureConfigPath        = 'C:\ProgramData\Warewolf\Server Settings\secure.config'       # or plaintext JSON (auto-encrypted)
 $WorkflowsSourcePath     = 'C:\ProgramData\Warewolf\Resources'

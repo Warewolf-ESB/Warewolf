@@ -71,14 +71,25 @@ after).
 
 ### Run natively on a Linux host
 
-On a Linux host (e.g. the `ubuntu-latest` agent in the pipeline's
-`Linux_Pilot` stage) `-Runtime` defaults to `Linux`, and direct mode runs the
+On a Linux host (every Test job in `pipeline.yml` runs on `ubuntu-latest`)
+`-Runtime` defaults to `Linux`, and direct mode runs the
 assemblies **natively with `dotnet test`** — same filter, settings, coverage
 (`--collect "Code Coverage"`) and `-RetryCount` handling as vstest, no
 container. `-Start*` deps run as Docker containers on the host ports the specs
 expect (FTPS is native pyftpdlib, so it needs `python`/`python3` with `pip`,
 and port 1010 needs `sysctl net.ipv4.ip_unprivileged_port_start=1000` when not
-running as root). `-CreateUNCPath` is Windows-only.
+running as root — the pipeline's unpack step sets it). `-StartMSSQLServer ""`
+runs `mssql/server:2022-latest` and provisions the same fixture as the Windows
+path (`testUser` login, `Dev2TestingDB` from `dev2testingdb.bacpac` via the
+`microsoft.sqlpackage` dotnet tool, plus the deterministic seed); `-StartFTPServer`
+creates every `FOR*TESTING` folder the specs use. `-ServerType LightweightExecution`
+works with the linux-x64 func CLI (`-FuncExePath .../func-cli/func`); put
+`~/.dotnet/tools` on `PATH` so `dotnet-coverage` resolves.
+
+`-CreateUNCPath`, `-UseRegionalSettings` and `-CreateLocalSchedulerAdmin` are
+Windows-only: on Linux they log a warning and are skipped (UNC rows in the
+File/Folder specs report Inconclusive). Pass paths with `/` — native tools
+(`dotnet test`, `dotnet-coverage`, `func`) treat `\` as a filename character.
 
 ```bash
 cd Bin/ServerTests

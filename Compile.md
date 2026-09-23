@@ -27,9 +27,10 @@ checking `$env:MSBuildPath`, then via registry. If everything fails it
 **On a Linux (or macOS) host** only PowerShell 7+ and the .NET SDK are needed:
 the `nuget.exe` / MSBuild discovery above is skipped, and so is the
 `Microsoft.TestPlatform` (`vstest.console.exe`) install — `TestRun.ps1` runs
-tests with `dotnet test` there. The pipeline's `Linux_Pilot` stage used to
-compile this way on `ubuntu-latest`, but the hosted Linux agent ran out of disk,
-so it now cross-compiles on `windows-2022` instead (see *Cross-compile for Linux*):
+tests with `dotnet test` there. The pipeline does **not** compile this way: the
+hosted `ubuntu-latest` agent runs out of disk on the self-contained publish, so
+the `Compile` job cross-compiles on `windows-2022` instead (see *Cross-compile
+for Linux*) and every Test job then runs that output on `ubuntu-latest`:
 
 ```bash
 pwsh ./Compile.ps1 -ServerTests -Runtime linux-x64 -SkipVulnerabilityCheck
@@ -110,8 +111,15 @@ publishes **framework-dependent**. Defaults: `win-x64` on Windows hosts,
 `linux-x64` on Linux/macOS. A self-contained Linux output needs its Unix
 execute bits (e.g. `testhost`), so move it between machines as a tarball —
 pipeline artifacts drop them. Output compiled on a **Windows** host has no
-execute bits at all: after unpacking on Linux, `chmod +x` the ELF files (the
-`Linux_Pilot` test job does this by checking each file for the ELF magic number).
+execute bits at all: after unpacking on Linux, `chmod +x` the ELF files.
+
+This is exactly what CI does: `pipeline.yml`'s `Compile` job runs
+`-ServerTests -Runtime linux-x64` on `windows-2022`, packs `Bin\ServerTests`
+with Windows' own `tar.exe` into `ServerTests-linux-x64.tar.gz` (the
+`TestBinaries` artifact — Git Bash's GNU tar misreads `D:\` paths), and every
+`ubuntu-latest` Test job unpacks it and restores execute bits by checking each
+file for the ELF magic number. (`Duplicate_Test_Check` unpacks the same
+tarball on `windows-2022`, since `vstest.console.exe` is .NET Framework.)
 
 If you publish the server self-contained for Linux but want to run the EXE on
 Windows for testing, the script auto-patches

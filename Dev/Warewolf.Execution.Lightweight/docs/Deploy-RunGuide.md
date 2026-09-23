@@ -9,6 +9,11 @@ to a Warewolf Workflow Execution Engine Azure Function App.
 > **Download the Warewolf Azure Execution Engine.** Download the Warewolf Azure Execution Engine build from
 > [warewolf.io/release-notes](https://warewolf.io/release-notes), extract the `.zip`, and
 > point the extracted folder (or the `.zip` itself) via `-PublishPath` to the Deployment Script (`Scripts/Deploy-WwExecutionEngine.ps1`).
+> The engine ships as **two** zips — pick the one that matches `-HostingPlan`:
+> `AzureFunctionsPackage-win-x64-<ver>.zip` for `Consumption` (the default; a Windows app) and
+> `AzureFunctionsPackage-linux-x64-<ver>.zip` for `Flex` (Flex Consumption is Linux-only). A
+> mismatched package deploys without error but the host cannot start the worker. Releases before
+> the split published a single `AzureFunctionsPackage-<ver>.zip`.
 
 > **Download the Deployment Scripts.** Download the Warewolf Azure Execution Engine deployment scripts from
 > [warewolf.io/release-notes](https://warewolf.io/release-notes), and extract the `.zip`
@@ -155,7 +160,7 @@ $ResourceGroup           = '<your-resource-group>'       # e.g. DEV2
 $Location                = 'southafricanorth'
 $StorageAccount          = '<your-storage-account>'      # 3-24 lowercase chars
 $AppName                 = '<your-function-app-name>'    # globally unique
-$PublishPath             = 'D:\ExecutionEngine\AzureFunctionsPackage-3.0.1.200'
+$PublishPath             = 'D:\ExecutionEngine\AzureFunctionsPackage-win-x64-3.0.1.200'   # linux-x64 package for -HostingPlan Flex
 $AuthConfigPath          = 'D:\ExecutionEngine\Deploy-WwExecutionEngine.authconfig.json'
 $SecureConfigPath        = 'C:\ProgramData\Warewolf\Server Settings\secure.config'
 $WorkflowsSourcePath     = 'C:\ProgramData\Warewolf\Resources'
