@@ -613,6 +613,56 @@ namespace Dev2.Data.Tests.PathOperations
         }
 
         [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_SftpDirectoryExists_EmptyListing_ReturnsTrue()
+        {
+            // Servers that omit "." / ".." list an existing empty directory as nothing.
+            var exists = Dev2FTPProvider.SftpDirectoryExists(() => new List<string>());
+
+            Assert.IsTrue(exists, "an empty listing is an existing, empty directory - not a missing one");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_SftpDirectoryExists_NonEmptyListing_ReturnsTrue()
+        {
+            var exists = Dev2FTPProvider.SftpDirectoryExists(() => new List<string> { ".", "..", "copied0.txt" });
+
+            Assert.IsTrue(exists);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_SftpDirectoryExists_ListingThrows_ReturnsFalse()
+        {
+            // A missing path (or a file) makes the SFTP opendir fail.
+            var exists = Dev2FTPProvider.SftpDirectoryExists<string>(() => throw new InvalidOperationException("No such file"));
+
+            Assert.IsFalse(exists);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(Dev2FTPProvider))]
+        public void Dev2FTPProvider_SftpDirectoryExists_LazyListingThrowsOnEnumeration_ReturnsFalse()
+        {
+            IEnumerable<string> LazyFailingListing()
+            {
+                throw new InvalidOperationException("No such file");
+#pragma warning disable CS0162 // unreachable: makes this an iterator, so the throw is deferred to enumeration
+                yield break;
+#pragma warning restore CS0162
+            }
+
+            var exists = Dev2FTPProvider.SftpDirectoryExists(LazyFailingListing);
+
+            Assert.IsFalse(exists, "a listing error raised during enumeration must still mean 'not present'");
+        }
+
+        [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory(nameof(Dev2FTPProvider))]
         public void Dev2FTPProvider_ListFilesInDirectory_ExpectedException()

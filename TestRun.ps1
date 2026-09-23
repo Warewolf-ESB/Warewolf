@@ -112,6 +112,11 @@ param(
 $ErrorActionPreference = 'Stop'
 $ProgressPreference    = 'SilentlyContinue'
 
+# PS 6+ automatic vars - fallbacks for Windows PowerShell 5.1
+if (-not (Test-Path Variable:\IsLinux))   { $IsLinux   = $false }
+if (-not (Test-Path Variable:\IsMacOS))   { $IsMacOS   = $false }
+if (-not (Test-Path Variable:\IsWindows)) { $IsWindows = $true  }
+
 # ----------------------------------------------------------------------------
 # Runtime normalisation
 # ----------------------------------------------------------------------------
@@ -122,6 +127,11 @@ if ($PSBoundParameters.ContainsKey('SUTRuntime') -and -not $PSBoundParameters.Co
     Write-Warning "-SUTRuntime is deprecated; use -Runtime $SUTRuntime instead."
     $Runtime = $SUTRuntime
 }
+# On a Linux host (e.g. an ubuntu-latest CI agent) the only runtime that makes
+# sense is Linux, so default to it instead of the Windows-native deps.
+if (-not $PSBoundParameters.ContainsKey('Runtime') -and -not $PSBoundParameters.ContainsKey('SUTRuntime') -and $IsLinux) {
+    $Runtime = 'Linux'
+}
 $SUTRuntime = $Runtime
 
 # -Runtime Windows implies the existing -LegacyWindowsDeps switch (every
@@ -130,11 +140,6 @@ if ($Runtime -eq 'Windows' -and -not $LegacyWindowsDeps.IsPresent) {
     $LegacyWindowsDeps = [switch]::Present
 }
 
-# PS 6+ automatic vars - fallbacks for Windows PowerShell 5.1
-if (-not (Test-Path Variable:\IsLinux))   { $IsLinux   = $false }
-if (-not (Test-Path Variable:\IsMacOS))   { $IsMacOS   = $false }
-if (-not (Test-Path Variable:\IsWindows)) { $IsWindows = $true  }
-
 # ============================================================================
 # Helpers
 # ============================================================================
@@ -142,6 +147,12 @@ if (-not (Test-Path Variable:\IsWindows)) { $IsWindows = $true  }
 function Write-Step($m) { Write-Host "`n==> $m" -ForegroundColor Cyan }
 function Write-Done($m) { Write-Host "    OK  $m" -ForegroundColor Green }
 function Write-Warn($m) { Write-Host "    !!  $m" -ForegroundColor Yellow }
+# Surfaces on the Azure DevOps run summary (TF_BUILD is set on every agent)
+# without aborting the script; a plain warning locally.
+function Write-PipelineError($m) {
+    Write-Warn $m
+    if ($env:TF_BUILD) { Write-Host "##vso[task.logissue type=error]$m" }
+}
 
 function Test-Exit([string]$label) {
     if ($LASTEXITCODE -ne 0) {
@@ -159,6 +170,11 @@ function dp([string]$path) {
 # CI agents invoke this script under Windows PowerShell 5.1 (.NET Framework), which lacks
 # it entirely, so use a Uri-based equivalent that works under both hosts.
 function Get-RelativePathCompat([string]$FromDirectory, [string]$ToPath) {
+    # pwsh (every OS) has the real API; the Uri fallback below also breaks on Linux,
+    # where "/home/..." parses as a relative Uri and MakeRelativeUri throws.
+    if ([System.IO.Path].GetMethod('GetRelativePath', [Type[]]@([string], [string]))) {
+        return [System.IO.Path]::GetRelativePath($FromDirectory, $ToPath)
+    }
     $fromUri = [System.Uri]((Join-Path $FromDirectory ''))
     $toUri   = [System.Uri]$ToPath
     $relative = [System.Uri]::UnescapeDataString($fromUri.MakeRelativeUri($toUri).ToString())
@@ -439,7 +455,13 @@ function Start-LinuxSidecar {
 # session so FTP and FTPS land on the same root.
 function Get-FTPSandboxRoot {
     if ($script:_ftpSandboxRoot) { return $script:_ftpSandboxRoot }
-    $candidates = @('C:\', (Join-Path $env:LOCALAPPDATA 'Warewolf-TestRun'), $env:TEMP)
+    # On Linux 'C:\' is not a root: Test-Path fails and New-Item would create a
+    # relative directory literally named "C:\" - use a /tmp sandbox instead.
+    $candidates = if ($IsLinux -or $IsMacOS) {
+        @((Join-Path ([System.IO.Path]::GetTempPath()) 'warewolf-testrun'))
+    } else {
+        @('C:\', (Join-Path "$env:LOCALAPPDATA" 'Warewolf-TestRun'), $env:TEMP)
+    }
     foreach ($c in $candidates) {
         if (-not $c) { continue }
         if (-not (Test-Path $c)) {
@@ -554,6 +576,7 @@ if __name__ == '__main__':
         -e FTP_USER_HOME=/home/ftpusers/dev2 `
         -e PASV_MIN_PORT=30000 -e PASV_MAX_PORT=30009 `
         stilliard/pure-ftpd | Out-Null
+    if ($LASTEXITCODE -ne 0) { Write-PipelineError "docker run ftpserver failed (exit $LASTEXITCODE); ftp:// rows will fail" }
     Start-Sleep -Seconds 3
     docker exec ftpserver mkdir -p /home/ftpusers/dev2/FORCOPYFILETESTING 2>$null | Out-Null
     docker exec ftpserver chmod -R 777 /home/ftpusers/dev2 2>$null | Out-Null
@@ -646,7 +669,7 @@ function Start-HostFTPSServer {
     #                                   .NET FtpWebRequest's data close_notify
     # Current pyftpdlib 2.2+ interoperates cleanly with .NET FtpWebRequest.
     $ftpRoot       = Get-FTPSandboxRoot
-    $ftpsHomeBase  = Join-Path $ftpRoot 'ftps_home\dev2'
+    $ftpsHomeBase  = Join-Path (Join-Path $ftpRoot 'ftps_home') 'dev2'
     $ftpsEntryFile = Join-Path $ftpRoot 'ftps_entrypoint.py'
     $ftpsPemFile   = Join-Path $ftpRoot 'ftps_cert.pem'
     $ftpsLogFile   = Join-Path $ftpRoot 'ftps_server.log'
@@ -656,14 +679,14 @@ function Start-HostFTPSServer {
     foreach ($sub in
         'FORCOPYFILETESTING','FORCREATEFILETESTING','FORDELETEFILETESTING',
         'FORFILERENAMETESTING','FORMOVEFILETESTING','FORREADFILETESTING',
-        'FORREADFOLDERTESTING','FORRENAMETESTING','FORTESTING','FORTESTING\emptydir',
+        'FORREADFOLDERTESTING','FORRENAMETESTING','FORTESTING','FORTESTING/emptydir',
         'FORUNZIPTESTING','FORWRITEFILETESTING','FORZIPTESTING'
     ) {
         $d = Join-Path $ftpsHomeBase $sub
-        if (!(Test-Path $d)) { mkdir $d | Out-Null }
+        if (!(Test-Path $d)) { New-Item -ItemType Directory -Force -Path $d | Out-Null }
     }
     foreach ($i in 0..4) {
-        $seed = Join-Path $ftpsHomeBase "FORCOPYFILETESTING\copyfile$i.txt"
+        $seed = Join-Path (Join-Path $ftpsHomeBase 'FORCOPYFILETESTING') "copyfile$i.txt"
         if (!(Test-Path $seed)) { 'testcontent' | Out-File -LiteralPath $seed -Encoding ascii -Force }
     }
 
@@ -728,7 +751,13 @@ function Start-HostFTPSServer {
     # imports `from OpenSSL import SSL, crypto` lazily at instantiation; without
     # pyOpenSSL the server process exits immediately with ImportError and the
     # port-21-style "FTPHandler" install of pyftpdlib alone is not enough.
-    pip install pyftpdlib pyOpenSSL | Out-Null
+    # `python -m pip`, not bare `pip`: on Linux the interpreter is often python3
+    # with no `pip` shim on PATH.
+    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
+    if (-not $pythonCmd) { $pythonCmd = (Get-Command python3 -ErrorAction SilentlyContinue).Source }
+    if (-not $pythonCmd) { $pythonCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source }
+    if (-not $pythonCmd) { throw 'python/python3/pythonw not found; cannot start FTPS server' }
+    & $pythonCmd -m pip install pyftpdlib pyOpenSSL | Out-Null
 
     # 4. Entrypoint script. Forward-slash form is what Python expects in literals.
     $ftpsHomeForPy = ($ftpsHomeBase -replace '\\','/')
@@ -798,28 +827,34 @@ if __name__ == '__main__':
     $pyBody | Out-File -LiteralPath $ftpsEntryFile -Encoding utf8 -Force
 
     # 5. Firewall — control + PASV. pyftpdlib binds the listener itself but the
-    # Windows Defender filter still drops inbound on the data ports.
-    foreach ($rule in @(
+    # Windows Defender filter still drops inbound on the data ports. (Windows only:
+    # the NetSecurity cmdlets do not exist on Linux, and localhost is unfiltered there.)
+    if ($IsWindows) { foreach ($rule in @(
         @{Name='Warewolf-FTPS-Control'; Port='1010'},
         @{Name='Warewolf-FTPS-PASV';    Port='17008-17015'})) {
         if (-not (Get-NetFirewallRule -DisplayName $rule.Name -ErrorAction SilentlyContinue)) {
             New-NetFirewallRule -DisplayName $rule.Name -Direction Inbound -Action Allow `
                 -Protocol TCP -LocalPort $rule.Port -ErrorAction SilentlyContinue | Out-Null
         }
-    }
+    } }
 
     # 6. Launch detached so the orchestrator continues; poll port 1010. Use
     # python.exe (not pythonw) with stdout/stderr redirected so an ImportError
     # or TLS-init crash lands in a log we can dump on timeout — pythonw drops
     # both streams on Windows, which is what hid the previous failure mode.
-    $pythonCmd = (Get-Command python -ErrorAction SilentlyContinue).Source
-    if (-not $pythonCmd) { $pythonCmd = (Get-Command pythonw -ErrorAction SilentlyContinue).Source }
-    if (-not $pythonCmd) { throw 'python/pythonw not found; cannot start FTPS server' }
+    # ($pythonCmd was resolved in step 3.)
     if (Test-Path $ftpsLogFile) { Remove-Item -LiteralPath $ftpsLogFile -Force -ErrorAction SilentlyContinue }
     if (Test-Path $ftpsErrFile) { Remove-Item -LiteralPath $ftpsErrFile -Force -ErrorAction SilentlyContinue }
-    $script:_ftpsProcess = Start-Process -FilePath $pythonCmd `
-        -ArgumentList @('-u', $ftpsEntryFile) -PassThru -WindowStyle Hidden `
-        -RedirectStandardOutput $ftpsLogFile -RedirectStandardError $ftpsErrFile
+    $startArgs = @{
+        FilePath               = $pythonCmd
+        ArgumentList           = @('-u', $ftpsEntryFile)
+        PassThru               = $true
+        RedirectStandardOutput = $ftpsLogFile
+        RedirectStandardError  = $ftpsErrFile
+    }
+    # -WindowStyle is Windows-only; Start-Process rejects it on Linux.
+    if ($IsWindows) { $startArgs.WindowStyle = 'Hidden' }
+    $script:_ftpsProcess = Start-Process @startArgs
 
     Write-Host "Waiting for FTPS server on port 1010..."
     for ($i = 1; $i -le 30; $i++) {
@@ -849,6 +884,14 @@ function Stop-HostFTPSServer {
     # doesn't abort the surrounding script. taskkill also matches python.exe
     # (the FTPS server now runs under python.exe so stdout/stderr can be
     # redirected — see Start-HostFTPSServer step 6).
+    if (-not $IsWindows) {
+        # No taskkill on Linux: stop the pyftpdlib process this script started.
+        if ($script:_ftpsProcess -and -not $script:_ftpsProcess.HasExited) {
+            $script:_ftpsProcess | Stop-Process -Force -ErrorAction SilentlyContinue
+        }
+        $script:_ftpsProcess = $null
+        return
+    }
     cmd /c 'taskkill /im pythonw.exe /f >nul 2>nul'
     cmd /c 'taskkill /im python.exe /f >nul 2>nul'
     $global:LASTEXITCODE = 0
@@ -893,10 +936,22 @@ function Start-HostSFTPServer {
         $sftpRoot   = Join-Path (Get-FTPSandboxRoot) 'sftp_home\dev2'
         $uploadDir  = Join-Path $sftpRoot 'upload'
         if (!(Test-Path $uploadDir)) { New-Item -ItemType Directory -Force -Path $uploadDir | Out-Null }
-        icacls $sftpRoot /inheritance:r | Out-Null
-        icacls $sftpRoot /setowner 'Administrators' | Out-Null
-        icacls $sftpRoot /grant:r 'SYSTEM:(OI)(CI)F' 'Administrators:(OI)(CI)F' 'dev2:(OI)(CI)RX' | Out-Null
-        icacls $uploadDir /grant 'dev2:(OI)(CI)M' | Out-Null
+        # Grant BEFORE stripping inheritance: '/inheritance:r' on a directory that
+        # only has inherited ACEs leaves an empty DACL, after which the owner change
+        # was refused ("C:\sftp_home\dev2: Access is denied." in CI build 30779) and
+        # '| Out-Null' hid it. Each step is now checked and reported as a pipeline
+        # error (not thrown: the job's non-SFTP rows can still run).
+        foreach ($step in @(
+            @($sftpRoot,  '/grant:r', 'SYSTEM:(OI)(CI)F', 'Administrators:(OI)(CI)F', 'dev2:(OI)(CI)RX'),
+            @($sftpRoot,  '/inheritance:r'),
+            @($sftpRoot,  '/setowner', 'Administrators'),
+            @($uploadDir, '/grant', 'dev2:(OI)(CI)M'))) {
+            $out = & icacls @step 2>&1
+            if ($LASTEXITCODE -ne 0) {
+                Write-PipelineError "icacls $($step -join ' ') failed (exit $LASTEXITCODE): $out"
+            }
+        }
+        $global:LASTEXITCODE = 0
 
         $cfg = "$env:ProgramData\ssh\sshd_config"
         if (Test-Path $cfg) {
@@ -909,6 +964,14 @@ function Start-HostSFTPServer {
         if ($body -notmatch '(?m)^\s*Subsystem\s+sftp\s') {
             $body += "`nSubsystem sftp sftp-server.exe`n"
         }
+        # File logging to %ProgramData%\ssh\logs\sshd.log (Win32-OpenSSH logs to ETW
+        # by default, so Copy-SFTPLogsToResults had nothing to ship). Global
+        # directives must precede every Match block, so replace-or-prepend.
+        foreach ($kv in @(@('SyslogFacility', 'LOCAL0'), @('LogLevel', 'VERBOSE'))) {
+            $pattern = "(?m)^\s*#?\s*$($kv[0])\s+.*$"
+            if ($body -match $pattern) { $body = $body -replace $pattern, "$($kv[0]) $($kv[1])" }
+            else                       { $body = "$($kv[0]) $($kv[1])`n" + $body }
+        }
         # Strip any Match block from a previous run before appending a fresh one -
         # Match blocks must be last in sshd_config and this keeps re-runs idempotent.
         $body = $body -replace '(?ms)^Match User dev2.*?(?=^Match |\z)', ''
@@ -920,12 +983,49 @@ function Start-HostSFTPServer {
         Set-Service -Name 'ssh-agent' -StartupType Automatic -ErrorAction SilentlyContinue
         Restart-Service sshd
         Start-Sleep -Seconds 2
+        Test-HostSFTPServer
         return
     }
     docker run -d --name sftpserver -p 2222:22 atmoz/sftp "dev2:Q/ulw&]:1001" | Out-Null
+    if ($LASTEXITCODE -ne 0) { Write-PipelineError "docker run sftpserver failed (exit $LASTEXITCODE); sftp:// rows will fail" }
     Start-Sleep -Seconds 3
     docker exec sftpserver mkdir -p /home/dev2/upload 2>$null | Out-Null
     docker exec sftpserver chmod 777 /home/dev2/upload 2>$null | Out-Null
+    Test-HostSFTPServer
+}
+
+function Test-HostSFTPServer {
+    # End-to-end probe of the SFTP dependency with the client library the product
+    # itself uses (SSH.NET, shipped next to this script): log in as dev2, list '/',
+    # write + delete a file in /upload - exactly what every sftp:// spec row needs.
+    # The File tools swallow the underlying SSH error (specs only ever report
+    # "Recursive Directory Create Failed" / "No such file"), so this is where the
+    # real server-side cause surfaces. Diagnostic only: never aborts the run.
+    $dll = Join-Path $PSScriptRoot 'Renci.SshNet.dll'
+    if (-not (Test-Path $dll)) { Write-Warn "SFTP probe skipped: $dll not found"; return }
+    $client = $null
+    try {
+        Add-Type -Path $dll -ErrorAction Stop
+        $client = [Renci.SshNet.SftpClient]::new('127.0.0.1', 2222, 'dev2', 'Q/ulw&]')
+        # sshd / the atmoz container can take a few seconds to accept logins.
+        for ($i = 1; ; $i++) {
+            try { $client.Connect(); break }
+            catch { if ($i -ge 10) { throw }; Start-Sleep -Seconds 2 }
+        }
+        $rootEntries = @($client.ListDirectory('/', $null) | ForEach-Object { $_.Name })
+        Write-Host "SFTP probe: '/' lists [$($rootEntries -join ', ')]"
+        if ($rootEntries -notcontains 'upload') {
+            throw "'/' has no 'upload' directory - the dev2 chroot is not in effect"
+        }
+        $probeFile = "/upload/_wwprobe_$([Guid]::NewGuid().ToString('N')).txt"
+        $client.WriteAllBytes($probeFile, [Text.Encoding]::ASCII.GetBytes('probe'))
+        $client.DeleteFile($probeFile)
+        Write-Done 'SFTP probe: login, list /, write + delete in /upload OK'
+    } catch {
+        Write-PipelineError "SFTP probe failed against sftp://localhost:2222 as dev2: $($_.Exception.GetBaseException().Message)"
+    } finally {
+        if ($client) { try { $client.Dispose() } catch { } }
+    }
 }
 function Stop-HostSFTPServer {
     # Capture the SFTP server's logs before teardown so they ship in the
@@ -2655,6 +2755,33 @@ function Merge-RetryTrx {
     }
 }
 
+function Get-TestRunnerCommand {
+    # Builds the RunTests.ps1 line: vstest.console.exe on Windows, or the
+    # equivalent `dotnet test` invocation on a Linux host ($UseDotnetTest).
+    # $TestNames (retry list) wins over $CaseFilter, as vstest's /Tests does.
+    param([string[]]$AssemblyPaths, [string]$TestNames, [string]$CaseFilter,
+          [string]$SettingsFile, [bool]$CollectCoverage, [string]$ResultsDir, [string]$VSTestExe)
+    if ($UseDotnetTest) {
+        $asm = ($AssemblyPaths | ForEach-Object { "`"./$($_ -replace '\\', '/')`"" }) -join ' '
+        $filter = if ($TestNames) {
+            (($TestNames -split ',') | Where-Object { $_.Trim() } | ForEach-Object { "Name=$($_.Trim())" }) -join '|'
+        } else { $CaseFilter }
+        $line = "& dotnet test $asm --logger trx --results-directory `"$ResultsDir`""
+        if ($filter)          { $line += " --filter `"$filter`"" }
+        if ($SettingsFile)    { $line += " --settings `"$SettingsFile`"" }
+        if ($CollectCoverage) { $line += ' --collect "Code Coverage"' }
+        return $line
+    }
+    $line = "&`"$VSTestExe`" /logger:trx .\" + ($AssemblyPaths -join " .\")
+    if ($TestNames)       { $line += " /Tests:`"$TestNames`"" }
+    elseif ($CaseFilter)  { $line += " /TestCaseFilter:`"$CaseFilter`"" }
+    if ($SettingsFile)    { $line += " --settings:`"$SettingsFile`"" }
+    if ($CollectCoverage) { $line += " /EnableCodeCoverage" }
+    # Pin vstest's results directory so TRX lands at $ResultsDir regardless of CWD.
+    $line += " /ResultsDirectory:`"$ResultsDir`""
+    return $line
+}
+
 function Get-FailedTestNames {
     param([string]$TestResultsPath)
     $files = @(Get-ChildItem "$TestResultsPath\*.trx")
@@ -2764,9 +2891,10 @@ $catalogMode = $List.IsPresent -or `
                ($Jobs.Count -gt 0) -or `
                (-not $hasDirectModeSelection)
 
-# -Runtime Linux in direct mode means "run tests in a Linux container" — set
-# -InContainer unless the caller explicitly opted out.
-if (-not $catalogMode -and $Runtime -eq 'Linux' -and -not $PSBoundParameters.ContainsKey('InContainer')) {
+# -Runtime Linux in direct mode on a Windows host means "run tests in a Linux
+# container" — set -InContainer unless the caller explicitly opted out. On a
+# Linux host the tests run natively with `dotnet test` (see the vstest section).
+if (-not $catalogMode -and $Runtime -eq 'Linux' -and -not $IsLinux -and -not $PSBoundParameters.ContainsKey('InContainer')) {
     $InContainer = [switch]::Present
 }
 
@@ -2786,11 +2914,16 @@ $TestResultsPath = if ($TestResultsDir) { $TestResultsDir } else { ".\TestResult
 if (Test-Path $TestResultsPath) { Remove-Item -Force -Recurse $TestResultsPath }
 New-Item -ItemType Directory $TestResultsPath -ErrorAction SilentlyContinue | Out-Null
 
+# Test runner: vstest.console.exe on Windows; `dotnet test` natively on a Linux
+# host (vstest.console.exe is a .NET Framework tool, and Compile.ps1 does not
+# install Microsoft.TestPlatform on Linux). -InContainer keeps its own runner.
+$UseDotnetTest = $IsLinux -and -not $InContainer.IsPresent
+
 # vstest resolution
 if (-not $VSTestPath -or -not (Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
     $VSTestPath = ".\Microsoft.TestPlatform\tools\net462\common7\ide"
 }
-if (-not (Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
+if (-not $UseDotnetTest -and -not (Test-Path "$VSTestPath\Extensions\TestPlatform\vstest.console.exe")) {
     if (-not $NuGet -or -not (Test-Path $NuGet)) {
         $NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
         if ($NuGetCommand) { $NuGet = $NuGetCommand.Path }
@@ -2964,7 +3097,6 @@ try {
             if (Test-Path "$TestResultsPath\Snapshot.coverage")     { Move-Item "$TestResultsPath\Snapshot.coverage"     "$TestResultsPath\Snapshot($loop).coverage" }
             if (Test-Path "$TestResultsPath\Snapshot_Backup.coverage") { Move-Item "$TestResultsPath\Snapshot_Backup.coverage" "$TestResultsPath\Snapshot_Backup($loop).coverage" }
 
-            $asmArg = ".\" + ($asmList -join " .\")
             if ($UNCPassword) {
                 "net use \\localhost\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
@@ -2973,41 +3105,32 @@ try {
                 $autoCov = Join-Path $PSScriptRoot 'coverage.runsettings'
                 if (Test-Path $autoCov) { $effectiveCovSettings = $autoCov }
             }
-            $settingsArg = if ($STA.IsPresent -or $Sequential.IsPresent) {
-                "--settings:`"$TestResultsPath\vstest.runsettings`""
+            $settingsFile = if ($STA.IsPresent -or $Sequential.IsPresent) {
+                "$TestResultsPath\vstest.runsettings"
             } elseif ($effectiveCovSettings -and (Test-Path $effectiveCovSettings)) {
-                "--settings:`"$effectiveCovSettings`""
+                $effectiveCovSettings
             } else { "" }
-            # Pin vstest's results directory so TRX lands at $TestResultsPath regardless of CWD.
-            $resultsDirArg = "/ResultsDirectory:`"$TestResultsPath`""
 
-            # Build vstest invocation
+            # Build the test-runner invocation (vstest.console.exe, or dotnet test on Linux)
             $vstestExe = "$VSTestPath\Extensions\TestPlatform\vstest.console.exe"
-            if ($TestsToRun) {
-                if ($PreTestRunScript) { "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
-                $covArg = if ($Coverage.IsPresent -and -not $PreTestRunScript) { "/EnableCodeCoverage" } else { "" }
-                "&`"$vstestExe`" /logger:trx $asmArg /Tests:`"$TestsToRun`" $settingsArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
-            } else {
-                $categoryArg = ""
+            $caseFilter = ""
+            if (-not $TestsToRun) {
                 if ($ExcludeCategories -and $ExcludeCategories.Count -gt 0) {
-                    $categoryArg = "/TestCaseFilter:`"(TestCategory!=" + ($ExcludeCategories -join ")&(TestCategory!=") + ")`""
+                    $caseFilter = "(TestCategory!=" + ($ExcludeCategories -join ")&(TestCategory!=") + ")"
                 } elseif ($Category) {
-                    $categoryArg = "/TestCaseFilter:`"(TestCategory=$Category)`""
+                    $caseFilter = "(TestCategory=$Category)"
                 } elseif ($Categories -and $Categories.Count -gt 0) {
-                    $categoryArg = "/TestCaseFilter:`"(TestCategory=" + ($Categories -join ")|(TestCategory=") + ")`""
+                    $caseFilter = "(TestCategory=" + ($Categories -join ")|(TestCategory=") + ")"
                 }
                 if ($Filter) {
-                    if ($categoryArg) {
-                        $existing = $categoryArg -replace '^/TestCaseFilter:"(.+)"$', '$1'
-                        $categoryArg = "/TestCaseFilter:`"($existing)&($Filter)`""
-                    } else {
-                        $categoryArg = "/TestCaseFilter:`"$Filter`""
-                    }
+                    $caseFilter = if ($caseFilter) { "($caseFilter)&($Filter)" } else { $Filter }
                 }
-                if ($PreTestRunScript) { "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
-                $covArg = if ($Coverage.IsPresent -and -not $PreTestRunScript) { "/EnableCodeCoverage" } else { "" }
-                "&`"$vstestExe`" /logger:trx $asmArg $categoryArg $settingsArg $covArg $resultsDirArg" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
+            if ($PreTestRunScript) { "&.\$PreTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
+            $collectCoverage = $Coverage.IsPresent -and -not $PreTestRunScript
+            Get-TestRunnerCommand -AssemblyPaths $asmList -TestNames $TestsToRun -CaseFilter $caseFilter `
+                -SettingsFile $settingsFile -CollectCoverage $collectCoverage -ResultsDir $TestResultsPath -VSTestExe $vstestExe |
+                Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             if ($PostTestRunScript) { "&.\$PostTestRunScript" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append }
             if ($UNCPassword) {
                 "net use \\localhost\FileSystemShareTestingSite /delete" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append

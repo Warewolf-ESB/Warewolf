@@ -546,7 +546,8 @@
     <PackageReference Include="TSQL.Parser" Version="2.6.0" />
   </ItemGroup>
   <ItemGroup />
-  <PropertyGroup>
+  <!-- cmd.exe syntax (xcopy of the win-x64 SQLite.Interop.dll): Windows hosts only. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <PostBuildEvent>
       if exist "$(SolutionDir)Dev2.Activities.Tests\bin\Debug\net8.0-windows\win\Dev2.Activities.Tests.dll" if not exist "$(SolutionDir)Dev2.Activities.Tests\bin\Debug\net8.0-windows\win\SQLite.Interop.dll" (
       echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Activities.Tests\bin\Debug\net8.0-windows\win"

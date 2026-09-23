@@ -409,7 +409,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         }
 
         [Given(@"use private public key for source is ""(.*)""")]
-        public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey) => _scenarioContext.Add(SourcePrivatePublicKeyFile, sourceKey);
+        public void GivenUsePrivatePublicKeyForSourceIs(string sourceKey) => _scenarioContext.Add(SourcePrivatePublicKeyFile, TranslateLocalWindowsPath(sourceKey));
 
         [Given(@"assign error to variable ""(.*)""")]
         public void GivenAssignErrorToVariable(string errorVariable)
@@ -538,7 +538,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"use private public key for destination is ""(.*)""")]
         public void GivenUsePrivatePublicKeyForDestinationIs(string destinationKey)
         {
-            _scenarioContext.Add(DestinationPrivateKeyFile, destinationKey);
+            _scenarioContext.Add(DestinationPrivateKeyFile, TranslateLocalWindowsPath(destinationKey));
         }
 
         [Then(@"validation is ""(.*)""")]
@@ -1272,7 +1272,10 @@ namespace Dev2.Activities.Specs.BaseTypes
         [BeforeTestRun]
         public static void CopyEncryptionKey()
         {
-            var tempDir = RuntimeInformation.IsOSPlatform(OSPlatform.Windows) ? @"C:\Temp" : "/tmp";
+            // The .feature rows name the key "C:\Temp\key.opk"; on Linux the key steps
+            // translate that through TranslateLocalWindowsPath (-> /tmp/Temp/key.opk), so
+            // the key must be written to the same translated location.
+            var tempDir = TranslateLocalWindowsPath(@"C:\Temp");
             if (!Directory.Exists(tempDir))
             {
                 Directory.CreateDirectory(tempDir);

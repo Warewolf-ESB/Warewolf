@@ -551,7 +551,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <PropertyGroup>
+  <!-- cmd.exe syntax (xcopy of the win-x64 SQLite.Interop.dll): Windows hosts only. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <PostBuildEvent>
       if exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0\win\Dev2.Activities.Specs.dll" if not exist "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0\win\SQLite.Interop.dll" (
         echo D | xcopy /Y /E /F /D "$(SolutionDir)Dev2.Server\bin\Debug\net8.0\runtimes\win-x64\native\SQLite.Interop.dll" "$(SolutionDir)Dev2.Activities.Specs\bin\Debug\net8.0\win"

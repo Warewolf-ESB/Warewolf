@@ -24,6 +24,19 @@ Enterprise → Professional → Community → BuildTools edition list, then by
 checking `$env:MSBuildPath`, then via registry. If everything fails it
 **prompts interactively** — pass `-MSBuildPath` explicitly to avoid that.
 
+**On a Linux (or macOS) host** only PowerShell 7+ and the .NET SDK are needed:
+the `nuget.exe` / MSBuild discovery above is skipped, and so is the
+`Microsoft.TestPlatform` (`vstest.console.exe`) install — `TestRun.ps1` runs
+tests with `dotnet test` there. This is what the pipeline's `Linux_Pilot` stage
+does on `ubuntu-latest`:
+
+```bash
+pwsh ./Compile.ps1 -ServerTests -Runtime linux-x64 -SkipVulnerabilityCheck
+```
+
+The output folder is `Bin/ServerTests` — mind the case, Linux paths are
+case-sensitive.
+
 ## What it builds
 
 Each solution / project maps to a fixed output folder under `Bin\`:
@@ -93,7 +106,9 @@ the script derive it.
 
 `linux-x64` publishes **self-contained** (embeds the runtime); `win-x64`
 publishes **framework-dependent**. Defaults: `win-x64` on Windows hosts,
-`linux-x64` on Linux/macOS.
+`linux-x64` on Linux/macOS. A self-contained Linux output needs its Unix
+execute bits (e.g. `testhost`), so move it between machines as a tarball —
+pipeline artifacts drop them.
 
 If you publish the server self-contained for Linux but want to run the EXE on
 Windows for testing, the script auto-patches

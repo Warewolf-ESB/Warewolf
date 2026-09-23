@@ -48,6 +48,21 @@ if ("$PSScriptRoot" -eq "" -or $PSScriptRoot -eq $null) {
 	$PSScriptRoot = Split-Path $MyInvocation.MyCommand.Path -Parent
 }
 
+# PS 6+ automatic vars - fallbacks for Windows PowerShell 5.1
+if (-not (Test-Path Variable:\IsLinux))  { $IsLinux  = $false }
+if (-not (Test-Path Variable:\IsMacOS))  { $IsMacOS  = $false }
+# nuget.exe and MSBuild.exe are only needed on a Windows host (vstest.console via
+# Microsoft.TestPlatform, SpecFlow regeneration). A Linux/macOS host compiles with
+# the dotnet CLI alone, so those lookups are skipped there.
+$IsWindowsHost = -not ($IsLinux -or $IsMacOS)
+$NuGetPackagesRoot = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { Join-Path $HOME ".nuget/packages" }
+# PowerShell cmdlets accept '\' as a separator on every platform, but native
+# commands (dotnet) receive the raw string, and on Linux '\' is a filename character.
+function ConvertTo-NativePath([string]$Path) {
+	if ($IsWindowsHost) { return $Path }
+	return $Path -replace '\\', '/'
+}
+
 # =====================================================================
 # Pre-compile security gates
 # =====================================================================
@@ -68,7 +83,8 @@ if ($null -ne $LASTEXITCODE -and $LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
 
-#Find Local NuGet
+#Find Local NuGet and Compiler (Windows hosts only - see $IsWindowsHost)
+if ($IsWindowsHost) {
 if ("$NuGet" -eq "" -or !(Test-Path "$NuGet" -ErrorAction SilentlyContinue)) {
 	$NuGetCommand = Get-Command NuGet -ErrorAction SilentlyContinue
 	if ($NuGetCommand) {
@@ -137,6 +153,7 @@ if (!(Test-Path "$MSBuildPath" -ErrorAction SilentlyContinue)) {
 		sleep 10
 		exit 1
 	}
+}
 }
 
 #Version
@@ -340,8 +357,6 @@ if ($RegenerateSpecFlowFeatureFiles.IsPresent) {
 
 # Resolve the publish runtime identifier once, before the solution loop.
 # linux-x64 is self-contained (embeds the runtime); win-x64 is framework-dependent.
-if (-not (Test-Path Variable:\IsLinux))  { $IsLinux  = $false }
-if (-not (Test-Path Variable:\IsMacOS))  { $IsMacOS  = $false }
 if ([string]::IsNullOrEmpty($Runtime)) {
     $Runtime = if ($IsLinux -or $IsMacOS) { "linux-x64" } else { "win-x64" }
 }
@@ -368,17 +383,19 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
             if ($OutputFolderName -eq "Webs") {
                 npm install --add-python-to-path='true' --global --production windows-build-tools
             }
-            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+            # vstest.console.exe (Microsoft.TestPlatform) is the Windows test runner; a
+            # Linux host runs tests with `dotnet test` instead (see TestRun.ps1).
+            if ($IsWindowsHost -and ($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName" -Version "17.2.0"
             }
 
-            if (($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
+            if ($IsWindowsHost -and ($OutputFolderName -like "AcceptanceTesting*" -or $OutputFolderName -like "ServerTests*") -and !($ProjectSpecificOutputs.IsPresent)) {
                 &"$NuGet" install Microsoft.TestPlatform -ExcludeVersion -NonInteractive -OutputDirectory "$PSScriptRoot\Bin\$OutputFolderName"
             }
 			Write-Host "Publishing to $OutputFolderName ($Runtime, self-contained: $RuntimeIsSelfContained)"
 			$_scFlag = if ($RuntimeIsSelfContained) { "-p:SelfContained=true" } else { "-p:SelfContained=false" }
-			dotnet restore "$PSScriptRoot\$SolutionFile" -r $Runtime --nologo -v minimal --force
-			dotnet publish "$PSScriptRoot\$SolutionFile" -c $Config -r $Runtime $_scFlag --no-restore -o "$PSScriptRoot\Bin\$OutputFolderName" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
+			dotnet restore (ConvertTo-NativePath "$PSScriptRoot\$SolutionFile") -r $Runtime --nologo -v minimal --force
+			dotnet publish (ConvertTo-NativePath "$PSScriptRoot\$SolutionFile") -c $Config -r $Runtime $_scFlag --no-restore -o (ConvertTo-NativePath "$PSScriptRoot\Bin\$OutputFolderName") --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true -p:ErrorOnDuplicatePublishOutputFiles=false
 			if ($LASTEXITCODE -ne 0) {
 				Write-Host "dotnet publish failed for $SolutionFile."
 				exit 1
@@ -449,8 +466,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				# far more consumers in this solution than 7.1.2 (only
 				# Warewolf.Execution.QueueProcessor(.Tests) needs 7.x), so pin 5.1.2 as the
 				# deterministic winner here.
-				$_nugetPackagesRoot = if ($env:NUGET_PACKAGES) { $env:NUGET_PACKAGES } else { "$env:USERPROFILE\.nuget\packages" }
-				$_rabbitMqDll = Join-Path $_nugetPackagesRoot "rabbitmq.client\5.1.2\lib\netstandard2.0\RabbitMQ.Client.dll"
+				$_rabbitMqDll = Join-Path $NuGetPackagesRoot "rabbitmq.client/5.1.2/lib/netstandard2.0/RabbitMQ.Client.dll"
 				if (Test-Path $_rabbitMqDll) {
 					Copy-Item -Path $_rabbitMqDll -Destination "$PSScriptRoot\Bin\$OutputFolderName\RabbitMQ.Client.dll" -Force
 					Write-Host "Pinned RabbitMQ.Client.dll to 5.1.2 in $OutputFolderName (majority of consumers; QueueProcessor's 7.1.2 is isolated to its own test job)."
@@ -484,8 +500,8 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 						# also match the stale, wrongly-pinned copy left behind by the solution-wide publish.
 						Get-ChildItem "$PSScriptRoot\Bin\$OutputFolderName" -Filter "Warewolf.Execution.QueueProcessor.Tests.*" -File -ErrorAction SilentlyContinue |
 							Remove-Item -Force -ErrorAction SilentlyContinue
-						dotnet restore "$_queueProcessorTestsProj" -r $Runtime --nologo -v minimal --force
-						dotnet publish "$_queueProcessorTestsProj" -c $Config -r $Runtime $_scFlag --no-restore -o "$_queueProcessorOut" --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true
+						dotnet restore (ConvertTo-NativePath $_queueProcessorTestsProj) -r $Runtime --nologo -v minimal --force
+						dotnet publish (ConvertTo-NativePath $_queueProcessorTestsProj) -c $Config -r $Runtime $_scFlag --no-restore -o (ConvertTo-NativePath $_queueProcessorOut) --nologo -p:NoWarn=NETSDK1194 -v minimal -p:UseAppHost=true
 						if ($LASTEXITCODE -ne 0) {
 							Write-Host "dotnet publish failed for Warewolf.Execution.QueueProcessor.Tests.csproj."
 							exit 1
@@ -524,7 +540,7 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 				# lib/net8.0 reference stub can overwrite the runtimes/unix implementation.
 				# Copy to both the flat root (self-contained publish RID probing) and to the
 				# relative runtimeTargets path (framework-dependent non-RID deps.json probing).
-				$_sqlPkg = Get-ChildItem "$env:USERPROFILE\.nuget\packages\microsoft.data.sqlclient" -Directory -ErrorAction SilentlyContinue |
+				$_sqlPkg = Get-ChildItem (Join-Path $NuGetPackagesRoot "microsoft.data.sqlclient") -Directory -ErrorAction SilentlyContinue |
 					Sort-Object Name -Descending | Select-Object -First 1
 				if ($_sqlPkg) {
 					$_unixDll = Join-Path $_sqlPkg.FullName "runtimes\unix\lib\net8.0\Microsoft.Data.SqlClient.dll"
@@ -611,8 +627,14 @@ foreach ($SolutionFile in $KnownSolutionFiles) {
 			# NoCorpusSample despite having a committed fixture. Staged here rather than via the csproj
 			# Resources glob because that glob controls what SHIPS to Azure (deployers supply their own
 			# workflows); this is test-corpus staging, exactly like the four copies above.
-			if (Test-Path "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\Resources") {
-				$LightweightCorpusParent = "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.Execution.Lightweight"
+			$LightweightCorpusParent = "$PSScriptRoot\Bin\$OutputFolderName\Warewolf.Execution.Lightweight"
+			if (Test-Path $LightweightCorpusParent -PathType Leaf) {
+				# A linux-x64 publish emits the engine's apphost as an extensionless FILE with
+				# exactly this name (Windows emits Warewolf.Execution.Lightweight.exe), so the
+				# corpus directory cannot exist beside it. Only the Round-Trip Fidelity sweep
+				# reads it; that job needs its corpus layout reworked before it moves to Linux.
+				Write-Warning "Skipping fidelity corpus staging: '$LightweightCorpusParent' is the $Runtime apphost file."
+			} elseif (Test-Path "$PSScriptRoot\Dev\Warewolf.Execution.Lightweight\Resources") {
 				if (!(Test-Path $LightweightCorpusParent)) {
 					New-Item -ItemType Directory -Path $LightweightCorpusParent -Force | Out-Null
 				}

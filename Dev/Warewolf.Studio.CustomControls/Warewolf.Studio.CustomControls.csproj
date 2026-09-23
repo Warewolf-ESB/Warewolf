@@ -118,7 +118,9 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="images\logo.png">
+    <!-- The folder is "Images" (case matters on Linux); Link keeps the lowercase
+         output path the *.html pages load via src="images/logo.png". -->
+    <Content Include="Images\logo.png" Link="images\logo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="LicenseRegistration.html">

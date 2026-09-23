@@ -226,6 +226,33 @@ namespace Dev2.Data.PathOperations
             return defaultPort;
         }
 
+        // A directory exists when it can be listed - NOT when the listing has entries.
+        // SFTP servers that omit "." / ".." return an empty listing for an existing,
+        // empty directory; counting entries reported it missing, so the recursive
+        // create tried to create it, the server refused (it exists), and every write
+        // into it failed with "Recursive Directory Create Failed". A missing path (or a
+        // file) makes the listing throw. Public static for the same reason as
+        // ExtractPort: the connecting Implementation class is not unit-testable.
+        public static bool SftpDirectoryExists<T>(Func<IEnumerable<T>> listDirectory)
+        {
+            try
+            {
+                var listing = listDirectory();
+                if (listing == null)
+                {
+                    return false;
+                }
+                // Force enumeration so a lazily-evaluated listing still surfaces its error here.
+                _ = listing.Any();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Error(typeof(Dev2FTPProvider), ex, GlobalConstants.WarewolfError);
+                return false;
+            }
+        }
+
         static bool IsDirectory(string part) => Dev2ActivityIOPathUtils.IsDirectory(part) || part.ToLower(CultureInfo.InvariantCulture).Contains(@"<dir>");
 
         static bool IsFile(string part) => !IsDirectory(part);
@@ -895,26 +922,15 @@ namespace Dev2.Data.PathOperations
             bool IsDirectoryAlreadyPresentSftp(IActivityIOPath path)
             {
                 var sftpClient = BuildSftpClient(path);
-                var isAlive = true;
                 try
                 {
                     var ftpPath = ExtractFileNameFromPath(path.Path);
-                    var arrayList = sftpClient.ListDirectory(ftpPath);
-                    if (arrayList == null || !arrayList.Any())
-                    {
-                        isAlive = false;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    isAlive = false;
-                    Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
+                    return SftpDirectoryExists(() => sftpClient.ListDirectory(ftpPath));
                 }
                 finally
                 {
                     sftpClient.Dispose();
                 }
-                return isAlive;
             }
 
             public IList<IActivityIOPath> ListFilesInDirectory(IActivityIOPath src)

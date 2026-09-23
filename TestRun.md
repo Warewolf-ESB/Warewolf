@@ -22,7 +22,7 @@ The script auto-installs `dotnet-coverage` and
 
 | Mode | How you trigger it | What it does |
 | --- | --- | --- |
-| **Direct** | Pass `-Projects` / `-Assemblies` / `-TestsToRun` / `-ExcludeProjects` / any `-Start*` dep flag / `-InContainer` | Runs `vstest.console` (or MTP) against the named assemblies. Manages SUT lifecycle. This is what `pipeline.yml` calls. |
+| **Direct** | Pass `-Projects` / `-Assemblies` / `-TestsToRun` / `-ExcludeProjects` / any `-Start*` dep flag / `-InContainer` | Runs `vstest.console` (or MTP) against the named assemblies — `dotnet test` on a Linux host. Manages SUT lifecycle. This is what `pipeline.yml` calls. |
 | **Catalog** | Pass none of the above, or pass `-Jobs` / `-List` | Parses `Dev\.azure\pipeline.yml`, builds a job catalog, dispatches each job, merges coverage, generates a report. |
 
 Direct mode is for "run these specific tests now." Catalog mode is for "do
@@ -69,6 +69,25 @@ Produces `TestResults\Cobertura.xml` after the run.
 The first run builds the `warewolf-coverage-env` image (slow once, cached
 after).
 
+### Run natively on a Linux host
+
+On a Linux host (e.g. the `ubuntu-latest` agent in the pipeline's
+`Linux_Pilot` stage) `-Runtime` defaults to `Linux`, and direct mode runs the
+assemblies **natively with `dotnet test`** — same filter, settings, coverage
+(`--collect "Code Coverage"`) and `-RetryCount` handling as vstest, no
+container. `-Start*` deps run as Docker containers on the host ports the specs
+expect (FTPS is native pyftpdlib, so it needs `python`/`python3` with `pip`,
+and port 1010 needs `sysctl net.ipv4.ip_unprivileged_port_start=1000` when not
+running as root). `-CreateUNCPath` is Windows-only.
+
+```bash
+cd Bin/ServerTests
+pwsh ./TestRun.ps1 -Projects "Warewolf.Tools.Specs" -Filter "TestCategory=CopyFileFromSFTP" `
+  -Coverage:$false -StartSFTPServer -StartFTPServer -StartFTPSServer
+```
+
+Pass `-InContainer` to keep the old containerised runner instead.
+
 ### Run a job that needs a dep (FTP, SQL Server, etc.)
 
 Pass the matching `-Start*` switch. On `-Runtime Windows` (default) most deps
@@ -94,6 +113,15 @@ FileAndFolder `.feature` files connect to — same pattern as
 `-StartFTPServer`'s `ftp://localhost:21/...`. On `-Runtime Windows` (the
 hosted `windows-2022` default) it's a chroot-jailed Windows OpenSSH `sftp-server`
 user; on `-Runtime Linux` it's an `atmoz/sftp` container.
+
+After startup it runs an **SFTP probe** with the product's own client library
+(`Renci.SshNet.dll` from the test output): log in as `dev2`, list `/`, write and
+delete a file in `/upload`. The File tools swallow the underlying SSH error (a
+broken server only ever shows up as `Recursive Directory Create Failed` or
+`No such file` in the specs), so the probe's `SFTP probe failed ...` pipeline
+error is where the real cause surfaces. On Windows, sshd also logs to
+`%ProgramData%\ssh\logs\sshd.log` (`LogLevel VERBOSE`), which ships in the
+job's `*_ServerLogs` artifact.
 
 ### Run a job under the lightweight execution engine
 

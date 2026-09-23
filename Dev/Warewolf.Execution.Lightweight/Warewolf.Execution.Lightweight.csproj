@@ -355,12 +355,16 @@
       <!-- carry it to the output and publish directories automatically.               -->
       <_IndexSourcePath>$(_ResourcesSourceDir)\workflow-index.json</_IndexSourcePath>
       <_ScriptPath>$(MSBuildProjectDirectory)\Scripts\Generate-WorkflowIndex.ps1</_ScriptPath>
+      <!-- Windows PowerShell does not exist on Linux; without this the index was  -->
+      <!-- silently skipped there (ContinueOnError below).                         -->
+      <_PowerShellExe Condition="'$(OS)' == 'Windows_NT'">powershell.exe</_PowerShellExe>
+      <_PowerShellExe Condition="'$(OS)' != 'Windows_NT'">pwsh</_PowerShellExe>
     </PropertyGroup>
 
     <!-- Run the PowerShell script to enumerate resources and emit the index. -->
     <!-- ContinueOnError: if PowerShell is unavailable the build still succeeds -->
     <!-- and ResolveFilePath falls back to its existing disk-based resolution.  -->
-    <Exec Command="powershell.exe -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(_ScriptPath)&quot; -ResourcesDir &quot;$(_ResourcesSourceDir)&quot; -OutputPath &quot;$(_IndexSourcePath)&quot;" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="true" />
+    <Exec Command="$(_PowerShellExe) -NoProfile -NonInteractive -ExecutionPolicy Bypass -File &quot;$(_ScriptPath)&quot; -ResourcesDir &quot;$(_ResourcesSourceDir)&quot; -OutputPath &quot;$(_IndexSourcePath)&quot;" WorkingDirectory="$(MSBuildProjectDirectory)" ContinueOnError="true" />
 
     <!-- Copy the newly generated index to the output directory immediately so it  -->
     <!-- is present on the very first build (before the Content glob can pick it  -->

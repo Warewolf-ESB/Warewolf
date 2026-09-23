@@ -392,6 +392,14 @@
   <ItemGroup Condition="'$(Configuration)' == 'Debug'">
   </ItemGroup>
   <PropertyGroup>
+    <IsTestProject>false</IsTestProject>
+    <UserSecretsId>61f81da6-a240-4f74-ac27-c901cbc2e6bd</UserSecretsId>
+    <StartupObject>Dev2.Program</StartupObject>
+  </PropertyGroup>
+  <!-- cmd.exe packaging of the Windows server output (net8.0-windows paths, xcopy,
+       taskkill); fails under /bin/sh, so Windows hosts only. Linux gets its
+       Resources via CopyReleaseResourcesToOutput below. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <PostBuildEvent>
     if exist "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\Warewolf Server.exe" (
     	echo D | xcopy /Y /E /F /D "$(SolutionDir)Resources - Release\Resources" "$(SolutionDir)Dev2.Server\bin\Debug\net8.0-windows\Resources"
@@ -412,9 +420,6 @@
     )
     taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
     taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"</PostBuildEvent>
-    <IsTestProject>false</IsTestProject>
-    <UserSecretsId>61f81da6-a240-4f74-ac27-c901cbc2e6bd</UserSecretsId>
-    <StartupObject>Dev2.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup Condition="'$(TargetFrameworkIdentifier)' != '.NETFramework'">
     <FrameworkReference Include="Microsoft.AspNetCore.App" />

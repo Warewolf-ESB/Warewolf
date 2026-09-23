@@ -728,7 +728,8 @@
     </Content>
     <EmbeddedResource Include="XML\ComPluginService.xml" />
   </ItemGroup>
-  <PropertyGroup>
+  <!-- cmd.exe syntax (taskkill / xcopy of the win-x64 SQLite.Interop.dll): Windows hosts only. -->
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <PostBuildEvent>
 		taskkill /f /im Warewolf.COMIPC.exe /fi "STATUS eq RUNNING"
 		taskkill /f /im Warewolf.COMIPC.vshost.exe /fi "STATUS eq RUNNING"

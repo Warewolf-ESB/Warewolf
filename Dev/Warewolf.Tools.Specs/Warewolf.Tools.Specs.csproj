@@ -904,7 +904,15 @@
     <Reference Include="System.Runtime.DurableInstancing" />
   </ItemGroup>
   <ItemGroup />
-  <PropertyGroup>
+  <!-- Build events are cmd.exe syntax. On a Linux host the GUID-path patching still
+       runs (AddGuidToPaths.ps1 is portable PowerShell) via pwsh; the SQLite.Interop
+       copy is win-x64 only and not needed there. -->
+  <PropertyGroup Condition="'$(OS)' != 'Windows_NT'">
+    <PreBuildEvent>
+      if [ -f "$(MSBuildProjectDirectory)/Toolbox/FileAndFolder/AddGuidToPaths.ps1" ]; then pwsh -nologo -noprofile -file "$(MSBuildProjectDirectory)/Toolbox/FileAndFolder/AddGuidToPaths.ps1"; fi
+    </PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(OS)' == 'Windows_NT'">
     <PreBuildEvent>
 		  if exist "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1" (
 		  powershell.exe -ExecutionPolicy Bypass -nologo -noprofile -file "$(SolutionDir)Warewolf.Tools.Specs\Toolbox\FileAndFolder\AddGuidToPaths.ps1"
