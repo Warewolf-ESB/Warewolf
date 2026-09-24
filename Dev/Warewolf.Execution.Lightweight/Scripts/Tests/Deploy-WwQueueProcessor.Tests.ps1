@@ -1037,6 +1037,121 @@ Describe 'Deploy-WwQueueProcessor — DryRun end-to-end' {
     }
 }
 
+Describe 'Deploy-WwQueueProcessor — broker auth parameters' {
+    # Regression: build 30827 (pipeline-LOADTEST, 2026-09-24) passed an undefined pipeline macro, so
+    # -RabbitMqSecretUri was the literal '$(QueueWorkerCiRabbitMqSecretUri)'. [Uri] parsed it as a
+    # relative uri with a null Host and the deploy died AFTER the image build and app create with
+    # "You cannot call a method on a null-valued expression". Validation now happens in Phase 0.
+
+    BeforeAll {
+        $global:azCalls = @()
+        function global:az {
+            $global:azCalls += ,($args -join ' ')
+            $global:LASTEXITCODE = 0
+            if (($args -join ' ') -match 'account show.*tenantId') { return 'tid-from-az-context' }
+            if (($args -join ' ') -match '^group exists') { return 'false' }
+            return ''
+        }
+
+        function script:Invoke-Qp {
+            param([hashtable] $Broker)
+            $common = @{
+                ResourceGroup       = 'RG'
+                Location            = 'southafricanorth'
+                AcaEnvironment      = 'aca-test'
+                Image               = 'acr.azurecr.io/wwqp@sha256:abc'
+                TriggerFilePath     = (Join-Path $script:FixtureDir 'triggers-mandate.bite')
+                QueueSourcePath     = $script:FixtureDir
+                EngineBaseUrl       = 'https://engine'
+                EngineResourceAppId = 'app-1'
+                DryRun              = $true
+                NonInteractive      = $true
+            }
+            & $script:DeployScript @common @Broker 6>&1 | Out-String
+        }
+    }
+
+    AfterAll {
+        Remove-Item Function:\az -ErrorAction SilentlyContinue
+    }
+
+    It 'rejects -RabbitMqSecretUri <Value> before anything is created' -TestCases @(
+        @{ Value = '$(QueueWorkerCiRabbitMqSecretUri)' }
+        @{ Value = 'rabbitmq-uri' }
+        @{ Value = 'https://example.com/secrets/rabbit' }
+        @{ Value = 'http://kv.vault.azure.net/secrets/rabbit' }
+        @{ Value = 'https://kv.vault.azure.net/keys/rabbit' }
+    ) {
+        param($Value)
+        $global:azCalls = @()
+        { Invoke-Qp -Broker @{ RabbitMqSecretUri = $Value } } |
+            Should -Throw '*is not a Key Vault secret URI*'
+        ($global:azCalls | Where-Object { $_ -match '^(group|acr|containerapp)' }).Count |
+            Should -Be 0 -Because 'a bad broker parameter must fail in Phase 0, not after the build'
+    }
+
+    It 'accepts a versioned Key Vault secret URI' {
+        $out = Invoke-Qp -Broker @{ RabbitMqSecretUri = 'https://kv.vault.azure.net/secrets/rabbit/0123abcd' }
+        $out | Should -Match 'KEDA rule set'
+    }
+
+    It 'rejects -RabbitMqConnectionUri <Value> without echoing it' -TestCases @(
+        @{ Value = '$(ProfilerBrokerUri)' }
+        @{ Value = 'https://u:p4ssw0rd@broker:5672/' }
+        @{ Value = 'broker:5672' }
+    ) {
+        param($Value)
+        $err = $null
+        try { Invoke-Qp -Broker @{ RabbitMqConnectionUri = $Value } } catch { $err = $_.Exception.Message }
+        $err | Should -Match 'is not an absolute amqp:// or amqps:// URI'
+        $err | Should -Not -Match 'p4ssw0rd' -Because 'the value may carry the broker password'
+    }
+
+    It 'rejects -RabbitMqSecretUri together with -RabbitMqConnectionUri' {
+        { Invoke-Qp -Broker @{
+            RabbitMqSecretUri     = 'https://kv.vault.azure.net/secrets/rabbit'
+            RabbitMqConnectionUri = 'amqp://u:p@broker:5672/' } } | Should -Throw '*mutually exclusive*'
+    }
+
+    It 'rejects -InlineRabbitMqSecret with -RabbitMqConnectionUri' {
+        { Invoke-Qp -Broker @{ RabbitMqConnectionUri = 'amqp://u:p@broker:5672/'; InlineRabbitMqSecret = $true } } |
+            Should -Throw '*applies to -RabbitMqSecretUri only*'
+    }
+
+    It 'with -RabbitMqConnectionUri: sets the secret inline, adds the KEDA rule, never touches Key Vault or leaks the password' {
+        $global:azCalls = @()
+        $out = Invoke-Qp -Broker @{ RabbitMqConnectionUri = 'amqp://testuser:s3cr3tpw@tunnel.example.net:20313/' }
+
+        $out | Should -Match 'RabbitMQ secret \(KEDA\)\s+:\s+inline amqp://tunnel\.example\.net:20313 \(from -RabbitMqConnectionUri\)'
+        $out | Should -Match '\[DRYRUN\] az containerapp secret set .*rabbitmq-connection=\*\*\*REDACTED\*\*\*'
+        $out | Should -Not -Match 'keyvaultref'
+        $out | Should -Match 'KEDA rule set: ceil\(queueLength / 1\) capped at 5'
+        $out | Should -Not -Match 's3cr3tpw' -Because 'the broker password must never reach the console'
+        $out | Should -Not -Match 'without broker auth'
+        ($global:azCalls | Where-Object { $_ -match '^keyvault' }).Count |
+            Should -Be 0 -Because 'the URI is handed over directly - there is no vault to read or grant'
+    }
+}
+
+Describe 'pipeline-LOADTEST ProfilerLoadTest_QueueProcessor broker wiring' {
+    # The job's broker (the devops RabbitMQ behind a rotating Cloudflare tunnel) is NOT the CloudAMQP
+    # broker behind the Cloud pipeline's QueueWorkerCiRabbitMqSecretUri, and that variable is not
+    # even defined on the Load Tests pipeline (build 30827). The URI must be resolved fresh per run.
+    BeforeAll {
+        $yml  = Get-Content -LiteralPath (Join-Path $PSScriptRoot '..\..\..\.azure\pipeline-LOADTEST.yml') -Raw
+        $from = $yml.IndexOf('- job: ProfilerLoadTest_QueueProcessor')
+        $to   = $yml.IndexOf("- job: ", $from + 10)
+        $script:Job = if ($to -gt 0) { $yml.Substring($from, $to - $from) } else { $yml.Substring($from) }
+    }
+
+    It 'passes the freshly resolved broker URI, not a Key Vault secret variable' {
+        $script:Job | Should -Not -BeNullOrEmpty
+        $script:Job | Should -Not -Match '\$\(QueueWorkerCiRabbitMqSecretUri\)|QueueWorkerCiRabbitMqSecretUriValue'
+        $script:Job | Should -Match '-RabbitMqConnectionUri\s+\$brokerUri'
+        $script:Job | Should -Match 'Resolve-E2EBrokerUri -SourceBitePath'
+    }
+}
+
 Describe 'Deploy-WwQueueProcessor — Assert-PublishMatchesBaseImage' {
 
     <#

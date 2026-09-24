@@ -420,6 +420,15 @@ dotnet publish Dev\Warewolf.Execution.QueueProcessor\Warewolf.Execution.QueuePro
   -RabbitMqSecretUri https://wwexecutionengine.vault.azure.net/secrets/rabbitmq-uri
 ```
 
+**KEDA broker credential** (one of, validated in Phase 0 — anything that is not an absolute Key
+Vault secret URI, e.g. an unexpanded `$(PipelineVariable)`, fails before the image is built):
+
+| Parameter | Secret `rabbitmq-connection` is… | Use when |
+|---|---|---|
+| `-RabbitMqSecretUri <kv secret uri>` | a runtime `keyvaultref` (app identity gets *Key Vault Secrets User*) | the default |
+| `-RabbitMqSecretUri … -InlineRabbitMqSecret` | copied from Key Vault at deploy time | tenant enforces CAE (`AKV10203`) |
+| `-RabbitMqConnectionUri amqp://…` | the URI itself, set inline — no Key Vault | the broker address rotates per run (devops broker behind the Cloudflare tunnel, `pipeline-LOADTEST.yml`); never echoed |
+
 **How the trigger file is pointed at the script** (mutually exclusive; `-TriggerId` narrows a
 folder/manifest to one trigger; **zero matches is a hard error**):
 

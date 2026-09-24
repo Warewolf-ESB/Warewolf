@@ -240,6 +240,13 @@ param(
     # "401 AKV10203 ... CaeAuthorizationFailed" on every sync, so KEDA never reads the queue depth.
     # Key Vault remains the source of truth; the cost is that rotation needs a redeploy.
     [switch] $InlineRabbitMqSecret,
+
+    # The broker URI ITSELF (amqp[s]://user:pass@host:port/vhost), set as a plain Container App
+    # secret with no Key Vault round-trip. Mutually exclusive with -RabbitMqSecretUri. For brokers
+    # whose address rotates per run (the devops broker behind a Cloudflare tunnel): a static Key
+    # Vault secret goes stale, so the caller resolves the URI fresh and hands it over directly.
+    # Never echoed - the plan shows scheme://host:port only.
+    [string] $RabbitMqConnectionUri,
     [switch] $UseSsl,
     [switch] $EncryptStagedSettings,
 
@@ -962,6 +969,55 @@ function Get-ScaleSettings {
     }
 }
 
+function Assert-BrokerAuthParameters {
+    <#
+        Validates -RabbitMqSecretUri / -RabbitMqConnectionUri up front and returns the plan's display
+        text for the KEDA credential (never the credential itself).
+
+        Fails in Phase 0 rather than mid-deploy. Regression: build 30827 passed an undefined pipeline
+        macro, so the script received the literal '$(QueueWorkerCiRabbitMqSecretUri)'. [Uri] parses
+        that as a RELATIVE uri with a null Host, and '.Host.Split()' died AFTER the image was built
+        and the Container App created, with only "You cannot call a method on a null-valued
+        expression" to go on.
+    #>
+    if ($RabbitMqSecretUri -and $RabbitMqConnectionUri) {
+        throw ('-RabbitMqSecretUri and -RabbitMqConnectionUri are mutually exclusive: pass the Key ' +
+               'Vault secret URI OR the broker URI itself, not both.')
+    }
+    if ($RabbitMqConnectionUri -and $InlineRabbitMqSecret) {
+        throw ('-InlineRabbitMqSecret applies to -RabbitMqSecretUri only; -RabbitMqConnectionUri is ' +
+               'always set inline.')
+    }
+
+    if ($RabbitMqSecretUri) {
+        $u = $null
+        $ok = [Uri]::TryCreate($RabbitMqSecretUri, [UriKind]::Absolute, [ref]$u) -and
+              $u.Scheme -eq 'https' -and $u.Host -match '\.vault\.' -and
+              $u.AbsolutePath -match '^/secrets/[^/]+(/[^/]+)?/?$'
+        if (-not $ok) {
+            throw ("-RabbitMqSecretUri '$RabbitMqSecretUri' is not a Key Vault secret URI " +
+                   '(expected https://<vault>.vault.azure.net/secrets/<name>[/<version>]). A value ' +
+                   "like '`$(SomeVariable)' means a pipeline variable is not defined for this pipeline.")
+        }
+        return $RabbitMqSecretUri
+    }
+
+    if ($RabbitMqConnectionUri) {
+        $u = $null
+        $ok = [Uri]::TryCreate($RabbitMqConnectionUri, [UriKind]::Absolute, [ref]$u) -and
+              $u.Scheme -in @('amqp', 'amqps') -and $u.Host
+        if (-not $ok) {
+            # The value may carry a password, so it is deliberately NOT quoted in this message.
+            throw ('-RabbitMqConnectionUri is not an absolute amqp:// or amqps:// URI with a host. ' +
+                   'A value like $(SomeVariable) means a pipeline variable is not defined for this pipeline.')
+        }
+        $port = if ($u.IsDefaultPort -or $u.Port -lt 0) { '' } else { ":$($u.Port)" }
+        return "inline $($u.Scheme)://$($u.Host)$port (from -RabbitMqConnectionUri)"
+    }
+
+    return $null
+}
+
 function Assert-TimeoutNesting {
     <#
         ENGINE__TIMEOUTSECONDS <= WORKER__SHUTDOWNGRACESECONDS < terminationGracePeriodSeconds.
@@ -1258,6 +1314,7 @@ if (-not $Image) {
 }
 
 Assert-TimeoutNesting
+$brokerAuthDisplay = Assert-BrokerAuthParameters
 
 $effectiveScope = if ($EngineScope) { $EngineScope } else { "api://$EngineResourceAppId/.default" }
 $triggerSet = Resolve-TriggerSet
@@ -1296,7 +1353,7 @@ Write-Host ("    {0,-28}: {1}" -f 'ACA environment', $AcaEnvironment)
 Write-Host ("    {0,-28}: {1}" -f 'Image', ($Image ? $Image : "build from $PublishPath -> $AcrName"))
 Write-Host ("    {0,-28}: {1}" -f 'Engine', "$EngineBaseUrl (scope $effectiveScope)")
 Write-Host ("    {0,-28}: {1}" -f 'Key Vault (WFAES)', ($KeyVaultName ? "$KeyVaultName / $KeyVaultSecretName" : 'not configured - staged files must be plaintext'))
-Write-Host ("    {0,-28}: {1}" -f 'RabbitMQ secret (KEDA)', ($RabbitMqSecretUri ? $RabbitMqSecretUri : 'NOT SET - the scale rule cannot authenticate'))
+Write-Host ("    {0,-28}: {1}" -f 'RabbitMQ secret (KEDA)', ($brokerAuthDisplay ? $brokerAuthDisplay : 'NOT SET - the scale rule cannot authenticate'))
 Write-Host ("    {0,-28}: {1}" -f 'Timeouts', "engine ${EngineTimeoutSeconds}s <= drain ${ShutdownGraceSeconds}s < termination ${TerminationGracePeriodSeconds}s")
 Write-Host ("    {0,-28}: {1}" -f 'Triggers resolved', $triggerSet.Count)
 
@@ -1434,8 +1491,8 @@ foreach ($sid in ($sourcePlan.Keys | Sort-Object)) {
         $sid, (Split-Path $sourcePlan[$sid] -Leaf), ($sourceRefs[$sid] -join ', '))
 }
 
-if (-not $RabbitMqSecretUri) {
-    Write-Note 'No -RabbitMqSecretUri: the KEDA rule will be created WITHOUT broker auth and cannot scale.'
+if (-not $brokerAuthDisplay) {
+    Write-Note 'No -RabbitMqSecretUri or -RabbitMqConnectionUri: the KEDA rule will be created WITHOUT broker auth and cannot scale.'
 }
 
 Write-Host ("    {0,-28}: {1}" -f 'Engine app role',
@@ -1706,7 +1763,16 @@ foreach ($planned in $plannedApps) {
         #   system for secret rabbitmq-connection. Error: unable to fetch secret
         # Azure RBAC is also eventually consistent, so even in the right order the first attempt can
         # lose a race with propagation - hence the retry rather than a blind sleep.
-        if ($RabbitMqSecretUri -and $InlineRabbitMqSecret) {
+        if ($RabbitMqConnectionUri) {
+            # Handed over directly by the caller (see the parameter's comment): nothing to read, and
+            # no Key Vault grant to wait on. -Sensitive keeps the credential out of echo and throws.
+            Invoke-Az -AzArgs @('containerapp', 'secret', 'set', '--name', $appName,
+                                '--resource-group', $ResourceGroup,
+                                '--secrets', "rabbitmq-connection=$("$RabbitMqConnectionUri".Trim())",
+                                '-o', 'none') -Mutating -Sensitive | Out-Null
+            Write-Ok "Secret 'rabbitmq-connection' set inline from -RabbitMqConnectionUri."
+        }
+        elseif ($RabbitMqSecretUri -and $InlineRabbitMqSecret) {
             # ── CAE workaround: copy the value at DEPLOY time instead of referencing it ────────
             # A keyvaultref makes the ACA control plane fetch the secret with the app's managed
             # identity on every sync. Where the tenant enforces Continuous Access Evaluation that
@@ -1811,7 +1877,8 @@ foreach ($planned in $plannedApps) {
                 }
                 catch {
                     Write-Note ("pollingInterval NOT applied - ACA's 30s default remains. This is " +
-                                'expected when the app has an inline secret; omit -InlineRabbitMqSecret ' +
+                                'expected when the app has an inline secret (-InlineRabbitMqSecret or ' +
+                                '-RabbitMqConnectionUri); switch to a plain -RabbitMqSecretUri ' +
                                 'to use a Key Vault reference if the faster cadence matters.')
                 }
             }
@@ -1820,7 +1887,7 @@ foreach ($planned in $plannedApps) {
             Write-Note "DryRun: pollingInterval=${PollingInterval}s NOT applied (needs the real resource id)."
         }
 
-        if ($scale.MaxReplicas -gt 0 -and $RabbitMqSecretUri) {
+        if ($scale.MaxReplicas -gt 0 -and $brokerAuthDisplay) {
             $scaleArgs = @(
                 'containerapp', 'update', '--name', $appName, '--resource-group', $ResourceGroup,
                 '--scale-rule-name', 'rabbitmq-backlog',
