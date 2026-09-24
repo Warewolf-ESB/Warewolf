@@ -222,6 +222,15 @@ explicitly. `-SUTRuntime` is the deprecated alias.
   anything tagged with the current `RunId`. If a prior run was killed (Ctrl-C
   before cleanup), run `docker ps -a --filter "name=ww-cov-"` and `docker rm
   -f` the leftovers. Same for `docker network ls`.
+- **EngineSpec job (`-ServerType LightweightExecution` + `-CoverageDir`/`-EngineSessionId`)
+  passes its pre-run stability check, then 503s on every route the moment `dotnet test`
+  starts, identically on every retry** — `-Coverage` defaults to `$true`, so the SpecFlow
+  test host's own `dotnet test` also runs `--collect "Code Coverage"` *while* the engine is
+  already wrapped in its own `dotnet-coverage collect -- func start`. Two concurrent, unisolated
+  coverage profiler sessions on the same bare-metal agent corrupt the engine's assembly loading
+  at startup. Since the code under test runs inside the engine process (already separately
+  instrumented), the test host's own coverage buys nothing — pass `-Coverage:$false` on the
+  job. All EngineSpec jobs in `Dev/.azure/pipeline.yml` do this as of build 30818's fix.
 - **FTP/FTPS port 21 / 1010 already bound** — another `pythonw.exe` from a
   previous run is still listening. `taskkill /im pythonw.exe /f` then re-run.
 - **`vstest.console.exe not found`** — direct mode bootstraps it via NuGet

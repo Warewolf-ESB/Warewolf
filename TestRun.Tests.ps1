@@ -80,6 +80,39 @@ Describe 'ConvertFrom-PipelineYaml - coverage output path' {
     }
 }
 
+Describe 'Get-TestRunnerCommand - coverage flag' {
+    # Regression guard for the "Other Specs" dual-coverage collision (CI build 30818,
+    # 2026-09-24): every EngineSpec job wraps the Lightweight engine in its own
+    # `dotnet-coverage collect -- func start` for engine-side coverage (CoverageDir/
+    # EngineSessionId), and separately -Coverage defaults to $true, which used to make
+    # this function also add --collect "Code Coverage" to the SpecFlow test-host's own
+    # `dotnet test` line. Two concurrent, unisolated coverage profiler sessions on the
+    # same bare-metal Linux agent corrupted the engine's assembly loading at startup
+    # ("Error building configuration in an external startup class ... Index not found"),
+    # permanently 503-ing it for the rest of every retry. The fix passes -Coverage:$false
+    # on every EngineSpec job in pipeline.yml; this test locks in the mechanism that
+    # relies on -- that Get-TestRunnerCommand actually honors CollectCoverage=$false.
+    BeforeAll {
+        script:Import-TestRunFunction 'Get-TestRunnerCommand'
+        # Get-TestRunnerCommand branches on the script-level $UseDotnetTest (set from
+        # $IsLinux at the top of TestRun.ps1) to pick the Linux `dotnet test` invocation
+        # over the Windows vstest.console.exe one. Force the Linux branch here since
+        # that's the one every EngineSpec CI job on ubuntu-latest actually runs.
+        $global:UseDotnetTest = $true
+    }
+    AfterAll { Remove-Variable -Name UseDotnetTest -Scope Global -ErrorAction SilentlyContinue }
+
+    It 'omits --collect "Code Coverage" when CollectCoverage is false' {
+        $line = Get-TestRunnerCommand -AssemblyPaths @('Warewolf.Security.Specs.dll') -CollectCoverage $false -ResultsDir '/tmp/results'
+        $line | Should -Not -Match 'Code Coverage'
+    }
+
+    It 'includes --collect "Code Coverage" when CollectCoverage is true' {
+        $line = Get-TestRunnerCommand -AssemblyPaths @('Warewolf.Security.Specs.dll') -CollectCoverage $true -ResultsDir '/tmp/results'
+        $line | Should -Match '--collect "Code Coverage"'
+    }
+}
+
 Describe 'ConvertTo-NativeToolPath' {
     BeforeAll { script:Import-TestRunFunction 'ConvertTo-NativeToolPath' }
 
