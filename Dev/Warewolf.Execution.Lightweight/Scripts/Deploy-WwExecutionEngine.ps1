@@ -82,6 +82,26 @@
 .PARAMETER SkipAuthProvisioning
     Skip Entra ID + Easy Auth provisioning.
 
+.PARAMETER EntraConfigRepairClientId
+    Optional. Under -SkipAuthProvisioning, Phase 2 auto-repairs a missing
+    WAREWOLF_ENTRA_CONFIG app setting via Configure-WwExecutionAuth.ps1
+    -RepairEntraConfigOnly, which normally looks up the existing Entra app
+    registration via `az ad app list --display-name <AppName>-auth` (Microsoft
+    Graph). Set this to the app registration's appId (GUID) to skip that Graph
+    lookup entirely and repair using this known clientId instead — needed when
+    the caller has no Graph read permission, or when the app's Entra config was
+    never provisioned under the "<AppName>-auth" naming convention (e.g.
+    warewolfserver's WAREWOLF_ENTRA_CONFIG points at a shared "Warewolf
+    Security" app registration, not "warewolfserver-auth" — build 30806,
+    2026-09-24, `az ad app list` failed with "Insufficient privileges").
+    Threaded through as Configure-WwExecutionAuth.ps1's own -KnownClientId.
+
+.PARAMETER EntraConfigRepairAppDisplayName
+    Optional. Cosmetic label used only for the repair step's logging/summary
+    when -EntraConfigRepairClientId is set (the real app registration is
+    looked up by appId, not by name, in that case). Defaults to
+    "<AppName>-auth" like the rest of Phase 2 when omitted.
+
 .PARAMETER AuthConfigPath
     JSON file describing GroupPermissions and UserAssignments for
     Configure-WwExecutionAuth.ps1.
@@ -402,6 +422,9 @@ param(
 
     # ── Auth provisioning ────────────────────────────────────────────────────
     [switch] $SkipAuthProvisioning,
+    [ValidatePattern('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')]
+    [string] $EntraConfigRepairClientId,
+    [string] $EntraConfigRepairAppDisplayName,
     [string] $AuthConfigPath,
 
     # ── Package inputs ───────────────────────────────────────────────────────
@@ -2658,7 +2681,7 @@ try {
 
         if ([string]::IsNullOrWhiteSpace($liveEntraConfig)) {
             Write-Note 'Auth provisioning skipped (-SkipAuthProvisioning), but WAREWOLF_ENTRA_CONFIG is missing on the live app - repairing it now.'
-            Invoke-ChildScript -Path $ConfigureAuthScript -Label 'Configure-WwExecutionAuth.ps1 (-RepairEntraConfigOnly)' -Parameters @{
+            $repairParams = @{
                 SubscriptionId         = $SubscriptionId
                 TenantId               = $TenantId
                 ResourceGroupName      = $ResourceGroup
@@ -2666,6 +2689,13 @@ try {
                 RepairEntraConfigOnly  = $true
                 NonInteractive         = $true
             }
+            # -EntraConfigRepairClientId skips Configure-WwExecutionAuth.ps1's own Microsoft
+            # Graph `az ad app list` lookup - needed when the caller has no Graph read
+            # permission, or the app's real Entra registration doesn't match the
+            # "<AppName>-auth" naming convention. See that param's doc comment above.
+            if ($EntraConfigRepairClientId)      { $repairParams['KnownClientId']      = $EntraConfigRepairClientId }
+            if ($EntraConfigRepairAppDisplayName) { $repairParams['EntraAppDisplayName'] = $EntraConfigRepairAppDisplayName }
+            Invoke-ChildScript -Path $ConfigureAuthScript -Label 'Configure-WwExecutionAuth.ps1 (-RepairEntraConfigOnly)' -Parameters $repairParams
             if (-not $DryRun) { Write-Ok 'WAREWOLF_ENTRA_CONFIG repaired.' }
         } else {
             Write-Note 'Auth provisioning skipped (-SkipAuthProvisioning); WAREWOLF_ENTRA_CONFIG already present.'

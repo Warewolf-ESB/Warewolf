@@ -5,11 +5,12 @@ Feature: Write File
 	I want a tool that writes a file at a given location
 
 Scenario Outline: Write file at location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
-	And source credentials as "<username>" and "<password>"	
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And Method is "<method>"
-	And input contents as "<content>"    
-	And use private public key for source is "<sourcePrivateKeyFile>" 
+	And input contents as "<content>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
 	And result as "<resultVar>"
     When the write file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
@@ -20,7 +21,7 @@ Scenario Outline: Write file at location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-		Examples: 
+		Examples:
 		| Name                       | source   | sourceLocation                                                          | method        | content        | username | password | resultVar  | result  | errorOccured | sourcePrivateKeyFile |
 		| Local with Overwrite       | [[path]] | c:\Temp\filetowrite0.txt                                                | Overwrite     | warewolf rules | ""       | ""       | [[result]] | Success | NO           |                      |
 		| FTP with Overwrite         | [[path]] | ftp://localhost:21/FORWRITEFILETESTING/filetowrite0.txt | Overwrite     | warewolf rules | dev2     | Q/ulw&]  | [[result]] | Success | NO           |                      |
@@ -35,7 +36,26 @@ Scenario Outline: Write file at location
 		| FTPS with Append Bottom    | [[path]] | ftps://localhost:1010/FORWRITEFILETESTING/filetowrite2.txt | Append Bottom | warewolf rules | dev2     | Q/ulw&]  | [[result]] | Success | NO           |                      |
 		| SFTP with Append Bottom    | [[path]] | sftp://localhost:2222/upload/filetowrite2.txt                            | Append Bottom | warewolf rules | dev2     | Q/ulw&]  | [[result]] | Success | NO           |                      |
 		| SFTP with Append Bottom PK | [[path]] | sftp://localhost:2222/upload/filetowrite21.txt                           | Append Bottom | warewolf rules | dev2     | Q/ulw&]  | [[result]] | Success | NO           | C:\\Temp\\key.opk    |
-		| Local with Overwrite       | [[path]] |                                                                         | Overwrite     | warewolf rules | ""       | ""       | [[result]] |         | AN           |                      |
+
+Scenario Outline: Write file with missing source
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And Method is "<method>"
+	And input contents as "<content>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And result as "<resultVar>"
+    When the write file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Output Path                 | Method   | Username   | Password | Private Key File       |File Contents |
+         | <source> = <sourceLocation> | <method> | <username> | String   | <sourcePrivateKeyFile> |<content>     |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+		Examples:
+		| Name                       | source   | sourceLocation | method    | content        | username | password | resultVar  | result | errorOccured | sourcePrivateKeyFile |
+		| Local with Overwrite       | [[path]] |                | Overwrite | warewolf rules | ""       | ""       | [[result]] |        | AN           |                      |
 
 
 Scenario Outline: Write file at location Null
@@ -57,9 +77,10 @@ Scenario Outline: Write file validation
 	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
 	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
-	And source credentials as "<username>" and "<password>"	
-	And use private public key for source is "<sourcePrivateKeyFile>" 
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And the source file exists
+	And use private public key for source is "<sourcePrivateKeyFile>"
 	And Method is "<method>"
 	And input contents as "<content>"   
 	And result as "<resultVar>"

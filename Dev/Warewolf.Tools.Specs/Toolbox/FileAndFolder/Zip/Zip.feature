@@ -1,5 +1,5 @@
 Feature: Zip
-	In order to be able to Zip File or Folder 
+	In order to be able to Zip File or Folder
 	as a Warewolf user
 	I want a tool that Zip File or Folder at a given location
 
@@ -8,12 +8,13 @@ Feature: Zip
 Scenario Outline: Zip file at local location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -37,12 +38,13 @@ Scenario Outline: Zip file at local location
 Scenario Outline: Zip file at FTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -67,12 +69,13 @@ Scenario Outline: Zip file at FTP location
 Scenario Outline: Zip file at FTPS location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -97,12 +100,13 @@ Scenario Outline: Zip file at FTPS location
 Scenario Outline: Zip file at SFTP location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -127,12 +131,13 @@ Scenario Outline: Zip file at SFTP location
 Scenario Outline: Zip file at local location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -144,7 +149,7 @@ Scenario Outline: Zip file at local location with overwrite disabled
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		| No | Name            | source   | sourceLocation    | username | password | destination | destinationLocation                                              | destUsername  | destPassword | selected | archivepassword | compression     | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		| 1  | Local to Local  | [[sourcePath]] | c:\filetozip0.txt | ""       | ""       | [[destPath]]   | c:\My New0.zip                                                   | ""            | ""           | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 		| 2  | Local to FTP    | [[sourcePath]] | c:\filetozip2.txt | ""       | ""       | [[destPath]]   | ftp://localhost:21/FORZIPTESTING/filetozip10.txt | dev2              | Q/ulw&]      | False    |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
@@ -156,12 +161,13 @@ Scenario Outline: Zip file at local location with overwrite disabled
 Scenario Outline: Zip file at FTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -173,7 +179,7 @@ Scenario Outline: Zip file at FTP location with overwrite disabled
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		| No | Name            | source         | sourceLocation                                                  | username          | password | destination   | destinationLocation                                                                             | destUsername  | destPassword | selected | archivepassword | compression     | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		| 1  | FTP to Local    | [[sourcePath]] | ftp://localhost:21/FORZIPTESTING/filetozip0.txt | dev2              | Q/ulw&]  | [[destPath]]  | c:\My New2 NoOver.zip                                                                                  | ""            | ""           | False    |                 | Default         | [[result]] | "Success" | NO           |                      |                           |
 		| 2  | FTP to UNC      | [[sourcePath]] | ftp://localhost:21/FORZIPTESTING/filetozip1.txt | dev2              | Q/ulw&]  | [[destPath]]  | \\\\localhost\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip12NoOver.txt | ""            | ""           | False    |                 | BestCompression | [[result]] | "Success" | NO           |                      |                           |
@@ -186,12 +192,13 @@ Scenario Outline: Zip file at FTP location with overwrite disabled
 Scenario Outline: Zip file at FTPS location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -216,12 +223,13 @@ Scenario Outline: Zip file at FTPS location with overwrite disabled
 Scenario Outline: Zip file at SFTP location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
@@ -233,7 +241,7 @@ Scenario Outline: Zip file at SFTP location with overwrite disabled
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		| No | Name            | source   | sourceLocation                              | username | password | destination | destinationLocation                                                                          | destUsername  | destPassword | selected | archivepassword | compression     | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		| 1  | SFTP to Local   | [[sourcePath]] | sftp://localhost:2222/upload/filetozip0.txt  | dev2     | Q/ulw&]  | [[destPath]]   | c:\My New4.zip                                                                               | ""            | ""           | False    |                 | None            | [[result]] | "Success" | NO           |                      |                           |
 		| 2  | SFTP to UNC     | [[sourcePath]] | sftp://localhost:2222/upload/filetozip1.txt  | dev2     | Q/ulw&]  | [[destPath]]   | \\\\localhost\FileSystemShareTestingSite\FileZipSharedTestingSite\filetozip14.txt | ""            | ""           | False    |                 | BestSpeed       | [[result]] | "Success" | NO           |                      |                           |
@@ -246,39 +254,58 @@ Scenario Outline: Zip file at SFTP location with overwrite disabled
 Scenario Outline: Zip file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And use private public key for destination is "<destinationPrivateKeyFile>"
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
 	Then the execution has "<errorOccured>" error
-	Examples: 
+	Examples:
 		| No | Name          | source   | sourceLocation                                                                | username | password     | destination | destinationLocation | destUsername  | destPassword | selected | archivepassword | compression     | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-		| 1  | Local to FTPS | [[sourcePath]] | NULL                                                                          | ""       | ""           | [[destPath]]   | c:\filetozip0.txt   | dev2              | Q/ulw&]      | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
 		| 2  | Local to FTPS | [[sourcePath]] | c:\filetozip0.txt                                                             | ""       | ""           | [[destPath]]   | Null                | dev2              | Q/ulw&]      | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
 		| 3  | FTP to Local  | [[sourcePath]] | ftp://localhost:21/FORZIPTESTING/filetozip0.txt               | dev2     | Q/ulw&]      | [[destPath]]   | " "                 | ""            | ""           | True     |                 | Default         | [[result]] | Error  | An           |                      |                           |
 		| 4  | FTPS to Local | [[sourcePath]] | ftps://localhost:1010/FORZIPTESTING/filetozip0.txt               | dev2     | Q/ulw&]      | [[destPath]]   | c:\My New3.zip      | ""            | ""           | True     |                 | BestCompression | [[result]] | Success  | NO           |                      |                           |
 		| 5  | SFTP to Local | [[sourcePath]] | sftp://localhost:2222/upload/filetozip0.txt                                    | dev2     | Q/ulw&]      | [[destPath]]   | c:\My New4.zip      | ""            | ""           | True     |                 | None            | [[result]] | Error  | NO           |                      |                           |
-		
+
 @Zip
-Scenario Outline: Zip file at location is compressed at ratio
+Scenario Outline: Zip file with missing source
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>" for zip tests
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+	And Archive Password as "<archivepassword>"
+	And the Compression as "<compression>"
+    When the Zip file tool is executed
+	Then the execution has "<errorOccured>" error
+	Examples:
+		| No | Name          | source   | sourceLocation                                                                | username | password     | destination | destinationLocation | destUsername  | destPassword | selected | archivepassword | compression     | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+		| 1  | Local to FTPS | [[sourcePath]] | NULL                                                                          | ""       | ""           | [[destPath]]   | c:\filetozip0.txt   | dev2              | Q/ulw&]      | True     |                 | BestCompression | [[result]] | Error  | An           |                      |                           |
+
+@Zip
+Scenario Outline: Zip file at location is compressed at ratio
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>" for zip tests
+	And the source file exists for zip tests
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+	And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
 	And use private public key for source is ""
 	And use private public key for destination is ""
-	And result as "<resultVar>"	
+	And result as "<resultVar>"
 	And Archive Password as "<archivepassword>"
 	And the Compression as "<compression>"
     When the Zip file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"
-	And the output is approximately "<compressionTimes>" the size of the original input 
+	And the output is approximately "<compressionTimes>" the size of the original input
 	And the execution has "<errorOccured>" error
 	And the debug inputs as
          | Source Path                 | Username   | Password | Destination Path                      | Destination Username | Destination Password | Overwrite  | Archive Password  | Compression Ratio |
@@ -286,10 +313,10 @@ Scenario Outline: Zip file at location is compressed at ratio
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		| No | Name           | source   | sourceLocation    | username | password | destination | destinationLocation | destUsername | destPassword | selected | archivepassword | compression     | resultVar  | result    | errorOccured | compressionTimes |
 		| 1  | Local to Local | [[sourcePath]] | c:\filetozip0.txt | ""       | ""       | [[destPath]]   | c:\My New0.zip      | ""           | ""           | True     |                 | None            | [[result]] | "Success" | NO           | 0.99             |
 		| 2  | Local to Local | [[sourcePath]] | c:\filetozip0.txt | ""       | ""       | [[destPath]]   | c:\My New0.zip      | ""           | ""           | True     |                 | Default         | [[result]] | "Success" | NO           | 1.71             |
 		| 3  | Local to Local | [[sourcePath]] | c:\filetozip0.txt | ""       | ""       | [[destPath]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestSpeed       | [[result]] | "Success" | NO           | 1.66             |
 		| 4  | Local to Local | [[sourcePath]] | c:\filetozip0.txt | ""       | ""       | [[destPath]]   | c:\My New0.zip      | ""           | ""           | True     |                 | BestCompression | [[result]] | "Success" | NO           | 1.71             |
-	
+

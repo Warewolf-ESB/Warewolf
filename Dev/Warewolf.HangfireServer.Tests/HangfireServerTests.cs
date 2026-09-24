@@ -22,6 +22,7 @@ using HangfireServer;
 using Newtonsoft.Json.Serialization;
 using Warewolf.Data;
 using Warewolf.Execution;
+using Warewolf.HangfireServer.Tests.TestSupport;
 using static HangfireServer.Program;
 using static Warewolf.Common.NetStandard20.ExecutionLogger;
 using ISerializer = Warewolf.Streams.ISerializer;
@@ -38,6 +39,8 @@ namespace Warewolf.HangfireServer.Tests
         [TestCategory(nameof(HangfireServer))]
         public void HangfireServer_Program_ConnectionString_Exists()
         {
+            PlatformGuards.RequireWindowsConsole();
+
             var args = new Args
             {
                 ShowConsole = true,
@@ -93,6 +96,8 @@ namespace Warewolf.HangfireServer.Tests
         [TestCategory(nameof(HangfireServer))]
         public void HangfireServer_Program_ConnectionString_Payload_Empty_Pause()
         {
+            PlatformGuards.RequireWindowsConsole();
+
             var args = new Args
             {
                 ShowConsole = true,

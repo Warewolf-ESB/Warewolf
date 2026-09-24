@@ -250,7 +250,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             var mockStateNotifier = new Mock<IStateNotifier>();
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
-            var identity = new MockPrincipal(WindowsIdentity.GetCurrent().Name);
+            var identity = new MockPrincipal(Environment.UserName);
             var currentPrincipal = new GenericPrincipal(identity, new[] {"Role1", "Roll2"});
             Thread.CurrentPrincipal = currentPrincipal;
             var mockPrincipal = new Mock<IPrincipal>();
@@ -373,7 +373,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
             mockStateNotifier.Setup(o => o.LogAdditionalDetail(It.IsAny<Audit>(), "ResumeJob")).Verifiable();
 
             var mockPrincipal = new Mock<IPrincipal>();
-            mockPrincipal.Setup(o => o.Identity).Returns(WindowsIdentity.GetCurrent());
+            mockPrincipal.Setup(o => o.Identity).Returns(new GenericIdentity(Environment.UserName));
 
             var dataObjectMock = new Mock<IDSFDataObject>();
             dataObjectMock.Setup(o => o.StateNotifier).Returns(mockStateNotifier.Object);
@@ -385,7 +385,7 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
                 {"environment", new StringBuilder(env)},
                 {"startActivityId", new StringBuilder("4032a11e-4fb3-4208-af48-b92a0602ab4b")},
                 {"versionNumber", new StringBuilder("1")},
-                {"currentuserprincipal", new StringBuilder(WindowsIdentity.GetCurrent().Name)}
+                {"currentuserprincipal", new StringBuilder(Environment.UserName)}
             };
             var jobStorage = new MemoryStorage();
             var client = new BackgroundJobClient(jobStorage);

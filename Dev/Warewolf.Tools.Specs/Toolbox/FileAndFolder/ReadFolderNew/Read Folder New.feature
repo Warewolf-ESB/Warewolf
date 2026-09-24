@@ -8,8 +8,9 @@ Feature: Read Folder
 Scenario Outline: Read Folder file at location new
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And use private public key for source is "<sourcePrivateKeyFile>"
-	And Read is "<read>"   
+	And Read is "<read>"
 	And result as "<resultVar>"
     When the read folder file tool is executed
 	Then the result variable "<resultVar>" will be "<result>"

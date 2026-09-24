@@ -16,6 +16,7 @@ using Dev2.Data.TO;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Tests.Runtime.TestSupport;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using ServiceStack;
@@ -394,6 +395,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestCategory(nameof(WebSources))]
         public void WebSource_ApiKeyFields_RoundTripThroughToXml()
         {
+            PlatformGuards.RequireWindowsDpapi();
+
             var source = KeySource(AuthenticationType.ApiKeyHeader, "X-Api-Key", "abc");
             source.ResourceName = "KeyRoundTrip";
             var copy = new WebSource(source.ToXml());

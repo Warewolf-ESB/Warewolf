@@ -540,9 +540,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 throw new ArgumentNullException(nameof(resourceName));
             }
 
-            var resourceNameToSearchFor = resourceName.Replace("/", "\\").Replace("\\", Path.DirectorySeparatorChar.ToString());
+            // Resource paths are logical and always use '\' as their separator, regardless of host
+            // OS (see ResourceBase.GetResourcePath) — normalize any '/'-style input to match.
+            var resourceNameToSearchFor = resourceName.Replace("/", "\\");
             var resourcePath = resourceNameToSearchFor;
-            var endOfResourcePath = resourceNameToSearchFor.LastIndexOf(Path.DirectorySeparatorChar);
+            var endOfResourcePath = resourceNameToSearchFor.LastIndexOf('\\');
             if (endOfResourcePath >= 0)
             {
                 resourceNameToSearchFor = resourceNameToSearchFor.Substring(endOfResourcePath + 1);

@@ -121,7 +121,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
-            var testFiles = Directory.EnumerateFiles(path).ToList();
+            // Directory.EnumerateFiles order is not guaranteed by the OS (NTFS vs ext4 differ) — sort so positional asserts are deterministic across platforms.
+            var testFiles = Directory.EnumerateFiles(path).OrderBy(f => f, StringComparer.OrdinalIgnoreCase).ToList();
             var test1FilePath = Path.Combine(path, "Test 1.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
             var test2FilePath = Path.Combine(path, "Test 2.test");
@@ -200,7 +201,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
-            var testFiles = Directory.EnumerateFiles(path).ToList();
+            // Directory.EnumerateFiles order is not guaranteed by the OS (NTFS vs ext4 differ) — sort so positional asserts are deterministic across platforms.
+            var testFiles = Directory.EnumerateFiles(path).OrderBy(f => f, StringComparer.OrdinalIgnoreCase).ToList();
             var test2FilePath = Path.Combine(path, "Test 2.test");
             Assert.AreEqual(test2FilePath, testFiles[1]);
           
@@ -244,7 +246,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Preconditions-------------------
             var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
-            var testFiles = Directory.EnumerateFiles(path).ToList();
+            // Directory.EnumerateFiles order is not guaranteed by the OS (NTFS vs ext4 differ) — sort so positional asserts are deterministic across platforms.
+            var testFiles = Directory.EnumerateFiles(path).OrderBy(f => f, StringComparer.OrdinalIgnoreCase).ToList();
             var test1FilePath = Path.Combine(path, "Test 1.test");
             var test2FilePath = Path.Combine(path, "Test 2.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
@@ -305,7 +308,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Preconditions-------------------
             var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
-            var testFiles = Directory.EnumerateFiles(path).ToList();
+            // Directory.EnumerateFiles order is not guaranteed by the OS (NTFS vs ext4 differ) — sort so positional asserts are deterministic across platforms.
+            var testFiles = Directory.EnumerateFiles(path).OrderBy(f => f, StringComparer.OrdinalIgnoreCase).ToList();
             var test1FilePath = Path.Combine(path, "Test 1.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
             var test2FilePath = Path.Combine(path, "Test 2.test");
@@ -356,7 +360,8 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Preconditions-------------------
             var path = Path.Combine(EnvironmentVariables.TestPath, resourceID.ToString());
             Assert.IsTrue(Directory.Exists(path));
-            var testFiles = Directory.EnumerateFiles(path).ToList();
+            // Directory.EnumerateFiles order is not guaranteed by the OS (NTFS vs ext4 differ) — sort so positional asserts are deterministic across platforms.
+            var testFiles = Directory.EnumerateFiles(path).OrderBy(f => f, StringComparer.OrdinalIgnoreCase).ToList();
             var test1FilePath = Path.Combine(path, "Test 1.test");
             Assert.AreEqual(test1FilePath, testFiles[0]);
             var test2FilePath = Path.Combine(path, "Test 2.test");

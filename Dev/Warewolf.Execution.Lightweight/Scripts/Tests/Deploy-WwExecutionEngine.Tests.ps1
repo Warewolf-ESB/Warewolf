@@ -1183,6 +1183,27 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Not -Match 'RepairEntraConfigOnly'
             $out | Should -Not -Match 'checking for WAREWOLF_ENTRA_CONFIG drift'
         }
+
+        It 'threads -EntraConfigRepairClientId/-AppDisplayName into the repair child-script call' {
+            # build 30806, 2026-09-24: the repair's own `az ad app list` needs Microsoft Graph
+            # permission the pipeline SP doesn't have, and warewolfserver's real Entra app isn't
+            # named "<AppName>-auth" anyway - -EntraConfigRepairClientId skips that lookup.
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.SkipAuthProvisioning              = $true
+            $callArgs.EntraConfigRepairClientId          = '05794411-b275-4801-97ac-8b078ed7196c'
+            $callArgs.EntraConfigRepairAppDisplayName    = 'Warewolf Security'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'.*-KnownClientId"
+            $out | Should -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'.*-EntraAppDisplayName"
+        }
+
+        It 'omits -KnownClientId/-EntraAppDisplayName from the repair call when not supplied (unchanged default)' {
+            $callArgs = $script:commonArgs.Clone(); $callArgs.SkipAuthProvisioning = $true
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'"
+            $out | Should -Not -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'.*-KnownClientId"
+            $out | Should -Not -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'.*-EntraAppDisplayName"
+        }
     }
 
     It 'fixes ASPNETCORE_ENVIRONMENT to Production' {

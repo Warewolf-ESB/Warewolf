@@ -7,6 +7,7 @@ Feature: Delete
 	Scenario Outline: Delete file at location
 		Given I have a source path "<source>" with value "<sourceLocation>"
 		And source credentials as "<username>" and "<password>"
+		And the source file exists
 		And result as "<resultVar>"
 		And use private public key for source is "<sourcePrivateKeyFile>"
 		When the delete file tool is executed
@@ -30,6 +31,7 @@ Feature: Delete
 	Scenario Outline: Delete file at location Null
 		Given I have a source path "<source>" with value "<sourceLocation>"
 		And source credentials as "<username>" and "<password>"
+		And the source file exists
 		And result as "<resultVar>"
 		And use private public key for source is "<sourcePrivateKeyFile>"
 		When the delete file tool is executed
@@ -37,12 +39,23 @@ Feature: Delete
 		Then the execution has "<errorOccured>" error
 		Examples:
 			| Name  | source   | sourceLocation                                                                              | username   | password | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
-			| Local | [[path]] | NULL                                                                                        | ""         | ""       | [[result]] | ""        | AN           |                      |
-			| Local | [[path]] | G:\filetodelete                                                                             | ""         | ""       | [[result]] | "Failure" | NO           |                      |
 			| UNC   | [[path]] | \\\\localhost\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Memo.txt | ""         | ""       | [[result]] | "Success" | NO           |                      |
 			| FTP   | [[path]] | ftp://localhost:21/FORDELETEFILETESTING/filetodelete.xtx                    | dev2       | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
 			| FTPS  | [[path]] | ftps://localhost:1010/FORDELETEFILETESTING/filetodelet.txt                     | dev2       | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 			| SFTP  | [[path]] | sftp://localhost:2222/upload/Memo.txt                                                        | dev2.local | Q/ulw&]  | [[result]] | ""        | NO           |                      |
+
+	Scenario Outline: Delete file with missing source
+		Given I have a source path "<source>" with value "<sourceLocation>"
+		And source credentials as "<username>" and "<password>"
+		And result as "<resultVar>"
+		And use private public key for source is "<sourcePrivateKeyFile>"
+		When the delete file tool is executed
+		Then the result variable "<resultVar>" will be "<result>"
+		Then the execution has "<errorOccured>" error
+		Examples:
+			| Name  | source   | sourceLocation   | username   | password | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
+			| Local | [[path]] | NULL             | ""         | ""       | [[result]] | ""        | AN           |                      |
+			| Local | [[path]] | G:\filetodelete  | ""         | ""       | [[result]] | "Failure" | NO           |                      |
 
 	Scenario Outline: Delete file Validation
 		Given I have a variable "[[a]]" with a value "<Val1>"
@@ -53,6 +66,7 @@ Feature: Delete
 		Given I have a source path "<File or Folder>" with value "<sourceLocation>"
 		And use private public key for source is "<sourcePrivateKeyFile>"
 		And source credentials as "<username>" and "<password>"
+		And the source file exists
 		And result as "<resultVar>"
 		When validating the delete tool
 		Then validation is "<ValidationResult>"

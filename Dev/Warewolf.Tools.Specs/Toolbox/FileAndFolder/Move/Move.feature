@@ -6,8 +6,9 @@ Feature: Move
 @FileMoveFromLocal
 @FileMoveFromLocalWithOverwrite
 Scenario Outline: Move file at local location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -34,8 +35,9 @@ Scenario Outline: Move file at local location
 @FileMoveFromUNC
 @FileMoveFromUNCWithOverwrite
 Scenario Outline: Move file at UNC location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -62,8 +64,9 @@ Scenario Outline: Move file at UNC location
 @FileMoveFromFTP
 @FileMoveFromFTPWithOverwrite
 Scenario Outline: Move file at FTP location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -90,8 +93,9 @@ Scenario Outline: Move file at FTP location
 @FileMoveFromFTPS
 @FileMoveFromFTPSWithOverwrite
 Scenario Outline: Move file at FTPS location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -118,8 +122,9 @@ Scenario Outline: Move file at FTPS location
 @FileMoveFromSFTP
 @FileMoveFromSFTPWithOverwrite
 Scenario Outline: Move file at SFTP location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -151,8 +156,9 @@ Scenario Outline: Move file at SFTP location
 @FileMoveFromLocal
 @FileMoveFromLocalWithoutOverwrite
 Scenario Outline: Move file at local location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -179,8 +185,9 @@ Scenario Outline: Move file at local location with overwrite disabled
 @FileMoveFromUNC
 @FileMoveFromUNCWithoutOverwrite
 Scenario Outline: Move file at UNC location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -207,8 +214,9 @@ Scenario Outline: Move file at UNC location with overwrite disabled
 @FileMoveFromFTP
 @FileMoveFromFTPWithoutOverwrite
 Scenario Outline: Move file at FTP location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -235,8 +243,9 @@ Scenario Outline: Move file at FTP location with overwrite disabled
 @FileMoveFromFTPS
 @FileMoveFromFTPSWithoutOverwrite
 Scenario Outline: Move file at FTPS location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -263,8 +272,9 @@ Scenario Outline: Move file at FTPS location with overwrite disabled
 @FileMoveFromSFTP
 @FileMoveFromSFTPWithoutOverwrite
 Scenario Outline: Move file at SFTP location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -295,7 +305,26 @@ Scenario Outline: Move file at SFTP location with overwrite disabled
 
 @FileAndFolderMove
 Scenario Outline: Move file at location Null
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And the source file exists
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the Move file tool is executed
+	Then the execution has "<errorOccured>" error
+	Examples:
+	   | No | Name           | source         | sourceLocation                                                                                 | username | password | destination  | destinationLocation                                              | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	   | 2  | Local to Local | [[sourcePath]] | C:\moved0.txt                                                                                  | ""       | ""       | [[destPath]] | C:\moved0.txt                                                    | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
+	   | 3  | UNC to Local   | [[sourcePath]] | \\\\localhost\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""       | ""       | [[destPath]] | cv:\moved1.txt                                                   | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
+	   | 4  | Local to FTP   | [[sourcePath]] | c:\temp\movefile1.txt                                                                          | ""       | ""       | [[destPath]] | ftp://localhost:21/FORMOVEFILETESTING/moved0.txt | dev2              | Q/ulw&]      | True     | [[result]] | Failure | NO           |                      |                           |
+
+@FileAndFolderMove
+Scenario Outline: Move file with missing source
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
@@ -305,15 +334,12 @@ Scenario Outline: Move file at location Null
 	And result as "<resultVar>"
     When the Move file tool is executed
 	Then the execution has "<errorOccured>" error
-	Examples: 
+	Examples:
 	   | No | Name           | source         | sourceLocation                                                                                 | username | password | destination  | destinationLocation                                              | destUsername  | destPassword | selected | resultVar  | result  | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 	   | 1  | Local to Local | [[sourcePath]] | NULL                                                                                           | ""       | ""       | [[destPath]] | Null                                                             | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
-	   | 2  | Local to Local | [[sourcePath]] | C:\moved0.txt                                                                                  | ""       | ""       | [[destPath]] | C:\moved0.txt                                                    | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
-	   | 3  | UNC to Local   | [[sourcePath]] | \\\\localhost\FileSystemShareTestingSite\FileMoveSharedTestingSite\movefile0.txt | ""       | ""       | [[destPath]] | cv:\moved1.txt                                                   | ""            | ""           | True     | [[result]] | Failure | AN           |                      |                           |
-	   | 4  | Local to FTP   | [[sourcePath]] | c:\temp\movefile1.txt                                                                          | ""       | ""       | [[destPath]] | ftp://localhost:21/FORMOVEFILETESTING/moved0.txt | dev2              | Q/ulw&]      | True     | [[result]] | Failure | NO           |                      |                           |
 	   | 5  | Local to FTPS  | [[sourcePath]] | v:\movefile2.txt                                                                               | ""       | ""       | [[destPath]] | ftp://localhost:1010/FORMOVEFILETESTING/moved0.txt | dev2              | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
 	   | 6  | Local to SFTP  | [[sourcePath]] | " "                                                                                            | ""       | ""       | [[destPath]] | sftp://localhost:2222/upload/moved0.txt                           | dev2              | Q/ulw&]      | True     | [[result]] | Failure | AN           |                      |                           |
-	 
+
 @FileAndFolderMove
 Scenario Outline: Move file Validation
 	Given I have a variable "[[a]]" with a value "<Val1>"
@@ -321,8 +347,9 @@ Scenario Outline: Move file Validation
 	And I have a variable "[[rec(1).a]]" with a value "<Val1>"
 	And I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	And I have a variable "[[index]]" with a value "1"
-	And I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	And I have a source path "<File or Folder>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And use private public key for source is "<sourcePrivateKeyFile>"

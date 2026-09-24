@@ -81,6 +81,22 @@
   unaffected. This mode repairs just that one setting without re-running the full
   (and non-idempotent-feeling, from a CI redeploy's perspective) provisioning flow.
 
+.PARAMETER KnownClientId
+  Optional, only meaningful with -RepairEntraConfigOnly. When set, skips the
+  `az ad app list --display-name <EntraAppDisplayName>` Microsoft Graph lookup
+  entirely and rebuilds WAREWOLF_ENTRA_CONFIG using this appId directly.
+
+  Use this when the caller's identity has no Microsoft Graph read permission
+  (e.g. a CI service principal with no admin-consented Application.Read.All /
+  Directory.Read.All — the default for a fresh Azure DevOps service connection)
+  or when -EntraAppDisplayName does not actually match how the app's Entra
+  config was provisioned (e.g. warewolfserver's WAREWOLF_ENTRA_CONFIG was hand-set
+  to a shared "Warewolf Security" app registration, not a per-app
+  "<FunctionAppName>-auth" one — build 30806, 2026-09-24, `az ad app list` failed
+  with "Insufficient privileges to complete the operation" for exactly this
+  reason). Must be a GUID. -EntraAppDisplayName is still used for logging/the
+  repair-mode summary even when this is set.
+
 .PRESCRIPT-LAYOUT  (PRV-16)
   This file is intentionally a single self-contained script so it can be
   uploaded to Azure Cloud Shell or a deployment runner without fighting a
@@ -133,6 +149,11 @@ param(
     # Drift-repair mode: re-apply WAREWOLF_ENTRA_CONFIG from an existing Entra app
     # registration and exit. See .PARAMETER RepairEntraConfigOnly above.
     [switch]    $RepairEntraConfigOnly,
+
+    # Optional, only meaningful with -RepairEntraConfigOnly: skip the Microsoft Graph
+    # `az ad app list` lookup and use this appId directly. See .PARAMETER KnownClientId above.
+    [ValidatePattern('^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$')]
+    [string]    $KnownClientId,
 
     # When set, Stage 4 replaces ALL app roles with the desired set (disable
     # then re-PATCH) without prompting.  In interactive mode the operator is
@@ -538,7 +559,8 @@ function Invoke-EntraConfigRepair {
         [Parameter(Mandatory)][string] $ResourceGroupName,
         [Parameter(Mandatory)][string] $FunctionAppName,
         [Parameter(Mandatory)][string] $EntraAppDisplayName,
-        [Parameter(Mandatory)][string] $OutputPath
+        [Parameter(Mandatory)][string] $OutputPath,
+        [string] $KnownClientId
     )
 
     Write-Host ""
@@ -554,18 +576,27 @@ function Invoke-EntraConfigRepair {
         throw "Function app '$FunctionAppName' was not found in resource group '$ResourceGroupName'."
     }
 
-    # Read-only lookup - unlike Stage 1, this mode never creates a registration and
-    # never re-asserts the redirect URI; it only needs the existing app's appId.
-    $app = Invoke-AzCli @(
-        'ad','app','list','--display-name',$EntraAppDisplayName,'--query','[0]','-o','json'
-    ) | ConvertFrom-AzJson
-    if ($null -eq $app) {
-        throw ("-RepairEntraConfigOnly requires an existing Entra app registration named " +
-               "'$EntraAppDisplayName'; none was found. Run without -RepairEntraConfigOnly to " +
-               "provision one, or pass the correct -EntraAppDisplayName.")
+    if ($KnownClientId) {
+        # -KnownClientId bypasses the Microsoft Graph lookup entirely - for a caller with
+        # no Graph read permission, or when -EntraAppDisplayName doesn't actually name the
+        # app registration this Function App's config was provisioned against.
+        $clientId = $KnownClientId
+        Write-Host "    using known appId $clientId (Microsoft Graph app lookup skipped)" -ForegroundColor Green
+    } else {
+        # Read-only lookup - unlike Stage 1, this mode never creates a registration and
+        # never re-asserts the redirect URI; it only needs the existing app's appId.
+        $app = Invoke-AzCli @(
+            'ad','app','list','--display-name',$EntraAppDisplayName,'--query','[0]','-o','json'
+        ) | ConvertFrom-AzJson
+        if ($null -eq $app) {
+            throw ("-RepairEntraConfigOnly requires an existing Entra app registration named " +
+                   "'$EntraAppDisplayName'; none was found. Run without -RepairEntraConfigOnly to " +
+                   "provision one, pass the correct -EntraAppDisplayName, or pass -KnownClientId " +
+                   "to skip this lookup.")
+        }
+        $clientId = $app.appId
+        Write-Host "    found existing appId $clientId" -ForegroundColor Green
     }
-    $clientId = $app.appId
-    Write-Host "    found existing appId $clientId" -ForegroundColor Green
 
     # Same read-merge-write as Stage 8, scoped to WAREWOLF_ENTRA_CONFIG alone -
     # WAREWOLF_SECURE_CONFIG and the client-secret setting are left untouched.
@@ -628,6 +659,7 @@ function Invoke-EntraConfigRepair {
         ClientId            = $clientId
         Audience            = "api://$clientId"
         PreservedFields     = @($script:PreservedEntraFields)
+        GraphLookupSkipped  = [bool]$KnownClientId
     }
     $summary | ConvertTo-Json -Depth 6 | Set-Content -Path $OutputPath -Encoding UTF8
 
@@ -1253,9 +1285,16 @@ if ($RepairEntraConfigOnly) {
     }
     if (Test-IsPlaceholder $EntraAppDisplayName) { $EntraAppDisplayName = "$FunctionAppName-auth" }
 
-    Invoke-EntraConfigRepair -SubscriptionId $SubscriptionId -TenantId $TenantId `
-        -ResourceGroupName $ResourceGroupName -FunctionAppName $FunctionAppName `
-        -EntraAppDisplayName $EntraAppDisplayName -OutputPath $OutputPath | Out-Null
+    $repairParams = @{
+        SubscriptionId      = $SubscriptionId
+        TenantId            = $TenantId
+        ResourceGroupName   = $ResourceGroupName
+        FunctionAppName     = $FunctionAppName
+        EntraAppDisplayName = $EntraAppDisplayName
+        OutputPath          = $OutputPath
+    }
+    if ($KnownClientId) { $repairParams['KnownClientId'] = $KnownClientId }
+    Invoke-EntraConfigRepair @repairParams | Out-Null
     return
 }
 

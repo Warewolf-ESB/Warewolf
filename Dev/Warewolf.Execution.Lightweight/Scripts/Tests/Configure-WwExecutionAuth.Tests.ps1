@@ -504,8 +504,48 @@ Describe 'Configure-WwExecutionAuth — Invoke-EntraConfigRepair (-RepairEntraCo
                 -EntraAppDisplayName 'warewolfserver-auth' -OutputPath $tmpOut | Out-Null
 
             $summary = Get-Content -Raw -LiteralPath $tmpOut | ConvertFrom-Json
-            $summary.Mode     | Should -Be 'RepairEntraConfigOnly'
-            $summary.ClientId | Should -Be $script:entraApp.appId
+            $summary.Mode               | Should -Be 'RepairEntraConfigOnly'
+            $summary.ClientId           | Should -Be $script:entraApp.appId
+            $summary.GraphLookupSkipped | Should -Be $false
+        } finally {
+            Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'uses -KnownClientId directly and never calls az ad app list' {
+        # build 30806, 2026-09-24: warewolfserver's Entra config was hand-set against a shared
+        # app registration, not one named "<AppName>-auth", and the pipeline SP has no
+        # Microsoft Graph permission to look one up anyway - -KnownClientId bypasses both.
+        $knownClientId = '22222222-2222-2222-2222-222222222222'
+        $tmpOut = Join-Path ([System.IO.Path]::GetTempPath()) ("repair-out-{0}.json" -f [guid]::NewGuid())
+        try {
+            $clientId = Invoke-EntraConfigRepair -SubscriptionId 'sub-1' -TenantId 'tenant-1' `
+                -ResourceGroupName 'DEV2' -FunctionAppName 'warewolfserver' `
+                -EntraAppDisplayName 'Warewolf Security' -OutputPath $tmpOut -KnownClientId $knownClientId
+
+            $clientId | Should -Be $knownClientId
+
+            $written = @($script:capturedSetFileContent | ConvertFrom-Json)
+            $written.Count | Should -Be 1
+            ($written[0].value | ConvertFrom-Json).clientId | Should -Be $knownClientId
+
+            @($script:azCallLog | Where-Object { $_[0] -eq 'ad' -and $_[1] -eq 'app' -and $_[2] -eq 'list' }).Count | Should -Be 0
+        } finally {
+            Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
+        }
+    }
+
+    It 'marks GraphLookupSkipped in the summary when -KnownClientId is used' {
+        $knownClientId = '33333333-3333-3333-3333-333333333333'
+        $tmpOut = Join-Path ([System.IO.Path]::GetTempPath()) ("repair-out-{0}.json" -f [guid]::NewGuid())
+        try {
+            Invoke-EntraConfigRepair -SubscriptionId 'sub-1' -TenantId 'tenant-1' `
+                -ResourceGroupName 'DEV2' -FunctionAppName 'warewolfserver' `
+                -EntraAppDisplayName 'Warewolf Security' -OutputPath $tmpOut -KnownClientId $knownClientId | Out-Null
+
+            $summary = Get-Content -Raw -LiteralPath $tmpOut | ConvertFrom-Json
+            $summary.GraphLookupSkipped | Should -Be $true
+            $summary.ClientId           | Should -Be $knownClientId
         } finally {
             Remove-Item -LiteralPath $tmpOut -Force -ErrorAction SilentlyContinue
         }

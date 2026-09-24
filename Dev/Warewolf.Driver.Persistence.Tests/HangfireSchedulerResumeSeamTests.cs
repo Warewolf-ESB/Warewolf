@@ -25,6 +25,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Driver.Persistence;
 using Warewolf.Driver.Persistence.Drivers;
+using Warewolf.Driver.Persistence.Tests.TestSupport;
 using Warewolf.Storage.Interfaces;
 using Dev2JsonSerializer = Dev2.Common.Serializers.Dev2JsonSerializer;
 
@@ -70,6 +71,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestCategory(nameof(HangfireScheduler))]
         public void ResumeJob_WithRegisteredExecutor_UsesSeam_AndTransitionsToManuallyResumed()
         {
+            PlatformGuards.RequireWindowsDpapi();
+
             var fake = new FakeResumptionExecutor(SerializeExecuteMessage(hasError: false, message: "Execution Completed."));
             CustomContainer.Register<IResumptionExecutor>(fake);
 
@@ -144,6 +147,8 @@ namespace Warewolf.Driver.Drivers.HangfireScheduler.Tests
         [TestCategory(nameof(HangfireScheduler))]
         public void ResumeJob_IsSynchronous_FinalisesStateOnlyAfterContinuationCompletes()
         {
+            PlatformGuards.RequireWindowsDpapi();
+
             var storage = new MemoryStorage();
             var client = new BackgroundJobClient(storage);
             var scheduler = new Persistence.Drivers.HangfireScheduler(client, storage, new Mock<IPersistedValues>().Object);

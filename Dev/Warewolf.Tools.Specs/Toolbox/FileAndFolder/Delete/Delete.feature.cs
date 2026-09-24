@@ -124,18 +124,21 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
   testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 10
-  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the source file exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
-  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
-  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
-  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 14
+  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 15
   testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1691 = new TechTalk.SpecFlow.Table(new string[] {
@@ -148,14 +151,14 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
                             string.Format("{0}", username),
                             "String",
                             string.Format("{0}", sourcePrivateKeyFile)});
-#line 15
+#line 16
   testRunner.And("the debug inputs as", ((string)(null)), table1691, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1692 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1692.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 18
+#line 19
   testRunner.And("the debug output as", ((string)(null)), table1692, "And ");
 #line hidden
             }
@@ -304,7 +307,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
             argumentsOfScenario.Add("errorOccured", errorOccured);
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location Null", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 30
+#line 31
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -314,25 +317,28 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
             else
             {
                 this.ScenarioStart();
-#line 31
+#line 32
   testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 32
+#line 33
   testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 33
-  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
 #line 34
-  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("the source file exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 35
-  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 36
-  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 37
+  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 38
+  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 39
   testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             }
@@ -340,7 +346,140 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: Variant 0")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        public void DeleteFileAtLocationNull_UNC()
+        {
+#line 31
+ this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.xtx")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        public void DeleteFileAtLocationNull_FTP()
+        {
+#line 31
+ this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.xtx", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftps://localhost:1010/FORDELETEFILETESTING/filetodelet.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        public void DeleteFileAtLocationNull_FTPS()
+        {
+#line 31
+ this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftps://localhost:1010/FORDELETEFILETESTING/filetodelet.txt", "dev2", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+#line hidden
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost:2222/upload/Memo.txt")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
+        public void DeleteFileAtLocationNull_SFTP()
+        {
+#line 31
+ this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://localhost:2222/upload/Memo.txt", "dev2.local", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+#line hidden
+        }
+        
+        public virtual void DeleteFileWithMissingSource(string name, string source, string sourceLocation, string username, string password, string resultVar, string result, string errorOccured, string sourcePrivateKeyFile, string[] exampleTags)
+        {
+            string[] tagsOfScenario = exampleTags;
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            argumentsOfScenario.Add("Name", name);
+            argumentsOfScenario.Add("source", source);
+            argumentsOfScenario.Add("sourceLocation", sourceLocation);
+            argumentsOfScenario.Add("username", username);
+            argumentsOfScenario.Add("password", password);
+            argumentsOfScenario.Add("resultVar", resultVar);
+            argumentsOfScenario.Add("result", result);
+            argumentsOfScenario.Add("errorOccured", errorOccured);
+            argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file with missing source", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 47
+ this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                this.ScenarioStart();
+#line 48
+  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line hidden
+#line 49
+  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 50
+  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 51
+  testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 52
+  testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line hidden
+#line 53
+  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 54
+  testRunner.Then(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            }
+            this.ScenarioCleanup();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file with missing source: Variant 0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 0")]
@@ -353,15 +492,15 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public void DeleteFileAtLocationNull_Variant0()
+        public void DeleteFileWithMissingSource_Variant0()
         {
-#line 30
- this.DeleteFileAtLocationNull("Local", "[[path]]", "NULL", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "", ((string[])(null)));
+#line 47
+ this.DeleteFileWithMissingSource("Local", "[[path]]", "NULL", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "", ((string[])(null)));
 #line hidden
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: Variant 1")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file with missing source: Variant 1")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 1")]
@@ -374,94 +513,10 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Failure\"")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public void DeleteFileAtLocationNull_Variant1()
+        public void DeleteFileWithMissingSource_Variant1()
         {
-#line 30
- this.DeleteFileAtLocationNull("Local", "[[path]]", "G:\\filetodelete", "\"\"", "\"\"", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "UNC")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public void DeleteFileAtLocationNull_Variant2()
-        {
-#line 30
- this.DeleteFileAtLocationNull("UNC", "[[path]]", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Memo.txt", "\"\"", "\"\"", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 3")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.xtx")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"Success\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public void DeleteFileAtLocationNull_Variant3()
-        {
-#line 30
- this.DeleteFileAtLocationNull("FTP", "[[path]]", "ftp://localhost:21/FORDELETEFILETESTING/filetodelete.xtx", "dev2", "Q/ulw&]", "[[result]]", "\"Success\"", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 4")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "FTPS")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "ftps://localhost:1010/FORDELETEFILETESTING/filetodelet.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public void DeleteFileAtLocationNull_Variant4()
-        {
-#line 30
- this.DeleteFileAtLocationNull("FTPS", "[[path]]", "ftps://localhost:1010/FORDELETEFILETESTING/filetodelet.txt", "dev2", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
-#line hidden
-        }
-        
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Delete file at location Null: Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Delete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("FileAndFolderDelete")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "Variant 5")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:Name", "SFTP")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:source", "[[path]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourceLocation", "sftp://localhost:2222/upload/Memo.txt")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:username", "dev2.local")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:password", "Q/ulw&]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:resultVar", "[[result]]")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "\"\"")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "NO")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
-        public void DeleteFileAtLocationNull_Variant5()
-        {
-#line 30
- this.DeleteFileAtLocationNull("SFTP", "[[path]]", "sftp://localhost:2222/upload/Memo.txt", "dev2.local", "Q/ulw&]", "[[result]]", "\"\"", "NO", "", ((string[])(null)));
+#line 47
+ this.DeleteFileWithMissingSource("Local", "[[path]]", "G:\\filetodelete", "\"\"", "\"\"", "[[result]]", "\"Failure\"", "NO", "", ((string[])(null)));
 #line hidden
         }
         
@@ -483,7 +538,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
             argumentsOfScenario.Add("OutputError", outputError);
             argumentsOfScenario.Add("sourcePrivateKeyFile", sourcePrivateKeyFile);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file Validation", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 47
+#line 60
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -493,49 +548,52 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
             else
             {
                 this.ScenarioStart();
-#line 48
+#line 61
   testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 49
+#line 62
   testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 50
+#line 63
   testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 51
+#line 64
   testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 52
+#line 65
   testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 53
+#line 66
   testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 54
+#line 67
   testRunner.And(string.Format("use private public key for source is \"{0}\"", sourcePrivateKeyFile), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 55
+#line 68
   testRunner.And(string.Format("source credentials as \"{0}\" and \"<password>\"", username), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 56
+#line 69
+  testRunner.And("the source file exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line hidden
+#line 70
   testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 57
+#line 71
   testRunner.When("validating the delete tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 58
+#line 72
   testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 59
+#line 73
   testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 60
+#line 74
   testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 61
+#line 75
   testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 62
+#line 76
   testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1693 = new TechTalk.SpecFlow.Table(new string[] {
@@ -546,14 +604,14 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
                             string.Format("{0} = {1}", fileOrFolder, sourceLocation),
                             string.Format("{0}", username),
                             "String"});
-#line 63
+#line 77
   testRunner.And("the debug inputs as", ((string)(null)), table1693, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1694 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1694.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 66
+#line 80
   testRunner.And("the debug output as", ((string)(null)), table1694, "And ");
 #line hidden
             }
@@ -580,7 +638,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_1()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("1", "[[sourcePath]]", "", "", "c:\\filetodelete.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -605,7 +663,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_2()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("2", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -630,7 +688,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_3()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("3", "[[a]][[b]].txt", "c:\\file", "todelete3", "c:\\filetodelete3.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -655,7 +713,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_4()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("4", "[[rec(1).a]]", "c:\\filetodelete13.txt", "", "c:\\filetodelete13.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -680,7 +738,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_5()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("5", "[[a]]:\\[[b]]", "C", "filetodelete4.txt", "C:\\filetodelete4.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -705,7 +763,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_6()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("6", "C:\\[[a]][[b]].txt", "file", "todelete5", "C:\\filetodelete5.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -730,7 +788,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_7()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("7", "[[rec(1).a]][[rec(2).a]]", "C:\\fileto", "delete6.txt", "C:\\filetodelete6.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -755,7 +813,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_8()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("8", "[[rec(1).a]]\\[[rec(2).a]]", "C:", "filetodelete7.txt", "C:\\filetodelete7.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -780,7 +838,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_9()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("9", "[[rec(1).a]][[rec(2).a]].txt", "C:\\fileto", "delete8", "C:\\filetodelete8.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -805,7 +863,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_10()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("10", "[[rec(1).a]]:[[rec(2).a]]", "C", "\\filetodelete9.txt", "C:\\filetodelete9.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -830,7 +888,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_11()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("11", "C:[[rec(1).a]][[rec(2).a]].txt", "\\fileto", "delete10", "C:\\filetodelete10.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -855,7 +913,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_12()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("12", "[[a]]", "C:\\copyfile0.txt", "", "C:\\copyfile0.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -880,7 +938,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_13()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("13", "[[a]]", "C:\\filetodelete16.txt", "filetodelete16.txt", "C:\\filetodelete16.txt", "\"\"", "[[result]]", "\"Success\"", "NO", "False", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -905,7 +963,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_14()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("14", "[[a&]]", "", "", "", "user1", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[a&]] contains invalid character(s)", "1.File or Folder - Variable name [[a&]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -930,7 +988,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_15()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("15", "[[rec(**).a]]", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "True", "File or Folder - Recordset index (**) contains invalid character(s)", "1.File or Folder - Recordset index (**) contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -955,7 +1013,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_16()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("16", "c(*()", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", "", ((string[])(null)));
 #line hidden
         }
@@ -980,7 +1038,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_17()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("17", "C:\\\\\\gvh", "", "", "C:\\\\\\gvh", "\"\"", "[[result]]", "\"Failure\"", "AN", "True", "\"\"", "\"\"", "", ((string[])(null)));
 #line hidden
         }
@@ -1005,7 +1063,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_18()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("18", "[[rec([[inde$x]]).a]]", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "True", "File or Folder - Variable name [[index$x]] contains invalid character(s)", "1.File or Folder - Variable name [[index$x]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1030,7 +1088,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_19()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("19", "[[sourcePath]]", "", "", "", "\"\"", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1055,7 +1113,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_20()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("20", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[rec([[index&]]).a]]", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[indexx&]] contains invalid character(s)", "Username - Recordset name [[indexx&]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1080,7 +1138,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_21()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("21", "[[sourcePath]].txt", "", "", "c:\\filetodelete2.txt", "[[a]]*]]", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
 #line hidden
         }
@@ -1105,7 +1163,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_22()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("22", "[[sourcePath]]", "", "", "c:\\filetodelete1.txt", "\"\"", "\"\"", "\"\"", "NO", "True", "The result field only allows a single result", "1.The result field only allows a single result", "", ((string[])(null)));
 #line hidden
         }
@@ -1131,7 +1189,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_23()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("23", "[[sourcePath]]", "", "", "\\\\localhost\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\filetodelete1." +
                     "txt", "\"\"", "[[a]]*]]", "\"\"", "NO", "True", "Result - The Result field only allows single result", "1.Result - The Result field only allows single result", "", ((string[])(null)));
 #line hidden
@@ -1158,7 +1216,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_24()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("24", "[[sourcePath]]", "", "", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\FileDeleteSharedTestingSite\\Sec" +
                     "ure\\filetodelete2.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
@@ -1184,7 +1242,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_25()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("25", "[[sourcePath]]", "", "", "c:\\filetodelete2.txt", "\"\"", "[[var]]00]]", "\"\"", "NO", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", "", ((string[])(null)));
 #line hidden
         }
@@ -1209,7 +1267,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_26()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("26", "[[sourcePath]]", "", "", "c:\\filetodelete3.txt", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1234,7 +1292,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_27()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("27", "[[sourcePath]]", "", "", "c:\\filetodelete13.txt", "\"\"", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1259,7 +1317,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_28()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("28", "[[sourcePath]]", "", "", "c:\\filetodelete14.txt", "\"\"", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1284,7 +1342,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_29()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("29", "[[sourcePath]]", "", "", "c:\\filetodelete15.txt", "\"\"", "[[@var]]", "\"\"", "NO", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1309,7 +1367,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_30()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("30", "[[sourcePath]]", "", "", "c:\\filetodelete16.txt", "\"\"", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1334,7 +1392,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_31()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("31", "[[sourcePath]]", "", "", "c:\\filetodelete17.txt", "\"\"", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1359,7 +1417,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_32()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("32", "[[sourcePath]]", "", "", "c:\\filetodelete18.txt", "\"\"", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1384,7 +1442,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_33()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("33", "[[sourcePath]]", "", "", "c:\\filetodelete19.txt", "\"\"", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "", ((string[])(null)));
 #line hidden
         }
@@ -1409,7 +1467,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_34()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("34", "[[sourcePath]]", "", "", "c:\\filetodelete20.txt", "\"\"", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1436,7 +1494,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:sourcePrivateKeyFile", "")]
         public void DeleteFileValidation_35()
         {
-#line 47
+#line 60
  this.DeleteFileValidation("35", "[[var@]]", "", "", "", "[[var@]]", "[[var@]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)   Result - Variable" +
                     " name [[var@]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Varia" +
                     "ble name [[var@]] contains invalid character(s)", "", ((string[])(null)));
@@ -1456,7 +1514,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
             argumentsOfScenario.Add("result", result);
             argumentsOfScenario.Add("errorOccured", errorOccured);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Delete file at location with incorrect directories", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 107
+#line 121
  this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1466,22 +1524,22 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
             else
             {
                 this.ScenarioStart();
-#line 108
+#line 122
   testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 109
+#line 123
   testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 110
+#line 124
   testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 111
+#line 125
   testRunner.When("the delete file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 112
+#line 126
   testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 113
+#line 127
   testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1695 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1492,14 +1550,14 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
                             string.Format("{0} = {1}", source, sourceLocation),
                             string.Format("{0}", username),
                             "String"});
-#line 114
+#line 128
   testRunner.And("the debug inputs as", ((string)(null)), table1695, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1696 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1696.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 117
+#line 131
   testRunner.And("the debug output as", ((string)(null)), table1696, "And ");
 #line hidden
             }
@@ -1521,7 +1579,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public void DeleteFileAtLocationWithIncorrectDirectories_Local()
         {
-#line 107
+#line 121
  this.DeleteFileAtLocationWithIncorrectDirectories("Local", "1234", "c:\\filetodelete.txt", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }
@@ -1541,7 +1599,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public void DeleteFileAtLocationWithIncorrectDirectories_UNC()
         {
-#line 107
+#line 121
  this.DeleteFileAtLocationWithIncorrectDirectories("UNC", "[[var]]", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }
@@ -1561,7 +1619,7 @@ namespace Warewolf.Tools.Specs.Toolbox.FileAndFolder.Delete
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:errorOccured", "AN")]
         public void DeleteFileAtLocationWithIncorrectDirectories_UNCSecure()
         {
-#line 107
+#line 121
  this.DeleteFileAtLocationWithIncorrectDirectories("UNC Secure", "[[variable]]", "\"\"", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", ((string[])(null)));
 #line hidden
         }

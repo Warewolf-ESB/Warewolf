@@ -476,7 +476,11 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 savedPath = savedPath.TrimStart('\\');
             }
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
-            var directoryName = Path.Combine(workspacePath, savedPath);
+            // savedPath is a logical resource category path and always uses '\' as its separator,
+            // regardless of host OS (see ResourceBase.GetResourcePath) — convert to the real
+            // filesystem separator before combining, so Linux gets nested directories instead of
+            // a single segment with literal backslashes in its name.
+            var directoryName = Path.Combine(workspacePath, savedPath.Replace('\\', Path.DirectorySeparatorChar));
             var resourceFilePath = Path.Combine(directoryName, resource.ResourceName + ".bite");
             resource.FilePath = resourceFilePath;
             return directoryName;

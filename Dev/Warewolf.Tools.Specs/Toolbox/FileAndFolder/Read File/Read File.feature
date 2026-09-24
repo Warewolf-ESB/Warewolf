@@ -8,6 +8,7 @@ Feature: Read File
 Scenario Outline: Read File at location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And result as "<resultVar>"
 	When the read file tool is executed
@@ -31,18 +32,29 @@ Scenario Outline: Read File at location
 Scenario Outline: Read File at locationNull
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And use private public key for source is "<sourcePrivateKeyFile>"
 	And result as "<resultVar>"
 	When the read file tool is executed
 	Then the execution has "<errorOccured>" error
-	Examples: 
+	Examples:
 	| NO | Name       | source   | sourceLocation                                                                                  | username      | password     | resultVar  | result | errorOccured | sourcePrivateKeyFile |
-	| 1  | Local      | [[path]] | NULL                                                                                            | ""            | ""           | [[result]] | Error  | AN           |                      |
 	| 2  | UNC        | [[path]] | \\\\localhost\FileSystemShareTestingSite\ReadFileSharedTestingSite\filetoread.txt | ""            | ""           | [[result]] | Guid   | NO           |                      |
 	| 3  | FTP        | [[path]] | ftp://localhost:21/FORREADFILETESTING/filetoread.txt                            | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 4  | FTPS       | [[path]] | ftps://localhost:1010/FORREADFILETESTING/filetodele.txt                           | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 5  | SFTP       | [[path]] | sftp://localhost:2222/upload/filetoread.txt                         | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           |                      |
 	| 6  | SFTP PK    | [[path]] | sftp://localhost:2222/upload/filetoread1.txt                        | dev2              | Q/ulw&]      | [[result]] | Guid   | NO           | C:\\Temp\\key.opk    |
+
+Scenario Outline: Read File with missing source
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And result as "<resultVar>"
+	When the read file tool is executed
+	Then the execution has "<errorOccured>" error
+	Examples:
+	| NO | Name       | source   | sourceLocation | username      | password     | resultVar  | result | errorOccured | sourcePrivateKeyFile |
+	| 1  | Local      | [[path]] | NULL           | ""            | ""           | [[result]] | Error  | AN           |                      |
 
 	
 Scenario Outline: Read File validation
@@ -51,8 +63,9 @@ Scenario Outline: Read File validation
 	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
 	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And result as "<resultVar>"
 	Then validation is "<ValidationResult>"
 	And validation message is "<DesignValidation>"

@@ -170,7 +170,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 return ResourceName;
             }
             var sep = System.IO.Path.DirectorySeparatorChar;
-            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + sep, "").Replace(".xml", "").Replace(".bite", "") ?? "";
+            return FilePath?.Replace(EnvironmentVariables.GetWorkspacePath(workspaceID) + sep, "").Replace(".xml", "").Replace(".bite", "").Replace(sep, '\\') ?? "";
         }
 
         public string GetResourceFromUnknownWorkspacePath()

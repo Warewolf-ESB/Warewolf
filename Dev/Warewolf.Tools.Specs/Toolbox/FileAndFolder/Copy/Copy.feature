@@ -1,13 +1,14 @@
 Feature: Copy
-	In order to be able to Copy File or Folder 
+	In order to be able to Copy File or Folder
 	as a Warewolf user
 	I want a tool that Copy File or Folder from a given location to another location
 
 @CopyFileFromLocal
 @CopyFileFromLocalWithOverwrite
 Scenario Outline: Copy file at local location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -23,7 +24,7 @@ Scenario Outline: Copy file at local location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation   | username | password | destination  | destinationLocation                                                            | destUsername                                                         | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | c:\copyfile0.txt | ""       | ""       | [[destPath]] | C:\copied00.txt                                                                | ""                                                                   | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | c:\copyfile1.txt | ""       | ""       | [[destPath]] | ftp://localhost:21/FORCOPYFILETESTING/copied0.txt              | dev2                                                                 | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
@@ -37,6 +38,7 @@ Scenario Outline: Copy file at local location
 Scenario Outline: Copy file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -64,8 +66,9 @@ Scenario Outline: Copy file at UNC location
 @CopyFileFromFTP
 @CopyFileFromFTPWithOverwrite
 Scenario Outline: Copy file at FTP location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -81,7 +84,7 @@ Scenario Outline: Copy file at FTP location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation                                                      | username | password | destination  | destinationLocation                                                            | destUsername   | destPassword                                       | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | ftp://localhost:21/FORCOPYFILETESTING/copyfile0.txt | dev2     | Q/ulw&]  | [[destPath]] | C:\copied20.txt                                                                | ""             | ""                                                 | True     | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | ftp://localhost:21/FORCOPYFILETESTING/copyfile1.txt | dev2     | Q/ulw&]  | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileCopySharedTestingSite\copied2.txt | ""             | ""                                                 | True     | [[result]] | "Success" | NO           |                      |                           |
@@ -92,8 +95,9 @@ Scenario Outline: Copy file at FTP location
 @CopyFileFromFTPS
 @CopyFileFromFTPSWithOverwrite
 Scenario Outline: Copy file at FTPS location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -109,7 +113,7 @@ Scenario Outline: Copy file at FTPS location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation                                                      | username          | password     | destination  | destinationLocation                                                            | destUsername   | destPassword                                       | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | ftps://localhost:1010/FORCOPYFILETESTING/copyfile0.txt | dev2              | Q/ulw&]      | [[destPath]] | C:\copied30.txt                                                                | ""             | ""                                                 | True     | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | ftps://localhost:1010/FORCOPYFILETESTING/copyfile1.txt | dev2              | Q/ulw&]      | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileCopySharedTestingSite\copied3.txt | ""             | ""                                                 | True     | [[result]] | "Success" | NO           |                      |                           |
@@ -120,8 +124,9 @@ Scenario Outline: Copy file at FTPS location
 @CopyFileFromSFTP
 @CopyFileFromSFTPWithOverwrite
 Scenario Outline: Copy file at SFTP location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -137,7 +142,7 @@ Scenario Outline: Copy file at SFTP location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation                        | username | password | destination  | destinationLocation                                                                      | destUsername | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | sftp://localhost:2222/upload/copyfile0.txt | dev2     | Q/ulw&]  | [[destPath]] | C:\copied40.txt                                                                          | ""           | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | sftp://localhost:2222/upload/copyfile1.txt | dev2     | Q/ulw&]  | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileCopySharedTestingSite\copied4.txt | ""      | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
@@ -150,8 +155,9 @@ Scenario Outline: Copy file at SFTP location
 @CopyFileFromLocal
 @CopyFileFromLocalWithoutOverwrite
 Scenario Outline: Copy file at local location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -167,7 +173,7 @@ Scenario Outline: Copy file at local location with overwrite disabled
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation   | username          | password     | destination  | destinationLocation                                                            | destUsername | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | c:\copyfile0.txt | ""                | ""           | [[destPath]] | C:\copied00.txt                                                                | ""           | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | c:\copyfile1.txt | ""                | ""           | [[destPath]] | ftp://localhost:21/FORCOPYFILETESTING/copied0.txt              | dev2         | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
@@ -181,6 +187,7 @@ Scenario Outline: Copy file at local location with overwrite disabled
 Scenario Outline: Copy file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -207,8 +214,9 @@ Scenario Outline: Copy file at UNC location with overwrite disabled
 @CopyFileFromFTP
 @CopyFileFromFTPWithoutOverwrite
 Scenario Outline: Copy file at FTP location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -224,7 +232,7 @@ Scenario Outline: Copy file at FTP location with overwrite disabled
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation                                                      | username | password | destination  | destinationLocation                                                                          | destUsername | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | ftp://localhost:21/FORCOPYFILETESTING/copyfile0.txt | dev2              | Q/ulw&]  | [[destPath]] | C:\copied20.txt                                                                              | ""           | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | ftp://localhost:21/FORCOPYFILETESTING/copyfile1.txt | dev2              | Q/ulw&]  | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileCopySharedTestingSite\copied2.txt | ""           | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
@@ -235,8 +243,9 @@ Scenario Outline: Copy file at FTP location with overwrite disabled
 @CopyFileFromFTPS
 @CopyFileFromFTPSWithoutOverwrite
 Scenario Outline: Copy file at FTPS location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -252,7 +261,7 @@ Scenario Outline: Copy file at FTPS location with overwrite disabled
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation                                                      | username | password | destination  | destinationLocation                                                                 | destUsername | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | ftps://localhost:1010/FORCOPYFILETESTING/copyfile0.txt | dev2     | Q/ulw&]  | [[destPath]] | C:\copied30.txt                                                                              | ""           | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | ftps://localhost:1010/FORCOPYFILETESTING/copyfile1.txt | dev2     | Q/ulw&]  | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileCopySharedTestingSite\copied3.txt | ""           | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
@@ -263,8 +272,9 @@ Scenario Outline: Copy file at FTPS location with overwrite disabled
 @CopyFileFromSFTP
 @CopyFileFromSFTPWithoutOverwrite
 Scenario Outline: Copy file at SFTP location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -280,7 +290,7 @@ Scenario Outline: Copy file at SFTP location with overwrite disabled
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 		 | No | source         | sourceLocation                                                     | username            | password     | destination  | destinationLocation                                                                          | destUsername | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
 		 | 1  | [[sourcePath]] | sftp://localhost:2222/upload/copyfile0.txt | dev2 | Q/ulw&]  | [[destPath]] | C:\copied40.txt                                                                              | ""           | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 		 | 2  | [[sourcePath]] | sftp://localhost:2222/upload/copyfile1.txt | dev2 | Q/ulw&]  | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileCopySharedTestingSite\copied4.txt | ""           | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
@@ -291,9 +301,10 @@ Scenario Outline: Copy file at SFTP location with overwrite disabled
 		 | 7  | [[sourcePath]] | sftp://localhost:2222/upload/copyfile7.txt | dev2 | Q/ulw&]  | [[destPath]] | sftp://localhost:2222/upload/copied71.txt                                                     | dev2         | Q/ulw&]      | False    | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    | C:\\Temp\\key.opk         |
 
 @FileAndFolderCopy
-Scenario Outline: Copy file at location Null			
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+Scenario Outline: Copy file at location Null
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -302,15 +313,14 @@ Scenario Outline: Copy file at location Null
 	And result as "<resultVar>"
     When the copy file tool is executed
 	Then the execution has "<errorOccured>" error
-	Examples: 
+	Examples:
 		 | No | source       | sourceLocation    | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-		 | 1  | [[variable]] | NULL              | ""       | ""       | [[destPath]] | c:\test.txt         | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
 		 | 2  | [[variable]] | c:\copyfile0.txt  | ""       | ""       | [[destPath]] | NULL                | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
 		 | 3  | [[variable]] | c:\copyfile0.txt  | ""       | ""       | [[destPath]] | v:\                 | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
 
 @FileAndFolderCopy
-Scenario Outline: Copy file at location Null with overwrite disabled	
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+Scenario Outline: Copy file with missing source
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
@@ -320,9 +330,41 @@ Scenario Outline: Copy file at location Null with overwrite disabled
 	And result as "<resultVar>"
     When the copy file tool is executed
 	Then the execution has "<errorOccured>" error
-	Examples: 
+	Examples:
+		 | No | source       | sourceLocation    | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+		 | 1  | [[variable]] | NULL              | ""       | ""       | [[destPath]] | c:\test.txt         | ""           | ""           | True     | [[result]] | Error  | An           |                      |                           |
+
+@FileAndFolderCopy
+Scenario Outline: Copy file at location Null with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And the source file exists
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the copy file tool is executed
+	Then the execution has "<errorOccured>" error
+	Examples:
 		 | No | source       | sourceLocation   | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-		 | 1  | [[variable]] | NULL             | ""       | ""       | [[destPath]] | c:\test.txt         | ""           | ""           | False    | [[result]] | Error  | An           |                      |                           |
 		 | 2  | [[variable]] | c:\copyfile0.txt | ""       | ""       | [[destPath]] | NULL                | ""           | ""           | False    | [[result]] | Error  | An           |                      |                           |
 		 | 3  | [[variable]] | c:\copyfile0.txt | ""       | ""       | [[destPath]] | v:\                 | ""           | ""           | False    | [[result]] | Error  | An           |                      |                           |
-                   																										 
+
+@FileAndFolderCopy
+Scenario Outline: Copy file with missing source with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the copy file tool is executed
+	Then the execution has "<errorOccured>" error
+	Examples:
+		 | No | source       | sourceLocation   | username | password | destination  | destinationLocation | destUsername | destPassword | selected | resultVar  | result | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+		 | 1  | [[variable]] | NULL             | ""       | ""       | [[destPath]] | c:\test.txt         | ""           | ""           | False    | [[result]] | Error  | An           |                      |                           |
+

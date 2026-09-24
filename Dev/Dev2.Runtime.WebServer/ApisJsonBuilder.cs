@@ -62,7 +62,9 @@ namespace Dev2.Runtime.WebServer
             else
             {
                 var webPath = path.Replace("\\", "/");
-                var searchPath = path.Replace('/', Path.DirectorySeparatorChar).Replace('\\', Path.DirectorySeparatorChar);
+                // Resource paths are logical and always use '\' as their separator, regardless of
+                // host OS (see ResourceBase.GetResourcePath) — normalize to match.
+                var searchPath = path.Replace('/', '\\');
                 apiJson.Url = EnvironmentVariables.PublicWebServerUri + webPath + "/apis.json";
                 resourceList = ResourceCatalog.GetResourceList(GlobalConstants.ServerWorkspaceID).Where(resource => resource.GetResourcePath(GlobalConstants.ServerWorkspaceID).Contains(searchPath) && resource.ResourceType == "WorkflowService").ToList();
             }

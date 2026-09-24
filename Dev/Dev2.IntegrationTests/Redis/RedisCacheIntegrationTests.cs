@@ -104,7 +104,7 @@ namespace Dev2.Integration.Tests.Redis
         [Timeout(60000)]
         [Owner("Siphamandla Dube")]
         [TestCategory(nameof(RedisCacheActivity))]
-        [TestCategory("Load Tests")]
+        [TestCategory("AnonymousRedis")]
         public void RedisCacheIntegration_CacheVariableResult_ShouldReturnInnerActivityOutputs_TTLExpired()
         {
             try

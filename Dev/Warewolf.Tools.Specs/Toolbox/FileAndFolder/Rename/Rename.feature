@@ -6,7 +6,35 @@ Feature: Rename
 @FileRenameFromLocal
 @FileRenameFromLocalWithOverwrite
 Scenario Outline: Rename file at local location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And the source file exists
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples:
+	| No | Name            | source         | sourceLocation      | username | password | destination  | destinationLocation                                                                             | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | Local to Local  | [[sourcePath]] | C:\renamefile0.txt  | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                                 | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | Local to FTP    | [[sourcePath]] | C:\renamefile1.txt  | ""       | ""       | [[destPath]] | ftp://localhost:21/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | Local to FTPS   | [[sourcePath]] | C:\renamefile2.txt  | ""       | ""       | [[destPath]] | ftps://localhost:1010/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | Local to SFTP   | [[sourcePath]] | C:\renamefile3.txt  | ""       | ""       | [[destPath]] | sftp://localhost:2222/upload/renamed0.txt                             | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | Local to UNC    | [[sourcePath]] | C:\renamefile4.txt  | ""       | ""       | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
+
+@FileAndFolderRename
+Scenario Outline: Rename file with missing source
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
@@ -23,13 +51,8 @@ Scenario Outline: Rename file at local location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 	| No | Name            | source         | sourceLocation      | username | password | destination  | destinationLocation                                                                             | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	| 1  | Local to Local  | [[sourcePath]] | C:\renamefile0.txt  | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                                 | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 2  | Local to FTP    | [[sourcePath]] | C:\renamefile1.txt  | ""       | ""       | [[destPath]] | ftp://localhost:21/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 3  | Local to FTPS   | [[sourcePath]] | C:\renamefile2.txt  | ""       | ""       | [[destPath]] | ftps://localhost:1010/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 4  | Local to SFTP   | [[sourcePath]] | C:\renamefile3.txt  | ""       | ""       | [[destPath]] | sftp://localhost:2222/upload/renamed0.txt                             | dev2          | Q/ulw&]      | True     | [[result]] | "Success" | NO           |                      |                           |
-	| 5  | Local to UNC    | [[sourcePath]] | C:\renamefile4.txt  | ""       | ""       | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""            | ""           | True     | [[result]] | "Success" | NO           |                      |                           |
 	| 6  | Local to Local  | [[sourcePath]] | NULL                | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                                 | ""            | ""           | True     | [[result]] | ""        | AN           |                      |                           |
 
 @FileRenameFromUNC
@@ -37,6 +60,7 @@ Scenario Outline: Rename file at local location
 Scenario Outline: Rename file at UNC location
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -63,8 +87,9 @@ Scenario Outline: Rename file at UNC location
 @FileRenameFromFTP
 @FileRenameFromFTPWithOverwrite
 Scenario Outline: Rename file at FTP location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -92,8 +117,9 @@ Scenario Outline: Rename file at FTP location
 @FileRenameFromFTPS
 @FileRenameFromFTPSWithOverwrite
 Scenario Outline: Rename file at FTPS location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -120,8 +146,9 @@ Scenario Outline: Rename file at FTPS location
 @FileRenameFromSFTP
 @FileRenameFromSFTPWithOverwrite
 Scenario Outline: Rename file at SFTP location
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -150,7 +177,35 @@ Scenario Outline: Rename file at SFTP location
 @FileRenameFromLocal
 @FileRenameFromLocalWithoutOverwrite
 	Scenario Outline: Rename file at local location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
+	And source credentials as "<username>" and "<password>"
+	And the source file exists
+	And I have a destination path "<destination>" with value "<destinationLocation>"
+    And destination credentials as "<destUsername>" and "<destPassword>"
+	And overwrite is "<selected>"
+	And use private public key for source is "<sourcePrivateKeyFile>"
+	And use private public key for destination is "<destinationPrivateKeyFile>"
+	And result as "<resultVar>"
+    When the rename file tool is executed
+	Then the result variable "<resultVar>" will be "<result>"
+	And the execution has "<errorOccured>" error
+	And the debug inputs as
+         | Source Path                 | Username   | Password | Source Private Key File |Destination Path                      | Destination Username | Destination Password |Destination Private Key File | Overwrite  |
+         | <source> = <sourceLocation> | <username> | String   | <sourcePrivateKeyFile>  |<destination> = <destinationLocation> | <destUsername>       | String               |<destinationPrivateKeyFile>  | <selected> |
+	And the debug output as
+		|                        |
+		| <resultVar> = <result> |
+	Examples:
+	| No | Name           | source         | sourceLocation     | username | password | destination  | destinationLocation                                                                             | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
+	| 1  | Local to Local | [[sourcePath]] | C:\renamefile0.txt | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                                 | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 2  | Local to FTP   | [[sourcePath]] | C:\renamefile1.txt | ""       | ""       | [[destPath]] | ftp://localhost:21/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 3  | Local to FTPS  | [[sourcePath]] | C:\renamefile2.txt | ""       | ""       | [[destPath]] | ftps://localhost:1010/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 4  | Local to SFTP  | [[sourcePath]] | C:\renamefile3.txt | ""       | ""       | [[destPath]] | sftp://localhost:2222/upload/renamed0.txt                                                        | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
+	| 5  | Local to UNC   | [[sourcePath]] | C:\renamefile4.txt | ""       | ""       | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
+
+@FileAndFolderRename
+Scenario Outline: Rename file with missing source with overwrite disabled
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
@@ -167,13 +222,8 @@ Scenario Outline: Rename file at SFTP location
 	And the debug output as
 		|                        |
 		| <resultVar> = <result> |
-	Examples: 
+	Examples:
 	| No | Name           | source         | sourceLocation     | username | password | destination  | destinationLocation                                                                             | destUsername  | destPassword | selected | resultVar  | result    | errorOccured | sourcePrivateKeyFile | destinationPrivateKeyFile |
-	| 1  | Local to Local | [[sourcePath]] | C:\renamefile0.txt | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                                 | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 2  | Local to FTP   | [[sourcePath]] | C:\renamefile1.txt | ""       | ""       | [[destPath]] | ftp://localhost:21/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 3  | Local to FTPS  | [[sourcePath]] | C:\renamefile2.txt | ""       | ""       | [[destPath]] | ftps://localhost:1010/FORFILERENAMETESTING/renamed0.txt                            | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 4  | Local to SFTP  | [[sourcePath]] | C:\renamefile3.txt | ""       | ""       | [[destPath]] | sftp://localhost:2222/upload/renamed0.txt                                                        | dev2          | Q/ulw&]      | False    | [[result]] | "Success" | NO           |                      |                           |
-	| 5  | Local to UNC   | [[sourcePath]] | C:\renamefile4.txt | ""       | ""       | [[destPath]] | \\\\localhost\FileSystemShareTestingSite\FileRenameSharedTestingSite\renamed0.txt | ""            | ""           | False    | [[result]] | "Success" | NO           |                      |                           |
 	| 6  | Local to Local | [[sourcePath]] | NULL               | ""       | ""       | [[destPath]] | C:\renamed0.txt                                                                                 | ""            | ""           | False    | [[result]] | ""        | AN           |                      |                           |
 
 @FileRenameFromUNC
@@ -181,6 +231,7 @@ Scenario Outline: Rename file at SFTP location
 Scenario Outline: Rename file at UNC location with overwrite disabled
 	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
 	And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -207,8 +258,9 @@ Scenario Outline: Rename file at UNC location with overwrite disabled
 @FileRenameFromFTP
 @FileRenameFromFTPWithoutOverwrite
 	Scenario Outline: Rename file at FTP location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -235,8 +287,9 @@ Scenario Outline: Rename file at UNC location with overwrite disabled
 @FileRenameFromFTPS
 @FileRenameFromFTPSWithoutOverwrite
 Scenario Outline: Rename file at FTPS location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -263,8 +316,9 @@ Scenario Outline: Rename file at FTPS location with overwrite disabled
 @FileRenameFromSFTP
 @FileRenameFromSFTPWithoutOverwrite
 	Scenario Outline: Rename file at SFTP location with overwrite disabled
-	Given I have a source path "<source>" with value "<sourceLocation>" 
+	Given I have a source path "<source>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And I have a destination path "<destination>" with value "<destinationLocation>"
     And destination credentials as "<destUsername>" and "<destPassword>"
 	And overwrite is "<selected>"
@@ -296,8 +350,9 @@ Scenario Outline: Rename file validation
 	Given I have a variable "[[rec(1).a]]" with a value "<Val1>"
 	Given I have a variable "[[rec(2).a]]" with a value "<Val2>"
 	Given I have a variable "[[index]]" with a value "1"
-	Given I have a source path "<File or Folder>" with value "<sourceLocation>" 
+	Given I have a source path "<File or Folder>" with value "<sourceLocation>"
 	And source credentials as "<username>" and "<password>"
+	And the source file exists
 	And use private public key for source is "C:\\Temp\\key.opk"
 	And use private public key for destination is "C:\\Temp\\key.opk"
 	And I have a destination path "<destination>" with value "<destinationLocation>"

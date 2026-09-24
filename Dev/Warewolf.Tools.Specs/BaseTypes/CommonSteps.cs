@@ -480,7 +480,6 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             _scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
             _scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
-            CreateSourceFileWithSomeDummyData();
         }
 
         [Given(@"source credentials as ""(.*)"" and ""(.*)"" for zip tests")]
@@ -488,8 +487,17 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             _scenarioContext.Add(SourceUsernameHolder, userName.Replace('"', ' ').Trim());
             _scenarioContext.Add(SourcePasswordHolder, password.Replace('"', ' ').Trim());
-            CreateSourceFileWithSomeDummyData(1000);
         }
+
+        // Explicit opt-in: scenarios whose source path is deliberately absent/invalid (e.g. a bogus
+        // drive letter, NULL, or blank) must NOT call this, or the harness itself would create the
+        // very file the scenario is asserting doesn't exist. See WOLF Move-file-at-location-Null
+        // false-pass investigation.
+        [Given(@"the source file exists")]
+        public void GivenTheSourceFileExists() => CreateSourceFileWithSomeDummyData();
+
+        [Given(@"the source file exists for zip tests")]
+        public void GivenTheSourceFileExistsForZipTests() => CreateSourceFileWithSomeDummyData(1000);
 
         [Given(@"I have a destination path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADestinationPathWithValue(string pathVariable, string location)

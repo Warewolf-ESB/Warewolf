@@ -125,21 +125,24 @@ this.ScenarioInitialize(scenarioInfo);
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 11
- testRunner.And("use private public key for source is \"<sourcePrivateKeyFile>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("the source file exists", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 12
- testRunner.And(string.Format("Read is \"{0}\"", read), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("use private public key for source is \"<sourcePrivateKeyFile>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 13
- testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And(string.Format("Read is \"{0}\"", read), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 14
-    testRunner.When("the read folder file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
 #line 15
- testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+    testRunner.When("the read folder file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
 #line 16
+ testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+#line 17
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1725 = new TechTalk.SpecFlow.Table(new string[] {
@@ -154,14 +157,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", username),
                             "String",
                             "<sourcePrivateKeyFile>"});
-#line 17
+#line 18
  testRunner.And("the debug inputs as", ((string)(null)), table1725, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1726 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1726.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 20
+#line 21
  testRunner.And("the debug output as", ((string)(null)), table1726, "And ");
 #line hidden
             }
@@ -693,7 +696,7 @@ this.ReadFolderFileAtLocation("23", "Empty_FTPS_Files_Folders", "[[path]]", "ftp
             argumentsOfScenario.Add("DesignValidation", designValidation);
             argumentsOfScenario.Add("OutputError", outputError);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file validation", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 51
+#line 52
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -703,49 +706,49 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 52
+#line 53
     testRunner.Given(string.Format("I have a variable \"[[a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 53
+#line 54
  testRunner.Given(string.Format("I have a variable \"[[b]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 54
+#line 55
  testRunner.Given(string.Format("I have a variable \"[[rec(1).a]]\" with a value \"{0}\"", val1), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 55
+#line 56
  testRunner.Given(string.Format("I have a variable \"[[rec(2).a]]\" with a value \"{0}\"", val2), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 56
+#line 57
  testRunner.Given("I have a variable \"[[index]]\" with a value \"1\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 57
+#line 58
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", fileOrFolder, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 58
+#line 59
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 59
+#line 60
  testRunner.And("use private public key for source is \"<sourcePrivateKeyFile>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 60
+#line 61
  testRunner.And("Read is \"<read>\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 61
+#line 62
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 62
+#line 63
  testRunner.Then(string.Format("validation is \"{0}\"", validationResult), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 63
+#line 64
  testRunner.And(string.Format("validation message is \"{0}\"", designValidation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 64
+#line 65
     testRunner.When("the read folder file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 65
+#line 66
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 66
+#line 67
  testRunner.And(string.Format("the execution has \"{0}\" error", errorOccured), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1727 = new TechTalk.SpecFlow.Table(new string[] {
@@ -760,14 +763,14 @@ this.ScenarioInitialize(scenarioInfo);
                             "String",
                             "Files & Folders",
                             "<sourcePrivateKeyFile>"});
-#line 67
+#line 68
  testRunner.And("the debug inputs as", ((string)(null)), table1727, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1728 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1728.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 70
+#line 71
  testRunner.And("the debug output as", ((string)(null)), table1728, "And ");
 #line hidden
             }
@@ -795,7 +798,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_1()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("1", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -821,7 +824,7 @@ this.ReadFolderFileValidation("1", "Local Files", "[[sourcePath]]", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_2()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("2", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -847,7 +850,7 @@ this.ReadFolderFileValidation("2", "Local Files", "[[sourcePath]]", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_3()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("3", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -873,7 +876,7 @@ this.ReadFolderFileValidation("3", "Local Files", "[[sourcePath]]", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_4()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("4", "Local Files", "[[a]]", "c:\\", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -899,7 +902,7 @@ this.ReadFolderFileValidation("4", "Local Files", "[[a]]", "c:\\", "\"\"", "c:\\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_5()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("5", "Local Files", "[[a]][[b]]", "c", ":\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -925,7 +928,7 @@ this.ReadFolderFileValidation("5", "Local Files", "[[a]][[b]]", "c", ":\\", "c:\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_6()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("6", "Local Files", "[[rec(1).a]]", "c:\\", "", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -951,7 +954,7 @@ this.ReadFolderFileValidation("6", "Local Files", "[[rec(1).a]]", "c:\\", "", "c
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_7()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("7", "Local Files", "[[a]][[b]]", "ftp://localhost:", ":1001/FORREADFOLDERTESTING/", "ftp://localhost:21/FOREADFOLDERTTESTING/", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -977,7 +980,7 @@ this.ReadFolderFileValidation("7", "Local Files", "[[a]][[b]]", "ftp://localhost
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_8()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("8", "Local Files", "[[a]]\\[[b]]", "c:", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1003,7 +1006,7 @@ this.ReadFolderFileValidation("8", "Local Files", "[[a]]\\[[b]]", "c:", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_9()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("9", "Local Files", "[[a]]:[[b]]", "c", "\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1029,7 +1032,7 @@ this.ReadFolderFileValidation("9", "Local Files", "[[a]]:[[b]]", "c", "\\", "c:\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_10()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("10", "Local Files", "[[rec(1).a]][[rec(2).a]]", "c", ":\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1055,7 +1058,7 @@ this.ReadFolderFileValidation("10", "Local Files", "[[rec(1).a]][[rec(2).a]]", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_11()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("11", "Local Files", "[[rec(1).a]]\\[[rec(2).a]]", "\\\\localhost", "ReadFolderSharedTestingSite", "\\\\SVRDEV.premier.local\\FileSystemShareTestingSite\\ReadFolderSharedTestingSite", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1081,7 +1084,7 @@ this.ReadFolderFileValidation("11", "Local Files", "[[rec(1).a]]\\[[rec(2).a]]",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_12()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("12", "Local Files", "[[rec(1).a]][[rec(2).a]]", "c", ":\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1107,7 +1110,7 @@ this.ReadFolderFileValidation("12", "Local Files", "[[rec(1).a]][[rec(2).a]]", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_13()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("13", "Local Files", "[[rec(1).a]]:[[rec(2).a]]", "c", "\\", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1133,7 +1136,7 @@ this.ReadFolderFileValidation("13", "Local Files", "[[rec(1).a]]:[[rec(2).a]]", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_14()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("14", "Local Files", "c:\\copyfile0.txt", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1159,7 +1162,7 @@ this.ReadFolderFileValidation("14", "Local Files", "c:\\copyfile0.txt", "\"\"", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "\"\"")]
         public void ReadFolderFileValidation_15()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("15", "Local Files", "[[rec(1).a]]", "c:\\", "\"\"", "c:\\", "\"\"", "\"\"", "[[result]]", "String", "NO", "False", "\"\"", "\"\"", ((string[])(null)));
 #line hidden
         }
@@ -1185,7 +1188,7 @@ this.ReadFolderFileValidation("15", "Local Files", "[[rec(1).a]]", "c:\\", "\"\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Variable name [[a&]] contains invalid character(s)")]
         public void ReadFolderFileValidation_16()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("16", "Local Files", "[[a&]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Variable name [[a&]] contains invalid character(s)", "1.Directory - Variable name [[a&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1211,7 +1214,7 @@ this.ReadFolderFileValidation("16", "Local Files", "[[a&]]", "\"\"", "\"\"", "",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Recordset index (**) contains invalid character(s)")]
         public void ReadFolderFileValidation_17()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("17", "Local Files", "[[rec(**).a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Recordset index (**) contains invalid character(s)", "1.Directory - Recordset index (**) contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1237,7 +1240,7 @@ this.ReadFolderFileValidation("17", "Local Files", "[[rec(**).a]]", "\"\"", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Please supply a valid File or Folder")]
         public void ReadFolderFileValidation_18()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("18", "Local Files", "c(*()", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Please supply a valid File or Folder", "1.Please supply a valid File or Folder", ((string[])(null)));
 #line hidden
         }
@@ -1263,7 +1266,7 @@ this.ReadFolderFileValidation("18", "Local Files", "c(*()", "\"\"", "\"\"", "", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory not found [ C:\\\\\\gvh ]")]
         public void ReadFolderFileValidation_19()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("19", "Local Files", "[[a]]", "C\\\\\\gvh", "\"\"", "c\\", "\"\"", "\"\"", "\"\"", "\"\"", "AN", "False", "\"\"", "1.Directory not found [ C:\\\\\\gvh ]", ((string[])(null)));
 #line hidden
         }
@@ -1289,7 +1292,7 @@ this.ReadFolderFileValidation("19", "Local Files", "[[a]]", "C\\\\\\gvh", "\"\""
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Variable name [[index$x]] contains invalid character(s)")]
         public void ReadFolderFileValidation_20()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("20", "Local Files", "[[rec([[inde$x]]).a]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Variable name [[index$x]] contains invalid character(s)", "1.Directory - Variable name [[index$x]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1315,7 +1318,7 @@ this.ReadFolderFileValidation("20", "Local Files", "[[rec([[inde$x]]).a]]", "\"\
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[a]]")]
         public void ReadFolderFileValidation_21()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("21", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]]", ((string[])(null)));
 #line hidden
         }
@@ -1341,7 +1344,7 @@ this.ReadFolderFileValidation("21", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Variable name [[$#]] contains invalid character(s)")]
         public void ReadFolderFileValidation_22()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("22", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "[[$#]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1367,7 +1370,7 @@ this.ReadFolderFileValidation("22", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]")]
         public void ReadFolderFileValidation_23()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("23", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "[[a]]\\[[b]]", "String", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[a]] 2.1.No Value assigned for [[b]]", ((string[])(null)));
 #line hidden
         }
@@ -1393,7 +1396,7 @@ this.ReadFolderFileValidation("23", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.No Value assigned for [[index]]")]
         public void ReadFolderFileValidation_24()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("24", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "[[rec([[index]]).a]]", "String", "[[result]]", "\"\"", "AN", "False", "\"\"", "1.No Value assigned for [[index]]", ((string[])(null)));
 #line hidden
         }
@@ -1419,7 +1422,7 @@ this.ReadFolderFileValidation("24", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "Username - Recordset name [[indexx&]] contains invalid character(s)")]
         public void ReadFolderFileValidation_25()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("25", "Local Files", "[[sourcePath]].txt", "\"\"", "\"\"", "c:\\", "[[rec([[index&]]).a]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Recordset name [[indexx&]] contains invalid character(s)", "Username - Recordset name [[indexx&]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1445,7 +1448,7 @@ this.ReadFolderFileValidation("25", "Local Files", "[[sourcePath]].txt", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Username - Invalid expression: opening and closing brackets don\"t match")]
         public void ReadFolderFileValidation_26()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("26", "Local Files", "[[sourcePath]].txt", "\"\"", "\"\"", "c:\\", "[[a]]*]]", "String", "[[result]]", "\"\"", "AN", "True", "Username - Invalid expression: opening and closing brackets don\"t match", "1.Username - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
@@ -1471,7 +1474,7 @@ this.ReadFolderFileValidation("26", "Local Files", "[[sourcePath]].txt", "\"\"",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
         public void ReadFolderFileValidation_27()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("27", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "[[a]]*]]", "\"\"", "\"\"", "NO", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
@@ -1497,7 +1500,7 @@ this.ReadFolderFileValidation("27", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
         public void ReadFolderFileValidation_28()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("28", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1523,7 +1526,7 @@ this.ReadFolderFileValidation("28", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid expression: opening and closing brackets don\"t match")]
         public void ReadFolderFileValidation_29()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("29", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "[[var]]00]]", "[[var]]00]]", "\"\"", "AN", "True", "Result - Invalid expression: opening and closing brackets don\"t match", "1.Result - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
@@ -1549,7 +1552,7 @@ this.ReadFolderFileValidation("29", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var@]] contains invalid character(s)")]
         public void ReadFolderFileValidation_30()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("30", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var@]]", "\"\"", "AN", "True", "Result - Variable name [[var@]] contains invalid character(s)", "1.Result - Variable name [[var@]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1575,7 +1578,7 @@ this.ReadFolderFileValidation("30", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
         public void ReadFolderFileValidation_31()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("31", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var[[a]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", ((string[])(null)));
 #line hidden
         }
@@ -1601,7 +1604,7 @@ this.ReadFolderFileValidation("31", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var.a]] contains invalid character(s)")]
         public void ReadFolderFileValidation_32()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("32", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var.a]]", "\"\"", "AN", "True", "Result - Variable name [[var.a]]contains invalid character(s)", "1.Result - Variable name [[var.a]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1627,7 +1630,7 @@ this.ReadFolderFileValidation("32", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[@var]] contains invalid character(s)")]
         public void ReadFolderFileValidation_33()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("33", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[#var]]", "\"\"", "AN", "True", "Result - Variable name [[@var]] contains invalid character(s)", "1.Result - Variable name [[@var]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1653,7 +1656,7 @@ this.ReadFolderFileValidation("33", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Variable name [[var 1]] contains invalid character(s)")]
         public void ReadFolderFileValidation_34()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("34", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[var 1]]", "\"\"", "AN", "True", "Result - Variable name [[var 1]] contains invalid character(s)", "1.Result - Variable name [[var 1]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1679,7 +1682,7 @@ this.ReadFolderFileValidation("34", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[var[[a]]]]")]
         public void ReadFolderFileValidation_35()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("35", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[rec(1).[[rec().1]]]]", "\"\"", "AN", "True", "Result - Invalid Region [[var[[a]]]]", "1.Result - Invalid Region [[var[[a]]]]", ((string[])(null)));
 #line hidden
         }
@@ -1705,7 +1708,7 @@ this.ReadFolderFileValidation("35", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset index [[@]] contains invalid character(s)")]
         public void ReadFolderFileValidation_36()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("36", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[rec(@).a]]", "\"\"", "AN", "True", "Result - Recordset index [[@]] contains invalid character(s)", "1.Result - Recordset index [[@]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1731,7 +1734,7 @@ this.ReadFolderFileValidation("36", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)")]
         public void ReadFolderFileValidation_37()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("37", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "\"\"", "[[rec\"()\".a]]", "\"\"", "AN", "True", "Result - Recordset name [[rec\"()\"]] contains invalid character(s)", "1.Result - Recordset name [[rec\"()\"]] contains invalid character(s)", ((string[])(null)));
 #line hidden
         }
@@ -1757,7 +1760,7 @@ this.ReadFolderFileValidation("37", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]")]
         public void ReadFolderFileValidation_38()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("38", "Local Files", "[[sourcePath]]", "\"\"", "\"\"", "c:\\", "\"\"", "[[rec([[[[b]]]]).a]]", "[[rec([[[[b]]]]).a]]", "\"\"", "AN", "True", "Result - Invalid Region [[rec([[[[b]]]]).a]]", "1.Result - Invalid Region [[rec([[[[b]]]]).a]]", ((string[])(null)));
 #line hidden
         }
@@ -1783,7 +1786,7 @@ this.ReadFolderFileValidation("38", "Local Files", "[[sourcePath]]", "\"\"", "\"
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - Invalid expression: opening and closing brackets don\"t match")]
         public void ReadFolderFileValidation_39()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("39", "Local Files", "[[a]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - Invalid expression: opening and closing brackets don\"t match", "1.Directory - Invalid expression: opening and closing brackets don\"t match", ((string[])(null)));
 #line hidden
         }
@@ -1809,7 +1812,7 @@ this.ReadFolderFileValidation("39", "Local Files", "[[a]", "\"\"", "\"\"", "", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Directory - [[rec]] does not exist in your variable list")]
         public void ReadFolderFileValidation_40()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("40", "Local Files", "[[rec]", "\"\"", "\"\"", "", "\"\"", "\"\"", "[[result]]", "\"\"", "AN", "True", "Directory - [[rec]] does not exist in your variable list", "1.Directory - [[rec]] does not exist in your variable list", ((string[])(null)));
 #line hidden
         }
@@ -1835,7 +1838,7 @@ this.ReadFolderFileValidation("40", "Local Files", "[[rec]", "\"\"", "\"\"", "",
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:OutputError", "1.Password cannot be empty or only white space")]
         public void ReadFolderFileValidation_41()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("41", "Local Files", "[[sourcePath]]", "\"\"", "\"\"\"", "c:\\", "Test", "\"\"", "[[result]]", "\"\"", "AN", "True", "Password cannot be empty or only white space", "1.Password cannot be empty or only white space", ((string[])(null)));
 #line hidden
         }
@@ -1863,7 +1866,7 @@ this.ReadFolderFileValidation("41", "Local Files", "[[sourcePath]]", "\"\"", "\"
             "ble name [[var@]] contains invalid character(s)")]
         public void ReadFolderFileValidation_42()
         {
-#line 51
+#line 52
 this.ReadFolderFileValidation("42", "Local Files", "[[var@]]", "\"\"", "\"\"", "", "[[var@]]", "String", "[[var@]]", "\"\"", "AN", "True", "Username - Variable name [[$#]] contains invalid character(s)   Result - Variable" +
                     " name [[var@]] contains invalid character(s)", "1.Username - Variable name [[$#]] contains invalid character(s)  2.Result - Varia" +
                     "ble name [[var@]] contains invalid character(s)", ((string[])(null)));
@@ -1884,7 +1887,7 @@ this.ReadFolderFileValidation("42", "Local Files", "[[var@]]", "\"\"", "\"\"", "
             argumentsOfScenario.Add("resultVar", resultVar);
             argumentsOfScenario.Add("result", result);
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Read Folder file at location with invalid directories", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 118
+#line 119
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -1894,28 +1897,28 @@ this.ScenarioInitialize(scenarioInfo);
             else
             {
                 this.ScenarioStart();
-#line 119
+#line 120
  testRunner.Given(string.Format("I have a source path \"{0}\" with value \"{1}\"", source, sourceLocation), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line hidden
-#line 120
+#line 121
  testRunner.And(string.Format("source credentials as \"{0}\" and \"{1}\"", username, password), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 121
+#line 122
  testRunner.And(string.Format("Read is \"{0}\"", read), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 122
+#line 123
  testRunner.And(string.Format("result as \"{0}\"", resultVar), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 123
+#line 124
  testRunner.And("use private public key for source is \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-#line 124
+#line 125
     testRunner.When("the read folder file tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line hidden
-#line 125
+#line 126
  testRunner.Then(string.Format("the result variable \"{0}\" will be \"{1}\"", resultVar, result), ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-#line 126
+#line 127
  testRunner.And("the execution has \"AN\" error", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1729 = new TechTalk.SpecFlow.Table(new string[] {
@@ -1928,14 +1931,14 @@ this.ScenarioInitialize(scenarioInfo);
                             string.Format("{0}", read),
                             string.Format("{0}", username),
                             "String"});
-#line 127
+#line 128
  testRunner.And("the debug inputs as", ((string)(null)), table1729, "And ");
 #line hidden
                 TechTalk.SpecFlow.Table table1730 = new TechTalk.SpecFlow.Table(new string[] {
                             ""});
                 table1730.AddRow(new string[] {
                             string.Format("{0} = {1}", resultVar, result)});
-#line 130
+#line 131
  testRunner.And("the debug output as", ((string)(null)), table1730, "And ");
 #line hidden
             }
@@ -1958,7 +1961,7 @@ this.ScenarioInitialize(scenarioInfo);
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
         public void ReadFolderFileAtLocationWithInvalidDirectories_1()
         {
-#line 118
+#line 119
 this.ReadFolderFileAtLocationWithInvalidDirectories("1", "Local Files", "4234", "4234", "Files", "\"\"", "\"\"", "[[result]]", "", ((string[])(null)));
 #line hidden
         }
@@ -1979,7 +1982,7 @@ this.ReadFolderFileAtLocationWithInvalidDirectories("1", "Local Files", "4234", 
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
         public void ReadFolderFileAtLocationWithInvalidDirectories_2()
         {
-#line 118
+#line 119
 this.ReadFolderFileAtLocationWithInvalidDirectories("2", "UNC", "[[var]]", "", "Folder", "\"\"", "\"\"", "[[result]]", "", ((string[])(null)));
 #line hidden
         }
@@ -2000,7 +2003,7 @@ this.ReadFolderFileAtLocationWithInvalidDirectories("2", "UNC", "[[var]]", "", "
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "")]
         public void ReadFolderFileAtLocationWithInvalidDirectories_3()
         {
-#line 118
+#line 119
 this.ReadFolderFileAtLocationWithInvalidDirectories("3", "FTP", "[[variable]]", "\"\"", "Files", "\"\"", "\"\"", "[[result]]", "", ((string[])(null)));
 #line hidden
         }

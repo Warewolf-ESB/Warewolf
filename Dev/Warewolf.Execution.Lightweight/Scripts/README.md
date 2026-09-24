@@ -627,6 +627,23 @@ is untouched. `Deploy-WwExecutionEngine.ps1`'s Phase 2 calls this mode automatic
 `-SkipAuthProvisioning` is set and the live setting is found missing — see
 `Dev/Warewolf.Execution.Lightweight/docs/Deploy-UAT-Redeploy-Spec.md` §17.
 
+By default this mode looks up the registration via `az ad app list --display-name
+<EntraAppDisplayName>` (Microsoft Graph). Pass `-KnownClientId <appId>` to skip that lookup
+entirely and rebuild `WAREWOLF_ENTRA_CONFIG` from a known appId instead — needed when the
+caller has no Graph read permission, or when `-EntraAppDisplayName` doesn't actually match
+how the app's Entra config was provisioned (e.g. `warewolfserver`'s config was hand-set
+against a shared app registration, not one named `warewolfserver-auth`):
+
+```powershell
+./Configure-WwExecutionAuth.ps1 -RepairEntraConfigOnly -NonInteractive `
+    -SubscriptionId <id> -TenantId <id> -ResourceGroupName <rg> -FunctionAppName <app> `
+    -KnownClientId <appId>
+```
+
+`Deploy-WwExecutionEngine.ps1` exposes this as `-EntraConfigRepairClientId` (and
+`-EntraConfigRepairAppDisplayName` for the log/summary label), threaded through to this
+script's `-KnownClientId` — see `Deploy-UAT-Redeploy-Spec.md` §18.
+
 ---
 
 ## CFG-03 — `secure.config` CI/CD deployment

@@ -230,6 +230,7 @@
     <Compile Include="ServiceModel\WebServicesTest.cs" />
     <Compile Include="ServiceModel\WebSourcesTests.cs" />
     <Compile Include="ServiceModel\WebExecuteStringArgsTests.cs" />
+    <Compile Include="TestSupport\PlatformGuards.cs" />
     <Compile Include="Services\ClearLogsTest.cs" />
     <Compile Include="Services\DeleteLogTests.cs" />
     <Compile Include="Services\FetchDebugItemFileTests.cs" />

@@ -814,3 +814,49 @@ were tuned against; re-run the load test and re-check the concurrency/scale-limi
 (`-ServiceBusMaxConcurrentCalls`, `-FlexMaximumInstanceCount`) against observed behaviour before
 trusting historical thresholds (e.g. the `FlexMaximumInstanceCount 30` carried over from
 `-FunctionAppScaleLimit 30`) on the new platform.
+
+## 18. `-KnownClientId`: the §17 self-heal's first live run needed a Graph-free path (2026-09-24)
+
+**What broke:** build 30806 (`pipeline-CLOUD.yml`, job `Deploy_And_Test_Azure_Functions`, step
+"Deploy via Deployment Scripts") failed — the very first live invocation of §17's automatic
+`WAREWOLF_ENTRA_CONFIG` repair. `Configure-WwExecutionAuth.ps1 -RepairEntraConfigOnly`'s
+`az ad app list --display-name warewolfserver-auth --query [0] -o json` failed with `ERROR:
+Insufficient privileges to complete the operation`.
+
+**Root cause, two layers deep:**
+1. The pipeline's service connection SP, "Warewolf DevOps" (appId
+   `a15fdb40-3dbe-470c-8b4c-55d3d5448fe9`), has **no Microsoft Graph permissions consented** —
+   verified live via `GET /servicePrincipals/{id}/appRoleAssignments` returning `[]`, despite the
+   app's manifest requesting `Application.ReadWrite.OwnedBy`. Deploying to the Function App itself
+   only needs ARM (Contributor), which the pipeline already has; §17's repair was the first thing
+   in this pipeline to need Microsoft Graph, and nothing had ever granted it.
+2. Even with Graph access, the lookup would still fail: **no app registration named
+   `warewolfserver-auth` exists** in the tenant (verified live — only a stale
+   `warewolfserver-staging-random-2857634-auth` from 2026-09-03 matches the `warewolfserver*`
+   prefix). `warewolfserver`'s `WAREWOLF_ENTRA_CONFIG` was always hand-set against the **shared
+   "Warewolf Security" app registration** (appId `05794411-b275-4801-97ac-8b078ed7196c` — the same
+   one §17's neighbouring "Probe the engine route directly" pipeline step already uses as
+   `$EngineResourceAppIdValue`), not a per-app `<AppName>-auth` registration. §17's repair assumed
+   the naming convention `Configure-WwExecutionAuth.ps1`'s normal (non-repair) provisioning flow
+   would have used, which was never actually run for this app (`-SkipAuthProvisioning` is
+   permanent here).
+
+**Fix:** `-RepairEntraConfigOnly` gained an optional `-KnownClientId <appId>` that skips the
+`az ad app list` Microsoft Graph lookup entirely and rebuilds `WAREWOLF_ENTRA_CONFIG` from that
+appId directly — everything else about the repair (read-merge-write via `Merge-EntraConfigJson`,
+no secret rotation, no role/Easy Auth changes) is unchanged.
+`Deploy-WwExecutionEngine.ps1` exposes this as `-EntraConfigRepairClientId` (plus
+`-EntraConfigRepairAppDisplayName`, a cosmetic label for the repair step's own logging/summary
+when the Graph lookup is skipped), threaded through only when supplied — callers that don't pass
+it keep the exact §17 behaviour. `pipeline-CLOUD.yml`'s `warewolfserver` deploy step now passes
+`-EntraConfigRepairClientId '05794411-b275-4801-97ac-8b078ed7196c'` and
+`-EntraConfigRepairAppDisplayName 'Warewolf Security'`, so no Microsoft Graph permission is
+needed anywhere in this pipeline for the self-heal to keep working.
+
+**Deliberately not done:** granting Microsoft Graph permissions (`Application.Read.All` /
+`Directory.Read.All`, or the `Directory Readers` role) to the "Warewolf DevOps" SP — the
+`-KnownClientId` approach avoids needing that at all, which is the smaller, least-privilege
+change. If a future app under `-SkipAuthProvisioning` genuinely does follow the
+`<AppName>-auth` convention (i.e. was provisioned by a real, non-repair-mode run of
+`Configure-WwExecutionAuth.ps1`), the original Graph-lookup path remains the default — simply
+omit `-EntraConfigRepairClientId` for that app's deploy step.

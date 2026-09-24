@@ -444,7 +444,9 @@ namespace Dev2.Runtime
         List<IServiceTestModelTO> GetTestList(string resourceTestDirectory)
         {
             var serviceTestModelTos = new List<IServiceTestModelTO>();
-            var files = _directoryWrapper.GetFiles(resourceTestDirectory);
+            // File enumeration order is not guaranteed by the OS (NTFS vs ext4 differ) — sort so
+            // callers see a stable, deterministic order regardless of host platform.
+            var files = _directoryWrapper.GetFiles(resourceTestDirectory).OrderBy(f => f, StringComparer.OrdinalIgnoreCase);
             foreach (var file in files)
             {
                 try
