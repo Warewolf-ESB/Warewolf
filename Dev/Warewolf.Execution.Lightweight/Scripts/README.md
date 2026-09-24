@@ -195,12 +195,14 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   how messages arrive. UAT: RabbitMQ → Shovel → Azure Service Bus → the engine's own
   `ServiceBusTrigger`. Dev: CloudAMQP queue `wwprofilerlw.queueprocessor.trigger.request` → this
   Container App (KEDA 0..20, `Concurrency 20` in `Dev/.azure/ProfilerDev.trigger.bite`) →
-  `POST /Secure/{workflow}` on the engine. **Three prerequisites, each failing the build early with
-  its remediation:** (1) the legacy `wwprofilerlw-shovel` is deleted by hand — the pipeline fails if
-  it exists, so a re-run of the UAT file cannot silently reintroduce a second consumer;
-  (2) `wwprofilerlw` has an Entra app registration (the worker calls only `/Secure/*`; the engine had
+  `POST /Secure/{workflow}` on the engine. **The pipeline deletes the legacy shovel itself:** its
+  first steps remove `wwprofilerlw-shovel` from the self-hosted broker (a no-op when already gone)
+  via `DELETE /api/parameters/shovel/%2f/wwprofilerlw-shovel`, then re-list and fail the build if it
+  is still there — so re-running the UAT file, which recreates it, can never leave a second consumer
+  behind. **Two prerequisites remain, each failing the build early with its remediation:**
+  (1) `wwprofilerlw` has an Entra app registration (the worker calls only `/Secure/*`; the engine had
   none and was open-access on `/public/*`) — a one-off `Configure-WwExecutionAuth.ps1` run by an
-  Application Administrator, then set `ProfilerEngineEntraAppId`; (3) a Key Vault secret holding the
+  Application Administrator, then set `ProfilerEngineEntraAppId`; (2) a Key Vault secret holding the
   CloudAMQP AMQP URI for the KEDA scaler (`ProfilerWorkerRabbitMqSecretUri`). The worker deploy runs
   under a raw service-principal login (`AzureClientId/Secret/TenantId` pipeline secrets), not the
   engine steps' service connection, because it must create role assignments. KEDA against CloudAMQP

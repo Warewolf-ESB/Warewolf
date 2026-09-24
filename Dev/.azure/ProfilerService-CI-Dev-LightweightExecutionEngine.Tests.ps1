@@ -10,7 +10,8 @@
         script otherwise fails only after the agent has spent minutes on the steps before it);
       * the Dev file deploys THE SAME ENGINE as the UAT file - same app, same deploy flags - so the
         two cannot drift into leaving the shared app in different states;
-      * the Dev file no longer builds the ShovelBridge, and does guard against a stray shovel;
+      * the Dev file no longer builds the ShovelBridge, and deletes (then verifies the absence of)
+        the legacy shovel before anything is deployed;
       * the trigger file is consistent with the pipeline that deploys it.
 
     Requires the powershell-yaml module. The whole suite is skipped (not failed) without it.
@@ -132,7 +133,7 @@ Describe 'ProfilerService-CI-Dev pipeline - same engine as UAT' -Skip:(-not $scr
     }
 }
 
-Describe 'ProfilerService-CI-Dev pipeline - ShovelBridge is gone, and guarded against' -Skip:(-not $script:HaveYaml) {
+Describe 'ProfilerService-CI-Dev pipeline - ShovelBridge is gone, and removed if present' -Skip:(-not $script:HaveYaml) {
 
     It 'does not provision or exercise the bridge in any step' {
         $offenders = @()
@@ -146,13 +147,171 @@ Describe 'ProfilerService-CI-Dev pipeline - ShovelBridge is gone, and guarded ag
         $offenders | Should -BeNullOrEmpty
     }
 
-    It 'fails the build when the legacy shovel still exists, before anything is deployed' {
-        $guard = Find-Step $script:Dev 'Verify the legacy ShovelBridge is disabled'
-        $guard | Should -Not -BeNullOrEmpty
-        (Get-StepScript $guard) | Should -Match '/api/shovels/'
-        (Get-StepScript $guard) | Should -Match 'throw'
-        (Get-StepIndex $script:Dev 'Verify the legacy ShovelBridge is disabled') |
-            Should -BeLessThan (Get-StepIndex $script:Dev 'Deploy via Deployment Scripts')
+    Context 'the shovel-disable step' {
+        BeforeAll {
+            $script:ShovelStepName = 'Disable the legacy ShovelBridge shovel (delete if present)'
+            $script:ShovelStep     = Find-Step $script:Dev $script:ShovelStepName
+            $script:ShovelScript   = Get-StepScript $script:ShovelStep
+        }
+
+        It 'exists and runs before anything is deployed' {
+            $script:ShovelStep | Should -Not -BeNullOrEmpty
+            (Get-StepIndex $script:Dev $script:ShovelStepName) |
+                Should -BeLessThan (Get-StepIndex $script:Dev 'Deploy via Deployment Scripts')
+        }
+
+        It 'lists shovels read-only, then deletes via the parameters resource the shovel is created with' {
+            # /api/shovels/... is the read-only status listing; a dynamic shovel is removed by clearing
+            # its runtime parameter, the same resource Configure-RabbitMqShovel.ps1 PUTs to create it.
+            $script:ShovelScript | Should -Match '/api/shovels/\$vhostEnc"'
+            $script:ShovelScript | Should -Match '-Method Delete -Uri "\$mgmtUri/api/parameters/shovel/\$vhostEnc/'
+            $script:ShovelScript | Should -Not -Match '-Method Delete -Uri "\$mgmtUri/api/shovels'
+        }
+
+        It 'only touches the one shovel named by ProfilerShovelName' {
+            $script:ShovelScript | Should -Match '\$shovel\s*=\s*''\$\(ProfilerShovelName\)'''
+            @([regex]::Matches($script:ShovelScript, '-Method Delete')).Count | Should -Be 1
+            $script:ShovelScript | Should -Not -Match 'api/queues|api/exchanges|api/bindings'
+        }
+
+        It 'is a no-op when the shovel is already absent, and treats a 404 on the delete as already gone' {
+            $script:ShovelScript | Should -Match 'nothing to delete'
+            $script:ShovelScript | Should -Match '-eq 404'
+        }
+
+        It 'verifies the shovel is really gone, and fails the build if it is not' {
+            $script:ShovelScript | Should -Match '\$deadline'
+            $script:ShovelScript | Should -Match 'still listed'
+            $script:ShovelScript | Should -Match 'throw'
+        }
+
+        It 'uses the self-hosted broker credential, not the CloudAMQP one' {
+            $script:ShovelStep['env'].Keys | Should -Contain 'RabbitMqPasswordValue'
+            $script:ShovelStep['env']['RabbitMqPasswordValue'] | Should -Be '$(ExternalRabbitMqPassword)'
+        }
+    }
+
+    # Runs the step's REAL script against a local stand-in for the RabbitMQ management API, so the
+    # behaviour (not just the text) is proven: which calls are made, in what order, and what fails.
+    Context 'the shovel-disable step, executed against a fake management API' {
+        BeforeAll {
+            $script:ShovelName = $script:Dev['variables']['ProfilerShovelName']
+
+            function script:Start-FakeBroker {
+                # -Shovels: names listed initially. -DeleteStatus: what DELETE answers.
+                # -DeleteRemoves: whether an accepted DELETE actually removes the shovel.
+                param([string[]] $Shovels, [int] $DeleteStatus = 204, [bool] $DeleteRemoves = $true)
+
+                $port = Get-Random -Minimum 20000 -Maximum 40000
+                $state = [hashtable]::Synchronized(@{
+                    Shovels = [System.Collections.ArrayList]@($Shovels)
+                    DeleteStatus = $DeleteStatus; DeleteRemoves = $DeleteRemoves
+                    Calls = [System.Collections.ArrayList]::new(); Stop = $false
+                })
+                $listener = [System.Net.HttpListener]::new()
+                $listener.Prefixes.Add("http://localhost:$port/")
+                $listener.Start()
+
+                $ps = [powershell]::Create()
+                [void]$ps.AddScript({
+                    param($listener, $state)
+                    while (-not $state.Stop) {
+                        try { $ctx = $listener.GetContext() } catch { break }
+                        $req = $ctx.Request; $res = $ctx.Response
+                        [void]$state.Calls.Add("$($req.HttpMethod) $($req.RawUrl)")
+                        $body = ''
+                        if ($req.HttpMethod -eq 'GET' -and $req.RawUrl -like '/api/shovels/*') {
+                            $items = @($state.Shovels | ForEach-Object { @{ name = $_; state = 'running'; vhost = '/' } })
+                            $body = if ($items.Count -eq 0) { '[]' } else { ConvertTo-Json -InputObject $items -Compress }
+                            $res.StatusCode = 200
+                        } elseif ($req.HttpMethod -eq 'DELETE' -and $req.RawUrl -like '/api/parameters/shovel/*') {
+                            $name = [Uri]::UnescapeDataString(($req.RawUrl -split '/')[-1])
+                            if ($state.DeleteRemoves) { $state.Shovels.Remove($name) }
+                            $res.StatusCode = $state.DeleteStatus
+                        } else { $res.StatusCode = 400 }
+                        $res.ContentType = 'application/json'
+                        $bytes = [Text.Encoding]::UTF8.GetBytes($body)
+                        $res.ContentLength64 = $bytes.Length
+                        $res.OutputStream.Write($bytes, 0, $bytes.Length)
+                        $res.Close()
+                    }
+                }).AddArgument($listener).AddArgument($state)
+                $handle = $ps.BeginInvoke()
+                [pscustomobject]@{ Port = $port; State = $state; Listener = $listener; Ps = $ps; Handle = $handle }
+            }
+
+            function script:Stop-FakeBroker {
+                param($Broker)
+                $Broker.State.Stop = $true
+                try { $Broker.Listener.Stop(); $Broker.Listener.Close() } catch { }
+                try { $Broker.Ps.Stop(); $Broker.Ps.Dispose() } catch { }
+            }
+
+            # Executes the step script as Azure DevOps would (macros expanded, secret in the env),
+            # pointed at the fake broker. The 30s verification window is shortened so the "delete
+            # accepted but shovel remains" case does not take half a minute.
+            function script:Invoke-ShovelStep {
+                param($Broker)
+                $body = $script:ShovelScript
+                $values = @{
+                    ProfilerRabbitMqManagementUri = "http://localhost:$($Broker.Port)"
+                    ProfilerRabbitMqVirtualHost   = $script:Dev['variables']['ProfilerRabbitMqVirtualHost']
+                    ProfilerRabbitMqUsername      = $script:Dev['variables']['ProfilerRabbitMqUsername']
+                    ProfilerShovelName            = $script:ShovelName
+                }
+                $body = [regex]::Replace($body, '\$\(([A-Za-z_][A-Za-z0-9_.]*)\)', {
+                    param($m) if ($values.ContainsKey($m.Groups[1].Value)) { $values[$m.Groups[1].Value] } else { 'MACRO' }
+                })
+                $body = $body.Replace('AddSeconds(30)', 'AddSeconds(1)').Replace('Start-Sleep -Seconds 3', 'Start-Sleep -Milliseconds 100')
+
+                $env:RabbitMqPasswordValue = 'not-a-real-password'
+                $threw = $null; $out = $null
+                try { $out = (& ([scriptblock]::Create($body))) 6>&1 | Out-String } catch { $threw = $_.Exception.Message }
+                [pscustomobject]@{ Output = $out; Error = $threw; Calls = @($Broker.State.Calls) }
+            }
+        }
+
+        It 'deletes a present shovel via /api/parameters/shovel, then re-lists and passes' {
+            $b = Start-FakeBroker -Shovels @($script:ShovelName, 'someone-elses-shovel')
+            try { $r = Invoke-ShovelStep $b } finally { Stop-FakeBroker $b }
+            $r.Error | Should -BeNullOrEmpty
+            $r.Calls | Should -Contain "DELETE /api/parameters/shovel/%2f/$($script:ShovelName)"
+            @($r.Calls | Where-Object { $_ -like 'DELETE *' }).Count | Should -Be 1
+            # list -> delete -> list (verification), in that order
+            $r.Calls[0] | Should -BeLike 'GET /api/shovels/*'
+            $r.Calls[1] | Should -BeLike 'DELETE *'
+            $r.Calls[-1] | Should -BeLike 'GET /api/shovels/*'
+            $r.Output | Should -Match 'Verified: shovel .* is gone'
+            $b.State.Shovels | Should -Contain 'someone-elses-shovel'   # other shovels are left alone
+        }
+
+        It 'makes no DELETE at all when the shovel is already absent' {
+            $b = Start-FakeBroker -Shovels @('someone-elses-shovel')
+            try { $r = Invoke-ShovelStep $b } finally { Stop-FakeBroker $b }
+            $r.Error | Should -BeNullOrEmpty
+            @($r.Calls | Where-Object { $_ -like 'DELETE *' }).Count | Should -Be 0
+            $r.Output | Should -Match 'nothing to delete'
+        }
+
+        It 'treats a 404 on the delete as already gone' {
+            $b = Start-FakeBroker -Shovels @($script:ShovelName) -DeleteStatus 404 -DeleteRemoves $true
+            try { $r = Invoke-ShovelStep $b } finally { Stop-FakeBroker $b }
+            $r.Error | Should -BeNullOrEmpty
+            $r.Output | Should -Match 'already gone'
+        }
+
+        It 'fails the build when the delete is accepted but the shovel is still listed' {
+            $b = Start-FakeBroker -Shovels @($script:ShovelName) -DeleteStatus 204 -DeleteRemoves $false
+            try { $r = Invoke-ShovelStep $b } finally { Stop-FakeBroker $b }
+            $r.Error | Should -Match 'still listed'
+        }
+
+        It 'fails the build, naming the required tag, when the broker refuses the delete' {
+            $b = Start-FakeBroker -Shovels @($script:ShovelName) -DeleteStatus 403 -DeleteRemoves $false
+            try { $r = Invoke-ShovelStep $b } finally { Stop-FakeBroker $b }
+            $r.Error | Should -Match 'DELETE /api/parameters/shovel'
+            $r.Error | Should -Match 'policymaker'
+        }
     }
 
     It 'runs the prerequisite validation straight after checkout, before any download or deploy' {
