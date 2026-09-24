@@ -2722,6 +2722,15 @@ This worker was originally built as a client example and has been promoted to a
   both bursts share the same engine and database capacity budget. See
   `Scripts/README.md`'s `wwqp-loadtest-*` entry and that job's own header comment in
   `pipeline-LOADTEST.yml` for the full rationale.
+- **The Dev profiler rig does not use this bridge.** `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`
+  deploys the same `wwprofilerlw` engine as the UAT pipeline but feeds it through the
+  `Warewolf.Execution.QueueProcessor` (RabbitMQ → ACA/KEDA → `/Secure/*`) instead. Its shovel,
+  `wwprofilerlw-shovel`, is deleted by hand, and that pipeline **fails if the shovel exists** —
+  it would otherwise compete for the same engine and database. The Service Bus namespace
+  `wwprofilerlwsb` is deliberately left in place, idle, so the change is reversible: re-running the
+  UAT pipeline recreates the shovel (and would then fail the Dev pipeline's guard until it is
+  deleted again). The engine's own `ServiceBusTrigger` stays configured on the idle queue because
+  its `%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%` binding only indexes when that app setting exists.
 
 
 ## See also

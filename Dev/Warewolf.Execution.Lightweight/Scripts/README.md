@@ -188,6 +188,24 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   and `WarewolfDevOpsTestDb`'s SQL budget. Verified via `Get-WwQueueRunReport.ps1` (worker+engine
   log reconciliation) rather than a database check, because `RequestForProfiling` no longer writes
   to `dbo.jobs1` — see that job's own header comment in `pipeline-LOADTEST.yml`.
+- **`wwqp-profilerdev-*`** (a `Warewolf.Execution.QueueProcessor` Container App) — deployed by
+  `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`, the **QueueProcessor sibling**
+  of `ProfilerService-CI-UAT-LightweightExecutionEngine.yml`. Both files deploy the **same engine
+  app (`wwprofilerlw`)** with identical engine flags (a Pester test pins that); they differ only in
+  how messages arrive. UAT: RabbitMQ → Shovel → Azure Service Bus → the engine's own
+  `ServiceBusTrigger`. Dev: CloudAMQP queue `wwprofilerlw.queueprocessor.trigger.request` → this
+  Container App (KEDA 0..20, `Concurrency 20` in `Dev/.azure/ProfilerDev.trigger.bite`) →
+  `POST /Secure/{workflow}` on the engine. **Three prerequisites, each failing the build early with
+  its remediation:** (1) the legacy `wwprofilerlw-shovel` is deleted by hand — the pipeline fails if
+  it exists, so a re-run of the UAT file cannot silently reintroduce a second consumer;
+  (2) `wwprofilerlw` has an Entra app registration (the worker calls only `/Secure/*`; the engine had
+  none and was open-access on `/public/*`) — a one-off `Configure-WwExecutionAuth.ps1` run by an
+  Application Administrator, then set `ProfilerEngineEntraAppId`; (3) a Key Vault secret holding the
+  CloudAMQP AMQP URI for the KEDA scaler (`ProfilerWorkerRabbitMqSecretUri`). The worker deploy runs
+  under a raw service-principal login (`AzureClientId/Secret/TenantId` pipeline secrets), not the
+  engine steps' service connection, because it must create role assignments. KEDA against CloudAMQP
+  (LavinMQ) had not been exercised when this was written — the first burst is the calibration run.
+  Tests: `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.Tests.ps1`.
 
 Highlights:
 
