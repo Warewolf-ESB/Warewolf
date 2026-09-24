@@ -655,6 +655,14 @@ against a shared app registration, not one named `warewolfserver-auth`):
 `-EntraConfigRepairAppDisplayName` for the log/summary label), threaded through to this
 script's `-KnownClientId` — see `Deploy-UAT-Redeploy-Spec.md` §18.
 
+For an engine that has **no** Entra app registration at all and is intentionally open access
+(no `-SecureConfigPath`, auth bypassed another way), pass `Deploy-WwExecutionEngine.ps1
+-SkipEntraConfigDriftRepair` instead — it suppresses the drift check under
+`-SkipAuthProvisioning` entirely, so the Graph lookup never runs. Unlike
+`-EntraConfigRepairClientId`, this is for the case where there is nothing to repair (wwprofilerlw,
+build 30815: no `wwprofilerlw-auth` registration exists, so even a permitted Graph lookup would
+find nothing and throw).
+
 ---
 
 ## CFG-03 — `secure.config` CI/CD deployment

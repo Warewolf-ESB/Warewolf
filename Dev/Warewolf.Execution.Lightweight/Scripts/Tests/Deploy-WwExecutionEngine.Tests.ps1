@@ -1204,6 +1204,22 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out | Should -Not -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'.*-KnownClientId"
             $out | Should -Not -Match "\[DRYRUN\] & 'Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'.*-EntraAppDisplayName"
         }
+
+        It 'never invokes the repair child-script with -SkipEntraConfigDriftRepair, even when WAREWOLF_ENTRA_CONFIG is missing' {
+            # build 30815, 2026-09-24: wwprofilerlw has no Entra app registration at all
+            # ("wwprofilerlw-auth" does not exist) and is intentionally open access, so the
+            # repair's own `az ad app list` Graph lookup is a false positive that either fails on
+            # privilege or finds nothing to repair either way. -SkipEntraConfigDriftRepair skips
+            # the drift check (and its live-settings query) entirely.
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.SkipAuthProvisioning        = $true
+            $callArgs.SkipEntraConfigDriftRepair  = $true
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'WAREWOLF_ENTRA_CONFIG drift check skipped \(-SkipEntraConfigDriftRepair\)'
+            $out | Should -Not -Match 'repairing it now'
+            $out | Should -Not -Match "Configure-WwExecutionAuth\.ps1 \(-RepairEntraConfigOnly\)'"
+            $out | Should -Not -Match 'checking for WAREWOLF_ENTRA_CONFIG drift'
+        }
     }
 
     It 'fixes ASPNETCORE_ENVIRONMENT to Production' {
