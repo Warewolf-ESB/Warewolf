@@ -177,6 +177,17 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   `Settings/ElasticsearchLoggingSource.bite` — its `ConnectionString` is WFAES-encrypted at
   rest and only decryptable via this app's own Key Vault key at runtime, so it does not need
   Secure File / secret-variable handling. No manual operator step is required.
+- **`wwqp-loadtest-*`** (a `Warewolf.Execution.QueueProcessor` Container App) — deployed fresh on
+  every `pipeline-LOADTEST.yml` run by the `Load_Test` stage's `ProfilerLoadTest_QueueProcessor`
+  job, via `Deploy-WwQueueProcessor.ps1` and the committed `Dev/.azure/ProfilerLoadTest.trigger.bite`.
+  Load-tests the RabbitMQ/QueueProcessor trigger path against `WarewolfServer-UAT` the same way
+  `ShovelBridgeLoadTest_ExternalServiceBus` load-tests the Service Bus/Shovel Bridge path — same
+  `RequestForProfiling` workflow, same 20,000-message volume — so the two trigger mechanisms have
+  comparable CI proof. Sequenced (`dependsOn`) after `ShovelBridgeLoadTest_ExternalServiceBus`
+  rather than run in parallel, because both bursts share `WarewolfServer-UAT`'s concurrency budget
+  and `WarewolfDevOpsTestDb`'s SQL budget. Verified via `Get-WwQueueRunReport.ps1` (worker+engine
+  log reconciliation) rather than a database check, because `RequestForProfiling` no longer writes
+  to `dbo.jobs1` — see that job's own header comment in `pipeline-LOADTEST.yml`.
 
 Highlights:
 

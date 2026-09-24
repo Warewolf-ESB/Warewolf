@@ -79,13 +79,8 @@ namespace Dev2.Common.Wrappers
 
         public string GetDirectoryName(string path)
         {
-            var validPath = path.TrimEnd('\\');
-            var index = validPath.LastIndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
-            if (index != -1)
-            {
-                return path.Substring(index + 1);
-            }
-            return path;
+            var validPath = path.TrimEnd(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
+            return Path.GetFileName(validPath);
         }
 
         public void Move(string directoryStructureFromPath, string directoryStructureToPath)

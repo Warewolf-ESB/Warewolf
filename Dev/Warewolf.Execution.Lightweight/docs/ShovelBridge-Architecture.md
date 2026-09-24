@@ -2712,6 +2712,16 @@ This worker was originally built as a client example and has been promoted to a
   the `ShovelBridgeE2ETest_ExternalServiceBus` job, and a fully end-to-end 1000-message
   workflow-execution load-test variant is wired into `pipeline-LOADTEST.yml`'s `Load_Test`
   stage as the `ShovelBridgeLoadTest_ExternalServiceBus` job.
+- The RabbitMQ/QueueProcessor path — this document's "why not extend `QueueWorker.exe`" answer
+  above, i.e. the *other* trigger mechanism this Shovel Bridge is an alternative to — now has an
+  analogous CI load test of its own, `ProfilerLoadTest_QueueProcessor`, added to the same
+  `Load_Test` stage: same `RequestForProfiling` workflow, same 20,000-message volume, same
+  `WarewolfServer-UAT` target, but delivered via a `Warewolf.Execution.QueueProcessor` Container
+  App consuming RabbitMQ directly instead of this Shovel/Service-Bus bridge. It is sequenced
+  (`dependsOn`) after `ShovelBridgeLoadTest_ExternalServiceBus` rather than run in parallel, since
+  both bursts share the same engine and database capacity budget. See
+  `Scripts/README.md`'s `wwqp-loadtest-*` entry and that job's own header comment in
+  `pipeline-LOADTEST.yml` for the full rationale.
 
 
 ## See also

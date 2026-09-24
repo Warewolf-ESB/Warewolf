@@ -395,8 +395,10 @@ namespace Dev2.Runtime
             }
             var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
             serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
-            var sw = new StreamWriter(filePath, false);
-            _serializer.Serialize(sw, serviceTestModelTo);
+            using (var sw = new StreamWriter(filePath, false))
+            {
+                _serializer.Serialize(sw, serviceTestModelTo);
+            }
         }
 
         DeployResult PersistTestToDisk(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
@@ -413,8 +415,10 @@ namespace Dev2.Runtime
                 }
                 var filePath = Path.Combine(dirPath, $"{serviceTestModelTo.TestName}.test");
                 serviceTestModelTo.Password = DpapiWrapper.EncryptIfDecrypted(serviceTestModelTo.Password);
-                var sw = new StreamWriter(filePath, false);
-                _serializer.Serialize(sw, serviceTestModelTo);
+                using (var sw = new StreamWriter(filePath, false))
+                {
+                    _serializer.Serialize(sw, serviceTestModelTo);
+                }
             }
             catch (Exception ex)
             {

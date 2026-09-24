@@ -453,6 +453,15 @@ looks like a missing app role rather than a config gap.
 > Note this differs from the JobProcessor, which uses one **global** row.
 > `Deploy-WwQueueProcessor.ps1` can also be run **standalone**.
 
+**Worked standalone example — CI load test.** `pipeline-LOADTEST.yml`'s `Load_Test` stage runs
+`Deploy-WwQueueProcessor.ps1` standalone (not via the engine's `-DeployRabbitMqTriggers`
+companion) against the already-deployed `WarewolfServer-UAT`, redeploying a fresh
+`wwqp-loadtest-*` Container App every run from the committed
+`Dev/.azure/ProfilerLoadTest.trigger.bite` — the RabbitMQ-trigger counterpart to that same
+stage's Service Bus/Shovel Bridge load test. No per-workflow `secure.config` row is needed there:
+`WarewolfServer-UAT` already runs with `WAREWOLF_SECURITY_FLAGS={"bypassSecureConfig":true}` set
+by the `Deploy_UAT` stage. See `Scripts/README.md`'s `wwqp-loadtest-*` entry for the full job.
+
 ### Logging / feature env vars
 
 | Parameter | Type | Default | Description |

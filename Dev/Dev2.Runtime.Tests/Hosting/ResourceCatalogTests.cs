@@ -520,7 +520,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             const string resourcePath = "MyTest\\Folder1";
-            var path = Path.Combine(workspacePath, resourcePath);
+            var path = Path.Combine(workspacePath, resourcePath.Replace('\\', Path.DirectorySeparatorChar));
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
             var resource = new DbSource(xml);
@@ -528,7 +528,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, resourcePath);
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + "\\" + resourceName + ".bite");
+            xml = XElement.Load(Path.Combine(path, resourceName + ".bite"));
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -627,7 +627,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             const string resourcePath = "MyTest\\Folder1\\";
             const string resourcePath1 = "MyTest\\Folder2\\";
-            var path = Path.Combine(workspacePath, resourcePath);
+            var path = Path.Combine(workspacePath, resourcePath.Replace('\\', Path.DirectorySeparatorChar));
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
             var resource = new DbSource(xml);
@@ -637,7 +637,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource1, resourcePath1, "", "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + "\\" + resourceName + ".bite");
+            xml = XElement.Load(Path.Combine(path, resourceName + ".bite"));
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -658,7 +658,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = Guid.NewGuid();
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             const string resourcePath = "MyTest\\Folder1";
-            var path = Path.Combine(workspacePath, resourcePath);
+            var path = Path.Combine(workspacePath, resourcePath.Replace('\\', Path.DirectorySeparatorChar));
             const string resourceName = "CitiesDatabase";
             var xml = XmlResource.Fetch(resourceName);
             var resource = new DbSource(xml);
@@ -669,7 +669,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalogResult = catalog.SaveResource(workspaceID, resource1, resourcePath, "", "");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.DuplicateMatch, resourceCatalogResult.Status);
-            xml = XElement.Load(path + "\\CitiesDatabase" + ".bite");
+            xml = XElement.Load(Path.Combine(path, "CitiesDatabase.bite"));
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -981,7 +981,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
+            var path = Path.Combine(EnvironmentVariables.GetWorkspacePath(workspaceID), "Bugs");
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -1967,7 +1967,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
+            var path = Path.Combine(EnvironmentVariables.GetWorkspacePath(workspaceID), "Bugs");
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -1996,7 +1996,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //---------------Set up test pack-------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
+            var path = Path.Combine(EnvironmentVariables.GetWorkspacePath(workspaceID), "Bugs");
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -2065,7 +2065,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var workspaceID = Guid.NewGuid();
 
-            var path = EnvironmentVariables.GetWorkspacePath(workspaceID) + "\\Bugs";
+            var path = Path.Combine(EnvironmentVariables.GetWorkspacePath(workspaceID), "Bugs");
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
             SaveResources(path, null, false, false, new[] { "Bug6619", resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
@@ -3279,8 +3279,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = EnvironmentVariables.ResourcePath;
             var sameResourceId = Guid.NewGuid();
             //------------Setup for test--------------------------            
-            var resourcePath = path + "\\MyTest\\Folder1";
-            var resourcePath1 = path + "\\MyTest\\Folder2";
+            var resourcePath = Path.Combine(path, "MyTest", "Folder1");
+            var resourcePath1 = Path.Combine(path, "MyTest", "Folder2");
             //------------Setup for test--------------------------         
             var catalog = new ResourceCatalog();
             Directory.CreateDirectory(path);
@@ -3524,7 +3524,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var workspaceID = GlobalConstants.ServerWorkspaceID;
 
             var sourceLocation = "Duplicate_Source";
-            var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+            var path = Path.Combine(EnvironmentVariables.ResourcePath, sourceLocation);
             Directory.CreateDirectory(path);
             const string resourceName = "wolf-Test_WF_";
             const string resourceName2 = "wolf-Test_Inner_WF_";
@@ -3533,7 +3533,7 @@ namespace Dev2.Tests.Runtime.Hosting
             const int numOfTestWFs2 = 2; 
             SaveTestResources(path, resourceName, out List<string> workflows, out List<Guid> resourceIds, numOfTestWFs);
             
-            SaveTestResources(path + "\\Duplicate_Source_Inner", resourceName2, out List<string> workflows2, out List<Guid> resourceIds2, numOfTestWFs2);
+            SaveTestResources(Path.Combine(path, "Duplicate_Source_Inner"), resourceName2, out List<string> workflows2, out List<Guid> resourceIds2, numOfTestWFs2);
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
@@ -3551,7 +3551,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Precondition-----------------
             var afterNames = string.Join(", ", resultAfterDuplicateF.Select(r => r.ResourceName));
             var sourceDirExists = Directory.Exists(path);
-            var destDir = EnvironmentVariables.ResourcePath + "\\Duplicate_Destination";
+            var destDir = Path.Combine(EnvironmentVariables.ResourcePath, "Duplicate_Destination");
             var destDirExists = Directory.Exists(destDir);
             var destFiles = destDirExists ? string.Join(", ", Directory.GetFiles(destDir, "*", SearchOption.AllDirectories)) : "<dir missing>";
             Assert.AreEqual(numOfWfs * 2, resultAfterDuplicateF.Count, $"Expected {numOfWfs * 2} workflows after DuplicateFolder but got {resultAfterDuplicateF.Count}. DuplicateFolder status: {resourceCatalogResult.Status}, message: {resourceCatalogResult.Message}. Source dir '{path}' exists: {sourceDirExists}. Dest dir '{destDir}' exists: {destDirExists}. Dest files: [{destFiles}]. All resource names: [{afterNames}]");
@@ -3639,7 +3639,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 var workspaceID = GlobalConstants.ServerWorkspaceID;
 
                 var sourceLocation = "ResourceCatalogParseMethodTests";
-                var path = EnvironmentVariables.ResourcePath + "\\" + sourceLocation;
+                var path = Path.Combine(EnvironmentVariables.ResourcePath, sourceLocation);
                 Directory.CreateDirectory(path);
                 const string resourceName = "wolf-Test_WF_";
 

@@ -117,7 +117,18 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         ResourceCatalogResult UpdateResourcePath(Guid workspaceID, IResource resource, string oldCategory, string newCategory)
         {
-            var oldPath = resource.GetSavePath();
+            // IResource.GetSavePath() always resolves against GlobalConstants.ServerWorkspaceID,
+            // which only matches resource.FilePath for resources that actually live in the server
+            // workspace. Recompute it here against the caller's real workspaceID instead, so this
+            // still resolves correctly for resources in a non-server workspace (e.g. a Studio session
+            // workspace, or workspaceID values used in tests).
+            var resourcePath = resource.GetResourcePath(workspaceID);
+            var oldPath = resourcePath;
+            var resourceNameIndex = resourcePath.LastIndexOf(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
+            if (resourceNameIndex >= 0)
+            {
+                oldPath = resourcePath.Substring(0, resourceNameIndex);
+            }
             var newPath = newCategory;
             if (!string.IsNullOrEmpty(oldPath))
             {
