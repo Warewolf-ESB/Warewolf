@@ -2183,6 +2183,25 @@ function Start-LightweightExecution {
     if (-not $env:AzureFunctionsJobHost__Logging__LogLevel__Default) {
         $env:AzureFunctionsJobHost__Logging__LogLevel__Default = 'Debug'
     }
+    # DIAGNOSTIC (build 30817, 2026-09-24): on Linux the host logs "Restarting host." ~31s after
+    # its lease is acquired but never says why - the reason is a Debug message ("Restart requested.
+    # Reason '...'") on the Host.General category, which Default=Debug alone did not surface.
+    # Raise the host system categories explicitly so warewolf-server.log records the trigger.
+    if (-not ${env:AzureFunctionsJobHost__Logging__LogLevel__Host.General}) {
+        ${env:AzureFunctionsJobHost__Logging__LogLevel__Host.General} = 'Debug'
+    }
+    if (-not ${env:AzureFunctionsJobHost__Logging__LogLevel__Host.Startup}) {
+        ${env:AzureFunctionsJobHost__Logging__LogLevel__Host.Startup} = 'Debug'
+    }
+    # DIAGNOSTIC experiment: every startup logs "'ServiceBusWorkflowTrigger' function is in error ...
+    # '%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%' does not resolve to a value". Give the trigger a resolvable
+    # queue name AND a syntactically valid (unreachable, placeholder) connection string - the queue
+    # name alone would only swap one indexing error for a missing-connection one - to see whether a
+    # function left in error is what provokes the host restart. Caller-supplied values win.
+    if (-not $env:WAREWOLF_SERVICEBUS_TRIGGER_QUEUE) { $env:WAREWOLF_SERVICEBUS_TRIGGER_QUEUE = 'ci-dummy-trigger-queue' }
+    if (-not $env:ServiceBusConnection) {
+        $env:ServiceBusConnection = 'Endpoint=sb://ci-dummy.servicebus.windows.net/;SharedAccessKeyName=ci;SharedAccessKey=ZHVtbXk='
+    }
     # Disable dynamic concurrency (snapshot persistence) and the host health
     # monitor. Both features acquire a "primary host" lease at startup and can
     # make the WebJobs Script Host restart itself once fully up (observed as
