@@ -1610,6 +1610,26 @@ foreach ($planned in $plannedApps) {
             $existingPrincipalId = Invoke-Az -AzArgs @('containerapp', 'show', '--name', $appName,
                                                        '--resource-group', $ResourceGroup,
                                                        '--query', 'identity.principalId', '-o', 'tsv') -AllowFail
+
+            if (-not $existingPrincipalId) {
+                # An app can exist with NO identity: 'containerapp create --system-assigned' has a
+                # known azure-cli 'containerapp' extension race (KeyError: 'principalId' in
+                # construct_for_post_process) where the ARM resource is created successfully but the
+                # CLI crashes before the identity assignment is reflected back to the caller.
+                # Observed live 2026-09-24 (build 30814, DEV2/wwqp-loadtest-profilerloadt-4647): the
+                # app existed afterwards with identity.type=None. This UPDATE branch only ever passed
+                # --system-assigned on CREATE, so without this the app is a permanent zombie -
+                # $existingPrincipalId stays blank on every future run and both
+                # Grant-AppIdentityRoles and Grant-EngineAppRole below silently no-op on it.
+                Write-Note "App '$appName' exists but has no managed identity - assigning one now."
+                Invoke-Az -AzArgs @('containerapp', 'identity', 'assign', '--name', $appName,
+                                    '--resource-group', $ResourceGroup,
+                                    '--system-assigned', '-o', 'none') -Mutating | Out-Null
+                $existingPrincipalId = Invoke-Az -AzArgs @('containerapp', 'show', '--name', $appName,
+                                                           '--resource-group', $ResourceGroup,
+                                                           '--query', 'identity.principalId', '-o', 'tsv') -AllowFail
+            }
+
             if ($existingPrincipalId) { Grant-AppIdentityRoles -PrincipalId $existingPrincipalId }
 
             # Ensure the registry is wired for managed-identity pull. 'create' passes

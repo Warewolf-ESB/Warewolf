@@ -743,6 +743,16 @@ Describe 'Deploy-WwQueueProcessor — DryRun end-to-end' {
             # (group missing) unless a test opts in via $global:rgExists, so the existing suite -
             # which never sets it - keeps exercising the "group is missing, create it" branch.
             if (($args -join ' ') -match '^group exists') { return $(if ($global:rgExists) { 'true' } else { 'false' }) }
+            # The $exists probe ('containerapp show ... --query name'). Defaults to '' (app
+            # missing) unless a test opts in via $global:appExists, so the existing suite - which
+            # never sets it - keeps exercising the create branch.
+            if (($args -join ' ') -match 'containerapp show .*--query name') {
+                return $(if ($global:appExists) { 'existing-app-name' } else { '' })
+            }
+            # identity.principalId on an existing app. Settable per test via
+            # $global:existingPrincipalId so a case can simulate an app that exists but has no
+            # managed identity yet (blank), then verify the self-heal assigns one.
+            if (($args -join ' ') -match 'identity\.principalId') { return $global:existingPrincipalId }
             return ''
         }
     }
@@ -750,6 +760,8 @@ Describe 'Deploy-WwQueueProcessor — DryRun end-to-end' {
     AfterAll {
         Remove-Item Function:\az -ErrorAction SilentlyContinue
         Remove-Variable -Name rgExists -Scope Global -ErrorAction SilentlyContinue
+        Remove-Variable -Name appExists -Scope Global -ErrorAction SilentlyContinue
+        Remove-Variable -Name existingPrincipalId -Scope Global -ErrorAction SilentlyContinue
     }
 
     It 'resolves one trigger, derives the plan, and performs NO mutating az call' {
@@ -961,6 +973,67 @@ Describe 'Deploy-WwQueueProcessor — DryRun end-to-end' {
 
         $out | Should -Match 'DISABLED: Concurrency = 0'
         $out | Should -Not -Match 'KEDA rule set'
+    }
+
+    It 'assigns a system identity to an EXISTING app that has none' {
+        # 'az containerapp create --system-assigned' has a known azure-cli 'containerapp' extension
+        # race (KeyError: 'principalId' in construct_for_post_process) where the ARM resource is
+        # created successfully but the CLI crashes before the identity assignment is reflected back.
+        # Observed live 2026-09-24 (build 30814, DEV2/wwqp-loadtest-profilerloadt-4647): the app
+        # existed with identity.type=None afterwards. The UPDATE branch only ever passed
+        # --system-assigned on CREATE, so without a self-heal here such an app is a permanent
+        # zombie - $existingPrincipalId stays blank on every future run and both
+        # Grant-AppIdentityRoles and Grant-EngineAppRole silently no-op on it.
+        $global:azCalls            = @()
+        $global:appExists          = $true
+        $global:existingPrincipalId = ''
+        try {
+            $out = & $script:DeployScript `
+                -ResourceGroup RG -Location southafricanorth `
+                -AcaEnvironment aca-test -Image 'acr.azurecr.io/wwqp@sha256:abc' `
+                -TriggerFilePath (Join-Path $script:FixtureDir 'triggers-mandate.bite') `
+                -QueueSourcePath $script:FixtureDir `
+                -EngineBaseUrl 'https://engine' -EngineResourceAppId 'app-1' `
+                -RabbitMqSecretUri 'https://kv.vault.azure.net/secrets/rabbit' `
+                -DryRun -NonInteractive 6>&1 | Out-String
+
+            # No create at all - this is the update path for an app that already exists.
+            $out | Should -Not -Match '\[DRYRUN\] az containerapp create'
+            $out | Should -Match "\[DRYRUN\] az containerapp identity assign.*--system-assigned" `
+                -Because 'an existing app with no identity must have one assigned before anything else touches it'
+
+            $assignIdx = $out.IndexOf('containerapp identity assign')
+            $updateIdx = $out.IndexOf('[DRYRUN] az containerapp update')
+            $assignIdx | Should -BeGreaterThan 0
+            $updateIdx | Should -BeGreaterThan 0
+            $assignIdx | Should -BeLessThan $updateIdx -Because 'the identity must exist before the image-bearing update runs'
+        } finally {
+            $global:appExists           = $false
+            $global:existingPrincipalId = ''
+        }
+    }
+
+    It 'does NOT re-assign identity for an EXISTING app that already has one' {
+        # The common case: an existing, healthy app. Re-assigning on every run would be harmless
+        # (the call is idempotent) but noisy and slower, so the self-heal must be conditional.
+        $global:azCalls             = @()
+        $global:appExists           = $true
+        $global:existingPrincipalId = 'MI-ALREADY-PRESENT'
+        try {
+            $out = & $script:DeployScript `
+                -ResourceGroup RG -Location southafricanorth `
+                -AcaEnvironment aca-test -Image 'acr.azurecr.io/wwqp@sha256:abc' `
+                -TriggerFilePath (Join-Path $script:FixtureDir 'triggers-mandate.bite') `
+                -QueueSourcePath $script:FixtureDir `
+                -EngineBaseUrl 'https://engine' -EngineResourceAppId 'app-1' `
+                -RabbitMqSecretUri 'https://kv.vault.azure.net/secrets/rabbit' `
+                -DryRun -NonInteractive 6>&1 | Out-String
+
+            $out | Should -Not -Match 'containerapp identity assign'
+        } finally {
+            $global:appExists           = $false
+            $global:existingPrincipalId = ''
+        }
     }
 }
 
