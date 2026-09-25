@@ -2187,6 +2187,8 @@ function Start-LightweightExecution {
     # its lease is acquired but never says why - the reason is a Debug message ("Restart requested.
     # Reason '...'") on the Host.General category, which Default=Debug alone did not surface.
     # Raise the host system categories explicitly so warewolf-server.log records the trigger.
+    # (Build 30825: still no reason logged; the restart came ~1.7s after `dotnet test` started, i.e.
+    # the test host's coverage profiler - see the coverage.runsettings gate in the retry loop.)
     if (-not ${env:AzureFunctionsJobHost__Logging__LogLevel__Host.General}) {
         ${env:AzureFunctionsJobHost__Logging__LogLevel__Host.General} = 'Debug'
     }
@@ -2251,8 +2253,11 @@ function Start-LightweightExecution {
                 $hostJson | Add-Member -MemberType NoteProperty -Name healthMonitor -Value ([pscustomobject]@{})
             }
             $hostJson.healthMonitor | Add-Member -MemberType NoteProperty -Name enabled -Value $false -Force
+            # $runDir is also the test step's working directory, so anything the test run creates
+            # there would otherwise be seen by the host's file watcher and restart the host.
+            $hostJson | Add-Member -MemberType NoteProperty -Name fileWatchingEnabled -Value $false -Force
             $hostJson | ConvertTo-Json -Depth 10 | Set-Content $hostJsonPath -Encoding UTF8
-            Write-Host "host.json patched: concurrency.dynamicConcurrencyEnabled=false, concurrency.snapshotPersistenceEnabled=false, healthMonitor.enabled=false (avoids known worker-indexing restart bug)"
+            Write-Host "host.json patched: concurrency.dynamicConcurrencyEnabled=false, concurrency.snapshotPersistenceEnabled=false, healthMonitor.enabled=false, fileWatchingEnabled=false (avoids known worker-indexing restart bug)"
         } catch {
             Write-Warn "Failed to patch host.json at $hostJsonPath for concurrency/healthMonitor overrides: $_"
         }
@@ -2337,6 +2342,10 @@ function Start-LightweightExecution {
     )
     $diagLines | ForEach-Object { Write-Host $_ }
     $diagLines | Out-File -FilePath $diagFile -Encoding utf8 -Force
+    # Stop-Engine diffs against this to show what the test run added to the host's script root.
+    $script:_engineDiagFile = $diagFile
+    $script:_engineRunDir   = $runDir
+    $script:_runDirSnapshot = @(Get-ChildItem -LiteralPath $runDir -Force -ErrorAction SilentlyContinue | ForEach-Object { Format-DirEntry $_ })
     if ($CoverageDir) {
         $null = New-Item -Path $CoverageDir -ItemType Directory -Force
         $sid = if ($EngineSessionId) { $EngineSessionId } else { [guid]::NewGuid().ToString("N") }
@@ -2382,6 +2391,18 @@ function Start-WarewolfServer {
 }
 
 function Stop-Engine {
+    if ($script:_engineDiagFile -and $script:_engineRunDir) {
+        $now = @(Get-ChildItem -LiteralPath $script:_engineRunDir -Force -ErrorAction SilentlyContinue |
+            ForEach-Object { if ($_.PSIsContainer) { "[D] $($_.Name)" } else { "[F] $($_.Name)" } })
+        $added   = @($now | Where-Object { $script:_runDirSnapshot -cnotcontains $_ })
+        $removed = @($script:_runDirSnapshot | Where-Object { $now -cnotcontains $_ })
+        $changeLines = @("", "RunDir top-level changes while the engine ran (captured $(Get-Date -Format o)):")
+        if ($added.Count -eq 0 -and $removed.Count -eq 0) { $changeLines += "  (none)" }
+        $changeLines += @($added | ForEach-Object { "  + $_" }) + @($removed | ForEach-Object { "  - $_" })
+        $changeLines | ForEach-Object { Write-Host $_ }
+        $changeLines | Out-File -FilePath $script:_engineDiagFile -Encoding utf8 -Append
+        $script:_engineDiagFile = $null
+    }
     if ($script:_sessionId) {
         Write-Host "Shutting down dotnet-coverage session $($script:_sessionId)..."
         # A shutdown timeout ("The operation has timed out.") must not bubble up
@@ -3219,7 +3240,7 @@ if ($STA.IsPresent -or $Sequential.IsPresent) {
     # a single /Settings file).
     $covInline = ""
     $covSrc = $CoverageSettings
-    if (-not $covSrc) {
+    if (-not $covSrc -and $Coverage.IsPresent) {
         $autoCov = Join-Path $PSScriptRoot 'coverage.runsettings'
         if (Test-Path $autoCov) { $covSrc = $autoCov }
     }
@@ -3298,8 +3319,11 @@ try {
             if ($UNCPassword) {
                 "net use \\localhost\FileSystemShareTestingSite /user:Administrator $UNCPassword" | Out-File "$TestResultsPath\RunTests.ps1" -Encoding ascii -Append
             }
+            # coverage.runsettings declares the Code Coverage DataCollector itself, so auto-attaching it
+            # under -Coverage:$false still profiles the test host; beside an engine already wrapped in
+            # dotnet-coverage that second profiler corrupts the engine's assembly loading (build 30825).
             $effectiveCovSettings = $CoverageSettings
-            if (-not $effectiveCovSettings) {
+            if (-not $effectiveCovSettings -and $Coverage.IsPresent) {
                 $autoCov = Join-Path $PSScriptRoot 'coverage.runsettings'
                 if (Test-Path $autoCov) { $effectiveCovSettings = $autoCov }
             }
