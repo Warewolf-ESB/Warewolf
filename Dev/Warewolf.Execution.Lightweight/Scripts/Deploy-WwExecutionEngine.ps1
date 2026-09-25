@@ -246,6 +246,11 @@
     `az functionapp scale config set --maximum-instance-count` (which is Flex-only; the classic
     plan rejects it).  The SAME broker-connection-budget reasoning in -FunctionAppScaleLimit
     applies: instance count is what spends the budget.  Ignored unless -HostingPlan Flex.
+    Flex differs in ONE way that matters (build 30857, 2026-09-25): it brings the whole cap up
+    at once instead of ramping, so every instance cold-starts together.  An engine older than
+    the single-flight fix in LightweightRabbitMqConnectionCache.AcquireCore opens one connection
+    per CONCURRENT EXECUTION on a cold miss, so on those builds budget
+    instances x maxConcurrentExecutions + other vhost users < vhost limit, not instances alone.
 
 .PARAMETER FlexDeploymentStorageContainerName
     OPT-IN.  Names the blob container Flex Consumption deploys the package into.  Left unset,

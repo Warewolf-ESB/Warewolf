@@ -509,3 +509,19 @@ Both are reversible and neither is required by the product:
 |---|---|---|
 | `Modify` on `C:\ProgramData\Warewolf\Server Settings\persistencesettings.json` for the current user | `ManualResumption*` / `SuspendExecution*` write it; CI agents run elevated | `icacls "<path>" /remove:g "<user>"` |
 | Regional settings set to CI's values — notably `sDecimal` `,` → `.` | `DateTime.ParseExact` of `…53.7555` fails when the decimal separator is a comma; this, not the locale, was the real cause of the date failures | restore from `regional-backup.json` |
+
+## 13. Cold-miss single-flight (2026-09-25, build 30857)
+
+§4's insert race was handled by "create, `TryAdd`, dispose the loser" — correct for leaks, but every
+concurrent cold miss still completed a full handshake first. On Flex Consumption, which starts its
+whole instance cap at once, that briefly held `maxConcurrentExecutions` connections per instance and
+exceeded a 40-connection CloudAMQP vhost (see `ShovelBridge-Architecture.md`, build 30857).
+
+`AcquireCore` now takes a per-key lock (`_createLocks`) on the **miss path only**, re-checks the map,
+evicts a stale entry it finds there, and only then calls the factory. Warm hits never lock; different
+keys never block each other; a factory failure still propagates to its own caller, and queued callers
+try the factory themselves rather than inheriting the error. Tests:
+`Cache_ConcurrentColdAcquire_SameKey_OpensExactlyOneConnection`,
+`…_DifferentKeys_DoNotSerialiseEachOther`, `…_FactoryThrows_PropagatesAndNextAcquireSucceeds`,
+`Cache_ColdAcquireAfterEviction_StillSingleFlight` — the first, third and fourth fail (16/4/16
+handshakes) with the lock removed, and the second fails with a single cache-wide lock.

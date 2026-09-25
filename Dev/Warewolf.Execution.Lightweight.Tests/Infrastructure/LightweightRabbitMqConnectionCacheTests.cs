@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -671,6 +672,225 @@ namespace Warewolf.Execution.Lightweight.Tests.Infrastructure
             {
                 Assert.AreEqual(1, c.DisposeCount,
                     "every connection created during the race must be disposed exactly once");
+            }
+        }
+
+        // ── Single-flight creation: the Flex cold-start burst (build 30857) ─────────────────────
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(LightweightRabbitMqConnectionCache))]
+        public void Cache_ConcurrentColdAcquire_SameKey_OpensExactlyOneConnection()
+        {
+            // Every execution on a freshly started instance misses the cache at once. Each one opening
+            // its own socket is what put 30 Flex instances x 2 executions over a 40-connection vhost.
+            var f = new Fixture();
+            var factory = new BlockingFactory(f);
+
+            var burst = ColdBurst.Start(f.Cache, KeyA, factory, callers: 16);
+            burst.ReleaseAndWait(factory);
+
+            Assert.AreEqual(1, factory.Calls, "concurrent misses on one key must share a single handshake");
+            Assert.AreEqual(0, burst.Errors.Count, string.Join("; ", burst.Errors));
+            Assert.AreEqual(16, burst.Leases.Count);
+            foreach (var lease in burst.Leases)
+            {
+                Assert.AreSame(burst.Leases[0].Connection, lease.Connection);
+                Assert.IsTrue(lease.IsCached);
+            }
+            Assert.AreEqual(0, f.Cache.UncachedFallbacks);
+            Assert.AreEqual(1, f.Cache.ConnectionsCreated);
+            Assert.AreEqual(0, f.Cache.ConnectionsDisposed, "no connection may be opened only to be thrown away");
+
+            burst.DisposeLeases();
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(LightweightRabbitMqConnectionCache))]
+        public void Cache_ConcurrentColdAcquire_DifferentKeys_DoNotSerialiseEachOther()
+        {
+            // The gate is per key: a slow handshake to one broker must not stall publishes to another.
+            var f = new Fixture();
+            var slowA = new BlockingFactory(f);
+
+            var burst = ColdBurst.Start(f.Cache, KeyA, slowA, callers: 1);
+
+            var acquireB = Task.Run(() =>
+            {
+                using (var lease = f.Cache.Acquire(KeyB, f.NewConnection))
+                {
+                    return lease.IsCached;
+                }
+            });
+
+            Assert.IsTrue(acquireB.Wait(TimeSpan.FromSeconds(10)),
+                "key B was blocked behind key A's in-flight connection creation");
+            Assert.IsTrue(acquireB.Result);
+
+            burst.ReleaseAndWait(slowA);
+            Assert.AreEqual(0, burst.Errors.Count, string.Join("; ", burst.Errors));
+            burst.DisposeLeases();
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(LightweightRabbitMqConnectionCache))]
+        public void Cache_ConcurrentColdAcquire_FactoryThrows_PropagatesAndNextAcquireSucceeds()
+        {
+            // The caller whose handshake failed must see the real error. The callers queued behind it
+            // must not inherit that error: they try the factory themselves, and only one of them opens.
+            var f = new Fixture();
+            var factory = new BlockingFactory(f, failFirstCall: true);
+
+            var burst = ColdBurst.Start(f.Cache, KeyA, factory, callers: 4);
+            burst.ReleaseAndWait(factory);
+
+            Assert.AreEqual(1, burst.Errors.Count, "exactly the failed handshake's caller sees an error");
+            StringAssert.Contains(burst.Errors[0], nameof(TimeoutException));
+            Assert.AreEqual(3, burst.Leases.Count);
+            foreach (var lease in burst.Leases)
+            {
+                Assert.AreSame(burst.Leases[0].Connection, lease.Connection);
+            }
+            Assert.AreEqual(2, factory.Calls, "one failed attempt, then one shared success");
+            Assert.AreEqual(1, f.Cache.CachedEntryCount, "the failure must leave nothing half-inserted");
+
+            burst.DisposeLeases();
+
+            using (var lease = f.Cache.Acquire(KeyA, f.NewConnection))
+            {
+                Assert.AreSame(f.Created[0], lease.Connection, "the recovered connection is reused afterwards");
+            }
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory(nameof(LightweightRabbitMqConnectionCache))]
+        public void Cache_ColdAcquireAfterEviction_StillSingleFlight()
+        {
+            // Replacement is a cold start too: once the idle entry expires, every waiting execution
+            // misses at once, exactly as on a new instance.
+            var f = new Fixture(idle: TimeSpan.FromMinutes(5));
+
+            IConnection original;
+            using (var lease = f.Cache.Acquire(KeyA, f.NewConnection))
+            {
+                original = lease.Connection;
+            }
+
+            f.Clock.Advance(TimeSpan.FromMinutes(6));
+
+            var factory = new BlockingFactory(f);
+            var burst = ColdBurst.Start(f.Cache, KeyA, factory, callers: 16);
+            burst.ReleaseAndWait(factory);
+
+            Assert.AreEqual(1, factory.Calls, "concurrent misses after eviction must share one replacement");
+            Assert.AreEqual(0, burst.Errors.Count, string.Join("; ", burst.Errors));
+            foreach (var lease in burst.Leases)
+            {
+                Assert.AreNotSame(original, lease.Connection);
+                Assert.AreSame(burst.Leases[0].Connection, lease.Connection);
+            }
+            Assert.AreEqual(1, ((FakeConnection)original).DisposeCount, "the expired connection is closed exactly once");
+
+            burst.DisposeLeases();
+        }
+
+        /// <summary>
+        /// A connection factory that parks inside the handshake until released, so a test can pile
+        /// callers up behind a cold miss exactly the way a burst of executions does.
+        /// </summary>
+        sealed class BlockingFactory
+        {
+            readonly Fixture _fixture;
+            readonly bool _failFirstCall;
+            readonly ManualResetEventSlim _release = new ManualResetEventSlim(false);
+            int _calls;
+
+            internal BlockingFactory(Fixture fixture, bool failFirstCall = false)
+            {
+                _fixture = fixture;
+                _failFirstCall = failFirstCall;
+            }
+
+            internal readonly ManualResetEventSlim Entered = new ManualResetEventSlim(false);
+            internal int Calls => Volatile.Read(ref _calls);
+
+            internal void Release() => _release.Set();
+
+            internal IConnection Create()
+            {
+                var call = Interlocked.Increment(ref _calls);
+                Entered.Set();
+                _release.Wait();
+
+                if (_failFirstCall && call == 1)
+                {
+                    throw new TimeoutException("broker unreachable");
+                }
+                return _fixture.NewConnection();
+            }
+        }
+
+        /// <summary>Starts N concurrent acquires of one key and collects their leases and errors.</summary>
+        sealed class ColdBurst
+        {
+            readonly Task[] _callers;
+            internal readonly List<IRabbitMqConnectionLease> Leases = new List<IRabbitMqConnectionLease>();
+            internal readonly List<string> Errors = new List<string>();
+
+            ColdBurst(int callers) => _callers = new Task[callers];
+
+            internal static ColdBurst Start(
+                LightweightRabbitMqConnectionCache cache, string key, BlockingFactory factory, int callers)
+            {
+                var burst = new ColdBurst(callers);
+                var started = new CountdownEvent(callers);
+
+                for (var i = 0; i < callers; i++)
+                {
+                    burst._callers[i] = Task.Factory.StartNew(() =>
+                    {
+                        started.Signal();
+                        try
+                        {
+                            var lease = cache.Acquire(key, factory.Create);
+                            lock (burst.Leases) { burst.Leases.Add(lease); }
+                        }
+                        catch (Exception ex)
+                        {
+                            lock (burst.Errors) { burst.Errors.Add(ex.GetType().Name + ": " + ex.Message); }
+                        }
+                    }, TaskCreationOptions.LongRunning);
+                }
+
+                Assert.IsTrue(started.Wait(TimeSpan.FromSeconds(10)), "callers did not start");
+                Assert.IsTrue(factory.Entered.Wait(TimeSpan.FromSeconds(10)), "no caller reached the factory");
+
+                // Give every other caller time to reach the miss path. Without single-flight they are
+                // all inside the factory by now, which is what the assertions then catch; with it they
+                // are queued on the key's gate. The wait only ever makes the defect MORE visible.
+                Thread.Sleep(250);
+                return burst;
+            }
+
+            internal void ReleaseAndWait(BlockingFactory factory)
+            {
+                factory.Release();
+                Assert.IsTrue(Task.WaitAll(_callers, TimeSpan.FromSeconds(30)), "callers did not finish");
+            }
+
+            internal void DisposeLeases()
+            {
+                foreach (var lease in Leases)
+                {
+                    lease.Dispose();
+                }
             }
         }
 

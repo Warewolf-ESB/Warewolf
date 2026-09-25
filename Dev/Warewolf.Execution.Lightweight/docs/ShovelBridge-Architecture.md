@@ -2690,6 +2690,33 @@ consequences worth knowing before copying the pattern to another rig:
     `Profiler.ProfilerRecommendation` rows (0 missing, 0 duplicate) alongside the three
     dead-letters; only `…-003181` left a gap, the single missing `Profiler.MandateScores` row
     (19999/20000). Reconcile both tables before calling a dead-letter data loss.
+- **2026-09-25 — build 30857: first 20k run on Flex, 19998/20000; the broker connection limit is
+  back, and this time it is a cold-start burst, not steady state.** Shovel, Service Bus and
+  database were all clean (20000 `ProfilerRecommendation` rows, 0 missing, 0 duplicate). The two
+  failures were result-publishes on the FIRST wave (`…-000036`, `…-000042`):
+  `NOT_ALLOWED - access to vhost 'bmkzdabu' refused: connection limit (40) is reached`.
+  - **Why 30 stopped being safe.** The cap of 30 was measured on the classic plan, where instances
+    ramped over ~14 minutes (13 → 24 → 32 of 40). Flex brings its whole cap up at once — the drain
+    ran at ~23 msg/s against the classic baseline's 4.2 — so every instance cold-starts together.
+  - **The code path.** `LightweightRabbitMqConnectionCache.AcquireCore` called `factory()` before
+    `TryAdd`, so concurrent misses on one instance each opened a socket and the losers discarded
+    theirs after the handshake: briefly `maxConcurrentExecutions` (2) connections per instance —
+    up to 60 against a limit of 40. Fixed by per-key single-flight creation (the miss path takes a
+    per-key lock and re-checks; warm hits stay lock-free), covered by four
+    `Cache_ConcurrentColdAcquire_*` / `Cache_ColdAcquireAfterEviction_*` tests, each confirmed to
+    fail with its defect re-injected.
+  - **Also on the vhost:** ~4 long-lived connections from the DEV2 Container Apps outbound IP pool
+    (QueueProcessor/KEDA), which the original budget never counted.
+  - **Stopgap:** `-FlexMaximumInstanceCount 16` — `(40 − 4) / 2 = 18`, less headroom. It matters
+    most in the two `ProfilerService-CI-*` files, which deploy the RELEASED engine zip and so keep
+    the old `AcquireCore` until a release carries the fix. `pipeline-LOADTEST.yml` `dotnet publish`es
+    from source, so its engine has the fix from the next run on. Once an engine with the fix is
+    deployed, the burst is 1 per instance again and the cap can return toward 30; confirm by
+    sampling `/api/connections` through the first two minutes of a run.
+  - Confidence: **high** for the failure and the code path (log and source read directly);
+    **medium** for "all instances started together" — inferred from throughput and from which
+    messages failed, because App Insights for `warewolfserver-uat-ai` could not be queried
+    (no read access to its managed workspace).
 
 
 ## Promotion status

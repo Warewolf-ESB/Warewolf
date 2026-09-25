@@ -54,6 +54,10 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
     readonly RabbitMqCacheOptions _options;
     readonly Func<DateTimeOffset> _clock;
     readonly ConcurrentDictionary<string, CacheEntry> _entries = new(StringComparer.Ordinal);
+
+    // One gate per cache key, serialising only connection CREATION (see AcquireCore). Never removed:
+    // keys are broker coordinates, so there are as many as there are distinct brokers - a handful.
+    readonly ConcurrentDictionary<string, object> _createLocks = new(StringComparer.Ordinal);
     readonly Timer? _sweepTimer;
 
     int _disposed;
@@ -209,30 +213,51 @@ public sealed class LightweightRabbitMqConnectionCache : IRabbitMqConnectionCach
                 EvictEntry(key, existing);
             }
 
-            if (_entries.Count >= _options.MaxConnections && !TryEvictIdlest())
+            // Single-flight creation per key. Without it, every execution that misses a cold cache at
+            // the same moment opens its own socket and all but one are discarded after the handshake
+            // — briefly maxConcurrentExecutions connections per instance. On Flex Consumption, which
+            // brings its whole instance cap up at once, that burst (30 instances x 2) broke a
+            // 40-connection CloudAMQP vhost in build 30857 even though the steady state is 1 per
+            // instance. Only the miss path is serialised; a warm hit above never takes this lock.
+            lock (_createLocks.GetOrAdd(key, _ => new object()))
             {
-                // At capacity and every cached connection is actively in use. Evicting one of those
-                // would not free anything (its lease keeps it alive) and would only destroy a warm
-                // entry, so serve this publish uncached instead.
-                return Uncached(factory);
+                // Whoever held the lock before us may have just created it.
+                if (_entries.TryGetValue(key, out var created))
+                {
+                    if (IsUsable(created) && TryAddRef(created))
+                    {
+                        return new CachedLease(this, key, created);
+                    }
+
+                    EvictEntry(key, created);
+                }
+
+                if (_entries.Count >= _options.MaxConnections && !TryEvictIdlest())
+                {
+                    // At capacity and every cached connection is actively in use. Evicting one of those
+                    // would not free anything (its lease keeps it alive) and would only destroy a warm
+                    // entry, so serve this publish uncached instead.
+                    return Uncached(factory);
+                }
+
+                var connection = factory();
+                var entry = new CacheEntry(connection, _clock().UtcTicks,
+                    _options.ChannelPool
+                        ? new RabbitMqChannelPool(connection, _options.MaxChannelsPerConnection)
+                        : null);
+
+                if (_entries.TryAdd(key, entry))
+                {
+                    Interlocked.Increment(ref _connectionsCreated);
+                    return new CachedLease(this, key, entry);
+                }
+
+                // Defensive only: every insert happens under this key's lock and the re-check above
+                // evicted any stale entry, so nothing should be mapped here. Drop ours rather than
+                // leaking it, then loop. Zero the count first so nothing can hand this entry out.
+                Volatile.Write(ref entry.RefCount, 0);
+                DisposeConnection(connection);
             }
-
-            var connection = factory();
-            var entry = new CacheEntry(connection, _clock().UtcTicks,
-                _options.ChannelPool
-                    ? new RabbitMqChannelPool(connection, _options.MaxChannelsPerConnection)
-                    : null);
-
-            if (_entries.TryAdd(key, entry))
-            {
-                Interlocked.Increment(ref _connectionsCreated);
-                return new CachedLease(this, key, entry);
-            }
-
-            // Another thread inserted first. Drop ours rather than leaking it, then loop and take
-            // theirs. Zero the count first so nothing can hand this entry out.
-            Volatile.Write(ref entry.RefCount, 0);
-            DisposeConnection(connection);
         }
 
         return Uncached(factory);
