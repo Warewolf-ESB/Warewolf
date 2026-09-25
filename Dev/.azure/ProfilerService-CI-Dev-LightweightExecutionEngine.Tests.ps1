@@ -321,6 +321,18 @@ Describe 'ProfilerService-CI-Dev pipeline - ShovelBridge is gone, and removed if
         (Get-StepIndex $script:Dev 'Validate Dev QueueProcessor prerequisites') |
             Should -BeLessThan (Get-StepIndex $script:Dev 'Download Lightweight Engine Package')
     }
+
+    # Build 30835: both were '' in the YAML. A YAML-declared variable shadows a UI/queue-time value
+    # of the same name, so an empty one here can never be fixed from the pipeline definition.
+    It 'declares ProfilerEngineEntraAppId as a GUID in the YAML itself' {
+        $script:Dev['variables']['ProfilerEngineEntraAppId'] |
+            Should -Match '^[0-9a-fA-F]{8}(-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}$'
+    }
+
+    It 'declares ProfilerWorkerRabbitMqSecretUri as a Key Vault secret URI in the YAML itself' {
+        $script:Dev['variables']['ProfilerWorkerRabbitMqSecretUri'] |
+            Should -Match '^https://[^/]+\.vault\.azure\.net/secrets/[^/]+'
+    }
 }
 
 Describe 'ProfilerService-CI-Dev pipeline - QueueProcessor deploy' -Skip:(-not $script:HaveYaml) {
