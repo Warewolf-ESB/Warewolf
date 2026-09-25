@@ -205,9 +205,12 @@ function Invoke-RabbitMqApi {
 
 function Get-OptionalProperty {
     <# $Object.$Name, or $null when it is absent — StrictMode Latest throws on a
-       missing property, and every field below is broker- and state-dependent. #>
+       missing property, and every field below is broker- and state-dependent.
+       Looked up with Properties[$Name], not Properties.Name: the broker sends an
+       uncapped queue's arguments as an empty {} object, and member enumeration
+       of .Name over zero properties throws under StrictMode too (build 30847). #>
     param($Object, [Parameter(Mandatory)][string] $Name)
-    if ($null -eq $Object -or $Object.PSObject.Properties.Name -notcontains $Name) { return $null }
+    if ($null -eq $Object -or $null -eq $Object.PSObject.Properties[$Name]) { return $null }
     return $Object.$Name
 }
 

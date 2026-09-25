@@ -85,6 +85,10 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
         # or as a queue argument (arguments.x-max-length). $null = uncapped.
         $global:policyMaxLength   = $null
         $global:argumentMaxLength = $null
+        # $true sends every absent optional object as an empty {} instead of
+        # omitting it, as a real broker does for a queue with no arguments or
+        # policy (build 30847).
+        $global:emptyObjects  = $false
         $global:headMessages  = @()
         $global:apiCalls      = [System.Collections.ArrayList]::new()
         $global:failOnGet     = $false
@@ -112,6 +116,11 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
                 }
                 if ($null -ne $global:argumentMaxLength) {
                     $q.arguments = [pscustomobject]@{ 'x-max-length' = $global:argumentMaxLength }
+                }
+                if ($global:emptyObjects) {
+                    foreach ($k in 'message_stats', 'effective_policy_definition', 'arguments') {
+                        if (-not $q.Contains($k)) { $q[$k] = [pscustomobject]@{} }
+                    }
                 }
                 return [pscustomobject]$q
             }
@@ -204,6 +213,16 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
     }
 
     Context 'failures' {
+
+        It 'treats a queue with empty arguments and policy objects as uncapped' {
+            $global:depthSequence = @(100)
+            $global:emptyObjects  = $true
+            . $script:SinkScript @commonArgs -LoadFunctionsOnly
+            $state = Get-QueueState -VHostName 'bmkzdabu' -Name 'q'
+            $state.Depth     | Should -Be 100
+            $state.MaxLength | Should -Be -1
+            $state.Published | Should -Be -1
+        }
 
         It 'throws when the depth never rises within the window' {
             $global:depthSequence = @(100)
@@ -354,6 +373,23 @@ Describe 'Test-WwSinkDelivery — delivery assertion' {
 
         It 'returns Published -1 when the broker reports no message_stats' {
             $global:depthSequence = @(7)
+            $b = & $script:SinkScript @commonArgs -ReportBaselineOnly
+            $b.Depth     | Should -Be 7
+            $b.Published | Should -Be -1
+        }
+
+        It 'reads an uncapped queue whose arguments and policy are empty objects (build 30847)' {
+            $global:depthSequence     = @(12)
+            $global:publishedSequence = @(900)
+            $global:emptyObjects      = $true
+            $b = & $script:SinkScript @commonArgs -ReportBaselineOnly
+            $b.Depth     | Should -Be 12
+            $b.Published | Should -Be 900
+        }
+
+        It 'returns Published -1 when message_stats is an empty object' {
+            $global:depthSequence = @(7)
+            $global:emptyObjects  = $true
             $b = & $script:SinkScript @commonArgs -ReportBaselineOnly
             $b.Depth     | Should -Be 7
             $b.Published | Should -Be -1
