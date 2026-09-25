@@ -1606,6 +1606,25 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
             $out | Should -Not -Match 'WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'
         }
+
+        It 'disables the trigger in the pre-upload app settings when neither trigger param is supplied' {
+            <#
+                On Flex Consumption az config-zip health-checks the host straight after the upload,
+                so a caller setting this switch in a later step is too late - the deploy itself
+                fails with "Failed to fetch host key". It must be in the app settings this script
+                applies before Phase 4.
+            #>
+            $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+            $out | Should -Match 'AzureWebJobs\.ServiceBusWorkflowTrigger\.Disabled\s*=\s*true'
+        }
+
+        It 'explicitly enables the trigger when both trigger params are supplied' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName    = 'wwexecution-secure-trigger-queue-e2e'
+            $callArgs.ServiceBusTriggerWorkflowName = 'profiler/ProfilerMain'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'AzureWebJobs\.ServiceBusWorkflowTrigger\.Disabled\s*=\s*false'
+        }
     }
 
     Context 'breaking change — required params have no defaults' {

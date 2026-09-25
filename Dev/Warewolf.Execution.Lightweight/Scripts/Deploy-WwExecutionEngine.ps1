@@ -647,6 +647,8 @@ $script:TargetFunctionsVersion    = '4'       # `functionapp create --functions-
 # (Dev2.Common/Config.cs -> GlobalConstants.ServerPathKey). Named here rather than inline so the
 # string cannot drift from the constant it has to match; see where it is set for why Flex needs it.
 $script:LinuxBasePathSettingName  = 'webServerBasePath'
+# Must match ServiceBusTriggerDefinition.DisabledAppSetting (Auth/Models/ServiceBusTriggerDefinition.cs).
+$script:ServiceBusTriggerDisabledSettingName = 'AzureWebJobs.ServiceBusWorkflowTrigger.Disabled'
 
 # Resolved for real in Phase 0.5. Seeded here so Save-DeploySummary is StrictMode-safe no
 # matter how early a run dies (the summary is the rollback's record of intent).
@@ -2061,6 +2063,19 @@ if (-not [string]::IsNullOrWhiteSpace($RabbitMqCacheConfig)) {
 if ($triggerConfigRequired) {
     $appSettings['WAREWOLF_SERVICEBUS_TRIGGER_QUEUE'] = $ServiceBusTriggerQueueName
 }
+
+# The ServiceBusWorkflowTrigger's on/off switch is written on EVERY deploy, in the same
+# appsettings call as everything above - i.e. BEFORE Phase 4 uploads the package. Without the
+# trigger params there is no queue for this app: ServiceBusTriggerDefinition.Load() would read
+# the checked-in dev/sample servicebustrigger.bite and the host could not resolve
+# %WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%, so the engine never comes up healthy. Callers used to set
+# the switch in a step AFTER this script, which worked only while config-zip returned without
+# waiting for the app: on Flex Consumption az now health-checks the host straight after the
+# upload ("Failed to fetch host key to check for function app status"), so a post-deploy fix is
+# too late and a first-time create can never pass. With the params supplied it is written as
+# 'false' so a disable left behind by an earlier trigger-less deploy cannot silently keep a
+# configured trigger off.
+$appSettings[$script:ServiceBusTriggerDisabledSettingName] = ($triggerConfigRequired ? 'false' : 'true')
 
 # Flex Consumption is LINUX, and on Linux the engine's data directory resolves from
 # CommonApplicationData to '/usr/share/Warewolf' — a path that EXISTS but is NOT writable in
