@@ -93,7 +93,8 @@ Describe 'Deploy-WwQueueProcessor — static' {
 
         foreach ($fn in @('Get-AppNameSlug', 'Resolve-AppNameCollision', 'Read-TriggerFile',
                           'Resolve-SourceFile', 'Get-ScaleSettings', 'Assert-TimeoutNesting',
-                          'New-StagingDirectory', 'Invoke-Az', 'Read-Required')) {
+                          'New-StagingDirectory', 'Invoke-Az', 'Read-Required',
+                          'Get-WorkerLoggingConfigEnvVar')) {
             Get-Command $fn -CommandType Function -ErrorAction SilentlyContinue |
                 Should -Not -BeNullOrEmpty -Because "$fn must be dot-sourceable for unit testing"
         }
@@ -1592,5 +1593,66 @@ Describe 'Deploy-WwQueueProcessor - engine app-role grant' {
         $armIdx    | Should -BeGreaterThan 0
         $roleIdx   | Should -BeGreaterThan $armIdx
         $settleIdx | Should -BeGreaterThan $roleIdx
+    }
+}
+
+Describe 'Deploy-WwQueueProcessor - worker logging config (WAREWOLF_LOGGING_CONFIG)' {
+    # Build 30853: the script still emitted ENABLECONSOLELOGGING=true, which the worker has not read
+    # since WOLF-8516 merged the toggles into WAREWOLF_LOGGING_CONFIG. Every replica logged
+    # console=False, no per-message line reached Log Analytics, and the run report reconstructed 0
+    # deliveries from a run that processed all 200.
+
+    BeforeAll {
+        . $script:DeployScript -LoadFunctionsOnly
+        $script:QpText = Get-Content -LiteralPath $script:DeployScript -Raw
+
+        function script:Get-EnvValue([string] $envVar) {
+            $envVar | Should -Match '^WAREWOLF_LOGGING_CONFIG='
+            ($envVar -split '=', 2)[1]
+        }
+    }
+
+    It 'enables console logging, the sink Get-WwQueueRunReport.ps1 reads' {
+        $json = Get-EnvValue (Get-WorkerLoggingConfigEnvVar -EnableAppInsights $false -EscapeForBatchShim $false) |
+            ConvertFrom-Json
+        $json.console     | Should -BeTrue
+        $json.appInsights | Should -BeFalse
+    }
+
+    It 'carries -EnableAppInsights into the appInsights flag' {
+        $json = Get-EnvValue (Get-WorkerLoggingConfigEnvVar -EnableAppInsights $true -EscapeForBatchShim $false) |
+            ConvertFrom-Json
+        $json.appInsights | Should -BeTrue
+    }
+
+    It 'contains no whitespace, so the argument is never re-quoted on the way to az' {
+        Get-WorkerLoggingConfigEnvVar -EnableAppInsights $true -EscapeForBatchShim $true | Should -Not -Match '\s'
+    }
+
+    It 'escapes the inner quotes only for a batch-shim az' {
+        $plain   = Get-EnvValue (Get-WorkerLoggingConfigEnvVar -EnableAppInsights $false -EscapeForBatchShim $false)
+        $escaped = Get-EnvValue (Get-WorkerLoggingConfigEnvVar -EnableAppInsights $false -EscapeForBatchShim $true)
+        $plain   | Should -Not -Match '\\'
+        $escaped | Should -Be ($plain.Replace('"', '\"'))
+    }
+
+    It 'reaches the real az as valid JSON (the value az.cmd would otherwise strip)' {
+        # The unit tests above pin the escaping rule; this pins the platform fact it relies on.
+        # az --debug echoes its parsed argv before rejecting the unknown command, so no Azure call
+        # is made. The call bypasses the suite's `az` shadow function by resolving the application.
+        $azApp = Get-Command az -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+        if (-not $azApp) { Set-ItResult -Skipped -Because 'the Azure CLI is not installed'; return }
+
+        $arg = Get-WorkerLoggingConfigEnvVar -EnableAppInsights $false
+        $out = & $azApp.Source wwqp-argv-probe $arg --debug 2>&1 | Out-String
+        $line = ($out -split "`n" | Where-Object { $_ -match 'Command arguments:' } | Select-Object -First 1)
+        $line | Should -Not -BeNullOrEmpty -Because 'az --debug prints the parsed argument list'
+        $line | Should -Match ([regex]::Escape("'WAREWOLF_LOGGING_CONFIG={`"console`":true,`"appInsights`":false}'"))
+    }
+
+    It 'no longer emits the pre-WOLF-8516 toggle names the worker ignores' {
+        $script:QpText | Should -Not -Match '"ENABLECONSOLELOGGING='
+        $script:QpText | Should -Not -Match '"ENABLEAPPLICATIONINSIGHTS='
+        $script:QpText | Should -Match '\(Get-WorkerLoggingConfigEnvVar -EnableAppInsights \$EnableAppInsights\.IsPresent\)'
     }
 }

@@ -429,10 +429,12 @@ the `\` separators in `WorkflowName`.
 
 The engine's pattern, to be reproduced exactly:
 
-1. `LoggingConfiguration.FromEnvironment()` reads `ENABLECONSOLELOGGING`, `ENABLEAPPLICATIONINSIGHTS`,
-   `ENABLEELASTICSEARCHLOGGING`, `EXECUTIONLOGLEVEL`, `STRUCTURED_LOGS`, `ASPNETCORE_ENVIRONMENT`, and
-   the `Settings/ElasticsearchLoggingSource.bite` path
-   ([LoggingConfiguration.cs:82-104](../Logging/LoggingConfiguration.cs#L82-L104)).
+1. `LoggingConfiguration.FromEnvironment()` reads `WAREWOLF_LOGGING_CONFIG` (one JSON setting —
+   `console`, `appInsights`, `elasticsearch`, `performanceCounters`, `structuredLogs`,
+   `elasticDebugMode`; WOLF-8516 replaced the six standalone `ENABLE*`/`STRUCTURED_LOGS`/
+   `ELASTIC_DEBUG_MODE` variables), `EXECUTIONLOGLEVEL`, `ASPNETCORE_ENVIRONMENT`, and the
+   `Settings/ElasticsearchLoggingSource.bite` path
+   ([LoggingConfiguration.cs:102-123](../Logging/LoggingConfiguration.cs#L102-L123)).
 2. A **bootstrap** console sink is installed **first** so no startup log is lost:
    `Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(bootstrapConsoleLogger)` plus
    `Dev2Logger.CorrelationPrefixProvider` ([Program.cs:19-27](../Program.cs#L19-L27)).
@@ -598,7 +600,7 @@ Environment variables / ACA secrets:
 | `WORKER__MAXCONCURRENCY` | In-replica in-flight cap; **default 1** = today's measured behaviour (§1.3) |
 | `WORKER__SHUTDOWNGRACESECONDS` | Must be ≤ the app's `terminationGracePeriodSeconds` |
 | `KEYVAULT__*` | Same variables the engine/JobProcessor use for the AES key |
-| `ENABLECONSOLELOGGING`, `ENABLEAPPLICATIONINSIGHTS`, `ENABLEELASTICSEARCHLOGGING`, `EXECUTIONLOGLEVEL`, `STRUCTURED_LOGS`, `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | **Identical names and semantics to the engine** (§1.8) |
+| `WAREWOLF_LOGGING_CONFIG`, `EXECUTIONLOGLEVEL`, `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | **Identical names and semantics to the engine** (§1.8). `Deploy-WwQueueProcessor.ps1` emits `WAREWOLF_LOGGING_CONFIG={"console":true,"appInsights":<flag>}`. Until build 30853 (2026-09-25) it still emitted the pre-WOLF-8516 `ENABLECONSOLELOGGING`, so every replica ran `console=False` and the run report reconstructed 0 deliveries from a run that processed all of them. |
 | `rabbitmq-connection` (ACA secret, Key Vault ref) | Consumed by the **KEDA scale rule only** — KEDA cannot use a managed identity against RabbitMQ |
 
 > **Empty string means UNSET.** Every reader above goes through `ReadString`/`IsNullOrWhiteSpace`,

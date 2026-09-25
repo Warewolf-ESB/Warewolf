@@ -56,14 +56,13 @@ COPY . .
 RUN chown -R warewolf:warewolf /app
 USER warewolf
 
-# Engine-parity logging switches (see LoggingConfiguration.FromEnvironment()).
+# Engine-parity logging switches (see LoggingConfiguration.FromEnvironment()). WOLF-8516 merged
+# the old standalone ENABLE*/STRUCTURED_LOGS variables into the one WAREWOLF_LOGGING_CONFIG JSON
+# value; the old names are ignored, so an image still setting them started with console OFF.
 # Deploy-WwQueueProcessor.ps1 overrides these per Container App via --set-env-vars.
 ENV DOTNET_ENVIRONMENT=Production \
-    ENABLECONSOLELOGGING=true \
-    ENABLEAPPLICATIONINSIGHTS=false \
-    ENABLEELASTICSEARCHLOGGING=false \
+    WAREWOLF_LOGGING_CONFIG="{\"console\":true,\"appInsights\":false,\"elasticsearch\":false,\"structuredLogs\":true}" \
     EXECUTIONLOGLEVEL=INFO \
-    STRUCTURED_LOGS=true \
     QUEUE__SETTINGSPATH=/app/Settings \
     WORKER__MAXCONCURRENCY=1 \
     WORKER__SHUTDOWNGRACESECONDS=60 \

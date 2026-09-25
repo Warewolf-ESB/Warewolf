@@ -248,6 +248,48 @@ Describe 'Deploy-WwJobProcessor — end-to-end (DryRun, no side effects)' {
         $out | Should -Match 'Summary written to'
     }
 
+    # The processor never reads a logging toggle (it does not use Warewolf.Execution.Lightweight's
+    # LoggingConfiguration), so these settings were written and ignored - under the pre-WOLF-8516
+    # names and equally under WAREWOLF_LOGGING_CONFIG.
+    It 'writes no logging-toggle app settings the processor does not read' {
+        $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
+        $out | Should -Match 'JOB_POLL_SCHEDULE' -Because 'the app settings must be in the output for the absence checks to mean anything'
+        foreach ($dead in 'ENABLECONSOLELOGGING', 'ENABLEAPPLICATIONINSIGHTS', 'STRUCTURED_LOGS', 'WAREWOLF_LOGGING_CONFIG') {
+            $out | Should -Not -Match "\b$dead\b"
+        }
+    }
+
+    It 'accepts -EnableConsoleLogging and -StructuredLogs for compatibility but says they are ignored' {
+        $a = $script:commonArgs.Clone(); $a.EnableConsoleLogging = $true; $a.StructuredLogs = $false
+        $out = (& $script:DeployScript @a) 6>&1 | Out-String
+        $out | Should -Match '-EnableConsoleLogging is ignored'
+        $out | Should -Match '-StructuredLogs is ignored'
+        $out | Should -Match 'Dry-run complete'
+    }
+
+    # WorkerTelemetry.cs reads the STANDARD connection-string name. Setup-ApplicationInsights.ps1
+    # defaults to the engine's WAREWOLF_ one, which this processor never reads - wwuat3-sbworker's App
+    # Insights had 0 rows in every table because of exactly that.
+    It 'provisions App Insights under the standard connection-string name, without the engine-only flag' {
+        $a = $script:commonArgs.Clone(); $a.EnableAppInsights = $true
+        $out = (& $script:DeployScript @a) 6>&1 | Out-String
+        $out | Should -Match 'APPLICATIONINSIGHTS_CONNECTION_STRING\s*= \(auto-read'
+        $out | Should -Not -Match 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING'
+        # DryRun renders the child script's parameter NAMES only, so the value is pinned statically below.
+        $call = ($out -split "`n" | Where-Object { $_ -match "\[DRYRUN\] & 'Setup-ApplicationInsights\.ps1'" } | Select-Object -First 1)
+        $call | Should -Not -BeNullOrEmpty
+        $call | Should -Match '-ConnectionStringSettingName'
+        $call | Should -Match '-SkipLoggingConfigFlag'
+        (Get-Content -LiteralPath $script:DeployScript -Raw) |
+            Should -Match "ConnectionStringSettingName\s*=\s*'APPLICATIONINSIGHTS_CONNECTION_STRING'"
+    }
+
+    It 'does not prompt for console-logging or structured-logs toggles' {
+        $text = Get-Content -LiteralPath $script:DeployScript -Raw
+        $text | Should -Not -Match "Resolve-Toggle -Name 'EnableConsoleLogging'"
+        $text | Should -Not -Match "Resolve-Toggle -Name 'StructuredLogs'"
+    }
+
     It 'applies the JobProcessor + resume-dispatch app settings' {
         $out = (& $script:DeployScript @commonArgs) 6>&1 | Out-String
         $out | Should -Match 'JOB_POLL_SCHEDULE\s*= 0 \*/1 \* \* \* \*'

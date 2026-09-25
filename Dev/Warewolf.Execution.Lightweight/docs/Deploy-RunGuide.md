@@ -304,7 +304,7 @@ is **"params first, prompt if missing"** — omitted values are prompted interac
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `-AppInsightsName` | string | `<AppName>-ai` | Application Insights resource name. |
-| `-EnableAppInsights` | bool (nullable) | prompt | Provision App Insights and enable worker telemetry (`ENABLEAPPLICATIONINSIGHTS=true` + `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`). |
+| `-EnableAppInsights` | bool (nullable) | prompt | Provision App Insights and enable worker telemetry (`"appInsights":true` in `WAREWOLF_LOGGING_CONFIG` + `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`). |
 
 > **Note:** the engine reads a deliberately **non-standard** `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`,
 > so the Azure portal's *Function App → Monitoring → Application Insights* blade will always show a
@@ -466,10 +466,10 @@ by the `Deploy_UAT` stage. See `Scripts/README.md`'s `wwqp-loadtest-*` entry for
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `-EnableConsoleLogging` | bool (nullable) | prompt | Set `ENABLECONSOLELOGGING=true`. |
+| `-EnableConsoleLogging` | bool (nullable) | prompt | Sets `"console"` in the `WAREWOLF_LOGGING_CONFIG` JSON app setting (WOLF-8516; formerly `ENABLECONSOLELOGGING`). |
 | `-ExecutionLogLevel` | `TRACE`\|`DEBUG`\|`INFO`\|`WARN`\|`ERROR`\|`FATAL`\|`OFF` | `INFO` | `EXECUTIONLOGLEVEL` — drives the engine's console + App Insights logging in code (the isolated worker does **not** read host.json). |
 | `-LicenseCheckEnabled` | bool (nullable) | engine default `true` | `WAREWOLF_LICENSE_CHECK_ENABLED`. |
-| `-StructuredLogs` | bool (nullable) | `true` | `STRUCTURED_LOGS` — JSON console output. |
+| `-StructuredLogs` | bool (nullable) | `true` | Sets `"structuredLogs"` in `WAREWOLF_LOGGING_CONFIG` (formerly `STRUCTURED_LOGS`) — JSON console output. |
 | `-AlignHostJsonLogLevel` | switch | off | **Opt-in.** Also rewrite the published `host.json` logLevel to the mapped level. Tunes only the Functions **host** process verbosity — not needed for the engine's own logging. |
 | `-ServiceBusMaxConcurrentCalls` | int (nullable) | off (SDK default) | **Opt-in.** Sets `host.json`'s `extensions.serviceBus.maxConcurrentCalls` — bounds how many Service Bus messages the Functions host *dispatches* to the trigger concurrently, upstream of and independent from `WAREWOLF_SERVICEBUS_TRIGGER_MAX_CONCURRENT_EXECUTIONS`'s own semaphore gate inside the trigger's code. See WOLF-8512, `docs/ShovelBridge-Architecture.md`. **INERT ON ITS OWN — pair it with `-DisableDynamicConcurrency`** or the host overrides it (the deploy warns at plan time if you don't). |
 | `-FunctionAppScaleLimit` | int (nullable, 1–1000) | unset (Azure default — effectively unbounded) | **Opt-in.** Caps Consumption-plan scale-out (`siteConfig.functionAppScaleLimit`), applied to both a newly created and a pre-existing app. **Set it below your message broker's connection limit.** The RabbitMQ connection cache is keyed *per broker endpoint* (`RabbitMqCacheKey.For(host, port, user, vhost, password)`), so a single-broker workload holds **one connection per instance** regardless of the cache's `maxConnections` — instance count, not per-instance config, is what spends the broker's budget. Measured 2026-09-15: 48 instances against a CloudAMQP vhost capped at 40 gave `NOT_ALLOWED - access to vhost '…' refused: connection limit (40) is reached`, dead-lettering every message whose instance lost the race. Leave headroom for connections that linger up to the cache's `idleTimeout` while instances recycle (`wwuat3` uses **30** against a limit of 40). **That 30 is near the ceiling, not conservative:** sampled under sustained load, connections plateau at **32/40** — a margin of 8, not 34 — and the plateau tracks the instance cap rather than message volume (identical at 5,000 and 15,000 messages). Raising this towards 40 would breach the vhost limit. |

@@ -49,6 +49,10 @@ var host = new HostBuilder()
             services.AddSingleton(serviceBusTrigger);
         }
 
+        // --- Telemetry -------------------------------------------------------------------
+        services.AddWorkerTelemetry(
+            Environment.GetEnvironmentVariable(WorkerTelemetry.ConnectionStringSettingName));
+
         // --- Options ---------------------------------------------------------------------
         services
             .AddOptions<WwExecutionOptions>()

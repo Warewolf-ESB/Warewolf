@@ -43,7 +43,7 @@ Only the **licence** and **broker credentials** are hand-supplied; the broker UR
 of the source `.bite` in item 7 (plaintext or DPAPI). `-Publish` and `-GenerateTriggers` are the only
 options that need the repo — pass `-RepoRoot` when running from `G:\Deployment\Scripts`.
 
-**Elasticsearch is engine-only.** `-EnableElasticsearch` sets `ENABLEELASTICSEARCHLOGGING=true` and
+**Elasticsearch is engine-only.** `-EnableElasticsearch` sets `"elasticsearch":true` in `WAREWOLF_LOGGING_CONFIG` and
 stages item 4 (which must carry that exact filename). The QueueProcessor has **no** Elasticsearch
 logger and `Deploy-WwQueueProcessor.ps1` has no ES parameter; it logs to console + App Insights.
 

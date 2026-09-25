@@ -14,8 +14,7 @@ ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     ASPNETCORE_ENVIRONMENT=Development \
     AZURE_TENANT_ID= \
     DEBUG_AZURE_KEYVAULT_SECRET="" \
-    ENABLEELASTICSEARCHLOGGING=true \
-    ENABLECONSOLELOGGING=true \
+    WAREWOLF_LOGGING_CONFIG="{\"console\":true,\"elasticsearch\":true}" \
     EXECUTIONLOGLEVEL=6
 EXPOSE 80
 EXPOSE 7071

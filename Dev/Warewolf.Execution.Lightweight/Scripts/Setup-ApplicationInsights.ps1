@@ -24,6 +24,16 @@
 .PARAMETER AppInsightsName
     Name for the Application Insights resource (default: {FunctionAppName}-ai)
 
+.PARAMETER ConnectionStringSettingName
+    App setting the connection string is written to. Default WAREWOLF_APPINSIGHTS_CONNECTION_STRING -
+    the Execution Engine's deliberately non-standard name (see Step 5). The Service Bus worker and
+    the job processor pass APPLICATIONINSIGHTS_CONNECTION_STRING: they read the standard name, and
+    they WANT the Functions host pipeline, which is what writes the requests/exceptions tables.
+
+.PARAMETER SkipLoggingConfigFlag
+    Do not set WAREWOLF_LOGGING_CONFIG.appInsights. That flag is read only by the Execution Engine;
+    on any other app it is a setting nothing consumes.
+
 .EXAMPLE
     .\Setup-ApplicationInsights.ps1 -ResourceGroup "my-rg" -FunctionAppName "my-function-app"
 
@@ -44,6 +54,13 @@ param(
 
     [Parameter(Mandatory = $false)]
     [string]$AppInsightsName = "$FunctionAppName-ai",
+
+    [Parameter(Mandatory = $false)]
+    [ValidateSet('WAREWOLF_APPINSIGHTS_CONNECTION_STRING', 'APPLICATIONINSIGHTS_CONNECTION_STRING')]
+    [string]$ConnectionStringSettingName = 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING',
+
+    [Parameter(Mandatory = $false)]
+    [switch]$SkipLoggingConfigFlag,
 
     # Waits (seconds) between retries of a TRANSIENT az failure - see WwAzCli.psm1. Not part of
     # the documented surface: the tests pass @(0) so a retry does not sleep.
@@ -189,16 +206,19 @@ Write-Host ""
 Write-Host "[Step 5/6] Configuring Function App..." -ForegroundColor Yellow
 
 # Set Application Insights connection string.
-# IMPORTANT: the lightweight worker reads WAREWOLF_APPINSIGHTS_CONNECTION_STRING — a
-# DELIBERATELY non-standard name (see Program.cs). The standard
-# APPLICATIONINSIGHTS_CONNECTION_STRING auto-enables the Functions HOST's own AI
-# pipeline (a separate process the worker cannot switch off), so it is intentionally
-# NOT set here — ENABLEAPPLICATIONINSIGHTS remains the single authoritative switch.
-Write-Host "   → Setting WAREWOLF_APPINSIGHTS_CONNECTION_STRING..." -ForegroundColor Gray
+# IMPORTANT: by default this is WAREWOLF_APPINSIGHTS_CONNECTION_STRING — the Execution Engine's
+# DELIBERATELY non-standard name (see Warewolf.Execution.Lightweight/Program.cs). The standard
+# APPLICATIONINSIGHTS_CONNECTION_STRING auto-enables the Functions HOST's own AI pipeline (a
+# separate process the engine cannot switch off), so for the engine it is intentionally NOT
+# set — WAREWOLF_LOGGING_CONFIG.appInsights remains the single authoritative switch.
+# The Service Bus worker and job processor pass -ConnectionStringSettingName
+# APPLICATIONINSIGHTS_CONNECTION_STRING: their SDK reads the standard name, and the host
+# pipeline is what gives them request telemetry (see their WorkerTelemetry.cs).
+Write-Host "   → Setting $ConnectionStringSettingName..." -ForegroundColor Gray
 Invoke-AiAz -Arguments @(
     'functionapp', 'config', 'appsettings', 'set',
     '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
-    '--settings', "WAREWOLF_APPINSIGHTS_CONNECTION_STRING=$connectionString",
+    '--settings', "$ConnectionStringSettingName=$connectionString",
     '--output', 'none') | Out-Null
 
 if ($LASTEXITCODE -ne 0) {
@@ -206,38 +226,43 @@ if ($LASTEXITCODE -ne 0) {
     exit 1
 }
 
-# Enable Application Insights logging in AzureExecutionLogger.
-# WOLF-8516: ENABLEAPPLICATIONINSIGHTS was merged into the WAREWOLF_LOGGING_CONFIG JSON
-# app setting alongside console/elasticsearch/performanceCounters/structuredLogs. An app
-# setting is a whole-value overwrite, so read-merge-write: fetch whatever
-# Deploy-WwExecutionEngine.ps1 already wrote, flip appInsights to true, preserve the rest.
-Write-Host "   → Setting WAREWOLF_LOGGING_CONFIG.appInsights=true..." -ForegroundColor Gray
-$existingLoggingConfigRaw = (Invoke-AiAz -Arguments @(
-    'functionapp', 'config', 'appsettings', 'list',
-    '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
-    '--query', "[?name=='WAREWOLF_LOGGING_CONFIG'].value | [0]",
-    '--output', 'tsv') | Out-String).Trim()
-
-$loggingConfigValue = [ordered]@{}
-if ($existingLoggingConfigRaw -and $existingLoggingConfigRaw -ne 'None') {
-    try {
-        ($existingLoggingConfigRaw | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $loggingConfigValue[$_.Name] = $_.Value }
-    }
-    catch {
-        Write-Host "   ⚠️  Existing WAREWOLF_LOGGING_CONFIG is not valid JSON — it will be replaced." -ForegroundColor Yellow
-    }
+if ($SkipLoggingConfigFlag) {
+    Write-Host "   → Skipping WAREWOLF_LOGGING_CONFIG.appInsights (-SkipLoggingConfigFlag: only the engine reads it)" -ForegroundColor Gray
 }
-$loggingConfigValue['appInsights'] = $true
+else {
+    # Enable Application Insights logging in AzureExecutionLogger.
+    # WOLF-8516: ENABLEAPPLICATIONINSIGHTS was merged into the WAREWOLF_LOGGING_CONFIG JSON
+    # app setting alongside console/elasticsearch/performanceCounters/structuredLogs. An app
+    # setting is a whole-value overwrite, so read-merge-write: fetch whatever
+    # Deploy-WwExecutionEngine.ps1 already wrote, flip appInsights to true, preserve the rest.
+    Write-Host "   → Setting WAREWOLF_LOGGING_CONFIG.appInsights=true..." -ForegroundColor Gray
+    $existingLoggingConfigRaw = (Invoke-AiAz -Arguments @(
+        'functionapp', 'config', 'appsettings', 'list',
+        '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
+        '--query', "[?name=='WAREWOLF_LOGGING_CONFIG'].value | [0]",
+        '--output', 'tsv') | Out-String).Trim()
 
-Invoke-AiAz -Arguments @(
-    'functionapp', 'config', 'appsettings', 'set',
-    '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
-    '--settings', "WAREWOLF_LOGGING_CONFIG=$($loggingConfigValue | ConvertTo-Json -Compress)",
-    '--output', 'none') | Out-Null
+    $loggingConfigValue = [ordered]@{}
+    if ($existingLoggingConfigRaw -and $existingLoggingConfigRaw -ne 'None') {
+        try {
+            ($existingLoggingConfigRaw | ConvertFrom-Json).PSObject.Properties | ForEach-Object { $loggingConfigValue[$_.Name] = $_.Value }
+        }
+        catch {
+            Write-Host "   ⚠️  Existing WAREWOLF_LOGGING_CONFIG is not valid JSON — it will be replaced." -ForegroundColor Yellow
+        }
+    }
+    $loggingConfigValue['appInsights'] = $true
 
-if ($LASTEXITCODE -ne 0) {
-    Write-Host "❌ Failed to enable Application Insights logging" -ForegroundColor Red
-    exit 1
+    Invoke-AiAz -Arguments @(
+        'functionapp', 'config', 'appsettings', 'set',
+        '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
+        '--settings', "WAREWOLF_LOGGING_CONFIG=$($loggingConfigValue | ConvertTo-Json -Compress)",
+        '--output', 'none') | Out-Null
+
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "❌ Failed to enable Application Insights logging" -ForegroundColor Red
+        exit 1
+    }
 }
 
 Write-Host "✅ Function App configured successfully" -ForegroundColor Green
@@ -252,14 +277,15 @@ Write-Host "[Step 6/6] Verifying configuration..." -ForegroundColor Yellow
 $settingsJson = Invoke-AiAz -Arguments @(
     'functionapp', 'config', 'appsettings', 'list',
     '--name', $FunctionAppName, '--resource-group', $ResourceGroup,
-    '--query', "[?name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='WAREWOLF_LOGGING_CONFIG']",
+    '--query', "[?name=='$ConnectionStringSettingName' || name=='WAREWOLF_LOGGING_CONFIG']",
     '--output', 'json') | Out-String
 $settings = if ([string]::IsNullOrWhiteSpace($settingsJson)) { @() } else { $settingsJson | ConvertFrom-Json }
 
-$aiConnectionSet = $settings | Where-Object { $_.name -eq "WAREWOLF_APPINSIGHTS_CONNECTION_STRING" }
+$aiConnectionSet = $settings | Where-Object { $_.name -eq $ConnectionStringSettingName }
 $loggingConfigSet = $settings | Where-Object { $_.name -eq "WAREWOLF_LOGGING_CONFIG" }
-$aiEnabled = $false
-if ($loggingConfigSet) {
+# With -SkipLoggingConfigFlag the flag is not part of this app's contract, so it is not checked.
+$aiEnabled = [bool]$SkipLoggingConfigFlag
+if (-not $aiEnabled -and $loggingConfigSet) {
     try { $aiEnabled = ($loggingConfigSet.value | ConvertFrom-Json).appInsights -eq $true } catch { $aiEnabled = $false }
 }
 

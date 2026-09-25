@@ -2659,7 +2659,7 @@ try {
         $aiConnectionString = (Invoke-Az @('monitor', 'app-insights', 'component', 'show', '--app', $AppInsightsName, '--resource-group', $ResourceGroup, '--query', 'connectionString', '-o', 'tsv') -AllowFail) -join ''
         if ([string]::IsNullOrWhiteSpace($aiConnectionString)) { $aiConnectionString = '<pending — created/read on a real run>' }
         if ($DryRun) {
-            Write-Note ("Application Insights '{0}': dry-run made NO change. A real run would {1}, then set WAREWOLF_APPINSIGHTS_CONNECTION_STRING + ENABLEAPPLICATIONINSIGHTS=true." -f $AppInsightsName, ($aiPreExists ? 'REUSE this existing component' : 'CREATE it (not present)'))
+            Write-Note ("Application Insights '{0}': dry-run made NO change. A real run would {1}, then set WAREWOLF_APPINSIGHTS_CONNECTION_STRING + WAREWOLF_LOGGING_CONFIG.appInsights=true." -f $AppInsightsName, ($aiPreExists ? 'REUSE this existing component' : 'CREATE it (not present)'))
         } else {
             Write-Ok ("Application Insights configured ({0} existing component)." -f ($aiPreExists ? 'reused' : 'created'))
         }

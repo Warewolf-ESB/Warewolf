@@ -32,8 +32,8 @@ var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices(services =>
     {
-        services.AddApplicationInsightsTelemetryWorkerService();
-        services.ConfigureFunctionsApplicationInsights();
+        services.AddWorkerTelemetry(
+            Environment.GetEnvironmentVariable(WorkerTelemetry.ConnectionStringSettingName));
 
         services.AddSingleton(settings);
         services.AddSingleton<JobStorageProvider>();

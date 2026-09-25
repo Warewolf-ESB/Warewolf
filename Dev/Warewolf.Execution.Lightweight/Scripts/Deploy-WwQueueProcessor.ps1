@@ -1053,6 +1053,40 @@ function Assert-TimeoutNesting {
     }
 }
 
+function Get-WorkerLoggingConfigEnvVar {
+    <#
+        The worker's logging toggles as ONE env var, WAREWOLF_LOGGING_CONFIG (WOLF-8516, see
+        Logging/LoggingConfiguration.cs). This used to emit ENABLECONSOLELOGGING=true, which the
+        worker has not read since WOLF-8516: build 30853 ran with console=False, so every per-message
+        line was dropped and Get-WwQueueRunReport.ps1 reconstructed 0 deliveries from a run that
+        actually processed all 200.
+
+        The value is JSON and --env-vars has no @file form (unlike the engine's
+        'appsettings set --settings @file'), so it has to survive the command line. On Windows `az`
+        is a batch shim (az.cmd), and under the default 'Windows'/'Legacy' native-argument mode the
+        inner quotes are consumed - az receives {console:true}, RawFlags cannot parse it, and every
+        flag silently reads false. Escaping them as \" yields the literal JSON (verified with
+        `az ... --debug`). A real executable (Linux/macOS az, or 'Standard' mode, which escapes
+        itself) must get the value unescaped, or the backslashes would reach the worker.
+    #>
+    param(
+        [bool] $EnableAppInsights,
+        # $null = detect from the az on PATH and the session's native-argument mode.
+        [Nullable[bool]] $EscapeForBatchShim = $null
+    )
+
+    $json = [ordered]@{ console = $true; appInsights = $EnableAppInsights } | ConvertTo-Json -Compress
+
+    if ($null -eq $EscapeForBatchShim) {
+        $azCmd = Get-Command az -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+        $EscapeForBatchShim = [bool]($azCmd -and $azCmd.Extension -in @('.cmd', '.bat') -and
+                                     $PSNativeCommandArgumentPassing -ne 'Standard')
+    }
+    if ($EscapeForBatchShim) { $json = $json.Replace('"', '\"') }
+
+    return "WAREWOLF_LOGGING_CONFIG=$json"
+}
+
 function Protect-StagedSettings {
     <#
         WFAES-encrypts every staged .bite under $SettingsRoot and proves each one decrypts again.
@@ -1640,8 +1674,7 @@ foreach ($planned in $plannedApps) {
             "WORKER__MAXDELIVERYATTEMPTS=$MaxDeliveryAttempts"
             "WORKER__RETRYENGINEINTERNALERRORS=$($RetryEngineInternalErrors.IsPresent.ToString().ToLowerInvariant())"
             "EXECUTIONLOGLEVEL=$ExecutionLogLevel"
-            "ENABLECONSOLELOGGING=true"
-            "ENABLEAPPLICATIONINSIGHTS=$($EnableAppInsights.IsPresent.ToString().ToLowerInvariant())"
+            (Get-WorkerLoggingConfigEnvVar -EnableAppInsights $EnableAppInsights.IsPresent)
         )
         if ($EngineTenantId) { $envVars += "ENGINE__TENANTID=$EngineTenantId" }
         if ($KeyVaultName)   { $envVars += "KEYVAULT__NAME=$KeyVaultName" }

@@ -71,9 +71,9 @@ services:
     environment:
       DOTNET_ENVIRONMENT: Development
       ASPNETCORE_ENVIRONMENT: Development
-      ENABLECONSOLELOGGING: "true"
+      # One JSON value (WOLF-8516); the old ENABLECONSOLELOGGING/STRUCTURED_LOGS names are ignored.
+      WAREWOLF_LOGGING_CONFIG: '{"console":true,"structuredLogs":false}'
       EXECUTIONLOGLEVEL: DEBUG
-      STRUCTURED_LOGS: "false"
 
       QUEUE__SETTINGSPATH: /app/Settings
 

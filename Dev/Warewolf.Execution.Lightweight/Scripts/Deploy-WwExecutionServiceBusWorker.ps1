@@ -207,7 +207,7 @@ param(
     [string] $TriggerId,
     [ValidateSet('secure', 'public')] [string] $TriggerRoute = 'secure',
     [switch] $StripTriggerCredentials,
-    # Logging / feature env vars
+    # Accepted for caller compatibility only - IGNORED (warns). See 'Feature toggles' below.
     [nullable[bool]] $EnableConsoleLogging,
     # Logging output / control
     [string] $LogDir,
@@ -600,7 +600,13 @@ if (-not $LogDir) { $LogDir = Join-Path (Split-Path $PublishDir -Parent) 'deploy
 
 # ── Feature toggles ────────────────────────────────────────────────────────────
 $enableAppInsights = Resolve-Toggle -Name 'EnableAppInsights'       -Current $EnableAppInsights       -Default $true -Prompt 'Provision + enable Application Insights?'
-$enableConsole     = Resolve-Toggle -Name 'EnableConsoleLogging'    -Current $EnableConsoleLogging    -Default $true -Prompt 'Enable console logging?'
+# No console-logging toggle: Warewolf.Execution.ServiceBusWorker never reads one. It does not use
+# Warewolf.Execution.Lightweight's LoggingConfiguration, so ENABLECONSOLELOGGING /
+# ENABLEAPPLICATIONINSIGHTS (and their WOLF-8516 successor WAREWOLF_LOGGING_CONFIG) were app settings
+# nothing consumed, and the prompt asked the operator a question with no effect.
+if ($null -ne $EnableConsoleLogging) {
+    Write-Note '-EnableConsoleLogging is ignored: the Service Bus worker has no console-logging toggle (it logs through the Functions host).'
+}
 $doCreateShovelRule = Resolve-Toggle -Name 'CreateShovelSendRule'   -Current $CreateShovelSendRule    -Default $true -Prompt 'Create a Send-only SAS rule on the queue for the RabbitMQ Shovel plugin?'
 $useMiForServiceBus = Resolve-Toggle -Name 'UseManagedIdentityForServiceBus' -Current $UseManagedIdentityForServiceBus -Default $true -Prompt 'Use Managed Identity for the worker''s Service Bus LISTEN connection (recommended)?'
 
@@ -629,8 +635,6 @@ $appSettings = [ordered]@{}
 $secretSettingNames = New-Object System.Collections.Generic.HashSet[string]
 
 $appSettings['FUNCTIONS_WORKER_RUNTIME']  = 'dotnet-isolated'
-$appSettings['ENABLECONSOLELOGGING']      = ($enableConsole ? 'true' : 'false')
-$appSettings['ENABLEAPPLICATIONINSIGHTS'] = ($enableAppInsights ? 'true' : 'false')
 
 # WwExecution:* — bound to WwExecutionOptions (see WwExecutionOptions.cs); the worker
 # uses double-underscore config-key nesting exactly like local.settings.json.
@@ -792,7 +796,7 @@ foreach ($k in $appSettings.Keys) {
 }
 Write-Host ("    {0,-34}= {1}" -f 'ServiceBusConnection*', ($useMiForServiceBus ? '(identity-based — set in Phase 2)' : '(SAS connection string — set in Phase 2)'))
 if ($enableAppInsights) {
-    Write-Host ("    {0,-34}= {1}" -f 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING', '(auto-read from the App Insights resource)')
+    Write-Host ("    {0,-34}= {1}" -f 'APPLICATIONINSIGHTS_CONNECTION_STRING', '(auto-read from the App Insights resource)')
 }
 Write-Host ''
 Write-Note 'Role registration is a SEPARATE step: grant this app''s managed identity the engine'
@@ -946,6 +950,10 @@ try {
             FunctionAppName = $AppName
             Location        = $Location
             AppInsightsName = $AppInsightsName
+            # The STANDARD name (WorkerTelemetry.cs reads it) - not the engine's WAREWOLF_ one: this
+            # worker wants the Functions host pipeline, which writes the requests/exceptions tables.
+            ConnectionStringSettingName = 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+            SkipLoggingConfigFlag       = $true
         }
         if ($created['appInsights'] -and -not $DryRun) {
             Invoke-Az (@('resource', 'tag', '--resource-group', $ResourceGroup, '--name', $AppInsightsName, '--resource-type', 'microsoft.insights/components', '--tags') + $ResourceTags) -Mutating | Out-Null

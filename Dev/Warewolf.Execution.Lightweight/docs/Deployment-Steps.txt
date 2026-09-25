@@ -327,10 +327,13 @@ and point the script at that folder (or a .zip of it).
                                      default INFO; PROMPTED when interactive and not supplied;
                                      drives the engine's console + App Insights logging IN CODE.
                                      Optionally also rewrites host.json — see below)
-    ENABLECONSOLELOGGING             -EnableConsoleLogging   (default TRUE)
-    STRUCTURED_LOGS                  -StructuredLogs         (default true)
-    ENABLEAPPLICATIONINSIGHTS        -EnableAppInsights      (default TRUE)
-    ENABLEELASTICSEARCHLOGGING       -EnableElasticsearch    (default FALSE — when enabled,
+    WAREWOLF_LOGGING_CONFIG          one JSON value (WOLF-8516; replaced ENABLECONSOLELOGGING,
+                                     STRUCTURED_LOGS, ENABLEAPPLICATIONINSIGHTS,
+                                     ENABLEELASTICSEARCHLOGGING, ENABLEPERFORMANCECOUNTERS):
+      "console"                      -EnableConsoleLogging   (default TRUE)
+      "structuredLogs"               -StructuredLogs         (default true)
+      "appInsights"                  -EnableAppInsights      (default TRUE)
+      "elasticsearch"                -EnableElasticsearch    (default FALSE — when enabled,
                                      requires -ElasticsearchSourcePath; Key Vault only if the
                                      source is WFAES-encrypted)
     WAREWOLF_LICENSE_CHECK_ENABLED   -LicenseCheckEnabled    (default true)

@@ -108,7 +108,8 @@ param(
     [string] $EngineResumeScope,
     [nullable[int]] $EngineResumeTimeoutSeconds,
     [nullable[bool]] $EngineResumeAuthDisabled,
-    # Logging / feature env vars
+    # Logging / feature env vars. -EnableConsoleLogging and -StructuredLogs are accepted for caller
+    # compatibility only - IGNORED (warns). See 'Feature toggles' below.
     [nullable[bool]] $EnableConsoleLogging,
     [ValidateSet('TRACE','DEBUG','INFO','WARN','ERROR','FATAL','OFF')] [string] $ExecutionLogLevel = 'INFO',
     [nullable[bool]] $StructuredLogs,
@@ -491,8 +492,17 @@ if (-not $LogDir) { $LogDir = Join-Path (Split-Path $PublishDir -Parent) 'deploy
 
 # ── Feature toggles ────────────────────────────────────────────────────────────
 $enableAppInsights  = Resolve-Toggle -Name 'EnableAppInsights'   -Current $EnableAppInsights   -Default $true  -Prompt 'Provision + enable Application Insights?'
-$enableConsole      = Resolve-Toggle -Name 'EnableConsoleLogging' -Current $EnableConsoleLogging -Default $true  -Prompt 'Enable console logging?'
-$structuredLogs     = Resolve-Toggle -Name 'StructuredLogs'      -Current $StructuredLogs       -Default $true  -Prompt 'Structured (JSON) console logs?'
+# No console-logging or structured-logs toggle: Warewolf.Execution.EngineJobProcessor never reads one.
+# It does not use Warewolf.Execution.Lightweight's LoggingConfiguration, so ENABLECONSOLELOGGING /
+# STRUCTURED_LOGS / ENABLEAPPLICATIONINSIGHTS (and their WOLF-8516 successor WAREWOLF_LOGGING_CONFIG)
+# were app settings nothing consumed, and the prompts asked questions with no effect.
+foreach ($ignored in @(
+        @{ Name = 'EnableConsoleLogging'; Value = $EnableConsoleLogging }
+        @{ Name = 'StructuredLogs';       Value = $StructuredLogs })) {
+    if ($null -ne $ignored.Value) {
+        Write-Note "-$($ignored.Name) is ignored: the job processor has no such toggle (it logs through the Functions host)."
+    }
+}
 $doEncryptResources = Resolve-Toggle -Name 'EncryptResources'    -Current $EncryptResources    -Default $false -Prompt 'Encrypt the persistence DbSource ConnectionString now? (encrypt once; leave off if already encrypted)'
 $authDisabled       = Resolve-Toggle -Name 'EngineResumeAuthDisabled' -Current $EngineResumeAuthDisabled -Default $false -Prompt 'DISABLE resume-route auth (development only)?'
 
@@ -540,9 +550,6 @@ $secretSettingNames = New-Object System.Collections.Generic.HashSet[string]
 
 $appSettings['ASPNETCORE_ENVIRONMENT']     = 'Production'
 $appSettings['EXECUTIONLOGLEVEL']          = $ExecutionLogLevel
-$appSettings['ENABLECONSOLELOGGING']       = ($enableConsole ? 'true' : 'false')
-$appSettings['STRUCTURED_LOGS']            = ($structuredLogs ? 'true' : 'false')
-$appSettings['ENABLEAPPLICATIONINSIGHTS']  = ($enableAppInsights ? 'true' : 'false')
 # Poller + reaper cadences and the stale-Processing threshold.
 $appSettings['JOB_POLL_SCHEDULE']          = $JobPollSchedule
 $appSettings['JOB_REAPER_SCHEDULE']        = $JobReaperSchedule
@@ -622,7 +629,7 @@ foreach ($k in $appSettings.Keys) {
     Write-Host ("    {0,-34}= {1}" -f $k, $shown)
 }
 if ($enableAppInsights) {
-    Write-Host ("    {0,-34}= {1}" -f 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING', '(auto-read from the App Insights resource)')
+    Write-Host ("    {0,-34}= {1}" -f 'APPLICATIONINSIGHTS_CONNECTION_STRING', '(auto-read from the App Insights resource)')
 }
 Write-Host ''
 Write-Note 'Role registration is a SEPARATE step: grant this app''s managed identity the engine'
@@ -777,6 +784,10 @@ try {
             FunctionAppName = $AppName
             Location        = $Location
             AppInsightsName = $AppInsightsName
+            # The STANDARD name (WorkerTelemetry.cs reads it) - not the engine's WAREWOLF_ one: this
+            # processor wants the Functions host pipeline, which writes the requests/exceptions tables.
+            ConnectionStringSettingName = 'APPLICATIONINSIGHTS_CONNECTION_STRING'
+            SkipLoggingConfigFlag       = $true
         }
         if ($created['appInsights'] -and -not $DryRun) {
             Invoke-Az (@('resource', 'tag', '--resource-group', $ResourceGroup, '--name', $AppInsightsName, '--resource-type', 'microsoft.insights/components', '--tags') + $ResourceTags) -Mutating | Out-Null

@@ -71,9 +71,9 @@ Dev2Logger  (legacy static, used everywhere in Dev2.*)
 
 | Sink | Class | Destination | When added |
 |---|---|---|---|
-| Console | `Logging/ConsoleExecutionLogger.cs` | `ILogger<T>` → stdout (Live Log Stream / filesystem logs) | AI **off** AND `ENABLECONSOLELOGGING=true` |
-| Azure | `Logging/AzureExecutionLogger.cs` | `ILogger<T>` → Application Insights **and** stdout | `ENABLEAPPLICATIONINSIGHTS=true` |
-| Elasticsearch | `Logging/ElasticsearchExecutionLogger.cs` | direct HTTP → Elasticsearch index | `ENABLEELASTICSEARCHLOGGING=true` **and** `.bite` file present |
+| Console | `Logging/ConsoleExecutionLogger.cs` | `ILogger<T>` → stdout (Live Log Stream / filesystem logs) | AI **off** AND `WAREWOLF_LOGGING_CONFIG.console=true` |
+| Azure | `Logging/AzureExecutionLogger.cs` | `ILogger<T>` → Application Insights **and** stdout | `WAREWOLF_LOGGING_CONFIG.appInsights=true` |
+| Elasticsearch | `Logging/ElasticsearchExecutionLogger.cs` | direct HTTP → Elasticsearch index | `WAREWOLF_LOGGING_CONFIG.elasticsearch=true` **and** `.bite` file present |
 | Audit | `Logging/AuditExecutionLogger.cs` | `ILogger<T>` (EventId 9000, `[AUDIT]`) | **always** |
 
 There are also two MEL-only loggers that **do not go through the composite**:
@@ -92,9 +92,9 @@ provider). Adding both would emit everything twice.
 
 ```csharp
 // 1. EXACTLY ONE general-purpose MEL sink
-if (loggingConfig.RegisterApplicationInsightsSdk)          // ENABLEAPPLICATIONINSIGHTS=true
+if (loggingConfig.RegisterApplicationInsightsSdk)          // WAREWOLF_LOGGING_CONFIG.appInsights
     loggers.Add(new AzureExecutionLogger(...));            // → AI provider + Console provider
-else if (loggingConfig.EnableConsoleLogging)               // ENABLECONSOLELOGGING=true
+else if (loggingConfig.EnableConsoleLogging)               // WAREWOLF_LOGGING_CONFIG.console
     loggers.Add(new ConsoleExecutionLogger(...));          // → Console provider only
 
 // 2. Elasticsearch — opt-in, requires the .bite file to exist
@@ -107,40 +107,40 @@ loggers.Add(new AuditExecutionLogger(...));
 
 Consequences:
 
-- If `ENABLEAPPLICATIONINSIGHTS=true`, the Azure sink is the general-purpose sink and
+- If `appInsights` is true, the Azure sink is the general-purpose sink and
   the dedicated Console sink is **not** added (the Azure sink already reaches stdout
-  via the console provider). `ENABLECONSOLELOGGING` then only controls whether the
+  via the console provider). `console` then only controls whether the
   console **provider** is attached (see §1.3), i.e. whether stdout/filesystem logs receive anything.
 - The composite is **never empty**: `AuditExecutionLogger` is always present. The
   startup banner reports the count — e.g. `CompositeExecutionLogger with 2 sink(s)`.
 
 ### 1.3 The two worker log paths
 
-The .NET isolated worker has two independent log paths, each gated by a different env var:
+The .NET isolated worker has two independent log paths, each gated by a different `WAREWOLF_LOGGING_CONFIG` field:
 
 ```
 (a) process stdout  → captured by the Functions host → FILESYSTEM logs / Live Log Stream
-        gated by ENABLECONSOLELOGGING  (attaches/omits the MEL AddConsole() provider)
+        gated by "console"      (attaches/omits the MEL AddConsole() provider)
 
 (b) worker AI SDK    → Application Insights
-        gated by ENABLEAPPLICATIONINSIGHTS  (registers the worker AI SDK)
+        gated by "appInsights"  (registers the worker AI SDK)
 ```
 
 In [`Program.cs`](../Program.cs) the console provider is attached **only** when
-`ENABLECONSOLELOGGING=true`:
+`console` is true:
 
 ```csharp
 .ConfigureLogging(logging =>
 {
-    if (loggingConfig.EnableConsoleLogging)        // ENABLECONSOLELOGGING
+    if (loggingConfig.EnableConsoleLogging)        // WAREWOLF_LOGGING_CONFIG.console
         logging.AddConsole();
     logging.AddFilter("Warewolf.Execution.Lightweight", loggingConfig.MelMinimumLevel);
 })
 ```
 
-So with `ENABLECONSOLELOGGING=false` there is **no** console provider, and execution
-logs reach only the sinks chosen in `AddExecutionLogging` (e.g. the AI SDK when
-`ENABLEAPPLICATIONINSIGHTS=true`) — never the filesystem logs.
+So with `console` false (or `WAREWOLF_LOGGING_CONFIG` unset or unparseable) there is **no**
+console provider, and execution logs reach only the sinks chosen in `AddExecutionLogging`
+(e.g. the AI SDK when `appInsights` is true) — never the filesystem logs.
 
 ### 1.4 The two audit paths
 
@@ -158,7 +158,7 @@ confuse them when searching:
 
 `Security/AuditLogger` emits the operational `SECURITY_AUDIT` events (cold start, Key
 Vault errors, decryption, 401/403 auth outcomes) and is registered unconditionally in
-`AddCoreServices`, so it works even when `ENABLECONSOLELOGGING=false`. Its invariants:
+`AddCoreServices`, so it works even when `console` is false. Its invariants:
 never logs key material or decrypted connection strings — only metadata.
 
 > Note: the XML doc-comment on `Security/AuditLogger` says it "routes through
@@ -196,13 +196,41 @@ restarts the worker).
 | Variable | Values | Default | Effect |
 |---|---|---|---|
 | `EXECUTIONLOGLEVEL` | `0`–`6` or name | `4` (INFO) | Minimum level shared by all execution sinks. |
-| `ENABLECONSOLELOGGING` | `true`/`false` | unset → false (deploy script sets `true`) | Attaches the MEL console provider (stdout → filesystem logs). Also selects `ConsoleExecutionLogger` when AI is off. |
-| `ENABLEAPPLICATIONINSIGHTS` | `true`/`false` | unset → false (deploy script sets `true`) | Single authoritative AI switch: registers the worker AI SDK + `AzureExecutionLogger`. Requires `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. |
+| `WAREWOLF_LOGGING_CONFIG` | JSON object | unset → every field `false` | The six logging toggles in **one** setting (WOLF-8516) — fields below. Missing fields are `false`. **Unparseable JSON is read as every field `false`**, with a single Warn line — so a mangled value silently turns console and App Insights off. |
 | `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | conn string | unset | AI connection string. **Deliberately non-standard name** (see §3.2). |
-| `ENABLEELASTICSEARCHLOGGING` | `true`/`false` | unset → false | Adds `ElasticsearchExecutionLogger`. Also requires `Settings/ElasticsearchLoggingSource.bite`. |
-| `STRUCTURED_LOGS` | `true`/`false` | `true` in Azure / `false` in Development | Parsed into `LoggingConfiguration.StructuredJson`. **Currently read but not yet wired to a JSON console formatter** (reserved; no-op at the sink level today). |
-| `ELASTIC_DEBUG_MODE` | `true`/`false` | `false` (dev-only) | Enables Elasticsearch HTTP request/response debug tracing. Forced off outside Development. Not set by the deploy script. |
-| `ASPNETCORE_ENVIRONMENT` | `Development`/`Production` | `Production` (fixed by deploy script) | Selects the logging profile (affects `STRUCTURED_LOGS`/`ELASTIC_DEBUG_MODE` defaults). |
+| `ASPNETCORE_ENVIRONMENT` | `Development`/`Production` | `Production` (fixed by deploy script) | Selects the logging profile (affects the effective `structuredLogs`/`elasticDebugMode` values). |
+
+**`WAREWOLF_LOGGING_CONFIG` fields** — e.g.
+`{"console":true,"appInsights":true,"elasticsearch":false,"performanceCounters":false,"structuredLogs":true}`:
+
+| Field | Formerly (removed in WOLF-8516) | Default | Effect |
+|---|---|---|---|
+| `console` | `ENABLECONSOLELOGGING` | `false` (deploy script sets `true`) | Attaches the MEL console provider (stdout → filesystem logs). Also selects `ConsoleExecutionLogger` when AI is off. |
+| `appInsights` | `ENABLEAPPLICATIONINSIGHTS` | `false` (deploy script sets `true`) | Single authoritative AI switch: registers the worker AI SDK + `AzureExecutionLogger`. Requires `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. |
+| `elasticsearch` | `ENABLEELASTICSEARCHLOGGING` | `false` | Adds `ElasticsearchExecutionLogger`. Also requires `Settings/ElasticsearchLoggingSource.bite`. |
+| `performanceCounters` | `ENABLEPERFORMANCECOUNTERS` | `false` | Registers the AI `PerformanceCollectorModule` (the `performanceCounters` table). Only takes effect with `appInsights`. |
+| `structuredLogs` | `STRUCTURED_LOGS` | effectively `true` outside Development | Parsed into `LoggingConfiguration.StructuredJson`. **Currently read but not yet wired to a JSON console formatter** (reserved; no-op at the sink level today). |
+| `elasticDebugMode` | `ELASTIC_DEBUG_MODE` | `false` | Elasticsearch HTTP request/response debug tracing. Forced off outside Development. Not set by the deploy script. |
+
+The old standalone names are **ignored** — an app that still carries them (app settings are never
+deleted by a redeploy) behaves as if they were absent.
+
+**Setting it in Azure — use a settings file, not `--settings K=V`.** The value is JSON, and on
+Windows `az` is a batch shim (`az.cmd`) that strips the inner double quotes from a command-line
+argument: `WAREWOLF_LOGGING_CONFIG={"console":true}` arrives as `{console:true}`, which the engine
+cannot parse — every field then reads `false`. A settings file carries the value verbatim.
+The value is a **whole-value overwrite**, so include every field you want on:
+
+```powershell
+$cfg  = [ordered]@{ console = $true; appInsights = $true; elasticsearch = $false } | ConvertTo-Json -Compress
+$file = Join-Path ([IO.Path]::GetTempPath()) 'ww-logging-config.json'
+ConvertTo-Json -AsArray -InputObject @([ordered]@{ name = 'WAREWOLF_LOGGING_CONFIG'; value = $cfg; slotSetting = $false }) |
+    Set-Content -LiteralPath $file -Encoding utf8NoBOM   # a BOM makes az reject the file
+az functionapp config appsettings set --name $AppName --resource-group $Rg --settings "@$file" -o none
+Remove-Item -LiteralPath $file
+```
+
+The sections below refer to this as *"set `WAREWOLF_LOGGING_CONFIG` (§2.1)"*.
 
 ### 2.2 EXECUTIONLOGLEVEL values
 
@@ -223,7 +251,7 @@ case-insensitive name; falls back to INFO when missing/unrecognised. Dev2 conven
 
 ### 2.3 Quick enable/disable matrix
 
-| Goal | `ENABLEAPPLICATIONINSIGHTS` | `ENABLECONSOLELOGGING` | `ENABLEELASTICSEARCHLOGGING` | `EXECUTIONLOGLEVEL` |
+| Goal | `appInsights` | `console` | `elasticsearch` | `EXECUTIONLOGLEVEL` |
 |---|---|---|---|---|
 | All execution logging off* | `false` | `false` | `false` | (any) |
 | Console/stdout only (dev) | `false` | `true` | `false` | `5` (DEBUG) |
@@ -231,6 +259,8 @@ case-insensitive name; falls back to INFO when missing/unrecognised. Dev2 conven
 | Elasticsearch (prod) | `false` | `false` | `true` | `4` (INFO) |
 | App Insights + Elasticsearch | `true` | `true` | `true` | `4` (INFO) |
 | Verbose troubleshooting | `true` | `true` | `true` | `6` (TRACE) |
+
+The three flag columns are fields of `WAREWOLF_LOGGING_CONFIG` (§2.1).
 
 \* `AuditExecutionLogger` is still present (security events are never gated by these flags),
 but with no console/AI provider attached, audit Error/Fatal entries have nowhere visible to land.
@@ -246,13 +276,13 @@ always-available stdout sink when AI is off. Azure captures stdout into the Live
 Stream and filesystem logs. Its entries carry the correlation prefix
 `[Instance:<id>] [Invocation:<guid>] [Function:<name>] [Trace:<id>] [ExecutionId:<guid>]`.
 
-When `ENABLEAPPLICATIONINSIGHTS=true`, `AzureExecutionLogger` takes the
+When `appInsights` is true, `AzureExecutionLogger` takes the
 general-purpose role and *also* reaches stdout (the console provider stays attached as
-long as `ENABLECONSOLELOGGING=true`), so you still see the same lines in the live stream.
+long as `console` is true), so you still see the same lines in the live stream.
 
 ### 3.2 Application Insights
 
-`ENABLEAPPLICATIONINSIGHTS=true` is the **single authoritative switch**. It registers
+`WAREWOLF_LOGGING_CONFIG.appInsights` is the **single authoritative switch**. It registers
 the worker AI SDK (`AddApplicationInsightsTelemetryWorkerService` +
 `ConfigureFunctionsApplicationInsights`) and applies the
 `ApplicationInsightsLogFilter` rule at `EXECUTIONLOGLEVEL`.
@@ -262,8 +292,14 @@ the worker AI SDK (`AddApplicationInsightsTelemetryWorkerService` +
 > `APPLICATIONINSIGHTS_CONNECTION_STRING`. The standard name auto-enables the Azure
 > Functions **host's own** AI pipeline (a separate process the worker cannot switch
 > off), which would forward captured stdout to AI at `Information` regardless of
-> `ENABLEAPPLICATIONINSIGHTS`. Using a host-unrecognised name keeps the host pipeline
+> `appInsights`. Using a host-unrecognised name keeps the host pipeline
 > dormant, so the worker SDK is the only path to AI and per-level severity is preserved.
+>
+> **This is engine-specific.** The Service Bus worker and the job processor deliberately use the
+> standard `APPLICATIONINSIGHTS_CONNECTION_STRING` (`WorkerTelemetry.cs` in each project): they
+> attach no console provider, so the flattening does not apply, and the host pipeline is what
+> gives them the `requests`/`exceptions` tables. Their deploy scripts pass
+> `Setup-ApplicationInsights.ps1 -ConnectionStringSettingName APPLICATIONINSIGHTS_CONNECTION_STRING`.
 >
 > Do **not** click "Turn on Application Insights" in the portal — it sets the standard
 > name and wakes the host pipeline. Provision via CLI (below). The portal may keep
@@ -287,12 +323,12 @@ az monitor app-insights component create `
 $cs = az monitor app-insights component show `
         --app $AppInsights --resource-group $Rg --query connectionString -o tsv
 
-# 3. Wire it onto the Function App (engine name + authoritative switch)
+# 3. Wire it onto the Function App: the engine's connection-string name + level...
 az functionapp config appsettings set --name $AppName --resource-group $Rg --settings `
-    ENABLEAPPLICATIONINSIGHTS=true `
     WAREWOLF_APPINSIGHTS_CONNECTION_STRING="$cs" `
-    ENABLECONSOLELOGGING=true `
     EXECUTIONLOGLEVEL=4
+#    ...then the authoritative switch: set WAREWOLF_LOGGING_CONFIG (§2.1) with
+#    console = $true; appInsights = $true
 
 # 4. Confirm the standard host setting is NOT present (expected: empty)
 az functionapp config appsettings list --name $AppName --resource-group $Rg `
@@ -310,7 +346,7 @@ The automated script `Scripts/Setup-ApplicationInsights.ps1` performs steps 1–
 (see [§6](#6-how-the-deploy-script-wires-logging)).
 
 **Telemetry needs three things to align** for execution-logger traces:
-`ENABLEAPPLICATIONINSIGHTS=true` + a valid connection string + a permissive
+`WAREWOLF_LOGGING_CONFIG.appInsights=true` + a valid connection string + a permissive
 `EXECUTIONLOGLEVEL`. Audit and middleware events flow regardless of `EXECUTIONLOGLEVEL`.
 
 **Useful KQL** (run against the `{AppName}-ai` resource → Logs):
@@ -354,11 +390,11 @@ is host-side sampling and is the one `host.json` AI knob that *does* affect what
 Two conditions are required for the sink to be added at startup
 ([ServiceCollectionExtensions.cs](../Infrastructure/ServiceCollectionExtensions.cs)):
 
-- `ENABLEELASTICSEARCHLOGGING=true`, **and**
+- `WAREWOLF_LOGGING_CONFIG.elasticsearch=true`, **and**
 - `Settings/ElasticsearchLoggingSource.bite` exists in the deployed package (shipped via
   `<Content>` `CopyToOutputDirectory=Always` in the `.csproj`).
 
-If the env var is true but the file is missing, the sink is silently skipped.
+If the flag is true but the file is missing, the sink is silently skipped.
 
 **The `.bite` file** is a Warewolf source XML whose `ConnectionString` attribute carries
 host, port, index, auth type and credentials, semicolon-delimited. It may be
@@ -373,17 +409,14 @@ SearchIndex=warewolftestlogs;AuthenticationType=Password;Username=test;Password=
 # AuthenticationType values: Anonymous | Password | API_Key
 ```
 
-**Enable/disable:**
-```powershell
-az functionapp config appsettings set --name $AppName --resource-group $Rg `
-    --settings ENABLEELASTICSEARCHLOGGING=true     # or =false to disable
-```
+**Enable/disable:** set `WAREWOLF_LOGGING_CONFIG` (§2.1) with `elasticsearch = $true` (or
+`$false`), keeping the other fields you already have on — the value is a whole-value overwrite.
 
 **Runtime behaviour:** fire-and-forget on a background `Task` (never blocks execution);
 failures are swallowed with a one-line `[ElasticsearchLogger]` diagnostic to stdout.
 Verbosity is controlled by `EXECUTIONLOGLEVEL` only. To change the target, edit the
 `.bite` `ConnectionString` and re-publish (re-encrypt with `Scripts/Encrypt-Config.ps1`
-if needed). `ELASTIC_DEBUG_MODE=true` (Development only) captures raw HTTP traffic.
+if needed). `WAREWOLF_LOGGING_CONFIG.elasticDebugMode=true` (Development only) captures raw HTTP traffic.
 
 ### 3.4 Audit logging
 
@@ -407,16 +440,16 @@ SECURITY_AUDIT | Event=AuthOutcome | Outcome=401 | Caller=anonymous | Workflow=H
 
 ### 4.1 Azure (highest priority)
 
-Set the env vars as Function App application settings (read on cold start):
+Set them as Function App application settings (read on cold start). Console on/off is the
+`console` field of `WAREWOLF_LOGGING_CONFIG` — set it through a settings file (§2.1), never as
+`--settings K=V`. `EXECUTIONLOGLEVEL` is a plain value and can go on the command line:
 
 ```powershell
-# Enable console/stdout at INFO
+# Level (plain value - command line is fine)
 az functionapp config appsettings set --name $AppName --resource-group $Rg `
-    --settings ENABLECONSOLELOGGING=true EXECUTIONLOGLEVEL=4
+    --settings EXECUTIONLOGLEVEL=4
 
-# Disable console/stdout
-az functionapp config appsettings set --name $AppName --resource-group $Rg `
-    --settings ENABLECONSOLELOGGING=false
+# Console on/off: set WAREWOLF_LOGGING_CONFIG (§2.1) with console = $true / $false
 
 # Stream the live console (App Service hosts Function Apps)
 az webapp log tail --name $AppName --resource-group $Rg
@@ -428,28 +461,29 @@ App Insights and Elasticsearch toggles are in [§3.2](#32-application-insights) 
 ### 4.2 Docker
 
 For developers running the engine in a container via `engine/run.ps1`. The
-`engine/docker/Dockerfile` pre-sets:
+`engine/docker/Dockerfile` pre-sets (logging-relevant lines):
 
 ```dockerfile
 ENV AzureWebJobsScriptRoot=/home/site/wwwroot \
     AzureFunctionsJobHost__Logging__Console__IsEnabled=true \
     ASPNETCORE_ENVIRONMENT=Development \
-    ENABLEELASTICSEARCHLOGGING=true \
-    ENABLECONSOLELOGGING=true \
-    EXECUTIONLOGLEVEL=4
+    WAREWOLF_LOGGING_CONFIG="{\"console\":true,\"elasticsearch\":true}" \
+    EXECUTIONLOGLEVEL=6
 ```
 
-So out of the box the container runs console + Elasticsearch at INFO (AI off — no
-connection string). Override at `docker run`:
+So out of the box the container runs console + Elasticsearch at TRACE (AI off — no
+connection string). Until 2026-09-25 the Dockerfile still set the pre-WOLF-8516
+`ENABLECONSOLELOGGING`/`ENABLEELASTICSEARCHLOGGING`, which the engine ignores, so older images
+ran with both **off**. Override at `docker run` (single quotes keep the JSON intact in bash):
 
 ```bash
-docker run -e ENABLECONSOLELOGGING=true -e ENABLEELASTICSEARCHLOGGING=false \
+docker run -e 'WAREWOLF_LOGGING_CONFIG={"console":true,"elasticsearch":false}' \
            -e EXECUTIONLOGLEVEL=5 executionengine:debug
 ```
 
 View logs with `docker logs -f ExecutionEngine_debug`. `run.ps1` forwards Key
-Vault/identity env vars from `local.settings.json` but does **not** override the three
-logging knobs — those come from the Dockerfile unless you append `-e` flags.
+Vault/identity env vars from `local.settings.json` but does **not** override the two
+logging settings — those come from the Dockerfile unless you append `-e` flags.
 
 ### 4.3 Local development (F5)
 
@@ -460,11 +494,10 @@ Launch profiles live in `Properties/launchSettings.json` ("Azure Functions" runs
 {
   "IsEncrypted": false,
   "Values": {
-    "ENABLECONSOLELOGGING": "true",
-    "ENABLEELASTICSEARCHLOGGING": "false",   // off while disconnected
-    "EXECUTIONLOGLEVEL": "5",                // DEBUG
-    "ENABLEAPPLICATIONINSIGHTS": "false"
-    // "WAREWOLF_APPINSIGHTS_CONNECTION_STRING": "..."  // set + enable AI to test locally
+    // JSON inside a JSON string: escape the inner quotes. elasticsearch off while disconnected.
+    "WAREWOLF_LOGGING_CONFIG": "{\"console\":true,\"elasticsearch\":false,\"appInsights\":false}",
+    "EXECUTIONLOGLEVEL": "5"                 // DEBUG
+    // "WAREWOLF_APPINSIGHTS_CONNECTION_STRING": "..."  // set it + "appInsights":true to test AI locally
   }
 }
 ```
@@ -572,11 +605,11 @@ a single-node cluster and point the `.bite` `HostName` at `http://localhost;Port
 
 | Symptom | Likely cause / fix |
 |---|---|
-| No startup banner anywhere | Console output disabled. In Docker/local check `host.json` `console.isEnabled`; in Azure check `ENABLECONSOLELOGGING` + the host is `Running`. |
-| Banner shows `1 sink(s)` | Both `ENABLEAPPLICATIONINSIGHTS` and `ENABLECONSOLELOGGING` are false (only Audit wired). Enable at least one. |
-| Expected ES but it's not in the count | `ENABLEELASTICSEARCHLOGGING` false, or `Settings/ElasticsearchLoggingSource.bite` missing from the package (`File.Exists` failed). |
+| No startup banner anywhere | Console output disabled. In Docker/local check `host.json` `console.isEnabled`; in Azure check `WAREWOLF_LOGGING_CONFIG` is **valid JSON** with `"console":true` + the host is `Running`. |
+| Banner shows `1 sink(s)` | Both `appInsights` and `console` are false (only Audit wired) — or `WAREWOLF_LOGGING_CONFIG` is missing, still uses the pre-WOLF-8516 names, or is unparseable (look for the `LoggingConfiguration failed to parse` Warn line). Enable at least one. |
+| Expected ES but it's not in the count | `WAREWOLF_LOGGING_CONFIG.elasticsearch` false, or `Settings/ElasticsearchLoggingSource.bite` missing from the package (`File.Exists` failed). |
 | Middleware lines visible, execution logger silent | `EXECUTIONLOGLEVEL` too strict. Lower it (worker does **not** read `host.json`). |
-| Console fine, App Insights empty | AI needs **both** `ENABLEAPPLICATIONINSIGHTS=true` **and** a valid `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. Verify the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` is **not** set. |
+| Console fine, App Insights empty | AI needs **both** `WAREWOLF_LOGGING_CONFIG.appInsights=true` **and** a valid `WAREWOLF_APPINSIGHTS_CONNECTION_STRING`. Verify the standard `APPLICATIONINSIGHTS_CONNECTION_STRING` is **not** set. |
 | ES sink added but index empty | Cluster unreachable from the worker — check `[ElasticsearchLogger] Exception` lines, network/VNet/firewall, then `.bite` credentials. |
 | ES docs missing `instance.id`/`invocation.id` | Startup-time entries run before the invocation context exists — null by design. |
 | No `SECURITY_AUDIT` / `[AUDIT]` lines | In Azure they're in App Insights regardless. In live stream, the `Security/AuditLogger` host-process category may filter `ColdStart` (Information); rely on App Insights or lower the host category. |
@@ -593,14 +626,16 @@ a single-node cluster and point the `.bite` `HostName` at `http://localhost;Port
   (default true), `-StructuredLogs` (default true), `-EnableAppInsights` (default
   true), `-EnableElasticsearch` (default false).
 - **Applies these app settings** (Phase 3 →
-  [Deploy-WwExecutionEngine.ps1:805-811](../Scripts/Deploy-WwExecutionEngine.ps1#L805-L811)):
-  `ASPNETCORE_ENVIRONMENT=Production`, `EXECUTIONLOGLEVEL`, `ENABLECONSOLELOGGING`,
-  `STRUCTURED_LOGS`, `ENABLEAPPLICATIONINSIGHTS`, `ENABLEELASTICSEARCHLOGGING`,
-  `WAREWOLF_LICENSE_CHECK_ENABLED` (+ Key Vault settings when encrypting).
+  [Deploy-WwExecutionEngine.ps1:2013-2032](../Scripts/Deploy-WwExecutionEngine.ps1#L2013-L2032)):
+  `ASPNETCORE_ENVIRONMENT=Production`, `EXECUTIONLOGLEVEL`, `WAREWOLF_LOGGING_CONFIG`
+  (`console`/`appInsights`/`elasticsearch`/`performanceCounters`/`structuredLogs` from the
+  parameters above), `WAREWOLF_LICENSE_CHECK_ENABLED` (+ Key Vault settings when encrypting).
+  The whole map is pushed with `--settings @file`, so the JSON value survives `az.cmd`.
 - **App Insights:** when `-EnableAppInsights`, Phase 1 invokes
   `Setup-ApplicationInsights.ps1`, which creates the `{AppName}-ai` component and sets
-  `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` + `ENABLEAPPLICATIONINSIGHTS=true`. It never
-  sets the standard `APPLICATIONINSIGHTS_CONNECTION_STRING`.
+  `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` + `WAREWOLF_LOGGING_CONFIG.appInsights=true`
+  (read-merge-write, preserving the other fields). For the engine it never sets the standard
+  `APPLICATIONINSIGHTS_CONNECTION_STRING` (the worker deploys do — see §3.2).
 - **Elasticsearch:** when `-EnableElasticsearch`, stages the user-supplied
   `ElasticsearchLoggingSource.bite` into `Settings/` (encrypting it via Key Vault when
   `-EncryptResources` is set).

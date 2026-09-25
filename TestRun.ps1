@@ -2621,8 +2621,7 @@ done
 set -e
 export AZURE_KEYVAULT_NAME=''
 export SkipFailureToRetrieveSecret='true'
-export ENABLECONSOLELOGGING='false'
-export ENABLEELASTICSEARCHLOGGING='false'
+export WAREWOLF_LOGGING_CONFIG='{"console":false,"elasticsearch":false}'
 export FUNCTIONS_WORKER_RUNTIME='dotnet-isolated'
 $securitySetup
 mkdir -p /server-rw && cp -a /server/. /server-rw/

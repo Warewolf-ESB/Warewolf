@@ -58,7 +58,7 @@ publish (and fails with a clear message under `-NonInteractive`).
 
 ### Elasticsearch applies to the ENGINE only
 
-`-EnableElasticsearch` stages item 4 and sets `ENABLEELASTICSEARCHLOGGING=true` on the engine. The file
+`-EnableElasticsearch` stages item 4 and sets `"elasticsearch":true` in the engine's `WAREWOLF_LOGGING_CONFIG`. The file
 must be named exactly `ElasticsearchLoggingSource.bite` — the engine reads that literal path under
 `Settings\`.
 

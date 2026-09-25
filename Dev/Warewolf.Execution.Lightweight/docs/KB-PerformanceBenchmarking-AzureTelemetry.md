@@ -54,7 +54,7 @@ Function App (dotnet-isolated)
                            MemoryWorkingSet, IoReadBytesPerSecond, Http2xx/4xx/5xx, etc.
 ```
 
-> **Key fact:** The `requests` and `exceptions` App Insights tables are **always empty** on this app. This is by design — `APPLICATIONINSIGHTS_CONNECTION_STRING` is not set, keeping the host AI pipeline dormant; `ENABLEAPPLICATIONINSIGHTS` is the single authoritative switch. All per-request counts come from Azure Monitor metrics; all log/trace data comes from `traces`, `dependencies`, and `performanceCounters`.
+> **Key fact:** The `requests` and `exceptions` App Insights tables are **always empty** on this app. This is by design — `APPLICATIONINSIGHTS_CONNECTION_STRING` is not set, keeping the host AI pipeline dormant; `WAREWOLF_LOGGING_CONFIG.appInsights` is the single authoritative switch. All per-request counts come from Azure Monitor metrics; all log/trace data comes from `traces`, `dependencies`, and `performanceCounters`.
 
 ---
 
@@ -97,14 +97,14 @@ Invoke-WebRequest "https://wwenginenewscriptai.azurewebsites.net/Public/Examples
 
 | Setting | Required Value | Purpose |
 |---|---|---|
-| `ENABLEAPPLICATIONINSIGHTS` | `true` | Gates App Insights SDK — must be true or all AI tables stay empty |
+| `WAREWOLF_LOGGING_CONFIG` | valid JSON with `"appInsights":true` | Gates App Insights SDK — must be true, **and the value must parse**, or all AI tables stay empty (an unparseable value reads as every flag false) |
 | `WAREWOLF_APPINSIGHTS_CONNECTION_STRING` | `InstrumentationKey=...` | Destination for traces/dependencies/perf counters |
 | `EXECUTIONLOGLEVEL` | `INFO` (prod) / `TRACE` (debug) | Log verbosity — TRACE generates high volume |
 
 ```powershell
 # Verify settings before benchmarking
 az functionapp config appsettings list --name wwenginenewscriptai -g DEV2 `
-  --query "[?name=='ENABLEAPPLICATIONINSIGHTS' || name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='EXECUTIONLOGLEVEL'].{Key:name,Value:value}" `
+  --query "[?name=='WAREWOLF_LOGGING_CONFIG' || name=='WAREWOLF_APPINSIGHTS_CONNECTION_STRING' || name=='EXECUTIONLOGLEVEL'].{Key:name,Value:value}" `
   --output table
 ```
 
@@ -531,9 +531,9 @@ A `-1` during a cold scale-out usually means the request was queued behind an in
 
 App Insights raw tables have a **5–10 minute ingestion lag**. The `union | summarize count()` query shows data instantly (pre-aggregated), but filtered queries need to wait. Either use `-Correlate` (the script waits automatically) or run the queries manually after waiting.
 
-### `ENABLEAPPLICATIONINSIGHTS` is set but App Insights shows zero data
+### `WAREWOLF_LOGGING_CONFIG.appInsights` is true but App Insights shows zero data
 
-The function app may not have been invoked since the setting was applied. A settings change triggers a restart — invoke at least one endpoint after restart, wait 5–10 minutes, then query:
+First confirm the stored value is **valid JSON** (quotes intact — see the Logging Guide §2.1 on `az.cmd` stripping them); an unparseable value turns App Insights off with only a Warn line. Otherwise, the function app may not have been invoked since the setting was applied. A settings change triggers a restart — invoke at least one endpoint after restart, wait 5–10 minutes, then query:
 
 ```powershell
 az monitor app-insights query --app $AI_NAME -g $RG --analytics-query "union requests, traces, dependencies, exceptions | summarize count() by itemType"

@@ -131,7 +131,7 @@
          at startup with TypeLoadException: 'Could not load type ... ITelemetryInitializer'. -->
     <PackageReference Include="Microsoft.ApplicationInsights.WorkerService" Version="2.23.0" />
 
-    <!-- Provides PerformanceCollectorModule (ENABLEPERFORMANCECOUNTERS). Already pulled in
+    <!-- Provides PerformanceCollectorModule (WAREWOLF_LOGGING_CONFIG.performanceCounters). Already pulled in
          transitively by the Functions AI package above (see its comment on the 2.x pin),
          but referenced explicitly here so the dependency can't silently drift off that pin.
          MUST stay on 2.23.0, same v2-core constraint as WorkerService above. -->

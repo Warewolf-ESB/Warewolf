@@ -140,3 +140,78 @@ Describe 'Setup-ApplicationInsights — transient retry' {
         $out | Should -Not -Match 'secret-app-id-9999'
     }
 }
+
+Describe 'Setup-ApplicationInsights — connection-string setting name' {
+    # The engine reads the non-standard WAREWOLF_APPINSIGHTS_CONNECTION_STRING; the Service Bus worker
+    # and job processor read the standard APPLICATIONINSIGHTS_CONNECTION_STRING. Writing only the
+    # engine's name to those apps left their App Insights empty (wwuat3-sbworker: 0 rows in every table).
+
+    BeforeEach {
+        $global:azCalls = [System.Collections.Generic.List[string]]::new()
+        # A global function cannot see this file's $script: scope - hand the value over globally.
+        $global:shimConnName = $script:ConnString
+
+        function global:az {
+            $a = $args; $line = ($a -join ' '); $global:azCalls.Add($line); $global:LASTEXITCODE = 0
+            if ($a[0] -eq 'account' -and $a -contains '--query') { return 'South Africa Subscription' }
+            if ($a[0] -eq 'account')                             { return '{"name":"South Africa Subscription"}' }
+            if ($a[0] -eq 'group' -and $a[1] -eq 'exists')       { return 'true' }
+            if ($a[0] -eq 'monitor' -and $a -contains '--query') { return $global:shimConnName }
+            if ($a[0] -eq 'monitor' -and $a -contains 'show')    { return '{"name":"app-ai"}' }
+            if ($a[0] -eq 'functionapp' -and $a -contains 'set') { return $null }
+            if ($a[0] -eq 'functionapp' -and $a -contains 'list' -and $line -match "\]\.value") { return '{"console":true}' }
+            if ($a[0] -eq 'functionapp' -and $a -contains 'list') {
+                # Echo back whichever connection-string name the verify step asked for.
+                $name = [regex]::Match($line, "\[\?name=='([A-Z_]+)'").Groups[1].Value
+                return ('[{"name":"' + $name + '","value":"x"},' +
+                        '{"name":"WAREWOLF_LOGGING_CONFIG","value":"{\"console\":true,\"appInsights\":true}"}]')
+            }
+            return $null
+        }
+
+        function script:Invoke-Setup([hashtable] $Extra = @{}) {
+            (& $script:AiScript -ResourceGroup 'DEV2' -FunctionAppName 'wwsbworker' -Location 'southafricanorth' `
+                -RetryDelaySeconds @(0) @Extra) 6>&1 | Out-String
+        }
+
+        function script:Get-SettingsSetCalls { @($global:azCalls | Where-Object { $_ -match 'appsettings set' }) }
+    }
+
+    AfterEach { Remove-Item Function:\az -ErrorAction SilentlyContinue }
+    AfterAll  { Remove-Variable -Name azCalls, shimConnName -Scope Global -ErrorAction SilentlyContinue }
+
+    It 'defaults to the engine''s non-standard name and sets the logging flag (engine unchanged)' {
+        $out = Invoke-Setup
+        $LASTEXITCODE | Should -Be 0
+        $sets = Get-SettingsSetCalls
+        $sets.Count | Should -Be 2
+        $sets[0] | Should -Match '--settings WAREWOLF_APPINSIGHTS_CONNECTION_STRING='
+        $sets[1] | Should -Match '--settings WAREWOLF_LOGGING_CONFIG='
+        @($sets | Where-Object { $_ -match '--settings APPLICATIONINSIGHTS_CONNECTION_STRING=' }).Count | Should -Be 0
+        $out | Should -Match 'Configuration verified successfully'
+    }
+
+    It 'writes the standard name when asked, and verifies against that name' {
+        $out = Invoke-Setup @{ ConnectionStringSettingName = 'APPLICATIONINSIGHTS_CONNECTION_STRING' }
+        $LASTEXITCODE | Should -Be 0
+        (Get-SettingsSetCalls)[0] | Should -Match '--settings APPLICATIONINSIGHTS_CONNECTION_STRING='
+        @(Get-SettingsSetCalls | Where-Object { $_ -match 'WAREWOLF_APPINSIGHTS_CONNECTION_STRING' }).Count | Should -Be 0
+        @($global:azCalls | Where-Object { $_ -match "appsettings list" -and $_ -match "name=='APPLICATIONINSIGHTS_CONNECTION_STRING'" }).Count |
+            Should -Be 1 -Because 'the verify step must look for the name it wrote'
+        $out | Should -Match 'Configuration verified successfully'
+    }
+
+    It '-SkipLoggingConfigFlag writes no WAREWOLF_LOGGING_CONFIG and still verifies' {
+        $out = Invoke-Setup @{ ConnectionStringSettingName = 'APPLICATIONINSIGHTS_CONNECTION_STRING'; SkipLoggingConfigFlag = $true }
+        $LASTEXITCODE | Should -Be 0
+        $sets = Get-SettingsSetCalls
+        $sets.Count | Should -Be 1
+        $sets[0] | Should -Not -Match 'WAREWOLF_LOGGING_CONFIG'
+        $out | Should -Match 'Configuration verified successfully'
+    }
+
+    It 'rejects a misspelt setting name rather than writing a setting nothing reads' {
+        { & $script:AiScript -ResourceGroup 'DEV2' -FunctionAppName 'x' -ConnectionStringSettingName 'APPINSIGHTS_CONNECTIONSTRING' } |
+            Should -Throw -ExpectedMessage '*does not belong to the set*'   # the ValidateSet, not a missing parameter
+    }
+}
