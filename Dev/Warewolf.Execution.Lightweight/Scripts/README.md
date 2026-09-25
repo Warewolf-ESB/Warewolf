@@ -195,11 +195,13 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   how messages arrive. UAT: RabbitMQ → Shovel → Azure Service Bus → the engine's own
   `ServiceBusTrigger`. Dev: CloudAMQP queue `wwprofilerlw.queueprocessor.trigger.request` → this
   Container App (KEDA 0..20, `Concurrency 20` in `Dev/.azure/ProfilerDev.trigger.bite`) →
-  `POST /Secure/{workflow}` on the engine. **The pipeline deletes the legacy shovel itself:** its
-  first steps remove `wwprofilerlw-shovel` from the self-hosted broker (a no-op when already gone)
-  via `DELETE /api/parameters/shovel/%2f/wwprofilerlw-shovel`, then re-list and fail the build if it
-  is still there — so re-running the UAT file, which recreates it, can never leave a second consumer
-  behind. **Two prerequisites remain, each failing the build early with its remediation:**
+  `POST /Secure/{workflow}` on the engine. **The Dev file talks only to CloudAMQP** (trigger,
+  dead-letter and result-sink queues on instance `bmkzdabu`); it never touches the self-hosted
+  `rabbitmq.warewolf.online` broker, which (with its ngrok tunnel) exists only because CloudAMQP's
+  free tier cannot shovel into Azure Service Bus. It neither creates nor removes the UAT file's
+  `wwprofilerlw-shovel`, so a live UAT shovel feeds the same engine from a different source queue —
+  no message is processed twice, but don't overlap UAT and Dev runs (shared engine + database).
+  **Two prerequisites remain, each failing the build early with its remediation:**
   (1) `wwprofilerlw` has an Entra app registration (the worker calls only `/Secure/*`; the engine had
   none and was open-access on `/public/*`) — a one-off `Configure-WwExecutionAuth.ps1` run by an
   Application Administrator, then set `ProfilerEngineEntraAppId`; (2) a Key Vault secret holding the

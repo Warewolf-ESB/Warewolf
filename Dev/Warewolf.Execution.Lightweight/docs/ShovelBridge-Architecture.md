@@ -2724,15 +2724,12 @@ This worker was originally built as a client example and has been promoted to a
   `pipeline-LOADTEST.yml` for the full rationale.
 - **The Dev profiler rig does not use this bridge.** `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`
   deploys the same `wwprofilerlw` engine as the UAT pipeline but feeds it through the
-  `Warewolf.Execution.QueueProcessor` (RabbitMQ → ACA/KEDA → `/Secure/*`) instead. Its shovel,
-  `wwprofilerlw-shovel`, would otherwise compete for the same engine and database, so that
-  pipeline **deletes it on every run** (`DELETE /api/parameters/shovel/{vhost}/{name}` — the runtime
-  parameter `Configure-RabbitMqShovel.ps1` PUTs to create it; `/api/shovels/...` is only the
-  read-only status listing), then re-lists and fails if it is still present. Only that one shovel is
-  touched: no queue, exchange, binding or message is removed. The Service Bus namespace
-  `wwprofilerlwsb` is deliberately left in place, idle, so the change is reversible: re-running the
-  UAT pipeline recreates the shovel, and the next Dev run removes it again, so the two pipelines
-  cannot be left feeding the engine at once. The engine's own `ServiceBusTrigger` stays configured on the idle queue because
+  `Warewolf.Execution.QueueProcessor` (CloudAMQP → ACA/KEDA → `/Secure/*`) instead. The
+  QueueProcessor needs no shovel, so the Dev pipeline uses only CloudAMQP and never touches this
+  bridge's self-hosted broker or `wwprofilerlw-shovel`. A live shovel feeds the same engine from a
+  different source queue, so no message is processed twice, but UAT and Dev runs in flight at once
+  share the engine and database — don't overlap them. The Service Bus namespace `wwprofilerlwsb`
+  is left in place. The engine's own `ServiceBusTrigger` stays configured on the idle queue because
   its `%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%` binding only indexes when that app setting exists.
 
 
