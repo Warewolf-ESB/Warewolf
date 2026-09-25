@@ -7,7 +7,9 @@
     ONE definition of "this az failure is transient, wait and try again", used by
     Deploy-WwExecutionEngine.ps1 (Invoke-Az), Setup-ApplicationInsights.ps1,
     Configure-WwExecutionAuth.ps1, Configure-WwExecutionAuth-Clients.ps1 and
-    Cleanup-WwExecutionAuth.ps1.  Each script keeps its own wrapper (its own log
+    Cleanup-WwExecutionAuth.ps1 - and, through Invoke-WwAz, by every inline `az` step in the
+    Dev/.azure pipelines (build 30844 lost a whole run to one ARM 503 in such a step).
+    Each script keeps its own wrapper (its own log
     format, secret redaction and throw/-AllowFail contract); only the pattern and
     the retry loop live here, so a new transient signature is added in one place.
 
@@ -114,4 +116,52 @@ function Invoke-WwAzWithRetry {
     return [pscustomobject]@{ Output = $output; ExitCode = $exit; Attempts = $attempt; Transient = $transient }
 }
 
-Export-ModuleMember -Function Test-WwAzTransientError, Invoke-WwAzWithRetry
+function Get-WwAzExecutable {
+    # The real az CLI, never an alias or function of the same name - Invoke-WwAz is normally
+    # reached THROUGH an `az` alias, so resolving plain `az` here would recurse. Separate so the
+    # Pester suite can mock it.
+    $cmd = Get-Command -Name az -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
+    if (-not $cmd) { throw 'az CLI not found on PATH.' }
+    return $cmd.Source
+}
+
+function Invoke-WwAz {
+    <#
+        Drop-in replacement for a bare `az ...` call in the pipelines' inline steps:
+
+            Import-Module '<Scripts>\WwAzCli.psm1' -Force
+            Set-Alias -Name az -Value Invoke-WwAz -Scope Script
+
+        after which every `az ...` line in the step retries on a transient failure, unchanged.
+        Behaves like the bare call it replaces: returns stdout only (so `$x = az ... -o tsv` and
+        `az ... | ConvertFrom-Json` see what they always saw), writes the final attempt's stderr
+        to the host, and leaves $LASTEXITCODE at the final exit code for the step's own check.
+
+        No param block on purpose: every argument, including --flags, passes through as $args.
+        Consequence: a caller's `2>$null` no longer hides az's stderr, because it is written to
+        the host rather than the error stream (writing it as an error would throw under the
+        steps' $ErrorActionPreference = 'Stop').
+    #>
+    $exe    = Get-WwAzExecutable
+    $azArgs = $args
+    # Name the command in retry messages by its leading subcommand words only - never an
+    # option or its value, which may be a secret (az login -p ...).
+    $label  = @($azArgs | Select-Object -First 3 | ForEach-Object { [string]$_ })
+    $cut    = [Array]::FindIndex([string[]]$label, [Predicate[string]] { param($a) $a.StartsWith('-') })
+    if ($cut -eq 0) { $label = @() } elseif ($cut -gt 0) { $label = $label[0..($cut - 1)] }
+    $label  = (@('az') + $label) -join ' '
+
+    $ErrorActionPreference = 'Continue'   # native stderr must never become terminating here
+    $result = Invoke-WwAzWithRetry -Invoke { & $exe @azArgs 2>&1 } -OnRetry {
+        param($attempt, $max, $wait)
+        Write-Host "##[warning]$label failed transiently (attempt $attempt/$max); retrying in ${wait}s."
+    }
+
+    foreach ($item in @($result.Output)) {
+        if ($item -is [System.Management.Automation.ErrorRecord]) { Write-Host $item.ToString() }
+        else { $item }
+    }
+    $global:LASTEXITCODE = $result.ExitCode
+}
+
+Export-ModuleMember -Function Test-WwAzTransientError, Invoke-WwAzWithRetry, Invoke-WwAz

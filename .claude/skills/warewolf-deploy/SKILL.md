@@ -24,7 +24,7 @@ dotnet publish Dev/Warewolf.Execution.Lightweight/Warewolf.Execution.Lightweight
 | `KeyVaultSetup.ps1` / `KeyVaultSetup.azcli` | Provision Key Vault for AES-backed secure.config encryption. |
 | `Encrypt-Config.ps1` | Encrypt `secure.config` / WFAES payloads. |
 | `Setup-ApplicationInsights.ps1` | Provision + wire App Insights. |
-| `WwAzCli.psm1` | **Shared az transient-retry policy** (`Invoke-WwAzWithRetry`, `Test-WwAzTransientError`) imported by the engine orchestrator's `Invoke-Az`, App Insights and the three auth scripts. Add a new transient signature HERE, not in a script. Callers pass the az call as a script block so test `az` shims still resolve. |
+| `WwAzCli.psm1` | **Shared az transient-retry policy** (`Invoke-WwAzWithRetry`, `Test-WwAzTransientError`, `Invoke-WwAz`) imported by the engine orchestrator's `Invoke-Az`, App Insights and the three auth scripts — and by **every inline `az` step in `Dev/.azure`** via `Set-Alias az Invoke-WwAz` (build 30844; guarded by `Dev/.azure/InlineAzRetry.Tests.ps1`). A new inline `az` step needs the same 3-line preamble and `pwsh`/`pscore`. Add a new transient signature HERE, not in a script. Callers pass the az call as a script block so test `az` shims still resolve. |
 | `Get-WwExecutionToken.ps1` / `Get-WwExecutionToken-AllFlows.ps1` | Acquire JWT/Entra tokens for calling secured routes. |
 | `Get-DropboxTokens.ps1` | Dropbox OAuth token retrieval. |
 | `Generate-WorkflowIndex.ps1` | Regenerate `workflow-index.json` from `Resources/`. |

@@ -146,3 +146,94 @@ Describe 'WwAzCli — Invoke-WwAzWithRetry' {
         $r.Output | Should -Be 'from-the-shim'
     }
 }
+
+Describe 'WwAzCli — Invoke-WwAz (the inline pipeline steps'' `az` alias)' {
+
+    BeforeEach {
+        Mock Start-Sleep -ModuleName WwAzCli { }
+        $script:hostLines = [System.Collections.Generic.List[string]]::new()
+        Mock Write-Host -ModuleName WwAzCli { $script:hostLines.Add([string]$Object) }
+
+        # Stands in for the real az executable. Plays back one step per call:
+        # @{ Exit = <int>; Out = <stdout lines>; Err = <stderr lines> }, and records the args it got.
+        $global:wwAzCalls = [System.Collections.Generic.List[object]]::new()
+        function script:Use-FakeAz([object[]] $Steps) {
+            $global:wwAzSteps = $Steps
+            $global:wwAzCalls.Clear()
+            Mock Get-WwAzExecutable -ModuleName WwAzCli {
+                {
+                    $global:wwAzCalls.Add(@($args))
+                    $step = $global:wwAzSteps[[Math]::Min($global:wwAzCalls.Count - 1, $global:wwAzSteps.Count - 1)]
+                    foreach ($l in @($step.Err)) { if ($l) { Write-Error -Message $l -ErrorAction Continue } }
+                    foreach ($l in @($step.Out)) { if ($l) { $l } }
+                    $global:LASTEXITCODE = $step.Exit
+                }
+            }
+        }
+    }
+
+    AfterEach {
+        Remove-Item Alias:\az -ErrorAction SilentlyContinue
+        Remove-Variable -Name wwAzCalls, wwAzSteps -Scope Global -ErrorAction SilentlyContinue
+    }
+
+    It 'retries the build-30844 ARM outage page and returns the eventual success' {
+        Use-FakeAz @(@{ Exit = 1; Err = $script:ArmOutage503 }, @{ Exit = 0; Out = 'true' })
+        $out = Invoke-WwAz functionapp config appsettings list --name app -o tsv
+        $out                  | Should -Be 'true'
+        $global:LASTEXITCODE  | Should -Be 0
+        $global:wwAzCalls.Count | Should -Be 2
+    }
+
+    It 'does NOT retry a real error, and leaves its exit code for the step''s own check' {
+        Use-FakeAz @(@{ Exit = 3; Err = 'ERROR: (ResourceNotFound) not found' }, @{ Exit = 0; Out = 'never' })
+        $out = Invoke-WwAz functionapp show --name app
+        $out                    | Should -BeNullOrEmpty
+        $global:LASTEXITCODE    | Should -Be 3
+        $global:wwAzCalls.Count | Should -Be 1
+    }
+
+    It 'gives up after 5 attempts on a persistent outage with the final exit code' {
+        Use-FakeAz @(@{ Exit = 1; Err = $script:ArmOutage503 })
+        Invoke-WwAz functionapp stop --name app
+        $global:LASTEXITCODE    | Should -Be 1
+        $global:wwAzCalls.Count | Should -Be 5
+    }
+
+    It 'returns stdout only - stderr (warnings included) goes to the host, never into the captured value' {
+        Use-FakeAz @(@{ Exit = 0; Out = @('line1', 'line2'); Err = 'WARNING: this command is in preview' })
+        $out = @(Invoke-WwAz servicebus queue show --name q)
+        $out -join '|'   | Should -Be 'line1|line2'
+        $script:hostLines | Should -Contain 'WARNING: this command is in preview'
+    }
+
+    It 'writes only the FINAL attempt''s stderr, and names the command without any option value on retry' {
+        Use-FakeAz @(@{ Exit = 1; Err = "$script:ArmOutage503 p=S3cr3t" }, @{ Exit = 0; Out = '{}' })
+        Invoke-WwAz login --service-principal -u appid -p S3cr3t --tenant t | Out-Null
+        ($script:hostLines -join "`n") | Should -Not -Match 'S3cr3t'
+        $script:hostLines | Should -Contain '##[warning]az login failed transiently (attempt 1/5); retrying in 3s.'
+    }
+
+    It 'passes every argument through to az unchanged' {
+        Use-FakeAz @(@{ Exit = 0; Out = 'x' })
+        Invoke-WwAz functionapp config appsettings set --settings '@C:\t\s.json' --query "[?name=='A'].value | [0]" -o none | Out-Null
+        $global:wwAzCalls[0] -join ' ' | Should -Be "functionapp config appsettings set --settings @C:\t\s.json --query [?name=='A'].value | [0] -o none"
+        $global:wwAzCalls[0].Count     | Should -Be 10
+    }
+
+    It 'works through the `az` alias exactly as the pipeline steps use it' {
+        Use-FakeAz @(@{ Exit = 1; Err = $script:ArmOutage503 }, @{ Exit = 0; Out = 'false' })
+        Set-Alias -Name az -Value Invoke-WwAz -Scope Script
+        $stored = az functionapp config appsettings list --name app --query "[?name=='X'].value | [0]" -o tsv
+        if ($LASTEXITCODE -ne 0) { throw 'unexpected' }
+        $stored | Should -Be 'false'
+    }
+
+    It 'resolves the real az executable, never the `az` alias that routes to itself' {
+        Mock Get-Command -ModuleName WwAzCli { [pscustomobject]@{ Source = 'C:\az\az.cmd' } }
+        Set-Alias -Name az -Value Invoke-WwAz -Scope Global
+        InModuleScope WwAzCli { Get-WwAzExecutable } | Should -Be 'C:\az\az.cmd'
+        Should -Invoke Get-Command -ModuleName WwAzCli -Times 1 -Exactly -ParameterFilter { $CommandType -eq 'Application' -and $Name -eq 'az' }
+        Remove-Item Alias:\az -Force -ErrorAction SilentlyContinue
+    }
+}
