@@ -92,9 +92,9 @@
 
 .EXAMPLE
     ./Test-WwShovelBridgeDelivery.ps1 `
-        -ManagementUri https://rabbitmq.warewolf.online -SourceQueue wwprofilerlw.servicebus.trigger.request `
+        -ManagementUri https://rabbitmq.warewolf.online -SourceQueue profiler.profile.request.DEV `
         -Username testuser -Password $pw -InputFields $fields -CorrelationToken $mandateId `
-        -ServiceBusNamespace wwprofilerlwsb -ServiceBusQueueName wwprofilerlw-trigger-queue -ResourceGroup DEV2
+        -ServiceBusNamespace wwprofilerlwsb -ServiceBusQueueName profiler.profile.request.DEV -ResourceGroup DEV2
 
 .NOTES
     Publishing over the MANAGEMENT API, not AMQP, is deliberate: RabbitMQ.Client

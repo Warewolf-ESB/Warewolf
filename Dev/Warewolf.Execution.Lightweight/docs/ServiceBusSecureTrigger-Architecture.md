@@ -699,8 +699,9 @@ transport-only trust model) for anyone deprovisioning or re-auditing these objec
   additive alongside it.
 - Automatic/CI-driven provisioning of the trigger queue and RBAC role, *except* for the
   profiler rig — `Enable-ServiceBusSecureTrigger.ps1` (see above) is run on every deploy by
-  `Dev/.azure/ProfilerService-CI-UAT-LightweightExecutionEngine.yml` against `wwprofilerlw`,
-  and by nothing else. For `warewolfserver` and `WarewolfServer-UAT` it remains a deliberately
+  the two Profiler pipelines (`Dev/.azure/ProfilerService-CI-{Dev,UAT}-LightweightExecutionEngine.yml`,
+  ShovelBridge architecture) against `wwprofilerlw` / `wwprofileruatlw`, and by nothing else.
+  For `warewolfserver` and `WarewolfServer-UAT` it remains a deliberately
   separate, human-reviewed step. Automating it for a given app costs a privilege grant as well
   as a pipeline step: Contributor cannot write role assignments, so the profiler pipeline's
   service principal holds `Role Based Access Control Administrator` on the DEV2 resource group,
