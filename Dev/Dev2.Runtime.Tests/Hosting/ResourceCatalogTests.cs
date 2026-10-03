@@ -989,10 +989,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             //------------Execute Test---------------------------
-            var workflow = ResourceCatalog.Instance.GetResource<Workflow>(workspaceID, "Bugs\\" + resourceName);
+            var workflow = rc.GetResource<Workflow>(workspaceID, "Bugs\\" + resourceName);
             //------------Assert Results-------------------------
             var savedFiles = Directory.Exists(path) ? string.Join(", ", Directory.GetFiles(path)) : "<path missing>";
-            var loadedResources = string.Join(", ", ResourceCatalog.Instance.GetResources(workspaceID).Select(r => r.ResourceName));
+            var loadedResources = string.Join(", ", rc.GetResources(workspaceID).Select(r => r.ResourceName));
             Assert.IsNotNull(workflow, $"GetResource<Workflow>(workspaceID, \"Bugs\\\\{resourceName}\") returned null. Workspace path: {path}. Files on disk: [{savedFiles}]. Loaded resources: [{loadedResources}]");
             Assert.IsInstanceOfType(workflow, typeof(Workflow));
         }
@@ -3306,11 +3306,18 @@ namespace Dev2.Tests.Runtime.Hosting
             catalog.LoadWorkspaceViaBuilder(path, true, allFolders.ToArray());
             var duplicateResources = catalog.GetDuplicateResources();
             //------------Assert Results-------------------------
-            Assert.IsTrue(duplicateResources.Count > 0);
+            // Fails only on CI's Linux agents (build 30903, both passes) and passes in a local Linux
+            // container. Suspected cause: ResourcePath order follows Directory.EnumerateDirectories,
+            // which is unordered off Windows. The diagnostics below record the actual order so the
+            // next failure confirms or rules that out before the assertions are changed.
+            var enumeratedOrder = string.Join(", ", allFolders.Select(f => Path.GetRelativePath(path, f)).Where(f => f.StartsWith("MyTest")));
+            var diagnostics = $"Folder enumeration order: [{enumeratedOrder}]. Duplicates: [{string.Join("; ", duplicateResources.Select(d => d.ResourceId + " => " + string.Join(" | ", d.ResourcePath)))}]. Expected [0] under '{resourcePath}', [1] under '{resourcePath1}'.";
+            Console.WriteLine(diagnostics);
+            Assert.IsTrue(duplicateResources.Count > 0, diagnostics);
             var duplicateResource = duplicateResources.Single();
-            Assert.IsTrue(duplicateResource.ResourcePath.Count == 2);
-            Assert.IsTrue(duplicateResource.ResourcePath[0].Contains(resourcePath));
-            Assert.IsTrue(duplicateResource.ResourcePath[1].Contains(resourcePath1));
+            Assert.IsTrue(duplicateResource.ResourcePath.Count == 2, diagnostics);
+            Assert.IsTrue(duplicateResource.ResourcePath[0].Contains(resourcePath), diagnostics);
+            Assert.IsTrue(duplicateResource.ResourcePath[1].Contains(resourcePath1), diagnostics);
         }
 
         [TestMethod]

@@ -24,6 +24,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Warewolf.Security.Encryption;
 using Warewolf.UnitTestAttributes;
 
 namespace Dev2.Tests.Runtime.Services
@@ -329,8 +330,24 @@ namespace Dev2.Tests.Runtime.Services
             StringAssert.Contains(result.Items[2].SqlDataType.ToString(), "Int");
         }
 
-        static DbSource CreateDev2TestingDbSource()
+        bool _aesHooksSet;
+        Func<string, string> _previousAesEncryptHook;
+        Func<string, string> _previousAesDecryptHook;
+
+        DbSource CreateDev2TestingDbSource()
         {
+            // SaveResource encrypts the connection string. Off Windows that reaches DPAPI and throws
+            // PlatformNotSupportedException unless an AES hook is set, as in Azure. The hooks are
+            // process-wide and most tests here run in parallel, so only these [DoNotParallelize]
+            // tests set them, and CleanupContainer restores the previous values. (These tests used
+            // to pass on Linux only because ResourceCatalog.Instance had been leaked as a mock whose
+            // SaveResource did nothing, CI build 30903.)
+            _previousAesEncryptHook = DpapiWrapper.AesEncryptHook;
+            _previousAesDecryptHook = DpapiWrapper.AesDecryptHook;
+            DpapiWrapper.AesEncryptHook = plainText => "WFAES::" + Convert.ToBase64String(Encoding.UTF8.GetBytes(plainText));
+            DpapiWrapper.AesDecryptHook = cipher => Encoding.UTF8.GetString(Convert.FromBase64String(cipher.Substring(7)));
+            _aesHooksSet = true;
+
             _containerOps = new Depends(Depends.ContainerType.MSSQL);
             var dbSource = new DbSource
             {
@@ -353,7 +370,15 @@ namespace Dev2.Tests.Runtime.Services
         }
 
         [TestCleanup]
-        public void CleanupContainer() => _containerOps?.Dispose();
+        public void CleanupContainer()
+        {
+            _containerOps?.Dispose();
+            if (_aesHooksSet)
+            {
+                DpapiWrapper.AesEncryptHook = _previousAesEncryptHook;
+                DpapiWrapper.AesDecryptHook = _previousAesDecryptHook;
+            }
+        }
 
         #endregion
 

@@ -303,3 +303,151 @@ Describe 'Azurite ownership of AzureWebJobsStorage across engine restarts' {
         $env:AzureWebJobsStorage | Should -Be 'DefaultEndpointsProtocol=https;AccountName=real'
     }
 }
+
+# CI build 30903 "Not Parallelizable Unit Tests": every retry re-ran all 38 assemblies (~30s of
+# testhost + coverage start-up each, ~19 min a pass) for 6 Dev2.Runtime.Tests failures, and
+# re-tried the skipped tests too, so the job hit its 45-minute timeout on the third pass.
+Describe 'Retry selection from the TRX' {
+    BeforeAll {
+        script:Import-TestRunFunction 'Get-FailedTestResults', 'Get-FailedTestNames', 'Get-FailedTestAssemblies'
+
+        # Writes a minimal TRX: one UnitTestResult + TestDefinitions/UnitTest per row.
+        function script:New-TrxFixture([object[]]$Rows) {
+            $dir = Join-Path ([System.IO.Path]::GetTempPath()) ("trx-" + [Guid]::NewGuid().ToString('N'))
+            New-Item -ItemType Directory -Path $dir | Out-Null
+            $results = ''; $defs = ''
+            foreach ($r in $Rows) {
+                $id = [Guid]::NewGuid().ToString()
+                $results += "<UnitTestResult testId=`"$id`" testName=`"$($r.Name)`" outcome=`"$($r.Outcome)`" />"
+                $storageAttr = if ($r.Storage) { " storage=`"$($r.Storage)`"" } else { '' }
+                $defs += "<UnitTest id=`"$id`" name=`"$($r.Name)`"$storageAttr />"
+            }
+            Set-Content -LiteralPath (Join-Path $dir 'run.trx') -Encoding UTF8 -Value @"
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Results>$results</Results>
+  <TestDefinitions>$defs</TestDefinitions>
+</TestRun>
+"@
+            return $dir
+        }
+
+        $script:Runtime = '/home/vsts/work/1/linuxtests/dev2.runtime.tests.dll'
+        $script:Queue   = '/home/vsts/work/1/linuxtests/queueprocessor/warewolf.execution.queueprocessor.tests.dll'
+        $script:Audit   = '/home/vsts/work/1/linuxtests/warewolf.auditing.tests.dll'
+        $script:AllAsm  = @('Dev2.Runtime.Tests.dll', 'QueueProcessor/Warewolf.Execution.QueueProcessor.Tests.dll',
+                            'Warewolf.Auditing.Tests.dll', 'Dev2.Common.Tests.dll')
+    }
+    AfterEach { if ($script:dir) { Remove-Item -LiteralPath $script:dir -Recurse -Force -ErrorAction SilentlyContinue } }
+
+    It 'retries Failed, Error and Timeout results but not Passed, NotExecuted or Inconclusive ones' {
+        $script:dir = script:New-TrxFixture @(
+            @{ Name = 'PassedTest';       Outcome = 'Passed';       Storage = $script:Runtime }
+            @{ Name = 'FailedTest';       Outcome = 'Failed';       Storage = $script:Runtime }
+            @{ Name = 'SkippedTest';      Outcome = 'NotExecuted';  Storage = $script:Audit }
+            @{ Name = 'InconclusiveTest'; Outcome = 'Inconclusive'; Storage = $script:Audit }
+            @{ Name = 'ErrorTest';        Outcome = 'Error';        Storage = $script:Queue }
+            @{ Name = 'TimeoutTest';      Outcome = 'Timeout';      Storage = $script:Runtime }
+        )
+        Get-FailedTestNames -TestResultsPath $script:dir | Should -Be @('FailedTest', 'ErrorTest', 'TimeoutTest')
+    }
+
+    It 'returns nothing to retry when only skipped and inconclusive results are left' {
+        $script:dir = script:New-TrxFixture @(
+            @{ Name = 'PassedTest';       Outcome = 'Passed';       Storage = $script:Runtime }
+            @{ Name = 'SkippedTest';      Outcome = 'NotExecuted';  Storage = $script:Audit }
+            @{ Name = 'InconclusiveTest'; Outcome = 'Inconclusive'; Storage = $script:Audit }
+        )
+        @(Get-FailedTestNames -TestResultsPath $script:dir).Count | Should -Be 0
+        @(Get-FailedTestAssemblies -TestResultsPath $script:dir -AssemblyPaths $script:AllAsm).Count | Should -Be 0
+    }
+
+    It 'narrows the retry to the assemblies holding a failure, keeping their relative paths' {
+        $script:dir = script:New-TrxFixture @(
+            @{ Name = 'FailedTest';  Outcome = 'Failed';      Storage = $script:Runtime }
+            @{ Name = 'FailedTwice'; Outcome = 'Failed';      Storage = $script:Runtime }
+            @{ Name = 'ErrorTest';   Outcome = 'Error';       Storage = $script:Queue }
+            @{ Name = 'SkippedTest'; Outcome = 'NotExecuted'; Storage = $script:Audit }
+        )
+        Get-FailedTestAssemblies -TestResultsPath $script:dir -AssemblyPaths $script:AllAsm |
+            Should -Be @('Dev2.Runtime.Tests.dll', 'QueueProcessor/Warewolf.Execution.QueueProcessor.Tests.dll')
+    }
+
+    It 'matches a Windows TRX storage path against a backslash-relative assembly path' {
+        $script:dir = script:New-TrxFixture @(
+            @{ Name = 'ErrorTest'; Outcome = 'Error'; Storage = 'd:\a\1\s\bin\servertests\queueprocessor\warewolf.execution.queueprocessor.tests.dll' }
+        )
+        Get-FailedTestAssemblies -TestResultsPath $script:dir -AssemblyPaths @('Dev2.Runtime.Tests.dll', 'QueueProcessor\Warewolf.Execution.QueueProcessor.Tests.dll') |
+            Should -Be @('QueueProcessor\Warewolf.Execution.QueueProcessor.Tests.dll')
+    }
+
+    It 'falls back to every assembly when a failed test has no storage in the TRX' {
+        $script:dir = script:New-TrxFixture @(
+            @{ Name = 'FailedTest';    Outcome = 'Failed' }
+            @{ Name = 'FailedLocated'; Outcome = 'Failed'; Storage = $script:Runtime }
+        )
+        Get-FailedTestAssemblies -TestResultsPath $script:dir -AssemblyPaths $script:AllAsm | Should -Be $script:AllAsm
+    }
+
+    It 'falls back to every assembly when no failed storage matches the assembly list' {
+        $script:dir = script:New-TrxFixture @(
+            @{ Name = 'FailedTest'; Outcome = 'Failed'; Storage = '/elsewhere/Some.Other.Tests.dll' }
+        )
+        Get-FailedTestAssemblies -TestResultsPath $script:dir -AssemblyPaths $script:AllAsm | Should -Be $script:AllAsm
+    }
+
+    It 'stops the retry loop instead of re-running the whole filter when nothing is retryable' {
+        $loopText = $script:TestRunAst.Extent.Text
+        $loopText | Should -Match 'if \(-not \$TestsToRun\) \{ break \}'
+        $loopText | Should -Match 'if \(\$retryAssemblies\) \{ \$asmList = \$retryAssemblies \}'
+    }
+}
+
+Describe 'MSSQL container reuse across retries' {
+    BeforeAll {
+        script:Import-TestRunFunction 'Test-MssqlFixtureProbe', 'Test-ReusableMssqlContainer'
+        $script:MssqlFullFixtureProbe = script:Get-TestRunScriptVariable 'MssqlFullFixtureProbe'
+        # Offline stand-in for the docker CLI: `ps` lists $script:running, `exec` prints $script:probeOut.
+        function script:docker {
+            $script:dockerCalls += , ($args -join ' ')
+            switch ($args[0]) {
+                'ps'   { $script:running }
+                'exec' { $script:probeOut }
+            }
+        }
+    }
+    BeforeEach { $script:dockerCalls = @() }
+
+    It 'reads the fixture probe through sqlcmd padding: <Output> -> <Expected>' -TestCases @(
+        @{ Output = @('', '1', ''); Expected = $true }
+        @{ Output = @('1');         Expected = $true }
+        @{ Output = @('', '0');     Expected = $false }
+        @{ Output = @();            Expected = $false }
+    ) {
+        param($Output, $Expected)
+        Test-MssqlFixtureProbe $Output | Should -Be $Expected
+    }
+
+    It 'reuses a running container that already holds the full fixture' {
+        $script:running = 'sqlserver'; $script:probeOut = @('', '1')
+        Test-ReusableMssqlContainer 'pwd' | Should -BeTrue
+        ($script:dockerCalls | Where-Object { $_ -like 'exec sqlserver*' }) | Should -Match ([regex]::Escape('-P pwd'))
+    }
+
+    It 'does not reuse when no sqlserver container is running' {
+        $script:running = $null; $script:probeOut = @('1')
+        Test-ReusableMssqlContainer 'pwd' | Should -BeFalse
+        ($script:dockerCalls | Where-Object { $_ -like 'exec*' }) | Should -BeNullOrEmpty
+    }
+
+    It 'does not reuse a running container without the fixture (or with a stale SA password)' {
+        $script:running = 'sqlserver'; $script:probeOut = $null
+        Test-ReusableMssqlContainer 'pwd' | Should -BeFalse
+    }
+
+    It 'only skips re-creating the container on retries' {
+        $fn = $script:TestRunAst.Find({ param($a) $a -is [System.Management.Automation.Language.FunctionDefinitionAst] -and $a.Name -eq 'Start-HostMSSQLServer' }, $true)
+        $fn.Extent.Text | Should -Match 'if \(\$ReuseRunning -and \(Test-ReusableMssqlContainer \$saPwd\)\)'
+        $script:TestRunAst.Extent.Text | Should -Match 'Start-HostMSSQLServer \$StartMSSQLServer -ReuseRunning:\(\$loop -gt 0\)'
+    }
+}
