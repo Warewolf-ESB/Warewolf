@@ -174,6 +174,18 @@ Describe 'Profiler <Env> pipeline - structure' -ForEach $script:Environments -Sk
         (Get-StepIndex $script:Doc 'Preflight: Warewolf infrastructure') |
             Should -BeLessThan (Get-StepIndex $script:Doc 'Download Lightweight Engine Package')
     }
+
+    It 'ends the infrastructure preflight by resetting LASTEXITCODE, so a tolerated az failure cannot fail the step' {
+        # 'az servicebus queue show' on a not-yet-created queue leaves $LASTEXITCODE at 1, and AzureCLI@2
+        # exits with $LASTEXITCODE: build 30932 reported every check as fine, then failed the step.
+        $body = Get-StepScript (Find-Step $script:Doc 'Preflight: Warewolf infrastructure')
+        $body = [regex]::Replace($body, '\$\([A-Za-z_][A-Za-z0-9_.]*\)', 'MACRO')
+        $body = [regex]::Replace($body, '\$\{\{[^}]*\}\}', 'TEMPLATE')
+        $tokens = $null; $errors = $null
+        $ast = [System.Management.Automation.Language.Parser]::ParseInput($body, [ref]$tokens, [ref]$errors)
+        $last = @($ast.EndBlock.Statements)[-1]
+        $last.Extent.Text | Should -Be '$global:LASTEXITCODE = 0'
+    }
 }
 
 Describe 'Profiler pipelines - syntax check sanity' {
