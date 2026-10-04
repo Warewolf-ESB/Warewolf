@@ -433,8 +433,13 @@ Describe 'Profiler pipelines - each architecture tears the other down' -Skip:(-n
         $body = Get-StepScript (Find-Step $script:Dev $stop)
         $body | Should -Match "starts_with\(name, '\`$prefix'\)"
         $body | Should -Match "\`$prefix = '\`$\(ProfilerWorkerAppNamePrefix\)'"
-        $body | Should -Match 'az containerapp stop'
-        $body | Should -Match "-ne 'Stopped'"
+        # The CLI has no 'az containerapp stop' (build 30925): the ARM stop action is POSTed, and it is
+        # long-running, so the step must wait for 'Stopped' rather than check once.
+        $code = (($body -split "`n") | Where-Object { $_ -notmatch '^\s*#' }) -join "`n"
+        $code | Should -Not -Match 'az containerapp stop'
+        $code | Should -Match 'az rest --method post --url "https://management\.azure\.com\$id/stop\?api-version=\$apiVersion"'
+        $code | Should -Match "if \(\`$after -eq 'Stopped'\) \{ break \}"
+        $code | Should -Match "-ne 'Stopped'"
         $body | Should -Not -Match 'containerapp delete'
     }
 
@@ -455,7 +460,12 @@ Describe 'Profiler pipelines - each architecture tears the other down' -Skip:(-n
     It 'QueueProcessor starts a worker an earlier ShovelBridge run stopped, without leaking the az alias into the deploy script' {
         $body = Get-StepScript (Find-Step $script:Dev 'Deploy QueueProcessor Container App (az acr build, DEV2/aca-warewolf)')
         $body | Should -Match "-eq 'Stopped'"
-        $body | Should -Match 'az containerapp start'
+        # No 'az containerapp start' exists either (build 30925): POST the ARM action, then wait for 'Running'.
+        $code = (($body -split "`n") | Where-Object { $_ -notmatch '^\s*#' }) -join "`n"
+        $code | Should -Not -Match 'az containerapp start'
+        $code | Should -Match 'az rest --method post --url "https://management\.azure\.com\$id/start\?api-version='
+        $code | Should -Match "if \(\`$status -eq 'Running'\) \{ break \}"
+        $code | Should -Match "-ne 'Running'"
         $body.IndexOf('Import-Module') | Should -BeGreaterThan $body.IndexOf("& '`$(QueueProcessorDeployScriptPath)'")
     }
 }
