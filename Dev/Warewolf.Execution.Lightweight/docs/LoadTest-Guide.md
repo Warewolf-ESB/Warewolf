@@ -442,12 +442,14 @@ publishing a single message.
 **The competing consumer is the most damaging false pass there is.** A second Container App bound to
 the same queue takes its share of the messages. If it forwards to a stopped or older engine, it
 dead-letters **and acks** them — so the queue still drains, the app still scales to zero, and the run
-looks clean while half the messages never executed. **Stop the other app** — `az containerapp stop -g
-<rg> -n <app>` — or repoint its `rabbitmq` scale rule at another queue.
+looks clean while half the messages never executed. **Stop the other app** — POST the ARM stop action,
+`az rest --method post --url "https://management.azure.com$(az containerapp show -g <rg> -n <app> --query id -o tsv)/stop?api-version=2025-07-01"`
+— or repoint its `rabbitmq` scale rule at another queue. There is no `az containerapp stop` (only
+`az containerapp job stop`); calling it fails with `'stop' is misspelled or not recognized` (build 30925).
 
 > ⚠ Earlier revisions of this guide said to park the competing app at `--max-replicas 0`. **Core az
 > rejects that** — `--max-replicas must be in the range [1,1000]` (confirmed on az 2.87). Use
-> `az containerapp stop`, or `az containerapp revision deactivate` for a single revision. Note that a
+> the ARM stop action above, or `az containerapp revision deactivate` for a single revision. Note that a
 > *stopped* app is still reported as a competing consumer by the contention check, which reads the
 > KEDA rule and not the app's `runningStatus`; repointing the rule is the only change that clears it.
 

@@ -7,9 +7,9 @@
     identity the Service Bus Data Receiver role, and sets the app settings the trigger binding
     requires.
 
-    ⚠ EXACTLY ONE CI JOB RUNS THIS SCRIPT; FOR EVERY OTHER APP IT IS A MANUAL OPERATOR STEP. ⚠
-    Dev/.azure/ProfilerService-CI-UAT-LightweightExecutionEngine.yml runs it against
-    'wwprofilerlw' on every deploy ("Enable Service Bus Secure Trigger" step, added after build
+    ⚠ ONLY THE PROFILER PIPELINES RUN THIS SCRIPT; FOR EVERY OTHER APP IT IS A MANUAL OPERATOR STEP. ⚠
+    Dev/.azure/ProfilerService-CI-{Dev,UAT}-LightweightExecutionEngine.yml run it against
+    'wwprofilerlw' / 'wwprofileruatlw' on every ShovelBridge deploy ("Enable Service Bus Secure Trigger" step, added after build
     30756 spent 301s watching a bridged message sit unconsumed because neither the RBAC grant nor
     the app setting had ever been applied to that rig). pipeline-CLOUD.yml ('warewolfserver') and
     pipeline-LOADTEST.yml ('WarewolfServer-UAT') deliberately still do NOT — it mutates a live

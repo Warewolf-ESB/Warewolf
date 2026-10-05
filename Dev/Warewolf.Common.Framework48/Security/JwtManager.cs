@@ -15,23 +15,31 @@ using Dev2.Common;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Services.Security;
 using Microsoft.IdentityModel.Tokens;
+using Warewolf.Services;
 
 namespace Warewolf.Security
 {
     public class JwtManager : IJwtManager
     {
         private readonly ISecuritySettings _securitySettings;
+        private readonly IResourceNameProvider _resourceNameProvider;
 
         public JwtManager(ISecuritySettings securitySettings)
+            : this(securitySettings, new ResourceNameProvider())
+        {
+        }
+
+        public JwtManager(ISecuritySettings securitySettings, IResourceNameProvider resourceNameProvider)
         {
             _securitySettings = securitySettings;
+            _resourceNameProvider = resourceNameProvider;
         }
 
         public string GenerateToken(string payload, int expireMinutes = 20)
         {
             try
             {
-                var securitySettingsData = _securitySettings.ReadSettingsFile(new ResourceNameProvider());
+                var securitySettingsData = _securitySettings.ReadSettingsFile(_resourceNameProvider);
                 var tokenHandler = new JwtSecurityTokenHandler();
                 var symmetricKey = Convert.FromBase64String(securitySettingsData.SecretKey);
                 var now = DateTime.UtcNow;
@@ -91,7 +99,7 @@ namespace Warewolf.Security
                     return null;
                 }
 
-                var securitySettingsData = _securitySettings.ReadSettingsFile(new ResourceNameProvider());
+                var securitySettingsData = _securitySettings.ReadSettingsFile(_resourceNameProvider);
                 var symmetricKey = Convert.FromBase64String(securitySettingsData.SecretKey);
 
                 var validationParameters = new TokenValidationParameters

@@ -72,21 +72,15 @@ namespace Dev2.Tests.Runtime.WebServer
             SecurityWrite.Write(securitySettingsTO);
             var payload = "<DataList><UserGroups Description='' IsEditable='True' ColumnIODirection='Output'><Name Description='' IsEditable='True' ColumnIODirection='Output'>public</Name></UserGroups></DataList>";
 
-            var res = new Mock<IResource>();
-            res.Setup(a => a.ResourceName).Returns(resourceName);
-            res.Setup(resource => resource.ResourceID).Returns(resourceId);
-            var mockCatalog = new Mock<IResourceCatalog>();
-            mockCatalog.Setup(a => a.GetResource(It.IsAny<Guid>(), resourceId)).Returns(res.Object);
-            mockCatalog.Setup(a => a.GetResourcePath(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns("bob\\dave");
-            CustomContainer.Register(mockCatalog.Object);
-
+            // Injected rather than registered in CustomContainer: the default ResourceNameProvider
+            // resolves ResourceCatalog.Instance, which would cache a registered mock catalog for
+            // the rest of the test run (CI build 30903).
             var mockResourceNameProvider = new Mock<IResourceNameProvider>();
             mockResourceNameProvider.Setup(a => a.GetResourceNameById(It.IsAny<Guid>())).Returns(resourceName);
-            CustomContainer.Register(mockResourceNameProvider.Object);
 
             //------------Execute Test---------------------------
             var securitySettings = new SecuritySettings();
-            var jwtManager = new JwtManager(securitySettings);
+            var jwtManager = new JwtManager(securitySettings, mockResourceNameProvider.Object);
             var encryptedPayload = jwtManager.GenerateToken(payload);
             var response = jwtManager.ValidateToken(encryptedPayload);
             //------------Assert Results-------------------------
@@ -103,7 +97,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //------------Setup for test-------------------------
             var securitySettings = new SecuritySettings();
-            var jwtManager = new JwtManager(securitySettings);
+            var jwtManager = new JwtManager(securitySettings, new Mock<IResourceNameProvider>().Object);
 
             //------------Execute Test---------------------------
             var response = jwtManager.ValidateToken( "321654");

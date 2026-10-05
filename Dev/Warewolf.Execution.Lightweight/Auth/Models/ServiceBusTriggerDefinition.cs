@@ -44,6 +44,28 @@ public sealed class ServiceBusTriggerDefinition
     public Guid ResourceId { get; init; }
 
     /// <summary>
+    /// Optional. The workflow input that receives the WHOLE message body as a string — the
+    /// in-process equivalent of a queue trigger's <c>MapEntireMessage = true</c>, which on-prem
+    /// binds the raw message to <c>Inputs[0]</c> only (<c>MessageToInputsMapper.cs:31-33</c>).
+    /// Blank or absent keeps the default binding: the <c>{"inputs":{…}}</c> envelope, else the
+    /// body verbatim (see <c>ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload</c>).
+    ///
+    /// <para>
+    /// Without it, a workflow that declares a single whole-document input (the profiler's
+    /// <c>RequestForProfilingConsume</c>, input <c>ProfileRequest</c>) receives the body's
+    /// top-level fields instead, and fails on its first step with
+    /// "Scalar value { ProfileRequest } is NULL".
+    /// </para>
+    /// </summary>
+    public string? MapEntireMessageTo
+    {
+        get => _mapEntireMessageTo;
+        init => _mapEntireMessageTo = string.IsNullOrWhiteSpace(value) ? null : value.Trim();
+    }
+
+    readonly string? _mapEntireMessageTo;
+
+    /// <summary>
     /// Loads and validates <c>Settings/servicebustrigger.bite</c>. Returns <c>null</c> without
     /// touching disk when the trigger is disabled entirely via
     /// <c>AzureWebJobs.ServiceBusWorkflowTrigger.Disabled</c> (the existing, unchanged
@@ -104,6 +126,16 @@ public sealed class ServiceBusTriggerDefinition
         {
             throw new ServiceBusTriggerConfigurationException(
                 $"Service Bus trigger config '{path}' is missing required value(s): {string.Join(", ", missing)}.");
+        }
+
+        if (definition.MapEntireMessageTo is { } mapTo && mapTo.StartsWith('@'))
+        {
+            // On-prem posts an '@'-prefixed whole-message input as multipart/form-data
+            // (WarewolfWebRequestForwarder.cs:100-108); this trigger executes in-process and has
+            // no such binding, so refuse rather than guess at a JSON object input.
+            throw new ServiceBusTriggerConfigurationException(
+                $"Service Bus trigger config '{path}' has {nameof(MapEntireMessageTo)}='{mapTo}'. An '@'-prefixed " +
+                "(JSON object) input is not supported by the in-process trigger - name a scalar input instead.");
         }
 
         return definition;

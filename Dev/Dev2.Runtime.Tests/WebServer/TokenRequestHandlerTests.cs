@@ -158,12 +158,10 @@ namespace Dev2.Tests.Runtime.WebServer
                         }
                     }
                 }.ToList());
-            CustomContainer.Register(mockCatalog.Object);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
             var mockResourceNameProvider = new Mock<IResourceNameProvider>();
             mockResourceNameProvider.Setup(a => a.GetResourceNameById(It.IsAny<Guid>())).Returns(ResourceName);
-            CustomContainer.Register(mockResourceNameProvider.Object);
 
             var doFactory = new TestTokenRequestDataObjectFactory(dataObject);
             var mockEsbChannelFactory = new Mock<IEsbChannelFactory>();
@@ -196,7 +194,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var securitySettings = mockSecuritySettings.Object;
             var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
             mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
-            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockSubscriptionProvider.Object);
+            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockResourceNameProvider.Object, mockSubscriptionProvider.Object);
             var headers = new Mock<NameValueCollection>();
             var webRequestTo = new WebRequestTO
             {
@@ -298,12 +296,10 @@ namespace Dev2.Tests.Runtime.WebServer
                         }
                     }
                 }.ToList());
-            CustomContainer.Register(mockCatalog.Object);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
             var mockResourceNameProvider = new Mock<IResourceNameProvider>();
             mockResourceNameProvider.Setup(a => a.GetResourceNameById(It.IsAny<Guid>())).Returns(ResourceName);
-            CustomContainer.Register(mockResourceNameProvider.Object);
 
             var doFactory = new TestTokenRequestDataObjectFactory(dataObject);
             var mockEsbChannelFactory = new Mock<IEsbChannelFactory>();
@@ -336,7 +332,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var securitySettings = mockSecuritySettings.Object;
             var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
             mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
-            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockSubscriptionProvider.Object);
+            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockResourceNameProvider.Object, mockSubscriptionProvider.Object);
             var headers = new Mock<NameValueCollection>();
             var webRequestTo = new WebRequestTO()
             {
@@ -405,12 +401,10 @@ namespace Dev2.Tests.Runtime.WebServer
                         }
                     }
                 }.ToList());
-            CustomContainer.Register(mockCatalog.Object);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
             var mockResourceNameProvider = new Mock<IResourceNameProvider>();
             mockResourceNameProvider.Setup(a => a.GetResourceNameById(It.IsAny<Guid>())).Returns(ResourceName);
-            CustomContainer.Register(mockResourceNameProvider.Object);
 
             var doFactory = new TestTokenRequestDataObjectFactory(dataObject);
             var mockEsbChannelFactory = new Mock<IEsbChannelFactory>();
@@ -443,7 +437,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var securitySettings = mockSecuritySettings.Object;
             var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
             mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
-            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockSubscriptionProvider.Object);
+            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockResourceNameProvider.Object, mockSubscriptionProvider.Object);
             var headers = new Mock<NameValueCollection>();
             var webRequestTo = new WebRequestTO()
             {
@@ -518,12 +512,10 @@ namespace Dev2.Tests.Runtime.WebServer
                         }
                     }
                 }.ToList());
-            CustomContainer.Register(mockCatalog.Object);
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
             var mockResourceNameProvider = new Mock<IResourceNameProvider>();
             mockResourceNameProvider.Setup(a => a.GetResourceNameById(It.IsAny<Guid>())).Returns(resourceName);
-            CustomContainer.Register(mockResourceNameProvider.Object);
 
             var doFactory = new TestTokenRequestDataObjectFactory(dataObject);
             var mockEsbChannelFactory = new Mock<IEsbChannelFactory>();
@@ -556,7 +548,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var securitySettings = mockSecuritySettings.Object;
             var mockSubscriptionProvider = new Mock<ISubscriptionProvider>();
             mockSubscriptionProvider.Setup(o => o.IsLicensed).Returns(true);
-            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockSubscriptionProvider.Object);
+            var handlerMock = new TokenRequestHandlerMock(mockCatalog.Object, wRepo.Object, authorizationService.Object, doFactory, mockEsbChannelFactory.Object, securitySettings, mockResourceNameProvider.Object, mockSubscriptionProvider.Object);
             var headers = new Mock<NameValueCollection>();
             var webRequestTo = new WebRequestTO()
             {
@@ -592,8 +584,11 @@ namespace Dev2.Tests.Runtime.WebServer
 
     class TokenRequestHandlerMock : TokenRequestHandler
     {
-        public TokenRequestHandlerMock(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, ISubscriptionProvider subscriptionProvider)
-            : base(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, subscriptionProvider)
+        // The name provider goes into the JwtManager directly: registering the mock catalog in
+        // CustomContainer instead made the default ResourceNameProvider cache it as
+        // ResourceCatalog.Instance for the rest of the test run (CI build 30903).
+        public TokenRequestHandlerMock(IResourceCatalog resourceCatalog, IWorkspaceRepository workspaceRepository, IAuthorizationService authorizationService, IDataObjectFactory dataObjectFactory, IEsbChannelFactory esbChannelFactory, ISecuritySettings securitySettings, IResourceNameProvider resourceNameProvider, ISubscriptionProvider subscriptionProvider)
+            : base(resourceCatalog, workspaceRepository, authorizationService, dataObjectFactory, esbChannelFactory, securitySettings, new JwtManager(securitySettings, resourceNameProvider), subscriptionProvider)
         {
         }
 

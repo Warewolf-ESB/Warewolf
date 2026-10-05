@@ -98,6 +98,7 @@
     <Compile Include="ESB\WF\XamlActivityHelperTests.cs" />
     <Compile Include="ESB\Management\ChatbotToolNormalizerTests.cs" />
     <Compile Include="ESB\Management\ChatbotContextBuilderTests.cs" />
+    <Compile Include="ESB\Management\ChatbotToolFormatsTests.cs" />
     <Compile Include="ESB\Management\EsbManagementServiceMetadataTests.cs" />
     <Compile Include="Workspaces\WorkspaceItemCoverageTests.cs" />
     <Compile Include="Coverage\PureHelpersCoverageTests.cs" />

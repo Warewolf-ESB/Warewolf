@@ -302,6 +302,15 @@
     (2026-09-12): the write failed with UnauthorizedAccessException. Baking the file into the
     package at deploy time (here) is the only mechanism that actually works.
 
+.PARAMETER ServiceBusTriggerMapEntireMessageTo
+    OPTIONAL. The workflow input that receives the WHOLE message body - the in-process
+    equivalent of a queue trigger's MapEntireMessage = true (pass that trigger's Inputs[0].Name).
+    Staged as MapEntireMessageTo in Settings/servicebustrigger.bite; omitted, the field is not
+    written and the trigger keeps its default binding (envelope, else the flat body's top-level
+    fields). Requires -ServiceBusTriggerQueueName/-ServiceBusTriggerWorkflowName. Without it,
+    the profiler's RequestForProfilingConsume (single input ProfileRequest) fails every Service
+    Bus message with "Scalar value { ProfileRequest } is NULL".
+
 .PARAMETER LicenseCheckEnabled
     WAREWOLF_LICENSE_CHECK_ENABLED (engine default: true).
 
@@ -610,6 +619,7 @@ param(
     # ── ServiceBusTrigger queue/workflow selection (WOLF-8517 — file-only, deploy-time-baked) ──
     [string] $ServiceBusTriggerQueueName,
     [string] $ServiceBusTriggerWorkflowName,
+    [string] $ServiceBusTriggerMapEntireMessageTo,
 
     # ── Logging output ───────────────────────────────────────────────────────
     [string] $LogDir,
@@ -1186,7 +1196,7 @@ function Save-DeploySummary {
         deployRabbitMqTriggers = [bool]$DeployRabbitMqTriggers
         queueProcessorApps  = ($DeployRabbitMqTriggers ? $script:QueueProcessorApps : $null)
         keyVault        = ($kvRequired ? @{ name = $KeyVaultName; secret = $KeyVaultSecretName } : $null)
-        serviceBusTrigger = ($triggerConfigRequired ? @{ queueName = $ServiceBusTriggerQueueName; workflowName = $ServiceBusTriggerWorkflowName } : $null)
+        serviceBusTrigger = ($triggerConfigRequired ? @{ queueName = $ServiceBusTriggerQueueName; workflowName = $ServiceBusTriggerWorkflowName; mapEntireMessageTo = $ServiceBusTriggerMapEntireMessageTo } : $null)
         appSettings     = $maskedSettings
     }
     # Atomic write: render to a temp sibling, then replace — a crash mid-write
@@ -1814,6 +1824,13 @@ if ($triggerConfigProvided.Count -eq 1) {
     throw "-ServiceBusTriggerQueueName and -ServiceBusTriggerWorkflowName must be supplied together (or neither) — got only $(if ([string]::IsNullOrWhiteSpace($ServiceBusTriggerQueueName)) { '-ServiceBusTriggerWorkflowName' } else { '-ServiceBusTriggerQueueName' }). ServiceBusTriggerDefinition.Load() refuses to start an enabled trigger with either field blank."
 }
 $triggerConfigRequired = $triggerConfigProvided.Count -eq 2
+$ServiceBusTriggerMapEntireMessageTo = if ([string]::IsNullOrWhiteSpace($ServiceBusTriggerMapEntireMessageTo)) { $null } else { $ServiceBusTriggerMapEntireMessageTo.Trim() }
+if ($ServiceBusTriggerMapEntireMessageTo -and -not $triggerConfigRequired) {
+    throw "-ServiceBusTriggerMapEntireMessageTo requires -ServiceBusTriggerQueueName and -ServiceBusTriggerWorkflowName - it is staged into the same Settings/servicebustrigger.bite, which is only written when both are supplied."
+}
+if ($ServiceBusTriggerMapEntireMessageTo -and $ServiceBusTriggerMapEntireMessageTo.StartsWith('@')) {
+    throw "-ServiceBusTriggerMapEntireMessageTo '$ServiceBusTriggerMapEntireMessageTo' is '@'-prefixed. The in-process trigger cannot bind a whole message to a JSON object input (ServiceBusTriggerDefinition.Load refuses it at cold start) - name a scalar input."
+}
 
 # ── Elasticsearch source (user-supplied, exact filename) ───────────────────────
 if ($enableEs) {
@@ -2227,7 +2244,7 @@ if ($sbtRequired) {
     Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger tunables', "$sbtSummary -> Settings/executionengine.settings.json")
 }
 if ($triggerConfigRequired) {
-    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger queue/workflow', "QueueName=$ServiceBusTriggerQueueName, WorkflowName=$ServiceBusTriggerWorkflowName -> Settings/servicebustrigger.bite")
+    Write-Host ("    {0,-28}: {1}" -f 'ServiceBusTrigger queue/workflow', "QueueName=$ServiceBusTriggerQueueName, WorkflowName=$ServiceBusTriggerWorkflowName$(if ($ServiceBusTriggerMapEntireMessageTo) { ", MapEntireMessageTo=$ServiceBusTriggerMapEntireMessageTo" }) -> Settings/servicebustrigger.bite")
 }
 if ($DisableDynamicConcurrency) {
     Write-Host ("    {0,-28}: {1}" -f 'Dynamic concurrency', 'PINNED OFF -> host.json concurrency.dynamicConcurrencyEnabled=false')
@@ -3201,6 +3218,11 @@ try {
         $triggerConfigValue = [ordered]@{
             QueueName    = $ServiceBusTriggerQueueName
             WorkflowName = $ServiceBusTriggerWorkflowName
+        }
+        # Written only when supplied, so every deploy that does not use it stages the same file as before.
+        if ($ServiceBusTriggerMapEntireMessageTo) {
+            $triggerConfigValue['MapEntireMessageTo'] = $ServiceBusTriggerMapEntireMessageTo
+            Write-Step "  MapEntireMessageTo=$ServiceBusTriggerMapEntireMessageTo (whole message body -> that one input)"
         }
         ($triggerConfigValue | ConvertTo-Json) | Set-Content -LiteralPath $triggerConfigDest -Encoding UTF8
         Write-Ok 'servicebustrigger.bite staged.'

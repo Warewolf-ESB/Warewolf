@@ -46,7 +46,12 @@ BeforeAll {
             $doc  = ConvertFrom-Yaml -Ordered (Get-Content -LiteralPath (Join-Path $PSScriptRoot $f) -Raw)
             $jobs = if ($doc.Contains('jobs')) { $doc['jobs'] } else { $doc['stages'] | ForEach-Object { $_['jobs'] } }
             foreach ($job in $jobs) {
-                $steps = @($job['steps'])
+                # A '- ${{ if ... }}:' item holds the steps it inserts; flatten them in place so a
+                # conditional step is checked exactly like an unconditional one.
+                $steps = @(foreach ($item in @($job['steps'])) {
+                    $key = @($item.Keys)[0]
+                    if ($item.Count -eq 1 -and $key -like '${{*}}') { @($item[$key]) } else { $item }
+                })
                 for ($i = 0; $i -lt $steps.Count; $i++) {
                     $body = Get-Body $steps[$i]
                     if ($body -and $body -match $script:AzCall) {

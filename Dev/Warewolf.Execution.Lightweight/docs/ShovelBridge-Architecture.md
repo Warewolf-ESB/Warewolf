@@ -213,6 +213,18 @@ bodies". `WorkflowQueueTrigger` has no equivalent fallback, and a flat body reac
 executes the workflow with an empty datalist rather than being rejected — the failure mode
 documented there. Worth closing the same way if this path is used with unmodified producers.
 
+A producer whose RabbitMQ trigger used **`MapEntireMessage = true`** (one input carrying the whole
+document, e.g. the profiler's `ProfileRequest`) is also unmodified-compatible with Model A since
+2026-10-05, but only when the engine is deployed with `-ServiceBusTriggerMapEntireMessageTo
+<Inputs[0].Name>` — the in-engine trigger never reads the RabbitMQ trigger file. Without it the
+body's top-level fields bind instead and the workflow fails on its first read of that input
+("Scalar value { ProfileRequest } is NULL"). See `ServiceBusSecureTrigger-Architecture.md`'s
+"Whole-message binding". The profiler pipelines derive the value from their trigger file and pass it
+only when the released orchestrator declares the parameter; on an older release a ShovelBridge run
+stops before deploying (its engine cannot bind the message either), a QueueProcessor run carries on.
+Their bridge smoke message and burst publish the flat body - never combine the mapping with a
+`{"ProfileRequest":"<json>"}` envelope, which would be bound whole and leave the envelope in `ProfileRequest`.
+
 ## Trigger binding configuration
 
 `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to the queue named by the
@@ -2749,15 +2761,20 @@ This worker was originally built as a client example and has been promoted to a
   both bursts share the same engine and database capacity budget. See
   `Scripts/README.md`'s `wwqp-loadtest-*` entry and that job's own header comment in
   `pipeline-LOADTEST.yml` for the full rationale.
-- **The Dev profiler rig does not use this bridge.** `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`
-  deploys the same `wwprofilerlw` engine as the UAT pipeline but feeds it through the
-  `Warewolf.Execution.QueueProcessor` (CloudAMQP → ACA/KEDA → `/Secure/*`) instead. The
-  QueueProcessor needs no shovel, so the Dev pipeline uses only CloudAMQP and never touches this
-  bridge's self-hosted broker or `wwprofilerlw-shovel`. A live shovel feeds the same engine from a
-  different source queue, so no message is processed twice, but UAT and Dev runs in flight at once
-  share the engine and database — don't overlap them. The Service Bus namespace `wwprofilerlwsb`
-  is left in place. The engine's own `ServiceBusTrigger` stays configured on the idle queue because
-  its `%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%` binding only indexes when that app setting exists.
+- **The profiler rigs run this bridge OR the QueueProcessor.** `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`
+  (engine `wwprofilerlw`) and `ProfilerService-CI-UAT-LightweightExecutionEngine.yml` (engine
+  `wwprofileruatlw`) share one body and take a `queueArchitecture` parameter: ShovelBridge (the
+  default — this bridge, source queue `profiler.profile.request.<ENV>` on the self-hosted broker,
+  shovel `wwprofilerlw-shovel` / `wwprofileruatlw-shovel`, Service Bus `wwprofilerlwsb` /
+  `wwprofileruatlwsb` with dead-letters forwarded to `profiler.profile.error.request.<ENV>`) or
+  QueueProcessor (CloudAMQP → ACA/KEDA → `/Secure/*`). Each run tears the other down: a ShovelBridge
+  run stops the environment's QueueProcessor workers, a QueueProcessor run deletes its shovel. The
+  two architectures use different brokers (CloudAMQP's free tier cannot shovel into Service Bus, and
+  the self-hosted broker publishes only 443, so KEDA cannot reach it over AMQP). Under QueueProcessor
+  the engine's own `ServiceBusTrigger` stays configured on its idle queue, because its
+  `%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%` binding only indexes when that app setting exists. The
+  retired `wwprofilerlw-trigger-queue` / `wwprofilerlw.servicebus.trigger.request` queues are left
+  in place. Both engines share the database and CloudAMQP sink — don't overlap Dev and UAT runs.
 
 
 ## See also

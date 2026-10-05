@@ -1565,6 +1565,52 @@ Describe 'Deploy-WwExecutionEngine — end-to-end (DryRun, no side effects)' {
             { & $script:DeployScript @callArgs } | Should -Throw '*together*'
         }
 
+        # -ServiceBusTriggerMapEntireMessageTo: the queue trigger's MapEntireMessage, carried to the
+        # in-process trigger. Without it the profiler DEV ShovelBridge run failed every message with
+        # "Scalar value { ProfileRequest } is NULL" (RequestForProfilingConsume's only input).
+        It 'stages MapEntireMessageTo into servicebustrigger.bite when supplied' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName         = 'profiler.profile.request.DEV'
+            $callArgs.ServiceBusTriggerWorkflowName      = 'ProfilerServices/ProfilerWrapper/Queue/RequestForProfilingConsume'
+            $callArgs.ServiceBusTriggerMapEntireMessageTo = ' ProfileRequest '
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Match 'MapEntireMessageTo=ProfileRequest'
+
+            $staged = Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter "wwexecutionengine-stage-$($script:appName)-*" |
+                ForEach-Object { Join-Path $_.FullName 'Settings/servicebustrigger.bite' } | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+            $staged | Should -Not -BeNullOrEmpty
+            $json = Get-Content -LiteralPath $staged -Raw | ConvertFrom-Json
+            $json.MapEntireMessageTo | Should -Be 'ProfileRequest'
+            $json.QueueName          | Should -Be 'profiler.profile.request.DEV'
+        }
+
+        It 'does NOT write MapEntireMessageTo when the param is omitted (existing deploys stage the same file)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName    = 'wwexecution-secure-trigger-queue-e2e'
+            $callArgs.ServiceBusTriggerWorkflowName = 'profiler/ProfilerMain'
+            $out = (& $script:DeployScript @callArgs) 6>&1 | Out-String
+            $out | Should -Not -Match 'MapEntireMessageTo'
+
+            $staged = Get-ChildItem -Path ([System.IO.Path]::GetTempPath()) -Directory -Filter "wwexecutionengine-stage-$($script:appName)-*" |
+                ForEach-Object { Join-Path $_.FullName 'Settings/servicebustrigger.bite' } | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+            $staged | Should -Not -BeNullOrEmpty
+            @((Get-Content -LiteralPath $staged -Raw | ConvertFrom-Json).PSObject.Properties.Name) | Should -Be @('QueueName', 'WorkflowName')
+        }
+
+        It 'throws when -ServiceBusTriggerMapEntireMessageTo is supplied without the queue/workflow pair' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerMapEntireMessageTo = 'ProfileRequest'
+            { & $script:DeployScript @callArgs } | Should -Throw '*requires -ServiceBusTriggerQueueName*'
+        }
+
+        It 'throws on an @-prefixed -ServiceBusTriggerMapEntireMessageTo (the engine would refuse it at cold start)' {
+            $callArgs = $script:commonArgs.Clone()
+            $callArgs.ServiceBusTriggerQueueName         = 'q'
+            $callArgs.ServiceBusTriggerWorkflowName      = 'wf'
+            $callArgs.ServiceBusTriggerMapEntireMessageTo = '@RequestData'
+            { & $script:DeployScript @callArgs } | Should -Throw "*'@'-prefixed*"
+        }
+
         It 'stages servicebustrigger.bite independently of executionengine.settings.json (no Key Vault / ServiceBusTrigger tunables supplied)' {
             $callArgs = $script:commonArgs.Clone()
             $callArgs.ServiceBusTriggerQueueName    = 'wwexecution-secure-trigger-queue-e2e'

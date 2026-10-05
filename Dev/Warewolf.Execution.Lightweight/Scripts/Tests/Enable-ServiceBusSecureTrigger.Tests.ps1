@@ -312,7 +312,9 @@ Describe 'Enable-ServiceBusSecureTrigger — profiler pipeline wiring' {
     }
 
     It 'resolves the script out of the published scripts package' {
-        $script:Pipeline | Should -Match "Filter 'Enable-ServiceBusSecureTrigger\.ps1'"
+        # Discovered by name among the ShovelBridge architecture's orchestrators, out of the extracted zip.
+        $script:Pipeline | Should -Match "SecureTriggerScriptPath = 'Enable-ServiceBusSecureTrigger\.ps1'"
+        $script:Pipeline | Should -Match 'Get-ChildItem -LiteralPath \$dir -Recurse -Filter \$wanted\[\$var\]'
     }
 
     It 'stages host.json from the engine package so the delivery-budget invariant can be checked' {

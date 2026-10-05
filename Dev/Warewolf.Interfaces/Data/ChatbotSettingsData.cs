@@ -27,6 +27,8 @@ namespace Warewolf.Configuration
         private string _botMessageTextColor = "#333333";
         private int _slidingWindowSummaryLength = 200;
         private bool _enableSlidingWindowTrimming = false;
+        private List<string> _disabledMcpTools = new List<string>();
+        private bool _mcpToolsOnlySystemPrompt = false;
 
         public NamedGuidWithEncryptedPayload ChatbotSource
         {
@@ -94,6 +96,20 @@ namespace Warewolf.Configuration
             set => SetProperty(ref _enableSlidingWindowTrimming, value);
         }
 
+        /// <summary>Warewolf DevOps MCP tools the chatbot must not see or call.</summary>
+        public List<string> DisabledMcpTools
+        {
+            get => _disabledMcpTools;
+            set => SetProperty(ref _disabledMcpTools, value ?? new List<string>());
+        }
+
+        /// <summary>When set, the system prompt carries nothing but the MCP tools.</summary>
+        public bool McpToolsOnlySystemPrompt
+        {
+            get => _mcpToolsOnlySystemPrompt;
+            set => SetProperty(ref _mcpToolsOnlySystemPrompt, value);
+        }
+
         public ChatbotSettingsData Clone()
         {
             var result = (ChatbotSettingsData)MemberwiseClone();
@@ -108,6 +124,8 @@ namespace Warewolf.Configuration
             result._botMessageTextColor = BotMessageTextColor;
             result._slidingWindowSummaryLength = SlidingWindowSummaryLength;
             result._enableSlidingWindowTrimming = EnableSlidingWindowTrimming;
+            result._disabledMcpTools = new List<string>(DisabledMcpTools ?? new List<string>());
+            result._mcpToolsOnlySystemPrompt = McpToolsOnlySystemPrompt;
             return result;
         }
 
@@ -126,10 +144,19 @@ namespace Warewolf.Configuration
                 equals &= BotMessageTextColor == other.BotMessageTextColor;
                 equals &= SlidingWindowSummaryLength == other.SlidingWindowSummaryLength;
                 equals &= EnableSlidingWindowTrimming == other.EnableSlidingWindowTrimming;
+                equals &= AreToolListsEqual(DisabledMcpTools, other.DisabledMcpTools);
+                equals &= McpToolsOnlySystemPrompt == other.McpToolsOnlySystemPrompt;
                 return equals;
             }
 
             return false;
+        }
+
+        private static bool AreToolListsEqual(List<string> list1, List<string> list2)
+        {
+            if (list1 == null && list2 == null) return true;
+            if (list1 == null || list2 == null) return false;
+            return new HashSet<string>(list1).SetEquals(list2);
         }
 
         private static bool AreResourceListsEqual(List<Guid> list1, List<Guid> list2)

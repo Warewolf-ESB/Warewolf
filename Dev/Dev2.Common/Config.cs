@@ -755,5 +755,25 @@ namespace Dev2.Common
                 Save();
             }
         }
+
+        public List<string> DisabledMcpTools
+        {
+            get => _settings?.DisabledMcpTools ?? new List<string>();
+            set
+            {
+                _settings.DisabledMcpTools = value ?? new List<string>();
+                Save();
+            }
+        }
+
+        public bool McpToolsOnlySystemPrompt
+        {
+            get => _settings?.McpToolsOnlySystemPrompt ?? false;
+            set
+            {
+                _settings.McpToolsOnlySystemPrompt = value;
+                Save();
+            }
+        }
     }
 }

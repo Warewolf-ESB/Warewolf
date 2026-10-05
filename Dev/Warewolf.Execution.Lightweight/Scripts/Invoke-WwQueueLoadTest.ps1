@@ -211,7 +211,8 @@ function Set-WwWorkerScale {
           * trust the update's own exit code - `az containerapp update` reports success before the new
             revision is active, so the ceiling is re-read from `containerapp show` and compared;
           * pass --max-replicas 0 - core az rejects it (range [1,1000]), which is why the harness docs'
-            old "park at --max-replicas 0" advice is unusable. Parking is `az containerapp stop`.
+            old "park at --max-replicas 0" advice is unusable. Parking is the ARM stop action, POSTed
+            with `az rest` - there is no `az containerapp stop` (build 30925).
 
         Each update mints a NEW REVISION. That is inherent to ACA, not a fault, but it means a run
         with -ApplyScale leaves revision churn behind - hence scaleBefore/scaleAfter in the summary.
@@ -1246,7 +1247,9 @@ else {
     if ($ApplyScale -and [int]$cfg.MaxReplicas -ne $scaleBefore) {
         if ([int]$cfg.MaxReplicas -lt 1) {
             throw ("-ApplyScale cannot set maxReplicas to $($cfg.MaxReplicas): core az enforces [1,1000]. " +
-                   'To stop the worker consuming, use: az containerapp stop.')
+                   'To stop the worker consuming, POST the ARM stop action (there is no az containerapp stop): ' +
+                   ('az rest --method post --url "https://management.azure.com$(az containerapp show -g {0} -n {1} --query id -o tsv)/stop?api-version=2025-07-01"' -f
+                       $cfg.ResourceGroup, $cfg.WorkerAppName))
         }
         Write-Step "Applying replica ceiling $scaleBefore -> $($cfg.MaxReplicas) on '$($cfg.WorkerAppName)' (-ApplyScale)"
         $applied = Set-WwWorkerScale -ResourceGroup $cfg.ResourceGroup -AppName $cfg.WorkerAppName -MaxReplicas ([int]$cfg.MaxReplicas)

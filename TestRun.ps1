@@ -1649,7 +1649,25 @@ function Get-MssqlSeedBatches {
     )
 }
 
-function Start-HostMSSQLServer([string]$BakFile) {
+function Test-MssqlFixtureProbe([object[]]$Output) {
+    # $script:MssqlFullFixtureProbe prints 1 or 0; sqlcmd may wrap it in blank lines.
+    $val = $Output | Where-Object { $_ -and "$_".Trim() -ne '' } | Select-Object -Last 1
+    return [bool]($val -and "$val".Trim() -eq '1')
+}
+
+function Test-ReusableMssqlContainer([string]$SaPassword) {
+    # True when the `sqlserver` container is still running and already holds the full fixture.
+    # Retries call Start-HostMSSQLServer -ReuseRunning so they keep the container the first
+    # pass provisioned instead of re-creating it and re-importing the bacpac (~40s a retry,
+    # CI build 30903). A stale container from another run with a different SA password fails
+    # the probe and is re-created as before.
+    $running = @(docker ps --filter 'name=^sqlserver$' --filter 'status=running' --format '{{.Names}}' 2>$null)
+    if ($running -notcontains 'sqlserver') { return $false }
+    $probe = docker exec sqlserver /opt/mssql-tools18/bin/sqlcmd -C -S localhost -U SA -P $SaPassword -d master -h -1 -W -Q $script:MssqlFullFixtureProbe 2>$null
+    return (Test-MssqlFixtureProbe $probe)
+}
+
+function Start-HostMSSQLServer([string]$BakFile, [switch]$ReuseRunning) {
     # Native Windows provisioning. Runs on Windows agents (including hosted windows-2022,
     # where the Linux mssql container cannot run) and whenever -LegacyWindowsDeps is set.
     # Provisions the Dev2TestingDB fixture that Depends(MSSQL) -> localhost:1433 expects:
@@ -1716,8 +1734,7 @@ function Start-HostMSSQLServer([string]$BakFile) {
         # Pr_GeneralTestColumnData) and the fn_diagramobjects function. Idempotent: Pr_General-
         # TestColumnData acts as a sentinel so re-runs (RetryCount) don't re-import.
         $probe = sqlcmd -S "localhost" -E -h -1 -W -Q $script:MssqlFullFixtureProbe 2>$null
-        $probeVal = $probe | Where-Object { $_ -and $_.Trim() -ne '' } | Select-Object -Last 1
-        if (-not ($probeVal -and $probeVal.Trim() -eq '1')) {
+        if (-not (Test-MssqlFixtureProbe $probe)) {
             $bacpac = Get-MssqlBacpacPath
             if ($bacpac) {
                 $sqlPackage = Resolve-SqlPackage
@@ -1748,10 +1765,14 @@ function Start-HostMSSQLServer([string]$BakFile) {
     # deterministic seed - via sqlcmd inside the container. 2022 images ship only mssql-tools18,
     # whose sqlcmd needs -C (trust the container's self-signed certificate).
     $saPwd = 'Test123456!'
-    docker rm -f sqlserver 2>$null | Out-Null
-    docker run -d --name sqlserver `
-        -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$saPwd" -p 1433:1433 `
-        mcr.microsoft.com/mssql/server:2022-latest | Out-Null
+    if ($ReuseRunning -and (Test-ReusableMssqlContainer $saPwd)) {
+        Write-Host "Reusing the running sqlserver container and its Dev2TestingDB fixture (retry)"
+    } else {
+        docker rm -f sqlserver 2>$null | Out-Null
+        docker run -d --name sqlserver `
+            -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$saPwd" -p 1433:1433 `
+            mcr.microsoft.com/mssql/server:2022-latest | Out-Null
+    }
     $sqlcmd = '/opt/mssql-tools18/bin/sqlcmd'
     function Invoke-ContainerSql([string]$Sql, [string]$Database = 'master') {
         docker exec sqlserver $sqlcmd -C -S localhost -U SA -P $saPwd -d $Database -h -1 -W -Q $Sql
@@ -1772,8 +1793,7 @@ function Start-HostMSSQLServer([string]$BakFile) {
 
     foreach ($batch in Get-MssqlLoginBatches) { Invoke-ContainerSql $batch | Out-Null }
 
-    $probeVal = Invoke-ContainerSql $script:MssqlFullFixtureProbe | Where-Object { $_ -and $_.Trim() -ne '' } | Select-Object -Last 1
-    if (-not ($probeVal -and $probeVal.Trim() -eq '1')) {
+    if (-not (Test-MssqlFixtureProbe (Invoke-ContainerSql $script:MssqlFullFixtureProbe))) {
         $bacpac = Get-MssqlBacpacPath
         $sqlPackage = if ($bacpac) { Resolve-SqlPackage } else { $null }
         if ($bacpac -and $sqlPackage) {
@@ -2991,12 +3011,44 @@ function Get-TestRunnerCommand {
     return $line
 }
 
-function Get-FailedTestNames {
+function Get-FailedTestResults {
+    # The UnitTestResult nodes a retry can turn green. NotExecuted (skipped/[Ignore]) and
+    # Inconclusive come back the same on every rerun, so retrying them only buys another full
+    # pass (CI build 30903 re-ran the skipped Warewolf.Auditing tests on every retry).
     param([string]$TestResultsPath)
     $files = @(Get-ChildItem "$TestResultsPath\*.trx")
-    if ($files.Count -eq 0) { return @() }
+    if ($files.Count -eq 0) { return }
     $xml = [xml](Get-Content $files[0].FullName)
-    return ($xml.TestRun.Results.UnitTestResult | Where-Object {$_.outcome -ne "Passed"}).testName
+    $xml.TestRun.Results.UnitTestResult | Where-Object { $_.outcome -in 'Failed', 'Error', 'Timeout', 'Aborted' }
+}
+
+function Get-FailedTestNames {
+    param([string]$TestResultsPath)
+    return @(Get-FailedTestResults -TestResultsPath $TestResultsPath | ForEach-Object { $_.testName })
+}
+
+function Get-FailedTestAssemblies {
+    # Narrows a retry to the assemblies that hold a failed test. Each assembly costs ~30s of
+    # testhost + coverage start-up even when the name filter matches nothing in it, so re-running
+    # all 38 for a handful of Dev2.Runtime.Tests failures took ~19 min per retry and ran the
+    # Not Parallelizable job past its 45-minute timeout (CI build 30903). Matched on file name:
+    # the TRX `storage` is an absolute (often lower-cased) path, $AssemblyPaths are relative.
+    # Falls back to every assembly when the TRX does not say where a failed test lives.
+    param([string]$TestResultsPath, [string[]]$AssemblyPaths)
+    $failed = @(Get-FailedTestResults -TestResultsPath $TestResultsPath)
+    if ($failed.Count -eq 0) { return @() }
+    $xml = [xml](Get-Content (@(Get-ChildItem "$TestResultsPath\*.trx"))[0].FullName)
+    $storageById = @{}
+    foreach ($def in $xml.TestRun.TestDefinitions.UnitTest) { $storageById[$def.id] = $def.storage }
+    $failedLeaves = @()
+    foreach ($r in $failed) {
+        $storage = $storageById[$r.testId]
+        if (-not $storage) { return $AssemblyPaths }
+        $failedLeaves += ($storage -split '[\\/]')[-1]
+    }
+    $narrowed = @($AssemblyPaths | Where-Object { $failedLeaves -contains (($_ -split '[\\/]')[-1]) })
+    if ($narrowed.Count -eq 0) { return $AssemblyPaths }
+    return $narrowed
 }
 
 function Invoke-LinuxContainerRun {
@@ -3263,6 +3315,7 @@ elseif ($ServerType -eq 'FullServer')       { Start-WarewolfServer }
 
 try {
     if ($Projects.Count -gt 0) {
+        $retryAssemblies = $null
         for ($loop = 0; $loop -le $RetryCount; $loop++) {
             if ($StartFTPServer.IsPresent)           { Start-HostFTPServer }
             if ($StartFTPSServer.IsPresent)          { Start-HostFTPSServer }
@@ -3275,7 +3328,7 @@ try {
             if ($StartRabbitMQServer.IsPresent)      { Start-HostRabbitMQServer }
             if ($StartRedisServer.IsPresent)         { Start-HostRedisServer }
             if ($StartExchangeConnector.IsPresent)   { Start-HostExchangeConnector }
-            if ($PSBoundParameters.ContainsKey('StartMSSQLServer')) { Start-HostMSSQLServer $StartMSSQLServer }
+            if ($PSBoundParameters.ContainsKey('StartMSSQLServer')) { Start-HostMSSQLServer $StartMSSQLServer -ReuseRunning:($loop -gt 0) }
 
             if ($RetryRebuild.IsPresent) {
                 if (Test-Path "$PWD\..\..\Compile.ps1") {
@@ -3303,6 +3356,7 @@ try {
                     $asmList += Get-RelativePathCompat $PWD.Path $a.FullName
                 }
             }
+            if ($retryAssemblies) { $asmList = $retryAssemblies }
             if (Test-Path "$VSTestPath\Extensions\TestPlatform\TestResults\*.trx") {
                 Remove-Item "$VSTestPath\Extensions\TestPlatform\TestResults" -Force -Recurse
             }
@@ -3376,6 +3430,10 @@ try {
             $break = Merge-RetryTrx -TestResultsPath $TestResultsPath
             if ($break) { break }
             $TestsToRun = (Get-FailedTestNames -TestResultsPath $TestResultsPath) -join ","
+            # Only skipped/inconclusive results left: another pass cannot change them, and an
+            # empty $TestsToRun would make the next pass re-run the whole filter.
+            if (-not $TestsToRun) { break }
+            $retryAssemblies = @(Get-FailedTestAssemblies -TestResultsPath $TestResultsPath -AssemblyPaths $asmList)
 
             # Recover from a permanently-broken engine before burning the
             # remaining retries on it. Wait-ForLightweightEngineStable only

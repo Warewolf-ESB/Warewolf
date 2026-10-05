@@ -86,6 +86,20 @@ creates every `FOR*TESTING` folder the specs use. `-ServerType LightweightExecut
 works with the linux-x64 func CLI (`-FuncExePath .../func-cli/func`); put
 `~/.dotnet/tools` on `PATH` so `dotnet-coverage` resolves.
 
+### How `-RetryCount` retries
+
+After each pass the TRX is merged and only the tests with a `Failed`, `Error`,
+`Timeout` or `Aborted` outcome are retried. Skipped (`NotExecuted`) and
+`Inconclusive` results are not, because a rerun can't change them; if nothing
+else is left to retry, the loop stops. A retry runs only the assemblies that
+hold those failures. It falls back to the full list when the TRX doesn't record
+where a failed test lives. Every assembly costs about 30 s of testhost and
+coverage start-up even when the filter matches nothing in it, so re-running all
+38 made each retry about 19 minutes (CI build 30903). On the Docker path, a
+retry keeps the running `sqlserver` container when it still holds the full
+fixture, instead of re-creating it and re-importing the bacpac. The first pass
+always starts a fresh container.
+
 `-CreateUNCPath`, `-UseRegionalSettings` and `-CreateLocalSchedulerAdmin` are
 Windows-only: on Linux they log a warning and are skipped (UNC rows in the
 File/Folder specs report Inconclusive). Pass paths with `/` — native tools
