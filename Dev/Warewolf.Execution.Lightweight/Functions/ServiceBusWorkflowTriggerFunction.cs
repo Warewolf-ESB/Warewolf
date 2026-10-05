@@ -269,8 +269,16 @@ public sealed class ServiceBusWorkflowTriggerFunction
         // "Silent-death diagnostic breadcrumb" section.
         _store.RecordClaimStage(correlationId, "ClaimAcquired");
 
+        var mapEntireMessageTo = _triggerDefinition.MapEntireMessageTo;
+        if (mapEntireMessageTo is not null)
+        {
+            _logger.LogDebug(
+                "ServiceBusWorkflowTrigger | CorrelationId={CorrelationId} | Binding the whole message body to input '{Input}' (MapEntireMessageTo).",
+                correlationId, mapEntireMessageTo);
+        }
+
         await ProcessMessageAsync(payload, correlationId, message, messageActions, receivedAt, cancellationToken,
-            ResolveRawInputPayload(body)).ConfigureAwait(false);
+            ResolveRawInputPayload(body, mapEntireMessageTo)).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -298,9 +306,31 @@ public sealed class ServiceBusWorkflowTriggerFunction
     /// <c>Malformed:BodyNotJson</c> before reaching here. Unlike the HTTP routes, this trigger
     /// therefore still does NOT accept an XML body.
     /// </para>
+    ///
+    /// <para>
+    /// When <paramref name="mapEntireMessageTo"/> is set
+    /// (<see cref="ServiceBusTriggerDefinition.MapEntireMessageTo"/>), the whole body is bound to
+    /// that one input as a string — <c>{"&lt;input&gt;":"&lt;body&gt;"}</c> — envelope or not,
+    /// matching on-prem <c>MapEntireMessage</c>, where the mapper never inspects the message
+    /// (<c>MessageToInputsMapper.cs:31-33</c>). Without this, a workflow declaring a single
+    /// whole-document input receives the body's top-level fields instead and fails with
+    /// "Scalar value { ProfileRequest } is NULL".
+    /// </para>
     /// </summary>
-    internal static string? ResolveRawInputPayload(string body)
-        => string.IsNullOrWhiteSpace(body) || JObject.Parse(body)["inputs"] != null ? null : body;
+    internal static string? ResolveRawInputPayload(string body, string? mapEntireMessageTo = null)
+    {
+        if (string.IsNullOrWhiteSpace(body))
+        {
+            return null;
+        }
+
+        if (mapEntireMessageTo is not null)
+        {
+            return new JObject { [mapEntireMessageTo] = body }.ToString(Formatting.None);
+        }
+
+        return JObject.Parse(body)["inputs"] != null ? null : body;
+    }
 
     /// <summary>
     /// Everything that happens once a message has been claimed for processing: execute
@@ -326,8 +356,11 @@ public sealed class ServiceBusWorkflowTriggerFunction
         var principal = WorkflowClaimsPrincipal.Anonymous();
 
         // ── Execute in-process (no HTTP hop) ────────────────────────────────────
+        // MapEntireMessageTo binds the body and nothing else - an envelope's "inputs" must not
+        // also merge in (WorkflowExecutor.ResolveInputPayload), or the mapping is not whole-message.
+        var envelopeInputs = _triggerDefinition.MapEntireMessageTo is null ? payload.Inputs : null;
         var executionRequest = WorkflowFunctionHelper.CreateRequestByName(
-            _triggerDefinition.WorkflowName, _config.WorkflowsDirectory, payload.Inputs ?? new Dictionary<string, string>());
+            _triggerDefinition.WorkflowName, _config.WorkflowsDirectory, envelopeInputs ?? new Dictionary<string, string>());
         executionRequest.ExecutingPrincipal = principal;
         // Non-envelope bodies bind verbatim, same as the HTTP routes — see ResolveRawInputPayload.
         executionRequest.RawInputPayload = rawInputPayload;

@@ -213,6 +213,14 @@ bodies". `WorkflowQueueTrigger` has no equivalent fallback, and a flat body reac
 executes the workflow with an empty datalist rather than being rejected — the failure mode
 documented there. Worth closing the same way if this path is used with unmodified producers.
 
+A producer whose RabbitMQ trigger used **`MapEntireMessage = true`** (one input carrying the whole
+document, e.g. the profiler's `ProfileRequest`) is also unmodified-compatible with Model A since
+2026-10-05, but only when the engine is deployed with `-ServiceBusTriggerMapEntireMessageTo
+<Inputs[0].Name>` — the in-engine trigger never reads the RabbitMQ trigger file. Without it the
+body's top-level fields bind instead and the workflow fails on its first read of that input
+("Scalar value { ProfileRequest } is NULL"). See `ServiceBusSecureTrigger-Architecture.md`'s
+"Whole-message binding". The profiler pipelines derive the value from their trigger file.
+
 ## Trigger binding configuration
 
 `WorkflowQueueTrigger`'s `[ServiceBusTrigger]` binds to the queue named by the

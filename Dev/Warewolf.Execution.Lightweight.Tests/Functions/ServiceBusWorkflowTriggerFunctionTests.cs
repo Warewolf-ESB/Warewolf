@@ -38,6 +38,7 @@ using Hangfire.MemoryStorage;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Functions;
@@ -1368,5 +1369,89 @@ public class ServiceBusWorkflowTriggerFunctionTests
     {
         Assert.IsNull(ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload(""));
         Assert.IsNull(ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload("   "));
+    }
+
+    // ── MapEntireMessageTo (2026-10-05) ─────────────────────────────────────────
+    //
+    // The profiler DEV ShovelBridge run failed every message with "Assign Object from Input
+    // Scalar (1) - Scalar value { ProfileRequest } is NULL": RequestForProfilingConsume declares ONE
+    // input, ProfileRequest, carrying the whole document, and its queue trigger says
+    // MapEntireMessage:true - which only the QueueProcessor honoured. This trigger bound the flat
+    // body's 16 top-level fields instead, so ProfileRequest was never set.
+
+    private const string ProfilerFlatBody =
+        "{\"ForPaymentCycle\":\"202402\",\"MandateCanTrack\":\"true\",\"MandateDRI\":\"22\",\"ResultPaymentCycle\":\"202401\"}";
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveRawInputPayload_MapEntireMessage_FlatBody_BindsWholeBodyToNamedInput()
+    {
+        var resolved = ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload(ProfilerFlatBody, "ProfileRequest");
+
+        var bound = JObject.Parse(resolved!);
+        Assert.AreEqual(1, bound.Count, "Only the named input may bind - the body's own fields must not leak in as inputs.");
+        Assert.AreEqual(JTokenType.String, bound["ProfileRequest"]!.Type, "The body is bound as a string, as on-prem's mapper does.");
+        Assert.AreEqual(ProfilerFlatBody, bound.Value<string>("ProfileRequest"), "The body must arrive byte-for-byte.");
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveRawInputPayload_MapEntireMessage_EnvelopeBody_StillMapsWholeBody()
+    {
+        // On-prem MapEntireMessage never inspects the message (MessageToInputsMapper.cs:31-33).
+        const string envelope = "{\"inputs\":{\"Name\":\"x\"}}";
+
+        var resolved = ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload(envelope, "ProfileRequest");
+
+        Assert.AreEqual(envelope, JObject.Parse(resolved!).Value<string>("ProfileRequest"));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void ResolveRawInputPayload_MapEntireMessage_EmptyBody_ReturnsNull()
+    {
+        Assert.IsNull(ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload("", "ProfileRequest"));
+        Assert.IsNull(ServiceBusWorkflowTriggerFunction.ResolveRawInputPayload("   ", "ProfileRequest"));
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_MapEntireMessageTo_ExecutorReceivesWholeBodyUnderTheNamedInput()
+    {
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var sut = NewSut(executor: executor, triggerDefinition: new ServiceBusTriggerDefinition
+        {
+            QueueName = "profiler.profile.request.DEV",
+            WorkflowName = "ProfilerServices/ProfilerWrapper/Queue/RequestForProfilingConsume",
+            MapEntireMessageTo = "ProfileRequest",
+        });
+        var actions = new FakeServiceBusMessageActions();
+
+        await sut.Run(NewMessage(ProfilerFlatBody, correlationId: "corr-map-entire"), actions, CancellationToken.None);
+
+        Assert.AreEqual(1, executor.CallCount);
+        Assert.AreEqual(ProfilerFlatBody, JObject.Parse(executor.LastRequest!.RawInputPayload!).Value<string>("ProfileRequest"));
+        Assert.AreEqual(1, actions.CompleteCalls);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public async Task Run_MapEntireMessageTo_EnvelopeInputsDoNotAlsoBind()
+    {
+        // WorkflowExecutor.ResolveInputPayload merges InputParameters into a JSON raw payload, so
+        // the envelope's inputs would otherwise ride along beside the mapped body.
+        var executor = new FakeWorkflowExecutor(_ => new WorkflowExecutionResult { IsSuccess = true, Payload = "{}" });
+        var sut = NewSut(executor: executor, triggerDefinition: new ServiceBusTriggerDefinition
+        {
+            QueueName = "q",
+            WorkflowName = "wf",
+            MapEntireMessageTo = "ProfileRequest",
+        });
+
+        await sut.Run(NewMessage("{\"inputs\":{\"Name\":\"x\"},\"correlationId\":\"corr-map-env\"}"),
+            new FakeServiceBusMessageActions(), CancellationToken.None);
+
+        Assert.AreEqual(1, executor.CallCount);
+        Assert.AreEqual(0, executor.LastRequest!.InputParameters.Count);
     }
 }

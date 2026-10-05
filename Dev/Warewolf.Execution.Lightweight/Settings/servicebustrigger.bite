@@ -23,6 +23,12 @@
   // The workflow every message on QueueName executes.
   "WorkflowName": "Hello World",
 
+  // Optional. The workflow input that receives the WHOLE message body as a string - the
+  // equivalent of a queue trigger's MapEntireMessage = true (use that trigger's Inputs[0].Name).
+  // Omit it to bind the {"inputs":{...}} envelope, else the body's top-level fields.
+  // Staged by Deploy-WwExecutionEngine.ps1 -ServiceBusTriggerMapEntireMessageTo.
+  // "MapEntireMessageTo": "ProfileRequest",
+
   // Optional metadata — audit/telemetry correlation only, not read by the trigger logic.
   "TriggerId": "00000000-0000-0000-0000-000000000000",
   "Name": "ServiceBusSecureTrigger",

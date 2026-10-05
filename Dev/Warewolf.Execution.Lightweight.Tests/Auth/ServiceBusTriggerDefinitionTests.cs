@@ -91,6 +91,57 @@ public class ServiceBusTriggerDefinitionTests
         Assert.AreEqual("wf", definition.WorkflowName);
     }
 
+    // ── MapEntireMessageTo (on-prem MapEntireMessage parity) ─────────────────────
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void Load_MapEntireMessageTo_IsParsedAndTrimmed()
+    {
+        var dir = NewSettingsDirectory();
+        WriteTriggerFile(dir, """{ "QueueName": "q", "WorkflowName": "wf", "MapEntireMessageTo": "  ProfileRequest " }""");
+
+        var definition = ServiceBusTriggerDefinition.Load(dir);
+
+        Assert.AreEqual("ProfileRequest", definition!.MapEntireMessageTo);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void Load_MapEntireMessageTo_Absent_IsNull()
+    {
+        // Every existing deployment's file - the default binding must be untouched.
+        var dir = NewSettingsDirectory();
+        WriteTriggerFile(dir, """{ "QueueName": "q", "WorkflowName": "wf" }""");
+
+        Assert.IsNull(ServiceBusTriggerDefinition.Load(dir)!.MapEntireMessageTo);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    [DataRow("")]
+    [DataRow("   ")]
+    public void Load_MapEntireMessageTo_Blank_IsTreatedAsUnset(string blank)
+    {
+        var dir = NewSettingsDirectory();
+        WriteTriggerFile(dir, $$"""{ "QueueName": "q", "WorkflowName": "wf", "MapEntireMessageTo": "{{blank}}" }""");
+
+        Assert.IsNull(ServiceBusTriggerDefinition.Load(dir)!.MapEntireMessageTo);
+    }
+
+    [TestMethod]
+    [TestCategory("UnitTest")]
+    public void Load_MapEntireMessageTo_AtPrefixed_ThrowsActionableError()
+    {
+        var dir = NewSettingsDirectory();
+        WriteTriggerFile(dir, """{ "QueueName": "q", "WorkflowName": "wf", "MapEntireMessageTo": "@RequestData" }""");
+
+        var ex = Assert.ThrowsException<ServiceBusTriggerConfigurationException>(
+            () => ServiceBusTriggerDefinition.Load(dir));
+
+        StringAssert.Contains(ex.Message, nameof(ServiceBusTriggerDefinition.MapEntireMessageTo));
+        StringAssert.Contains(ex.Message, "@RequestData");
+    }
+
     // ── Disabled short-circuit ───────────────────────────────────────────────────
 
     [TestMethod]

@@ -209,6 +209,31 @@ Warewolf envelope.
 > variables — producing this same `Invalid Calculate` text for an unrelated reason. Pass
 > `-InputParameters` whenever `-WorkflowRoute` is not the default.
 
+### Whole-message binding — `MapEntireMessageTo` (2026-10-05)
+
+The verbatim fallback above binds a flat body's **top-level fields** as inputs. That is wrong
+for a workflow declaring ONE input that carries the whole document — the on-prem queue
+trigger's `MapEntireMessage = true`, where `MessageToInputsMapper` (lines 31-33) puts the raw
+message into `Inputs[0]` and inspects nothing else. This trigger never reads the queue
+trigger file, so it never learned that setting, and every Profiler DEV ShovelBridge message failed:
+
+```
+Assign Object from Input Scalar (1) - Scalar value { ProfileRequest } is NULL: { @RequestData }
+```
+
+`ProfilerServices/ProfilerWrapper/Queue/RequestForProfilingConsume` declares only
+`ProfileRequest`; the 16 flat fields bound, `ProfileRequest` did not. The QueueProcessor path
+ran the same workflow cleanly because `EngineForwarder` does apply `MapEntireMessage`.
+
+Set `MapEntireMessageTo` in `Settings/servicebustrigger.bite` (staged by
+`Deploy-WwExecutionEngine.ps1 -ServiceBusTriggerMapEntireMessageTo`) and the body is bound as a
+string to that input — `{"ProfileRequest":"<body>"}` — **envelope or not**, with any envelope
+`inputs` ignored. That is the same payload the QueueProcessor's `{"inputParameters":{…}}`
+produces after `WorkflowExecutor.BuildJsonPayload`. Unset (the default), binding is exactly as
+described above. An `@`-prefixed (JSON object) input is refused at cold start: on-prem posts
+those as multipart, which this in-process trigger has no equivalent for. The JSON-only boundary
+above still applies — a non-JSON body is dead-lettered as `Malformed:BodyNotJson` before mapping.
+
 ## Result delivery — polling only (no push)
 
 The result of an execution is retrieved by polling `GET
@@ -270,7 +295,9 @@ never WFAES-encrypted), loaded once at cold start **before** the host is built. 
 `WorkflowName` is registered as a DI singleton and consumed directly by
 `ServiceBusWorkflowTriggerFunction` — **the message body no longer names the workflow**
 (see "Message contract" above). A missing file, or either field blank, is fatal — refuses
-to start rather than silently defaulting.
+to start rather than silently defaulting. The optional `MapEntireMessageTo` names the input
+that receives the whole body (see "Whole-message binding" above); blank or absent leaves the
+default binding, an `@`-prefixed value is fatal.
 
 **Correction (2026-09-14) — `QueueName` could NOT drop the app setting; it still needs one.**
 The original WOLF-8517 design (immediately above, kept for history) intended `QueueName` to
