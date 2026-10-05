@@ -143,10 +143,15 @@ namespace Warewolf.Execution.Lightweight.Security
             string reason,
             string correlationId)
         {
-            _logger.LogWarning(
-                $"SECURITY_AUDIT | Event=ServiceBusTriggerOutcome | Status={status} | Caller={caller} | " +
-                $"Workflow={workflow} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
-                AuditExecutionId);
+            try
+            {    
+                _logger.LogWarning(
+                    $"SECURITY_AUDIT | Event=ServiceBusTriggerOutcome | Status={status} | Caller={caller} | " +
+                    $"Workflow={workflow} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
+                    AuditExecutionId);
+            } catch {
+                //Swallow errors here
+            }
         }
     }
 }
