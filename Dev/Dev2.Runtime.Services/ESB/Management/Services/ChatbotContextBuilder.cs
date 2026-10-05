@@ -70,6 +70,12 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// </summary>
         public static string BuildSystemPrompt(ChatbotSettingsData settings)
         {
+            // MCP tools only: the tools travel as native tool definitions, so the prompt itself is empty.
+            if (settings.McpToolsOnlySystemPrompt)
+            {
+                return string.Empty;
+            }
+
             var promptBuilder = new StringBuilder(4096);
 
             // Header

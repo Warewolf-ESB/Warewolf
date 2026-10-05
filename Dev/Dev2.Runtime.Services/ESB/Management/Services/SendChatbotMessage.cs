@@ -44,6 +44,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 // Extract parameters
                 values.TryGetValue(Warewolf.Service.SendChatbotMessage.Message, out StringBuilder messageBuilder);
                 values.TryGetValue(Warewolf.Service.SendChatbotMessage.ConversationHistory, out StringBuilder conversationHistoryBuilder);
+                values.TryGetValue(Warewolf.Service.SendChatbotMessage.McpTools, out StringBuilder mcpToolsBuilder);
+                values.TryGetValue(Warewolf.Service.SendChatbotMessage.ToolTurns, out StringBuilder toolTurnsBuilder);
 
                 // Validate message
                 if (messageBuilder == null || string.IsNullOrWhiteSpace(messageBuilder.ToString()))
@@ -134,22 +136,45 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var systemPrompt = ChatbotContextBuilder.BuildSystemPrompt(settings);
                 var messages = BuildMessagesArray(systemPrompt, message, conversationHistory);
 
+                // MCP tools the client can run, less any disabled in settings: a disabled tool never reaches the model.
+                var disabledTools = new HashSet<string>(settings.DisabledMcpTools ?? new List<string>(), StringComparer.Ordinal);
+                var tools = (ParseJsonArgument<List<ChatbotTool>>(mcpToolsBuilder, "MCP tools") ?? new List<ChatbotTool>())
+                    .Where(t => !string.IsNullOrWhiteSpace(t?.Name) && !disabledTools.Contains(t.Name))
+                    .ToList();
+                var toolTurns = ParseJsonArgument<List<ChatbotToolTurn>>(toolTurnsBuilder, "tool turns") ?? new List<ChatbotToolTurn>();
+
                 // Send to AI provider
                 using (var client = new HttpClient())
                 {
                     client.Timeout = TimeSpan.FromSeconds(TimeoutSeconds);
                     var apiService = new ChatbotApiService(client);
-                    var response = apiService.SendMessage(chatbotSourceDef, messages);
 
-                    var normalizedResponse = ChatbotToolNormalizer.NormalizeResponse(response);
+                    if (tools.Count == 0 && toolTurns.Count == 0)
+                    {
+                        var response = apiService.SendMessage(chatbotSourceDef, messages);
+                        return serializer.SerializeToBuilder(new
+                        {
+                            Response = ChatbotToolNormalizer.NormalizeResponse(response),
+                            Error = (string)null
+                        });
+                    }
+
+                    var reply = apiService.SendMessageWithTools(chatbotSourceDef, messages, tools, toolTurns);
+                    var allowedCalls = reply.ToolCalls.Where(c => tools.Any(t => t.Name == c.Name)).ToList();
+                    if (string.IsNullOrEmpty(reply.Text) && allowedCalls.Count == 0)
+                    {
+                        return CreateErrorResponse(serializer, "Could not parse response content from AI service");
+                    }
 
                     var result = new
                     {
-                        Response = normalizedResponse,
-                        Error = (string)null
+                        Response = string.IsNullOrEmpty(reply.Text) ? string.Empty : ChatbotToolNormalizer.NormalizeResponse(reply.Text),
+                        Error = (string)null,
+                        ToolCalls = allowedCalls
                     };
 
-                    return serializer.SerializeToBuilder(result);
+                    // Newtonsoft directly: Dev2JsonSerializer adds $type metadata the browser doesn't need.
+                    return new StringBuilder(JsonConvert.SerializeObject(result));
                 }
             }
             catch (HttpRequestException ex)
@@ -188,11 +213,31 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
+        private static T ParseJsonArgument<T>(StringBuilder value, string description) where T : class
+        {
+            if (value == null || string.IsNullOrWhiteSpace(value.ToString()))
+            {
+                return null;
+            }
+            try
+            {
+                return JsonConvert.DeserializeObject<T>(value.ToString());
+            }
+            catch (Exception ex)
+            {
+                Dev2Logger.Warn($"Failed to parse {description}: {ex.Message}", GlobalConstants.WarewolfWarn);
+                return null;
+            }
+        }
+
         private static List<object> BuildMessagesArray(string systemPrompt, string currentMessage, List<ConversationMessage> conversationHistory)
         {
             var messages = new List<object>();
 
-            messages.Add(new { role = "system", content = systemPrompt });
+            if (!string.IsNullOrEmpty(systemPrompt))
+            {
+                messages.Add(new { role = "system", content = systemPrompt });
+            }
 
             // Add conversation history if provided
             if (conversationHistory != null && conversationHistory.Any())
@@ -255,7 +300,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(
             HandlesType(),
-            "<DataList><Message ColumnIODirection=\"Input\"/><ConversationHistory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+            "<DataList><Message ColumnIODirection=\"Input\"/><ConversationHistory ColumnIODirection=\"Input\"/><McpTools ColumnIODirection=\"Input\"/><ToolTurns ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 

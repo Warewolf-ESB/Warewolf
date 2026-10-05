@@ -49,6 +49,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Config.Chatbot.BotMessageTextColor = chatbotSettingsData.BotMessageTextColor;
                     Config.Chatbot.SlidingWindowSummaryLength = chatbotSettingsData.SlidingWindowSummaryLength;
                     Config.Chatbot.EnableSlidingWindowTrimming = chatbotSettingsData.EnableSlidingWindowTrimming;
+                    Config.Chatbot.DisabledMcpTools = chatbotSettingsData.DisabledMcpTools;
+                    Config.Chatbot.McpToolsOnlySystemPrompt = chatbotSettingsData.McpToolsOnlySystemPrompt;
                 }
                 else
                 {

@@ -81,6 +81,37 @@ namespace Dev2.Tests.Runtime.ESB.Management
         }
 
         // ── BuildSystemPrompt: empty / null settings paths ──────────────────
+        [TestMethod, Owner(Owner), TestCategory(Cat)]
+        public void BuildSystemPrompt_McpToolsOnly_ReturnsEmptyPrompt()
+        {
+            var settings = new ChatbotSettingsData
+            {
+                IncludeSystemLog = true,
+                SelectedResourceIds = new List<Guid> { Guid.NewGuid() },
+                McpToolsOnlySystemPrompt = true
+            };
+
+            Assert.AreEqual(string.Empty, ChatbotContextBuilder.BuildSystemPrompt(settings));
+        }
+
+        [TestMethod, Owner(Owner), TestCategory(Cat)]
+        public void ChatbotSettingsData_CloneAndEquals_IncludeMcpToolSettings()
+        {
+            var settings = new ChatbotSettingsData
+            {
+                DisabledMcpTools = new List<string> { "azure_delete_function_app" },
+                McpToolsOnlySystemPrompt = true
+            };
+
+            var clone = settings.Clone();
+            Assert.IsTrue(settings.Equals(clone));
+            CollectionAssert.AreEqual(settings.DisabledMcpTools, clone.DisabledMcpTools);
+            Assert.AreNotSame(settings.DisabledMcpTools, clone.DisabledMcpTools);
+
+            clone.DisabledMcpTools.Add("warewolf_delete_workflow");
+            Assert.IsFalse(settings.Equals(clone));
+        }
+
 
         [TestMethod, Owner(Owner), TestCategory(Cat)]
         public void BuildSystemPrompt_NoResources_NoLog_ReturnsZeroFoundMessages()

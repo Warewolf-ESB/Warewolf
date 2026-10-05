@@ -74,6 +74,8 @@ namespace Warewolf.Service
     {
         public const string Message = nameof(Message);
         public const string ConversationHistory = nameof(ConversationHistory);
+        public const string McpTools = nameof(McpTools);
+        public const string ToolTurns = nameof(ToolTurns);
     }
 
     public static class SaveAuditingSettings

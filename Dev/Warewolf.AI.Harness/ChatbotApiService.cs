@@ -51,6 +51,141 @@ namespace Warewolf.AI.Harness
         }
 
         /// <summary>
+        /// Sends messages with tools the model may call, using each provider's native tool calling.
+        /// <paramref name="turns"/> are the tool rounds already run since the last user message.
+        /// The reply carries the model's text and any further tool calls it wants made.
+        /// </summary>
+        public ChatbotReply SendMessageWithTools(ChatbotSourceDefinition source, List<object> messages, List<ChatbotTool> tools, List<ChatbotToolTurn> turns)
+        {
+            tools = tools ?? new List<ChatbotTool>();
+            turns = turns ?? new List<ChatbotToolTurn>();
+            switch (ResolveProvider(source))
+            {
+                case AnthropicProvider.ProviderName:
+                    return SendToAnthropicWithTools(source, messages, tools, turns);
+                case GeminiProvider.ProviderName:
+                    return SendToGeminiWithTools(source, messages, tools, turns);
+                case OpenRouterProvider.ProviderName:
+                {
+                    var payload = CreatePayload(source.SelectedModel, ChatbotToolFormats.OpenAIMessages(messages, turns), null, useMaxCompletionTokens: false, includeTemperature: false);
+                    AddTools(payload, "tools", tools.Count > 0 ? ChatbotToolFormats.OpenAITools(tools) : null);
+                    return ChatbotToolFormats.ParseOpenAIReply(PostForResponse(source.CompletionsEndpoint, payload, "Authorization", $"Bearer {source.ApiKey}", null));
+                }
+                default:
+                    return SendToOpenAIWithTools(source, messages, tools, turns);
+            }
+        }
+
+        private ChatbotReply SendToOpenAIWithTools(ChatbotSourceDefinition source, List<object> messages, List<ChatbotTool> tools, List<ChatbotToolTurn> turns)
+        {
+            var endpoint = NormalizeLmStudioEndpoint(source.CompletionsEndpoint);
+            bool hasApiKey = !string.IsNullOrWhiteSpace(source.ApiKey);
+            string authName = hasApiKey ? "Authorization" : null;
+            string authValue = hasApiKey ? $"Bearer {source.ApiKey}" : null;
+            var allMessages = ChatbotToolFormats.OpenAIMessages(messages, turns);
+            var openAITools = tools.Count > 0 ? ChatbotToolFormats.OpenAITools(tools) : null;
+
+            var payload = CreatePayload(source.SelectedModel, allMessages, null, useMaxCompletionTokens: false, includeTemperature: true);
+            AddTools(payload, "tools", openAITools);
+            var response = PostWithAuth(endpoint, payload, authName, authValue, null);
+            var body = response.Content.ReadAsStringAsync().Result;
+
+            // Retry without temperature if not supported by this model
+            if (!response.IsSuccessStatusCode && body.Contains("temperature") && (body.Contains("not support") || body.Contains("unsupported")))
+            {
+                payload = CreatePayload(source.SelectedModel, allMessages, null, useMaxCompletionTokens: false, includeTemperature: false);
+                AddTools(payload, "tools", openAITools);
+                response = PostWithAuth(endpoint, payload, authName, authValue, null);
+                body = response.Content.ReadAsStringAsync().Result;
+            }
+
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"AI service error: {response.StatusCode} - {body}");
+            }
+            return ChatbotToolFormats.ParseOpenAIReply(body);
+        }
+
+        private ChatbotReply SendToAnthropicWithTools(ChatbotSourceDefinition source, List<object> messages, List<ChatbotTool> tools, List<ChatbotToolTurn> turns)
+        {
+            string systemMessage = null;
+            var nonSystemMessages = new List<object>();
+            foreach (var msg in messages)
+            {
+                var json = JObject.FromObject(msg);
+                if (json["role"]?.ToString() == "system")
+                {
+                    systemMessage = (systemMessage == null ? "" : systemMessage + "\n\n") + json["content"]?.ToString();
+                }
+                else
+                {
+                    nonSystemMessages.Add(msg);
+                }
+            }
+
+            var payload = CreatePayload(source.SelectedModel, ChatbotToolFormats.AnthropicMessages(nonSystemMessages, turns), systemMessage, useMaxCompletionTokens: false, includeTemperature: true);
+            AddTools(payload, "tools", tools.Count > 0 ? ChatbotToolFormats.AnthropicTools(tools) : null);
+            return ChatbotToolFormats.ParseAnthropicReply(PostForResponse(source.CompletionsEndpoint, payload, "x-api-key", source.ApiKey, "anthropic-version=2023-06-01"));
+        }
+
+        private ChatbotReply SendToGeminiWithTools(ChatbotSourceDefinition source, List<object> messages, List<ChatbotTool> tools, List<ChatbotToolTurn> turns)
+        {
+            string systemPrompt = null;
+            var contents = new List<object>();
+            foreach (var msg in messages)
+            {
+                var json = JObject.FromObject(msg);
+                var role = json["role"]?.ToString();
+                if (role == "system")
+                {
+                    systemPrompt = (systemPrompt == null ? "" : systemPrompt + "\n\n") + json["content"]?.ToString();
+                    continue;
+                }
+                contents.Add(new
+                {
+                    role = role == "assistant" ? "model" : role,
+                    parts = new[] { new { text = json["content"]?.ToString() } }
+                });
+            }
+
+            var requestBody = new Dictionary<string, object> { ["contents"] = ChatbotToolFormats.GeminiContents(contents, turns) };
+            if (!string.IsNullOrWhiteSpace(systemPrompt))
+            {
+                requestBody["system_instruction"] = new { parts = new[] { new { text = systemPrompt } } };
+            }
+            AddTools(requestBody, "tools", tools.Count > 0 ? ChatbotToolFormats.GeminiTools(tools) : null);
+
+            const string baseUrl = "https://generativelanguage.googleapis.com/v1beta";
+            var endpoint = $"{baseUrl}/{source.SelectedModel}:generateContent?key={source.ApiKey}";
+            var response = PostWithAuthAndTelemetry(endpoint, requestBody, null, null, null);
+            var body = response.Content.ReadAsStringAsync().Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"AI service error: {response.StatusCode} - {body}");
+            }
+            return ChatbotToolFormats.ParseGeminiReply(body);
+        }
+
+        private static void AddTools(Dictionary<string, object> payload, string key, List<object> tools)
+        {
+            if (tools != null && tools.Count > 0)
+            {
+                payload[key] = tools;
+            }
+        }
+
+        private string PostForResponse(string endpoint, object payload, string authHeaderName, string authHeaderValue, string additionalHeaders)
+        {
+            var response = PostWithAuth(endpoint, payload, authHeaderName, authHeaderValue, additionalHeaders);
+            var body = response.Content.ReadAsStringAsync().Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new HttpRequestException($"AI service error: {response.StatusCode} - {body}");
+            }
+            return body;
+        }
+
+        /// <summary>
         /// Resolves the provider from the explicit Provider field or falls back to URL heuristics.
         /// </summary>
         internal static string ResolveProvider(ChatbotSourceDefinition source)
