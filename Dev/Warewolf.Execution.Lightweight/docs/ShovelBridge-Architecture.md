@@ -219,10 +219,11 @@ document, e.g. the profiler's `ProfileRequest`) is also unmodified-compatible wi
 <Inputs[0].Name>` — the in-engine trigger never reads the RabbitMQ trigger file. Without it the
 body's top-level fields bind instead and the workflow fails on its first read of that input
 ("Scalar value { ProfileRequest } is NULL"). See `ServiceBusSecureTrigger-Architecture.md`'s
-"Whole-message binding". The profiler pipelines do NOT use it yet: they deploy the released engine,
-which lacks the binding, so their ShovelBridge burst and smoke message send the envelope
-`{"ProfileRequest":"<json>"}` instead. Never combine the two - the envelope would be bound whole and
-`ProfileRequest` would hold the envelope itself. Switch the body shape and the parameter together.
+"Whole-message binding". The profiler pipelines derive the value from their trigger file and pass it
+only when the released orchestrator declares the parameter; on an older release a ShovelBridge run
+stops before deploying (its engine cannot bind the message either), a QueueProcessor run carries on.
+Their bridge smoke message and burst publish the flat body - never combine the mapping with a
+`{"ProfileRequest":"<json>"}` envelope, which would be bound whole and leave the envelope in `ProfileRequest`.
 
 ## Trigger binding configuration
 
