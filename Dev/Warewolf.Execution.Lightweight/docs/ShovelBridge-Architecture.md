@@ -222,8 +222,12 @@ body's top-level fields bind instead and the workflow fails on its first read of
 "Whole-message binding". The profiler pipelines derive the value from their trigger file and pass it
 only when the released orchestrator declares the parameter; on an older release a ShovelBridge run
 stops before deploying (its engine cannot bind the message either), a QueueProcessor run carries on.
-Their bridge smoke message and burst publish the flat body - never combine the mapping with a
-`{"ProfileRequest":"<json>"}` envelope, which would be bound whole and leave the envelope in `ProfileRequest`.
+Their bridge smoke message and burst publish the flat body - never combine the mapping with any
+envelope, `{"ProfileRequest":"<json>"}` or the trigger's own `{"inputs":{...}}`: either is bound whole
+and leaves the envelope in `ProfileRequest`. Build 30957 did exactly that - the smoke message was still
+`{"inputs":{...}}`, so `MandateId` read NULL and the message dead-lettered `Failed:ExecutionFailed`
+while the identical fields over HTTP passed. `Test-WwShovelBridgeDelivery.ps1 -BodyShape Flat` is the
+fix; the pipelines choose it whenever the trigger file has `MapEntireMessage`.
 
 ## Trigger binding configuration
 
