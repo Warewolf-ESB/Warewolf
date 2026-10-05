@@ -60,12 +60,18 @@
     Virtual host containing the source queue. Default: / (encoded as %2f, the
     one vhost that must not be left bare).
 .PARAMETER InputFields
-    REQUIRED. The workflow's input fields, wrapped as {"inputs":{...}} — the
-    post-WOLF-8517 message contract. A FLAT body is the trap this guards:
-    WOLF-8517 removed the 'workflow' field from ServiceBusWorkflowMessage (the
-    name now comes solely from Settings/servicebustrigger.bite), and a flat body
-    binds as Inputs=null, executing against an EMPTY datalist rather than
-    failing cleanly.
+    REQUIRED. The workflow's input fields, published in the shape -BodyShape names.
+.PARAMETER BodyShape
+    How -InputFields go on the wire. It must match how the engine's trigger binds,
+    or the workflow runs against the wrong datalist and fails deep inside itself.
+      Envelope (default) - {"inputs":{...}}, the post-WOLF-8517 contract for a
+                 trigger that binds input by input. A FLAT body is the trap there:
+                 it binds as Inputs=null, against an EMPTY datalist.
+      Flat     - the fields as top-level properties, as the real producer sends
+                 them. For a trigger deployed with -ServiceBusTriggerMapEntireMessageTo,
+                 which binds the WHOLE body to one input and ignores any envelope:
+                 sent an envelope, that input receives {"inputs":{...}} and every
+                 field the workflow reads from it is NULL (build 30957).
 .PARAMETER CorrelationToken
     OPTIONAL but recommended. The run-scoped value (the smoke test's MandateId)
     echoed in this script's own output, so the same token can be handed to
@@ -113,6 +119,8 @@ param(
     [string] $VHost = '/',
 
     [hashtable] $InputFields,
+    [ValidateSet('Envelope', 'Flat')]
+    [string] $BodyShape = 'Envelope',
     [string] $CorrelationToken,
 
     [string] $ServiceBusNamespace,
@@ -154,9 +162,11 @@ function Get-VHostForApi {
 
 function Format-WwBridgeMessageBody {
     <#
-        The engine's documented {"inputs":{...}} envelope — the same shape
-        Publish-WwProfilerExact.ps1 sends, and the reason that script carries a
-        long note about flat bodies. Keys are emitted in sorted order so the
+        Envelope: the engine's documented {"inputs":{...}} envelope — the same
+        shape Publish-WwProfilerExact.ps1 sends, and the reason that script
+        carries a long note about flat bodies. Flat: the same fields as top-level
+        properties, for a MapEntireMessageTo trigger (see -BodyShape), which must
+        never see an envelope. Keys are emitted in sorted order so the
         body is byte-stable across runs and a diff of two builds' logs is
         readable; the engine binds by name, so order is presentation only.
 
@@ -166,12 +176,16 @@ function Format-WwBridgeMessageBody {
         sends.
     #>
     [CmdletBinding()]
-    param([Parameter(Mandatory)][hashtable] $Fields)
+    param(
+        [Parameter(Mandatory)][hashtable] $Fields,
+        [ValidateSet('Envelope', 'Flat')][string] $Shape = 'Envelope'
+    )
 
     $ordered = [ordered]@{}
     foreach ($key in ($Fields.Keys | Sort-Object)) {
         $ordered[$key] = if ($null -eq $Fields[$key]) { '' } else { [string]$Fields[$key] }
     }
+    if ($Shape -eq 'Flat') { return ($ordered | ConvertTo-Json -Compress -Depth 5) }
     return ([ordered]@{ inputs = $ordered } | ConvertTo-Json -Compress -Depth 5)
 }
 
@@ -419,8 +433,8 @@ $dlqBefore      = if ($sbBaseline) { $sbBaseline.DeadLetter } else { -1 }
 Write-Step ("baseline     : source depth $sourceBaseline" +
             $(if ($sbBaseline) { ", service bus active $($sbBaseline.Active) / dead-letter $($sbBaseline.DeadLetter)" } else { '' }))
 
-$body = Format-WwBridgeMessageBody -Fields $InputFields
-Write-Step "publishing 1 message ($([Text.Encoding]::UTF8.GetByteCount($body)) bytes)"
+$body = Format-WwBridgeMessageBody -Fields $InputFields -Shape $BodyShape
+Write-Step "publishing 1 message ($([Text.Encoding]::UTF8.GetByteCount($body)) bytes, $BodyShape body)"
 Publish-BridgeMessage -VHostName $VHost -Name $SourceQueue -Body $body | Out-Null
 $publishedAt = Get-Date
 Write-Ok 'Published and routed to the source queue.'

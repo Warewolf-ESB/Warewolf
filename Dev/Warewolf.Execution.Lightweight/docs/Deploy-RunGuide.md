@@ -456,7 +456,8 @@ looks like a missing app role rather than a config gap.
 **Worked standalone example — CI load test.** `pipeline-LOADTEST.yml`'s `Load_Test` stage runs
 `Deploy-WwQueueProcessor.ps1` standalone (not via the engine's `-DeployRabbitMqTriggers`
 companion) against the already-deployed `WarewolfServer-UAT`, redeploying a fresh
-`wwqp-loadtest-*` Container App every run from the committed
+`wwqp-loadtest-*` Container App on every run that ticks the opt-in `RunQueueProcessorLoadTest`
+parameter (default `false`) from the committed
 `Dev/.azure/ProfilerLoadTest.trigger.bite` — the RabbitMQ-trigger counterpart to that same
 stage's Service Bus/Shovel Bridge load test. No per-workflow `secure.config` row is needed there:
 `WarewolfServer-UAT` already runs with `WAREWOLF_SECURITY_FLAGS={"bypassSecureConfig":true}` set

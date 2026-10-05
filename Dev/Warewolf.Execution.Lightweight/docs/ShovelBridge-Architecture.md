@@ -222,8 +222,12 @@ body's top-level fields bind instead and the workflow fails on its first read of
 "Whole-message binding". The profiler pipelines derive the value from their trigger file and pass it
 only when the released orchestrator declares the parameter; on an older release a ShovelBridge run
 stops before deploying (its engine cannot bind the message either), a QueueProcessor run carries on.
-Their bridge smoke message and burst publish the flat body - never combine the mapping with a
-`{"ProfileRequest":"<json>"}` envelope, which would be bound whole and leave the envelope in `ProfileRequest`.
+Their bridge smoke message and burst publish the flat body - never combine the mapping with any
+envelope, `{"ProfileRequest":"<json>"}` or the trigger's own `{"inputs":{...}}`: either is bound whole
+and leaves the envelope in `ProfileRequest`. Build 30957 did exactly that - the smoke message was still
+`{"inputs":{...}}`, so `MandateId` read NULL and the message dead-lettered `Failed:ExecutionFailed`
+while the identical fields over HTTP passed. `Test-WwShovelBridgeDelivery.ps1 -BodyShape Flat` is the
+fix; the pipelines choose it whenever the trigger file has `MapEntireMessage`.
 
 ## Trigger binding configuration
 
@@ -2729,6 +2733,18 @@ consequences worth knowing before copying the pattern to another rig:
     **medium** for "all instances started together" — inferred from throughput and from which
     messages failed, because App Insights for `warewolfserver-uat-ai` could not be queried
     (no read access to its managed workspace).
+- **2026-10-05 — `pipeline-LOADTEST.yml` moves `WarewolfServer-UAT` back to Windows Consumption
+  (`Y1`).** The load test now targets the **win-x64** engine (`data-role="engine-windows-zip-link"`
+  on release-notes.php; a pinned `linux-x64` URL is refused) deployed with `-HostingPlan
+  Consumption -FunctionAppScaleLimit 30` in place of `-HostingPlan Flex -FlexInstanceMemoryMB 4096
+  -FlexMaximumInstanceCount 16`. The 30 relies on `Y1`'s gradual ramp-up (the original 32/40
+  plateau above), not on the all-at-once Flex burst that broke build 30857. Watch it: 30 + ~4
+  Container Apps connections leaves almost no headroom, so drop back toward 16 if a run dead-letters
+  with `connection limit (40) is reached` on an engine without the `AcquireCore` fix. (Correction to
+  the stopgap note above: since the 2026-09 released-bits change, `pipeline-LOADTEST.yml` also deploys
+  the RELEASED engine zip and no longer builds from source.) Results from the Flex runs (30857
+  onwards) are **not** a baseline for this platform. Re-baseline from the first `Y1` run. Migration
+  steps: `Deploy-UAT-Redeploy-Spec.md` §19.
 
 
 ## Promotion status
@@ -2758,7 +2774,9 @@ This worker was originally built as a client example and has been promoted to a
   `WarewolfServer-UAT` target, but delivered via a `Warewolf.Execution.QueueProcessor` Container
   App consuming RabbitMQ directly instead of this Shovel/Service-Bus bridge. It is sequenced
   (`dependsOn`) after `ShovelBridgeLoadTest_ExternalServiceBus` rather than run in parallel, since
-  both bursts share the same engine and database capacity budget. See
+  both bursts share the same engine and database capacity budget. It is **opt-in**: it runs only
+  when the pipeline's `RunQueueProcessorLoadTest` parameter (default `false`) is ticked at queue
+  time, and otherwise shows as Skipped without deploying anything. See
   `Scripts/README.md`'s `wwqp-loadtest-*` entry and that job's own header comment in
   `pipeline-LOADTEST.yml` for the full rationale.
 - **The profiler rigs run this bridge OR the QueueProcessor.** `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`

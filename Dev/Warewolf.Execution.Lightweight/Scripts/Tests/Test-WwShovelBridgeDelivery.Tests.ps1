@@ -110,6 +110,34 @@ Describe 'Test-WwShovelBridgeDelivery — message body' {
         $b = Format-WwBridgeMessageBody -Fields @{ c = '3'; a = '1'; b = '2' }
         $a | Should -Be $b
     }
+
+    It 'emits the fields at the top level, with no envelope, for -Shape Flat' {
+        # A MapEntireMessageTo trigger hands the whole body to one input; sent an
+        # envelope, that input received {"inputs":{...}} and MandateId bound NULL (build 30957).
+        $parsed = Format-WwBridgeMessageBody -Fields @{ MandateId = 'abc'; MandateDRI = '22' } -Shape Flat | ConvertFrom-Json
+        $parsed.PSObject.Properties.Name | Should -Not -Contain 'inputs'
+        $parsed.MandateId  | Should -Be 'abc'
+        $parsed.MandateDRI | Should -Be '22'
+    }
+
+    It 'keeps legitimately empty fields in a Flat body too' {
+        $parsed = Format-WwBridgeMessageBody -Fields $script:CanonicalFields -Shape Flat | ConvertFrom-Json
+        $parsed.PSObject.Properties.Name.Count | Should -Be 16
+        $parsed.RequestType | Should -Be ''
+        $parsed.FASGroup    | Should -Be ''
+    }
+
+    It 'is byte-stable in the Flat shape too' {
+        $a = Format-WwBridgeMessageBody -Fields @{ b = '2'; a = '1'; c = '3' } -Shape Flat
+        $b = Format-WwBridgeMessageBody -Fields @{ c = '3'; a = '1'; b = '2' } -Shape Flat
+        $a | Should -Be $b
+        $a | Should -Be '{"a":"1","b":"2","c":"3"}'
+    }
+
+    It 'defaults -BodyShape to Envelope, so existing callers keep the WOLF-8517 contract' {
+        $ast = [System.Management.Automation.Language.Parser]::ParseFile($script:BridgeScript, [ref]$null, [ref]$null)
+        ($ast.ParamBlock.Parameters | Where-Object { $_.Name.VariablePath.UserPath -eq 'BodyShape' }).DefaultValue.Value | Should -Be 'Envelope'
+    }
 }
 
 Describe 'Test-WwShovelBridgeDelivery — publish request' {
@@ -280,6 +308,15 @@ Describe 'Test-WwShovelBridgeDelivery — end to end, shimmed' {
         # on a body that never carried the envelope at all.
         $publishes[0].Body | Should -Match '\\"inputs\\"'
         $publishes[0].Body | Should -Match '"delivery_mode":2'
+    }
+
+    It 'publishes the flat body, with no envelope, under -BodyShape Flat' {
+        & $script:BridgeScript @commonArgs @sbArgs -BodyShape Flat | Out-Null
+        $publishes = @($global:apiCalls | Where-Object { $_.Uri -match '/publish$' })
+        $publishes.Count | Should -Be 1
+        $payload = ($publishes[0].Body | ConvertFrom-Json).payload | ConvertFrom-Json
+        $payload.PSObject.Properties.Name | Should -Not -Contain 'inputs'
+        $payload.MandateId | Should -Be $script:CanonicalFields.MandateId
     }
 
     It 'throws when the broker does not route the publish — a queue that is not there' {
