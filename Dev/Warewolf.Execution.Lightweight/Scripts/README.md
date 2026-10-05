@@ -187,8 +187,9 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   rest and only decryptable via this app's own Key Vault key at runtime, so it does not need
   Secure File / secret-variable handling. No manual operator step is required.
 - **`wwqp-loadtest-*`** (a `Warewolf.Execution.QueueProcessor` Container App) — deployed fresh on
-  every `pipeline-LOADTEST.yml` run by the `Load_Test` stage's `ProfilerLoadTest_QueueProcessor`
-  job, via `Deploy-WwQueueProcessor.ps1` and the committed `Dev/.azure/ProfilerLoadTest.trigger.bite`.
+  every `pipeline-LOADTEST.yml` run that ticks the `RunQueueProcessorLoadTest` parameter (opt-in,
+  default `false`; otherwise the job is Skipped and nothing is deployed) by the `Load_Test` stage's
+  `ProfilerLoadTest_QueueProcessor` job, via `Deploy-WwQueueProcessor.ps1` and the committed `Dev/.azure/ProfilerLoadTest.trigger.bite`.
   The worker package (`queueworker-zip-link`) and `Deploy-WwQueueProcessor.ps1` are the
   **published** ones, from the same release `Deploy_UAT` resolved for the engine (handed over as
   `ResolveRelease` output variables; pin with `WarewolfQueueWorkerZipUrl`). The Dockerfile, the
