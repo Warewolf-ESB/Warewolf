@@ -58,6 +58,14 @@ BeforeAll {
         return $null
     }
 
+    # The workflow a trigger's WorkflowName ('ProfilerServices\...\Name') resolves to, as XML: the
+    # same relative path under the engine's Resources/ that WorkflowIndex.Resolve() keys on.
+    function script:Get-TriggerWorkflow {
+        param([string] $WorkflowName)
+        $path = Join-Path $PSScriptRoot "..\Warewolf.Execution.Lightweight\Resources\$($WorkflowName.Replace('\', '/')).bite"
+        [xml](Get-Content -LiteralPath $path -Raw)
+    }
+
     # Every step in order, '${{ if }}' blocks flattened. Each item: Step, Architecture ($null = both).
     function script:Get-TaggedSteps {
         param($Doc)
@@ -215,14 +223,14 @@ Describe 'Profiler pipelines - Dev and UAT share one body, with their own resour
 
     It 'give each environment its own <_>' -ForEach @(
         'ProfilerEnvironment', 'ProfilerEngineAppName', 'ProfilerEngineStorageAccount', 'ProfilerQueueTriggerFile',
-        'ProfilerQueueName', 'ProfilerDeadLetterQueueName', 'ProfilerServiceBusNamespace',
+        'ProfilerServiceBusNamespace',
         'ProfilerServiceBusTriggerQueueName', 'ProfilerServiceBusErrorQueueName', 'ProfilerShovelName', 'ProfilerWorkerAppNamePrefix') {
         $script:Uat['variables'][$_] | Should -Not -Be $script:Dev['variables'][$_] -Because "$_ is per environment"
     }
 
     It 'keep the rest of the variables identical' {
         $own = 'ProfilerEnvironment', 'ProfilerEngineAppName', 'ProfilerEngineStorageAccount', 'ProfilerQueueTriggerFile',
-               'ProfilerQueueName', 'ProfilerDeadLetterQueueName', 'ProfilerServiceBusNamespace',
+               'ProfilerServiceBusNamespace',
                'ProfilerServiceBusTriggerQueueName', 'ProfilerServiceBusErrorQueueName', 'ProfilerShovelName', 'ProfilerWorkerAppNamePrefix'
         foreach ($name in @($script:Dev['variables'].Keys | Where-Object { $_ -notin $own })) {
             $script:Uat['variables'][$name] | Should -Be $script:Dev['variables'][$name] -Because "$name is shared"
@@ -252,21 +260,22 @@ Describe 'Profiler <Env> pipeline - per-environment queues' -ForEach $script:Env
         $script:Trig = Get-Content -LiteralPath (Join-Path $PSScriptRoot $Trigger) -Raw | ConvertFrom-Json
     }
 
-    It 'names the queues profiler.profile.request.<Env> / profiler.profile.error.request.<Env>' {
-        $script:Vars['ProfilerEnvironment']         | Should -Be $Env
-        $script:Vars['ProfilerQueueName']           | Should -Be "profiler.profile.request.$Env"
-        $script:Vars['ProfilerDeadLetterQueueName'] | Should -Be "profiler.profile.error.request.$Env"
+    It 'names the queues profiler.profile.request.<Env> / profiler.profile.error.request.<Env> in its trigger file' {
+        $script:Vars['ProfilerEnvironment'] | Should -Be $Env
+        $script:Trig.QueueName              | Should -Be "profiler.profile.request.$Env"
+        $script:Trig.DeadLetterQueue        | Should -Be "profiler.profile.error.request.$Env"
     }
 
     It 'gives the Service Bus trigger and error queues the same names' {
-        $script:Vars['ProfilerServiceBusTriggerQueueName'] | Should -Be $script:Vars['ProfilerQueueName']
-        $script:Vars['ProfilerServiceBusErrorQueueName']   | Should -Be $script:Vars['ProfilerDeadLetterQueueName']
+        $script:Vars['ProfilerServiceBusTriggerQueueName'] | Should -Be $script:Trig.QueueName
+        $script:Vars['ProfilerServiceBusErrorQueueName']   | Should -Be $script:Trig.DeadLetterQueue
     }
 
-    It 'points at its own trigger file, whose queues match the variables' {
+    It 'points at its own trigger file, the single source of its queue names' {
         $script:Vars['ProfilerQueueTriggerFile'] | Should -BeLike "*\Dev\.azure\$Trigger"
-        $script:Trig.QueueName       | Should -Be $script:Vars['ProfilerQueueName']
-        $script:Trig.DeadLetterQueue | Should -Be $script:Vars['ProfilerDeadLetterQueueName']
+        # Declared here as well, a variable could drift from the file the worker image actually bakes in.
+        $script:Vars.Keys | Should -Not -Contain 'ProfilerQueueName'
+        $script:Vars.Keys | Should -Not -Contain 'ProfilerDeadLetterQueueName'
     }
 
     It 'passes the Service Bus trigger queue to the engine deploy, so its binding indexes under both architectures' {
@@ -276,9 +285,11 @@ Describe 'Profiler <Env> pipeline - per-environment queues' -ForEach $script:Env
         (Get-TaggedSteps $script:Doc | Where-Object { $_.Step['displayName'] -eq 'Deploy via Deployment Scripts' }).Architecture | Should -BeNullOrEmpty
     }
 
-    It 'checks the trigger file against the variables and the environment suffix' {
+    It 'publishes the trigger file''s queue names, checked against the variables and the environment suffix' {
         $check = Get-StepScript (Find-Step $script:Doc 'Verify trigger file matches pipeline variables')
         $check | Should -Match "'\`$\(ProfilerQueueTriggerFile\)'"
+        $check | Should -Match ([regex]::Escape('variable=ProfilerQueueName]$($trigger.QueueName)'))
+        $check | Should -Match ([regex]::Escape('variable=ProfilerDeadLetterQueueName]$($trigger.DeadLetterQueue)'))
         $check | Should -Match 'ProfilerServiceBusTriggerQueueName'
         $check | Should -Match 'ProfilerServiceBusErrorQueueName'
         $check | Should -Match '\.\$\(ProfilerEnvironment\)'
@@ -523,7 +534,7 @@ Describe 'Profiler pipelines - ShovelBridge burst' -Skip:(-not $script:HaveYaml)
         $order = 'Verify ShovelBridge shovel is running',
                  'Smoke Test: Verify Sink Queue (bridge)',
                  'Capture Service Bus + sink baseline (before bridge burst)',
-                 'Publish the bridge burst ($(ProfilerBurstMessageCount) messages, RequestForProfiling shape)',
+                 'Publish the bridge burst ($(ProfilerBurstMessageCount) messages, RequestForProfilingConsume shape)',
                  'Wait for the bridge burst to drain',
                  'Verify the bridge burst was processed (Service Bus)',
                  'Verify results reached the sink (bridge burst)'
@@ -533,8 +544,8 @@ Describe 'Profiler pipelines - ShovelBridge burst' -Skip:(-not $script:HaveYaml)
         (Get-StepIndex $script:Dev $order[3] 'QueueProcessor') | Should -Be -1
     }
 
-    It 'publishes RequestForProfiling-shaped messages to the source queue''s exchange on the self-hosted broker, counting only routed ones' {
-        $step = Find-Step $script:Dev 'Publish the bridge burst ($(ProfilerBurstMessageCount) messages, RequestForProfiling shape)'
+    It 'publishes RequestForProfilingConsume-shaped messages to the source queue''s exchange on the self-hosted broker, counting only routed ones' {
+        $step = Find-Step $script:Dev 'Publish the bridge burst ($(ProfilerBurstMessageCount) messages, RequestForProfilingConsume shape)'
         $body = Get-StepScript $step
         $body | Should -Match 'Publish-WwQueueBurst\.ps1'' -LoadFunctionsOnly'
         $body | Should -Match "-BodyShape 'Profiler'"
@@ -621,12 +632,12 @@ Describe 'Profiler pipelines - QueueProcessor deploy' -Skip:(-not $script:HaveYa
     }
 
     It 'publishes the burst only after the worker is deployed, then verifies per message and at the sink' {
-        $publish = Get-StepIndex $script:Dev 'Publish the burst ($(ProfilerBurstMessageCount) messages, RequestForProfiling shape)' 'QueueProcessor'
+        $publish = Get-StepIndex $script:Dev 'Publish the burst ($(ProfilerBurstMessageCount) messages, RequestForProfilingConsume shape)' 'QueueProcessor'
         $publish | Should -BeGreaterThan (Get-StepIndex $script:Dev $script:WorkerName 'QueueProcessor')
         (Get-StepIndex $script:Dev 'Verify the QueueProcessor burst was processed' 'QueueProcessor') | Should -BeGreaterThan $publish
         (Get-StepIndex $script:Dev 'Verify results reached the sink (worker burst)' 'QueueProcessor') |
             Should -BeGreaterThan (Get-StepIndex $script:Dev 'Verify the QueueProcessor burst was processed' 'QueueProcessor')
-        (Get-StepScript (Find-Step $script:Dev 'Publish the burst ($(ProfilerBurstMessageCount) messages, RequestForProfiling shape)')) |
+        (Get-StepScript (Find-Step $script:Dev 'Publish the burst ($(ProfilerBurstMessageCount) messages, RequestForProfilingConsume shape)')) |
             Should -Match "-QueueName      '\`$\(ProfilerQueueName\)'"
     }
 
@@ -661,14 +672,13 @@ Describe '<Trigger>' -ForEach $script:Environments -Skip:(-not $script:HaveYaml)
     It 'has its own identity, distinct from the load-test trigger' {
         $script:Trig.TriggerId | Should -Be $script:Trig.Id
         $script:Trig.TriggerId | Should -Not -Be $script:LoadTest.TriggerId
-        $script:Trig.ResourceId | Should -Not -Be $script:LoadTest.ResourceId
-        [guid]::Parse($script:Trig.TriggerId)  | Should -Not -BeNullOrEmpty
-        [guid]::Parse($script:Trig.ResourceId) | Should -Not -BeNullOrEmpty
+        [guid]::Parse($script:Trig.TriggerId) | Should -Not -BeNullOrEmpty
     }
 
-    It 'consumes the queue and dead-letter queue its pipeline declares' {
-        $script:Trig.QueueName       | Should -Be $script:Doc['variables']['ProfilerQueueName']
-        $script:Trig.DeadLetterQueue | Should -Be $script:Doc['variables']['ProfilerDeadLetterQueueName']
+    It 'consumes this environment''s queue and a separate dead-letter queue' {
+        # The pipeline publishes these as ProfilerQueueName / ProfilerDeadLetterQueueName rather than declaring them.
+        $script:Trig.QueueName       | Should -BeLike "*.$Env"
+        $script:Trig.DeadLetterQueue | Should -BeLike "*.$Env"
         $script:Trig.DeadLetterQueue | Should -Not -Be $script:Trig.QueueName
     }
 
@@ -688,17 +698,24 @@ Describe '<Trigger>' -ForEach $script:Environments -Skip:(-not $script:HaveYaml)
         $script:Trig.WorkflowName.Replace('\', '/') | Should -Be $script:Doc['variables']['ProfilerSmokeWorkflowRoute']
     }
 
-    It 'binds exactly the 16 inputs the smoke test sends' {
+    It 'maps the whole message to the workflow''s single input (MapEntireMessage)' {
+        # RequestForProfilingConsume reads the whole document from ONE scalar input and parses it into
+        # [[@RequestData]] itself, so the trigger must hand it the raw message, not bind fields by name.
+        $script:Trig.MapEntireMessage | Should -BeTrue
+        @($script:Trig.Inputs | ForEach-Object Name) -join ',' | Should -Be 'ProfileRequest'
+        $workflow = Get-TriggerWorkflow $script:Trig.WorkflowName
+        $declared = @($workflow.Service.DataList.ChildNodes | Where-Object { $_.ColumnIODirection -in 'Input', 'Both' } | ForEach-Object LocalName)
+        $declared -join ',' | Should -Be 'ProfileRequest' -Because 'the trigger''s one input must be the workflow''s only input'
+    }
+
+    It 'carries the 16 fields the smoke test sends, every one read by the workflow from that input' {
         $smoke = Get-StepScript (Find-Step $script:Doc 'Smoke Test: Execute Profiler Workflow')
         $block = [regex]::Match($smoke, '\$inputs = \[ordered\]@\{(?<body>.*?)\r?\n\s*\}', 'Singleline').Groups['body'].Value
         $smokeNames = @([regex]::Matches($block, '(?m)^\s*(\w+)\s*=') | ForEach-Object { $_.Groups[1].Value }) | Sort-Object
         $smokeNames.Count | Should -Be 16
-        (@($script:Trig.Inputs | ForEach-Object Name) | Sort-Object) -join ',' | Should -Be ($smokeNames -join ',')
-    }
-
-    It 'maps every input to a message field of the same name (flat body, MapEntireMessage false)' {
-        $script:Trig.MapEntireMessage | Should -BeFalse
-        foreach ($i in $script:Trig.Inputs) { $i.Value | Should -Be $i.Name }
+        # The fields [[@RequestData]] declares - what the workflow can read out of ProfileRequest.
+        $requestData = @((Get-TriggerWorkflow $script:Trig.WorkflowName).Service.DataList.RequestData.ChildNodes | ForEach-Object LocalName)
+        foreach ($name in $smokeNames) { $requestData | Should -Contain $name -Because "the smoke test sends $name" }
     }
 }
 
@@ -709,14 +726,27 @@ Describe 'Profiler trigger files - Dev and UAT are separate triggers' -Skip:(-no
         $script:UatTrig = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'ProfilerUat.trigger.bite') -Raw | ConvertFrom-Json
     }
 
-    It 'differ in <_>' -ForEach @('TriggerId', 'ResourceId', 'Name', 'QueueName', 'DeadLetterQueue') {
+    It 'differ in <_>' -ForEach @('TriggerId', 'Name', 'QueueName', 'DeadLetterQueue') {
         $script:UatTrig.$_ | Should -Not -Be $script:DevTrig.$_
     }
 
     It 'are otherwise the same trigger (workflow, scaling, source and inputs)' {
         $strip = { param($t) $c = $t | ConvertTo-Json -Depth 10 | ConvertFrom-Json
-                   foreach ($p in 'Id', 'TriggerId', 'ResourceId', 'Name', 'QueueName', 'DeadLetterQueue') { $c.PSObject.Properties.Remove($p) }
+                   foreach ($p in 'Id', 'TriggerId', 'Name', 'QueueName', 'DeadLetterQueue') { $c.PSObject.Properties.Remove($p) }
                    $c | ConvertTo-Json -Depth 10 }
         (& $strip $script:UatTrig) | Should -Be (& $strip $script:DevTrig)
+    }
+}
+
+Describe 'Profiler trigger files - ResourceId names the workflow' -Skip:(-not $script:HaveYaml) {
+
+    # A trigger's ResourceId is the id of the WORKFLOW it runs, not of the trigger: the catalog looks
+    # a workflow's queues up by it (TriggersCatalog.LoadQueuesByResourceId). Dev and UAT once carried
+    # RequestForProfiling's id while naming RequestForProfilingConsume - production's trigger
+    # (Unlimited.ProfilerServices Triggers/ProfilerProfileRequest.txt) carries the consume workflow's.
+    It '<_> carries the ID of the workflow it names' -ForEach @('ProfilerDev.trigger.bite', 'ProfilerUat.trigger.bite', 'ProfilerLoadTest.trigger.bite') {
+        $trig = Get-Content -LiteralPath (Join-Path $PSScriptRoot $_) -Raw | ConvertFrom-Json
+        $workflow = Get-TriggerWorkflow $trig.WorkflowName
+        $trig.ResourceId | Should -Be $workflow.Service.ID -Because "$_ runs $($trig.WorkflowName)"
     }
 }
