@@ -443,6 +443,13 @@ new logging is designed to confirm or kill it.
   §13 `WEBSITE_RUN_FROM_PACKAGE` gotcha), and smoke-tests `/apis.json` before letting
   `Load_Test` proceed. No manual operator action is required — both persistence files are
   checked into source control (see `Scripts/README.md`'s "Deploy targets" section).
+  **Changed 2026-10-05:** the stage no longer publishes the current commit. `Deploy_UAT` now
+  downloads the **published** linux-x64 engine package and `Deploy-WwExecutionEngine.ps1` from
+  `warewolf.online/release-notes.php` (as the Profiler Dev/UAT pipelines do), and the
+  `Build_And_Publish_UAT` job became `Stage_UAT_Resources` (workflow resources only). The
+  §9-§13 stale-deployment gap stays closed — every run still deploys a fresh package and
+  full-restarts the app — but a source fix now reaches UAT only once it is released, or when
+  `WarewolfEngineZipUrl`/`WarewolfScriptsZipUrl` are pinned to a published build.
 - **Version stamping.** There is no reliable way to tell which build UAT is running. Surface an
   app version in a health endpoint and log it at startup.
 - **`jobs1`/`jobs2` provisioning script.** The schema exists only as live database state; that is
@@ -706,6 +713,12 @@ Fixed on 2026-09-14 by deleting the blob-download step and pointing the deploy a
 `WwE2E.Common.psm1`, `Publish-WwQueueBurst.ps1`, `Get-WwQueueRunReport.ps1`) was already using.
 **Both pipelines now run this commit's copy of the deployment scripts; never reintroduce a
 version-pinned script source.**
+
+> **2026-10-05:** `pipeline-LOADTEST.yml` now deliberately deploys the **released** scripts
+> (see §10). That is not the v2.0 failure mode: the release is resolved from
+> `release-notes.php` on every run (latest by default, pinning is opt-in), and the deploy step
+> checks the released orchestrator declares every parameter it passes, failing up front with the
+> pin to use instead of mid-deploy with `A parameter cannot be found`.
 
 The third row of the table above was an **unresolved deploy-time gap** until §17:
 `WAREWOLF_ENTRA_CONFIG` is written only by `Configure-WwExecutionAuth.ps1`, which

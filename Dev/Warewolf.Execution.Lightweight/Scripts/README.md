@@ -165,11 +165,20 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   `Warewolf-ExecutionEngine-Deployment-Scripts-v2.0.zip` from blob storage, pinning it to a
   2026-06-26 snapshot of these scripts; every argument added here after that date failed the
   deploy with `A parameter cannot be found that matches parameter name '<X>'`
-  (WOLF-8512, builds 30660-30666 — see `docs/Deploy-UAT-Redeploy-Spec.md` §15). **Both
-  pipelines now run the built commit's copy of these scripts; do not reintroduce a
-  version-pinned script source.**
+  (WOLF-8512, builds 30660-30666 — see `docs/Deploy-UAT-Redeploy-Spec.md` §15). **This
+  pipeline runs the built commit's copy of these scripts; do not reintroduce a hard-coded,
+  version-pinned script source.** (`pipeline-LOADTEST.yml` deliberately deploys the *released*
+  scripts instead — see the next entry — but resolves the latest release from
+  `release-notes.php` on every run and checks the released orchestrator declares every
+  parameter it passes, so it cannot go stale the way the v2.0 pin did.)
 - **`WarewolfServer-UAT`** — deployed by `pipeline-LOADTEST.yml`'s `Deploy_UAT` stage on
-  every run of that pipeline, immediately before `Load_Test`. Automated per
+  every run of that pipeline, immediately before `Load_Test`. Since 2026-10-05 it deploys the
+  **published** engine package and `Deploy-WwExecutionEngine.ps1` from
+  `warewolf.online/release-notes.php` (`engine-linux-zip-link` / `scripts-zip-link`), as the
+  Profiler Dev/UAT pipelines do, rather than compiling this commit — so it load-tests what has been
+  released. To load-test unreleased engine or script changes, publish a build and pin
+  `WarewolfEngineZipUrl` / `WarewolfScriptsZipUrl` at queue time. The deploy step fails before
+  touching Azure if the released orchestrator lacks any parameter the pipeline passes. Automated per
   `docs/Deploy-UAT-Redeploy-Spec.md` §10 — previously this app was ONLY updated by manual,
   undocumented deploys, which is what let a source fix go un-deployed and silently fail an
   otherwise-passing load test (see that spec's §9-§13). The Hangfire persistence DB source
@@ -180,6 +189,10 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
 - **`wwqp-loadtest-*`** (a `Warewolf.Execution.QueueProcessor` Container App) — deployed fresh on
   every `pipeline-LOADTEST.yml` run by the `Load_Test` stage's `ProfilerLoadTest_QueueProcessor`
   job, via `Deploy-WwQueueProcessor.ps1` and the committed `Dev/.azure/ProfilerLoadTest.trigger.bite`.
+  The worker package (`queueworker-zip-link`) and `Deploy-WwQueueProcessor.ps1` are the
+  **published** ones, from the same release `Deploy_UAT` resolved for the engine (handed over as
+  `ResolveRelease` output variables; pin with `WarewolfQueueWorkerZipUrl`). The Dockerfile, the
+  trigger file and the verification scripts still come from the checkout.
   Load-tests the RabbitMQ/QueueProcessor trigger path against `WarewolfServer-UAT` the same way
   `ShovelBridgeLoadTest_ExternalServiceBus` load-tests the Service Bus/Shovel Bridge path — same
   `RequestForProfiling` workflow, same 20,000-message volume — so the two trigger mechanisms have
