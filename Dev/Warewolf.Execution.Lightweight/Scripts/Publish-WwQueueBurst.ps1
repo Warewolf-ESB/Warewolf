@@ -72,9 +72,16 @@ param(
     # body shape cannot serve every queue:
     #   Mandate  - the mandate/collection document (order-success-queue and similar).
     #   Profiler - the FLAT 16-field body that trigger 9923dc51 (profiler.profile.request) binds,
-    #              one property per declared workflow input.
+    #              one property per declared workflow input. Also right for a trigger with
+    #              MapEntireMessage = true, which hands the whole body to one input.
+    #   ProfilerEnvelope - the same 16 fields as a JSON STRING under a single 'ProfileRequest'
+    #              property: {"ProfileRequest":"{...}"}. For a trigger that binds by top-level
+    #              property name to RequestForProfilingConsume's ONE input, ProfileRequest - the
+    #              ServiceBusWorkflowTrigger. Sent the flat shape, that trigger finds no
+    #              'ProfileRequest' property and the workflow fails on
+    #              'Scalar value { ProfileRequest } is NULL: { @RequestData }' (build 30945: 200 of 200).
     # Default stays Mandate so existing order-success runs are unaffected.
-    [ValidateSet('Mandate', 'Profiler')]
+    [ValidateSet('Mandate', 'Profiler', 'ProfilerEnvelope')]
     [string] $BodyShape = 'Mandate',
 
     # Skip the pre-publish exchange/queue/binding assertion. The default is to ensure it, because
@@ -149,7 +156,7 @@ function New-WwBurstBody {
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string] $MandateId,
-        [ValidateSet('Mandate', 'Profiler')][string] $Shape = 'Mandate'
+        [ValidateSet('Mandate', 'Profiler', 'ProfilerEnvelope')][string] $Shape = 'Mandate'
     )
 
     # ── Profiler shape ────────────────────────────────────────────────────────────────
@@ -184,7 +191,12 @@ function New-WwBurstBody {
     # them separately produces contradictions the workflow then acts on - ExtractScheduleId is
     # literally ResultPaymentCycle concatenated with the DRI, so a mismatched pair yields a
     # schedule id that never existed, which is worse than an obviously wrong value.
-    if ($Shape -eq 'Profiler') {
+    #
+    # ProfilerEnvelope wraps exactly this flat document, as a STRING, in {"ProfileRequest": ...} -
+    # the wire shape of the bridge smoke message, which RequestForProfilingConsume executes. A nested
+    # OBJECT would not do: ProfileRequest is a scalar input, and the workflow parses its text into
+    # @RequestData itself.
+    if ($Shape -in 'Profiler', 'ProfilerEnvelope') {
         $inv = [System.Globalization.CultureInfo]::InvariantCulture
 
         # Day 1-28 only. Days 29-31 are absent from some months, and the presented date's day IS
@@ -193,7 +205,7 @@ function New-WwBurstBody {
         $presented = (Get-Date '2024-01-01').AddMonths((Get-Random -Minimum 0 -Maximum 24)).AddDays($dri - 1)
         $resultOn  = $presented.AddDays((Get-Random -Minimum 0 -Maximum 8))
 
-        return [ordered]@{
+        $flat = [ordered]@{
             # Declared in the trigger's own input order, which is also the sample's order.
             ForPaymentCycle       = $presented.AddMonths(1).ToString('yyyyMM', $inv)
             MandateCanTrack       = @('true', 'false')     | Get-Random   # GetCollectionMethod IsEqual 'false'; lowercased by ProfilerMain
@@ -220,6 +232,11 @@ function New-WwBurstBody {
             RequestType           = ''
             FASGroup              = ''
         } | ConvertTo-Json -Compress
+
+        if ($Shape -eq 'ProfilerEnvelope') {
+            return [ordered]@{ ProfileRequest = $flat } | ConvertTo-Json -Compress
+        }
+        return $flat
     }
 
     # Machine-local time, matching the sample values ('09/11/2026 01:58:19.451'), with
@@ -295,7 +312,7 @@ function New-WwBurstManifest {
         [Parameter(Mandatory)][string] $Label,
         [int] $SuccessCount = 0,
         [int] $FailureCount = 0,
-        [ValidateSet('Mandate', 'Profiler')][string] $BodyShape = 'Mandate'
+        [ValidateSet('Mandate', 'Profiler', 'ProfilerEnvelope')][string] $BodyShape = 'Mandate'
     )
     $slug = Get-WwBurstQueueSlug -QueueName $QueueName
     $list = [System.Collections.Generic.List[object]]::new()
