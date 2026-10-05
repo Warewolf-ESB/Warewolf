@@ -83,7 +83,12 @@ namespace Warewolf.Execution.Lightweight.Security
         /// </summary>
         public void LogDecryption(string instanceId)
         {
-            _logger.LogDebug(GetDecryptionLog(instanceId), AuditExecutionId);
+            try
+            {
+                _logger.LogDebug(GetDecryptionLog(instanceId), AuditExecutionId);
+            } catch {
+                //Swallow exceptions here
+            }
         }
 
         /// <summary>
@@ -119,10 +124,15 @@ namespace Warewolf.Execution.Lightweight.Security
             string reason,
             string correlationId)
         {
-            _logger.LogWarning(
-                $"SECURITY_AUDIT | Event=AuthOutcome | Outcome={outcome} | Caller={caller} | " +
-                $"Workflow={workflow} | Path={path} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
-                AuditExecutionId);
+            try
+            {
+                _logger.LogWarning(
+                    $"SECURITY_AUDIT | Event=AuthOutcome | Outcome={outcome} | Caller={caller} | " +
+                    $"Workflow={workflow} | Path={path} | Reason={reason} | CorrelationId={correlationId} | Utc={DateTimeOffset.UtcNow}",
+                    AuditExecutionId);
+            } catch {
+                //Swallow this exception
+            }
         }
 
         /// <summary>
