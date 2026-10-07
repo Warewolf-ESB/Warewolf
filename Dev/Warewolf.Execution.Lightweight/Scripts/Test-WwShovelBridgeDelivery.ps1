@@ -433,7 +433,18 @@ $dlqBefore      = if ($sbBaseline) { $sbBaseline.DeadLetter } else { -1 }
 Write-Step ("baseline     : source depth $sourceBaseline" +
             $(if ($sbBaseline) { ", service bus active $($sbBaseline.Active) / dead-letter $($sbBaseline.DeadLetter)" } else { '' }))
 
-$body = Format-WwBridgeMessageBody -Fields $InputFields -Shape $BodyShape
+# The token is what Test-WwSinkDelivery.ps1 looks for, so the published body's
+# MandateId must BE the token, or the two assertions describe different messages.
+$publishFields = @{} + $InputFields
+if (-not [string]::IsNullOrWhiteSpace($CorrelationToken)) {
+    $existingMandateId = if ($publishFields.ContainsKey('MandateId')) { [string]$publishFields['MandateId'] } else { $null }
+    if ($existingMandateId -and $existingMandateId -ne $CorrelationToken) {
+        Write-Note "MandateId '$existingMandateId' in -InputFields replaced by -CorrelationToken '$CorrelationToken'."
+    }
+    $publishFields['MandateId'] = $CorrelationToken
+}
+
+$body = Format-WwBridgeMessageBody -Fields $publishFields -Shape $BodyShape
 Write-Step "publishing 1 message ($([Text.Encoding]::UTF8.GetByteCount($body)) bytes, $BodyShape body)"
 Publish-BridgeMessage -VHostName $VHost -Name $SourceQueue -Body $body | Out-Null
 $publishedAt = Get-Date

@@ -77,6 +77,15 @@ param(
     [ValidateSet('Mandate', 'Profiler')]
     [string] $BodyShape = 'Mandate',
 
+    # When set, EVERY success message carries this MandateId (the pipeline's variable) instead of
+    # a fresh GUID per message. Database reconciliation by MandateId is then per-run, not per-message.
+    [string] $MandateId,
+
+    # A JSON array of input records. When set, ONE message is published PER RECORD, its body
+    # being exactly that record's fields (flat, as the Profiler shape) - -SuccessCount,
+    # -BodyShape and -MandateId are then ignored. Each record's MandateId is its manifest key.
+    [string] $DataFilePath,
+
     # Skip the pre-publish exchange/queue/binding assertion. The default is to ensure it, because
     # the failure it closes is silent by nature - see WHERE MESSAGES ARE PUBLISHED above.
     [switch] $SkipTopologyEnsure,
@@ -283,6 +292,27 @@ function New-WwBurstBody {
     } | ConvertTo-Json -Compress -Depth 5
 }
 
+function Read-WwBurstDataFile {
+    <#
+        Reads a JSON array of flat input records and returns each as a compact JSON body,
+        in file order, with its fields exactly as written. Empty values are kept.
+    #>
+    [CmdletBinding()]
+    param([Parameter(Mandatory)][string] $Path)
+    if (-not (Test-Path -LiteralPath $Path)) { throw "Data file '$Path' not found." }
+    $records = @(Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json -NoEnumerate | ForEach-Object { $_ })
+    if ($records.Count -eq 0) { throw "Data file '$Path' contains no records." }
+    $i = 0
+    foreach ($r in $records) {
+        $i++
+        if ($r -isnot [pscustomobject]) { throw "Record $i in '$Path' is not a JSON object." }
+        [pscustomobject]@{
+            MandateId = if ($r.PSObject.Properties['MandateId']) { [string]$r.MandateId } else { $null }
+            Body      = ($r | ConvertTo-Json -Compress -Depth 5)
+        }
+    }
+}
+
 function New-WwBurstManifest {
     <#
         Builds the full manifest in memory BEFORE anything is published, so the txn/body uniqueness
@@ -295,15 +325,27 @@ function New-WwBurstManifest {
         [Parameter(Mandatory)][string] $Label,
         [int] $SuccessCount = 0,
         [int] $FailureCount = 0,
-        [ValidateSet('Mandate', 'Profiler')][string] $BodyShape = 'Mandate'
+        [ValidateSet('Mandate', 'Profiler')][string] $BodyShape = 'Mandate',
+        [string] $FixedMandateId,
+        [object[]] $Records
     )
     $slug = Get-WwBurstQueueSlug -QueueName $QueueName
     $list = [System.Collections.Generic.List[object]]::new()
 
+    if ($Records) {
+        $i = 0
+        foreach ($rec in $Records) {
+            $i++
+            $txn = New-WwBurstTxn -Label $Label -Slug $slug -Kind 'success' -Index $i
+            $list.Add([pscustomobject]@{ txn = $txn; mandateId = $rec.MandateId; queue = $QueueName
+                                         kind = 'success'; bytes = $rec.Body.Length; body = $rec.Body })
+        }
+        $SuccessCount = 0
+    }
     for ($i = 1; $i -le $SuccessCount; $i++) {
         $txn = New-WwBurstTxn -Label $Label -Slug $slug -Kind 'success' -Index $i
         # Uppercase, unbraced - the form the production samples use.
-        $mandateId = [guid]::NewGuid().ToString().ToUpperInvariant()
+        $mandateId = if ([string]::IsNullOrWhiteSpace($FixedMandateId)) { [guid]::NewGuid().ToString().ToUpperInvariant() } else { $FixedMandateId }
         $body = New-WwBurstBody -MandateId $mandateId -Shape $BodyShape
         $list.Add([pscustomobject]@{ txn = $txn; mandateId = $mandateId; queue = $QueueName
                                      kind = 'success'; bytes = $body.Length; body = $body })
@@ -321,10 +363,11 @@ function New-WwBurstManifest {
         throw "Manifest has duplicate transaction ids ($distinct unique of $($list.Count)). Reconciliation would be meaningless."
     }
     # MandateId is the DATABASE reconciliation key, so a collision there is just as fatal as a txn
-    # collision - two messages would be indistinguishable in dbo.jobs1.
+    # collision - two messages would be indistinguishable in dbo.jobs1. A caller-fixed -MandateId
+    # shares it across the burst on purpose, so the check applies only to generated ids.
     $successIds = @($list | Where-Object { $_.kind -eq 'success' } | ForEach-Object mandateId)
     $distinctMandates = @($successIds | Select-Object -Unique).Count
-    if ($distinctMandates -ne $successIds.Count) {
+    if ([string]::IsNullOrWhiteSpace($FixedMandateId) -and -not $Records -and $distinctMandates -ne $successIds.Count) {
         throw "Manifest has duplicate MandateIds ($distinctMandates unique of $($successIds.Count)). Database reconciliation would be meaningless."
     }
     return , $list.ToArray()
@@ -341,6 +384,8 @@ Import-Module (Join-Path $ScriptDir 'WwE2E.Common.psm1') -Force
 foreach ($required in @(@{ N = 'QueueName'; V = $QueueName }, @{ N = 'Label'; V = $Label }, @{ N = 'ManifestPath'; V = $ManifestPath })) {
     if ([string]::IsNullOrWhiteSpace($required.V)) { throw "-$($required.N) is required." }
 }
+$records = if ($DataFilePath) { @(Read-WwBurstDataFile -Path $DataFilePath) } else { $null }
+if ($records) { $SuccessCount = $records.Count }
 if ($SuccessCount + $FailureCount -eq 0) { throw 'Nothing to publish: -SuccessCount and -FailureCount are both 0.' }
 
 if (-not $AmqpUri) {
@@ -353,7 +398,7 @@ if (-not $AmqpUri) {
 }
 
 # Built and validated before the connection is even opened.
-$manifest = New-WwBurstManifest -QueueName $QueueName -Label $Label -SuccessCount $SuccessCount -FailureCount $FailureCount -BodyShape $BodyShape
+$manifest = New-WwBurstManifest -QueueName $QueueName -Label $Label -SuccessCount $SuccessCount -FailureCount $FailureCount -BodyShape $BodyShape -FixedMandateId $MandateId -Records $records
 
 Initialize-E2ERabbitClient -PublishPath $PublishPath
 $session = New-E2EBrokerSession -AmqpUri $AmqpUri -ClientName "wwqp-burst-$Label"
