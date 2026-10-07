@@ -2745,6 +2745,22 @@ consequences worth knowing before copying the pattern to another rig:
   the RELEASED engine zip and no longer builds from source.) Results from the Flex runs (30857
   onwards) are **not** a baseline for this platform. Re-baseline from the first `Y1` run. Migration
   steps: `Deploy-UAT-Redeploy-Spec.md` §19.
+- **2026-10-07 — `WarewolfDevOpsTestDb` brought up to Unlimited.ProfilerServices develop (FS-992).**
+  Upstream extended `Profiler.MasterDates` to 2030-12-31 and seeded `Profiler.ProfileDates` for 2027
+  onwards (IDs 19678–22440), and corrected some November 2026 rows: the 2026-11-04 election holiday
+  moves those collection dates, and grant 68 moves to 2026-11-03. The full upstream project
+  (`Database/Warewolf.ProfilerDB`) was published in place with `sqlpackage`
+  (`/p:AllowIncompatiblePlatform=True` because the project targets SQL 2016;
+  `DropObjectsNotInSource=False`). No drop: `dbo.jobs1`/`jobs2` and `devops_warewolf` were untouched.
+  The database now also holds the upstream views, functions and `dbo` tables that
+  `Provision-ProfilerSchema.sql` deliberately omits. Upstream's `usp_GetSpecialHolidays` hard-codes
+  `[ProfilerDB3].[Profiler].[SpecialHolidays]`, which Azure SQL rejects (Msg 40515). It was published
+  from a copy with the database prefix removed, and still needs fixing upstream. The
+  `SeedProfileDates`, `SeedSpecialHolidays` and `SeedGrantDates` blocks of
+  `Provision-ProfilerSchema.sql` were regenerated from upstream in the same change. Without that,
+  the next run's apply step would have deleted the new rows again, because the `ProfileDates` seed
+  deletes rows missing from its source. Re-applying the regenerated script to the live database
+  changed 0 rows.
 
 
 ## Promotion status
