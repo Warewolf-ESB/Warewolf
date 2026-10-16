@@ -69,12 +69,13 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         private HostEnvironmentConfig HostConfig() => McpToolTestHostConfig.ForWorkflowsDirectory(_root);
 
-        private void WriteWorkflow(string relativePath, string name, string comment = "", string dataListXml = "<DataList />")
+        private void WriteWorkflow(string relativePath, string name, string comment = "", string dataListXml = "<DataList />", Guid? id = null)
         {
             var fullPath = Path.Combine(_root, relativePath);
             Directory.CreateDirectory(Path.GetDirectoryName(fullPath)!);
+            var idAttribute = id is null ? string.Empty : $" ID=\"{id}\"";
             File.WriteAllText(fullPath,
-                $"<Service Name=\"{name}\" ResourceType=\"WorkflowService\">" +
+                $"<Service{idAttribute} Name=\"{name}\" ResourceType=\"WorkflowService\">" +
                 $"<Comment>{comment}</Comment>{dataListXml}<Action Name=\"InvokeWorkflow\" Type=\"Workflow\">" +
                 "<XamlDefinition></XamlDefinition></Action></Service>");
         }
@@ -239,6 +240,136 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Sub/Nested");
 
             Assert.AreEqual("Nested", result.Name);
+        }
+
+        // ── Tests: lookup by ResourceID (the Web Studio chatbot's SelectedResourceIds) ──
+
+        private static GetWorkflowDefinitionResult HandleById(
+            HostEnvironmentConfig hostConfig, IWorkflowAuthPolicyLoader authPolicyLoader, ClaimsPrincipal? user, Guid id, string? format = null) =>
+            GetWorkflowDefinitionTool.Handle(hostConfig, authPolicyLoader, user, id: id, format: format);
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ById_ResolvesAWorkflowInANestedFolder()
+        {
+            var id = Guid.NewGuid();
+            WriteWorkflow(Path.Combine("Sub", "Nested.bite"), "Nested", comment: "By id", id: id);
+
+            var result = HandleById(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, id);
+
+            Assert.AreEqual("Nested", result.Name);
+            Assert.AreEqual("By id", result.Envelope.Description);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ById_FindsAWorkflowWrittenAfterTheIndexWasBuilt_AndNotOneDeletedSince()
+        {
+            var early = Guid.NewGuid();
+            WriteWorkflow("Early.bite", "Early", id: early);
+            var noView = new StubAuthPolicyLoader { IsConfigEffective = false };
+            HandleById(HostConfig(), noView, null, early); // builds the cached index for this directory
+
+            var late = Guid.NewGuid();
+            WriteWorkflow("Late.bite", "Late", id: late);
+            File.Delete(Path.Combine(_root, "Early.bite"));
+
+            Assert.AreEqual("Late", HandleById(HostConfig(), noView, null, late).Name);
+            var stale = Assert.ThrowsException<ModelContextProtocol.McpException>(() => HandleById(HostConfig(), noView, null, early));
+            StringAssert.Contains(stale.Message, early.ToString());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ById_UnknownId_OrANonWorkflowResource_IsNotFound()
+        {
+            var sourceId = Guid.NewGuid();
+            File.WriteAllText(Path.Combine(_root, "ASource.bite"), $"<Source ID=\"{sourceId}\" Name=\"ASource\" ResourceType=\"DbSource\"></Source>");
+            var loader = new StubAuthPolicyLoader { IsConfigEffective = false };
+
+            Assert.ThrowsException<ModelContextProtocol.McpException>(() => HandleById(HostConfig(), loader, null, Guid.NewGuid()));
+            Assert.ThrowsException<ModelContextProtocol.McpException>(() => HandleById(HostConfig(), loader, null, sourceId));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ById_ChecksViewPermissionOnTheWorkflowsPath()
+        {
+            var secret = Guid.NewGuid();
+            var visible = Guid.NewGuid();
+            WriteWorkflow(Path.Combine("Ops", "Secret.bite"), "Secret", id: secret);
+            WriteWorkflow(Path.Combine("Ops", "Visible.bite"), "Visible", id: visible);
+            var checkedPaths = new List<string>();
+            var loader = new StubAuthPolicyLoader
+            {
+                IsConfigEffective = true,
+                EffectivePermissions = (path, _) =>
+                {
+                    checkedPaths.Add(path);
+                    return path.Equals("Ops/Visible", StringComparison.OrdinalIgnoreCase) ? WorkflowPermission.View : WorkflowPermission.None;
+                },
+            };
+
+            Assert.AreEqual("Visible", HandleById(HostConfig(), loader, Principal("Developers"), visible).Name);
+            var denied = Assert.ThrowsException<ModelContextProtocol.McpException>(() => HandleById(HostConfig(), loader, Principal("Developers"), secret));
+            StringAssert.Contains(denied.Message, "permission");
+            CollectionAssert.Contains(checkedPaths, "Ops/Secret");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_IdTakesPrecedenceOverName()
+        {
+            var id = Guid.NewGuid();
+            WriteWorkflow("ByName.bite", "ByName");
+            WriteWorkflow("ById.bite", "ById", id: id);
+
+            var result = GetWorkflowDefinitionTool.Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "ByName", id);
+
+            Assert.AreEqual("ById", result.Name);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_EmptyIdAndBlankName_Throws()
+        {
+            var ex = Assert.ThrowsException<ModelContextProtocol.McpException>(() =>
+                GetWorkflowDefinitionTool.Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, " ", Guid.Empty));
+
+            Assert.AreEqual("`name` or `id` is required.", ex.Message);
+        }
+
+        // ── Tests: format ──────────────────────────────────────────────────────
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_FormatXaml_AlsoReturnsTheFullResourceXml_DefaultDoesNot()
+        {
+            var id = Guid.NewGuid();
+            WriteWorkflow("Hello.bite", "Hello", comment: "Says hello", id: id);
+            var loader = new StubAuthPolicyLoader { IsConfigEffective = false };
+
+            var xaml = HandleById(HostConfig(), loader, null, id, format: "XAML");
+            var x6 = HandleById(HostConfig(), loader, null, id, format: "x6");
+            var unspecified = HandleById(HostConfig(), loader, null, id);
+
+            Assert.AreEqual(File.ReadAllText(Path.Combine(_root, "Hello.bite")), xaml.Xaml);
+            Assert.AreEqual("Says hello", xaml.Envelope.Description, "the envelope is still returned");
+            Assert.IsNull(x6.Xaml);
+            Assert.IsNull(unspecified.Xaml);
+            Assert.IsFalse(JsonSerializer.Serialize(unspecified).Contains("\"xaml\""), "omitted from the response, not null");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_UnknownFormat_Throws()
+        {
+            WriteWorkflow("Hello.bite", "Hello");
+
+            var ex = Assert.ThrowsException<ModelContextProtocol.McpException>(() =>
+                GetWorkflowDefinitionTool.Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Hello", format: "yaml"));
+
+            StringAssert.Contains(ex.Message, "`format`");
         }
 
         // ── Tests: bodyEditable fidelity gate, using real committed fixtures ──

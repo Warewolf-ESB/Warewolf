@@ -254,6 +254,7 @@ internal static class ListWorkflowsTool
     internal static WorkflowSummary ReadDetail(WorkflowFile file)
     {
         string description = string.Empty;
+        string? id = null;
         var inputs = new List<string>();
         var outputs = new List<string>();
 
@@ -261,6 +262,7 @@ internal static class ListWorkflowsTool
         {
             var root = XElement.Load(file.FullPath);
             description = root.Element("Comment")?.Value.Trim() ?? string.Empty;
+            id = Guid.TryParse(root.Attribute("ID")?.Value, out var resourceId) ? resourceId.ToString() : null;
 
             var dataListXml = root.Element("DataList")?.ToString() ?? "<DataList />";
             var dataListTo = new DataListTO(dataListXml);
@@ -273,7 +275,7 @@ internal static class ListWorkflowsTool
             // a valid WorkflowService by its root attributes), just without detail.
         }
 
-        return new WorkflowSummary(file.Name, file.RelativePath, description, inputs, outputs);
+        return new WorkflowSummary(file.Name, file.RelativePath, description, inputs, outputs, id);
     }
 
     // ── Pagination cursor (opaque offset token) ───────────────────────────────
@@ -315,7 +317,10 @@ internal sealed record WorkflowSummary(
     [property: JsonPropertyName("path")] string Path,
     [property: JsonPropertyName("description")] string Description,
     [property: JsonPropertyName("inputs")] IReadOnlyList<string> Inputs,
-    [property: JsonPropertyName("outputs")] IReadOnlyList<string> Outputs);
+    [property: JsonPropertyName("outputs")] IReadOnlyList<string> Outputs,
+    // The ResourceID, which get_workflow_definition also accepts: it survives deployment between
+    // engines where a path may not (the Web Studio chatbot's org-wide selected resources use it).
+    [property: JsonPropertyName("id"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Id = null);
 
 /// <summary>The full <c>list_workflows</c> response payload.</summary>
 internal sealed record ListWorkflowsResult(

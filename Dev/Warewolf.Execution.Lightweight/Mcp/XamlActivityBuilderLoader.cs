@@ -10,6 +10,7 @@ using Dev2.DynamicServices.Objects;
 using System;
 using System.Activities;
 using System.Activities.XamlIntegration;
+using System.Reflection;
 using System.Text;
 using System.Xaml;
 
@@ -46,6 +47,24 @@ namespace Warewolf.Execution.Lightweight.Mcp;
 /// </summary>
 internal static class XamlActivityBuilderLoader
 {
+    /// <summary>
+    /// The assembly whose <c>[XmlnsDefinition]</c> maps the workflow XAML namespace
+    /// <c>http://schemas.microsoft.com/netfx/2009/xaml/activities</c> — CoreWF's
+    /// <c>System.Activities</c> facade, not <c>UiPath.Workflow</c> where <see cref="ActivityBuilder"/>
+    /// itself lives.
+    /// </summary>
+    internal const string ActivitiesXmlnsAssemblyName = "System.Activities";
+
+    /// <summary>
+    /// The default <see cref="XamlSchemaContext"/> only knows the XML namespaces of assemblies
+    /// already loaded when it first resolves one, and nothing loads
+    /// <see cref="ActivitiesXmlnsAssemblyName"/> before the reader asks for it. So the first
+    /// <see cref="Load"/> in a fresh process — an engine cold start whose first call is
+    /// <c>get_workflow_definition</c>, or a test run of just that tool — failed with
+    /// "Cannot create unknown type '{…/xaml/activities}Activity'", and every later one worked.
+    /// </summary>
+    static XamlActivityBuilderLoader() => Assembly.Load(new AssemblyName(ActivitiesXmlnsAssemblyName));
+
     /// <summary>
     /// Compiles <paramref name="xamlDefinition"/> into an <see cref="ActivityBuilder"/>.
     /// Returns <c>null</c> when the XAML has no root <c>ActivityBuilder</c> (e.g. it directly

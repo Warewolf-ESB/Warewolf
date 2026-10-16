@@ -348,7 +348,7 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
             Assert.AreEqual(HttpStatusCode.BadRequest, status);
             var json = JObject.Parse(body);
             Assert.AreEqual("bad_request", json["error"]?.ToString());
-            Assert.AreEqual("`name` is required.", json["message"]?.ToString());
+            Assert.AreEqual("`name` or `id` is required.", json["message"]?.ToString());
         }
 
         // ── Tests: happy-path round-trip, one per route ──────────────────────
@@ -380,6 +380,37 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
 
             Assert.AreEqual(HttpStatusCode.OK, status);
             Assert.AreEqual("Hello", JObject.Parse(body)["name"]?.ToString());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task GetWorkflowDefinition_BindsIdAndFormat()
+        {
+            var id = Guid.NewGuid();
+            File.WriteAllText(Path.Combine(_root, "ById.bite"),
+                $"<Service ID=\"{id}\" Name=\"ById\" ResourceType=\"WorkflowService\"><Comment /><DataList />" +
+                "<Action Name=\"InvokeWorkflow\" Type=\"Workflow\"><XamlDefinition></XamlDefinition></Action></Service>");
+            var function = NewFunctions();
+            var (ctx, req) = NewRequest("get_workflow_definition", $"{{\"id\":\"{id}\",\"format\":\"xaml\"}}");
+
+            var (status, body) = await Invoke(function.GetWorkflowDefinition(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.OK, status);
+            var json = JObject.Parse(body);
+            Assert.AreEqual("ById", json["name"]?.ToString());
+            StringAssert.Contains(json["xaml"]?.ToString(), $"ID=\"{id}\"");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task GetWorkflowDefinition_MalformedId_Is400()
+        {
+            var function = NewFunctions();
+            var (ctx, req) = NewRequest("get_workflow_definition", "{\"id\":\"not-a-guid\"}");
+
+            var (status, _) = await Invoke(function.GetWorkflowDefinition(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.BadRequest, status);
         }
 
         [TestMethod]

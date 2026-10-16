@@ -89,6 +89,24 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public void Handle_ReportsEachWorkflowsResourceId_AndLeavesItOutWhenThereIsNone()
+        {
+            var id = Guid.NewGuid();
+            File.WriteAllText(Path.Combine(_root, "WithId.bite"),
+                $"<Service ID=\"{id}\" Name=\"WithId\" ResourceType=\"WorkflowService\"><Comment /><DataList /></Service>");
+            WriteWorkflow("NoId.bite", "NoId");
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false });
+
+            Assert.AreEqual(id.ToString(), result.Workflows.Single(w => w.Name == "WithId").Id);
+            Assert.IsNull(result.Workflows.Single(w => w.Name == "NoId").Id);
+            var json = System.Text.Json.JsonSerializer.Serialize(result);
+            StringAssert.Contains(json, $"\"id\":\"{id}\"");
+            Assert.AreEqual(1, System.Text.RegularExpressions.Regex.Matches(json, "\"id\"").Count, "omitted, not null, when there's no ID");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public void Handle_EmptyDirectory_ReturnsNoWorkflows()
         {
             var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false });

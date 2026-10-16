@@ -54,6 +54,27 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
             return xamlDefinition;
         }
 
+        /// <summary>
+        /// The first Load in a fresh process used to fail because the assembly mapping the
+        /// activities XAML namespace wasn't loaded yet. That only shows when nothing else has
+        /// loaded it first, so assert the invariant directly: once the loader is initialized, that
+        /// assembly is loaded and does map the namespace.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Initialization_LoadsTheAssemblyThatMapsTheActivitiesXamlNamespace()
+        {
+            System.Runtime.CompilerServices.RuntimeHelpers.RunClassConstructor(typeof(XamlActivityBuilderLoader).TypeHandle);
+
+            var assembly = AppDomain.CurrentDomain.GetAssemblies()
+                .SingleOrDefault(a => a.GetName().Name == XamlActivityBuilderLoader.ActivitiesXmlnsAssemblyName);
+
+            Assert.IsNotNull(assembly, $"{XamlActivityBuilderLoader.ActivitiesXmlnsAssemblyName} should be loaded by the loader's initialization.");
+            Assert.IsTrue(assembly!.GetCustomAttributes(typeof(System.Windows.Markup.XmlnsDefinitionAttribute), false)
+                .Cast<System.Windows.Markup.XmlnsDefinitionAttribute>()
+                .Any(x => x.XmlNamespace == "http://schemas.microsoft.com/netfx/2009/xaml/activities"));
+        }
+
         [TestMethod]
         [TestCategory("UnitTest")]
         public void Load_RealWorkflowXaml_AssignObject_ProducesNonNullActivityBuilder()

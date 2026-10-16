@@ -60,43 +60,93 @@ internal static class GetWorkflowDefinitionTool
 {
     internal const string ToolName = "get_workflow_definition";
 
+    /// <summary>The default <c>format</c>: envelope + X6 body only.</summary>
+    internal const string FormatX6 = "x6";
+
+    /// <summary>
+    /// Also return the workflow's full resource XML as <c>xaml</c> — the Web Studio chatbot's
+    /// <c>LoadResourcesAsXaml</c> setting, matching the Warewolf server's
+    /// <c>ChatbotContextBuilder</c>, which sends <c>GetResourceContents</c> in that mode.
+    /// </summary>
+    internal const string FormatXaml = "xaml";
+
+    /// <param name="id">
+    /// The workflow's ResourceID — the Web Studio chatbot's org-wide <c>SelectedResourceIds</c>
+    /// name resources by id, which survives deployment between engines where a path may not.
+    /// Takes precedence over <paramref name="name"/> when both are given.
+    /// </param>
     internal static GetWorkflowDefinitionResult Handle(
         HostEnvironmentConfig hostConfig,
         IWorkflowAuthPolicyLoader authPolicyLoader,
         ClaimsPrincipal? user = null,
-        [Description("Workflow name — must match a `path` from a prior list_workflows response.")]
-        string name = "")
+        [Description("Workflow name — must match a `path` from a prior list_workflows response. Required unless `id` is given.")]
+        string name = "",
+        [Description("Workflow ResourceID (GUID). Used instead of `name` when given.")]
+        Guid? id = null,
+        [Description("\"x6\" (default) or \"xaml\" — xaml also returns the workflow's full resource XML in `xaml`.")]
+        string? format = null)
     {
-        if (string.IsNullOrWhiteSpace(name))
+        var resourceId = id is { } value && value != Guid.Empty ? value : (Guid?)null;
+        if (resourceId is null && string.IsNullOrWhiteSpace(name))
         {
-            throw new McpException("`name` is required.");
+            throw new McpException("`name` or `id` is required.");
         }
+
+        var includeXaml = string.IsNullOrWhiteSpace(format) || string.Equals(format, FormatX6, StringComparison.OrdinalIgnoreCase)
+            ? false
+            : string.Equals(format, FormatXaml, StringComparison.OrdinalIgnoreCase)
+                ? true
+                : throw new McpException($"`format` must be \"{FormatX6}\" or \"{FormatXaml}\".");
 
         var principal = user as WorkflowClaimsPrincipal;
         var workflowsDirectory = hostConfig.WorkflowsDirectory;
-        var relativePath = name.Replace('\\', '/').TrimStart('/');
+        string? filePath;
+        string relativePath;
+        string label;
+        if (resourceId is { } guid)
+        {
+            filePath = WorkflowResourceCache.Instance.ResolveFresh(workflowsDirectory, guid);
+            relativePath = filePath is null ? string.Empty : RelativeName(workflowsDirectory, filePath);
+            label = guid.ToString();
+        }
+        else
+        {
+            relativePath = name.Replace('\\', '/').TrimStart('/');
+            filePath = WorkflowNameResolver.Resolve(workflowsDirectory, relativePath);
+            label = name;
+        }
 
-        var filePath = WorkflowNameResolver.Resolve(workflowsDirectory, relativePath);
         var (headerName, isWorkflow) = filePath is null
             ? (null, false)
             : ListWorkflowsTool.TryReadWorkflowHeader(filePath);
 
         if (filePath is null || !isWorkflow || headerName is null)
         {
-            throw new McpException($"Workflow '{name}' was not found.");
+            throw new McpException($"Workflow '{label}' was not found.");
         }
 
         if (!ListWorkflowsTool.HasViewPermission(authPolicyLoader, principal, relativePath))
         {
-            throw new McpException($"You do not have permission to view workflow '{name}'.");
+            throw new McpException($"You do not have permission to view workflow '{label}'.");
         }
 
         var (description, inputs, outputs) = ReadEnvelopeDetail(filePath);
         var envelope = new WorkflowEnvelope(headerName, description, inputs, outputs);
 
         var (bodyEditable, body, nonEditableReason) = BuildBody(filePath, headerName);
+        var xaml = includeXaml ? WorkflowExecutor.ReadWorkflowFile(filePath).ToString() : null;
 
-        return new GetWorkflowDefinitionResult(headerName, envelope, bodyEditable, body, nonEditableReason);
+        return new GetWorkflowDefinitionResult(headerName, envelope, bodyEditable, body, nonEditableReason, xaml);
+    }
+
+    /// <summary>
+    /// <paramref name="filePath"/> as a <c>list_workflows</c> <c>path</c>: relative to the
+    /// workflows directory, forward slashes, no extension — the key the View check uses.
+    /// </summary>
+    static string RelativeName(string workflowsDirectory, string filePath)
+    {
+        var relative = Path.GetRelativePath(workflowsDirectory, filePath);
+        return Path.ChangeExtension(relative, null)!.Replace('\\', '/');
     }
 
     // ── Body production + fidelity gate ───────────────────────────────────────
@@ -329,4 +379,5 @@ internal sealed record GetWorkflowDefinitionResult(
     [property: JsonPropertyName("envelope")] WorkflowEnvelope Envelope,
     [property: JsonPropertyName("bodyEditable")] bool BodyEditable,
     [property: JsonPropertyName("body")] JsonElement? Body,
-    [property: JsonPropertyName("nonEditableReason")] string? NonEditableReason);
+    [property: JsonPropertyName("nonEditableReason")] string? NonEditableReason,
+    [property: JsonPropertyName("xaml"), JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)] string? Xaml = null);

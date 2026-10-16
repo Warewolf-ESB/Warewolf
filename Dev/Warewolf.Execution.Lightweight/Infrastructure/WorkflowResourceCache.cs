@@ -107,6 +107,35 @@ namespace Warewolf.Execution.Lightweight
             return index.ById.TryGetValue(resourceId, out var entry) ? entry : null;
         }
 
+        /// <summary>
+        /// Resolve a resource file path from its ResourceId, checked against the files on disk.
+        /// The index is built once per directory and never refreshed, so a resource created since
+        /// (e.g. by the <c>create_workflow</c>/<c>deploy_workflow</c> MCP tools) is a miss, and a
+        /// deleted or re-identified one is a stale hit: both fall back to a header-only rescan.
+        /// For callers outside the execution hot path; execution keeps using <see cref="Resolve"/>.
+        /// </summary>
+        internal string? ResolveFresh(string baseDirectory, Guid resourceId)
+        {
+            if (resourceId == Guid.Empty)
+                return null;
+
+            var cached = GetEntry(baseDirectory, resourceId);
+            if (cached is not null && TryReadEntry(cached.FilePath)?.ResourceId == resourceId)
+                return cached.FilePath;
+
+            var directory = Path.GetFullPath(baseDirectory);
+            if (!Directory.Exists(directory))
+                return null;
+
+            foreach (var file in Directory.EnumerateFiles(directory, "*.bite", SearchOption.AllDirectories))
+            {
+                if (TryReadEntry(file)?.ResourceId == resourceId)
+                    return file;
+            }
+
+            return null;
+        }
+
         // ── Internal helpers ──────────────────────────────────────────────────
 
         private DirectoryIndex GetIndex(string baseDirectory)

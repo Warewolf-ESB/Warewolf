@@ -107,6 +107,19 @@ state (an Assign) passes 20/20 at concurrency 20, which is why single-message te
 
 When adding an activity, keep per-execution state on the `DsfDataObject`, never on the activity.
 
+### Chatbot: two paths
+
+- **Full Warewolf Server** (WPF Studio, or Web Studio connected over SignalR to a non-Lightweight server):
+  the server's own `SendChatbotMessage` (`Warewolf.AI.Harness`), settings/sources on that server.
+- **Web Studio otherwise** (no server, or a Lightweight engine — which has no chatbot of its own): the
+  **organization's** chatbot. Sources + settings live in warewolf-admin's licensing DB
+  (`/api/studio/chatbot-*`; View lists sources, Contribute changes them, Execute for settings and chat);
+  the turn runs in **warewolf-devops-mcp** (`POST /studio/chat` + SSE events), never in an Azure Function
+  (230 s limit). It reads the org's settings + API key from warewolf-admin as the user, and the prompt's
+  selected resources from the bound engine via `get_workflow_definition` by `id` (`format: "xaml"` for
+  LoadResourcesAsXaml); `list_workflows` returns each workflow's `id`. Spec:
+  `C:\Builds\warewolf-admin\docs\specs\organization-chatbot.md`.
+
 ## Studio (WPF desktop client)
 - **`Warewolf.Studio.ViewModels`** / **`Warewolf.Studio.Views`** — MVVM pair for the designer UI
 - **`Warewolf.Studio.Core`** / **`Warewolf.Studio.CustomControls`** / **`Warewolf.Studio.Themes.Luna`** — supporting UI components

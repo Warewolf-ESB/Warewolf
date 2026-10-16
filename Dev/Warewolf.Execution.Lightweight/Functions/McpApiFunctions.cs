@@ -131,8 +131,8 @@ namespace Warewolf.Execution.Lightweight.Functions
             FunctionContext context)
             => Invoke(req, context, async (principal, ct) =>
             {
-                var p = await ReadBody<NameRequest>(req, ct) ?? new NameRequest();
-                return GetWorkflowDefinitionTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name);
+                var p = await ReadBody<GetWorkflowDefinitionRequest>(req, ct) ?? new GetWorkflowDefinitionRequest();
+                return GetWorkflowDefinitionTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id, p.Format);
             });
 
         [Function("McpApiGetWorkflowUrl")]
@@ -438,6 +438,8 @@ namespace Warewolf.Execution.Lightweight.Functions
     sealed record ListWorkflowsRequest(string? Folder = null, string? Cursor = null, int? PageSize = null);
 
     sealed record NameRequest(string Name = "");
+
+    sealed record GetWorkflowDefinitionRequest(string Name = "", Guid? Id = null, string? Format = null);
 
     sealed record ToolNameRequest([property: JsonPropertyName("tool_name")] string ToolName = "");
 
