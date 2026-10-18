@@ -39,7 +39,7 @@ BeforeAll {
     # Lays out both publish folders the step walks, then runs the step's script against them.
     # The YAML joins paths with '\'; on Linux that is not a separator, so normalise it.
     function script:Invoke-StripStep([string] $BuildDir, [switch] $OmitAllowList) {
-        foreach ($name in 'AzureFunctionsPublish', 'AzureFunctionsPublishWindows') {
+        foreach ($name in 'AzureFunctionsPublish', 'AzureFunctionsPublishLinux') {
             $publish = Join-Path $BuildDir $name
             $resources = Join-Path $publish 'Resources'
             New-Item -ItemType Directory -Force -Path (Join-Path $resources 'tools') | Out-Null
@@ -64,11 +64,11 @@ Describe 'Release artifact strip step (pipeline-CLOUD.yml)' -Skip:(-not $script:
 
     It 'finds the strip step (guards against a vacuous pass)' {
         $script:Body | Should -Not -BeNullOrEmpty
-        $script:Body | Should -Match 'AzureFunctionsPublishWindows'
+        $script:Body | Should -Match 'AzureFunctionsPublishLinux'
     }
 
     Context 'both engine publish folders (linux-x64 and win-x64)' -ForEach @(
-        @{ Folder = 'AzureFunctionsPublish' }, @{ Folder = 'AzureFunctionsPublishWindows' }
+        @{ Folder = 'AzureFunctionsPublish' }, @{ Folder = 'AzureFunctionsPublishLinux' }
     ) {
         BeforeAll {
             $script:BuildDir = Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))

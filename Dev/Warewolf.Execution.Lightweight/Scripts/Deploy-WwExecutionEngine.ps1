@@ -237,6 +237,16 @@
     Use this only for an unusual package the check misjudges; the plan states that it was
     skipped.
 
+.PARAMETER RunFromPackage
+    OPT-IN, classic Consumption only.  Sets WEBSITE_RUN_FROM_PACKAGE=1 before the zip deploy, so
+    the package is mounted read-only instead of extracted over wwwroot.  The engine then keeps
+    its workflows in %HOME%/data/Warewolf/Resources on the content share (PackagedResources),
+    seeded from the package, so workflows saved at runtime survive every later deploy and are
+    seen by every instance.  Without it, config-zip replaces wwwroot and can take saved workflows
+    with it.  Turning it on for an app that already ran extracted leaves the workflows saved
+    in its old wwwroot/Resources behind (only the package's own are seeded), so copy those
+    across first.  Rejected with -HostingPlan Flex, which has no content share.
+
 .PARAMETER FlexInstanceMemoryMB
     Flex Consumption instance size in MB (see https://aka.ms/flex-instance-sizes).  Ignored
     unless -HostingPlan Flex.  Default 2048.
@@ -438,6 +448,10 @@ param(
     # Opt-out of the plan-time "package runtime matches -HostingPlan" check (win-x64 for
     # Consumption, linux-x64 for Flex). Printed in the plan when used.
     [switch] $SkipPackageRuntimeCheck,
+
+    # OPT-IN (classic Consumption only): run from the mounted package, so saved workflows live
+    # on the content share and survive deploys. See the parameter help.
+    [switch] $RunFromPackage,
 
     # ── Publish source (REQUIRED — folder or .zip) ───────────────────────────
     [string] $PublishPath,
@@ -2109,6 +2123,14 @@ $appSettings[$script:ServiceBusTriggerDisabledSettingName] = ($triggerConfigRequ
 if ($HostingPlan -eq 'Flex') {
     $appSettings[$script:LinuxBasePathSettingName] = '/tmp'
 }
+# -RunFromPackage: set BEFORE Phase 4's config-zip, because zip deploy reads it to decide
+# between mounting the package (SitePackages) and extracting it over wwwroot.
+if ($RunFromPackage) {
+    if ($HostingPlan -eq 'Flex') {
+        throw '-RunFromPackage applies to -HostingPlan Consumption only: Flex always runs from its package and has no content share.'
+    }
+    $appSettings['WEBSITE_RUN_FROM_PACKAGE'] = '1'
+}
 # NOTE: BYPASS_SECURE_CONFIG, WAREWOLF_SUPER_ADMIN_ENABLED and
 # SkipFailureToRetrieveSecret (merged into WAREWOLF_SECURITY_FLAGS — WOLF-8516) are
 # deliberately NOT set here (not shown in logs/summary, not created on the Function
@@ -2597,6 +2619,31 @@ try {
                 '--https-only', 'true', '--os-type', 'Windows', '--tags'
             ) + $ResourceTags) -Mutating | Out-Null
             Write-Ok 'Function App created.'
+        }
+    }
+
+    # 1.3a-bitness Classic Consumption runs a 32-bit worker unless told otherwise, and the
+    # win-x64 package this plan takes cannot load in one. Applied on BOTH branches above: a
+    # pre-existing app keeps whatever bitness it already had. Flex is Linux and has no toggle.
+    if ($HostingPlan -ne 'Flex') {
+        Write-Step 'Setting a 64-bit worker process (use32BitWorkerProcess=false)'
+        Invoke-Az @(
+            'functionapp', 'config', 'set',
+            '--name', $AppName, '--resource-group', $ResourceGroup,
+            '--use-32bit-worker-process', 'false', '-o', 'none'
+        ) -Mutating | Out-Null
+        if ($DryRun) {
+            Write-Note 'Dry-run: worker bitness not changed, so not verified.'
+        } else {
+            $use32 = Invoke-Az @(
+                'functionapp', 'config', 'show',
+                '--name', $AppName, '--resource-group', $ResourceGroup,
+                '--query', 'use32BitWorkerProcess', '-o', 'tsv'
+            )
+            if ("$use32".Trim() -ne 'false') {
+                throw "64-bit worker did not apply: siteConfig.use32BitWorkerProcess reads '$use32'."
+            }
+            Write-Ok 'Worker process is 64-bit (verified).'
         }
     }
 

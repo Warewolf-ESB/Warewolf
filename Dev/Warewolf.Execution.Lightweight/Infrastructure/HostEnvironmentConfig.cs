@@ -53,8 +53,12 @@ public sealed class HostEnvironmentConfig
         var debugConfig = isDevelopment ? DebugConfig.FromEnvironment() : null;
 
         return new(
+            // A run-from-package wwwroot is read-only, so the package's Resources move somewhere
+            // writable when they can (see PackagedResources). An explicit setting still wins.
             workflowsDirectory:           file?.WorkflowsDirectory
-                                          ?? Path.Combine(AppContext.BaseDirectory, "Resources"),
+                                          ?? PackagedResources.ResolveWorkflowsDirectory(
+                                                 Path.Combine(AppContext.BaseDirectory, "Resources"),
+                                                 Environment.GetEnvironmentVariable),
             vaultName:                    file?.KeyVaultName,
             secretName:                   file?.KeyVaultSecretName
                                           ?? DefaultSecretName,
