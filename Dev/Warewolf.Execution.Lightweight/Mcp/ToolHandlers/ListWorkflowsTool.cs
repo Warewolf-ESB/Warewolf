@@ -142,7 +142,7 @@ internal static class ListWorkflowsTool
             return true;
         }
 
-        var groups = principal?.Groups ?? Array.Empty<string>();
+        var groups = principal?.EffectiveGroups ?? Array.Empty<string>();
         var callerRoles = groups
             .Append(principal?.UserName ?? string.Empty)
             .Append(principal?.UserId ?? string.Empty)

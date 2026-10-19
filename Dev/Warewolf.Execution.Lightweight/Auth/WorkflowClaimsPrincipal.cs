@@ -38,6 +38,13 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
             [WorkflowPermission.Administrator] = "Permission.Administrator",
         };
 
+    /// <summary>
+    /// Implicit role held by every signed-in user (a delegated token), so secure.config can grant
+    /// something to all of them without granting it to <c>Public</c>, which anonymous callers
+    /// also hold. App-only tokens and anonymous callers never hold it.
+    /// </summary>
+    public const string AuthenticatedUsersGroup = "Authenticated Users";
+
     /// <summary>Initialises a new instance from a <see cref="ClaimsIdentity"/>.</summary>
     public WorkflowClaimsPrincipal(ClaimsIdentity identity) : base(identity)
     {
@@ -62,6 +69,9 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
             .ToList();
 
         Groups = roleClaims.AsReadOnly();
+        EffectiveGroups = IsUserToken && !roleClaims.Contains(AuthenticatedUsersGroup, StringComparer.OrdinalIgnoreCase)
+            ? roleClaims.Append(AuthenticatedUsersGroup).ToList().AsReadOnly()
+            : Groups;
 
         // Permissions are resolved from secure.config at request time, not from the token.
         // SetResolvedPermissions() is called by WorkflowPolicyMatcher after resolution.
@@ -97,6 +107,12 @@ public sealed class WorkflowClaimsPrincipal : ClaimsPrincipal
     /// e.g. ["Developers", "DevOps"]
     /// </summary>
     public IReadOnlyList<string> Groups { get; }
+
+    /// <summary>
+    /// <see cref="Groups"/> plus the implicit <see cref="AuthenticatedUsersGroup"/> for a signed-in
+    /// user. This is what secure.config rows are matched against.
+    /// </summary>
+    public IReadOnlyList<string> EffectiveGroups { get; }
 
     /// <summary>
     /// Effective <see cref="WorkflowPermission"/> flags resolved from
