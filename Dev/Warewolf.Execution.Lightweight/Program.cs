@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
+using Warewolf.Execution.Lightweight.SelfHost;
 
 const string executionId = "Program-Startup";
 
@@ -18,6 +19,12 @@ try
     // SqlConnection opens, and the switch is cached internally after SqlClient's first read of
     // it — see SqlClientCompatibilityConfigurator's own doc comment for the incident this guards.
     SqlClientCompatibilityConfigurator.Configure();
+
+    // A packaged engine runs without the Functions host (SelfHostedEngine: --self-host or
+    // WAREWOLF_SELF_HOST=1). Its defaults go in before the configuration below reads them.
+    var selfHosted = SelfHostedEngine.IsRequested(args, Environment.GetEnvironmentVariable);
+    if (selfHosted)
+        SelfHostedEngine.ApplyDefaults(Environment.GetEnvironmentVariable, Environment.SetEnvironmentVariable, SelfHostedEngine.IsWindows);
 
     // ── Step 1: Load configuration ───────────────────────────────────────────
     var config = HostEnvironmentConfig.Load();
@@ -31,7 +38,8 @@ try
     // indirection to resolve it. Returns null when the trigger is disabled via
     // AzureWebJobs.ServiceBusWorkflowTrigger.Disabled; otherwise a missing/invalid file is
     // fatal — see ServiceBusTriggerDefinition.Load's doc comment.
-    var serviceBusTrigger = ServiceBusTriggerDefinition.Load();
+    // Self-hosted, there are no Service Bus triggers to configure.
+    var serviceBusTrigger = selfHosted ? null : ServiceBusTriggerDefinition.Load();
 
     // WOLF-8512: raised as early in cold start as possible (before host build / DI
     // resolution) rather than lazily on first trigger invocation — see
@@ -53,7 +61,7 @@ try
 
     // ── Step 3: Build host ───────────────────────────────────────────────────
 
-    var host = new HostBuilder()
+    var host = selfHosted ? SelfHostedEngine.Build(args, config, loggingConfig) : new HostBuilder()
         .ConfigureWarewolf(config, serviceBusTrigger)
         // ── Worker logging (driven entirely by environment variables, NOT host.json) ──
         // The isolated WORKER's MEL pipeline does NOT read host.json — host.json logging

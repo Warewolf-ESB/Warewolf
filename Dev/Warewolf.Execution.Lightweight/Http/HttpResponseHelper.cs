@@ -68,7 +68,7 @@ public static class HttpResponseHelper
         response.Headers.Add("Content-Type", "application/json");
         response.Headers.Add(CorrelationIdHeader, correlationId);
         await response.WriteStringAsync(JsonSerializer.Serialize(body, CamelCaseOptions));
-        context.GetInvocationResult().Value = response;
+        context.SetHttpResponse(response);
     }
 
     /// <summary>
@@ -111,7 +111,7 @@ public static class HttpResponseHelper
         response.Headers.Add("Content-Type", "application/json");
         response.Headers.Add(CorrelationIdHeader, correlationId);
         await response.WriteStringAsync(JsonSerializer.Serialize(body));
-        if (context != null) context.GetInvocationResult().Value = response;
+        if (context != null) context.SetHttpResponse(response);
         return response;
     }
 

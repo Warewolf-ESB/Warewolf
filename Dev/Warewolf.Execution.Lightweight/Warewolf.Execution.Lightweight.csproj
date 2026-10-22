@@ -116,6 +116,12 @@
     <!-- Worker SDK for isolated process model - generates .azurefunctions folder -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="2.1.0" />
 
+    <!-- The self-hosted engine (SelfHost/SelfHostedEngine.cs): Kestrel instead of the Functions host,
+         as the "Warewolf Server" Windows service or a systemd unit, for a packaged engine on a VPS. -->
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="10.0.0" />
+
     <!-- Application Insights for rich telemetry and structured logging -->
     <PackageReference Include="Microsoft.Azure.Functions.Worker.ApplicationInsights" Version="2.51.0" />
 

@@ -12,6 +12,7 @@ using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Azure.Functions.Worker.Middleware;
 using Microsoft.Extensions.Logging;
 using Warewolf.Execution.Lightweight.Auth.Models;
+using Warewolf.Execution.Lightweight.Http;
 using Warewolf.Execution.Lightweight.Infrastructure;
 
 namespace Warewolf.Execution.Lightweight.Auth.Middleware;
@@ -130,7 +131,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
 
                 var resp302 = request.CreateResponse(HttpStatusCode.Redirect);
                 resp302.Headers.Add("Location", redirect);
-                context.GetInvocationResult().Value = resp302;
+                context.SetHttpResponse(resp302);
                 return;
             }
 
@@ -149,7 +150,7 @@ public sealed class EasyAuthRedirectMiddleware : IFunctionsWorkerMiddleware
                 path,
             }));
 
-            context.GetInvocationResult().Value = response;
+            context.SetHttpResponse(response);
             return;
         }
 

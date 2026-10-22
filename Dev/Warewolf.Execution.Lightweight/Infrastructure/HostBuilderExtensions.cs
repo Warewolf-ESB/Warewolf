@@ -39,36 +39,8 @@ internal static class HostBuilderExtensions
         HostEnvironmentConfig config,
         ServiceBusTriggerDefinition? serviceBusTrigger = null)
         => builder
-            .ConfigureFunctionsWorkerDefaults(worker =>
-            {
-                // ── Usage/uptime publish — MUST be the very first middleware so its
-                //    stopwatch spans the FULL request/response lifecycle (including
-                //    every middleware below and the function body itself), instead of
-                //    only the workflow-execution portion. Its post-`next()` code still
-                //    runs last-out, after everything downstream has completed —
-                //    including error paths — so publishing here does not lose access
-                //    to the workflow-execution facts recorded further down the
-                //    pipeline (see UsagePublishContext). ─────────────────────────────
-                worker.UseMiddleware<UsagePublishMiddleware>();
-
-                // ── Instance correlation — MUST run right after usage-publish so all
-                //    subsequent middleware and function code inherits the scope ─────
-                worker.UseMiddleware<InstanceCorrelationMiddleware>();
-
-                // ── Auth middleware pipeline — ORDER IS CRITICAL ──────────────
-                // 1. Intercept unauthenticated requests to /secure/* before
-                //    Easy Auth redirect fires. Pass /public/* straight through.
-                worker.UseMiddleware<EasyAuthRedirectMiddleware>();
-
-                // 2. Decode X-MS-CLIENT-PRINCIPAL Easy Auth header into a
-                //    strongly-typed WorkflowClaimsPrincipal and store it in
-                //    FunctionContext.Items.
-                worker.UseMiddleware<ClaimsPrincipalBuilderMiddleware>();
-
-                // 3. Enforce secure.config group + permission policies on
-                //    /secure/* routes. Returns 403 if the caller lacks access.
-                worker.UseMiddleware<WorkflowAuthorizationMiddleware>();
-            })
+            // The middleware and its order: WarewolfMiddleware.Order, shared with the self-hosted engine.
+            .ConfigureFunctionsWorkerDefaults(worker => worker.UseWarewolfMiddleware())
             // Registered AFTER ConfigureFunctionsWorkerDefaults (which adds its own
             // local.settings.json / environment-variable configuration sources) so this
             // in-memory override, when present, wins over any leftover

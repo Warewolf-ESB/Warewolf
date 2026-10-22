@@ -57,11 +57,19 @@ internal static class PackagedResources
     }
 
     /// <summary>
+    /// <c>WAREWOLF_DATA_DIR/Resources</c> when that's set (a self-hosted engine, see
+    /// <c>SelfHost.SelfHostedEngine</c>, whose install folder isn't the place for data);
     /// <c>%HOME%/data/Warewolf/Resources</c> when the app runs from a package and has a
-    /// persistent content share, else <c>null</c>.
+    /// persistent content share; else <c>null</c>.
     /// </summary>
     internal static string? WritableDirectoryFor(Func<string, string?> getEnv)
     {
+        var dataDirectory = getEnv("WAREWOLF_DATA_DIR");
+        if (!string.IsNullOrWhiteSpace(dataDirectory))
+        {
+            return Path.Combine(dataDirectory, "Resources");
+        }
+
         var package = getEnv("WEBSITE_RUN_FROM_PACKAGE");
         if (string.IsNullOrWhiteSpace(package) || package.Trim() == "0")
         {
