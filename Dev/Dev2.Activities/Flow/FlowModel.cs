@@ -8,21 +8,29 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+#nullable enable
+
 using System.Collections.Generic;
 
-namespace Warewolf.Bite.Flow
+namespace Dev2.Activities.Flow
 {
     /// <summary>
-    /// The control-flow skeleton of a .bite <c>Flowchart</c>, as plain objects rather than WF <c>FlowNode</c>s.
-    /// Successors are filled in after the whole document is read, so <c>x:Reference</c> may point forwards.
+    /// A workflow's definition as authored: the control-flow skeleton of its Flowchart, as plain objects rather than
+    /// WF <c>FlowNode</c>s, holding the activities themselves. Readers (XAML, the JSON body) produce it, writers and
+    /// the X6 converters consume it, and <c>FlowGraphBuilder</c> links it into the executable graph.
+    /// Successors may be filled in after all nodes exist, so references can point forwards.
     /// </summary>
     public abstract class FlowNodeModel
     {
+        /// <summary>The node's name (XAML <c>x:Name</c>, JSON node id), when it has one.</summary>
         public string? Name { get; set; }
     }
 
     public sealed class FlowchartModel
     {
+        /// <summary>The workflow's name: XAML <c>x:Class</c>.</summary>
+        public string? Name { get; set; }
+
         public FlowNodeModel? StartNode { get; set; }
 
         /// <summary>
@@ -54,5 +62,20 @@ namespace Warewolf.Bite.Flow
 
         /// <summary>Cases in document order, as WF's <c>FlowSwitch.Cases</c> dictionary would hold them.</summary>
         public List<KeyValuePair<string, FlowNodeModel?>> Cases { get; } = new List<KeyValuePair<string, FlowNodeModel?>>();
+
+        /// <summary><c>Cases[key] = target</c>, as on WF's dictionary: replaces the key's target, or adds it last.</summary>
+        public void SetCase(string key, FlowNodeModel? target)
+        {
+            var entry = new KeyValuePair<string, FlowNodeModel?>(key, target);
+            var index = Cases.FindIndex(c => c.Key == key);
+            if (index >= 0)
+            {
+                Cases[index] = entry;
+            }
+            else
+            {
+                Cases.Add(entry);
+            }
+        }
     }
 }

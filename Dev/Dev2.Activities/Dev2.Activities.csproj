@@ -122,6 +122,7 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Activities\ActivityParser.cs" />
     <Compile Include="Activities\FlowNodeFactory.cs" />
+    <Compile Include="Flow\FlowModel.cs" />
     <Compile Include="Activities\DateAndTime\DsfDotNetDateTimeActivity.cs" />
     <Compile Include="Activities\DateAndTime\DsfDotNetDateTimeDifferenceActivity.cs" />
     <Compile Include="Activities\DebugCopyException.cs" />

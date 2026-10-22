@@ -37,13 +37,24 @@ namespace Warewolf.Bite.Xaml
 
         public static object FromText(Type argumentType, string text, Func<string, Type, object?> convert)
         {
-            if (text.Length >= 2 && text[0] == '[' && text[text.Length - 1] == ']')
+            if (IsBracketed(text))
             {
                 return Expression(argumentType, text.Substring(1, text.Length - 2));
             }
-            var literalText = text.StartsWith("%", StringComparison.Ordinal) ? text.Substring(1) : text;
+            var literalText = IsEscapedLiteral(text) ? text.Substring(1) : text;
             return Literal(argumentType, convert(literalText, argumentType.GetGenericArguments()[0]));
         }
+
+        static bool IsBracketed(string text) => text.Length >= 2 && text[0] == '[' && text[text.Length - 1] == ']';
+
+        /// <summary>
+        /// WF drops one leading '%' only from text that would otherwise read as an expression once its '%'s are
+        /// removed: "%[a]" is the literal "[a]" and "%%[a]" is "%[a]", but "%x" and "%[a" stay as they are.
+        /// </summary>
+        public static bool IsEscapedLiteral(string text) => text.StartsWith("%", StringComparison.Ordinal) && IsBracketed(text.TrimStart('%'));
+
+        /// <summary>Text to write for a literal so that it reads back as that literal: the inverse of the escape above.</summary>
+        public static string EscapeLiteral(string text) => IsBracketed(text.TrimStart('%')) ? "%" + text : text;
 
         /// <summary>An argument holding a VB expression (a value for InArgument, a reference otherwise), uncompiled.</summary>
         public static object Expression(Type argumentType, string expressionText)

@@ -25,6 +25,10 @@
  *    3. WorkflowExecutor.Execute's catch(Exception) no longer appends ex.StackTrace to the
  *       caller-facing Errors list (it leaked internal file paths — see the same findings doc,
  *       "Supporting bugs").
+ *
+ *  Since WF removal T3.3 the converter no longer emits the WriteLine placeholder at all: an
+ *  unconnected start cell compiles to a Flowchart with no StartNode, which reaches the same
+ *  "no start node found" handling.
  */
 
 using Dev2.Activities.WF;
@@ -265,11 +269,10 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
         [TestCategory("UnitTest")]
         public void Execute_HandCraftedFileWithUnconnectedStartNode_FailsCleanly_NoStackTraceLeaked()
         {
-            // Bypasses ValidateWorkflowTool entirely - drives X6ToWorkflowConverter directly,
-            // exactly like CreateWorkflowTool's own compile step, to reproduce the same
-            // WriteLine-only-StartNode XAML shape a hand-crafted or legacy .bite file could have.
-            var xaml = new Dev2.Activities.WF.X6ToWorkflowConverter().X6JsonToWorkflow(StartOnlyBody("Legacy").GetRawText());
-            xaml = Dev2.Activities.WF.X6ToWorkflowConverter.AddReplaceNameSpace(xaml);
+            // Bypasses ValidateWorkflowTool entirely - drives the X6 -> XAML conversion directly,
+            // exactly like CreateWorkflowTool's own compile step. An unconnected start cell now
+            // compiles to a Flowchart with no StartNode (it used to be a WriteLine-only StartNode).
+            var xaml = Warewolf.Bite.BiteFormat.X6ToXaml(StartOnlyBody("Legacy").GetRawText());
 
             var biteContents = EnvelopeBiteWriter.BuildBiteFileContents(
                 Guid.NewGuid().ToString(), "Legacy", "", EmptyEnvelope(), xaml.ToString(),

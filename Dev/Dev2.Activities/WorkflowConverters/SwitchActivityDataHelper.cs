@@ -6,9 +6,9 @@ using System.Reflection;
 using System.Activities;
 using Newtonsoft.Json;
 using System.Text.RegularExpressions;
-using System.Activities.Statements;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common.X6;
+using Dev2.Activities.Flow;
 
 namespace Dev2.Activities.WorkflowConverters
 {
@@ -37,7 +37,7 @@ namespace Dev2.Activities.WorkflowConverters
             PropertyInfo? IsEndedOnError
         );
 
-        public Cell CreateSwitchNode(FlowSwitch<object> flowSwitch, string nodeId)
+        public Cell CreateSwitchNode(FlowSwitchModel flowSwitch, string nodeId)
         {
             var cell = new Cell
             {
@@ -49,37 +49,6 @@ namespace Dev2.Activities.WorkflowConverters
                 {
                     [Constants.TYPE] = Constants.FLOWSWITCH,
                     [Constants.EXPRESSION] = GetCleanExpressionText(flowSwitch.Expression) ?? Constants.SWITCH
-                }
-            };
-
-            CurrentY += 150;
-
-            var expression = flowSwitch.Expression;
-            if (expression != null && expression.GetType().Name.Contains(nameof(DsfFlowSwitchActivity)))
-            {
-                ProcessSwitchActivityReflection(expression, flowSwitch, cell);
-            }
-            else
-            {
-                ProcessBasicExpression(expression, cell);
-            }
-
-            return cell;
-        }
-
-        public Cell CreateSwitchNodeString(FlowSwitch<string> flowSwitch, string nodeId)
-        {
-            var cell = new Cell
-            {
-                id = nodeId,
-                shape = Constants.POLYGON,
-                position = new Position(CurrentX, CurrentY),
-                label = Constants.SWITCH,
-                data = new Dictionary<string, object>
-                {
-                    [Constants.TYPE] = Constants.FLOWSWITCH,
-                    [Constants.EXPRESSION] = GetCleanExpressionText(flowSwitch.Expression) ?? Constants.SWITCH
-                    //[Constants.EXPRESSION] = flowSwitch.Expression?.ToString() ?? Constants.SWITCH
                 }
             };
 
@@ -92,7 +61,7 @@ namespace Dev2.Activities.WorkflowConverters
 
                 if (expression.GetType().Name.Contains(nameof(DsfFlowSwitchActivity)))
                 {
-                    ProcessSwitchActivityReflectionString(expression, flowSwitch, cell);
+                    ProcessSwitchActivityReflection(expression, flowSwitch, cell);
                 }
                 else
                 {
@@ -117,7 +86,7 @@ namespace Dev2.Activities.WorkflowConverters
             cell.label = displayName ?? Constants.SWITCH;
         }
 
-        private static void ProcessSwitchActivityReflection(object expression, FlowSwitch<object> flowSwitch, Cell cell)
+        private static void ProcessSwitchActivityReflection(object expression, FlowSwitchModel flowSwitch, Cell cell)
         {
             try
             {
@@ -149,50 +118,6 @@ namespace Dev2.Activities.WorkflowConverters
                 // Always emit a switch expression so the X6 designer always has switch metadata;
                 // falls back to the default variable when ExpressionText is empty.
                 cell.data[Constants.SWITCH_EXPRESSION] = CreateSwitchExpressionJson(expressionText, flowSwitch);
-
-                if (!string.IsNullOrEmpty(uniqueId))
-                {
-                    cell.data[Constants.UNIQUEID] = uniqueId;
-                }
-            }
-            catch (Exception)
-            {
-                ProcessBasicExpression(expression, cell);
-            }
-        }
-
-        private static void ProcessSwitchActivityReflectionString(object expression, FlowSwitch<string> flowSwitch, Cell cell)
-        {
-            try
-            {
-                var accessors = GetOrCreatePropertyAccessors(expression.GetType());
-
-                var displayName = GetPropertyValueSafely<string>(accessors.DisplayName, expression) ?? Constants.SWITCH;
-                var expressionText = GetPropertyValueSafely<string>(accessors.ExpressionText, expression);
-                var uniqueId = GetPropertyValueSafely<string>(accessors.UniqueID, expression);
-
-                // Handle error properties
-                var onErrorVariable = GetPropertyValueSafely<string>(accessors.OnErrorVariable, expression) ?? string.Empty;
-                var onErrorWorkflow = GetPropertyValueSafely<string>(accessors.OnErrorWorkflow, expression) ?? string.Empty;
-                var isEndedOnError = GetPropertyValueSafely<bool>(accessors.IsEndedOnError, expression);
-
-                DsfNativeActivity<object>.SetOnErrorData(cell, isEndedOnError, onErrorVariable, onErrorWorkflow);
-
-                cell.data[Constants.DISPLAYNAME] = displayName;
-                cell.label = displayName;
-
-                if (!string.IsNullOrEmpty(expressionText))
-                {
-                    var cleanVariable = ExtractSwitchVariable(expressionText);
-                    if (!string.IsNullOrEmpty(cleanVariable))
-                    {
-                        cell.data[Constants.EXPRESSION] = $"[[{cleanVariable}]]";
-                    }
-                }
-
-                // Always emit a switch expression so the X6 designer always has switch metadata;
-                // falls back to the default variable when ExpressionText is empty.
-                cell.data[Constants.SWITCH_EXPRESSION] = CreateSwitchExpressionJsonString(expressionText, flowSwitch);
 
                 if (!string.IsNullOrEmpty(uniqueId))
                 {
@@ -254,39 +179,7 @@ namespace Dev2.Activities.WorkflowConverters
             return default(T);
         }
 
-        private static string CreateSwitchExpressionJson(string expressionText, FlowSwitch<object> flowSwitch)
-        {
-            try
-            {
-                var switchVariable = ExtractSwitchVariable(expressionText);
-
-                var cases = flowSwitch.Cases.Select(c =>
-                {
-                    var key = c.Key?.ToString();
-                    var value = c.Key?.ToString();
-                    return new { Key = key, Value = value };
-                }).ToList();
-
-                var defaultCase = flowSwitch.Default != null ? Constants.SWITCH_DEFAULT : null;
-
-                var switchExpression = new
-                {
-                    SwitchVariable = switchVariable,
-                    Cases = cases,
-                    DefaultCase = defaultCase
-                };
-
-                return JsonConvert.SerializeObject(switchExpression);
-            }
-            catch (Exception)
-            {
-                // If serialization fails, return a basic expression - exactly like original
-                var fallback = JsonConvert.SerializeObject(new { SwitchVariable =  Constants.SWITCH_VARIABLE, Cases = new object[0] });
-                return fallback;
-            }
-        }
-
-        private static string CreateSwitchExpressionJsonString(string expressionText, FlowSwitch<string> flowSwitch)
+        private static string CreateSwitchExpressionJson(string expressionText, FlowSwitchModel flowSwitch)
         {
             try
             {
@@ -368,16 +261,5 @@ namespace Dev2.Activities.WorkflowConverters
             // Final fallback
             return expression.ToString();
         }
-    }
-
-    public static class SwitchNodeProcessorExtensions
-    {
-        public static Cell CreateSwitchNode(this SwitchActivityDataHelper processor,
-            FlowSwitch<object> flowSwitch, string nodeId) =>
-            processor.CreateSwitchNode(flowSwitch, nodeId);
-
-        public static Cell CreateSwitchNodeString(this SwitchActivityDataHelper processor,
-            FlowSwitch<string> flowSwitch, string nodeId) =>
-            processor.CreateSwitchNodeString(flowSwitch, nodeId);
     }
 }

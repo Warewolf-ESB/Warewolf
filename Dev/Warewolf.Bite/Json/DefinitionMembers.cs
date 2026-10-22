@@ -70,11 +70,10 @@ namespace Warewolf.Bite.Json
                 .FirstOrDefault(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IEnumerable<>))
                 ?.GetGenericArguments()[0] ?? typeof(object);
 
-        public static bool IsWarewolfType(Type type)
-        {
-            var name = type.Assembly.GetName().Name ?? "";
-            return name.StartsWith("Dev2", StringComparison.Ordinal) || name.StartsWith("Warewolf", StringComparison.Ordinal);
-        }
+        public static bool IsWarewolfType(Type type) => IsWarewolfName(type.Assembly.GetName().Name);
+
+        public static bool IsWarewolfName(string? assemblyName) =>
+            assemblyName != null && (assemblyName.StartsWith("Dev2", StringComparison.Ordinal) || assemblyName.StartsWith("Warewolf", StringComparison.Ordinal));
 
         static int Depth(Type? type)
         {

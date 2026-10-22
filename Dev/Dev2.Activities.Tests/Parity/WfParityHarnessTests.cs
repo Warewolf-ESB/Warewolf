@@ -17,6 +17,7 @@ using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Bite;
 using Warewolf.Bite.Json;
+using Warewolf.Bite.Xaml;
 
 namespace Dev2.Tests.Activities.Parity
 {
@@ -117,6 +118,71 @@ namespace Dev2.Tests.Activities.Parity
             Console.WriteLine($"JSON round trip: {compared} workflow(s); XamlDefinition {xamlChars:N0} chars, BiteDefinition {jsonChars:N0} chars ({(xamlChars == 0 ? 0 : 100.0 * jsonChars / xamlChars):F0}%)");
             Assert.IsTrue(compared > 0, "No workflows were round-tripped.");
             Assert.AreEqual(0, problems.Count, $"{problems.Count} round-trip problem(s) across {compared} workflow(s):{Environment.NewLine}{string.Join(Environment.NewLine, problems.Take(200))}");
+        }
+
+        // ---------------------------------------------------------------- WF-free XAML writer (T3.2)
+
+        [TestMethod]
+        [Timeout(300000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_XamlRewrite_GeneratedCorpus() => AssertXamlRewrite(GeneratedCorpus(), new HashSet<string>());
+
+        [TestMethod]
+        [Timeout(1200000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_XamlRewrite_RepoWorkflows() => AssertXamlRewrite(RepoWorkflows(), KnownOldPathFailures);
+
+        [TestMethod]
+        [Timeout(1200000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_XamlRewrite_ExternalCorpora() => AssertXamlRewrite(ExternalCorpora(), new HashSet<string>());
+
+        // XAML -> model -> BiteXamlWriter -> XAML'. XAML' must load on the WF path (what engines still running WF
+        // do) to the same graph as the original, and read the same through BiteReader.
+        static void AssertXamlRewrite(IEnumerable<(string Name, string Bite)> workflows, HashSet<string> knownFailures)
+        {
+            var problems = new List<string>();
+            var compared = 0;
+            var bite = new BiteReader();
+
+            foreach (var (name, original) in workflows)
+            {
+                if (knownFailures.Contains(name))
+                {
+                    continue;
+                }
+                try
+                {
+                    var rewritten = RewriteXaml(original, bite);
+                    var againstWf = ActivityGraphDiff.Compare(Reference.Read(original), Reference.Read(rewritten))
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                    var againstBite = ActivityGraphDiff.Compare(bite.Read(original), bite.Read(rewritten))
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                    compared++;
+                    problems.AddRange(againstWf.Take(10).Select(d => $"{name}: WF path: {d}"));
+                    problems.AddRange(againstBite.Take(10).Select(d => $"{name}: BiteReader: {d}"));
+                }
+                catch (Exception e)
+                {
+                    problems.Add($"{name}: {e.GetType().Name}: {(e.InnerException ?? e).Message}");
+                }
+            }
+
+            Assert.IsTrue(compared > 0, "No workflows were rewritten.");
+            Assert.AreEqual(0, problems.Count, $"{problems.Count} rewrite problem(s) across {compared} workflow(s):{Environment.NewLine}{string.Join(Environment.NewLine, problems.Take(200))}");
+        }
+
+        static string RewriteXaml(string bite, BiteReader reader)
+        {
+            var service = XElement.Parse(bite, LoadOptions.PreserveWhitespace);
+            var xaml = service.Descendants("XamlDefinition").First();
+            var model = reader.ReadModel(xaml.Value, (string)service.Attribute("ID") ?? "")
+                        ?? throw new InvalidOperationException("No Flowchart to rewrite");
+            xaml.Value = BiteXamlWriter.Write(model);
+            return service.ToString(SaveOptions.DisableFormatting);
         }
 
         // ---------------------------------------------------------------- corpora

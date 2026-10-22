@@ -1,4 +1,4 @@
-﻿using Dev2.Activities.WF;
+﻿using Warewolf.Bite;
 using Dev2.Communication;
 
 namespace Dev2.Runtime.ESB.WF
@@ -7,7 +7,7 @@ namespace Dev2.Runtime.ESB.WF
     {
         public static void Process(EsbExecuteRequest request)
         {
-            var xaml = X6ToWorkflowConverter.X6JsonToXaml(request.Args);
+            var xaml = BiteFormat.X6ToXaml(request.Args);
             if (xaml != null && xaml.Length > 0)
             {
                 request.AddArgument("ResourceXaml", xaml);

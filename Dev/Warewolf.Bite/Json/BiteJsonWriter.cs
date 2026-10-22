@@ -17,6 +17,7 @@ using System.Net;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Xml.Linq;
+using Dev2.Activities.Flow;
 using Warewolf.Bite.Flow;
 using Warewolf.Bite.Xaml;
 
@@ -127,6 +128,7 @@ namespace Warewolf.Bite.Json
 
             return new JsonObject
             {
+                ["name"] = chart.Name,
                 ["start"] = Id(chart.StartNode),
                 ["nodes"] = nodes,
             };

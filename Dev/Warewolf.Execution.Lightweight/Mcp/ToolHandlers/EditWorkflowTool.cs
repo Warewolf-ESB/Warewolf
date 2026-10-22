@@ -4,7 +4,6 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
-using Dev2.Activities.WF;
 using ModelContextProtocol;
 using System;
 using System.ComponentModel;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
+using Warewolf.Bite;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -35,8 +35,7 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <item>Requires <b>Contribute</b> permission, resource-if-present else global, Public OR'd —
 /// the exact same rule <see cref="CreateWorkflowTool"/> applies
 /// (<see cref="ListWorkflowsTool.HasPermission"/>).</item>
-/// <item>Compiles <c>body</c> to XAML via <see cref="X6ToWorkflowConverter.X6JsonToWorkflow"/> +
-/// <see cref="X6ToWorkflowConverter.AddReplaceNameSpace"/>, then wraps it in a
+/// <item>Compiles <c>body</c> to XAML via <see cref="BiteFormat.X6ToXaml(string)"/>, then wraps it in a
 /// <c>&lt;Service&gt;</c> envelope via <see cref="EnvelopeBiteWriter"/> — identical pipeline to
 /// <c>create_workflow</c>.</item>
 /// <item><b>Preserves the existing file's <c>Service ID</c></b> (its current root <c>ID</c>
@@ -117,9 +116,7 @@ internal static class EditWorkflowTool
         string xamlDefinition;
         try
         {
-            var xaml = new X6ToWorkflowConverter().X6JsonToWorkflow(body.GetRawText());
-            xaml = X6ToWorkflowConverter.AddReplaceNameSpace(xaml);
-            xamlDefinition = xaml.ToString();
+            xamlDefinition = BiteFormat.X6ToXaml(body.GetRawText()).ToString();
         }
         catch (Exception ex)
         {

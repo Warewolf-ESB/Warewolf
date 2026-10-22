@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 using Dev2;
+using Dev2.Activities.Flow;
 using Warewolf.Bite.Flow;
 
 namespace Warewolf.Bite.Xaml
@@ -83,6 +84,7 @@ namespace Warewolf.Bite.Xaml
                 return null;
             }
             var chart = ReadFlowchart(implementation);
+            chart.Name = (string?)root.Attribute(X + "Class");
             chart.Nodes.AddRange(_flowNodes);
             foreach (var fixup in _fixups)
             {

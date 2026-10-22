@@ -562,27 +562,5 @@ namespace Dev2.Activities
         }
         #endregion
 
-        public DsfDecision ParseDsfDecisionOnly(FlowDecision decision, List<IDev2Activity> seenActivities)
-        {
-
-            var activity = decision.Condition as DsfFlowDecisionActivity;
-            if (activity != null)
-            {
-                if (seenActivities.Contains(activity))
-                {
-                    return new DsfDecision(activity);
-                }
-
-                var dec = FlowNodeFactory.CreateDecision(activity);
-                if (!seenActivities.Contains(activity))
-                {
-                    seenActivities.Add(dec);
-                }
-
-                return dec;
-            }
-
-            return null;
-        }
     }
 }

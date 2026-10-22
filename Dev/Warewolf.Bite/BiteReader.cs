@@ -14,6 +14,7 @@ using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Dev2;
+using Dev2.Activities.Flow;
 using Warewolf.Bite.Flow;
 using Warewolf.Bite.Xaml;
 
@@ -87,6 +88,8 @@ namespace Warewolf.Bite
         }
 
         internal static string SeedFor(XElement service, string body) => (string?)service.Attribute("ID") ?? Hash(body);
+
+        internal static string SeedForXaml(string xamlDefinition) => Hash(xamlDefinition);
 
         static string Hash(string text)
         {

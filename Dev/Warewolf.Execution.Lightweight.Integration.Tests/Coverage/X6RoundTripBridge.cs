@@ -6,10 +6,10 @@
 
 using System.Linq;
 using System.Text;
-using Dev2.Activities.WF;
 using Dev2.Common.X6;
 using Dev2.Web;
 using Newtonsoft.Json;
+using Warewolf.Bite;
 
 namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
 {
@@ -26,8 +26,8 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// Merges an <c>X6WorkflowLoadModel</c> JSON string (separate "nodes"/"edges" arrays, as
         /// emitted by <c>WorkflowToX6Converter.ConvertToX6Json</c>) into an <c>X6WorkflowSaveModel</c>
         /// JSON string (a single "cells" array, as expected by
-        /// <c>X6ToWorkflowConverter.X6JsonToWorkflow</c>), tagging every edge with the AntV/X6
-        /// library's own <c>shape: "edge"</c> convention so X6JsonToWorkflow's <c>c.shape != "edge"</c>
+        /// <c>BiteFormat.X6ToXaml</c>), tagging every edge with the AntV/X6
+        /// library's own <c>shape: "edge"</c> convention so the converter's <c>c.shape != "edge"</c>
         /// node/edge split resolves correctly.
         ///
         /// <para>
@@ -57,10 +57,9 @@ namespace Warewolf.Execution.Lightweight.Integration.Tests.Coverage
         /// </summary>
         internal static string RoundTripXaml(StringBuilder xamlDefinition)
         {
-            var activityBuilder = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(xamlDefinition);
-            var loadJson = new WorkflowToX6Converter().ConvertToX6Json(activityBuilder, xamlDefinition.ToString());
+            var loadJson = BiteFormat.XamlToX6(xamlDefinition.ToString());
             var saveJson = LoadModelToSaveModel(loadJson);
-            return new X6ToWorkflowConverter().X6JsonToWorkflow(saveJson).ToString();
+            return BiteFormat.X6ToXaml(saveJson).ToString();
         }
     }
 }

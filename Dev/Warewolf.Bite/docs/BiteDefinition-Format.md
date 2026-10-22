@@ -40,6 +40,7 @@ The `<Service>` XML envelope is unchanged: the catalog, explorer, versioning and
 
 | Field | Meaning |
 |---|---|
+| `name` | Optional. The workflow's name, as XAML's `x:Class` carries it. |
 | `start` | The ID of the start node, or `null` for a workflow with no start node. |
 | `nodes` | Every flowchart node, in document order, **including nodes not reachable from `start`**. Those are designer content, and execution ignores them. |
 | `kind` | `step`, `decision` or `switch`. |
@@ -74,6 +75,14 @@ Notes on these rules:
   - members declared on WF base types are skipped, except `DisplayName`.
 - **The argument and body shapes deliberately ignore the WF types.** When Workstream 2 replaces those types with plain ones, existing JSON bodies stay valid.
 
+## Schema
+
+[`BiteDefinition-v1.schema.json`](BiteDefinition-v1.schema.json) is the JSON Schema (draft 2020-12) for the body.
+
+- **Generated, not hand-written:** `Warewolf.Bite.Json.BiteJsonSchema` derives it from the same rules the reader and writer use. It covers every public, constructible `IDev2Activity` type in the assemblies `Dev2.Activities` references, and every type their members reach. A member's schema follows the Values table above.
+- **Scope:** it checks shape — node kinds, member names, `$type` names and value types. It does not check what a reader resolves at run time, such as whether a successor ID exists or an expression compiles.
+- **Kept current by a test:** `BiteJsonSchema_CheckedInCopy_IsCurrent` fails when a change to an activity or to the rules alters the output. Regenerate with `WAREWOLF_REGENERATE_BITE_SCHEMA=1` and commit the result.
+
 ## IDs
 
 - **Stored IDs win.** The writer stores every activity's `UniqueID`, including IDs that were minted when a legacy XAML file without them was read.
@@ -86,5 +95,7 @@ Notes on these rules:
 | Each of the 903 corpus workflows (113 generated, 680 repo, 110 external) goes XAML → JSON → graph equal to both the XAML read and the WF path | `Dev2.Activities.Tests` → `WfParity_JsonRoundTrip_*` |
 | Writer output is deterministic and independent of the current culture | `Warewolf.Bite.Tests` → `BiteJsonTests` |
 | Unknown versions, disallowed types and dangling successor IDs fail loudly, naming the JSON path | `Warewolf.Bite.Tests` → `BiteJsonTests` |
+| The JSON body of every corpus workflow validates against the schema, and the checked-in schema matches the generator | `Warewolf.Bite.Tests` → `BiteJsonSchemaTests` |
+| XAML written from the model (`BiteXamlWriter`, used by Web Studio and MCP saves) loads on the WF path to the same graph as the original, for all 903 corpus workflows | `Dev2.Activities.Tests` → `WfParity_XamlRewrite_*` |
 
 **Size:** measured against the original XAML body, the JSON body is 78% for the generated corpus, 76% for the repo workflows, and 62% for the WPF-authored external workflows, whose view state goes away.

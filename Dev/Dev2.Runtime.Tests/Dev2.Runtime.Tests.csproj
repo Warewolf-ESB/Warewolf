@@ -95,7 +95,6 @@
     <Compile Include="ESB\Execution\EvaluatorTests.cs" />
     <Compile Include="ESB\Execution\WebServiceContainerTests.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainerTests.cs" />
-    <Compile Include="ESB\WF\XamlActivityHelperTests.cs" />
     <Compile Include="ESB\Management\ChatbotToolNormalizerTests.cs" />
     <Compile Include="ESB\Management\ChatbotContextBuilderTests.cs" />
     <Compile Include="ESB\Management\ChatbotToolFormatsTests.cs" />

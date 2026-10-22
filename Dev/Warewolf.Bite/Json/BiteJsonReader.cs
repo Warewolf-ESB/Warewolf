@@ -18,6 +18,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
 using Dev2;
+using Dev2.Activities.Flow;
 using Warewolf.Bite.Flow;
 using Warewolf.Bite.Xaml;
 
@@ -112,6 +113,7 @@ namespace Warewolf.Bite.Json
                     }
                 }
 
+                chart.Name = OptionalString(root, "name");
                 chart.StartNode = Link(Optional(root, "start"), "$.start");
                 return chart;
             }
