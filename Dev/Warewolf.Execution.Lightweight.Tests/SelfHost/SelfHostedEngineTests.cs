@@ -51,6 +51,7 @@ public class SelfHostedEngineTests
 
         Assert.AreEqual("/var/lib/warewolf", env["WAREWOLF_DATA_DIR"]);
         Assert.AreEqual("false", env["WAREWOLF_LICENSE_CHECK_ENABLED"]);
+        Assert.AreEqual("{\"console\":true}", env["WAREWOLF_LOGGING_CONFIG"]);
         Assert.AreEqual("http://127.0.0.1:4000", env["WAREWOLF_SELFHOST_URLS"]);
         Assert.AreEqual(Path.Combine(@"D:\PD", "Warewolf"), SelfHostedEngine.DefaultDataDirectory(true, name => name == "ProgramData" ? @"D:\PD" : null));
         Assert.AreEqual("http://127.0.0.1:3142", SelfHostedEngine.DefaultUrls);

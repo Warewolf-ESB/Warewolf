@@ -33,7 +33,7 @@ namespace Warewolf.Execution.Lightweight.SelfHost;
 /// <para>
 /// What differs from Azure: it listens on <c>WAREWOLF_SELFHOST_URLS</c> (loopback port 3142 by default),
 /// keeps workflows in <c>WAREWOLF_DATA_DIR</c> (%ProgramData%\Warewolf or /var/lib/warewolf), skips the
-/// licence check (a locally hosted engine is free), drops Easy Auth principal headers (nothing here
+/// licence check (a locally hosted engine is free), logs to the console, drops Easy Auth principal headers (nothing here
 /// validates them) and runs no Service Bus triggers or Application Insights.
 /// </para>
 /// </summary>
@@ -57,6 +57,9 @@ internal static class SelfHostedEngine
         Default("WAREWOLF_DATA_DIR", DefaultDataDirectory(isWindows, getEnv));
         Default("WAREWOLF_LICENSE_CHECK_ENABLED", "false");
         Default("WAREWOLF_SELFHOST_URLS", DefaultUrls);
+        // Every sink defaults off (LoggingConfiguration); a service's logs go to stdout, which the
+        // service manager keeps (journald, or the Windows service's own output).
+        Default("WAREWOLF_LOGGING_CONFIG", "{\"console\":true}");
     }
 
     internal static string DefaultDataDirectory(bool isWindows, Func<string, string?> getEnv) =>
