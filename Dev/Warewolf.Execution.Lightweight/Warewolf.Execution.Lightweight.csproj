@@ -179,6 +179,7 @@
 
     <!-- Licensing / Chargebee integration -->
     <ProjectReference Include="..\Warewolf.Licensing\Warewolf.Licensing.csproj" />
+    <ProjectReference Include="..\Warewolf.Bite\Warewolf.Bite.csproj" />
 
     <!--
       Warewolf.Usage: third-party closed-source assembly (also referenced by

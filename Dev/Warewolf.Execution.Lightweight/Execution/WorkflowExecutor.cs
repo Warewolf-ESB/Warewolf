@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Warewolf.Bite;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Models;
@@ -1068,7 +1069,7 @@ namespace Warewolf.Execution.Lightweight
                 return reused;
             }
 
-            var prepared = BuildExclusivePreparedWorkflow(xamlDefinition);
+            var prepared = BuildExclusivePreparedWorkflow(xamlDefinition, filePath);
             if (prepared != null)
             {
                 prepared.PoolKey = key;
@@ -1085,8 +1086,12 @@ namespace Warewolf.Execution.Lightweight
         /// see <see cref="TestMockActivityResolver"/>) without ever touching the pool other
         /// concurrent <see cref="Execute(WorkflowExecutionRequest)"/> calls share.
         /// </summary>
-        internal static PreparedWorkflow BuildExclusivePreparedWorkflow(StringBuilder xamlDefinition)
+        internal static PreparedWorkflow BuildExclusivePreparedWorkflow(StringBuilder xamlDefinition, string shadowLabel = null)
         {
+            // LoadDynamicActivity cleans the StringBuilder in place, so the shadow reader takes the text first.
+            var shadowSink = ShadowSink;
+            var shadowXaml = shadowSink != null ? xamlDefinition.ToString() : null;
+
             var activity = LoadDynamicActivity(xamlDefinition);
             if (activity == null)
             {
@@ -1096,11 +1101,38 @@ namespace Warewolf.Execution.Lightweight
             // Parsed once per compiled instance rather than once per execution: Parse() only walks
             // the activity's own object graph, so the chain it returns belongs to this instance and
             // is as exclusively owned as the instance itself.
-            return new PreparedWorkflow
+            var prepared = new PreparedWorkflow
             {
                 Activity      = activity,
                 StartActivity = new ActivityParser().Parse(activity),
             };
+
+            if (shadowSink != null)
+            {
+                RunShadow(shadowSink, prepared.StartActivity, shadowXaml, shadowLabel);
+            }
+            return prepared;
+        }
+
+        /// <summary>
+        /// WF removal T1.7 shadow mode: when set (only if <c>WAREWOLF_BITE_SHADOW</c> is on, see Program.cs), every
+        /// freshly built workflow is also read by the WF-free <see cref="BiteReader"/> and compared. The WF graph is
+        /// the one executed either way.
+        /// </summary>
+        internal static Action<BiteShadowResult> ShadowSink { get; set; }
+
+        // Synchronous and before the graph is handed out: comparing later would read activity state that a running
+        // execution is changing. Nothing here may affect the prepared workflow, so every failure is swallowed.
+        static void RunShadow(Action<BiteShadowResult> sink, IDev2Activity startActivity, string xaml, string label)
+        {
+            try
+            {
+                sink(BiteShadow.Compare(startActivity, xaml, label ?? "(unknown)"));
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn($"BiteShadow failed and was ignored: {e.GetType().Name}: {e.Message}", GlobalConstants.WarewolfWarn);
+            }
         }
 
         /// <summary>

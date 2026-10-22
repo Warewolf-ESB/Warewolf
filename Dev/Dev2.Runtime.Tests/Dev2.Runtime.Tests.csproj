@@ -213,6 +213,7 @@
     <Compile Include="ServiceModel\Data\WebSourceTests.cs" />
     <Compile Include="ServiceModel\Data\PluginSourceTests.cs" />
     <Compile Include="ServiceModel\Data\ResourceTests.cs" />
+    <Compile Include="Hosting\ResourceCatalogParseObserverTests.cs" />
     <Compile Include="Hosting\ResourceCatalogTests.cs" />
     <Compile Include="ServiceModel\Data\EmailSourceTests.cs" />
     <Compile Include="ServiceModel\Data\DbSourceTests.cs" />
@@ -252,7 +253,6 @@
       <Link>app.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="DynamicServicesHostTests.cs" />
     <Compile Include="Services\HostSecureConfigTests.cs" />
     <Compile Include="Services\MockServiceExecutionAbstract.cs" />
     <Compile Include="Services\MoveItemsServiceTest.cs" />

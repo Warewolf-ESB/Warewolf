@@ -362,21 +362,13 @@ namespace Dev2.Activities
                     return new List<IDev2Activity> { activity };
                 }
 
-                var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
-                var ds = new Dev2Switch { SwitchVariable = val.ToString() };
-                var swi = new DsfSwitch(activity);
+                var swi = FlowNodeFactory.CreateSwitch(activity, switchFlowSwitch.DisplayName);
                 if (!seenActivities.Contains(activity))
                 {
                     seenActivities.Add(swi);
                 }
                 swi.Switches = switchFlowSwitch.Cases.Select(a => new Tuple<string, IDev2Activity>(a.Key, ParseTools(a.Value, seenActivities).FirstOrDefault())).ToDictionary(a => a.Item1, a => a.Item2);
                 swi.Default = ParseTools(switchFlowSwitch.Default, seenActivities);
-                swi.Switch = ds.SwitchVariable;
-                swi.DisplayName = switchFlowSwitch.DisplayName;
-                swi.OnErrorVariable = activity.OnErrorVariable;
-                swi.OnErrorWorkflow = activity.OnErrorWorkflow;
-                swi.IsEndedOnError = activity.IsEndedOnError;
-                swi.Inner.DisplayName = swi.DisplayName;
                 return new List<IDev2Activity>
                 {  swi
                 };
@@ -395,22 +387,13 @@ namespace Dev2.Activities
                 {
                     return new List<IDev2Activity> { activity };
                 }
-                var rawText = activity.ExpressionText;
-
-                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
-
-                var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
-                var dec = new DsfDecision(activity);
+                var dec = FlowNodeFactory.CreateDecision(activity);
                 if (!seenActivities.Contains(activity))
                 {
                     seenActivities.Add(dec);
                 }
                 dec.TrueArm = ParseTools(decision.True, seenActivities);
                 dec.FalseArm = ParseTools(decision.False, seenActivities);
-                dec.Conditions = decisionStack;
-                dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
-
 
                 return new List<IDev2Activity>
                 { dec};
@@ -590,23 +573,11 @@ namespace Dev2.Activities
                     return new DsfDecision(activity);
                 }
 
-                var rawText = activity.ExpressionText;
-
-                var activityTextjson = rawText.Substring(rawText.IndexOf("{", StringComparison.Ordinal)).Replace(@""",AmbientDataList)", "").Replace("\"", "!");
-
-                var activityText = Dev2DecisionStack.FromVBPersitableModelToJSON(activityTextjson);
-                var decisionStack = JsonConvert.DeserializeObject<Dev2DecisionStack>(activityText);
-                var dec = new DsfDecision(activity);
+                var dec = FlowNodeFactory.CreateDecision(activity);
                 if (!seenActivities.Contains(activity))
                 {
                     seenActivities.Add(dec);
                 }
-
-                //dec.TrueArm = ParseTools(decision.True, seenActivities);
-                //dec.FalseArm = ParseTools(decision.False, seenActivities);
-                dec.Conditions = decisionStack;
-                dec.And = decisionStack.Mode == Dev2DecisionMode.AND;
-
 
                 return dec;
             }
