@@ -1,0 +1,2 @@
+# Test-Linux.sh runs in a Linux container: LF on every checkout.
+*.sh text eol=lf
