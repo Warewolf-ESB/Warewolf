@@ -97,6 +97,16 @@ namespace Warewolf.Bite.Xaml
             return Resolve(ns + typeName.Name, arguments, scope);
         }
 
+        /// <summary>
+        /// Resolves a namespace-qualified CLR name (no assembly), as the JSON body's <c>$type</c> carries it, through
+        /// the same allowlist as XAML. Generic types are not named this way: collections are JSON arrays.
+        /// </summary>
+        public Type ResolveFullName(string fullName, XObject? at = null) =>
+            _cache.GetOrAdd("clr|" + fullName, _ =>
+                AllowedSystemTypes.TryGetValue(fullName, out var system) ? system
+                : FindWf(fullName) ?? (WarewolfIndex.Value.TryGetValue(fullName, out var warewolf) ? warewolf : null))
+            ?? throw new BiteFormatException($"Type '{fullName}' is not allowed in a .bite resource", at);
+
         static Type? Find(string namespaceUri, string localName, int arity)
         {
             var genericName = arity == 0 ? localName : $"{localName}`{arity}";

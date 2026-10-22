@@ -24,6 +24,12 @@ namespace Warewolf.Bite.Flow
     public sealed class FlowchartModel
     {
         public FlowNodeModel? StartNode { get; set; }
+
+        /// <summary>
+        /// Every node the flowchart declares, reachable or not, in document order. Execution only walks from
+        /// <see cref="StartNode"/>; the rest is designer content, which a writer must not drop.
+        /// </summary>
+        public List<FlowNodeModel> Nodes { get; } = new List<FlowNodeModel>();
     }
 
     public sealed class FlowStepModel : FlowNodeModel

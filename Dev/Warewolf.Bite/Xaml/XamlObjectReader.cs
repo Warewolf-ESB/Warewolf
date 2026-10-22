@@ -61,6 +61,7 @@ namespace Warewolf.Bite.Xaml
         readonly string _idSeed;
         readonly Dictionary<string, object?> _names = new Dictionary<string, object?>(StringComparer.Ordinal);
         readonly List<Action> _fixups = new List<Action>();
+        readonly List<FlowNodeModel> _flowNodes = new List<FlowNodeModel>();
 
         /// <param name="idSeed">Seeds the stable UniqueID minted for activities whose XAML has none (the resource ID).</param>
         public XamlObjectReader(XamlTypeResolver resolver, string idSeed)
@@ -82,6 +83,7 @@ namespace Warewolf.Bite.Xaml
                 return null;
             }
             var chart = ReadFlowchart(implementation);
+            chart.Nodes.AddRange(_flowNodes);
             foreach (var fixup in _fixups)
             {
                 fixup();
@@ -109,7 +111,7 @@ namespace Warewolf.Bite.Xaml
                 }
                 else
                 {
-                    ReadFlowSlot(child, _ => { }); // Flowchart.Nodes: registers names; only nodes reachable from the start are used
+                    ReadFlowSlot(child, _ => { }); // Flowchart.Nodes: every node is recorded as it is read (see ReadFlowNode)
                 }
             }
             return chart;
@@ -176,6 +178,7 @@ namespace Warewolf.Bite.Xaml
                 throw new BiteFormatException($"Expected a flow node, found <{element.Name.LocalName}>", element);
             }
             Register(element, node);
+            _flowNodes.Add(node);
             return node;
         }
 

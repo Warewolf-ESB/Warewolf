@@ -16,6 +16,7 @@ using System.Runtime.CompilerServices;
 using System.Xml.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Bite;
+using Warewolf.Bite.Json;
 
 namespace Dev2.Tests.Activities.Parity
 {
@@ -44,10 +45,86 @@ namespace Dev2.Tests.Activities.Parity
         [Timeout(300000)]
         [Owner("Ashley Lewis")]
         [TestCategory("WfParity")]
-        public void WfParity_GeneratedCorpus_ReaderOutputsMatch()
+        public void WfParity_GeneratedCorpus_ReaderOutputsMatch() => AssertParity(GeneratedCorpus(), new HashSet<string>());
+
+        [TestMethod]
+        [Timeout(1200000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_RepoWorkflows_ReaderOutputsMatch() => AssertParity(RepoWorkflows(), KnownOldPathFailures);
+
+        [TestMethod]
+        [Timeout(1200000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_ExternalCorpora_ReaderOutputsMatch() => AssertParity(ExternalCorpora(), new HashSet<string>());
+
+        // ---------------------------------------------------------------- JSON body round trip (T1.5)
+
+        [TestMethod]
+        [Timeout(300000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_JsonRoundTrip_GeneratedCorpus() => AssertJsonRoundTrip(GeneratedCorpus(), new HashSet<string>());
+
+        [TestMethod]
+        [Timeout(1200000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_JsonRoundTrip_RepoWorkflows() => AssertJsonRoundTrip(RepoWorkflows(), KnownOldPathFailures);
+
+        [TestMethod]
+        [Timeout(1200000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WfParity")]
+        public void WfParity_JsonRoundTrip_ExternalCorpora() => AssertJsonRoundTrip(ExternalCorpora(), new HashSet<string>());
+
+        // XAML -> BiteReader -> G1 -> JSON body -> BiteReader -> G2. G2 must equal both G1 and the WF path's graph.
+        static void AssertJsonRoundTrip(IEnumerable<(string Name, string Bite)> workflows, HashSet<string> knownFailures)
+        {
+            var problems = new List<string>();
+            var compared = 0;
+            long xamlChars = 0, jsonChars = 0;
+            var bite = new BiteReader();
+
+            foreach (var (name, original) in workflows)
+            {
+                if (knownFailures.Contains(name))
+                {
+                    continue; // nothing to round-trip: no reader can load it
+                }
+                try
+                {
+                    var converted = BiteJsonWriter.ConvertResource(original);
+                    xamlChars += XElement.Parse(original).Descendants("XamlDefinition").First().Value.Length;
+                    jsonChars += XElement.Parse(converted).Descendants("BiteDefinition").First().Value.Length;
+
+                    var fromJson = bite.Read(converted);
+                    var againstXaml = ActivityGraphDiff.Compare(bite.Read(original), fromJson)
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                    var againstWf = ActivityGraphDiff.Compare(Reference.Read(original), fromJson)
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                    compared++;
+                    problems.AddRange(againstXaml.Take(10).Select(d => $"{name}: vs XAML read: {d}"));
+                    problems.AddRange(againstWf.Take(10).Select(d => $"{name}: vs WF path: {d}"));
+                }
+                catch (Exception e)
+                {
+                    problems.Add($"{name}: {e.GetType().Name}: {e.Message}");
+                }
+            }
+
+            Console.WriteLine($"JSON round trip: {compared} workflow(s); XamlDefinition {xamlChars:N0} chars, BiteDefinition {jsonChars:N0} chars ({(xamlChars == 0 ? 0 : 100.0 * jsonChars / xamlChars):F0}%)");
+            Assert.IsTrue(compared > 0, "No workflows were round-tripped.");
+            Assert.AreEqual(0, problems.Count, $"{problems.Count} round-trip problem(s) across {compared} workflow(s):{Environment.NewLine}{string.Join(Environment.NewLine, problems.Take(200))}");
+        }
+
+        // ---------------------------------------------------------------- corpora
+
+        static IEnumerable<(string Name, string Bite)> GeneratedCorpus()
         {
             var assembly = typeof(WfParityHarnessTests).Assembly;
-            var workflows = assembly.GetManifestResourceNames()
+            return assembly.GetManifestResourceNames()
                 .Where(n => n.Contains(".WfCorpus.") && n.EndsWith(".bite", StringComparison.Ordinal))
                 .OrderBy(n => n, StringComparer.Ordinal)
                 .Select(n =>
@@ -56,16 +133,11 @@ namespace Dev2.Tests.Activities.Parity
                     {
                         return (Name: n, Bite: reader.ReadToEnd());
                     }
-                });
-
-            AssertParity(workflows, new HashSet<string>());
+                })
+                .ToList();
         }
 
-        [TestMethod]
-        [Timeout(1200000)]
-        [Owner("Ashley Lewis")]
-        [TestCategory("WfParity")]
-        public void WfParity_RepoWorkflows_ReaderOutputsMatch()
+        static IEnumerable<(string Name, string Bite)> RepoWorkflows()
         {
             var root = RepoRoot();
             if (root == null)
@@ -73,21 +145,16 @@ namespace Dev2.Tests.Activities.Parity
                 Assert.Inconclusive("Repo source tree not found: set BUILD_SOURCESDIRECTORY to the checkout root.");
             }
 
-            var workflows = Directory.EnumerateFiles(Path.Combine(root, "Dev"), "*.bite", SearchOption.AllDirectories)
+            return Directory.EnumerateFiles(Path.Combine(root, "Dev"), "*.bite", SearchOption.AllDirectories)
                 .Select(f => Path.GetRelativePath(root, f).Replace('\\', '/'))
                 .Where(f => !f.Contains("/bin/") && !f.Contains("/obj/") && !f.Contains("/WfCorpus/"))
                 .OrderBy(f => f, StringComparer.Ordinal)
                 .Select(f => (Name: f, Bite: File.ReadAllText(Path.Combine(root, f))))
-                .Where(w => IsWorkflow(w.Bite));
-
-            AssertParity(workflows, KnownOldPathFailures);
+                .Where(w => IsWorkflow(w.Bite))
+                .ToList();
         }
 
-        [TestMethod]
-        [Timeout(1200000)]
-        [Owner("Ashley Lewis")]
-        [TestCategory("WfParity")]
-        public void WfParity_ExternalCorpora_ReaderOutputsMatch()
+        static IEnumerable<(string Name, string Bite)> ExternalCorpora()
         {
             var directories = Environment.GetEnvironmentVariable(ExtraCorpusVariable);
             if (string.IsNullOrWhiteSpace(directories))
@@ -95,13 +162,12 @@ namespace Dev2.Tests.Activities.Parity
                 Assert.Inconclusive($"Customer/real-world corpora are not checked in; set {ExtraCorpusVariable} to a '{Path.PathSeparator}'-separated list of folders to include them.");
             }
 
-            var workflows = directories.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+            return directories.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
                 .SelectMany(d => Directory.EnumerateFiles(d, "*.bite", SearchOption.AllDirectories))
                 .OrderBy(f => f, StringComparer.Ordinal)
                 .Select(f => (Name: f, Bite: File.ReadAllText(f)))
-                .Where(w => IsWorkflow(w.Bite));
-
-            AssertParity(workflows, new HashSet<string>());
+                .Where(w => IsWorkflow(w.Bite))
+                .ToList();
         }
 
         static void AssertParity(IEnumerable<(string Name, string Bite)> workflows, HashSet<string> knownFailures)

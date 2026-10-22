@@ -42,16 +42,37 @@ namespace Warewolf.Bite
 
             // Same lookup as WorkflowExecutor.ExtractWorkflowParts: <Action> directly or under <Actions>.
             var action = service.Element("Actions")?.Element("Action") ?? service.Element("Action");
+
+            // A versioned JSON body (T1.5) takes precedence over legacy XAML.
+            var biteDefinition = action?.Element("BiteDefinition");
+            if (biteDefinition != null)
+            {
+                var version = (string?)biteDefinition.Attribute("FormatVersion");
+                if (version != Json.BiteJsonWriter.FormatVersion.ToString(System.Globalization.CultureInfo.InvariantCulture))
+                {
+                    throw new BiteFormatException($"Unsupported BiteDefinition FormatVersion '{version}'; this reader understands '{Json.BiteJsonWriter.FormatVersion}'", biteDefinition);
+                }
+                return ReadJson(biteDefinition.Value, SeedFor(service, biteDefinition.Value));
+            }
+
             var xamlDefinition = action?.Element("XamlDefinition")?.Value;
             if (string.IsNullOrWhiteSpace(xamlDefinition))
             {
-                throw new BiteFormatException("Resource has no <XamlDefinition>", service);
+                throw new BiteFormatException("Resource has no <BiteDefinition> or <XamlDefinition>", service);
             }
-            return ReadXaml(xamlDefinition, (string?)service.Attribute("ID") ?? Hash(xamlDefinition));
+            return ReadXaml(xamlDefinition, SeedFor(service, xamlDefinition));
         }
 
         /// <summary>Reads a bare XAML definition; <paramref name="resourceId"/> seeds stable ids for activities saved without one.</summary>
-        public IDev2Activity? ReadXaml(string xamlDefinition, string resourceId)
+        public IDev2Activity? ReadXaml(string xamlDefinition, string resourceId) =>
+            FlowGraphBuilder.Build(ReadModel(xamlDefinition, resourceId));
+
+        /// <summary>Reads a bare version 1 JSON body.</summary>
+        public IDev2Activity? ReadJson(string jsonDefinition, string resourceId) =>
+            FlowGraphBuilder.Build(new Json.BiteJsonReader(_resolver, resourceId).Read(jsonDefinition));
+
+        /// <summary>The unlinked definition of a XAML workflow, or null when its implementation is not a Flowchart.</summary>
+        public FlowchartModel? ReadModel(string xamlDefinition, string resourceId)
         {
             XElement root;
             try
@@ -62,9 +83,10 @@ namespace Warewolf.Bite
             {
                 throw new BiteFormatException($"XamlDefinition is not valid XML: {e.Message}", null, e);
             }
-            var chart = new XamlObjectReader(_resolver, resourceId).ReadWorkflow(root);
-            return FlowGraphBuilder.Build(chart);
+            return new XamlObjectReader(_resolver, resourceId).ReadWorkflow(root);
         }
+
+        internal static string SeedFor(XElement service, string body) => (string?)service.Attribute("ID") ?? Hash(body);
 
         static string Hash(string text)
         {
