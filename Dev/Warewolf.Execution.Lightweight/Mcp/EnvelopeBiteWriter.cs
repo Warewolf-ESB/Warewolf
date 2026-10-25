@@ -40,8 +40,8 @@ internal static class EnvelopeBiteWriter
     /// <param name="description">Envelope description — becomes the <c>&lt;Comment&gt;</c> element text.</param>
     /// <param name="envelope">The <c>envelope</c> input, per <c>get_workflow_schema</c>'s <c>envelope_schema</c>
     /// (<c>inputs</c>/<c>outputs</c> arrays of <c>{ kind, name, fields? }</c>).</param>
-    /// <param name="xamlDefinition">The compiled, namespace-fixed-up XAML text (already run through
-    /// <c>X6ToWorkflowConverter.AddReplaceNameSpace</c>) — written raw; <see cref="XElement"/> escapes it automatically.</param>
+    /// <param name="xamlDefinition">The compiled XAML text (from <c>BiteFormat.X6ToXaml</c>) — written raw;
+    /// <see cref="XElement"/> escapes it automatically.</param>
     /// <param name="versionNumber">The <c>VersionInfo</c> <c>VersionNumber</c> — <c>"1"</c> for a first save.</param>
     /// <param name="timestampUtc">The <c>VersionInfo</c> <c>DateTimeStamp</c> (current UTC time).</param>
     /// <param name="user">The <c>VersionInfo</c> <c>User</c> — the calling principal's identity, or a system fallback.</param>

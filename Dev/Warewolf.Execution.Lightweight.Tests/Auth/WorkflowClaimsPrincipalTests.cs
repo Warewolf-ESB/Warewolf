@@ -5,6 +5,7 @@
  */
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Execution.Lightweight.Auth;
@@ -26,6 +27,22 @@ public class WorkflowClaimsPrincipalTests
         foreach (var r in roles) claims.Add(new Claim(ClaimTypes.Role, r));
         return new WorkflowClaimsPrincipal(
             new ClaimsIdentity(claims, "Test", ClaimTypes.Name, ClaimTypes.Role));
+    }
+
+    [TestMethod]
+    public void UserToken_HoldsAuthenticatedUsersGroup()
+    {
+        var p = Build(isUserToken: true, "alice@contoso.com", "Developers");
+
+        CollectionAssert.AreEquivalent(new[] { "Developers", WorkflowClaimsPrincipal.AuthenticatedUsersGroup }, p.EffectiveGroups.ToArray());
+        CollectionAssert.AreEqual(new[] { "Developers" }, p.Groups.ToArray());
+    }
+
+    [TestMethod]
+    public void AppOnlyAndAnonymousCallers_DoNotHoldAuthenticatedUsersGroup()
+    {
+        Assert.AreEqual(0, Build(isUserToken: false, userName: "").EffectiveGroups.Count);
+        Assert.AreEqual(0, WorkflowClaimsPrincipal.Anonymous().EffectiveGroups.Count);
     }
 
     [TestMethod]

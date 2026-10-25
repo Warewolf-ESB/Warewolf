@@ -13,11 +13,9 @@ using System;
 namespace Dev2.Activities.WF
 {
     /// <summary>
-    /// Thrown by <see cref="X6ToWorkflowConverter.X6JsonToWorkflow"/> when the supplied X6 graph
+    /// Thrown by <see cref="X6ToWorkflowConverter.X6JsonToModel"/> when the supplied X6 graph
     /// has no node that resolves to a flowchart start node (either the graph has no cells at all,
-    /// or none of its cells are recognised as a start node). Replaces the previous behaviour of
-    /// letting <c>WorkflowHelper.EnsureImplementation</c> throw a raw <see cref="NullReferenceException"/>
-    /// when finalising a <c>null</c> <see cref="System.Activities.Statements.Flowchart"/>.
+    /// or none of its cells are recognised as a start node), so there is no flowchart to write.
     /// </summary>
     public class EmptyWorkflowGraphException : Exception
     {

@@ -18,6 +18,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
 using System.Xml.Linq;
+using Warewolf.Bite;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -250,9 +251,7 @@ internal static class AddStepTool
         string xamlDefinition;
         try
         {
-            var xaml = new X6ToWorkflowConverter().X6JsonToWorkflow(JsonConvert.SerializeObject(graph));
-            xaml = X6ToWorkflowConverter.AddReplaceNameSpace(xaml);
-            xamlDefinition = xaml.ToString();
+            xamlDefinition = BiteFormat.X6ToXaml(JsonConvert.SerializeObject(graph)).ToString();
         }
         catch (Exception ex)
         {

@@ -13,6 +13,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Xml;
 using System.Xml.Linq;
+using Warewolf.Bite;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -136,7 +137,7 @@ internal static class DeployWorkflowTool
 
     /// <summary>
     /// Validates that <paramref name="biteContent"/> is well-formed XML shaped like a
-    /// Warewolf <c>WorkflowService</c> resource with a compilable <c>XamlDefinition</c>, and
+    /// Warewolf <c>WorkflowService</c> resource with a readable <c>XamlDefinition</c>, and
     /// returns that XAML text. Throws <see cref="McpException"/> (never a raw
     /// <see cref="XmlException"/> or converter exception) describing exactly what is wrong,
     /// mirroring how <see cref="CreateWorkflowTool"/>/<see cref="EditWorkflowTool"/> report a
@@ -176,19 +177,14 @@ internal static class DeployWorkflowTool
             throw new McpException("`biteContent` has no Action/XamlDefinition to deploy.");
         }
 
-        System.Activities.ActivityBuilder? activityBuilder;
         try
         {
-            activityBuilder = XamlActivityBuilderLoader.Load(xamlDefinition);
+            // Read, not run: malformed XAML and types outside the allowlist fail here, before anything is written.
+            new BiteReader().ReadModel(xamlDefinition.ToString(), root.Attribute("ID")?.Value ?? string.Empty);
         }
-        catch (Exception ex)
+        catch (BiteFormatException ex)
         {
-            throw new McpException($"`biteContent`'s XamlDefinition could not be compiled: {ex.Message}");
-        }
-
-        if (activityBuilder is null)
-        {
-            throw new McpException("`biteContent`'s XamlDefinition could not be compiled into an ActivityBuilder.");
+            throw new McpException($"`biteContent`'s XamlDefinition could not be read: {ex.Message}");
         }
 
         return xamlDefinition;

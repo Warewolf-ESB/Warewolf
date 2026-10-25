@@ -350,11 +350,18 @@
     <Compile Include="Validation\IsValidExpressionRuleTests.cs" />
     <Compile Include="Validation\IsValidJsonCreateMappingInputRuleTests.cs" />
     <Compile Include="WorkflowHelperTests.cs" />
+    <Compile Include="Parity\ActivityGraphCanonicalizerTests.cs" />
+    <Compile Include="Parity\WfBiteReader.cs" />
+    <Compile Include="Parity\WfParityHarnessTests.cs" />
+    <Compile Include="WfCorpus\WfCorpusGenerator.cs" />
+    <Compile Include="WfCorpus\WfCorpusTests.cs" />
     <Compile Include="XML\XmlResource.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\SimulationShape.xml" />
     <EmbeddedResource Include="XML\SimulationData.xml" />
+    <!-- WF-removal activity corpus: one generated .bite per activity class (see WfCorpusGenerator). -->
+    <EmbeddedResource Include="WfCorpus\*.bite" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="ActivityStrings.resx">
@@ -413,6 +420,7 @@
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Net6.Compatibility\Dev2.Net6.Compatibility.csproj" />
+    <ProjectReference Include="..\Warewolf.Bite\Warewolf.Bite.csproj" />
     <ProjectReference Include="..\Dev2.Runtime.Services\Dev2.Runtime.Services.csproj">
       <Project>{b48ffdf5-6b1b-4279-a93f-2913b9d3be83}</Project>
       <Name>Dev2.Runtime.Services</Name>

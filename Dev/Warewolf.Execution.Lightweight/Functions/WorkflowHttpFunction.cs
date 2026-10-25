@@ -506,7 +506,7 @@ namespace Warewolf.Execution.Lightweight
                 p is Auth.WorkflowClaimsPrincipal wcp &&
                 wcp.Identity?.IsAuthenticated == true)
             {
-                var middlewareGroups = (IReadOnlyList<string>)wcp.Groups;
+                var middlewareGroups = (IReadOnlyList<string>)wcp.EffectiveGroups;
                 return name => PermissionChecker.HasUserDiscoveryPermission(name, config, middlewareGroups);
             }
 
@@ -579,7 +579,7 @@ namespace Warewolf.Execution.Lightweight
                 p is Auth.WorkflowClaimsPrincipal wcp &&
                 wcp.Identity?.IsAuthenticated == true)
             {
-                return (true, (IReadOnlyList<string>)wcp.Groups);
+                return (true, (IReadOnlyList<string>)wcp.EffectiveGroups);
             }
 
             var config = SecureConfigLoader.Config;

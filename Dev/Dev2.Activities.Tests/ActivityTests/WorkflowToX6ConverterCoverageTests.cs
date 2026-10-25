@@ -8,9 +8,9 @@
  * Warewolf activity type.  Almost all of those helper files were at 0% line
  * coverage — the converter was only exercised for the FlowSwitch path.
  *
- * The class has a single clean entry point, ConvertToX6Json(ActivityBuilder, xml),
+ * The class has a single clean entry point, ConvertToX6Json(FlowchartModel, xml),
  * and no external dependencies, so it is cheaply unit-testable by handing it a
- * workflow whose Implementation is the activity under test and asserting on the
+ * workflow whose start step is the activity under test and asserting on the
  * produced X6WorkflowLoadModel.  Each CreateXxxActivity helper is reached through
  * the big type-dispatch in CreateActivityNode, so converting one activity of each
  * type drives that type's helper plus its dispatch arm.
@@ -30,6 +30,7 @@ using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities;
+using Dev2.Activities.Flow;
 using Dev2.Activities.DateAndTime;
 using Dev2.Activities.Exchange;
 using Dev2.Activities.RabbitMQ.Consume;
@@ -45,6 +46,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Unlimited.Applications.BusinessDesignStudio.Activities.PathOperations;
+using Warewolf.Bite;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -57,17 +59,20 @@ namespace Dev2.Tests.Activities.ActivityTests
         // Helpers
         // ─────────────────────────────────────────────────────────────────
 
-        static X6WorkflowLoadModel Convert(Activity implementation)
+        static X6WorkflowLoadModel Convert(Activity implementation) =>
+            Convert(new FlowchartModel { StartNode = new FlowStepModel { Action = implementation } });
+
+        static X6WorkflowLoadModel Convert(FlowchartModel workflow)
         {
             var converter = new WorkflowToX6Converter();
-            var json = converter.ConvertToX6Json(new ActivityBuilder { Implementation = implementation }, "<xml/>");
+            var json = converter.ConvertToX6Json(workflow, "<xml/>");
             Assert.IsNotNull(json);
             var model = JsonConvert.DeserializeObject<X6WorkflowLoadModel>(json);
             Assert.IsNotNull(model);
             return model;
         }
 
-        // A leaf activity placed directly as the workflow Implementation produces a
+        // A leaf activity placed as the workflow's only step produces a
         // start node plus exactly one activity node, joined by one edge.
         static void AssertLeaf(Activity activity)
         {
@@ -469,9 +474,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
         public void Convert_Flowchart_StepChain()
         {
-            var step2 = new FlowStep { Action = new DsfDataSplitActivity() };
-            var step1 = new FlowStep { Action = new DsfMultiAssignActivity(), Next = step2 };
-            var model = Convert(new Flowchart { StartNode = step1 });
+            var step2 = new FlowStepModel { Action = new DsfDataSplitActivity() };
+            var step1 = new FlowStepModel { Action = new DsfMultiAssignActivity(), Next = step2 };
+            var model = Convert(new FlowchartModel { StartNode = step1 });
             Assert.IsTrue(model.Nodes.Count >= 3,
                 $"Expected start + two step nodes, got {model.Nodes.Count}.");
         }
@@ -479,20 +484,20 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
         public void Convert_Flowchart_Empty()
         {
-            var model = Convert(new Flowchart());
+            var model = Convert(new FlowchartModel());
             Assert.IsTrue(model.Nodes.Count >= 1);
         }
 
         [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
         public void Convert_Flowchart_Decision_TrueAndFalse()
         {
-            var decision = new FlowDecision
+            var decision = new FlowDecisionModel
             {
                 Condition = new DsfFlowDecisionActivityStub(),
-                True = new FlowStep { Action = new DsfMultiAssignActivity() },
-                False = new FlowStep { Action = new DsfDataSplitActivity() }
+                True = new FlowStepModel { Action = new DsfMultiAssignActivity() },
+                False = new FlowStepModel { Action = new DsfDataSplitActivity() }
             };
-            var model = Convert(new Flowchart { StartNode = decision });
+            var model = Convert(new FlowchartModel { StartNode = decision });
             Assert.IsTrue(model.Nodes.Count >= 3);
             Assert.IsTrue(model.Edges.Exists(e => e.label == "True" || e.label == "true"));
 
@@ -515,10 +520,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         /// <summary>
-        /// Builds the FlowDecision.Condition a real workflow carries. ActivityParser
-        /// .ParseDsfDecisionOnly returns null for anything that is not a DsfFlowDecisionActivity,
-        /// and it parses the decision stack back out of ExpressionText — so a bare stub condition
-        /// yields a DsfDecision with no DisplayText, which the read side then refuses. This mirrors
+        /// Builds the FlowDecision.Condition a real workflow carries. The converter only parses a
+        /// DsfFlowDecisionActivity (FlowNodeFactory.CreateDecision), reading the decision stack back
+        /// out of ExpressionText — so a bare stub condition yields a DsfDecision with no
+        /// DisplayText, which the read side then refuses. This mirrors
         /// the exact ExpressionText shape DsfFlowDecisionActivity.FromX6Json emits.
         /// </summary>
         static DsfFlowDecisionActivity RealDecisionCondition(string displayText)
@@ -564,14 +569,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
         public void Convert_Flowchart_Decision_EmitsFlowDecisionType_NotLegacyDsfDecision()
         {
-            var decision = new FlowDecision
+            var decision = new FlowDecisionModel
             {
                 Condition = new DsfFlowDecisionActivityStub(),
-                True = new FlowStep { Action = new DsfMultiAssignActivity() },
-                False = new FlowStep { Action = new DsfDataSplitActivity() }
+                True = new FlowStepModel { Action = new DsfMultiAssignActivity() },
+                False = new FlowStepModel { Action = new DsfDataSplitActivity() }
             };
 
-            var model = Convert(new Flowchart { StartNode = decision });
+            var model = Convert(new FlowchartModel { StartNode = decision });
 
             var decisionNodes = model.Nodes.FindAll(n =>
                 n.data != null &&
@@ -598,19 +603,19 @@ namespace Dev2.Tests.Activities.ActivityTests
             // its nodes in BOTH places, so the decision is visited twice; without the
             // registration the second visit mints a duplicate. A decision reachable only from
             // StartNode never exercises this.
-            var decision = new FlowDecision
+            var decision = new FlowDecisionModel
             {
                 Condition = RealDecisionCondition("If [[x]] Is > 0"),
-                True = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnTrue" } },
-                False = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnFalse" } }
+                True = new FlowStepModel { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnTrue" } },
+                False = new FlowStepModel { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnFalse" } }
             };
-            var start = new FlowStep
+            var start = new FlowStepModel
             {
                 Action = new DsfDotNetMultiAssignActivity { DisplayName = "Seed" },
                 Next = decision
             };
 
-            var flowchart = new Flowchart { StartNode = start };
+            var flowchart = new FlowchartModel { StartNode = start };
             flowchart.Nodes.Add(start);
             flowchart.Nodes.Add(decision);
 
@@ -658,17 +663,17 @@ namespace Dev2.Tests.Activities.ActivityTests
             // The seam test: XAML -> X6 -> XAML through BOTH converters, which is the only
             // place the type mismatch was observable. Before the fix a single <FlowDecision>
             // came back as zero, flattened into a linear FlowStep chain.
-            var decision = new FlowDecision
+            var decision = new FlowDecisionModel
             {
                 DisplayName = "If [[x]] Is > 0",
                 Condition = RealDecisionCondition("If [[x]] Is > 0"),
                 // Both arms must be types X6ToWorkflowConverter can rebuild, or the read side
                 // throws on the arm rather than on the decision this test is about.
-                True = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnTrue" } },
-                False = new FlowStep { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnFalse" } }
+                True = new FlowStepModel { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnTrue" } },
+                False = new FlowStepModel { Action = new DsfDotNetMultiAssignActivity { DisplayName = "OnFalse" } }
             };
 
-            var loadModel = Convert(new Flowchart { StartNode = decision });
+            var loadModel = Convert(new FlowchartModel { StartNode = decision });
 
             // The X6 web client performs this load-model -> save-model merge on save; there is no
             // equivalent bridge in .NET, so mirror it here (same step as X6RoundTripBridge).
@@ -683,9 +688,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             saveModel.Cells.AddRange(loadModel.Edges);
 
-            var xaml = new X6ToWorkflowConverter()
-                .X6JsonToWorkflow(JsonConvert.SerializeObject(saveModel))
-                .ToString();
+            var xaml = BiteFormat.X6ToXaml(JsonConvert.SerializeObject(saveModel)).ToString();
 
             StringAssert.Contains(xaml, "<FlowDecision",
                 "The round-tripped workflow must still contain a FlowDecision — a flattened " +
@@ -725,7 +728,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var forEach = ForEachWithSequenceBody("StepOne", "StepTwo");
             var bodyId = ((DsfSequenceActivity)forEach.DataFunc.Handler).UniqueID;
 
-            var model = Convert(new Flowchart { StartNode = new FlowStep { Action = forEach } });
+            var model = Convert(new FlowchartModel { StartNode = new FlowStepModel { Action = forEach } });
 
             var loop = model.Nodes.Find(n => n.id == forEach.UniqueID);
             Assert.IsNotNull(loop, "The For Each cell must be emitted.");
@@ -752,7 +755,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod, Timeout(60000), Owner("Ashley Lewis"), TestCategory(Cat)]
         public void RoundTrip_ForEachWithSequenceBody_KeepsEveryStep()
         {
-            var loadModel = Convert(new Flowchart { StartNode = new FlowStep { Action = ForEachWithSequenceBody("StepOne", "StepTwo") } });
+            var loadModel = Convert(new FlowchartModel { StartNode = new FlowStepModel { Action = ForEachWithSequenceBody("StepOne", "StepTwo") } });
 
             // Mirror the web client's load-model -> save-model merge (see the decision round trip above).
             foreach (var edge in loadModel.Edges)
@@ -762,7 +765,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var saveModel = new X6WorkflowSaveModel { ResourceName = "ForEachRoundTrip", Cells = new List<Cell>(loadModel.Nodes) };
             saveModel.Cells.AddRange(loadModel.Edges);
 
-            var xaml = new X6ToWorkflowConverter().X6JsonToWorkflow(JsonConvert.SerializeObject(saveModel)).ToString();
+            var xaml = BiteFormat.X6ToXaml(JsonConvert.SerializeObject(saveModel)).ToString();
 
             var dataFunc = System.Xml.Linq.XDocument.Parse(xaml).Descendants()
                 .First(e => e.Name.LocalName == "DsfForEachActivity.DataFunc");
@@ -785,7 +788,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void Convert_NullImplementation_ProducesStartNodeOnly()
         {
             var converter = new WorkflowToX6Converter();
-            var json = converter.ConvertToX6Json(new ActivityBuilder { Implementation = null }, "<xml/>");
+            var json = converter.ConvertToX6Json(null, "<xml/>");
             var model = JsonConvert.DeserializeObject<X6WorkflowLoadModel>(json);
             Assert.IsNotNull(model);
             Assert.AreEqual(1, model.Nodes.Count, "Only the start node should be produced for a null implementation.");
@@ -796,7 +799,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void Convert_PreservesWorkflowXml()
         {
             var converter = new WorkflowToX6Converter();
-            var json = converter.ConvertToX6Json(new ActivityBuilder { Implementation = new DsfMultiAssignActivity() }, "<some-xaml/>");
+            var json = converter.ConvertToX6Json(new FlowchartModel { StartNode = new FlowStepModel { Action = new DsfMultiAssignActivity() } }, "<some-xaml/>");
             var model = JsonConvert.DeserializeObject<X6WorkflowLoadModel>(json);
             Assert.AreEqual("<some-xaml/>", model.WorkflowXml);
         }

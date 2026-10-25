@@ -634,15 +634,38 @@ namespace Dev2.Runtime.Hosting
                 if (ServiceActionRepo.Instance.ReadCache(resourceID) == null)
                     ServiceActionRepo.Instance.AddToCache(resourceID, service);
 
+                // WF removal T1.7: snapshot the XAML before GetActivity, whose loader may clean it in place.
+                var parseObserver = CustomContainer.Get<IWorkflowParseObserver>();
+                var shadowXaml = parseObserver != null ? sa?.XamlDefinition?.ToString() : null;
+
                 var activity = GetActivity(sa);
                 if (parser != null)
                 {
                     //return parser.ParseWithoutCache(activity, resourceID, true);
-                    return parser.ParseWithCache(new ResourceActivityParseWithCacheParameters(activity, workspaceID, resourceID, true));
-                } 
+                    var parsed = parser.ParseWithCache(new ResourceActivityParseWithCacheParameters(activity, workspaceID, resourceID, true));
+                    NotifyParsed(parseObserver, resourceID, shadowXaml, parsed);
+                    return parsed;
+                }
             }
 
             return null;
+        }
+
+        // Both caches missed above, so this is a fresh parse: tell the observer (shadow mode). Never let it affect the caller.
+        internal static void NotifyParsed(IWorkflowParseObserver observer, Guid resourceID, string xamlDefinition, IDev2Activity parsed)
+        {
+            if (observer == null || parsed == null || string.IsNullOrEmpty(xamlDefinition))
+            {
+                return;
+            }
+            try
+            {
+                observer.Parsed(resourceID, new StringBuilder(xamlDefinition), parsed);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn($"Workflow parse observer failed and was ignored: {e.GetType().Name}: {e.Message}", GlobalConstants.WarewolfWarn);
+            }
         }
 
 

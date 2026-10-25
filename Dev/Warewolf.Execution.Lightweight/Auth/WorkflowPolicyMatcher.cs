@@ -82,7 +82,7 @@ public sealed class WorkflowPolicyMatcher : IWorkflowPolicyMatcher
         // Collect all role identifiers: group claims + UPN for direct-UPN entries +
         // the Entra object id, for secure.config rows keyed on the one claim that
         // stays stable across display-name/UPN drift.
-        var callerRoles = principal.Groups
+        var callerRoles = principal.EffectiveGroups
             .Append(principal.UserName)
             .Append(principal.UserId)
             .Where(s => !string.IsNullOrWhiteSpace(s))

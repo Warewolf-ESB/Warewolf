@@ -19,6 +19,7 @@ using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Xml;
 using ModelContextProtocol;
+using Warewolf.Bite;
 
 namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
@@ -68,7 +69,7 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// flip <c>valid</c> to <c>false</c>).</item>
 /// <item>Finally — only when every check above found zero hard errors, so a graph already known
 /// to be broken isn't also run through the (potentially slower, less specific) real compiler —
-/// attempts the actual <see cref="X6ToWorkflowConverter.X6JsonToWorkflow"/> compile, catching any
+/// attempts the actual <see cref="BiteFormat.X6ToXaml(string)"/> compile, catching any
 /// exception (e.g. <see cref="UnsupportedActivityTypeException"/> for the "Calculate" gap
 /// documented on <see cref="ToolCatalog"/>, or <see cref="EmptyWorkflowGraphException"/>) and
 /// reporting it as a structured error rather than letting it propagate to the MCP caller.</item>
@@ -272,7 +273,7 @@ internal static class ValidateWorkflowTool
         {
             try
             {
-                _ = new X6ToWorkflowConverter().X6JsonToWorkflow(bodyJson);
+                _ = BiteFormat.X6ToXaml(bodyJson);
             }
             catch (Exception ex)
             {

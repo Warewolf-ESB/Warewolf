@@ -96,7 +96,6 @@
     <Compile Include="ESB\Execution\ServiceTestExecutionContainer.cs" />
     <Compile Include="ESB\Execution\WebServiceContainer.cs" />
     <Compile Include="ESB\Execution\WfExecutionContainer.cs" />
-    <Compile Include="ESB\WF\XamlActivityHelper.cs" />
     <Compile Include="ESB\WF\WFApplicationUtils.cs" />
     <Compile Include="ESB\Control\EsbServicesEndpoint.cs" />
     <Compile Include="ESB\WF\JsonToWorkflowMapper.cs" />
@@ -177,6 +176,7 @@
       <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
       <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Bite\Warewolf.Bite.csproj" />
     <ProjectReference Include="..\Warewolf.Auditing\Warewolf.Auditing.csproj">
       <Project>{2C4E3DC6-2195-4486-894D-8351B066D8CA}</Project>
       <Name>Warewolf.Auditing</Name>

@@ -20,7 +20,9 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// reasoning as <see cref="ListToolsTool"/>). The three shapes below mirror the spec's own
 /// "Body data model: the X6 graph" and "Dual authoring surface" sections literally; nothing
 /// here is derived from <see cref="ToolCatalog"/> or any live workflow — per-tool
-/// <c>data</c> field shapes are <c>get_tool_schema</c>'s job, not this tool's.
+/// <c>data</c> field shapes are <c>get_tool_schema</c>'s job, not this tool's. The JSON Schema of the
+/// stored <c>&lt;BiteDefinition&gt;</c> body is <see cref="GetBiteDefinitionSchemaTool"/>'s, kept out of
+/// this response because of its size.
 /// </para>
 /// </summary>
 internal static class GetWorkflowSchemaTool

@@ -464,6 +464,21 @@ namespace Warewolf.Execution.Lightweight.Tests.Functions
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public async Task GetBiteDefinitionSchema_HappyPath()
+        {
+            var function = NewFunctions();
+            var (ctx, req) = NewRequest("get_bite_definition_schema");
+
+            var (status, body) = await Invoke(function.GetBiteDefinitionSchema(req, ctx));
+
+            Assert.AreEqual(HttpStatusCode.OK, status);
+            var json = JObject.Parse(body);
+            Assert.AreEqual(1, (int?)json["format_version"]);
+            Assert.IsNotNull(json["schema"]?["$defs"]?["activity"]);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public async Task GetToolSchema_HappyPath()
         {
             var function = NewFunctions();
