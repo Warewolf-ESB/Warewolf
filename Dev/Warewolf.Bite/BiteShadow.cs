@@ -81,7 +81,7 @@ namespace Warewolf.Bite
             {
                 watch.Restart();
                 var differences = ActivityGraphDiff.Compare(reference, candidate)
-                    .Where(d => !MintedIds.IsMintedIdDifference(d, xamlDefinition))
+                    .Where(d => !MintedIds.IsMintedIdDifference(d, xamlDefinition) && !ReencryptedSecrets.IsReencryptionDifference(d, xamlDefinition))
                     .ToList();
                 return new BiteShadowResult
                 {

@@ -12,6 +12,7 @@ using System;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Security.Encryption;
 
 namespace Warewolf.Bite.Tests
 {
@@ -78,6 +79,32 @@ namespace Warewolf.Bite.Tests
             var result = BiteShadow.Compare(reference, unsaved, "r1");
 
             Assert.IsTrue(result.Matched, result.ToString());
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("BiteShadow")]
+        [DoNotParallelize]
+        public void BiteShadow_SecretEncryptedAgainOnEachLoad_IsNotADifference()
+        {
+            // A password stored by another machine: this one cannot decrypt it, so every load encrypts it again,
+            // here through a randomising AES hook so the test behaves the same with or without Windows DPAPI.
+            var email = Xaml.Workflow($"<Flowchart.StartNode><FlowStep><da:DsfSendEmailActivity DisplayName=\"e\" UniqueID=\"{A}\" Password=\"AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAAAAAAAAAAAAA\" /></FlowStep></Flowchart.StartNode>");
+            var savedHook = DpapiWrapper.AesEncryptHook;
+            DpapiWrapper.AesEncryptHook = _ => "WFAES::" + Guid.NewGuid().ToString("N");
+            try
+            {
+                var reference = (Dev2.Activities.DsfSendEmailActivity)Xaml.Read(email)!;
+                StringAssert.StartsWith(reference.Password, "WFAES::", "the stored password must have been encrypted again on load");
+
+                var result = BiteShadow.Compare(reference, email, "r1");
+
+                Assert.IsTrue(result.Matched, result.ToString());
+            }
+            finally
+            {
+                DpapiWrapper.AesEncryptHook = savedHook;
+            }
         }
 
         [DataTestMethod]
