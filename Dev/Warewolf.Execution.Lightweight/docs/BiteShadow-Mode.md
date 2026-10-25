@@ -52,6 +52,9 @@ How to read these lines:
 - **`<resource>`** is the workflow file path on the Lightweight engine and the resource ID on the Server.
 - **Differences are paths plus the first 8 hex digits of a SHA-256 of each value, never the values themselves.** Activity properties can hold connection strings and passwords. To investigate, load the named workflow locally and run the parity harness (`Dev2.Activities.Tests`, category `WfParity`), which shows full values.
 - **Activities saved without a `UniqueID`** get an ID minted at load time on both readers. Those differences are ignored, so they never show up as mismatches.
+- **Secrets encrypted again on load** (a password stored by another machine, or as plain text) come out as
+  fresh DPAPI or `WFAES::` ciphertext on each read. When both sides are ciphertext and neither is the stored
+  value, the difference is ignored (`ReencryptedSecrets`).
 
 ## App Insights query (Lightweight engine)
 

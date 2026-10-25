@@ -102,9 +102,9 @@ namespace Dev2.Tests.Activities.Parity
 
                     var fromJson = bite.Read(converted);
                     var againstXaml = ActivityGraphDiff.Compare(bite.Read(original), fromJson)
-                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original) && !ReencryptedSecrets.IsReencryptionDifference(d, original)).ToList();
                     var againstWf = ActivityGraphDiff.Compare(Reference.Read(original), fromJson)
-                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original) && !ReencryptedSecrets.IsReencryptionDifference(d, original)).ToList();
                     compared++;
                     problems.AddRange(againstXaml.Take(10).Select(d => $"{name}: vs XAML read: {d}"));
                     problems.AddRange(againstWf.Take(10).Select(d => $"{name}: vs WF path: {d}"));
@@ -158,9 +158,9 @@ namespace Dev2.Tests.Activities.Parity
                 {
                     var rewritten = RewriteXaml(original, bite);
                     var againstWf = ActivityGraphDiff.Compare(Reference.Read(original), Reference.Read(rewritten))
-                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original) && !ReencryptedSecrets.IsReencryptionDifference(d, original)).ToList();
                     var againstBite = ActivityGraphDiff.Compare(bite.Read(original), bite.Read(rewritten))
-                        .Where(d => !MintedIds.IsMintedIdDifference(d, original)).ToList();
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, original) && !ReencryptedSecrets.IsReencryptionDifference(d, original)).ToList();
                     compared++;
                     problems.AddRange(againstWf.Take(10).Select(d => $"{name}: WF path: {d}"));
                     problems.AddRange(againstBite.Take(10).Select(d => $"{name}: BiteReader: {d}"));
@@ -267,7 +267,7 @@ namespace Dev2.Tests.Activities.Parity
                 try
                 {
                     differences = ActivityGraphDiff.Compare(expected, Candidate.Read(bite))
-                        .Where(d => !MintedIds.IsMintedIdDifference(d, bite))
+                        .Where(d => !MintedIds.IsMintedIdDifference(d, bite) && !ReencryptedSecrets.IsReencryptionDifference(d, bite))
                         .ToList();
                 }
                 catch (Exception e)
