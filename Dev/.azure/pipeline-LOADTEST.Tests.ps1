@@ -426,12 +426,20 @@ Describe 'pipeline-LOADTEST - both load-test jobs publish the real-world data fi
         $p | Should -BeGreaterThan $e
         $script:QpSteps[$d]['task'] | Should -Be 'DownloadSecureFile@1'
         $script:QpSteps[$d]['name'] | Should -Be 'profilerLoadTestData'
-        $script:QpSteps[$d]['inputs']['secureFile'] | Should -Be '$(ProfilerLoadTestDataSecureFile)'
+        $script:QpSteps[$d]['inputs']['secureFile'] | Should -Be 'CollectionsForProfiling.zip'
     }
 
-    It 'defines the data-file variables the steps read' {
+    It 'names the secure file literally - its authorisation is checked before variables are expanded' {
+        # '$(ProfilerLoadTestDataSecureFile)' made Azure DevOps look for a file with that literal
+        # name and reject the whole pipeline as invalid.
+        foreach ($job in 'ProfilerLoadTest_QueueProcessor', 'ShovelBridgeLoadTest_ExternalServiceBus') {
+            $dl = @((Get-Job $job)['steps']) | Where-Object { $_['task'] -eq 'DownloadSecureFile@1' -and $_['name'] -eq 'profilerLoadTestData' }
+            $dl['inputs']['secureFile'] | Should -Not -Match '\$\(' -Because "$job's secure-file name must be a literal"
+        }
+    }
+
+    It 'defines the data-file variable the steps read' {
         $vars = $script:QpJob['variables']
-        $vars['ProfilerLoadTestDataSecureFile'] | Should -Be 'CollectionsForProfiling.zip'
         $vars['ProfilerLoadTestDataFile'] | Should -Be '$(Agent.BuildDirectory)\ProfilerLoadTestData\CollectionsForProfiling.json'
     }
 
@@ -484,12 +492,11 @@ Describe 'pipeline-LOADTEST - both load-test jobs publish the real-world data fi
             $r | Should -BeGreaterThan $e
             $script:SbSteps[$d]['task'] | Should -Be 'DownloadSecureFile@1'
             $script:SbSteps[$d]['name'] | Should -Be 'profilerLoadTestData'
-            $script:SbSteps[$d]['inputs']['secureFile'] | Should -Be '$(ProfilerLoadTestDataSecureFile)'
+            $script:SbSteps[$d]['inputs']['secureFile'] | Should -Be 'CollectionsForProfiling.zip'
         }
 
-        It 'defines the same data-file variables as the QueueProcessor job' {
+        It 'defines the same data-file variable as the QueueProcessor job' {
             $vars = $script:SbJob['variables']
-            $vars['ProfilerLoadTestDataSecureFile'] | Should -Be $script:QpJob['variables']['ProfilerLoadTestDataSecureFile']
             $vars['ProfilerLoadTestDataFile'] | Should -Be $script:QpJob['variables']['ProfilerLoadTestDataFile']
         }
 
