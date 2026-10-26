@@ -632,6 +632,17 @@ Eight are regression tests for defects found while building and running this:
   Phase 0, `Initialize-WwAzNonInteractive` is asserted to run before the first az call, and the
   report step is bounded by a timeout that names the step and points at stdin as the usual cause
 
+### Publishing real data: `-DataFilePath`
+
+`Publish-WwQueueBurst.ps1 -DataFilePath <json>` publishes **one message per record** of a JSON array
+of flat input records instead of generating bodies (`-SuccessCount`, `-BodyShape` and `-MandateId`
+are then ignored). Each body is the record exactly as written, empty values included, and the
+record's `MandateId` is its manifest key. `pipeline-LOADTEST.yml` uses this for the
+QueueProcessor job and, through `Test-ShovelBridgeE2E.ps1 -DataFilePath`, for the ShovelBridge job;
+see `ShovelBridge-Architecture.md` for the secure-file hand-off, the fixed-MandateId re-run caveat
+and why `-MessageCount` is not passed. The data-file path of the publisher is covered in
+`Tests/Publish-WwQueueBurst.Tests.ps1`.
+
 ---
 
 ## Related
