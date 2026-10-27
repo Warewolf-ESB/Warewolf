@@ -280,7 +280,8 @@ internal static class ListWorkflowsTool
 
     // ── Pagination cursor (opaque offset token) ───────────────────────────────
 
-    static int DecodeCursor(string? cursor)
+    // internal so ListSourcesTool pages the same way.
+    internal static int DecodeCursor(string? cursor)
     {
         if (string.IsNullOrWhiteSpace(cursor))
         {
@@ -306,7 +307,7 @@ internal static class ListWorkflowsTool
         return 0;
     }
 
-    static string EncodeCursor(int offset) =>
+    internal static string EncodeCursor(int offset) =>
         Convert.ToBase64String(Encoding.UTF8.GetBytes($"offset:{offset}"));
 }
 

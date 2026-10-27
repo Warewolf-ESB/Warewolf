@@ -27,7 +27,7 @@ using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 namespace Warewolf.Execution.Lightweight.Functions
 {
     /// <summary>
-    /// Plain REST wrappers around the 18 workflow-authoring and licensing tool handlers under
+    /// Plain REST wrappers around the workflow-authoring and licensing tool handlers under
     /// <c>Mcp/ToolHandlers/</c>, one HTTP-triggered POST route per tool under
     /// <c>/mcp-api/{tool_name}</c>. Replaces the retired <c>/mcp</c> JSON-RPC/SSE
     /// endpoint (formerly <c>McpFunction</c>).
@@ -117,6 +117,16 @@ namespace Warewolf.Execution.Lightweight.Functions
             {
                 var p = await ReadBody<ListWorkflowsRequest>(req, ct) ?? new ListWorkflowsRequest();
                 return ListWorkflowsTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Folder, p.Cursor, p.PageSize);
+            });
+
+        [Function("McpApiListSources")]
+        public Task<HttpResponseData> ListSources(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/list_sources")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<ListWorkflowsRequest>(req, ct) ?? new ListWorkflowsRequest();
+                return ListSourcesTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Folder, p.Cursor, p.PageSize);
             });
 
         [Function("McpApiListTools")]
