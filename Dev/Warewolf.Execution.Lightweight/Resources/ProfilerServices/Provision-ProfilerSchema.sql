@@ -821,15 +821,21 @@ BEGIN
 			)
 
 	-- Score Collection Results
+	-- One source row per (ProfileId, DebitRunId): a window spanning two payment cycles can hold several
+	-- ProfileDates for the same profile and debit run, and MandateScores has one row per
+	-- (MandateId, ProfileId, DebitRunId). IsHit is 1 when ANY of those dates is the result date.
 	MERGE [Profiler].[MandateScores] WITH (
 			ROWLOCK
 			,UPDLOCK
 			) AS MandateScores
 	USING (
-		SELECT ProfileDateId
-			,CollectionDate
-			,pd.DebitRunId
+		SELECT pd.DebitRunId
 			,pd.ProfileId
+			,MAX(CASE
+					WHEN @ResultDate = pd.CollectionDate
+						THEN 1
+					ELSE 0
+					END) AS IsHit
 		FROM [Profiler].[ProfileDates] pd WITH (NOLOCK)
 		LEFT OUTER JOIN [Profiler].[MandateScores] ms WITH (NOLOCK) ON ms.MandateId = @MandateId
 			AND ms.PaymentCycle >= @ResultPaymentCycle
@@ -838,6 +844,8 @@ BEGIN
 		WHERE pd.CollectionDate BETWEEN cast(@ResultPresentedOnDate AS DATE)
 				AND cast(@ResultDate AS DATE)
 			AND ms.MandateId IS NULL
+		GROUP BY pd.DebitRunId
+			,pd.ProfileId
 		) AS [ProfileDates]
 		ON [MandateScores].ProfileId = [ProfileDates].ProfileId
 			AND [MandateScores].DebitRunId = [ProfileDates].DebitRunId
@@ -847,7 +855,7 @@ BEGIN
 			UPDATE
 			SET [MandateScores].[Score] = CASE 
 					WHEN @ResultType = 'Success'
-						AND @ResultDate = [ProfileDates].CollectionDate
+						AND [ProfileDates].IsHit = 1
 						THEN CASE 
 								WHEN [MandateScores].[Score] = - 1
 									THEN 1
@@ -878,7 +886,7 @@ BEGIN
 				,getdate()
 				,CASE 
 					WHEN @ResultType = 'Success'
-						AND @ResultDate = [ProfileDates].[CollectionDate]
+						AND [ProfileDates].IsHit = 1
 						THEN 1
 					ELSE - 1
 					END

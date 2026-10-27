@@ -2761,6 +2761,21 @@ consequences worth knowing before copying the pattern to another rig:
   the next run's apply step would have deleted the new rows again, because the `ProfileDates` seed
   deletes rows missing from its source. Re-applying the regenerated script to the live database
   changed 0 rows.
+- **2026-10-27 — build 31052: 77 of 20,000 dead-lettered on a duplicate key in
+  `usp_ScoreMandateCollectionDates`, not on load.** All 77 carry `Failed:ExecutionFailed` /
+  "Workflow execution failed due to an unexpected error." (the engine's generic wrapper). App Insights
+  (`warewolfserver-uat-ai`) kept only four, each SQL error 2627 on `PK_MandateProfileScores`; the other
+  73 are assumed to share the cause. The data file has 20,000 distinct MandateIds, so it is not two
+  messages racing on one mandate. The cause is deterministic: the first `MERGE`'s source returned one
+  row per `ProfileDate` in `[ResultPresentedOnDate, ResultDate]`, and a window spanning two payment
+  cycles holds two for the same `(ProfileId, DebitRunId)` (e.g. `LastDay-ClearsInTwoBankDays` / 31 on
+  Sep 2 and Oct 2), which `MandateScores` keys as one row. CECB-2050 (`8ff9262`) removed the old
+  same-cycle filter that hid this. When the row already existed the same shape raises error 8672.
+  **Fixed** by grouping the source to one row per `(ProfileId, DebitRunId)` with `IsHit =
+  MAX(ResultDate = CollectionDate)`: a Success scores +1 if any candidate date is the result date,
+  else -1. `ResultDate` can only equal the latest candidate, so "earliest wins" would be wrong.
+  Regression suite: `Scripts/Tests/Provision-ProfilerSchema.Scoring.Tests.ps1` (needs Docker).
+  Not yet verified on UAT: the fix must be applied to `WarewolfDevOpsTestDb` and the 20k run repeated.
 
 
 ## Promotion status

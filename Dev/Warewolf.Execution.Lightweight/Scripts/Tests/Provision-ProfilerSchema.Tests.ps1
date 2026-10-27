@@ -89,6 +89,19 @@ Describe 'Provision-ProfilerSchema.sql - coverage of the RequestForProfiling cal
             'Copy it from Warewolf.ProfilerDB (CREATE -> CREATE OR ALTER), with its dependencies')
     }
 
+    It 'carries usp_ScoreMandateCollectionDates identical to the Unlimited.ProfilerServices source (whitespace aside)' -Skip:(-not $env:WW_PROFILERSERVICES_REPO) {
+        # Optional drift guard: set WW_PROFILERSERVICES_REPO to a checkout of Unlimited.ProfilerServices.
+        # Skipped when unset (CI has no sibling checkout); the behavioural suite
+        # Provision-ProfilerSchema.Scoring.Tests.ps1 is what protects the procedure's semantics there.
+        $upstreamPath = Join-Path $env:WW_PROFILERSERVICES_REPO 'Database/Warewolf.ProfilerDB/Profiler/Stored Procedures/usp_ScoreMandateCollectionDates.sql'
+        $norm = { param($s) ($s -replace '^﻿', '' -replace '\s+', ' ').Trim() }
+        $upstream = & $norm ('CREATE OR ALTER ' + ((Get-Content -LiteralPath $upstreamPath -Raw) -replace '^﻿?\s*CREATE\s+', ''))
+        $m = [regex]::Match($script:SchemaSql, 'CREATE OR ALTER PROCEDURE \[Profiler\]\.\[usp_ScoreMandateCollectionDates\].*?\r?\nGO\r?\n', 'Singleline')
+        $m.Success | Should -BeTrue
+        $local = & $norm ($m.Value -replace '\r?\nGO\r?\n$', '')
+        $local | Should -BeExactly $upstream -Because 'the provisioning script must be a verbatim copy (CREATE -> CREATE OR ALTER only) of the upstream procedure'
+    }
+
     It 'defines func_PublicHolidaysByYear before the procedure that selects from it' {
         $fn   = $script:SchemaSql.IndexOf('CREATE OR ALTER FUNCTION [Profiler].[func_PublicHolidaysByYear]')
         $proc = $script:SchemaSql.IndexOf('CREATE OR ALTER PROCEDURE [Profiler].[usp_GetPublicHolidaysInDateRange]')
