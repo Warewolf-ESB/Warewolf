@@ -599,3 +599,51 @@ Describe 'pipeline-LOADTEST - end-to-end message processing time' -Skip:(-not $s
         ($out | Where-Object { $_ -like '*QueueProcessor*' }) | Should -Match 'not recorded'
     }
 }
+
+Describe 'pipeline-LOADTEST - Profiler schema provisioning survives a paused serverless database' -Skip:(-not $script:HaveYaml) {
+    <#
+        Build 31060: WarewolfDevOpsTestDb (serverless, autoPauseDelay 60) was resuming, and the
+        step's single 30s connection attempt timed out in the post-login phase. EXECUTED against a
+        stubbed Invoke-Sqlcmd that fails with each queued message in turn.
+    #>
+
+    BeforeAll {
+        $script:ProvisionStep = Find-Step 'ShovelBridgeLoadTest_ExternalServiceBus' 'Provision Profiler schema on WarewolfDevOpsTestDb (idempotent)'
+
+        function script:Invoke-ProvisionStep {
+            param([string[]] $Failures)
+            $script:SqlCalls = 0
+            $script:SqlFailures = [System.Collections.Generic.Queue[string]]::new([string[]]@($Failures))
+            $sb = [scriptblock]::Create((Expand-Macros (Get-StepScript $script:ProvisionStep) @{ 'Build.SourcesDirectory' = 'C:\src' }))
+            & {
+                function Get-Module { $true }
+                function Import-Module {}
+                function Start-Sleep {}
+                function Invoke-Sqlcmd { $script:SqlCalls++; if ($script:SqlFailures.Count) { throw $script:SqlFailures.Dequeue() } }
+                . $sb
+            } 6>&1 | ForEach-Object { [string]$_ }
+        }
+    }
+
+    It 'retries a post-login connection timeout and then succeeds' {
+        $out = Invoke-ProvisionStep -Failures 'Connection Timeout Expired.  The timeout period elapsed during the post-login phase.'
+        $script:SqlCalls | Should -Be 2
+        $out | Should -Contain 'Profiler schema/procedures provisioned (idempotent) on WarewolfDevOpsTestDb.'
+        ($out | Where-Object { $_ -like '##`[warning]Attempt 1/5*' }) | Should -Not -BeNullOrEmpty
+    }
+
+    It 'retries 40613 "not currently available" while the database resumes' {
+        $null = Invoke-ProvisionStep -Failures 'Database ''WarewolfDevOpsTestDb'' on server is not currently available.', 'Error 40613'
+        $script:SqlCalls | Should -Be 3
+    }
+
+    It 'fails at once, without retrying, on an error in the script itself' {
+        { Invoke-ProvisionStep -Failures "Invalid object name 'Profiler.Foo'." } | Should -Throw "*Invalid object name*"
+        $script:SqlCalls | Should -Be 1
+    }
+
+    It 'gives up after five attempts when the database never comes back' {
+        { Invoke-ProvisionStep -Failures (1..6 | ForEach-Object { 'Connection Timeout Expired.' }) } | Should -Throw '*Connection Timeout Expired*'
+        $script:SqlCalls | Should -Be 5
+    }
+}
