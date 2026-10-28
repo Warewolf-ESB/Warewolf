@@ -719,6 +719,11 @@ function Wait-WwTriggerQueueDrain {
         has not produced a result worth polling for, and failing here surfaces the last observed
         queue depths - which is the diagnostic that says whether messages were still executing,
         still queued, or already dead-lettered.
+
+        Returns the last readable counts and QuietSince - the FIRST empty reading of the quiet
+        window that drained it, which is when processing actually finished (to within
+        -PollIntervalSeconds). The return itself comes -QuietSeconds later, so timing the run
+        off the return would add the whole quiet window to it.
     #>
     param(
         [Parameter(Mandatory)][string] $NamespaceName,
@@ -757,7 +762,7 @@ function Wait-WwTriggerQueueDrain {
 
         if ($verdict.IsDrained) {
             Write-Ok "Trigger queue '$QueueName' drained (active+scheduled 0 for $($verdict.SecondsQuiet)s >= ${QuietSeconds}s). Dead-letter depth now: $($last.DeadLetter)."
-            return $last
+            return [pscustomobject]@{ Counts = $last; QuietSince = $verdict.QuietSince }
         }
 
         if ($now -ge $deadline) {
@@ -783,6 +788,104 @@ function Wait-WwTriggerQueueDrain {
         }
 
         Start-Sleep -Seconds $PollIntervalSeconds
+    }
+}
+
+function Format-WwDuration {
+    param([Parameter(Mandatory)][double] $Seconds)
+    $span = [TimeSpan]::FromSeconds([Math]::Round($Seconds))
+    if ($span.TotalHours -ge 1) { return '{0}h {1:D2}m {2:D2}s' -f [int][Math]::Floor($span.TotalHours), $span.Minutes, $span.Seconds }
+    if ($span.TotalMinutes -ge 1) { return '{0}m {1:D2}s' -f $span.Minutes, $span.Seconds }
+    return '{0}s' -f $span.Seconds
+}
+
+function Get-WwProcessingTimings {
+    <#
+        Splits a publish -> drain -> poll run into the durations a reader actually wants. Pure:
+        timestamps in, numbers out.
+
+        ProcessingSeconds (publish start -> trigger queue first read empty) is the headline: the
+        time the whole pipeline took to consume every message. It is NOT the harness's poll-leg
+        "exec/s" figure, which only measures reading back results that were already recorded
+        (build 31055 printed 96.5 exec/s for a run that processed at ~15 msg/s). DrainedAtUtc is
+        only as precise as the drain loop's poll interval.
+
+        A null DrainedAtUtc (publish failed, so nothing was drained) leaves the processing figures
+        null rather than inventing them; likewise a null PollEndUtc leaves PollSeconds null.
+    #>
+    param(
+        [Parameter(Mandatory)][int]      $MessageCount,
+        [Parameter(Mandatory)][datetime] $PublishStartUtc,
+        [Parameter(Mandatory)][datetime] $PublishEndUtc,
+        $DrainedAtUtc,
+        $DrainConfirmedUtc,
+        $PollEndUtc
+    )
+
+    $publishSeconds    = ($PublishEndUtc - $PublishStartUtc).TotalSeconds
+    $processingSeconds = $null
+    $quietWaitSeconds  = $null
+    $pollSeconds       = $null
+    $messagesPerSecond = $null
+
+    if ($null -ne $DrainedAtUtc) {
+        $processingSeconds = ([datetime] $DrainedAtUtc - $PublishStartUtc).TotalSeconds
+        if ($processingSeconds -gt 0) { $messagesPerSecond = [Math]::Round($MessageCount / $processingSeconds, 1) }
+        if ($null -ne $DrainConfirmedUtc) { $quietWaitSeconds = ([datetime] $DrainConfirmedUtc - [datetime] $DrainedAtUtc).TotalSeconds }
+        if ($null -ne $PollEndUtc -and $null -ne $DrainConfirmedUtc) { $pollSeconds = ([datetime] $PollEndUtc - [datetime] $DrainConfirmedUtc).TotalSeconds }
+    }
+
+    [pscustomobject]@{
+        MessageCount      = $MessageCount
+        PublishSeconds    = [Math]::Round($publishSeconds, 1)
+        ProcessingSeconds = if ($null -ne $processingSeconds) { [Math]::Round($processingSeconds, 1) } else { $null }
+        QuietWaitSeconds  = if ($null -ne $quietWaitSeconds)  { [Math]::Round($quietWaitSeconds, 1) }  else { $null }
+        PollSeconds       = if ($null -ne $pollSeconds)       { [Math]::Round($pollSeconds, 1) }       else { $null }
+        MessagesPerSecond = $messagesPerSecond
+    }
+}
+
+function Write-WwProcessingTimings {
+    <#
+        Prints the timing block, and under Azure DevOps (TF_BUILD) also publishes the headline as
+        output variables (read by pipeline-LOADTEST.yml's Report_Step_Timings stage through the
+        step's name) and as a Markdown table on the build's Summary tab.
+    #>
+    param(
+        [Parameter(Mandatory)] $Timings,
+        [int] $DrainPollIntervalSeconds = 30
+    )
+
+    $na = 'n/a (nothing was drained)'
+    $processing = if ($null -ne $Timings.ProcessingSeconds) { "$(Format-WwDuration $Timings.ProcessingSeconds) ($($Timings.MessagesPerSecond) msg/s)" } else { $na }
+    $quietWait  = if ($null -ne $Timings.QuietWaitSeconds)  { Format-WwDuration $Timings.QuietWaitSeconds } else { $na }
+    $poll       = if ($null -ne $Timings.PollSeconds)       { Format-WwDuration $Timings.PollSeconds } else { 'n/a (not polled)' }
+
+    Write-Host "  Timings ($($Timings.MessageCount) messages):" -ForegroundColor White
+    Write-Host "    Publish to RabbitMQ                  : $(Format-WwDuration $Timings.PublishSeconds)" -ForegroundColor White
+    Write-Host "    END-TO-END PROCESSING                : $processing" -ForegroundColor Green
+    Write-Host "      (publish start -> trigger queue first empty, +/-${DrainPollIntervalSeconds}s)" -ForegroundColor White
+    Write-Host "    Quiet-window confirmation (not work) : $quietWait" -ForegroundColor White
+    Write-Host "    Result poll (reads recorded results) : $poll" -ForegroundColor White
+
+    if ($env:TF_BUILD) {
+        Write-Host "##vso[task.setvariable variable=MessageCount;isOutput=true]$($Timings.MessageCount)"
+        Write-Host "##vso[task.setvariable variable=ProcessingSeconds;isOutput=true]$($Timings.ProcessingSeconds)"
+        Write-Host "##vso[task.setvariable variable=MessagesPerSecond;isOutput=true]$($Timings.MessagesPerSecond)"
+
+        $summaryDir = if ($env:AGENT_TEMPDIRECTORY) { $env:AGENT_TEMPDIRECTORY } else { [System.IO.Path]::GetTempPath() }
+        $summaryPath = Join-Path $summaryDir 'ShovelBridgeTimings.md'
+        @(
+            "### ShovelBridge load test timings ($($Timings.MessageCount) messages)"
+            ''
+            '| Stage | Duration |'
+            '|---|---|'
+            "| Publish to RabbitMQ | $(Format-WwDuration $Timings.PublishSeconds) |"
+            "| **End-to-end processing** (publish start -> trigger queue empty, +/-${DrainPollIntervalSeconds}s) | **$processing** |"
+            "| Quiet-window confirmation (not work) | $quietWait |"
+            "| Result poll (reads recorded results) | $poll |"
+        ) -join "`n" | Set-Content -LiteralPath $summaryPath -Encoding utf8
+        Write-Host "##vso[task.uploadsummary]$summaryPath"
     }
 }
 
@@ -952,6 +1055,31 @@ ORDER BY e.SeqNum;
     }
 }
 
+function Invoke-WwProfilerReconciliation {
+    <#
+        Runs Get-WwProfilerReconciliationQueries' chunks and returns every row as one flat
+        sequence, in SeqNum order.
+
+        Invoke-WwSqlQuery returns each query's rows as ONE array object (return , @(...)), which
+        an assignment unrolls but a foreach statement's output does not - collecting the chunks
+        directly gave one Object[] per chunk, and the verdict code's [int]$_.RowsForMandate then
+        failed with "Cannot convert System.Object[] to System.Int32" (build 31055). Assigning
+        each chunk first and then emitting it unrolls it row by row.
+
+        Invoke-WwSqlQuery comes from Invoke-WwQueueLoadTest.ps1, which Phase 4c dot-sources
+        before calling this.
+    #>
+    param(
+        [Parameter(Mandatory)][string]   $ConnectionString,
+        [Parameter(Mandatory)][string[]] $MandateIds
+    )
+
+    foreach ($reconQuery in (Get-WwProfilerReconciliationQueries -MandateIds $MandateIds)) {
+        $chunkRows = Invoke-WwSqlQuery -ConnectionString $ConnectionString -Query $reconQuery
+        $chunkRows
+    }
+}
+
 if ($LoadFunctionsOnly) { return }
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -988,6 +1116,8 @@ if ($RabbitMqMode -eq 'External') {
 # Declared unconditionally so the Phase 4 branches can test it under Set-StrictMode even
 # when -VerifyWorkflowExecution was never passed (the validation block below is what sets it).
 $useLateMintedResultToken = $false
+# Set by the split publish -> drain -> poll path only; the final summary repeats its headline.
+$processingTimings = $null
 
 # -DataFilePath: one message per record of a real-world data file instead of the one templated
 # -WorkflowInputsJson. It sizes the run (an explicit, disagreeing -MessageCount is an error rather
@@ -1568,19 +1698,25 @@ try {
         if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) { $publishArgs += @('--message-auth-token', (ConvertFrom-SecureStringPlain $MessageAuthToken)) }
 
         Write-Step "dotnet run (E2EHarness --phase publish, $MessageCount message(s), no poll token needed)"
+        # The publish leg's own "Published N in Xs" line covers only the publish; these stamps
+        # are what the end-to-end processing time (Write-WwProcessingTimings) is measured from.
+        $publishStartUtc = (Get-Date).ToUniversalTime()
         & dotnet @publishArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
         $harnessExitCode = $LASTEXITCODE
+        $publishEndUtc   = (Get-Date).ToUniversalTime()
 
         if ($harnessExitCode -ne 0) {
             Write-Note "Publish leg failed (exit $harnessExitCode) - skipping the drain wait and result poll; there is nothing to reconcile."
+            Write-WwProcessingTimings -Timings (Get-WwProcessingTimings -MessageCount $MessageCount -PublishStartUtc $publishStartUtc -PublishEndUtc $publishEndUtc)
         } else {
             Write-Step "Waiting for trigger queue '$DestinationQueueName' to drain (quiet window ${DrainQuietSeconds}s, budget ${DrainTimeoutSeconds}s)"
-            Wait-WwTriggerQueueDrain `
+            $drain = Wait-WwTriggerQueueDrain `
                 -NamespaceName   $ServiceBusNamespaceName `
                 -ResourceGroup   $ServiceBusResourceGroup `
                 -QueueName       $DestinationQueueName `
                 -QuietSeconds    $DrainQuietSeconds `
-                -TimeoutSeconds  $DrainTimeoutSeconds | Out-Null
+                -TimeoutSeconds  $DrainTimeoutSeconds
+            $drainConfirmedUtc = (Get-Date).ToUniversalTime()
 
             Write-Step "Minting a fresh result-poll token (client '$ResultPollClientId' -> audience 'api://$ResultPollResourceAppId')"
             Import-Module (Join-Path $PSScriptRoot '..' '..' 'WwE2E.Common.psm1') -Force -ErrorAction Stop
@@ -1615,6 +1751,16 @@ try {
             Write-Step "dotnet run (E2EHarness --phase poll, $MessageCount correlationId(s))"
             & dotnet @pollArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
             $harnessExitCode = $LASTEXITCODE
+
+            # Printed here, before Phases 4b-4d, so it appears whether or not the run passes.
+            $processingTimings = Get-WwProcessingTimings `
+                -MessageCount      $MessageCount `
+                -PublishStartUtc   $publishStartUtc `
+                -PublishEndUtc     $publishEndUtc `
+                -DrainedAtUtc      $drain.QuietSince `
+                -DrainConfirmedUtc $drainConfirmedUtc `
+                -PollEndUtc        (Get-Date).ToUniversalTime()
+            Write-WwProcessingTimings -Timings $processingTimings
         }
     } elseif ($VerifyWorkflowExecution) {
         $harnessArgs = @(
@@ -1779,9 +1925,7 @@ try {
             $profilerRows = $null
             if ($null -ne $dataRecords) {
                 Write-Step "Reconciling Profiler.ProfilerRecommendation for the $($dataRecords.Count) MandateId(s) in the data file (expecting $MessageCount)"
-                $profilerRows = foreach ($reconQuery in (Get-WwProfilerReconciliationQueries -MandateIds $dataRecords.MandateIds)) {
-                    Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query $reconQuery
-                }
+                $profilerRows = Invoke-WwProfilerReconciliation -ConnectionString $jobsDbConnStringPlain -MandateIds $dataRecords.MandateIds
             } else {
             $guidStem    = Get-WwCorrelationGuidStem -CorrelationIdPrefix $CorrelationId
             $escapedStem = $guidStem.Replace("'", "''")
@@ -1984,6 +2128,9 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
         Write-Host "  Destination   : $DestinationQueueName (Service Bus, Managed Identity trigger)" -ForegroundColor White
         Write-Host "  Workflow      : (fixed by the deployed trigger's Settings/servicebustrigger.bite)" -ForegroundColor White
         Write-Host "  Messages      : $MessageCount" -ForegroundColor White
+        if ($null -ne $processingTimings -and $null -ne $processingTimings.ProcessingSeconds) {
+            Write-Host "  Processed in  : $(Format-WwDuration $processingTimings.ProcessingSeconds) end-to-end ($($processingTimings.MessagesPerSecond) msg/s; publish start -> trigger queue empty)" -ForegroundColor Green
+        }
         Write-Host "  CorrelationId : $CorrelationId" -ForegroundColor White
         Write-Host "  Engine        : $EngineBaseUrl" -ForegroundColor White
     } else {

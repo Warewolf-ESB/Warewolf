@@ -538,3 +538,64 @@ Describe 'pipeline-LOADTEST - both load-test jobs publish the real-world data fi
         }
     }
 }
+
+Describe 'pipeline-LOADTEST - end-to-end message processing time' -Skip:(-not $script:HaveYaml) {
+
+    BeforeAll {
+        $script:Report = Get-Job 'Report_Step_Timings'
+        $script:PrintStep = @($script:Report['steps']) | Where-Object { $_['displayName'] -eq 'Print end-to-end message processing time' }
+
+        function script:Invoke-PrintStep {
+            param([hashtable] $Values)
+            $sb = [scriptblock]::Create((Expand-Macros (Get-StepScript $script:PrintStep) $Values))
+            & $sb 6>&1 | ForEach-Object { [string]$_ }
+        }
+    }
+
+    It 'names the steps that publish the processing figures' {
+        (Find-Step 'ShovelBridgeLoadTest_ExternalServiceBus' 'Run ShovelBridge load test (20000 messages, VerifyWorkflowExecution mode, UAT engine)')['name'] |
+            Should -Be 'ShovelBridgeRun'
+        $drain = Find-Step 'ProfilerLoadTest_QueueProcessor' 'Wait for the queue to drain'
+        $drain['name'] | Should -Be 'QueueProcessorDrain'
+        foreach ($v in 'MessageCount', 'ProcessingSeconds', 'MessagesPerSecond') {
+            Get-StepScript $drain | Should -Match ([regex]::Escape("variable=$v;isOutput=true]"))
+        }
+    }
+
+    It 'stamps the QueueProcessor publish start before publishing the burst' {
+        $publish = Get-StepScript (Find-Step 'ProfilerLoadTest_QueueProcessor' 'Publish the burst (one message per data-file record, RequestForProfiling shape)')
+        $publish.IndexOf('variable=BurstPublishStartUtc]') | Should -BeGreaterThan -1
+        $publish.IndexOf('variable=BurstPublishStartUtc]') | Should -BeLessThan $publish.IndexOf('Publish-WwQueueBurst.ps1')
+        Get-StepScript (Find-Step 'ProfilerLoadTest_QueueProcessor' 'Wait for the queue to drain') | Should -Match '\$\(BurstPublishStartUtc\)'
+    }
+
+    It 'reads every figure from an existing job and named step in Load_Test' {
+        $expected = @{
+            Shovel = 'ShovelBridgeLoadTest_ExternalServiceBus', 'ShovelBridgeRun'
+            Qp     = 'ProfilerLoadTest_QueueProcessor', 'QueueProcessorDrain'
+        }
+        foreach ($prefix in $expected.Keys) {
+            $job, $step = $expected[$prefix]
+            (Get-Job $job) | Should -Not -BeNullOrEmpty
+            foreach ($v in 'MessageCount', 'ProcessingSeconds', 'MessagesPerSecond') {
+                $script:Report['variables']["$prefix$v"] | Should -Be "`$[ stageDependencies.Load_Test.$job.outputs['$step.$v'] ]"
+            }
+        }
+        (Get-Stage 'Report_Step_Timings')['dependsOn'] | Should -Contain 'Load_Test'
+    }
+
+    It 'prints the headline first, and even when Load_Test failed' {
+        $script:Report['steps'][1]['displayName'] | Should -Be 'Print end-to-end message processing time'
+        $script:PrintStep['condition'] | Should -Be 'always()'
+    }
+
+    It 'prints each job''s processing time, or "not recorded" for a job that did not drain' {
+        $out = Invoke-PrintStep @{
+            ShovelMessageCount = '20000'; ShovelProcessingSeconds = '1350.4'; ShovelMessagesPerSecond = '14.8'
+            QpMessageCount     = '';      QpProcessingSeconds     = '';       QpMessagesPerSecond     = ''
+        }
+        $out[0] | Should -Match 'END-TO-END PROCESSING TIME'
+        $out | Should -Contain '  RabbitMQ Shovel -> Service Bus: 20000 message(s) in 0h 22m 30s (14.8 msg/s)'
+        ($out | Where-Object { $_ -like '*QueueProcessor*' }) | Should -Match 'not recorded'
+    }
+}

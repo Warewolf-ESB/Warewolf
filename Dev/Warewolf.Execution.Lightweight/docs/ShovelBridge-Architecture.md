@@ -2854,6 +2854,28 @@ This worker was originally built as a client example and has been promoted to a
     cycle (202610; the old template used 202402).
   - `VerifyWorkflowInputsJson` remains, but only the pre-warm steps read it.
 
+- **2026-10-28 — build 31055: Phase 4c's data-file reconciliation never ran, and the run's only
+  throughput figure was the wrong one.**
+  - **Phase 4c** failed (non-fatally) with `Cannot convert the "System.Object[]" value … to type
+    "System.Int32"`. `Invoke-WwSqlQuery` returns each query's rows as ONE array object
+    (`return , @(...)`); an assignment unrolls that, but the `foreach` over the 1000-id chunks did
+    not, so `$profilerRows` held 20 `Object[]`s and `[int]$_.RowsForMandate` read a whole chunk at
+    once. The chunk loop is now `Invoke-WwProfilerReconciliation`, which unrolls each chunk; Pester
+    pins it with the real return shape. The generated-GUID path (one query, assigned) was never
+    affected.
+  - **Timing.** The log's only rate, `in 207.2s (96.5 exec/s)`, is the *poll* leg reading back
+    results already recorded; the run actually processed at ~15 msg/s (~22 min). Phase 4 now
+    prints a Timings block — publish, **end-to-end processing (publish start -> trigger queue first
+    empty, ±30s drain poll)**, quiet-window confirmation, result poll — repeats the headline in
+    the PASSED summary, and under Azure DevOps adds it to the build Summary tab and sets
+    `ShovelBridgeRun.{MessageCount,ProcessingSeconds,MessagesPerSecond}` output variables.
+    `Wait-WwTriggerQueueDrain` returns `QuietSince` for this (its return comes a whole
+    `-DrainQuietSeconds` later). The QueueProcessor job's drain step reports the same figure
+    (`QueueProcessorDrain.*`, publish start stamped as `BurstPublishStartUtc`; RabbitMQ reports
+    ready messages only, so up to one prefetch per consumer may still be executing). The
+    `Report_Step_Timings` stage prints both first, ahead of its step table — whose longest
+    ShovelBridge row also includes pre-flight, the quiet window, the poll and Phases 4b-4d.
+
 
 ## See also
 

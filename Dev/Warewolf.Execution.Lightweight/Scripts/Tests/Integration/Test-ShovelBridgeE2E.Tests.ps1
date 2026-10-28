@@ -539,6 +539,49 @@ Describe 'Test-ShovelBridgeE2E — Get-WwProfilerReconciliationQueries (pure, no
     }
 }
 
+Describe 'Test-ShovelBridgeE2E — Invoke-WwProfilerReconciliation (chunk flattening, build 31055 regression)' {
+    <#
+        Invoke-WwSqlQuery is mocked with the real function's return shape - each query's rows as
+        ONE array object (return , @(...)) - which is what a foreach over the chunks failed to
+        unroll. Every third row is reported missing, so the verdict filter has something to count.
+    #>
+
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+        function script:New-Ids { param([int] $Count) 0..($Count - 1) | ForEach-Object { '{0:X8}-0000-0000-0000-000000000000' -f $_ } }
+        # Stand-in so Pester has a command to mock; the real one is dot-sourced from
+        # Invoke-WwQueueLoadTest.ps1 at Phase 4c.
+        function script:Invoke-WwSqlQuery { param([string] $ConnectionString, [string] $Query) }
+    }
+
+    BeforeEach {
+        Mock Invoke-WwSqlQuery {
+            $seqs = [regex]::Matches($Query, "\((\d+),'") | ForEach-Object { [int]$_.Groups[1].Value }
+            return , @($seqs | ForEach-Object {
+                [pscustomobject]@{ SeqNum = $_; RowsForMandate = [int]($_ % 3 -ne 0); ScoreRows = 1 }
+            })
+        }
+    }
+
+    It 'returns one flat row per MandateId across chunks, each with an integer SeqNum' {
+        $rows = @(Invoke-WwProfilerReconciliation -ConnectionString 'cs' -MandateIds (New-Ids 2500))
+        $rows.Count | Should -Be 2500
+        foreach ($r in $rows) { $r.SeqNum | Should -BeOfType [int] }
+        @($rows.SeqNum) | Should -Be @(0..2499)
+    }
+
+    It 'feeds the Phase 4c verdict filter without an Object[]-to-Int32 conversion error' {
+        $rows = @(Invoke-WwProfilerReconciliation -ConnectionString 'cs' -MandateIds (New-Ids 2500))
+        $missing = @($rows | Where-Object { [int]$_.RowsForMandate -eq 0 } | ForEach-Object { [int]$_.SeqNum })
+        $missing.Count | Should -Be 834   # SeqNums 0, 3, ... 2499 → ceil(2500 / 3)
+    }
+
+    It 'runs one query per 1000-id chunk' {
+        $null = Invoke-WwProfilerReconciliation -ConnectionString 'cs' -MandateIds (New-Ids 2500)
+        Should -Invoke Invoke-WwSqlQuery -Times 3 -Exactly
+    }
+}
+
 Describe 'Test-ShovelBridgeE2E — -DataFilePath parameter validation' {
     <#
         Every throw here happens in Phase 0, before any Docker/RabbitMQ/Service Bus/SQL access
@@ -637,5 +680,90 @@ Describe 'Test-ShovelBridgeE2E — Get-WwQueueCountDetails / Get-WwDeadLetterCou
     It 'keeps Get-WwDeadLetterCount returning $null on a failed read' {
         function script:az { $global:LASTEXITCODE = 1; '' }
         Get-WwDeadLetterCount -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q' | Should -BeNullOrEmpty
+    }
+}
+
+Describe 'Test-ShovelBridgeE2E — end-to-end processing timings (pure, no Azure)' {
+
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+        $script:T0 = [datetime]::new(2026, 10, 27, 16, 55, 0, [DateTimeKind]::Utc)
+    }
+
+    It 'measures processing from publish start to the first empty reading, not the poll leg' {
+        # Build 31055's shape: ~98s publish, ~22m to drain, 371s quiet window, ~207s poll.
+        $t = Get-WwProcessingTimings -MessageCount 20000 `
+            -PublishStartUtc   $script:T0 `
+            -PublishEndUtc     $script:T0.AddSeconds(98) `
+            -DrainedAtUtc      $script:T0.AddSeconds(1350) `
+            -DrainConfirmedUtc $script:T0.AddSeconds(1721) `
+            -PollEndUtc        $script:T0.AddSeconds(1928)
+        $t.PublishSeconds    | Should -Be 98
+        $t.ProcessingSeconds | Should -Be 1350
+        $t.MessagesPerSecond | Should -Be 14.8
+        $t.QuietWaitSeconds  | Should -Be 371
+        $t.PollSeconds       | Should -Be 207
+    }
+
+    It 'reports no processing figures when nothing was drained (publish failed)' {
+        $t = Get-WwProcessingTimings -MessageCount 20000 -PublishStartUtc $script:T0 -PublishEndUtc $script:T0.AddSeconds(5)
+        $t.PublishSeconds | Should -Be 5
+        foreach ($p in 'ProcessingSeconds', 'MessagesPerSecond', 'QuietWaitSeconds', 'PollSeconds') { $t.$p | Should -BeNullOrEmpty -Because $p }
+    }
+
+    It 'formats durations as s, m ss, and h mm ss' {
+        Format-WwDuration 42     | Should -Be '42s'
+        Format-WwDuration 1350.4 | Should -Be '22m 30s'
+        Format-WwDuration 3725   | Should -Be '1h 02m 05s'
+    }
+
+    It 'publishes the headline as output variables and a Summary-tab table under Azure DevOps' {
+        $saved = $env:TF_BUILD, $env:AGENT_TEMPDIRECTORY
+        try {
+            $env:TF_BUILD = 'True'; $env:AGENT_TEMPDIRECTORY = $TestDrive
+            $t = Get-WwProcessingTimings -MessageCount 20000 -PublishStartUtc $script:T0 -PublishEndUtc $script:T0.AddSeconds(98) `
+                -DrainedAtUtc $script:T0.AddSeconds(1350) -DrainConfirmedUtc $script:T0.AddSeconds(1721) -PollEndUtc $script:T0.AddSeconds(1928)
+            $out = @(Write-WwProcessingTimings -Timings $t 6>&1 | ForEach-Object { [string]$_ })
+            $out | Should -Contain '##vso[task.setvariable variable=ProcessingSeconds;isOutput=true]1350'
+            $out | Should -Contain '##vso[task.setvariable variable=MessagesPerSecond;isOutput=true]14.8'
+            $out | Should -Contain '##vso[task.setvariable variable=MessageCount;isOutput=true]20000'
+            $md = Join-Path $TestDrive 'ShovelBridgeTimings.md'
+            $out | Should -Contain "##vso[task.uploadsummary]$md"
+            Get-Content -LiteralPath $md -Raw | Should -Match '\*\*22m 30s \(14\.8 msg/s\)\*\*'
+        } finally {
+            $env:TF_BUILD, $env:AGENT_TEMPDIRECTORY = $saved
+        }
+    }
+
+    It 'emits no Azure DevOps logging commands outside a build' {
+        $saved = $env:TF_BUILD
+        try {
+            $env:TF_BUILD = $null
+            $t = Get-WwProcessingTimings -MessageCount 1 -PublishStartUtc $script:T0 -PublishEndUtc $script:T0.AddSeconds(1)
+            @(Write-WwProcessingTimings -Timings $t 6>&1 | ForEach-Object { [string]$_ } | Where-Object { $_ -like '##vso*' }) | Should -BeNullOrEmpty
+        } finally { $env:TF_BUILD = $saved }
+    }
+}
+
+Describe 'Test-ShovelBridgeE2E — Wait-WwTriggerQueueDrain returns when processing finished' {
+
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+    }
+
+    It 'returns QuietSince as the FIRST empty reading, not the end of the quiet window' {
+        # A fake clock that advances 30s per Get-Date call: deadline (t+30), then one call per poll -
+        # active=5 at t+60, empty at t+90 (QuietSince), t+120, t+150 (60s quiet -> drained).
+        $script:Clock = [datetime]::new(2026, 10, 27, 17, 0, 0, [DateTimeKind]::Utc)
+        $script:Active = [System.Collections.Generic.Queue[int]]::new([int[]]@(5, 0, 0, 0))
+        Mock Get-Date { $script:Clock = $script:Clock.AddSeconds(30); $script:Clock }
+        Mock Start-Sleep {}
+        Mock Get-WwQueueCountDetails { [pscustomobject]@{ Active = $script:Active.Dequeue(); Scheduled = 0; DeadLetter = 7; Transfer = 0 } }
+
+        $r = Wait-WwTriggerQueueDrain -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q' -QuietSeconds 60 -TimeoutSeconds 3600 6>$null
+
+        $r.QuietSince        | Should -Be ([datetime]::new(2026, 10, 27, 17, 1, 30, [DateTimeKind]::Utc))
+        $r.Counts.DeadLetter | Should -Be 7
+        Should -Invoke Get-WwQueueCountDetails -Times 4 -Exactly
     }
 }
