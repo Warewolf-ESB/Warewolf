@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Turns .bite workflows into System 1 training/eval examples (Mobile/Warewolf.Studio/docs/Plan.md §2).
+       Reads only; the engine's own XAML → X6 conversion and ToolCatalog keep the corpus in step with add_step. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Warewolf.Corpus.Extractor</RootNamespace>
+    <AssemblyName>Warewolf.Corpus.Extractor</AssemblyName>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Dev\Warewolf.Execution.Lightweight\Warewolf.Execution.Lightweight.csproj" />
+    <ProjectReference Include="..\..\..\..\Dev\Warewolf.Bite\Warewolf.Bite.csproj" />
+  </ItemGroup>
+
+  <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
+    <ItemGroup>
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WPF" />
+      <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App.WindowsForms" />
+    </ItemGroup>
+  </Target>
+
+</Project>

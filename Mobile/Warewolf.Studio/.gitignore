@@ -1,0 +1,7 @@
+# Gradle caches and build output
+.gradle/
+build/
+.kotlin/
+
+# The corpus itself (client workflows and what is derived from them) never lives in the repo;
+# corpus/ holds only the code that builds it.
