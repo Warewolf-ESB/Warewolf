@@ -2875,6 +2875,14 @@ This worker was originally built as a client example and has been promoted to a
     ready messages only, so up to one prefetch per consumer may still be executing). The
     `Report_Step_Timings` stage prints both first, ahead of its step table — whose longest
     ShovelBridge row also includes pre-flight, the quiet window, the poll and Phases 4b-4d.
+  - **Build 31060** failed before the run: the first connection to the paused serverless
+    `WarewolfDevOpsTestDb` timed out post-login at 30s. The schema-provisioning step now retries
+    connection-level failures (5 attempts, 90s connection timeout).
+  - **Build 31065** failed in Phase 3: the shovel stayed `starting` for the whole 30s wait, with
+    settings identical to 31055's, which came up in time. The wait is now 120s, and on timeout
+    `Get-WwShovelLegDiagnosis` reads `GET /api/connections` and names the failing leg (no
+    `Shovel <name>` connection = SOURCE; connected but not running = DESTINATION) — the check
+    under "Configuring a shovel with the public name", automated.
 
 
 ## See also

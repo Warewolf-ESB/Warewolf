@@ -504,6 +504,37 @@ function Wait-ForCondition {
     return $false
 }
 
+function Get-WwShovelLegDiagnosis {
+    <#
+        Says which leg of a shovel that never reached 'running' failed, from a GET /api/connections
+        snapshot. Pure: the caller does the HTTP call.
+
+        The management API keeps no failure reason for a shovel - it reports a crash-looping one
+        as 'starting' - but its connections do survive: a shovel whose SOURCE leg is up appears
+        as a connection named 'Shovel <name>' (docs/ShovelBridge-Architecture.md, "Configuring
+        a shovel with the public name"). So no such connection means the source leg failed, and
+        one that exists while the shovel still will not run means the destination (Service Bus)
+        leg did. Build 31065 stopped with only "state: starting" and no way to tell which.
+    #>
+    param(
+        $Connections,
+        [Parameter(Mandatory)][string] $ShovelName
+    )
+
+    if ($null -eq $Connections) {
+        return 'Could not read GET /api/connections, so which leg failed is unknown - check the broker log.'
+    }
+    $mine = @(@($Connections) | Where-Object {
+        $_ -and $_.PSObject.Properties['client_properties'] -and $_.client_properties -and
+        $_.client_properties.PSObject.Properties['connection_name'] -and
+        [string]$_.client_properties.connection_name -like "*$ShovelName*"
+    })
+    if ($mine.Count -eq 0) {
+        return "SOURCE leg: the broker shows no connection for shovel '$ShovelName', so it never connected to its own broker (src-uri host/port/credentials/vhost). The destination is not the problem yet."
+    }
+    return "DESTINATION leg: shovel '$ShovelName' is connected to its own broker ($($mine.Count) connection(s)) but still not running, so it is failing to connect to Service Bus (dest-uri SAS key/rule, queue, TLS hostname check or cacertfile, or the namespace being unavailable)."
+}
+
 function Test-ServiceBusQueueExists {
     <#
         Fast, dependency-free existence probe for a Service Bus queue, using the
@@ -1631,7 +1662,10 @@ try {
     # failed to connect. Treating only 'running' as success is a false-negative trap:
     # a shovel snapshotted mid flow-control at the poll instant is fully healthy and
     # will keep delivering, so accept both here (see docs/ShovelBridge-Architecture.md).
-    $shovelRunning = Wait-ForCondition -Description "shovel '$ShovelName' running" -MaxAttempts 15 -DelaySeconds 2 -Condition {
+    # 120s, not 30s: a shovel that fails a connect attempt waits out reconnect-delay (5s) before
+    # the next, and the amqps leg to Service Bus is the slow one - build 31065 timed out at 30s
+    # still 'starting', where build 31055 with identical settings had come up in time.
+    $shovelRunning = Wait-ForCondition -Description "shovel '$ShovelName' running" -MaxAttempts 60 -DelaySeconds 2 -Condition {
         $shovels = Invoke-RabbitMqApi -Method Get -Path "/api/shovels/$vhostForApi" -AllowFail
         $mine = @($shovels) | Where-Object { $_.name -eq $ShovelName }
         if ($mine) { $script:lastShovelState = $mine[0] }
@@ -1645,6 +1679,9 @@ try {
         # Status), since a bare "did not reach running" gives no lead on WHICH
         # side (src vs dest) is failing.
         $stateDetail = if ($lastShovelState) { " Last observed state: $($lastShovelState | ConvertTo-Json -Compress)." } else { ' No shovel status was ever observed for this name — check the PUT above succeeded.' }
+        $legDiagnosis = Get-WwShovelLegDiagnosis -ShovelName $ShovelName -Connections (Invoke-RabbitMqApi -Method Get -Path '/api/connections' -AllowFail)
+        Write-Note "Which leg failed: $legDiagnosis"
+        $stateDetail += " Which leg failed: $legDiagnosis"
         $destHint = if ($DestinationMode -eq 'ExternalServiceBus' -and $RabbitMqMode -eq 'External') {
             " If the broker logs show a TLS alert containing 'hostname_check_failed', the broker is missing the amqp10_client wildcard-hostname-check fix in its advanced.config — see the 'Security' section of docs/ShovelBridge-Architecture.md (this is the single most common cause against a real Service Bus namespace, and produces this exact generic 'failed to connect to destination' reason with no other symptom). -RabbitMqMode Container already bakes this fix in, so if you're seeing this in Container mode the cause is something else."
         } elseif ($DestinationMode -eq 'ExternalServiceBus' -and $RabbitMqMode -eq 'Container') {

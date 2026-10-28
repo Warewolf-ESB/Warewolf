@@ -767,3 +767,29 @@ Describe 'Test-ShovelBridgeE2E — Wait-WwTriggerQueueDrain returns when process
         Should -Invoke Get-WwQueueCountDetails -Times 4 -Exactly
     }
 }
+
+Describe 'Test-ShovelBridgeE2E — Get-WwShovelLegDiagnosis (pure, no broker; build 31065)' {
+
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+        function script:New-Conn { param([string] $Name) [pscustomobject]@{ name = '127.0.0.1:1 -> 127.0.0.1:5672'; client_properties = [pscustomobject]@{ connection_name = $Name } } }
+    }
+
+    It 'blames the SOURCE leg when the broker has no connection for the shovel' {
+        $d = Get-WwShovelLegDiagnosis -ShovelName 'my-shovel' -Connections @((New-Conn 'Shovel other-shovel'), [pscustomobject]@{ name = 'no client props' })
+        $d | Should -BeLike 'SOURCE leg:*'
+    }
+
+    It 'blames the DESTINATION leg when the shovel is connected to its own broker but not running' {
+        $d = Get-WwShovelLegDiagnosis -ShovelName 'my-shovel' -Connections @((New-Conn 'Shovel other-shovel'), (New-Conn 'Shovel my-shovel'))
+        $d | Should -BeLike 'DESTINATION leg:*1 connection(s)*'
+    }
+
+    It 'handles a single connection object (Invoke-RestMethod unrolls a one-element array)' {
+        Get-WwShovelLegDiagnosis -ShovelName 'my-shovel' -Connections (New-Conn 'Shovel my-shovel') | Should -BeLike 'DESTINATION leg:*'
+    }
+
+    It 'says the leg is unknown, rather than guessing, when /api/connections could not be read' {
+        Get-WwShovelLegDiagnosis -ShovelName 'my-shovel' -Connections $null | Should -BeLike '*unknown*'
+    }
+}
