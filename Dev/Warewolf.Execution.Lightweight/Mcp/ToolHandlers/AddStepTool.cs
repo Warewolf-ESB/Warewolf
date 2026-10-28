@@ -87,7 +87,10 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// call could never be resolved by a later call's <c>afterStepId</c>. Fixed by having
 /// <see cref="X6ToWorkflowConverter"/> persist the X6 cell's <c>id</c> as the created activity's
 /// <c>UniqueID</c> (a real, XAML-serialized property), and having <see cref="WorkflowToX6Converter"/>
-/// prefer that persisted <c>UniqueID</c> over minting a fresh id when converting back. This is scoped
+/// prefer that persisted <c>UniqueID</c> over minting a fresh id when converting back. A step copy-pasted in
+/// Studio shares its original's <c>UniqueID</c>; the converter gives each repeat a deterministic id derived
+/// from it (<c>WorkflowToX6Converter.NodeIdFor</c>), so node ids stay unique and stable, and the next save
+/// persists that id as the copy's own <c>UniqueID</c>. This is scoped
 /// to the top-level activity chain (where <c>add_step</c> always attaches); ids for nodes nested
 /// inside containers (ForEach/Sequence/etc. children) are still freshly generated on each read.
 /// </para>

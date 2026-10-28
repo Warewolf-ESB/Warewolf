@@ -410,5 +410,86 @@ namespace Dev2.Tests.Activities.ActivityTests
                 "A legacy DsfDecision must round-trip back as itself, not as DsfFlowDecisionActivity (Constants.FLOWDECISION).");
         }
 
+        // Copy-pasting a step in Studio copies its UniqueID, so real workflows hold activities that share one.
+
+        const string IdA = "aaaaaaaa-0000-0000-0000-000000000001";
+        const string IdB = "bbbbbbbb-0000-0000-0000-000000000002";
+        const string IdC = "cccccccc-0000-0000-0000-000000000003";
+
+        /// <summary>start → A → B → C → B' where B' is a copy-paste of B (same UniqueID).</summary>
+        static FlowchartModel ChainWithPastedCopy()
+        {
+            FlowStepModel Step(string uniqueId, string name, FlowNodeModel next = null) =>
+                new FlowStepModel { Action = new DsfMultiAssignActivity { UniqueID = uniqueId, DisplayName = name }, Next = next };
+
+            return new FlowchartModel { StartNode = Step(IdA, "A", Step(IdB, "B", Step(IdC, "C", Step(IdB, "B copy")))) };
+        }
+
+        static X6WorkflowLoadModel Convert(FlowchartModel flowchart, WorkflowToX6Converter converter = null) =>
+            JsonConvert.DeserializeObject<X6WorkflowLoadModel>((converter ?? new WorkflowToX6Converter()).ConvertToX6Json(flowchart, ""));
+
+        static Cell NodeLabelled(X6WorkflowLoadModel graph, string label) => graph.Nodes.Find(n => n.label == label);
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_NodeIds")]
+        public void WorkflowToX6Converter_DuplicateUniqueID_CopyGetsDistinctNodeId_FirstKeepsItsOwn()
+        {
+            var graph = Convert(ChainWithPastedCopy());
+
+            Assert.AreEqual(IdB, NodeLabelled(graph, "B").id);
+            Assert.AreNotEqual(IdB, NodeLabelled(graph, "B copy").id);
+            Assert.AreEqual(graph.Nodes.Count, new HashSet<string>(graph.Nodes.ConvertAll(n => n.id)).Count, "every node id must be unique");
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_NodeIds")]
+        public void WorkflowToX6Converter_DuplicateUniqueID_DerivedIdIsStableAcrossConversions()
+        {
+            var reused = new WorkflowToX6Converter();
+
+            var first = NodeLabelled(Convert(ChainWithPastedCopy()), "B copy").id;
+            var freshConverter = NodeLabelled(Convert(ChainWithPastedCopy()), "B copy").id;
+            var sameConverterTwice = NodeLabelled(Convert(ChainWithPastedCopy(), reused), "B copy").id;
+            var sameConverterAgain = NodeLabelled(Convert(ChainWithPastedCopy(), reused), "B copy").id;
+
+            Assert.AreEqual(first, freshConverter, "add_step's afterStepId relies on the same XAML giving the same ids");
+            Assert.AreEqual(first, sameConverterTwice);
+            Assert.AreEqual(first, sameConverterAgain, "a reused converter must not carry ids over from the previous conversion");
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_NodeIds")]
+        public void WorkflowToX6Converter_DuplicateUniqueID_EdgesConnectTheRightCopy()
+        {
+            var graph = Convert(ChainWithPastedCopy());
+            var c = NodeLabelled(graph, "C").id;
+            var copy = NodeLabelled(graph, "B copy").id;
+
+            Assert.AreEqual(4, graph.Edges.Count, "start→A, A→B, B→C and C→B copy");
+            Assert.IsTrue(graph.Edges.Exists(e => e.Source.Id == c && e.Target.Id == copy), "C must lead to the copy, not back to B");
+            Assert.IsFalse(graph.Edges.Exists(e => e.Source.Id == c && e.Target.Id == IdB));
+        }
+
+        [TestMethod]
+        [Timeout(60000)]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WorkflowToX6Converter_NodeIds")]
+        public void WorkflowToX6Converter_UniqueIDsWithoutDuplicates_AreTheNodeIds()
+        {
+            FlowStepModel Step(string uniqueId, string name, FlowNodeModel next = null) =>
+                new FlowStepModel { Action = new DsfMultiAssignActivity { UniqueID = uniqueId, DisplayName = name }, Next = next };
+
+            var graph = Convert(new FlowchartModel { StartNode = Step(IdA, "A", Step(IdB, "B", Step(IdC, "C"))) });
+
+            Assert.AreEqual(IdA, NodeLabelled(graph, "A").id);
+            Assert.AreEqual(IdB, NodeLabelled(graph, "B").id);
+            Assert.AreEqual(IdC, NodeLabelled(graph, "C").id);
+        }
     }
 }

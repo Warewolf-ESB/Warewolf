@@ -41,6 +41,9 @@ namespace Dev2.Activities.WF
         private readonly List<Activity> _tempChildActivities = new(16);
         private readonly List<string> _tempEndNodes = new(8);
 
+        // Node ids already handed out in the current conversion; see NodeIdFor.
+        private readonly HashSet<string> _usedNodeIds = new(StringComparer.OrdinalIgnoreCase);
+
         /// <summary>
         /// Convert a workflow definition (as Warewolf.Bite's BiteReader.ReadModel reads it) to X6 Json
         /// </summary>
@@ -51,6 +54,7 @@ namespace Dev2.Activities.WF
         {
             try
             {
+                _usedNodeIds.Clear();
                 var graphData = new X6WorkflowLoadModel { WorkflowXml = xml, ActivityNodeMap = new Dictionary<Activity, Cell>() };
                 var activityNodeMap = new Dictionary<Activity, string>(64);
 
@@ -86,9 +90,7 @@ namespace Dev2.Activities.WF
             // as a future call's afterStepId" contract). Only fall back to a fresh id when the
             // activity has no UniqueID (e.g. non-Dev2 WF-Foundation activities like the start
             // WriteLine node), where stability isn't meaningful anyway.
-            var nodeId = activity is IDev2Activity dev2Activity && !string.IsNullOrWhiteSpace(dev2Activity.UniqueID)
-                ? dev2Activity.UniqueID
-                : CommonHelper.GenerateNodeId();
+            var nodeId = NodeIdFor(activity);
             activityNodeMap[activity] = nodeId;
 
             if (!HasNestedActivities(activity))//if (activity is not DsfForEachActivity)
@@ -490,9 +492,7 @@ namespace Dev2.Activities.WF
 
             // Reuse the activity's persisted UniqueID when it has one, so the body's node id is stable
             // across repeated ConvertToX6Json calls — see the matching comment in ProcessActivity.
-            var nestedNodeId = nestedActivity is IDev2Activity { UniqueID: { Length: > 0 } uniqueId }
-                ? uniqueId
-                : CommonHelper.GenerateNodeId();
+            var nestedNodeId = NodeIdFor(nestedActivity);
             activityNodeMap[nestedActivity] = nestedNodeId;
 
             // Create the nested activity node
@@ -622,6 +622,35 @@ namespace Dev2.Activities.WF
 
         //    }
         //}
+
+        /// <summary>
+        /// The X6 node id for <paramref name="activity"/>: its persisted UniqueID, so ids stay stable across reads.
+        /// Copy-pasting a step in Studio copies its UniqueID too, and a graph whose nodes share an id has
+        /// ambiguous edges (and <see cref="CreateEdgeIfNotExists"/> drops some of them), so each repeat of an id
+        /// already used in this conversion gets one derived from that UniqueID and its occurrence instead. The
+        /// derivation is deterministic, so the same XAML still yields the same ids, and saving the graph persists
+        /// the derived id as the copy's own UniqueID (X6ToWorkflowConverter.ApplyUniqueIdFromNode).
+        /// </summary>
+        private string NodeIdFor(Activity activity)
+        {
+            if (activity is not IDev2Activity dev2Activity || string.IsNullOrWhiteSpace(dev2Activity.UniqueID))
+            {
+                return CommonHelper.GenerateNodeId();
+            }
+
+            var nodeId = dev2Activity.UniqueID;            for (var occurrence = 1; !_usedNodeIds.Add(nodeId); occurrence++)
+            {
+                nodeId = DerivedNodeId(dev2Activity.UniqueID, occurrence);
+            }
+
+            return nodeId;
+        }
+
+        private static string DerivedNodeId(string uniqueId, int occurrence)
+        {
+            var hash = System.Security.Cryptography.SHA256.HashData(System.Text.Encoding.UTF8.GetBytes($"{uniqueId.ToLowerInvariant()}#{occurrence}"));
+            return new Guid(hash.AsSpan(0, 16)).ToString();
+        }
 
         private Cell CreateStartNode()
         {
