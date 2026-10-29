@@ -100,23 +100,30 @@ BeforeAll {
         ) -join "`n"
     }
 
-    # Runs the resolve step with Invoke-WebRequest stubbed to return -Page. Returns the Write-Host
-    # lines; the step's own throw propagates.
+    # Runs the resolve step with Invoke-WebRequest stubbed to return -Page, the pins passed through
+    # the environment exactly as the step's env: block does (defaults = the parameters' 'latest').
+    # Returns the Write-Host lines; the step's own throw propagates.
     function script:Invoke-ResolveStep {
-        param([string] $Page, [string] $EngineZipUrl = '', [string] $ScriptsZipUrl = '', [string] $QueueWorkerZipUrl = '')
+        param([string] $Page, [string] $EngineZipUrl = 'latest', [string] $ScriptsZipUrl = 'latest', [string] $QueueWorkerZipUrl = 'latest')
         $script:PageRequests = 0
         $body = Expand-Macros (Get-StepScript (Find-Step 'Deploy_UAT' 'Resolve Published Release URLs')) @{
             WarewolfReleasesStorageAccount = 'stwwreleases'
-            WarewolfEngineZipUrl           = $EngineZipUrl
-            WarewolfScriptsZipUrl          = $ScriptsZipUrl
-            WarewolfQueueWorkerZipUrl      = $QueueWorkerZipUrl
         }
         $sb = [scriptblock]::Create($body)
-        & {
-            function Invoke-WebRequest { $script:PageRequests++; [pscustomobject]@{ Content = $Page } }
-            . $sb
-        } 6>&1 | ForEach-Object { [string]$_ }
+        $pins = @{ WarewolfEngineZipUrl = $EngineZipUrl; WarewolfScriptsZipUrl = $ScriptsZipUrl; WarewolfQueueWorkerZipUrl = $QueueWorkerZipUrl }
+        $saved = @{}
+        foreach ($k in $pins.Keys) { $saved[$k] = [Environment]::GetEnvironmentVariable($k); [Environment]::SetEnvironmentVariable($k, $pins[$k]) }
+        try {
+            & {
+                function Invoke-WebRequest { $script:PageRequests++; [pscustomobject]@{ Content = $Page } }
+                . $sb
+            } 6>&1 | ForEach-Object { [string]$_ }
+        } finally {
+            foreach ($k in $saved.Keys) { [Environment]::SetEnvironmentVariable($k, $saved[$k]) }
+        }
     }
+
+    $script:PinNames = 'WarewolfEngineZipUrl', 'WarewolfScriptsZipUrl', 'WarewolfQueueWorkerZipUrl'
 }
 
 Describe 'pipeline-LOADTEST - released bits' -Skip:(-not $script:HaveYaml) {
@@ -136,13 +143,26 @@ Describe 'pipeline-LOADTEST - released bits' -Skip:(-not $script:HaveYaml) {
         $bad | Should -BeNullOrEmpty
     }
 
-    It 'tracks the latest release by default, with all three pins empty' {
+    It 'tracks the latest release by default, with all three pins as run parameters defaulting to latest' {
         $vars = $script:Doc['variables']
         $vars['WarewolfReleasesStorageAccount'] | Should -Be 'stwwreleases'
-        foreach ($v in 'WarewolfEngineZipUrl', 'WarewolfScriptsZipUrl', 'WarewolfQueueWorkerZipUrl') {
-            $vars.Contains($v) | Should -BeTrue -Because "$v is the pin for that package"
-            $vars[$v] | Should -Be ''
+        foreach ($name in $script:PinNames) {
+            $p = @($script:Doc['parameters']) | Where-Object { $_['name'] -eq $name }
+            $p | Should -Not -BeNullOrEmpty -Because "$name is the pin for that package"
+            $p['type'] | Should -Be 'string'
+            $p['default'] | Should -Be 'latest'
+            # A YAML-defined variable cannot be overridden at queue time - the reason the pins moved.
+            $vars.Contains($name) | Should -BeFalse -Because "a YAML variable named $name would be unsettable at queue time"
         }
+    }
+
+    It 'hands the pins to the resolve step through env:, never as template text inside its script' {
+        $step = Find-Step 'Deploy_UAT' 'Resolve Published Release URLs'
+        foreach ($name in $script:PinNames) {
+            $step['env'][$name] | Should -Be "`${{ parameters.$name }}"
+        }
+        Get-StepScript $step | Should -Not -Match '\$\{\{'
+        $script:Yaml | Should -Not -Match '\$\(Warewolf(Engine|Scripts|QueueWorker)ZipUrl\)'
     }
 
     It 'no longer compiles the engine or the QueueProcessor' {
@@ -199,6 +219,27 @@ Describe 'pipeline-LOADTEST - Resolve Published Release URLs' -Skip:(-not $scrip
         @{ What = 'worker';  Page = @{ WorkerUrl  = 'http://stwwreleases.blob.core.windows.net/releases/Warewolf-QueueProcessor-9.zip' } }
     ) {
         { Invoke-ResolveStep -Page (New-ReleasePage @Page) } | Should -Throw '*Refusing to fetch*'
+    }
+
+    It 'reads the page for a pin given as <Value>' -ForEach @(
+        @{ Value = 'latest' }, @{ Value = 'LATEST' }, @{ Value = ' latest ' }, @{ Value = '' }
+    ) {
+        $out = Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl $Value -ScriptsZipUrl $Value -QueueWorkerZipUrl $Value
+        $script:PageRequests | Should -Be 1
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-win-x64-9.9.9.9.zip"
+    }
+
+    It 'mixes a pinned engine with page-resolved scripts and worker' {
+        $out = Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl "$script:Host_/branch-builds/AzureFunctionsPackage-win-x64-Branch-abc.zip"
+        $script:PageRequests | Should -Be 1
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/branch-builds/AzureFunctionsPackage-win-x64-Branch-abc.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedScriptsZipUrl;isOutput=true]$script:Host_/DeploymentScripts-9.9.9.9.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedQueueWorkerZipUrl;isOutput=true]$script:Host_/Warewolf-QueueProcessor-9.9.9.9.zip"
+    }
+
+    It 'refuses a pinned engine on an untrusted host' {
+        { Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl 'https://evil.example.com/AzureFunctionsPackage-win-x64-9.zip' } |
+            Should -Throw '*Refusing to fetch*'
     }
 
     It 'refuses a pinned linux-x64 engine package' {
@@ -380,6 +421,161 @@ Describe 'pipeline-LOADTEST - ProfilerLoadTest_QueueProcessor uses the same rele
 
         foreach ($other in 'Load_Tests', 'ShovelBridgeLoadTest_ExternalServiceBus') {
             [string](Get-Job $other)['condition'] | Should -Not -Match 'RunQueueProcessorLoadTest'
+        }
+    }
+}
+
+Describe 'pipeline-LOADTEST - both load-test jobs publish the real-world data file' -Skip:(-not $script:HaveYaml) {
+
+    BeforeAll {
+        $script:QpJob    = Get-Job 'ProfilerLoadTest_QueueProcessor'
+        $script:QpSteps  = @($script:QpJob['steps'])
+        $script:QpNames  = @($script:QpSteps | ForEach-Object { $_['displayName'] })
+        $script:Download = 'Download the load-test data file (secure file)'
+        $script:Expand   = 'Expand and validate the load-test data file'
+        $script:Publish  = 'Publish the burst (one message per data-file record, RequestForProfiling shape)'
+        $script:RepoRoot = (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
+
+        # Runs the expand step for real: -Records becomes a zip holding CollectionsForProfiling.json
+        # (or -EntryName), standing in for the downloaded secure file. Returns the Write-Host lines.
+        function script:Invoke-ExpandStep {
+            param([object[]] $Records, [string] $EntryName = 'CollectionsForProfiling.json', [int] $MessageCount = 3,
+                  [string] $Job = 'ProfilerLoadTest_QueueProcessor')
+            $work = Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))
+            New-Item -ItemType Directory -Force -Path (Join-Path $work 'src') | Out-Null
+            Set-Content -LiteralPath (Join-Path $work "src\$EntryName") -Value (ConvertTo-Json -InputObject @($Records) -Depth 5)
+            $zip = Join-Path $work 'data.zip'
+            Compress-Archive -Path (Join-Path $work "src\$EntryName") -DestinationPath $zip
+            $body = Expand-Macros (Get-StepScript (Find-Step $Job $script:Expand)) @{
+                ProfilerLoadTestDataFile           = Join-Path $work 'out\CollectionsForProfiling.json'
+                'profilerLoadTestData.secureFilePath' = $zip
+                'Build.SourcesDirectory'           = $script:RepoRoot
+                MessageCount                       = $MessageCount
+            }
+            & ([scriptblock]::Create($body)) 6>&1 | ForEach-Object { [string]$_ }
+        }
+
+        function script:New-Record { param([string] $MandateId) [ordered]@{ MandateId = $MandateId; ForPaymentCycle = '202610' } }
+    }
+
+    It 'downloads the secure file, then expands it, then publishes - all before the burst' {
+        $d = [array]::IndexOf($script:QpNames, $script:Download)
+        $e = [array]::IndexOf($script:QpNames, $script:Expand)
+        $p = [array]::IndexOf($script:QpNames, $script:Publish)
+        $d | Should -BeGreaterOrEqual 0
+        $e | Should -BeGreaterThan $d
+        $p | Should -BeGreaterThan $e
+        $script:QpSteps[$d]['task'] | Should -Be 'DownloadSecureFile@1'
+        $script:QpSteps[$d]['name'] | Should -Be 'profilerLoadTestData'
+        $script:QpSteps[$d]['inputs']['secureFile'] | Should -Be 'CollectionsForProfiling.zip'
+    }
+
+    It 'names the secure file literally - its authorisation is checked before variables are expanded' {
+        # '$(ProfilerLoadTestDataSecureFile)' made Azure DevOps look for a file with that literal
+        # name and reject the whole pipeline as invalid.
+        foreach ($job in 'ProfilerLoadTest_QueueProcessor', 'ShovelBridgeLoadTest_ExternalServiceBus') {
+            $dl = @((Get-Job $job)['steps']) | Where-Object { $_['task'] -eq 'DownloadSecureFile@1' -and $_['name'] -eq 'profilerLoadTestData' }
+            $dl['inputs']['secureFile'] | Should -Not -Match '\$\(' -Because "$job's secure-file name must be a literal"
+        }
+    }
+
+    It 'defines the data-file variable the steps read' {
+        $vars = $script:QpJob['variables']
+        $vars['ProfilerLoadTestDataFile'] | Should -Be '$(Agent.BuildDirectory)\ProfilerLoadTestData\CollectionsForProfiling.json'
+    }
+
+    It 'publishes from -DataFilePath and no longer sizes or shapes the burst itself' {
+        $publish = Get-StepScript (Find-Step 'ProfilerLoadTest_QueueProcessor' $script:Publish)
+        $publish | Should -Match "-DataFilePath\s+'\`$\(ProfilerLoadTestDataFile\)'"
+        $publish | Should -Not -Match '-SuccessCount'
+        $publish | Should -Not -Match '-BodyShape'
+        $publish | Should -Match '-ManifestPath'
+    }
+
+    It 'expands a valid file to the path the publish step reads, and reports the record count' {
+        $out = Invoke-ExpandStep -Records @((New-Record 'A'), (New-Record 'B'), (New-Record 'C'))
+        $out | Should -Contain 'Data file: 3 record(s), 3 distinct MandateId(s).'
+    }
+
+    It 'warns, rather than fails, when the record count differs from MessageCount' {
+        $out = Invoke-ExpandStep -Records @((New-Record 'A'), (New-Record 'B'), (New-Record 'C')) -MessageCount 20000
+        ($out -join "`n") | Should -Match 'Data file has 3 records but MessageCount is 20000'
+    }
+
+    It 'fails before publishing when MandateIds repeat' {
+        { Invoke-ExpandStep -Records @((New-Record 'A'), (New-Record 'A')) } | Should -Throw '*duplicate MandateIds (1 unique of 2)*'
+    }
+
+    It 'fails when the zip does not hold CollectionsForProfiling.json at its root' {
+        { Invoke-ExpandStep -Records @((New-Record 'A')) -EntryName 'other.json' } | Should -Throw '*did not contain CollectionsForProfiling.json*'
+    }
+
+    It 'fails when the data file holds no records' {
+        { Invoke-ExpandStep -Records @() } | Should -Throw '*contains no records*'
+    }
+
+    Context 'ShovelBridgeLoadTest_ExternalServiceBus' {
+
+        BeforeAll {
+            $script:SbJob   = Get-Job 'ShovelBridgeLoadTest_ExternalServiceBus'
+            $script:SbSteps = @($script:SbJob['steps'])
+            $script:SbNames = @($script:SbSteps | ForEach-Object { $_['displayName'] })
+            # The step that INVOKES the script (an earlier step only mentions it in a comment).
+            $script:SbRun   = $script:SbSteps | Where-Object { (Get-StepScript $_) -match "(?m)^\s*&\s*'[^']*Test-ShovelBridgeE2E\.ps1'" } | Select-Object -First 1
+        }
+
+        It 'downloads the secure file, then expands it, before the burst runs' {
+            $d = [array]::IndexOf($script:SbNames, $script:Download)
+            $e = [array]::IndexOf($script:SbNames, $script:Expand)
+            $r = [array]::IndexOf($script:SbNames, $script:SbRun['displayName'])
+            $d | Should -BeGreaterOrEqual 0
+            $e | Should -BeGreaterThan $d
+            $r | Should -BeGreaterThan $e
+            $script:SbSteps[$d]['task'] | Should -Be 'DownloadSecureFile@1'
+            $script:SbSteps[$d]['name'] | Should -Be 'profilerLoadTestData'
+            $script:SbSteps[$d]['inputs']['secureFile'] | Should -Be 'CollectionsForProfiling.zip'
+        }
+
+        It 'defines the same data-file variable as the QueueProcessor job' {
+            $vars = $script:SbJob['variables']
+            $vars['ProfilerLoadTestDataFile'] | Should -Be $script:QpJob['variables']['ProfilerLoadTestDataFile']
+        }
+
+        It 'runs Test-ShovelBridgeE2E.ps1 with -DataFilePath, and neither a templated body nor a message count' {
+            $run = Get-StepScript $script:SbRun
+            $run | Should -Match "-DataFilePath\s+'\`$\(ProfilerLoadTestDataFile\)'"
+            $run | Should -Match '-VerifyWorkflowExecution'
+            $run | Should -Match '-DbVerificationMode\s+ProfilerRecommendation'
+            $run | Should -Not -Match '-WorkflowInputsJson'
+            $run | Should -Not -Match '-MessageCount' -Because 'the data file sizes the run and a disagreeing -MessageCount is an error'
+        }
+
+        It 'passes only parameters Test-ShovelBridgeE2E.ps1 declares' {
+            $script = Join-Path $script:RepoRoot 'Dev\Warewolf.Execution.Lightweight\Scripts\Tests\Integration\Test-ShovelBridgeE2E.ps1'
+            $declared = (Get-Command -Name $script -CommandType ExternalScript).Parameters
+            $passed = [regex]::Matches((Get-StepScript $script:SbRun), '(?m)^\s+-([A-Za-z][A-Za-z0-9]*)\b') | ForEach-Object { $_.Groups[1].Value }
+            $passed | Should -Contain 'DataFilePath'
+            @($passed | Where-Object { -not $declared.ContainsKey($_) }) | Should -BeNullOrEmpty
+        }
+
+        It 'expands a valid file and reports the record count' {
+            $out = Invoke-ExpandStep -Job 'ShovelBridgeLoadTest_ExternalServiceBus' -Records @((New-Record 'A'), (New-Record 'B'), (New-Record 'C'))
+            $out | Should -Contain 'Data file: 3 record(s), 3 distinct MandateId(s).'
+        }
+
+        It 'fails before publishing when MandateIds repeat' {
+            { Invoke-ExpandStep -Job 'ShovelBridgeLoadTest_ExternalServiceBus' -Records @((New-Record 'A'), (New-Record 'A')) } |
+                Should -Throw '*duplicate MandateIds (1 unique of 2)*'
+        }
+
+        It 'fails when the zip does not hold CollectionsForProfiling.json at its root' {
+            { Invoke-ExpandStep -Job 'ShovelBridgeLoadTest_ExternalServiceBus' -Records @((New-Record 'A')) -EntryName 'other.json' } |
+                Should -Throw '*did not contain CollectionsForProfiling.json*'
+        }
+
+        It 'still pre-warms with VerifyWorkflowInputsJson, which is why that variable stays' {
+            $script:SbJob['variables'].Contains('VerifyWorkflowInputsJson') | Should -BeTrue
+            (@($script:SbSteps | ForEach-Object { Get-StepScript $_ }) -join "`n") | Should -Match 'ConvertFrom-Json ''\$\(VerifyWorkflowInputsJson\)'''
         }
     }
 }

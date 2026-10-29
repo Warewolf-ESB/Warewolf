@@ -437,6 +437,164 @@ Describe 'Test-ShovelBridgeE2E — late-minted result-token parameter validation
 }
 
 
+Describe 'Test-ShovelBridgeE2E — Read-WwShovelDataFile (pure, no DB)' {
+
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+
+        function script:New-DataFile {
+            param([string] $Json)
+            $p = Join-Path $TestDrive ([guid]::NewGuid().ToString('N') + '.json')
+            Set-Content -LiteralPath $p -Value $Json
+            $p
+        }
+    }
+
+    It 'returns the record count and each MandateId as an upper-case dashed GUID, in file order' {
+        $f = New-DataFile '[{"MandateId":"dcf7b738-bcf6-f011-8406-000d3a48abe3"},{"MandateId":"{1D90C594-3EE5-EF11-8EEA-7C1E52272B2B}"}]'
+        $r = Read-WwShovelDataFile -Path $f
+        $r.Count | Should -Be 2
+        @($r.MandateIds) | Should -Be @('DCF7B738-BCF6-F011-8406-000D3A48ABE3', '1D90C594-3EE5-EF11-8EEA-7C1E52272B2B')
+    }
+
+    It 'handles a single-record file' {
+        $r = Read-WwShovelDataFile -Path (New-DataFile '[{"MandateId":"DCF7B738-BCF6-F011-8406-000D3A48ABE3"}]')
+        $r.Count | Should -Be 1
+        @($r.MandateIds).Count | Should -Be 1
+    }
+
+    It 'throws for a missing file' {
+        { Read-WwShovelDataFile -Path (Join-Path $TestDrive 'nope.json') } | Should -Throw '*not found*'
+    }
+
+    It 'throws for an empty array' {
+        { Read-WwShovelDataFile -Path (New-DataFile '[]') } | Should -Throw '*contains no records*'
+    }
+
+    It 'throws naming the record when a MandateId is absent' {
+        { Read-WwShovelDataFile -Path (New-DataFile '[{"MandateId":"DCF7B738-BCF6-F011-8406-000D3A48ABE3"},{"ForPaymentCycle":"202610"}]') } |
+            Should -Throw '*Record 2*no MandateId*'
+    }
+
+    It 'rejects a MandateId that is not a GUID - it is interpolated into SQL later' {
+        { Read-WwShovelDataFile -Path (New-DataFile '[{"MandateId":"x''); DROP TABLE Profiler.ProfilerRecommendation;--"}]') } |
+            Should -Throw '*not a GUID*'
+    }
+
+    It 'rejects repeated MandateIds' {
+        $id = 'DCF7B738-BCF6-F011-8406-000D3A48ABE3'
+        { Read-WwShovelDataFile -Path (New-DataFile "[{`"MandateId`":`"$id`"},{`"MandateId`":`"$($id.ToLower())`"}]") } |
+            Should -Throw '*repeats MandateIds (1 unique of 2)*'
+    }
+
+    It 'throws when an element is not an object' {
+        { Read-WwShovelDataFile -Path (New-DataFile '["oops"]') } | Should -Throw '*Record 1*not a JSON object*'
+    }
+}
+
+Describe 'Test-ShovelBridgeE2E — Get-WwProfilerReconciliationQueries (pure, no DB)' {
+
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+        function script:New-Ids { param([int] $Count) 0..($Count - 1) | ForEach-Object { '{0:X8}-0000-0000-0000-000000000000' -f $_ } }
+    }
+
+    It 'emits one query per ChunkSize ids, and none beyond the list' {
+        @(Get-WwProfilerReconciliationQueries -MandateIds (New-Ids 2500) -ChunkSize 1000).Count | Should -Be 3
+        @(Get-WwProfilerReconciliationQueries -MandateIds (New-Ids 1000) -ChunkSize 1000).Count | Should -Be 1
+        @(Get-WwProfilerReconciliationQueries -MandateIds (New-Ids 1) -ChunkSize 1000).Count | Should -Be 1
+    }
+
+    It 'never puts more than 1000 rows in a VALUES constructor (the SQL Server limit)' {
+        foreach ($q in Get-WwProfilerReconciliationQueries -MandateIds (New-Ids 2500)) {
+            ([regex]::Matches($q, "\(\d+,'[0-9A-F-]{36}'\)")).Count | Should -BeLessOrEqual 1000
+        }
+    }
+
+    It 'numbers SeqNum by position in the whole list, across chunks' {
+        $q = @(Get-WwProfilerReconciliationQueries -MandateIds (New-Ids 5) -ChunkSize 2)
+        $q.Count | Should -Be 3
+        $q[1] | Should -Match "\(2,'00000002-"
+        $q[1] | Should -Match "\(3,'00000003-"
+        $q[1] | Should -Not -Match "\(1,'"
+        $q[2] | Should -Match "\(4,'00000004-"
+    }
+
+    It 'covers every id exactly once across the chunks' {
+        $ids = New-Ids 2345
+        $text = (Get-WwProfilerReconciliationQueries -MandateIds $ids -ChunkSize 1000) -join "`n"
+        ([regex]::Matches($text, "\(\d+,'([0-9A-F-]{36})'\)") | ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique).Count | Should -Be 2345
+        ([regex]::Matches($text, "\(\d+,'[0-9A-F-]{36}'\)")).Count | Should -Be 2345
+    }
+
+    It 'restricts both aggregates to the chunk, returns the columns the verdict code reads, and orders by SeqNum' {
+        $q = Get-WwProfilerReconciliationQueries -MandateIds (New-Ids 3)
+        $q | Should -Match 'FROM Profiler\.ProfilerRecommendation p WITH \(NOLOCK\)\s+WHERE p\.MandateId IN \(SELECT MandateId FROM Expected\)'
+        $q | Should -Match 'FROM Profiler\.MandateScores s WITH \(NOLOCK\)\s+WHERE s\.MandateId IN \(SELECT MandateId FROM Expected\)'
+        foreach ($col in 'AS SeqNum', 'AS RowsForMandate', 'AS ScoreRows', 'ORDER BY e\.SeqNum') { $q | Should -Match $col }
+    }
+
+    It 'refuses a value that is not a GUID rather than interpolating it' {
+        { Get-WwProfilerReconciliationQueries -MandateIds @("x'); DROP TABLE t;--") } | Should -Throw '*not a GUID*'
+    }
+}
+
+Describe 'Test-ShovelBridgeE2E — -DataFilePath parameter validation' {
+    <#
+        Every throw here happens in Phase 0, before any Docker/RabbitMQ/Service Bus/SQL access
+        (same approach as the late-minted token validation above).
+    #>
+
+    BeforeAll {
+        $script:TargetScript = Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1'
+        $script:DataFile = Join-Path $TestDrive 'data.json'
+        Set-Content -LiteralPath $script:DataFile -Value '[{"MandateId":"DCF7B738-BCF6-F011-8406-000D3A48ABE3"},{"MandateId":"1D90C594-3EE5-EF11-8EEA-7C1E52272B2B"}]'
+
+        function script:Invoke-Target {
+            param([hashtable] $Extra, [switch] $NoVerify)
+            $splat = @{
+                DestinationMode         = 'ExternalServiceBus'
+                ExternalShovelDestUri   = 'amqps://example.invalid:5671/?sasl=plain'
+                EngineBaseUrl           = 'https://engine.invalid'
+                ServiceBusNamespaceName = 'ns'
+                ServiceBusResourceGroup = 'rg'
+                DataFilePath            = $script:DataFile
+            }
+            if (-not $NoVerify) { $splat['VerifyWorkflowExecution'] = $true }
+            foreach ($k in $Extra.Keys) { $splat[$k] = $Extra[$k] }
+            & $script:TargetScript @splat
+        }
+    }
+
+    It 'requires -VerifyWorkflowExecution' {
+        { Invoke-Target -NoVerify -Extra @{ ExternalServiceBusConnectionString = (ConvertTo-SecureString 'x' -AsPlainText -Force) } } |
+            Should -Throw '*-DataFilePath requires -VerifyWorkflowExecution*'
+    }
+
+    It 'is mutually exclusive with -WorkflowInputsJson' {
+        { Invoke-Target -Extra @{ WorkflowInputsJson = '{"a":"b"}' } } | Should -Throw '*mutually exclusive*'
+    }
+
+    It 'refuses the Jobs1 verification mode, whose generated-prefix match real records cannot satisfy' {
+        { Invoke-Target -Extra @{ JobsDbConnectionString = (ConvertTo-SecureString 'x' -AsPlainText -Force); DbVerificationMode = 'Jobs1' } } |
+            Should -Throw '*needs -DbVerificationMode ProfilerRecommendation*'
+    }
+
+    It 'refuses an explicit -MessageCount that disagrees with the record count' {
+        { Invoke-Target -Extra @{ MessageCount = 5 } } | Should -Throw '*disagrees with the 2 record(s)*'
+    }
+
+    It 'accepts an explicit -MessageCount equal to the record count, getting past the data-file checks' {
+        # Proceeds into the next Phase 0 guard (the result-poll token), which is the proof the
+        # data-file validation passed; nothing past Phase 0 is reached.
+        { Invoke-Target -Extra @{ MessageCount = 2 } } | Should -Throw '*-ResultPollAuthToken is required*'
+    }
+
+    It 'validates the file before anything else - a missing file fails fast' {
+        { Invoke-Target -Extra @{ DataFilePath = (Join-Path $TestDrive 'absent.json') } } | Should -Throw '*not found*'
+    }
+}
+
 Describe 'Test-ShovelBridgeE2E — Get-WwQueueCountDetails / Get-WwDeadLetterCount' {
 
     BeforeAll {

@@ -2809,6 +2809,35 @@ This worker was originally built as a client example and has been promoted to a
   `%WAREWOLF_SERVICEBUS_TRIGGER_QUEUE%` binding only indexes when that app setting exists. The
   retired `wwprofilerlw-trigger-queue` / `wwprofilerlw.servicebus.trigger.request` queues are left
   in place. Both engines share the database and CloudAMQP sink — don't overlap Dev and UAT runs.
+- **`pipeline-LOADTEST.yml`'s two load-test jobs publish a real-world data file, not a template
+  (2026-10-26).** `ShovelBridgeLoadTest_ExternalServiceBus` and `ProfilerLoadTest_QueueProcessor` both
+  take their message content from `CollectionsForProfiling.json`: 20,000 anonymised
+  `RequestForProfiling` records (flat, 16 string fields, one distinct GUID `MandateId` each),
+  published one message per record in file order. The file is too large to commit and sits at the
+  secure-file size cap raw, so it lives in Pipelines > Library > Secure files as
+  `CollectionsForProfiling.zip` (JSON at the zip root); each job downloads it
+  (`DownloadSecureFile@1`), expands it to `$(Agent.BuildDirectory)\ProfilerLoadTestData`, and
+  validates it before publishing anything. The QueueProcessor job passes it to
+  `Publish-WwQueueBurst.ps1 -DataFilePath`. This job passes it to
+  `Test-ShovelBridgeE2E.ps1 -DataFilePath`, which hands it to the E2E harness as `--data-file`
+  (`WorkflowInputDataFile.cs`): each record becomes that message's `inputs` map exactly as written
+  — `WorkflowInputTemplate` placeholders are **not** expanded in it — and the correlationIds stay
+  generated (`<prefix>-NNNNNN`), so result polling and the drain are unchanged. Consequences:
+  - **The file sizes the run.** `-MessageCount` is no longer passed; a `--message-count` /
+    `-MessageCount` that disagrees with the record count is an error, because sending part of the
+    file would report the rest as lost.
+  - **Phase 4c reconciles the file's own MandateIds**
+    (`Get-WwProfilerReconciliationQueries`, chunked at 1000 per `VALUES` constructor; `SeqNum` is
+    the record's position in the file) instead of the generated `{correlationGuid}` stem. The ids
+    are validated as GUIDs before they are interpolated into SQL. `-DbVerificationMode Jobs1` is
+    refused with a data file, since it matches generated `MessageContent` prefixes.
+  - **The ids are fixed, not run-scoped.** `usp_InsertProfilerRecommendation` is an upsert keyed
+    on `(MandateId, ForPaymentCycle)`, so a re-run against a database that already holds them
+    inserts nothing and — worse for the reconciliation — reads them as *written* even if this
+    run's message never reached the database. Neither job cleans the tables first; start a re-run
+    from cleaned `Profiler` tables, and confirm `Profiler.ProfileDates` is seeded for the file's
+    cycle (202610; the old template used 202402).
+  - `VerifyWorkflowInputsJson` remains, but only the pre-warm steps read it.
 
 
 ## See also
