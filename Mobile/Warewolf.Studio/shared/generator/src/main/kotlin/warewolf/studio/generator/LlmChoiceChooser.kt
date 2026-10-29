@@ -28,9 +28,7 @@ class LlmChoiceChooser(private val llm: LlmClient) : NextActionChooser {
 
     internal fun prompt(context: ChoiceContext, options: List<String>): String = buildString {
         appendLine("You are building a Warewolf workflow one step at a time.")
-        appendLine("Goal: ${context.goal}")
-        appendLine("Steps so far on this branch: ${context.tail.path.ifEmpty { listOf("(none)") }.joinToString(" -> ")}")
-        context.tail.arm?.let { appendLine("This branch is the '$it' arm of the previous step.") }
+        append(context.describeState())
         appendLine("Choose the next step. Pick $END if this branch is finished.")
         options.forEachIndexed { i, name ->
             val description = context.tools.getOrNull(i)?.description ?: "Finish this branch."

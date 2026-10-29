@@ -1,11 +1,10 @@
 package warewolf.studio.eval
 
-import warewolf.studio.generator.BranchTail
-import warewolf.studio.generator.ChoiceContext
 import warewolf.studio.generator.InvalidChoiceException
 import warewolf.studio.generator.LlmChoiceChooser
 import warewolf.studio.generator.NextActionChooser
 import warewolf.studio.generator.ToolCatalog
+import warewolf.studio.generator.ClassifierChooser
 import warewolf.studio.generator.Action
 import java.nio.file.Files
 import java.nio.file.Path
@@ -15,14 +14,27 @@ import java.util.Locale
  * System 1 baseline evaluation (Plan.md §2, option b): next-tool accuracy of the small LLM on held-out corpus
  * sets, beside a majority-class floor so the number has something to beat.
  *
- *     gradlew :eval:run --args="<derivedDir> [--model qwen2.5:0.5b] [--eval-sets caps,asws] [--limit N]"
+ *     gradlew :eval:run --args="<derivedDir> [--model qwen2.5:0.5b] [--eval-sets caps,asws] [--limit N] [--state names|rich]"
+ *
+ * `--state rich` shows System 1 each earlier step's label and variables, not just its tool name.
+ * `--client markov` scores the no-model baseline ([MarkovChooser]) instead of a language model.
+ * `--client classifier --model-dir <dir> [--float]` scores the trained classifier ([OnnxClassifier]); it always
+ * sees rich state.
+ * `--export-features <outDir>` writes the trained classifier's training data ([Features]) and scores nothing.
  */
 fun main(args: Array<String>) {
+    // The whole-workflow comparison has its own commands (bakeoff/BakeOff.kt).
+    if (args.firstOrNull() == "bakeoff") return warewolf.studio.eval.bakeoff.BakeOff.main(args.drop(1))
     val dir = Path.of(args.firstOrNull() ?: error("usage: <derivedDir> [--model m] [--eval-sets a,b] [--limit N]"))
     val option = { name: String -> args.indexOf(name).takeIf { it >= 0 }?.let { args.getOrNull(it + 1) } }
     val model = option("--model") ?: "qwen2.5:0.5b"
     val evalSets = (option("--eval-sets") ?: "caps,asws").split(',').toSet()
     val limit = option("--limit")?.toInt()
+    val richState = when (val state = option("--state") ?: "names") {
+        "names" -> false
+        "rich" -> true
+        else -> error("--state must be names or rich, not '$state'")
+    }
 
     val split = Corpus.split(Corpus.loadExamples(dir), evalSets)
     // Small models favour early options, so list the tools most used in training first (END stays last).
@@ -32,6 +44,12 @@ fun main(args: Array<String>) {
     // System 1 can only answer with a placeable tool or END, so examples whose answer is anything else are not scored.
     val scored = split.eval.filter { it.answerIsKnown && it.next in placeable }.let { if (limit != null) it.take(limit) else it }
 
+    option("--export-features")?.let { out ->
+        val counts = Features.export(split, ToolCatalog.placeable(Corpus.loadTools(dir)), Path.of(out))
+        println("features written to $out: $counts")
+        return
+    }
+
     println("train examples ${split.train.size}; eval examples ${split.eval.size} (dropped ${split.droppedForLeakage} sharing a family with training); scored ${scored.size}")
 
     val majority = split.train.filter { it.answerIsKnown }.groupingBy { it.next }.eachCount().maxBy { it.value }.key
@@ -40,23 +58,34 @@ fun main(args: Array<String>) {
     // --client jev compares TypeSafe's Jev (cloud; needs JEV_API_KEY) against the local Ollama baselines;
     // --two-step asks Jev "finished?" and "which tool?" separately (JevTwoStepChooser).
     val useJev = option("--client") == "jev"
+    val useMarkov = option("--client") == "markov"
+    val classifier = if (option("--client") == "classifier") {
+        OnnxClassifier(Path.of(option("--model-dir") ?: error("--client classifier needs --model-dir")), quantized = "--float" !in args)
+    } else null
     val twoStep = useJev && "--two-step" in args
     val jevModel = option("--model") ?: "jev-latest"
     val runName = when {
         twoStep -> "$jevModel-two-step"
         useJev -> jevModel
+        useMarkov -> "markov"
+        classifier != null -> "classifier-" + Path.of(option("--model-dir")!!).fileName + if ("--float" in args) "-float" else ""
         else -> model
-    }
+    } + if (richState) "-rich" else ""
     val jevClient = if (useJev && !twoStep) JevClient(model = jevModel) else null
     val twoStepChooser = if (twoStep) JevTwoStepChooser(option("--end-threshold")?.toDouble() ?: 0.5, jevModel) else null
-    val chooser: NextActionChooser = twoStepChooser ?: LlmChoiceChooser(jevClient ?: OllamaClient(model))
+    val chooser: NextActionChooser = when {
+        twoStepChooser != null -> twoStepChooser
+        useMarkov -> MarkovChooser(split.train)
+        classifier != null -> ClassifierChooser(classifier, classifier.labels, tools, classifier.recentSteps)
+        else -> LlmChoiceChooser(jevClient ?: OllamaClient(model))
+    }
     val predictions = mutableListOf<Prediction>()
     val twoStepAnswers = mutableListOf<Pair<Double, String?>>()
     var invalid = 0
     // One file per model, so runs of different clients never overwrite each other.
     Files.newBufferedWriter(dir.resolve("predictions-${runName.replace(Regex("[^A-Za-z0-9.]"), "_")}.jsonl")).use { out ->
         scored.forEachIndexed { i, example ->
-            val context = ChoiceContext(example.goal, BranchTail(afterStepId = null, arm = example.arm, path = example.path), tools)
+            val context = example.context(tools, richState || classifier != null)
             val predicted = try {
                 when (val action = chooser.choose(context)) {
                     is Action.End -> LlmChoiceChooser.END
@@ -81,8 +110,10 @@ fun main(args: Array<String>) {
     val label = when {
         twoStepChooser != null -> "Jev ${twoStepChooser.resolvedModel ?: "?"}, two-step"
         jevClient != null -> "Jev ${jevClient.resolvedModel ?: "?"}"
+        useMarkov -> "Markov (previous tool and arm)"
+        classifier != null -> "classifier ${option("--model-dir")}"
         else -> model
-    }
+    } + if (richState) ", rich state" else ""
     printReport("$label (invalid answers: $invalid)", score(predictions, LlmChoiceChooser.END))
 
     if (twoStepAnswers.size == predictions.size) {

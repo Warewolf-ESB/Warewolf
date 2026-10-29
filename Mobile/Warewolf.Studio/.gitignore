@@ -5,3 +5,7 @@ build/
 
 # The corpus itself (client workflows and what is derived from them) never lives in the repo;
 # corpus/ holds only the code that builds it.
+
+# The classifier's training environment (train/requirements.txt rebuilds it)
+train/.venv/
+__pycache__/

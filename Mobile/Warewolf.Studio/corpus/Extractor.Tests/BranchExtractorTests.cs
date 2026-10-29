@@ -125,6 +125,78 @@ public class BranchExtractorTests
         StringAssert.Contains(error.Message, "duplicate node id(s) in the X6 graph: a");
     }
 
+    [TestMethod]
+    public void Steps_describe_each_step_on_the_path_with_its_label_and_variables()
+    {
+        var assign = Node("a", Assign, displayName: "Set defaults");
+        assign["data"]!["fieldsCollection"] = new JArray(
+            new JObject { ["fieldName"] = "[[name]]", ["fieldValue"] = "[[first]] [[last]]" },
+            new JObject { ["fieldName"] = "[[name]]", ["fieldValue"] = "x" });
+        var graph = Graph(
+            [Node("s", "start"), assign, Node("c", Calculate, displayName: "Total")],
+            [Edge("s", "a"), Edge("a", "c")]);
+
+        var result = Extractor.Extract(graph);
+
+        Assert.AreEqual(0, result.Examples[0].Steps.Count);
+        var end = result.Examples[2];
+        Assert.AreEqual(2, end.Steps.Count);
+        Assert.AreEqual("Set defaults", end.Steps[0].Label);
+        CollectionAssert.AreEqual(new[] { "name", "first", "last" }, end.Steps[0].Variables.ToArray());
+        Assert.AreEqual("Total", end.Steps[1].Label);
+        CollectionAssert.AreEqual(new[] { "Assign", "Calculate" }, end.Steps.Select(s => s.Tool).ToArray());
+    }
+
+    [TestMethod]
+    public void Legacy_step_label_comes_from_its_DisplayName_property()
+    {
+        var type = LegacyType("Unlimited.Applications.BusinessDesignStudio.Activities.DsfMultiAssignActivity");
+        var graph = Graph(
+            [Node("s", "start"), Node("a", type, new JObject { ["DisplayName"] = "Assign (2)" })],
+            [Edge("s", "a")]);
+
+        var result = Extractor.Extract(graph);
+
+        Assert.AreEqual("Assign (2)", result.Examples[1].Steps.Single().Label);
+    }
+
+    [TestMethod]
+    public void Step_without_a_label_or_variables_has_empty_ones()
+    {
+        var graph = Graph([Node("s", "start"), Node("a", Assign)], [Edge("s", "a")]);
+
+        var step = Extractor.Extract(graph).Examples[1].Steps.Single();
+
+        Assert.AreEqual("", step.Label);
+        Assert.AreEqual(0, step.Variables.Count);
+    }
+
+    [TestMethod]
+    public void Steps_follow_each_arm_of_a_decision()
+    {
+        var graph = Graph(
+            [Node("s", "start"), Node("d", Decision, displayName: "Is valid?"), Node("a", Assign)],
+            [Edge("s", "d"), Edge("d", "a", decisionArm: true)]);
+
+        var result = Extractor.Extract(graph);
+
+        var falseArm = result.Examples.Single(e => e.Arm == "False");
+        Assert.AreEqual("Is valid?", falseArm.Steps.Single().Label);
+        var trueEnd = result.Examples.Single(e => e.Path.Count == 2);
+        CollectionAssert.AreEqual(new[] { "Decision", "Assign" }, trueEnd.Steps.Select(s => s.Tool).ToArray());
+    }
+
+    [TestMethod]
+    [DataRow("[[a]]", new[] { "a" })]
+    [DataRow("x [[a]] y [[rs(*).f]]", new[] { "a", "rs(*).f" })]
+    [DataRow("[[rs([[i]]).f]]", new[] { "rs([[i]]).f" })]
+    [DataRow("no variables ]] [[", new string[0])]
+    [DataRow("[[]]", new string[0])]
+    public void Variables_are_the_outermost_bracketed_expressions(string text, string[] expected)
+    {
+        CollectionAssert.AreEqual(expected, BranchExtractor.Variables(text).ToArray());
+    }
+
     static string LegacyType(string clrType) => $"{clrType}, Dev2.Activities, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null";
 
     static string[] Describe(GraphExamples result) =>
@@ -133,9 +205,14 @@ public class BranchExtractorTests
     static string Graph(JObject[] nodes, JObject[] edges) =>
         new JObject { ["nodes"] = new JArray(nodes), ["edges"] = new JArray(edges) }.ToString();
 
-    static JObject Node(string id, string type, JObject? properties = null)
+    static JObject Node(string id, string type, JObject? properties = null, string? displayName = null)
     {
         var data = new JObject { ["type"] = type };
+        if (displayName is not null)
+        {
+            data["displayname"] = displayName;
+        }
+
         if (properties is not null)
         {
             data["properties"] = properties;

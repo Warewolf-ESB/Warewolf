@@ -56,11 +56,7 @@ class JevTwoStepChooser(
 
     internal fun request(context: ChoiceContext): JsonObject = buildJsonObject {
         put("model", model)
-        put("state", buildString {
-            appendLine("Goal: ${context.goal}")
-            appendLine("Steps so far on this branch: ${context.tail.path.ifEmpty { listOf("(none)") }.joinToString(" -> ")}")
-            context.tail.arm?.let { appendLine("This branch is the '$it' arm of the previous step.") }
-        })
+        put("state", context.describeState())
         putJsonObject("questions") {
             putJsonObject(FINISHED) {
                 put("type", "noul")

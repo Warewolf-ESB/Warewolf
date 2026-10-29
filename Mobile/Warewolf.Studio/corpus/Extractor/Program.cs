@@ -81,7 +81,7 @@ using (var examplesOut = new StreamWriter(Path.Combine(outDir, "examples.jsonl")
 
         foreach (var example in graph?.Examples ?? [])
         {
-            examplesOut.WriteLine(JsonSerializer.Serialize(new { set = workflow.Set, id = workflow.Id, family, example.Path, example.Arm, example.Next }, json));
+            examplesOut.WriteLine(JsonSerializer.Serialize(new { set = workflow.Set, id = workflow.Id, family, example.Path, example.Arm, example.Next, example.Steps }, json));
             exampleCount++;
         }
 

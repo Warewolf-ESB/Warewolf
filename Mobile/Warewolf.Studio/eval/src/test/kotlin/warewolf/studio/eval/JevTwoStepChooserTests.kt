@@ -8,10 +8,12 @@ import warewolf.studio.generator.BranchKind
 import warewolf.studio.generator.BranchTail
 import warewolf.studio.generator.ChoiceContext
 import warewolf.studio.generator.InvalidChoiceException
+import warewolf.studio.generator.StepSummary
 import warewolf.studio.generator.Tool
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.test.assertTrue
 
 class JevTwoStepChooserTests {
     private val assign = Tool("Assign", "Data", "Assigns values to variables.")
@@ -63,5 +65,26 @@ class JevTwoStepChooserTests {
         val chooser = JevTwoStepChooser(post = FakeJev(finished = 0.1, tool = "Sort Records").post)
 
         assertFailsWith<InvalidChoiceException> { chooser.choose(context) }
+    }
+
+    @Test
+    fun `the state shows each step's label and variables when the tail has them`() {
+        val jev = FakeJev(finished = 0.1, tool = "Assign")
+        val rich = context.copy(tail = BranchTail(null, path = listOf("Assign"), steps = listOf(StepSummary("Assign", "Set defaults", listOf("name")))))
+
+        JevTwoStepChooser(post = jev.post).choose(rich)
+        val state = Json.parseToJsonElement(jev.requests.single()).jsonObject.getValue("state").jsonPrimitive.content
+
+        assertTrue("""Steps so far on this branch: Assign "Set defaults" [[name]]""" in state)
+    }
+
+    @Test
+    fun `the state lists tool names only when the tail has no steps`() {
+        val jev = FakeJev(finished = 0.1, tool = "Assign")
+
+        JevTwoStepChooser(post = jev.post).choose(context)
+        val state = Json.parseToJsonElement(jev.requests.single()).jsonObject.getValue("state").jsonPrimitive.content
+
+        assertTrue(state.lines().contains("Steps so far on this branch: Assign"))
     }
 }

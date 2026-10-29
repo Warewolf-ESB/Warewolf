@@ -37,8 +37,9 @@ class FrontierLoop(
                     val id = sink.place(tail, action.tool)
                     steps += PlacedStep(id, action.tool, tail)
                     val path = tail.path + action.tool.name
+                    val stepsSoFar = tail.steps + sink.summary(id, action.tool)
                     // Depth-first: the new tails go to the front, so one branch finishes before the next starts.
-                    armsOf(action).asReversed().forEach { arm -> frontier.addFirst(BranchTail(id, arm, path)) }
+                    armsOf(action).asReversed().forEach { arm -> frontier.addFirst(BranchTail(id, arm, path, stepsSoFar)) }
                 }
             }
         }

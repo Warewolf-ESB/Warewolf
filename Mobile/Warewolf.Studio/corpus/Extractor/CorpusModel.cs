@@ -9,14 +9,25 @@ public enum BranchKind { None, Decision, Switch }
 public sealed record ResolvedTool(string Name, BranchKind BranchKind);
 
 /// <summary>
+/// One step already on a branch, as System 1 sees it: the tool, the author's label for the step, and every
+/// <c>[[variable]]</c> the step's data mentions (read or written), in order.
+/// </summary>
+public sealed record StepSummary(
+    [property: JsonPropertyName("tool")] string Tool,
+    [property: JsonPropertyName("label")] string Label,
+    [property: JsonPropertyName("variables")] IReadOnlyList<string> Variables);
+
+/// <summary>
 /// One System 1 decision: on a branch whose tools so far are <see cref="Path"/> (on <see cref="Arm"/> of the
 /// last one, when it forks), the workflow's author placed <see cref="Next"/> — a tool name, <see cref="End"/>,
-/// or <c>?&lt;dataType&gt;</c> for an activity the catalog does not know.
+/// or <c>?&lt;dataType&gt;</c> for an activity the catalog does not know. <see cref="Steps"/> describes each
+/// step of <see cref="Path"/> in more detail.
 /// </summary>
 public sealed record Example(
     [property: JsonPropertyName("path")] IReadOnlyList<string> Path,
     [property: JsonPropertyName("arm")] string? Arm,
-    [property: JsonPropertyName("next")] string Next)
+    [property: JsonPropertyName("next")] string Next,
+    [property: JsonPropertyName("steps")] IReadOnlyList<StepSummary> Steps)
 {
     public const string End = "END";
     public const string UnknownPrefix = "?";

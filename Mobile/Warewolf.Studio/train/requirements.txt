@@ -1,0 +1,8 @@
+# Venv created with --system-site-packages. torch needs a CUDA 12.8+ build for Blackwell (sm_120) GPUs; install it
+# into the venv separately, since pip treats the system's +cu126 build as satisfying a plain pin:
+#   pip install --ignore-installed --no-deps "torch==2.11.0+cu128" --index-url https://download.pytorch.org/whl/cu128
+sentence-transformers==6.2.0
+onnx==1.23.2
+onnxruntime==1.31.1
+onnxscript==0.7.2
+pytest

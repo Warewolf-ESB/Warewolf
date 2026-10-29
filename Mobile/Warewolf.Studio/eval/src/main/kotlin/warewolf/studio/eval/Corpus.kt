@@ -8,6 +8,9 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import warewolf.studio.generator.BranchKind
+import warewolf.studio.generator.BranchTail
+import warewolf.studio.generator.ChoiceContext
+import warewolf.studio.generator.StepSummary
 import warewolf.studio.generator.Tool
 import java.nio.file.Files
 import java.nio.file.Path
@@ -21,9 +24,15 @@ data class CorpusExample(
     val path: List<String>,
     val arm: String?,
     val next: String,
+    /** Each step of [path] with its label and variables; empty in corpora extracted before steps were recorded. */
+    val steps: List<StepSummary> = emptyList(),
 ) {
     /** The corpus marks activities the catalog cannot place with a leading `?`. */
     val answerIsKnown: Boolean get() = !next.startsWith("?")
+
+    /** What System 1 would see at this decision; [rich] adds each earlier step's label and variables. */
+    fun context(tools: List<Tool>, rich: Boolean): ChoiceContext =
+        ChoiceContext(goal, BranchTail(afterStepId = null, arm = arm, path = path, steps = if (rich) steps else emptyList()), tools)
 }
 
 data class Split(val train: List<CorpusExample>, val eval: List<CorpusExample>, val droppedForLeakage: Int)
@@ -49,6 +58,10 @@ object Corpus {
                 path = (o["Path"] as JsonArray).map { it.jsonPrimitive.content },
                 arm = o["Arm"].let { if (it == null || it is JsonNull) null else it.jsonPrimitive.content },
                 next = o.string("Next"),
+                steps = (o["Steps"] as? JsonArray).orEmpty().map { step ->
+                    val s = step.jsonObject
+                    StepSummary(s.string("tool"), s.string("label"), s.getValue("variables").jsonArray.map { it.jsonPrimitive.content })
+                },
             )
         }
     }

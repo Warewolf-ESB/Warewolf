@@ -46,10 +46,10 @@ public sealed class BranchExtractor(Func<string, JObject?, ResolvedTool?> resolv
         public SortedSet<string> Unknown { get; } = new(StringComparer.Ordinal);
         public int Merges { get; private set; }
 
-        public void FromStart(string startId) => Continue(outgoing[startId].FirstOrDefault(), [], arm: null);
+        public void FromStart(string startId) => Continue(outgoing[startId].FirstOrDefault(), [], [], arm: null);
 
         /// <summary>Records what follows <paramref name="path"/> along <paramref name="edge"/> (END when there is none), then descends.</summary>
-        void Continue(JObject? edge, List<string> path, string? arm)
+        void Continue(JObject? edge, List<string> path, List<StepSummary> steps, string? arm)
         {
             var targetId = edge is null ? null : Target(edge);
             if (targetId is null || !_placed.Add(targetId))
@@ -59,7 +59,7 @@ public sealed class BranchExtractor(Func<string, JObject?, ResolvedTool?> resolv
                     Merges++;
                 }
 
-                Examples.Add(new Example(path, arm, Example.End));
+                Examples.Add(new Example(path, arm, Example.End, steps));
                 return;
             }
 
@@ -72,35 +72,89 @@ public sealed class BranchExtractor(Func<string, JObject?, ResolvedTool?> resolv
             }
 
             var name = tool?.Name ?? Example.UnknownPrefix + dataType;
-            Examples.Add(new Example(path, arm, name));
-            Place(targetId, [.. path, name], tool?.BranchKind ?? BranchKind.None);
+            Examples.Add(new Example(path, arm, name, steps));
+            Place(targetId, [.. path, name], [.. steps, Summarize(name, node)], tool?.BranchKind ?? BranchKind.None);
         }
 
-        void Place(string nodeId, List<string> path, BranchKind kind)
+        void Place(string nodeId, List<string> path, List<StepSummary> steps, BranchKind kind)
         {
             var edges = outgoing[nodeId].ToList();
             switch (kind)
             {
                 case BranchKind.Decision:
-                    Continue(edges.FirstOrDefault(e => IsDecisionArm(e, isTrue: true)), path, "True");
-                    Continue(edges.FirstOrDefault(e => IsDecisionArm(e, isTrue: false)), path, "False");
+                    Continue(edges.FirstOrDefault(e => IsDecisionArm(e, isTrue: true)), path, steps, "True");
+                    Continue(edges.FirstOrDefault(e => IsDecisionArm(e, isTrue: false)), path, steps, "False");
                     break;
                 case BranchKind.Switch:
                     // A Switch with no wired cases closes its branch like any other dead end.
                     if (edges.Count == 0)
                     {
-                        Examples.Add(new Example(path, null, Example.End));
+                        Examples.Add(new Example(path, null, Example.End, steps));
                     }
 
                     foreach (var edge in edges)
                     {
-                        Continue(edge, path, edge["label"]?.Value<string>() ?? "");
+                        Continue(edge, path, steps, edge["label"]?.Value<string>() ?? "");
                     }
 
                     break;
                 default:
-                    Continue(edges.FirstOrDefault(), path, arm: null);
+                    Continue(edges.FirstOrDefault(), path, steps, arm: null);
                     break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// The step's label (<c>data.displayname</c>, or a legacy activity's <c>data.properties.DisplayName</c>) and
+    /// every variable its data mentions. Inputs and outputs are not told apart: the field names differ per tool.
+    /// </summary>
+    static StepSummary Summarize(string tool, JObject node)
+    {
+        var data = node["data"] as JObject;
+        var label = data?[Constants.DISPLAYNAME]?.Value<string>()
+                    ?? data?[Constants.PROPERTIES]?[Constants.PROPERTY_DISPLAYNAME]?.Value<string>()
+                    ?? "";
+        var variables = new List<string>();
+        var seen = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var value in data?.Descendants().OfType<JValue>().Where(v => v.Type == JTokenType.String) ?? [])
+        {
+            foreach (var variable in Variables(value.Value<string>()!))
+            {
+                if (seen.Add(variable))
+                {
+                    variables.Add(variable);
+                }
+            }
+        }
+
+        return new StepSummary(tool, label.Trim(), variables);
+    }
+
+    /// <summary>The outermost <c>[[…]]</c> expressions in <paramref name="text"/>, brackets removed; <c>[[rs([[i]]).f]]</c> is one.</summary>
+    public static IEnumerable<string> Variables(string text)
+    {
+        var depth = 0;
+        var start = 0;
+        for (var i = 0; i < text.Length - 1; i++)
+        {
+            if (text[i] == '[' && text[i + 1] == '[')
+            {
+                if (depth++ == 0)
+                {
+                    start = i + 2;
+                }
+
+                i++;
+            }
+            else if (text[i] == ']' && text[i + 1] == ']' && depth > 0)
+            {
+                if (--depth == 0 && i > start)
+                {
+                    yield return text[start..i];
+                }
+
+                i++;
             }
         }
     }

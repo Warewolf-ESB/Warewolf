@@ -15,7 +15,7 @@ class FrontierLoopTests {
         val result = FrontierLoop(chooser, sink).run("goal", catalog)
 
         assertEquals(listOf("Assign"), result.steps.map { it.tool.name })
-        assertEquals(BranchTail(afterStepId = "s1", arm = null, path = listOf("Assign")), chooser.seen[1].tail)
+        assertEquals(BranchTail(afterStepId = "s1", arm = null, path = listOf("Assign"), steps = listOf(StepSummary("Assign"))), chooser.seen[1].tail)
     }
 
     @Test
@@ -37,6 +37,16 @@ class FrontierLoopTests {
 
         assertEquals(listOf("True", "False"), chooser.seen.drop(1).map { it.tail.arm })
         assertTrue(chooser.seen.drop(1).all { it.tail.afterStepId == "s1" })
+    }
+
+    @Test
+    fun `each arm of a decision carries the steps placed before it`() {
+        val chooser = ScriptedChooser(Action.Place(assign), Action.Place(decision), Action.End(), Action.End())
+
+        FrontierLoop(chooser, sink).run("goal", catalog)
+
+        val expected = listOf(StepSummary("Assign"), StepSummary("Decision"))
+        assertEquals(listOf(expected, expected), chooser.seen.drop(2).map { it.tail.steps })
     }
 
     @Test
