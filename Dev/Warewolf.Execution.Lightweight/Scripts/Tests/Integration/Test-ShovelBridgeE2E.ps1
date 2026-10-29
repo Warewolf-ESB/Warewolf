@@ -166,6 +166,19 @@
     bodies therefore serialise the entire run behind a single lock, and are recorded as N retry
     attempts of ONE job instead of N distinct jobs. The harness prints a warning if you omit it
     on a multi-message run.
+.PARAMETER DataFilePath
+    Only used when -VerifyWorkflowExecution. A JSON array of flat string-map records - the file
+    Publish-WwQueueBurst.ps1 -DataFilePath reads: ONE message per record, each published exactly
+    as written (no placeholder expansion), instead of the one templated -WorkflowInputsJson.
+    Mutually exclusive with -WorkflowInputsJson, and requires -DbVerificationMode
+    ProfilerRecommendation when -JobsDbConnectionString is supplied.
+
+    The file sizes the run: -MessageCount defaults to the record count, and an explicit
+    -MessageCount that disagrees is an error. Every record must carry a unique GUID MandateId;
+    Phase 4c then reconciles Profiler.ProfilerRecommendation for exactly those ids (record
+    position is the SeqNum) instead of for generated, run-scoped ones. Because the ids are fixed,
+    a MandateId scored by an EARLIER run reads as written even if this run's message never
+    reached the database - start from cleaned Profiler tables when re-running.
 .PARAMETER CorrelationId
     Only used when -VerifyWorkflowExecution. Caller-supplied idempotency/polling key. When
     -MessageCount is 1 (default), this is used verbatim and, when omitted, a fresh GUID is
@@ -377,6 +390,7 @@ param(
     # ── Full-pipeline "did the workflow actually execute" verification (additive) ──────
     [switch] $VerifyWorkflowExecution,
     [string] $WorkflowInputsJson,
+    [string] $DataFilePath,
     [string] $CorrelationId,
     [securestring] $MessageAuthToken,
     [string] $EngineBaseUrl,
@@ -841,6 +855,103 @@ function Get-WwJobsDbVerdict {
     }
 }
 
+function Read-WwShovelDataFile {
+    <#
+        Reads -DataFilePath: a JSON array of flat workflow-input records (the same file
+        Publish-WwQueueBurst.ps1 -DataFilePath reads), one published message per record.
+
+        Returns the record count and each record's MandateId normalised to the upper-case
+        dashed GUID form. Phase 4c interpolates these straight into SQL, so a value that is not a
+        GUID is rejected HERE rather than escaped later, and the normalised form (never the raw
+        text) is what reaches the query. MandateId must be present and unique: it is the key the
+        reconciliation expects exactly one recommendation row for.
+
+        Pure function - no network or DB access - so it is unit-tested (see
+        Test-ShovelBridgeE2E.Tests.ps1).
+    #>
+    param(
+        [Parameter(Mandatory)][string] $Path
+    )
+
+    if (-not (Test-Path -LiteralPath $Path)) { throw "-DataFilePath '$Path' not found." }
+    $records = @(Get-Content -LiteralPath $Path -Raw | ConvertFrom-Json -NoEnumerate | ForEach-Object { $_ })
+    if ($records.Count -eq 0) { throw "-DataFilePath '$Path' contains no records." }
+
+    $ids = [string[]]::new($records.Count)
+    for ($i = 0; $i -lt $records.Count; $i++) {
+        $r = $records[$i]
+        if ($r -isnot [pscustomobject]) { throw "Record $($i + 1) in '$Path' is not a JSON object." }
+        if (-not $r.PSObject.Properties['MandateId']) { throw "Record $($i + 1) in '$Path' has no MandateId; the database reconciliation is keyed on it." }
+        $parsed = [guid]::Empty
+        if (-not [guid]::TryParse([string]$r.MandateId, [ref]$parsed)) {
+            throw "Record $($i + 1) in '$Path': MandateId '$($r.MandateId)' is not a GUID."
+        }
+        $ids[$i] = $parsed.ToString('D').ToUpperInvariant()
+    }
+
+    $distinct = @($ids | Select-Object -Unique).Count
+    if ($distinct -ne $ids.Count) {
+        throw "-DataFilePath '$Path' repeats MandateIds ($distinct unique of $($ids.Count)); the reconciliation expects exactly one recommendation per message."
+    }
+
+    [pscustomobject]@{ Count = $ids.Count; MandateIds = $ids }
+}
+
+function Get-WwProfilerReconciliationQueries {
+    <#
+        Builds the Profiler.ProfilerRecommendation / MandateScores reconciliation for an explicit
+        MandateId list, as one query per -ChunkSize ids. Each row carries the id's 0-based
+        position in the list as SeqNum - the same column the generated-GUID reconciliation
+        returns - so the caller's verdict code is shared.
+
+        Chunked because a VALUES table constructor accepts at most 1000 rows. The two aggregates
+        are restricted to the chunk's own MandateIds (rather than grouping the whole tables once
+        per chunk) so 20 chunks stay cheap on a shared database.
+
+        -MandateIds must already be normalised GUIDs (Read-WwShovelDataFile); this re-checks, since
+        the values are interpolated into SQL text.
+    #>
+    param(
+        [Parameter(Mandatory)][string[]] $MandateIds,
+        [ValidateRange(1, 1000)][int] $ChunkSize = 1000
+    )
+
+    foreach ($id in $MandateIds) {
+        $parsed = [guid]::Empty
+        if (-not [guid]::TryParse($id, [ref]$parsed)) { throw "'$id' is not a GUID; refusing to interpolate it into SQL." }
+    }
+
+    for ($start = 0; $start -lt $MandateIds.Count; $start += $ChunkSize) {
+        $end  = [Math]::Min($start + $ChunkSize, $MandateIds.Count) - 1
+        $rows = ($start..$end | ForEach-Object { "($_,'$($MandateIds[$_])')" }) -join ','
+        @"
+;WITH Expected AS (
+    SELECT SeqNum, CONVERT(uniqueidentifier, MandateId) AS MandateId
+    FROM (VALUES $rows) AS v(SeqNum, MandateId)
+),
+Recs AS (
+    SELECT p.MandateId, COUNT(*) AS RowsForMandate
+    FROM Profiler.ProfilerRecommendation p WITH (NOLOCK)
+    WHERE p.MandateId IN (SELECT MandateId FROM Expected)
+    GROUP BY p.MandateId
+),
+Scores AS (
+    SELECT s.MandateId, COUNT(*) AS ScoreRows
+    FROM Profiler.MandateScores s WITH (NOLOCK)
+    WHERE s.MandateId IN (SELECT MandateId FROM Expected)
+    GROUP BY s.MandateId
+)
+SELECT e.SeqNum                        AS SeqNum,
+       ISNULL(r.RowsForMandate, 0)     AS RowsForMandate,
+       ISNULL(sc.ScoreRows, 0)         AS ScoreRows
+FROM Expected e
+LEFT JOIN Recs   r  ON r.MandateId  = e.MandateId
+LEFT JOIN Scores sc ON sc.MandateId = e.MandateId
+ORDER BY e.SeqNum;
+"@
+    }
+}
+
 if ($LoadFunctionsOnly) { return }
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -877,6 +988,30 @@ if ($RabbitMqMode -eq 'External') {
 # Declared unconditionally so the Phase 4 branches can test it under Set-StrictMode even
 # when -VerifyWorkflowExecution was never passed (the validation block below is what sets it).
 $useLateMintedResultToken = $false
+
+# -DataFilePath: one message per record of a real-world data file instead of the one templated
+# -WorkflowInputsJson. It sizes the run (an explicit, disagreeing -MessageCount is an error rather
+# than a silent truncation - sending part of the file would report the rest as lost) and swaps
+# Phase 4c's generated-GUID reconciliation for the file's own MandateIds. Declared unconditionally
+# for Set-StrictMode, like $useLateMintedResultToken above.
+$dataRecords = $null
+if (-not [string]::IsNullOrWhiteSpace($DataFilePath)) {
+    if (-not $VerifyWorkflowExecution) {
+        throw '-DataFilePath requires -VerifyWorkflowExecution (it supplies the workflow-trigger messages'' inputs).'
+    }
+    if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) {
+        throw '-DataFilePath and -WorkflowInputsJson are mutually exclusive: the data file supplies every message''s inputs.'
+    }
+    if ($JobsDbConnectionString -and $DbVerificationMode -ne 'ProfilerRecommendation') {
+        throw '-DataFilePath needs -DbVerificationMode ProfilerRecommendation: the Jobs1 reconciliation matches generated MessageContent prefixes, which real records do not carry.'
+    }
+    $dataRecords = Read-WwShovelDataFile -Path $DataFilePath
+    if ($PSBoundParameters.ContainsKey('MessageCount') -and $MessageCount -ne $dataRecords.Count) {
+        throw "-MessageCount $MessageCount disagrees with the $($dataRecords.Count) record(s) in -DataFilePath; omit -MessageCount, the data file sizes the run."
+    }
+    $MessageCount = $dataRecords.Count
+    Write-Ok "-DataFilePath: $MessageCount record(s), one message each; Phase 4c will reconcile their own MandateIds."
+}
 
 if ($VerifyWorkflowExecution) {
     # A live engine must already be listening (Managed Identity) on -DestinationQueueName —
@@ -1429,6 +1564,7 @@ try {
             '--publish-concurrency', $PublishConcurrency
         )
         if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $publishArgs += @('--workflow-inputs-json', $WorkflowInputsJson) }
+        if ($null -ne $dataRecords) { $publishArgs += @('--data-file', $DataFilePath) }
         if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) { $publishArgs += @('--message-auth-token', (ConvertFrom-SecureStringPlain $MessageAuthToken)) }
 
         Write-Step "dotnet run (E2EHarness --phase publish, $MessageCount message(s), no poll token needed)"
@@ -1497,6 +1633,7 @@ try {
             '--publish-concurrency', $PublishConcurrency
         )
         if (-not [string]::IsNullOrWhiteSpace($WorkflowInputsJson)) { $harnessArgs += @('--workflow-inputs-json', $WorkflowInputsJson) }
+        if ($null -ne $dataRecords) { $harnessArgs += @('--data-file', $DataFilePath) }
         if ($MessageAuthToken -and $MessageAuthToken.Length -gt 0) { $harnessArgs += @('--message-auth-token', (ConvertFrom-SecureStringPlain $MessageAuthToken)) }
     } else {
         $harnessArgs = @(
@@ -1632,6 +1769,20 @@ try {
             # is an upsert keyed on (MandateId, ForPaymentCycle), so a constant MandateId would
             # return AlreadyExists=1 on every later run, insert nothing, and make a healthy run
             # look like $MessageCount lost messages.
+            #
+            # With -DataFilePath the MandateIds are the file's own, not generated, so the stem
+            # arithmetic does not apply: the reconciliation is keyed on that explicit list instead
+            # (Get-WwProfilerReconciliationQueries, chunked). SeqNum is then the record's 0-based
+            # position in the file. Fixed ids are NOT run-scoped: a MandateId already scored by an
+            # earlier run is reported as written even if this run's message never reached the
+            # database, so a re-run against the same database must start from cleaned tables.
+            $profilerRows = $null
+            if ($null -ne $dataRecords) {
+                Write-Step "Reconciling Profiler.ProfilerRecommendation for the $($dataRecords.Count) MandateId(s) in the data file (expecting $MessageCount)"
+                $profilerRows = foreach ($reconQuery in (Get-WwProfilerReconciliationQueries -MandateIds $dataRecords.MandateIds)) {
+                    Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query $reconQuery
+                }
+            } else {
             $guidStem    = Get-WwCorrelationGuidStem -CorrelationIdPrefix $CorrelationId
             $escapedStem = $guidStem.Replace("'", "''")
 
@@ -1664,9 +1815,14 @@ LEFT JOIN Recs   r  ON r.MandateId  = e.MandateId
 LEFT JOIN Scores sc ON sc.MandateId = e.MandateId
 ORDER BY e.SeqNum;
 "@
+            }
             if (-not $profilerRows -or @($profilerRows).Count -eq 0) {
                 throw 'Profiler.ProfilerRecommendation reconciliation query returned no rows.'
             }
+
+            # A sequence number is only meaningful to a reader as a MandateId when it indexes a
+            # data file; for generated GUIDs it IS the identity.
+            $seqLabel = { param([int] $Seq) if ($null -ne $dataRecords) { "$Seq ($($dataRecords.MandateIds[$Seq]))" } else { "$Seq" } }
 
             $allRows      = @($profilerRows)
             $missingSeq   = @($allRows | Where-Object { [int]$_.RowsForMandate -eq 0 } | ForEach-Object { [int]$_.SeqNum })
@@ -1684,12 +1840,12 @@ ORDER BY e.SeqNum;
                 Write-Ok "Profiler.ProfilerRecommendation confirms all $MessageCount messages produced exactly one recommendation."
             } else {
                 if ($missingSeq.Count -gt 0) {
-                    $shown = ($missingSeq | Select-Object -First 20) -join ', '
+                    $shown = ($missingSeq | Select-Object -First 20 | ForEach-Object { & $seqLabel $_ }) -join ', '
                     $more  = if ($missingSeq.Count -gt 20) { " (+$($missingSeq.Count - 20) more)" } else { '' }
                     Write-Note "Sequence numbers with no recommendation (never reached ProfilerMain's own DB activity): $shown$more"
                 }
                 if ($duplicateSeq.Count -gt 0) {
-                    $shownDup = ($duplicateSeq | Select-Object -First 20) -join ', '
+                    $shownDup = ($duplicateSeq | Select-Object -First 20 | ForEach-Object { & $seqLabel $_ }) -join ', '
                     Write-Note "Sequence numbers with MORE THAN ONE recommendation row: $shownDup — usp_InsertProfilerRecommendation is an upsert keyed on (MandateId, ForPaymentCycle), so this indicates a real defect, not contention."
                 }
                 if ($scoredCount -lt $writtenCount) {

@@ -158,6 +158,113 @@ Describe 'New-WwBurstManifest' {
     }
 }
 
+Describe 'Read-WwBurstDataFile' {
+
+    BeforeAll {
+        function script:New-DataFile {
+            param([string] $Json)
+            $p = Join-Path $TestDrive ([guid]::NewGuid().ToString('N') + '.json')
+            Set-Content -LiteralPath $p -Value $Json
+            $p
+        }
+    }
+
+    It 'returns one compact body per record, in file order, with the field values exactly as written' {
+        $p = New-DataFile '[{"MandateId":"B","ForPaymentCycle":"202610"},{"MandateId":"A","ForPaymentCycle":"202611"}]'
+        $r = @(Read-WwBurstDataFile -Path $p)
+        $r.Count | Should -Be 2
+        @($r.MandateId) | Should -Be @('B', 'A')
+        $r[0].Body | Should -Be '{"MandateId":"B","ForPaymentCycle":"202610"}'
+    }
+
+    It 'keeps empty values - an empty RelatedMandates is real data, not a missing field' {
+        $r = @(Read-WwBurstDataFile -Path (New-DataFile '[{"MandateId":"A","RelatedMandates":"","FASGroup":""}]'))
+        ($r[0].Body | ConvertFrom-Json).PSObject.Properties.Name | Should -Contain 'RelatedMandates'
+        ($r[0].Body | ConvertFrom-Json).RelatedMandates | Should -Be ''
+    }
+
+    It 'returns a single record for a one-element array' {
+        @(Read-WwBurstDataFile -Path (New-DataFile '[{"MandateId":"A"}]')).Count | Should -Be 1
+    }
+
+    It 'gives a record with no MandateId a null key rather than failing' {
+        (@(Read-WwBurstDataFile -Path (New-DataFile '[{"ForPaymentCycle":"202610"}]')))[0].MandateId | Should -BeNullOrEmpty
+    }
+
+    It 'throws for a missing file' {
+        { Read-WwBurstDataFile -Path (Join-Path $TestDrive 'nope.json') } | Should -Throw '*not found*'
+    }
+
+    It 'throws for an empty array' {
+        { Read-WwBurstDataFile -Path (New-DataFile '[]') } | Should -Throw '*contains no records*'
+    }
+
+    It 'throws naming the record when an element is not a JSON object' {
+        { Read-WwBurstDataFile -Path (New-DataFile '[{"MandateId":"A"},"oops"]') } | Should -Throw '*Record 2*not a JSON object*'
+    }
+}
+
+Describe 'New-WwBurstManifest with -Records (data file)' {
+
+    BeforeAll {
+        $script:Records = @(
+            [pscustomobject]@{ MandateId = 'M1'; Body = '{"MandateId":"M1"}' }
+            [pscustomobject]@{ MandateId = 'M2'; Body = '{"MandateId":"M2"}' }
+            [pscustomobject]@{ MandateId = 'M3'; Body = '{"MandateId":"M3"}' }
+        )
+    }
+
+    It 'publishes exactly one success message per record, carrying the record body verbatim' {
+        $m = New-WwBurstManifest -QueueName 'profiler-queue' -Label 'L' -Records $script:Records
+        @($m).Count | Should -Be 3
+        @($m.body) | Should -Be @('{"MandateId":"M1"}', '{"MandateId":"M2"}', '{"MandateId":"M3"}')
+        @($m | Where-Object kind -ne 'success').Count | Should -Be 0
+    }
+
+    It 'keys each entry by its record''s own MandateId, not a generated one' {
+        $m = New-WwBurstManifest -QueueName 'profiler-queue' -Label 'L' -Records $script:Records
+        @($m.mandateId) | Should -Be @('M1', 'M2', 'M3')
+    }
+
+    It 'ignores -SuccessCount and -BodyShape when records are supplied' {
+        $m = New-WwBurstManifest -QueueName 'profiler-queue' -Label 'L' -SuccessCount 50 -BodyShape Profiler -Records $script:Records
+        @($m).Count | Should -Be 3
+    }
+
+    It 'still gives every message a unique transaction id' {
+        $m = New-WwBurstManifest -QueueName 'profiler-queue' -Label 'L' -Records $script:Records
+        @($m.txn | Select-Object -Unique).Count | Should -Be 3
+    }
+
+    It 'records each body''s byte count' {
+        $m = New-WwBurstManifest -QueueName 'profiler-queue' -Label 'L' -Records $script:Records
+        foreach ($e in $m) { $e.bytes | Should -Be $e.body.Length }
+    }
+
+    It 'does not reject repeated MandateIds - the data file is the caller''s own key set (the pipeline checks it separately)' {
+        $dup = @($script:Records[0], $script:Records[0])
+        { New-WwBurstManifest -QueueName 'profiler-queue' -Label 'L' -Records $dup } | Should -Not -Throw
+    }
+}
+
+Describe 'Publish-WwQueueBurst.ps1 -DataFilePath guards' {
+
+    It 'fails on a missing data file before any broker connection is attempted' {
+        { & $script:PublishScript -QueueName 'q' -Label 'L' -ManifestPath 'x.json' -AmqpUri 'amqp://u:p@localhost:1/' `
+              -DataFilePath (Join-Path $TestDrive 'absent.json') } | Should -Throw '*not found*'
+    }
+
+    It 'does not treat -SuccessCount 0 as nothing to publish when a data file supplies the records' {
+        $p = Join-Path $TestDrive 'one.json'
+        Set-Content -LiteralPath $p -Value '[{"MandateId":"A"}]'
+        # Past the "Nothing to publish" guard the script tries the (unreachable) broker; any error
+        # other than that guard proves the records were counted.
+        $err = try { & $script:PublishScript -QueueName 'q' -Label 'L' -ManifestPath (Join-Path $TestDrive 'm.json') `
+                         -AmqpUri 'amqp://u:p@127.0.0.1:1/' -SuccessCount 0 -DataFilePath $p -PublishPath $TestDrive; $null } catch { $_.Exception.Message }
+        $err | Should -Not -BeLike '*Nothing to publish*'
+    }
+}
+
 Describe 'Publish-WwQueueBurst.ps1 parameter guards' {
 
     It 'rejects a run with nothing to publish' {
