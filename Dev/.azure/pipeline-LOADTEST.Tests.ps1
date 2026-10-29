@@ -100,23 +100,30 @@ BeforeAll {
         ) -join "`n"
     }
 
-    # Runs the resolve step with Invoke-WebRequest stubbed to return -Page. Returns the Write-Host
-    # lines; the step's own throw propagates.
+    # Runs the resolve step with Invoke-WebRequest stubbed to return -Page, the pins passed through
+    # the environment exactly as the step's env: block does (defaults = the parameters' 'latest').
+    # Returns the Write-Host lines; the step's own throw propagates.
     function script:Invoke-ResolveStep {
-        param([string] $Page, [string] $EngineZipUrl = '', [string] $ScriptsZipUrl = '', [string] $QueueWorkerZipUrl = '')
+        param([string] $Page, [string] $EngineZipUrl = 'latest', [string] $ScriptsZipUrl = 'latest', [string] $QueueWorkerZipUrl = 'latest')
         $script:PageRequests = 0
         $body = Expand-Macros (Get-StepScript (Find-Step 'Deploy_UAT' 'Resolve Published Release URLs')) @{
             WarewolfReleasesStorageAccount = 'stwwreleases'
-            WarewolfEngineZipUrl           = $EngineZipUrl
-            WarewolfScriptsZipUrl          = $ScriptsZipUrl
-            WarewolfQueueWorkerZipUrl      = $QueueWorkerZipUrl
         }
         $sb = [scriptblock]::Create($body)
-        & {
-            function Invoke-WebRequest { $script:PageRequests++; [pscustomobject]@{ Content = $Page } }
-            . $sb
-        } 6>&1 | ForEach-Object { [string]$_ }
+        $pins = @{ WarewolfEngineZipUrl = $EngineZipUrl; WarewolfScriptsZipUrl = $ScriptsZipUrl; WarewolfQueueWorkerZipUrl = $QueueWorkerZipUrl }
+        $saved = @{}
+        foreach ($k in $pins.Keys) { $saved[$k] = [Environment]::GetEnvironmentVariable($k); [Environment]::SetEnvironmentVariable($k, $pins[$k]) }
+        try {
+            & {
+                function Invoke-WebRequest { $script:PageRequests++; [pscustomobject]@{ Content = $Page } }
+                . $sb
+            } 6>&1 | ForEach-Object { [string]$_ }
+        } finally {
+            foreach ($k in $saved.Keys) { [Environment]::SetEnvironmentVariable($k, $saved[$k]) }
+        }
     }
+
+    $script:PinNames = 'WarewolfEngineZipUrl', 'WarewolfScriptsZipUrl', 'WarewolfQueueWorkerZipUrl'
 }
 
 Describe 'pipeline-LOADTEST - released bits' -Skip:(-not $script:HaveYaml) {
@@ -136,13 +143,26 @@ Describe 'pipeline-LOADTEST - released bits' -Skip:(-not $script:HaveYaml) {
         $bad | Should -BeNullOrEmpty
     }
 
-    It 'tracks the latest release by default, with all three pins empty' {
+    It 'tracks the latest release by default, with all three pins as run parameters defaulting to latest' {
         $vars = $script:Doc['variables']
         $vars['WarewolfReleasesStorageAccount'] | Should -Be 'stwwreleases'
-        foreach ($v in 'WarewolfEngineZipUrl', 'WarewolfScriptsZipUrl', 'WarewolfQueueWorkerZipUrl') {
-            $vars.Contains($v) | Should -BeTrue -Because "$v is the pin for that package"
-            $vars[$v] | Should -Be ''
+        foreach ($name in $script:PinNames) {
+            $p = @($script:Doc['parameters']) | Where-Object { $_['name'] -eq $name }
+            $p | Should -Not -BeNullOrEmpty -Because "$name is the pin for that package"
+            $p['type'] | Should -Be 'string'
+            $p['default'] | Should -Be 'latest'
+            # A YAML-defined variable cannot be overridden at queue time - the reason the pins moved.
+            $vars.Contains($name) | Should -BeFalse -Because "a YAML variable named $name would be unsettable at queue time"
         }
+    }
+
+    It 'hands the pins to the resolve step through env:, never as template text inside its script' {
+        $step = Find-Step 'Deploy_UAT' 'Resolve Published Release URLs'
+        foreach ($name in $script:PinNames) {
+            $step['env'][$name] | Should -Be "`${{ parameters.$name }}"
+        }
+        Get-StepScript $step | Should -Not -Match '\$\{\{'
+        $script:Yaml | Should -Not -Match '\$\(Warewolf(Engine|Scripts|QueueWorker)ZipUrl\)'
     }
 
     It 'no longer compiles the engine or the QueueProcessor' {
@@ -199,6 +219,27 @@ Describe 'pipeline-LOADTEST - Resolve Published Release URLs' -Skip:(-not $scrip
         @{ What = 'worker';  Page = @{ WorkerUrl  = 'http://stwwreleases.blob.core.windows.net/releases/Warewolf-QueueProcessor-9.zip' } }
     ) {
         { Invoke-ResolveStep -Page (New-ReleasePage @Page) } | Should -Throw '*Refusing to fetch*'
+    }
+
+    It 'reads the page for a pin given as <Value>' -ForEach @(
+        @{ Value = 'latest' }, @{ Value = 'LATEST' }, @{ Value = ' latest ' }, @{ Value = '' }
+    ) {
+        $out = Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl $Value -ScriptsZipUrl $Value -QueueWorkerZipUrl $Value
+        $script:PageRequests | Should -Be 1
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-win-x64-9.9.9.9.zip"
+    }
+
+    It 'mixes a pinned engine with page-resolved scripts and worker' {
+        $out = Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl "$script:Host_/branch-builds/AzureFunctionsPackage-win-x64-Branch-abc.zip"
+        $script:PageRequests | Should -Be 1
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/branch-builds/AzureFunctionsPackage-win-x64-Branch-abc.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedScriptsZipUrl;isOutput=true]$script:Host_/DeploymentScripts-9.9.9.9.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedQueueWorkerZipUrl;isOutput=true]$script:Host_/Warewolf-QueueProcessor-9.9.9.9.zip"
+    }
+
+    It 'refuses a pinned engine on an untrusted host' {
+        { Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl 'https://evil.example.com/AzureFunctionsPackage-win-x64-9.zip' } |
+            Should -Throw '*Refusing to fetch*'
     }
 
     It 'refuses a pinned linux-x64 engine package' {

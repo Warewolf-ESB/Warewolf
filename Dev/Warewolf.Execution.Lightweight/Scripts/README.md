@@ -175,10 +175,12 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
 - **`WarewolfServer-UAT`** — deployed by `pipeline-LOADTEST.yml`'s `Deploy_UAT` stage on
   every run of that pipeline, immediately before `Load_Test`. Since 2026-10-05 it deploys the
   **published** engine package and `Deploy-WwExecutionEngine.ps1` from
-  `warewolf.online/release-notes.php` (`engine-linux-zip-link` / `scripts-zip-link`), as the
+  `warewolf.online/release-notes.php` (`engine-windows-zip-link` / `scripts-zip-link`), as the
   Profiler Dev/UAT pipelines do, rather than compiling this commit — so it load-tests what has been
-  released. To load-test unreleased engine or script changes, publish a build and pin
-  `WarewolfEngineZipUrl` / `WarewolfScriptsZipUrl` at queue time. The deploy step fails before
+  released. To load-test unreleased engine or script changes, upload a build to the `stwwreleases`
+  storage account (e.g. under `releases/branch-builds/`) and set the `WarewolfEngineZipUrl` /
+  `WarewolfScriptsZipUrl` **run parameters** (default `latest`) in the Run pipeline dialog. They
+  are parameters, not variables: a YAML-defined variable cannot be set at queue time. The deploy step fails before
   touching Azure if the released orchestrator lacks any parameter the pipeline passes. Automated per
   `docs/Deploy-UAT-Redeploy-Spec.md` §10 — previously this app was ONLY updated by manual,
   undocumented deploys, which is what let a source fix go un-deployed and silently fail an
@@ -193,7 +195,7 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   `ProfilerLoadTest_QueueProcessor` job, via `Deploy-WwQueueProcessor.ps1` and the committed `Dev/.azure/ProfilerLoadTest.trigger.bite`.
   The worker package (`queueworker-zip-link`) and `Deploy-WwQueueProcessor.ps1` are the
   **published** ones, from the same release `Deploy_UAT` resolved for the engine (handed over as
-  `ResolveRelease` output variables; pin with `WarewolfQueueWorkerZipUrl`). The Dockerfile, the
+  `ResolveRelease` output variables; pin with the `WarewolfQueueWorkerZipUrl` run parameter). The Dockerfile, the
   trigger file and the verification scripts still come from the checkout.
   Load-tests the RabbitMQ/QueueProcessor trigger path against `WarewolfServer-UAT` the same way
   `ShovelBridgeLoadTest_ExternalServiceBus` load-tests the Service Bus/Shovel Bridge path — same
