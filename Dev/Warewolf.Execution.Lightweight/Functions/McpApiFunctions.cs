@@ -317,6 +317,36 @@ namespace Warewolf.Execution.Lightweight.Functions
                 return DeleteUiTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id);
             });
 
+        [Function("McpApiListTests")]
+        public Task<HttpResponseData> ListTests(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/list_tests")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<NameRequest>(req, ct) ?? new NameRequest();
+                return ListTestsTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name);
+            });
+
+        [Function("McpApiGetTest")]
+        public Task<HttpResponseData> GetTest(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_test")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<TestNameRequest>(req, ct) ?? new TestNameRequest();
+                return GetTestTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.TestName);
+            });
+
+        [Function("McpApiDeleteTest")]
+        public Task<HttpResponseData> DeleteTest(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/delete_test")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<TestNameRequest>(req, ct) ?? new TestNameRequest();
+                return DeleteTestTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.TestName);
+            });
+
         [Function("McpApiExecuteWorkflow")]
         public Task<HttpResponseData> ExecuteWorkflow(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/execute_workflow")] HttpRequestData req,
@@ -505,6 +535,8 @@ namespace Warewolf.Execution.Lightweight.Functions
     sealed record NamedTestRequest(string Name = "", JsonElement Test = default);
 
     sealed record ExecuteTestRequest(string Name = "", string TestName = "");
+
+    sealed record TestNameRequest(string Name = "", string TestName = "");
 
     sealed record ExecuteWorkflowRequest(string Name = "", JsonElement? Inputs = null);
 
