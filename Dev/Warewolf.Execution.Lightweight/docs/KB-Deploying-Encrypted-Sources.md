@@ -54,6 +54,8 @@ cd D:\Warewolf\Warewolf_Net6\Dev\Warewolf.Execution.Lightweight\Scripts
 # answer "n" to the backup prompt (you are working on a copy)
 ```
 
+Without `az` (e.g. in a pipeline), pass the key material itself with `-KVSecret` in place of `-VaultName`/`-SecretName`, or encrypt a whole folder with `Encrypt-Resources.ps1` — see `README-Encryption.md`, *Encrypting in CI/CD Without az*.
+
 Confirm the result — the `ConnectionString` should now start with `WFAES::`.
 
 ### Step 2 — Deploy to Azure (Kudu VFS)
