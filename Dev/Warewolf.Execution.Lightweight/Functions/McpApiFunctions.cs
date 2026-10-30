@@ -281,6 +281,42 @@ namespace Warewolf.Execution.Lightweight.Functions
                 return await ExecuteTestTool.Handle(_hostConfig, _authPolicyLoader, _workflowExecutor, principal, p.Name, p.TestName, ct);
             });
 
+        [Function("McpApiGetUiSchema")]
+        public Task<HttpResponseData> GetUiSchema(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_ui_schema")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, (_, _) => Task.FromResult<object>(GetUiSchemaTool.Handle()));
+
+        [Function("McpApiCreateUi")]
+        public Task<HttpResponseData> CreateUi(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/create_ui")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<WorkflowFormRequest>(req, ct) ?? new WorkflowFormRequest();
+                return CreateUiTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id, p.Form);
+            });
+
+        [Function("McpApiGetUi")]
+        public Task<HttpResponseData> GetUi(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_ui")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<WorkflowFormRequest>(req, ct) ?? new WorkflowFormRequest();
+                return GetUiTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id);
+            });
+
+        [Function("McpApiDeleteUi")]
+        public Task<HttpResponseData> DeleteUi(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/delete_ui")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<WorkflowFormRequest>(req, ct) ?? new WorkflowFormRequest();
+                return DeleteUiTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id);
+            });
+
         [Function("McpApiExecuteWorkflow")]
         public Task<HttpResponseData> ExecuteWorkflow(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/execute_workflow")] HttpRequestData req,
@@ -456,6 +492,9 @@ namespace Warewolf.Execution.Lightweight.Functions
     sealed record EnvelopeBodyRequest(JsonElement Envelope = default, JsonElement Body = default);
 
     sealed record NamedEnvelopeBodyRequest(string Name = "", JsonElement Envelope = default, JsonElement Body = default);
+
+    /// <summary>A workflow named by <c>name</c> or <c>id</c>, and (create_ui only) its <c>form</c>.</summary>
+    sealed record WorkflowFormRequest(string Name = "", Guid? Id = null, JsonElement Form = default);
 
     sealed record DeployWorkflowRequest(string Name = "", string BiteContent = "", bool Overwrite = false);
 
