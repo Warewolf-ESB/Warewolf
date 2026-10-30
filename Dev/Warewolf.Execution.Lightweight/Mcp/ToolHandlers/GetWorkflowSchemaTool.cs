@@ -11,8 +11,9 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 
 /// <summary>
 /// Implements the <c>get_workflow_schema</c> MCP tool: returns the hard-coded JSON shape of the overall
-/// workflow <b>envelope</b> and the <b>body</b>/<b>add_step</b> graph shapes used by
-/// <c>create_workflow</c>/<c>edit_workflow</c>/<c>add_step</c>.
+/// workflow <b>envelope</b>, the <b>body</b>/<b>add_step</b> graph shapes used by
+/// <c>create_workflow</c>/<c>edit_workflow</c>/<c>add_step</c>, and the <b>test</b> definition
+/// <c>create_test</c>/<c>edit_test</c> take.
 ///
 /// <para>
 /// Takes no input, needs no permission check, and needs nothing request-scoped — the schema
@@ -30,7 +31,7 @@ internal static class GetWorkflowSchemaTool
     internal const string ToolName = "get_workflow_schema";
 
     // Static JSON-Schema-ish reference documents, built once and reused for every call —
-    // there is nothing request-scoped or workflow-specific about any of these three shapes.
+    // there is nothing request-scoped or workflow-specific about any of these shapes.
     static readonly JsonElement _envelopeSchema = Parse("""
         {
           "name": "string",
@@ -84,7 +85,44 @@ internal static class GetWorkflowSchemaTool
         }
         """);
 
-    static readonly GetWorkflowSchemaResult _result = new(_envelopeSchema, _bodySchema, _addStepSchema);
+    // The create_test/edit_test `test` argument (TestDefinitionModel), with the closed value sets those tools and
+    // execute_test enforce: AuthenticationType, StepType, and the DecisionTypeDisplayValue strings AssertOp matches.
+    static readonly JsonElement _testSchema = Parse("""
+        {
+          "testName": "string, required (also the file name: {workflow}.tests/{testName}.test.json)",
+          "enabled": "boolean, optional (default true)",
+          "authenticationType": "string, optional — Windows | User | Anonymous | Public | Password | API_Key | ApiKeyQuery | ApiKeyHeader | Bearer",
+          "userName": "string, optional (non-Public authenticationType only)",
+          "password": "string, optional (non-Public only; may be a ${secret} placeholder)",
+          "inputs": [
+            { "variable": "string ([[name]] or [[rs(1).field]])", "value": "string", "emptyIsNull": "boolean, optional" }
+          ],
+          "outputs": [
+            {
+              "variable": "string ([[name]] or [[rs(1).field]])",
+              "assertOp": "string, optional (default \"=\") — = | <> (Not Equal) | < | <= | > | >= | Contains | Doesn't Contain | Starts With | Doesn't Start With | Ends With | Doesn't End With | Is Between | Not Between | Is NULL | Is Not NULL | Is Numeric | Not Numeric | Is Text | Not Text | Is Alphanumeric | Not Alphanumeric | Is XML | Not XML | Is Date | Not Date | Is Email | Not Email | Is Regex | Not Regex | Is Binary | Not Binary | Is Hex | Not Hex | Is Base64 | Not Base64 | There is An Error | There is No Error",
+              "value": "string (expected value; unused by the Is/Not checks)",
+              "from": "string, optional (lower bound for Is Between/Not Between)",
+              "to": "string, optional (upper bound for Is Between/Not Between)"
+            }
+          ],
+          "noErrorExpected": "boolean, optional",
+          "errorExpected": "boolean, optional",
+          "errorContainsText": "string, optional (with errorExpected)",
+          "testSteps": [
+            {
+              "activityId": "string, required (a node id in the workflow's current body, from get_workflow_definition)",
+              "activityType": "string (the node's data.type)",
+              "type": "string, required — Mock (replace the step's outputs) | Assert (check the step's outputs after it runs)",
+              "stepDescription": "string, optional",
+              "stepOutputs": [ { "variable": "string", "assertOp": "string, as outputs[].assertOp", "value": "string", "from": "string, optional", "to": "string, optional" } ],
+              "children": ["testSteps entry, optional (steps nested in a Decision/ForEach/Sequence)"]
+            }
+          ]
+        }
+        """);
+
+    static readonly GetWorkflowSchemaResult _result = new(_envelopeSchema, _bodySchema, _addStepSchema, _testSchema);
 
     internal static GetWorkflowSchemaResult Handle() => _result;
 
@@ -99,4 +137,5 @@ internal static class GetWorkflowSchemaTool
 internal sealed record GetWorkflowSchemaResult(
     [property: JsonPropertyName("envelope_schema")] JsonElement EnvelopeSchema,
     [property: JsonPropertyName("body_schema")] JsonElement BodySchema,
-    [property: JsonPropertyName("add_step_schema")] JsonElement AddStepSchema);
+    [property: JsonPropertyName("add_step_schema")] JsonElement AddStepSchema,
+    [property: JsonPropertyName("test_schema")] JsonElement TestSchema);

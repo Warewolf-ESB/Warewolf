@@ -3,6 +3,8 @@ package warewolf.studio.eval.bakeoff
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
@@ -57,6 +59,60 @@ class OllamaText(
                     .build()
                 val response = http.send(request, HttpResponse.BodyHandlers.ofString())
                 check(response.statusCode() == 200) { "Ollama returned ${response.statusCode()}: ${response.body().take(300)}" }
+                response.body()
+            }
+        }
+    }
+}
+
+/**
+ * A larger local model served by LM Studio's OpenAI-compatible chat API (ask.leylew.is by default), authorised with
+ * the `LLM_API_KEY` bearer token. A JSON-schema [format] goes in as `response_format`, which LM Studio enforces with
+ * grammar-constrained decoding like [OllamaText]. Gemma 4 loops on one token under the grammar at temperature 0, so
+ * this samples at a low temperature with a fixed seed to keep runs repeatable.
+ */
+class LmStudioText(
+    private val model: String,
+    private val maxReplyTokens: Int = 8_192,
+    private val temperature: Double = 0.2,
+    private val seed: Int = 7,
+    private val post: (String) -> String = httpPost(
+        (System.getenv("LLM_BASE_URL") ?: "https://ask.leylew.is/v1") + "/chat/completions",
+        System.getenv("LLM_API_KEY") ?: error("LLM_API_KEY is not set"),
+    ),
+) : TextModel {
+    override fun complete(prompt: String, format: JsonObject?): String {
+        val request = buildJsonObject {
+            put("model", model)
+            put("stream", false)
+            put("temperature", temperature)
+            put("seed", seed)
+            put("max_tokens", maxReplyTokens)
+            putJsonArray("messages") { add(buildJsonObject { put("role", "user"); put("content", prompt) }) }
+            if (format != null) putJsonObject("response_format") {
+                put("type", "json_schema")
+                putJsonObject("json_schema") { put("name", "reply"); put("strict", true); put("schema", format) }
+            }
+        }
+        val response = Json.parseToJsonElement(post(request.toString())).jsonObject
+        val message = response.getValue("choices").jsonArray.first().jsonObject.getValue("message").jsonObject
+        // A thinking model (Qwen 3.x) under a grammar can leave the whole reply in reasoning_content.
+        return message["content"]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() }
+            ?: message["reasoning_content"]?.jsonPrimitive?.contentOrNull.orEmpty()
+    }
+
+    companion object {
+        fun httpPost(url: String, apiKey: String): (String) -> String {
+            val http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()
+            return { body ->
+                val request = HttpRequest.newBuilder(URI.create(url))
+                    .timeout(Duration.ofMinutes(15))
+                    .header("Content-Type", "application/json")
+                    .header("Authorization", "Bearer $apiKey")
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .build()
+                val response = http.send(request, HttpResponse.BodyHandlers.ofString())
+                check(response.statusCode() == 200) { "LM Studio returned ${response.statusCode()}: ${response.body().take(300)}" }
                 response.body()
             }
         }

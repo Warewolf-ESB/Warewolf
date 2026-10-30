@@ -209,9 +209,10 @@ object WorkflowText {
     /**
      * What the judge sees of a workflow, the same for every contender so it cannot tell them apart: each step's
      * tool, label and filled-in fields (engine bookkeeping such as positions and Studio properties dropped), then
-     * each connection with its arm or case.
+     * each connection with its arm or case. [showIds] names steps by their node ids instead of S1, S2, …, for a
+     * model that has to refer to them (a service test's `activityId`).
      */
-    fun summary(workflow: JsonObject, catalog: Catalog): String = buildString {
+    fun summary(workflow: JsonObject, catalog: Catalog, showIds: Boolean = false): String = buildString {
         val body = workflow.getValue("body").jsonObject
         val envelope = workflow["envelope"] as? JsonObject
         val ids = mutableMapOf<String, String>()
@@ -222,7 +223,7 @@ object WorkflowText {
             val data = node["data"] as? JsonObject ?: JsonObject(emptyMap())
             val type = data["type"]?.jsonPrimitive?.contentOrNull
             val id = node["id"]?.jsonPrimitive?.contentOrNull ?: return@forEach
-            val label = if (type.equals("start", true)) "start" else "S${ids.size}"
+            val label = if (type.equals("start", true)) "start" else if (showIds) id else "S${ids.size}"
             ids[id] = label
             if (label == "start") return@forEach
             val tool = catalog.toolFor(type)?.name ?: "unknown type $type"

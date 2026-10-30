@@ -1,8 +1,14 @@
 # Warewolf Mobile Studio — Plan
 
-Status: **P4 baseline and first trained classifier done, P0 engine spikes not started**. Branch `MobileStudio`, off
+Status: **System 1 deprecated (2026-10-29); P0 engine spikes not started**. Branch `MobileStudio`, off
 `7580-SelfHostedEngine` (the npm engine installer). The System 1 baseline (generator loop, LLM chooser,
-corpus and evaluation harness) is built ahead of the spikes; see [System 1 baseline](#system-1-baseline).
+corpus and evaluation harness) was built ahead of the spikes; see [System 1 baseline](#system-1-baseline).
+
+> **Deprecated: System 1.** The [whole-workflow comparison](#whole-workflow-comparison-2026-10-28) showed that no
+> System 1 workflow was rated usable (judge ≥4 on 0 of 50), while large models write whole workflows directly.
+> Generation now goes to a large model: a self-hosted one (LM Studio at ask.leylew.is) or the cloud. §2, §3 and the
+> System 1 sections below are kept as the record. The code (`shared/generator` choosers, `train`, the classifier and
+> Markov contenders in `eval`) stays for comparison runs and gets no further work.
 
 ## Goal
 
@@ -74,6 +80,8 @@ The engine stays authoritative for graph changes: the generator only calls `add_
 
 ### 2. Generation: System 1 decides, the small LLM fills in
 
+*Deprecated 2026-10-29; see the status note at the top.*
+
 State: the user's goal, the current graph, a **frontier** of open branch tails, the variables in scope.
 
 Each step takes one frontier entry, and System 1 returns one of:
@@ -143,7 +151,8 @@ tap-to-edit property sheets.
 
 ## System 1 baseline
 
-Option (b) from §2, built first so the trained classifier has a number to beat.
+*Deprecated 2026-10-29; kept as the record.* Option (b) from §2, built first so the trained classifier has a number
+to beat.
 
 ### Layout
 
@@ -156,7 +165,8 @@ Option (b) from §2, built first so the trained classifier has a number to beat.
 | `corpus/Get-KuduBites.ps1` | Byte-exact `.bite` download from an engine's Kudu VFS with the caller's `az` token |
 | `shared/generator` (classifier) | `ClassifierChooser` (option a) and a pure-Kotlin `WordPieceTokenizer` that matches Hugging Face's, checked against a golden fixture |
 | `eval` (classifier) | `--export-features` (training rows built with `describeState`), `--client markov` (no-model baseline), `--client classifier` (`OnnxClassifier`, ONNX Runtime on the JVM) |
-| `eval/bakeoff` | Whole-workflow comparison: `bakeoff select|run|judge|score|spotcheck` against a self-hosted engine (`WAREWOLF_DATA_DIR` outside the repo) |
+| `eval/bakeoff` | Whole-workflow comparison: `bakeoff select|run|judge|score|spotcheck` against a self-hosted engine (`WAREWOLF_DATA_DIR` outside the repo); contenders `ollama:`, `lmstudio:` (LM Studio, `LLM_BASE_URL` + `LLM_API_KEY`) and `claude:` |
+| `eval/bakeoff` (artifacts) | Service tests and input forms: `bakeoff subjects`, `bakeoff tests|forms run|judge|score` (`Artifacts.kt`, `ArtifactBakeOff.kt`) |
 | `train` | Python: fine-tunes a sentence encoder plus a linear head on the exported features, exports ONNX (float and int8); see `train/README.md` |
 
 Build: `gradlew test` here; `dotnet test corpus/Extractor.Tests`.
@@ -296,6 +306,51 @@ goal fit 1–5 from a normalised summary that hides the contender.
 - Conclusion: on this evidence, generation belongs in the cloud. Offline generation would need a much larger
   on-device model or far more training data than 1,040 workflows; the phone can still browse, run and edit offline.
 
+**Self-hosted large model (2026-10-29).** `lmstudio:google/gemma-4-31b-qat` on the same 50 goals, through LM Studio on
+the author's PC (RTX 5070 Ti; the 18.9 GB Q4 model does not fit in 16 GB VRAM, so about 7 tokens/s). It runs against
+port 4141 directly: through ask.leylew.is, Cloudflare ends a request after about 100 s (524). Gemma 4 loops on one token
+under the JSON grammar at temperature 0, so this contender samples at 0.2 with seed 7. Results: *run in progress*.
+
+## Service tests and input forms (2026-10-29)
+
+Question: can a model write a **service test** for an existing workflow, and the **input form** a person fills in to
+run it? Subjects: the 50 valid workflows Opus produced above (`bakeoff subjects` stores them in the engine as
+`Bakeoff/<id>`, node ids rewritten to GUIDs; see finding 5). 46 of them have inputs and get a form.
+
+- **Tests:** the model sees the goal, the workflow (steps by node id) and the engine's `test_schema`, and must mock every
+  step that reaches outside the workflow (no sources are configured). `create_test` stores it (up to 2 repairs with the
+  engine's error), then `execute_test` runs it.
+- **Forms:** one JSON Schema (2020-12) document, which the studio would render. Checked against the meta-schema
+  (`networknt` validator), for exactly one property per input, and for shape (scalar → primitive, object → object,
+  recordset → array of objects with one property per field); up to 2 repairs with the problems.
+- Both are rated 1–5 by the blind Opus judge (goal, workflow summary and artifact; the contender never shown).
+
+| Tests | Runs | Stored 1st try | Stored | Ran | Passed | Outputs asserted | Mocks per test | Judge mean | Judge ≥4 | Median s |
+|---|---|---|---|---|---|---|---|---|---|---|
+| Claude Opus | 50 | 100% | 100% | 98% | 68% | 97% | 1.0 | 4.52 | 96% | 19 |
+| Claude Sonnet | 50 | 100% | 100% | 100% | 72% | 96% | 1.1 | 4.24 | 90% | 14 |
+| Gemma 4 31B (LM Studio) | | | | | | | | | | |
+
+| Forms | Runs | Accepted 1st try | Accepted | Meta-schema valid | Inputs covered | Shapes right | Judge mean | Judge ≥4 | Median s |
+|---|---|---|---|---|---|---|---|---|---|
+| Claude Opus | 46 | 100% | 100% | 100% | 100% | 100% | 4.76 | 100% | 12 |
+| Claude Sonnet | 46 | 100% | 100% | 100% | 100% | 100% | 4.70 | 100% | 10 |
+| Gemma 4 31B (LM Studio) | | | | | | | | | | |
+
+- Forms are easy for the cloud models. Tests are stored and run, but about 30% fail, almost all on expected values the
+  model predicted wrongly (a validation outcome, a date, JSON formatting) or on an external step it did not mock (a
+  web host, a file path). No repair is offered on a failing run; a "run, see the failure, fix the test" loop is the next
+  lever, at the risk of weakening the assertions until they pass.
+- Same judge caveat as above: Opus rates Opus.
+- **Engine findings** (continuing the list above):
+  5. `create_workflow` and `validate_workflow` accept non-GUID node ids (`getReadme`), but `execute_test` then fails
+     with a null reference on a mocked step; the same test passes once the ids are GUIDs.
+  6. An unmocked step whose source does not exist ends the test run with a null reference or "Unrecognized Guid
+     format" instead of naming the missing source.
+  7. `create_test`/`edit_test` pointed callers at `get_workflow_schema`'s `test_schema`, which did not exist. **Fixed:**
+     `test_schema` is now returned, and `GetWorkflowSchemaToolTests` checks it lists every `AuthenticationType`,
+     `StepType` and assert operator the engine accepts.
+
 ## Test strategy
 
 The detailed test plan is presented for approval before any test is written (CLAUDE.md).
@@ -307,8 +362,11 @@ The detailed test plan is presented for approval before any test is written (CLA
 - **Corpus extractor (C#):** branch walk (linear, Decision, Switch, unknown types), legacy mapping, Service ID
   de-duplication, step labels and variables (done).
 - **Comparison harness (`eval/bakeoff`):** engine client, workflow extraction and repair loop, System 1 body
-  assembly (arms, cases, refills, declarations), field-filler constraints, structure scores, judge prompt and parsing
-  (done).
+  assembly (arms, cases, refills, declarations), field-filler constraints, structure scores, judge prompt and parsing,
+  the LM Studio client (done).
+- **Artifact tasks (`eval/bakeoff`):** service-test prompt, store/repair/run loop and output coverage; form check
+  (meta-schema, coverage, shapes) and repair loop; GUID id rewrite; artifact judge (done).
+- **Engine (C#):** `GetWorkflowSchemaToolTests` covers `test_schema` (done).
 - **Python (`train/tests`):** label encoding, class weights, ONNX export parity on a tiny synthetic model (done).
 - **Evaluation harness:** System 1 next-tool accuracy; end-to-end `validate_workflow` pass rate per
   model tier.

@@ -37,7 +37,8 @@ import kotlin.random.Random
  *     gradlew :eval:run --args="bakeoff judge <bakeoffDir> [--model opus] [--parallel N]"
  *     gradlew :eval:run --args="bakeoff score <bakeoffDir>"
  *
- * Contenders: `ollama:<model>` and `claude:<model>` write whole workflows; `system1-markov:<fillModel>` and
+ * Contenders: `ollama:<model>`, `lmstudio:<model>` (LM Studio at `LLM_BASE_URL`, default ask.leylew.is, with
+ * `LLM_API_KEY`) and `claude:<model>` write whole workflows; `system1-markov:<fillModel>` and
  * `system1-classifier:<fillModel>` (with `--model-dir`) are System 1 with an Ollama field filler. `<bakeoffDir>`
  * holds `list_tools.json` and `tool_schemas.json` from the engine; the engine runs at `--engine`
  * (default http://127.0.0.1:3142).
@@ -51,7 +52,8 @@ object BakeOff {
             "judge" -> judge(Path.of(args[1]), option("--model") ?: "opus", option("--parallel")?.toInt() ?: 4)
             "score" -> score(Path.of(args[1]))
             "spotcheck" -> spotcheck(Path.of(args[1]), option("--count")?.toInt() ?: 15)
-            else -> error("usage: bakeoff select|run|judge|score …")
+            "subjects", "tests", "forms" -> ArtifactBakeOff.main(args)
+            else -> error("usage: bakeoff select|run|judge|score|spotcheck|subjects|tests|forms …")
         }
     }
 
@@ -112,7 +114,7 @@ object BakeOff {
                     val outcome = try {
                         generator.generate(id, row.str("goal"))
                     } catch (e: Exception) {
-                        Outcome(null, EngineClient.Validation(false, listOf("harness error: ${e.message?.take(300)}")), false, 0, "error")
+                        Outcome(null, EngineClient.Validation(false, listOf("harness error: ${e.toString().take(300)}")), false, 0, "error")
                     }
                     val seconds = (System.nanoTime() - started) / 1e9
                     val line = resultJson(id, contender, outcome, seconds, catalog).toString()
@@ -131,6 +133,7 @@ object BakeOff {
         val model = contender.substringAfter(':')
         return when (kind) {
             "ollama" -> WholeWorkflowGenerator(OllamaText(model), catalog, engine, schema, constrained = true)
+            "lmstudio" -> WholeWorkflowGenerator(LmStudioText(model), catalog, engine, schema, constrained = true)
             "claude" -> WholeWorkflowGenerator(ClaudeCli(model), catalog, engine, schema, constrained = false)
             "system1-markov", "system1-classifier" -> {
                 val split = Corpus.split(Corpus.loadExamples(derived), evalSets)
@@ -264,12 +267,12 @@ object BakeOff {
         println("wrote ${picked.size} spot-check items")
     }
 
-    private fun resultFiles(dir: Path): List<Path> =
+    internal fun resultFiles(dir: Path): List<Path> =
         Files.list(dir).use { files -> files.filter { it.fileName.toString().startsWith("results-") && it.toString().endsWith(".jsonl") }.sorted().toList() }
 
-    private fun fileSafe(name: String) = name.replace(Regex("[^A-Za-z0-9.]"), "_")
+    internal fun fileSafe(name: String) = name.replace(Regex("[^A-Za-z0-9.]"), "_")
 
-    private fun jsonLines(file: Path): List<JsonObject> =
+    internal fun jsonLines(file: Path): List<JsonObject> =
         Files.readAllLines(file).filter { it.isNotBlank() }.map { Json.parseToJsonElement(it).jsonObject }
 
     private fun JsonObject.str(key: String) = getValue(key).jsonPrimitive.content
