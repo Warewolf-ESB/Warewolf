@@ -27,6 +27,8 @@ import platform.Foundation.NSURL
 import platform.Foundation.NSURLRequest
 import platform.Foundation.NSUserDefaults
 import platform.UIKit.UIApplication
+import platform.UIKit.UIViewAutoresizingFlexibleHeight
+import platform.UIKit.UIViewAutoresizingFlexibleWidth
 import platform.UIKit.UIViewController
 import platform.WebKit.WKNavigation
 import platform.WebKit.WKNavigationDelegateProtocol
@@ -51,7 +53,7 @@ private class IosHost(override val studio: StudioAddress) : AppHost {
         WKWebsiteDataStore.defaultDataStore().httpCookieStore.getAllCookies { cookies ->
             val token = cookies.orEmpty()
                 .filterIsInstance<NSHTTPCookie>()
-                .firstOrNull { it.name == ACCESS_COOKIE && studio.host.substringBefore(':').endsWith(it.domain.trimStart('.')) }
+                .firstOrNull { it.name == ACCESS_COOKIE && studio.receivesCookiesFor(it.domain) }
                 ?.value
             continuation.resume(token?.takeIf { it.isNotBlank() })
         }
@@ -74,7 +76,7 @@ private class IosHost(override val studio: StudioAddress) : AppHost {
         Column(Modifier.fillMaxSize().safeDrawingPadding()) {
             TextButton(onClick = onCancel) { Text("Cancel") }
             // The list reloads afterwards and asks again if Access didn't leave a session.
-            StudioWebView(studio.signInUrl, Modifier.fillMaxSize()) { url -> if (isStudioPage(url)) onSignedIn() }
+            StudioWebView(studio.signInUrl, Modifier.fillMaxSize()) { url -> if (studio.isStudioPage(url)) onSignedIn() }
         }
     }
 
@@ -86,12 +88,6 @@ private class IosHost(override val studio: StudioAddress) : AppHost {
             TextButton(onClick = onBack, modifier = Modifier.align(Alignment.TopEnd)) { Text("Close") }
         }
     }
-
-    private fun isStudioPage(url: String): Boolean {
-        if (!url.startsWith(studio.origin + "/") && url != studio.origin) return false
-        val path = "/" + url.removePrefix(studio.origin).trimStart('/')
-        return !path.startsWith("/api/") && !path.startsWith("/cdn-cgi/")
-    }
 }
 
 @Composable
@@ -101,6 +97,8 @@ private fun StudioWebView(url: String, modifier: Modifier, onPageFinished: (Stri
     UIKitView(
         factory = {
             WKWebView(frame = CGRectMake(0.0, 0.0, 0.0, 0.0), configuration = WKWebViewConfiguration()).apply {
+                // Fill whatever Compose sizes it to, so CSS 100vh is never 0 (the Android white page, README.md).
+                autoresizingMask = UIViewAutoresizingFlexibleWidth or UIViewAutoresizingFlexibleHeight
                 navigationDelegate = delegate
                 NSURL.URLWithString(url)?.let { loadRequest(NSURLRequest.requestWithURL(it)) }
             }

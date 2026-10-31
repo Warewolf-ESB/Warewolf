@@ -10,6 +10,8 @@
 
       * both YAML files parse and every embedded PowerShell script is syntactically valid;
       * pipeline.yml runs the app tests in the Test stage and fails on a red or missing result;
+      * pipeline.yml compiles the iOS host (device and simulator frameworks, shared tests) on macOS,
+        and builds the XcodeGen host app (iosApp/project.yml) for a device, unsigned;
       * pipeline.yml builds the APK in Compile_Release with the stamped version, the secure-file
         keystore and the signing variables, and publishes the artifact pipeline-MOBILE.yml downloads;
         the job is emitted on main branches only, because Azure DevOps validates a secure file at
@@ -163,6 +165,36 @@ Describe 'pipeline.yml - Mobile Studio jobs' -Skip:(-not $script:HaveYaml) {
         $publish['inputs']['testResultsFiles'] | Should -Match 'shared/app/build/test-results/desktopTest/\*\.xml$'
         $publish['inputs']['failTaskOnFailedTests'] | Should -BeTrue
         $publish['inputs']['failTaskOnMissingResultsFile'] | Should -BeTrue
+    }
+
+    It 'compiles the iOS host on a macOS agent, for device and simulator, with the shared tests' {
+        $job = Get-Job $script:Ci 'Test' 'Mobile_Studio_iOS_Build'
+        $job | Should -Not -BeNullOrEmpty
+        $job['pool']['vmImage'] | Should -Match '^macOS-'
+        $build = Find-Step $job 'Compile Mobile Studio iOS frameworks and tests'
+        [string]$build['bash'] | Should -Match 'set -euo pipefail'
+        [string]$build['bash'] | Should -Match ':shared:app:linkDebugFrameworkIosArm64'
+        [string]$build['bash'] | Should -Match ':shared:app:linkDebugFrameworkIosSimulatorArm64'
+        [string]$build['bash'] | Should -Match ':shared:app:compileTestKotlinIosSimulatorArm64'
+        $build['workingDirectory'] | Should -Match 'Mobile/Warewolf.Studio$'
+    }
+
+    It 'generates the Xcode host from iosApp/project.yml and builds it for a device, unsigned' {
+        $job = Get-Job $script:Ci 'Test' 'Mobile_Studio_iOS_Build'
+        $app = Find-Step $job 'Build Mobile Studio iOS app (unsigned)'
+        $app | Should -Not -BeNullOrEmpty
+        $app['workingDirectory'] | Should -Match 'Mobile/Warewolf.Studio/iosApp$'
+        [string]$app['bash'] | Should -Match 'set -euo pipefail'
+        [string]$app['bash'] | Should -Match 'JAVA_HOME='
+        [string]$app['bash'] | Should -Match 'xcodegen generate'
+        [string]$app['bash'] | Should -Match '-sdk iphoneos'
+        [string]$app['bash'] | Should -Match 'CODE_SIGNING_ALLOWED=NO'
+        Test-Path -LiteralPath (Join-Path $PSScriptRoot '../../Mobile/Warewolf.Studio/iosApp/project.yml') | Should -BeTrue
+    }
+
+    It 'never commits the generated Xcode project' {
+        $ignore = Get-Content -LiteralPath (Join-Path $PSScriptRoot '../../Mobile/Warewolf.Studio/.gitignore') -Raw
+        $ignore | Should -Match '(?m)^iosApp/\*\.xcodeproj/$'
     }
 
     It 'emits the APK job only on main branches, so its secure file is never validated on a feature branch (run 31115)' {

@@ -205,9 +205,12 @@ Built as `shared/app` (Kotlin Multiplatform: Android, iOS, desktop JVM) and `and
 - **Engine calls from a UI** use the studio's MSAL inside the WebView (redirect sign-in). Not yet tried
   on a device; some Entra tenants block WebView sign-in, and the Azure guest check's pop-up isn't opened.
 - **Auto-start** is stored per organization (`autoStart.<orgId>`, from `/api/studio/me`).
-- **iOS:** `iosMain` (WKWebView, NSUserDefaults, Close button in place of Back) is written but not
-  compiled, since Kotlin/Native iOS needs macOS; there is no Xcode project yet.
-- Tests: `shared/app/src/commonTest` (API client, auto-start and launch, links, home model), run on the
+- **iOS:** `iosMain` (WKWebView, NSUserDefaults, Close button in place of Back) is written; Kotlin/Native
+  iOS needs macOS, so it is compiled only in CI (`Mobile_Studio_iOS_Build`, 2026-10-31), not yet green.
+  The Xcode host is `iosApp/` (SwiftUI shell, XcodeGen `project.yml`), built unsigned in the same job. iOS plan (2026-10-31): P2 parity only, built on hosted CI (no Mac), ad hoc
+  distribution (an `itms-services` link on `stwwreleases`) once there is a paid Apple Developer account and
+  a registered iPhone. Hosted Azure macOS agents are Intel (arm64 preview paused) and Compose 1.12 publishes
+  no `iosX64`, so iOS is compile-only in CI: no `iosTest`, no simulator smoke test.- Tests: `shared/app/src/commonTest` (API client, auto-start and launch, links, home model), run on the
   desktop JVM. No Android instrumented or iOS tests yet.
 - CI and release (2026-10-31): `pipeline.yml` runs these tests (Test stage, `Mobile_Studio_Tests`) and, on
   main branches, builds a signed release APK in `Compile_Release`; `pipeline-MOBILE.yml` publishes it to

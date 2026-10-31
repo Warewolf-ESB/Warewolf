@@ -2,6 +2,8 @@ package warewolf.studio.app
 
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class StudioLinksTest {
     private val studio = StudioAddress("https://app.warewolf.online/")
@@ -17,6 +19,32 @@ class StudioLinksTest {
     @Test
     fun signsInThroughAccessBackToTheRoot() {
         assertEquals("https://app.warewolf.online/api/studio/login?returnTo=%2F", studio.signInUrl)
+    }
+
+    @Test
+    fun knowsTheStudiosOwnPagesFromItsApiAndAccess() {
+        assertTrue(studio.isStudioPage("https://app.warewolf.online"))
+        assertTrue(studio.isStudioPage("https://app.warewolf.online/"))
+        assertTrue(studio.isStudioPage("https://app.warewolf.online/organization-ui/ui-1?standalone=true"))
+        assertTrue(studio.isStudioPage("https://app.warewolf.online/?next=/api/studio/me"))
+
+        assertFalse(studio.isStudioPage("https://app.warewolf.online/api/studio/login?returnTo=%2F"))
+        assertFalse(studio.isStudioPage("https://app.warewolf.online/cdn-cgi/access/callback"))
+        assertFalse(studio.isStudioPage("https://warewolf.cloudflareaccess.com/cdn-cgi/access/login"))
+        assertFalse(studio.isStudioPage("https://app.warewolf.online.evil.example/"))
+    }
+
+    @Test
+    fun takesCookiesForItsHostOrAParentDomain() {
+        assertTrue(studio.receivesCookiesFor("app.warewolf.online"))
+        assertTrue(studio.receivesCookiesFor(".warewolf.online"))
+        assertTrue(studio.receivesCookiesFor("Warewolf.Online"))
+        assertTrue(StudioAddress("http://localhost:4200").receivesCookiesFor("localhost"))
+
+        assertFalse(studio.receivesCookiesFor("f.online"))
+        assertFalse(studio.receivesCookiesFor("other.warewolf.online"))
+        assertFalse(studio.receivesCookiesFor("."))
+        assertFalse(studio.receivesCookiesFor(""))
     }
 
     @Test

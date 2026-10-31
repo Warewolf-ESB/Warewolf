@@ -65,7 +65,7 @@ private class AndroidHost(private val context: Context, override val studio: Stu
         BackHandler(onBack = onCancel)
         StudioWebView(studio.signInUrl, Modifier.fillMaxSize().safeDrawingPadding()) { url ->
             // Access, then the studio's backend, send the browser back to a studio page once the session exists.
-            if (isStudioPage(url) && accessCookie() != null) {
+            if (studio.isStudioPage(url) && accessCookie() != null) {
                 CookieManager.getInstance().flush()
                 onSignedIn()
             }
@@ -85,12 +85,6 @@ private class AndroidHost(private val context: Context, override val studio: Stu
             ?.firstOrNull { it.startsWith("$ACCESS_COOKIE=") }
             ?.substringAfter('=')
             ?.takeIf { it.isNotBlank() }
-
-    private fun isStudioPage(url: String): Boolean {
-        if (!url.startsWith(studio.origin + "/") && url != studio.origin) return false
-        val path = Uri.parse(url).path.orEmpty()
-        return !path.startsWith("/api/") && !path.startsWith("/cdn-cgi/")
-    }
 }
 
 @SuppressLint("SetJavaScriptEnabled")

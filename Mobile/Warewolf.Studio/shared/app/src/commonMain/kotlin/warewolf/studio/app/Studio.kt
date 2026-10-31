@@ -15,6 +15,23 @@ class StudioAddress(address: String) {
     /** Cloudflare Access sign-in; the studio's backend sends the browser back to the root once it's done. */
     val signInUrl: String get() = url("/api/studio/login?returnTo=%2F")
 
+    /**
+     * One of the studio's own pages, not its API (`/api/`) or Cloudflare Access (`/cdn-cgi/`): where
+     * sign-in ends up once Access has left a session.
+     */
+    fun isStudioPage(url: String): Boolean {
+        if (!url.startsWith("$origin/") && url != origin) return false
+        val path = "/" + url.removePrefix(origin).trimStart('/').substringBefore('?').substringBefore('#')
+        return !path.startsWith("/api/") && !path.startsWith("/cdn-cgi/")
+    }
+
+    /** Whether a cookie set for [domain] (with or without a leading dot) is sent to the studio: its own host or a parent domain, whatever the port. */
+    fun receivesCookiesFor(domain: String): Boolean {
+        val studioHost = host.substringBefore(':').lowercase()
+        val cookieDomain = domain.trim().trimStart('.').lowercase()
+        return cookieDomain.isNotEmpty() && (studioHost == cookieDomain || studioHost.endsWith(".$cookieDomain"))
+    }
+
     override fun toString(): String = origin
 
     companion object {

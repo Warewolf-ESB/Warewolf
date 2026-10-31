@@ -12,3 +12,9 @@ __pycache__/
 
 # Each machine's Android SDK path
 local.properties
+
+# The iOS host's Xcode project is generated from iosApp/project.yml (XcodeGen), never committed;
+# so is the Info.plist XcodeGen writes from it.
+iosApp/*.xcodeproj/
+iosApp/WarewolfStudio/Info.plist
+xcuserdata/

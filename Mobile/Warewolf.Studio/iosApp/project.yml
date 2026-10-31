@@ -1,0 +1,51 @@
+# The iOS host app (README.md, "iOS"). XcodeGen turns this into WarewolfStudio.xcodeproj, which is
+# generated, never committed: `xcodegen generate` here, on a Mac or in CI (Mobile_Studio_iOS_Build).
+#
+# The app is a SwiftUI shell around the shared Compose UI: the Kotlin framework WarewolfStudio
+# (shared/app, static) is built by Gradle from the build phase below, for the configuration, SDK and
+# architectures Xcode is building. Build for arm64 only (devices, Apple Silicon simulators): Compose
+# 1.12 publishes no iosX64.
+name: WarewolfStudio
+
+options:
+  deploymentTarget:
+    iOS: "16.0"
+
+targets:
+  WarewolfStudio:
+    type: application
+    platform: iOS
+    sources:
+      - WarewolfStudio
+    info:
+      path: WarewolfStudio/Info.plist
+      properties:
+        CFBundleDisplayName: Warewolf Studio
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        UILaunchScreen: {}
+        # Compose renders at the display's full refresh rate on ProMotion iPhones.
+        CADisableMinimumFrameDurationOnPhone: true
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+    settings:
+      base:
+        # The same id as the Android app (online.warewolf.studio).
+        PRODUCT_BUNDLE_IDENTIFIER: online.warewolf.studio
+        MARKETING_VERSION: 0.1.0
+        CURRENT_PROJECT_VERSION: 1
+        TARGETED_DEVICE_FAMILY: "1"
+        SWIFT_VERSION: "5.0"
+        # The Gradle build phase reads and writes outside the sandbox Xcode 15+ gives script phases.
+        ENABLE_USER_SCRIPT_SANDBOXING: NO
+        FRAMEWORK_SEARCH_PATHS: $(inherited) $(SRCROOT)/../shared/app/build/xcode-frameworks/$(CONFIGURATION)/$(SDK_NAME)
+        OTHER_LDFLAGS: $(inherited) -framework WarewolfStudio
+    preBuildScripts:
+      - name: Build the Kotlin framework
+        basedOnDependencyAnalysis: false
+        script: |
+          set -euo pipefail
+          cd "$SRCROOT/.."
+          ./gradlew :shared:app:embedAndSignAppleFrameworkForXcode --console=plain
