@@ -1,6 +1,6 @@
 # Warewolf Mobile Studio — Plan
 
-Status: **System 1 deprecated (2026-10-29); P0 engine spikes not started**. Branch `MobileStudio`, off
+Status: **P2 app skeleton built (2026-10-31): Android builds, iOS not yet compiled; System 1 deprecated (2026-10-29); P0 engine spikes not started**. Branch `MobileStudio`, off
 `7580-SelfHostedEngine` (the npm engine installer). The System 1 baseline (generator loop, LLM chooser,
 corpus and evaluation harness) was built ahead of the spikes; see [System 1 baseline](#system-1-baseline).
 
@@ -54,6 +54,7 @@ Mobile/Warewolf.Studio/
 │  ├─ models         model catalog, device tiering (platform-specific RAM/SoC probing), download + SHA-256
 │  ├─ engine-client  mcp-api/* over a Unix socket (Ktor)
 │  └─ studio-ui      Compose Multiplatform: UI list, fullscreen UI, flow canvas, property sheets, run/debug
+│                    (P2 built this as shared/app; see P2 build)
 ├─ androidApp/       Android host: engine as a child process under a foreground service
 └─ iosApp/           iOS host: engine embedded in the app process
 ```
@@ -160,12 +161,18 @@ What it uses (read in `~/angular/src/app`, high confidence):
   (`OrganizationUiSummary.workflows`, `canEdit`).
 - `app.routes.ts:97-100`: `organization-ui/:id` already runs a UI by id.
 
-**Prerequisite, Web Studio deep link.** The editor cannot be opened on a given workflow today: the
-`workflow/:resourceid` route (`app.routes.ts:70-72`) is never read by `WorkflowDesignerComponent` (it injects
-`ActivatedRoute` at `workflow-designer.component.ts:242` and does not use it), and Lightweight workflows have
-no ids the studio can see (`Services/lightweight-mcp-api.ts:187-190`). Edit needs a route keyed by what a UI
-holds, e.g. `/workflow?server=<engine>&path=<workflow path>`, which opens a tab on that engine's workflow
-after the usual studio sign-in.
+**Web Studio deep link (done 2026-10-31, `~/angular` develop).** Edit opens
+`<studio>/workflow?engine=<engine address>&path=<workflow path>`, built from the UI workflow's `server` and
+`workflow`. The path may use `/` or `\`, a leading slash and `.bite`. The designer opens that workflow in a tab
+after the saved tabs (or focuses the tab it is already in), then removes the parameters from the URL. It is not
+`?server=`: the studio takes that as its startup engine (`Common/StartupServer.ts`) and connects to it without
+asking. An engine on the user's server list opens directly; the list is given 10 s to arrive, since the
+organization's shared list joins after sign-in. Any other engine opens only after the user confirms it, and is
+then known for that session only, so the workflow can be saved. The engine's own View/Contribute decide the
+rest. Code: `parseWorkflowDeepLink` (`Services/lightweight-mcp-api.ts`),
+`CommunicationService.waitForLightweightServer` / `linkLightweightServer`,
+`WorkflowDesignerComponent.openWorkflowDeepLink`; tests in `lightweight-mcp-api.spec.ts`,
+`communication.service.lightweight.spec.ts` and `workflow-designer.component.deep-link.spec.ts`.
 
 **Decided (2026-10-31):**
 
@@ -182,13 +189,34 @@ after the usual studio sign-in.
    engine reachable from the phone; the on-device engine (§1) is not involved in running UIs or editing.
 5. **No workflow explorer.** This layout is the home screen of P2.
 
+### P2 build (2026-10-31)
+
+Built as `shared/app` (Kotlin Multiplatform: Android, iOS, desktop JVM) and `androidApp`; see [README](../README.md).
+
+- **Native shell, UIs in a WebView (decided).** The list, auto-start and Edit picker are Compose
+  screens. A UI runs on the studio's own `/organization-ui/:id?standalone=true` page in a WebView, so
+  the studio's sandbox (`organization-ui-frame.ts`) and its engine calls run the UI unchanged. The
+  studio shows that page without its side menu since `~/angular` 38fa4bb6 (`isStandalonePage`).
+- **Sign-in.** `/api/studio/*` is behind Cloudflare Access (`studio-session.service.ts`), and the app
+  has no Access session of its own. It signs in through `/api/studio/login` in a WebView and sends the
+  `CF_Authorization` cookie from the WebView's store (Android `CookieManager`, iOS `WKWebsiteDataStore`)
+  with its own calls. A redirect, 401/403 or an HTML reply means signed out. Sign-in and UI pages share
+  that store, so the UI pages are signed in to the studio too.
+- **Engine calls from a UI** use the studio's MSAL inside the WebView (redirect sign-in). Not yet tried
+  on a device; some Entra tenants block WebView sign-in, and the Azure guest check's pop-up isn't opened.
+- **Auto-start** is stored per organization (`autoStart.<orgId>`, from `/api/studio/me`).
+- **iOS:** `iosMain` (WKWebView, NSUserDefaults, Close button in place of Back) is written but not
+  compiled, since Kotlin/Native iOS needs macOS; there is no Xcode project yet.
+- Tests: `shared/app/src/commonTest` (API client, auto-start and launch, links, home model), run on the
+  desktop JVM. No Android instrumented or iOS tests yet.
+
 ## Phases
 
 | Phase | Scope | Exit |
 |---|---|---|
 | **P0** | Spikes (below) | go/no-go per spike |
 | P1 | Engine host + Unix socket on both platforms | a workflow runs over the socket from Kotlin |
-| P2 | KMP skeleton + [app layout](#app-layout-2026-10-31) | UI list, auto-start, fullscreen UI, Edit in the Web Studio in the phone's browser |
+| P2 | KMP skeleton + [app layout](#app-layout-2026-10-31) | UI list, auto-start, fullscreen UI, Edit in the Web Studio in the phone's browser. **Built** ([P2 build](#p2-build-2026-10-31)); not yet run on a device |
 | P3 | Model catalog + tiering | right model downloaded and loaded per device |
 | P4 | Generator (baseline System 1, then trained) | generated workflows pass `validate_workflow` |
 | P5 | Editing parity | hand-editing matches the web studio's core flows |
@@ -447,3 +475,4 @@ The detailed test plan is presented for approval before any test is written (CLA
 
 - `engine/npm/README.md` and `Build-NpmPackages.ps1` (new mobile runtimes, or a sibling build script).
 - `warewolf-build` and `warewolf-architecture` skills, and `CLAUDE.md` (a third way to host the engine).
+- `README.md` (build steps, modules) and `~/angular`'s `/organization-ui/` standalone page and `/workflow?engine=&path=` link, which the app depends on.

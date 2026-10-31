@@ -9,3 +9,6 @@ build/
 # The classifier's training environment (train/requirements.txt rebuilds it)
 train/.venv/
 __pycache__/
+
+# Each machine's Android SDK path
+local.properties
