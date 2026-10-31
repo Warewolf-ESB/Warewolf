@@ -53,7 +53,7 @@ Mobile/Warewolf.Studio/
 │  ├─ llm            common interface; llama.cpp via JNI (Android), cinterop + Metal (iOS)
 │  ├─ models         model catalog, device tiering (platform-specific RAM/SoC probing), download + SHA-256
 │  ├─ engine-client  mcp-api/* over a Unix socket (Ktor)
-│  └─ studio-ui      Compose Multiplatform: explorer, flow canvas, property sheets, run/debug
+│  └─ studio-ui      Compose Multiplatform: UI list, fullscreen UI, flow canvas, property sheets, run/debug
 ├─ androidApp/       Android host: engine as a child process under a foreground service
 └─ iosApp/           iOS host: engine embedded in the app process
 ```
@@ -127,9 +127,60 @@ of base model.
 The Angular canvas is AntV X6; on mobile it becomes a custom Compose canvas: top-down flow, pan/zoom,
 tap-to-edit property sheets.
 
-1. Browse, view, run, debug.
+1. UI list, fullscreen UI, Edit in the Web Studio in the phone's browser (see [App layout](#app-layout-2026-10-31)).
 2. Generate with the new method, then edit fields.
 3. Hand-editing with drag and drop.
+
+### App layout (2026-10-31)
+
+The app opens on the organization's UIs. **There is no workflow explorer**: a workflow is reached only
+through a UI that uses it. In the first version workflows are edited in the Web Studio, opened in the
+phone's normal browser; a native designer (the Compose canvas above) can replace it later.
+
+```
+Launch ──(auto-start UI set and still viewable)──▶ Fullscreen UI ──back──▶ UI list
+   │
+   └──────────────────────────────────────────────▶ UI list (home)
+                                                       │ per UI:
+                                                       ├─ Open ──────▶ Fullscreen UI
+                                                       ├─ Auto-start ─▶ toggle (at most one UI)
+                                                       └─ Edit ──────▶ pick workflow ──▶ Web Studio editor (phone's browser)
+```
+
+| Screen | Behaviour |
+|---|---|
+| **UI list** (home) | `GET /api/studio/organization-uis`: only the UIs the caller may View. Each row shows name, description and last updated, with Open, Auto-start and Edit actions. Empty list: say there are none and who publishes them (an administrator, through the MCP server). |
+| **Auto-start** | At most one UI per signed-in organization, stored on the device (not on the server). Setting it on another UI moves it. On launch the app opens that UI fullscreen. If it is no longer in the list (deleted, or View revoked), the app shows the list with a notice and clears the setting. |
+| **Fullscreen UI** | Runs the UI the way the Web Studio's `/organization-ui/:id` page does (`organization-ui-page.component.ts`, the sandboxed frame from `organization-ui-frame.ts`), with no app chrome. Back (gesture or button) returns to the list, also when the UI was auto-started. |
+| **Edit** | Lists the UI's `workflows` (`key`, `server`, `workflow` path; `organization-uis.service.ts:6-13`); a UI with one workflow skips the list. The chosen one opens in the Web Studio's workflow editor, opened in the phone's default browser. |
+
+What it uses (read in `~/angular/src/app`, high confidence):
+
+- `organization/organization-uis/organization-uis.service.ts:37-58`: the list/get API and its shapes
+  (`OrganizationUiSummary.workflows`, `canEdit`).
+- `app.routes.ts:97-100`: `organization-ui/:id` already runs a UI by id.
+
+**Prerequisite, Web Studio deep link.** The editor cannot be opened on a given workflow today: the
+`workflow/:resourceid` route (`app.routes.ts:70-72`) is never read by `WorkflowDesignerComponent` (it injects
+`ActivatedRoute` at `workflow-designer.component.ts:242` and does not use it), and Lightweight workflows have
+no ids the studio can see (`Services/lightweight-mcp-api.ts:187-190`). Edit needs a route keyed by what a UI
+holds, e.g. `/workflow?server=<engine>&path=<workflow path>`, which opens a tab on that engine's workflow
+after the usual studio sign-in.
+
+**Decided (2026-10-31):**
+
+1. **Web Studio in the phone's browser.** Edit hands the deep link above to the default browser app (Android
+   `ACTION_VIEW` intent, iOS `UIApplication.open`), so the browser's existing studio sign-in cookie
+   (Cloudflare Access) is used and no second sign-in is needed. Not an in-app WebView, which has its own cookie
+   store, and not `SFSafariViewController`, which on iOS 11+ does not share Safari's cookies either. The user
+   returns to the app with back / the app switcher. A native designer may replace this later.
+2. **One workflow skips the picker.**
+3. **Permissions are per server.** Edit is shown on every UI. Whether the caller may open or save a workflow is
+   decided by the permissions on that workflow's own engine, not by the UI's `canEdit` (which is Contribute on
+   the *UI*). A refusal is shown in the editor as the engine returns it.
+4. **UIs run against the cloud engines.** Each workflow a UI uses runs on the `server` it names, a cloud-hosted
+   engine reachable from the phone; the on-device engine (§1) is not involved in running UIs or editing.
+5. **No workflow explorer.** This layout is the home screen of P2.
 
 ## Phases
 
@@ -137,7 +188,7 @@ tap-to-edit property sheets.
 |---|---|---|
 | **P0** | Spikes (below) | go/no-go per spike |
 | P1 | Engine host + Unix socket on both platforms | a workflow runs over the socket from Kotlin |
-| P2 | KMP skeleton + read-only studio | browse, view, run, debug |
+| P2 | KMP skeleton + [app layout](#app-layout-2026-10-31) | UI list, auto-start, fullscreen UI, Edit in the Web Studio in the phone's browser |
 | P3 | Model catalog + tiering | right model downloaded and loaded per device |
 | P4 | Generator (baseline System 1, then trained) | generated workflows pass `validate_workflow` |
 | P5 | Editing parity | hand-editing matches the web studio's core flows |
@@ -363,6 +414,12 @@ run it? Subjects: the 50 valid workflows Opus produced above (`bakeoff subjects`
      genuinely unconnected, and Opus and Sonnet never hit either. **Fixed:** `CommonHelper.TryGetDecisionArm`,
      shared by the converter, `validate_workflow` and `add_step`, uses the flags when present and otherwise a
      `true`/`false` label. The converter is shared with `Dev2.Server`, so both engines accept it.
+  10. A JSON-object path written without its `@` (`[[ISSResponseObject.iss.latitude]]`) was reported as the
+     undeclared variable `ISSResponseObject.iss.latitude`, although its root was declared. muse-glimmer (a4762f87,
+     after the `envelope.variables` grammar fix) retried the same reference three times on that message. **Fixed:**
+     `validate_workflow` still rejects it but names the fix: the `[[@...]]` form, and kind `object` when the root is
+     declared as another kind. Still open: `add_step` auto-declares such a reference as a scalar named with the
+     whole dotted path.
 
 ## Test strategy
 

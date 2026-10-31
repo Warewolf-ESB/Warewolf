@@ -160,7 +160,9 @@ class ClaudeCli(private val model: String, private val timeoutMinutes: Long = 15
 
 /**
  * The JSON-schema constraint for a whole workflow: an envelope and a body whose node shapes and types come from the
- * catalog (so a node can never be mistaken for an edge), with each tool's own fields allowed inside `data`.
+ * catalog (so a node can never be mistaken for an edge), with each tool's own fields allowed inside `data`. The
+ * envelope lists every property it may hold, `variables` (working variables) included: the grammar LM Studio builds
+ * from it allows no other.
  */
 fun workflowFormat(catalog: Catalog): JsonObject {
     val types = (listOf("start") + catalog.tools.map { it.dataType }).joinToString(",") { "\"$it\"" }
@@ -173,7 +175,8 @@ private fun workflowFormatJson(types: String): JsonObject = Json.parseToJsonElem
       "envelope":{"type":"object","required":["name","inputs","outputs"],"properties":{
         "name":{"type":"string"},"description":{"type":"string"},
         "inputs":{"type":"array","items":{"${'$'}ref":"#/${'$'}defs/variable"}},
-        "outputs":{"type":"array","items":{"${'$'}ref":"#/${'$'}defs/variable"}}}},
+        "outputs":{"type":"array","items":{"${'$'}ref":"#/${'$'}defs/variable"}},
+        "variables":{"type":"array","items":{"${'$'}ref":"#/${'$'}defs/variable"}}}},
       "body":{"type":"object","required":["resourcename","cells"],"properties":{
         "resourcename":{"type":"string"},
         "cells":{"type":"array","items":{"anyOf":[{"${'$'}ref":"#/${'$'}defs/node"},{"${'$'}ref":"#/${'$'}defs/edge"}]}}}}},

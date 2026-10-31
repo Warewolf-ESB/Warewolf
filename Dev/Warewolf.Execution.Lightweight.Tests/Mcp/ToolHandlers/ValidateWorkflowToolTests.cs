@@ -879,6 +879,90 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.IsFalse(error.Message.Contains("'@Missing' is not declared"));
         }
 
+        static Cell AssignLatitudeFrom(string fieldValue) => MakeNode("assign1", "dsfdotnetmultiassignactivity",
+            new Dictionary<string, object>
+            {
+                ["displayName"] = "Assign",
+                ["fields"] = new JArray(new JObject { ["FieldName"] = "[[Latitude]]", ["FieldValue"] = fieldValue, ["IndexNumber"] = 1 })
+            });
+
+        static JsonElement ResponseDeclaredAs(string kind) => EnvelopeOf(new
+        {
+            inputs = new[] { new { name = "Response", kind, fields = new string[0] } },
+            outputs = new[] { new { name = "Latitude", kind = "scalar", fields = new string[0] } }
+        });
+
+        /// <summary>
+        /// A dotted path without the '@' sigil was reported as the undeclared variable
+        /// 'Response.iss_position.latitude' although 'Response' was declared, and a generator
+        /// retried the same reference three times (bakeoff a4762f87). The error must name the fix.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectPathWithoutSigil_RootDeclaredAsObject_ErrorSuggestsSigil()
+        {
+            var body = BodyOf("PathNoSigil", MakeStartNode(), AssignLatitudeFrom("[[Response.iss_position.latitude]]"),
+                MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(ResponseDeclaredAs("object"), body);
+
+            Assert.IsFalse(result.Valid);
+            var error = result.Errors.Single(e => e.Severity == "error");
+            Assert.IsTrue(error.Message.Contains("'[[@Response.iss_position.latitude]]'"), error.Message);
+            Assert.IsFalse(error.Message.Contains("not declared"), error.Message);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectPathWithoutSigil_RootDeclaredAsScalar_ErrorSuggestsSigilAndObjectKind()
+        {
+            var body = BodyOf("PathNoSigilScalar", MakeStartNode(), AssignLatitudeFrom("[[Response.iss_position.latitude]]"),
+                MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(ResponseDeclaredAs("scalar"), body);
+
+            Assert.IsFalse(result.Valid);
+            var error = result.Errors.Single(e => e.Severity == "error");
+            Assert.IsTrue(error.Message.Contains("'[[@Response.iss_position.latitude]]'"), error.Message);
+            Assert.IsTrue(error.Message.Contains("kind 'object'") && error.Message.Contains("'scalar'"), error.Message);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectPathWithoutSigil_RootUndeclared_KeepsUndeclaredError()
+        {
+            var body = BodyOf("PathNoSigilUndeclared", MakeStartNode(), AssignLatitudeFrom("[[Missing.iss_position.latitude]]"),
+                MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(ResponseDeclaredAs("object"), body);
+
+            Assert.IsFalse(result.Valid);
+            var error = result.Errors.Single(e => e.Severity == "error");
+            Assert.IsTrue(error.Message.Contains("'Missing.iss_position.latitude' is not declared"), error.Message);
+            Assert.IsFalse(error.Message.Contains("'@'"), error.Message);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ObjectPathWithoutSigil_ReportsOneErrorPerReference()
+        {
+            var fields = new JArray(
+                new JObject { ["FieldName"] = "[[Latitude]]", ["FieldValue"] = "[[Response.iss_position.latitude]]", ["IndexNumber"] = 1 },
+                new JObject { ["FieldName"] = "[[Latitude]]", ["FieldValue"] = "[[Response.iss_position.longitude]]", ["IndexNumber"] = 2 });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign", ["fields"] = fields });
+            var body = BodyOf("PathNoSigilTwice", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(ResponseDeclaredAs("object"), body);
+
+            var errors = result.Errors.Where(e => e.Severity == "error").Select(e => e.Message).ToList();
+            Assert.AreEqual(2, errors.Count, string.Join("; ", errors));
+            Assert.IsTrue(errors.Any(m => m.Contains("[[@Response.iss_position.latitude]]")));
+            Assert.IsTrue(errors.Any(m => m.Contains("[[@Response.iss_position.longitude]]")));
+            Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("never referenced")),
+                "The root is referenced, just without its sigil: no unused-input warning on top of the error.");
+        }
+
         [TestMethod]
         [TestCategory("UnitTest")]
         public void Handle_UnusedEnvelopeInput_ReturnsWarningOnly_ValidStaysTrue()

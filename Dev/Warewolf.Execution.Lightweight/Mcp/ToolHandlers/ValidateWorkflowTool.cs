@@ -62,8 +62,8 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <c>X6ToWorkflowConverter.HandleSwitchConnection</c> resolves it).</item>
 /// <item>Every <c>[[...]]</c>-bracketed reference found anywhere inside a node's <c>data</c>
 /// must resolve to a declared <c>envelope.inputs</c>/<c>outputs</c> entry (undeclared reference
-/// = error); a recordset field reference (<c>[[Recordset().Field]]</c>) must further resolve to
-/// a <c>fields</c> entry on that recordset's envelope entry (unresolved field = error); a
+/// = error, naming the missing <c>@</c> when a dotted reference's root is declared); a recordset
+/// field reference (<c>[[Recordset().Field]]</c>) must further resolve to a <c>fields</c> entry on that recordset's envelope entry (unresolved field = error); a
 /// declared input never referenced anywhere in <c>body</c> = warning, not an error (doesn't
 /// flip <c>valid</c> to <c>false</c>).</item>
 /// <item>Finally — only when every check above found zero hard errors, so a graph already known
@@ -670,6 +670,13 @@ internal static class ValidateWorkflowTool
 
                 if (!byName.TryGetValue(baseName, out var declared))
                 {
+                    if (MissingObjectSigilHint(raw, isObjectReference, byName) is { } hint)
+                    {
+                        errors.Add(ValidationIssue.Error($"cell '{cell.id}' {hint}", $"/cells/{index}"));
+                        referencedNames.Add(baseName[..baseName.IndexOf('.', StringComparison.Ordinal)]);
+                        continue;
+                    }
+
                     errors.Add(ValidationIssue.Error(
                         $"cell '{cell.id}' references undeclared variable '[[{raw}]]' — '{baseName}' is not declared in envelope.inputs/outputs/variables.",
                         $"/cells/{index}"));
@@ -829,6 +836,34 @@ internal static class ValidateWorkflowTool
         }
 
         return (baseName, null, isObjectReference);
+    }
+
+    /// <summary>
+    /// A dotted reference without the object sigil (<c>[[Response.iss.latitude]]</c>) whose first
+    /// segment is a declared variable is a JSON-object path missing its <c>@</c>, not a reference
+    /// to an undeclared <c>Response.iss.latitude</c>. Saying only "not declared" sent generators
+    /// round the same retry three times (bakeoff a4762f87), so this names the fix instead: the
+    /// <c>@</c> form, and kind <c>object</c> when the root is declared as something else. Null when
+    /// the reference is not that shape, leaving the plain undeclared error.
+    /// </summary>
+    static string? MissingObjectSigilHint(string raw, bool isObjectReference, Dictionary<string, EnvelopeVariable> byName)
+    {
+        if (isObjectReference)
+        {
+            return null;
+        }
+
+        var path = DataListUtil.StripBracketsFromValue(raw).Trim();
+        var pathStart = path.IndexOf('.', StringComparison.Ordinal);
+        if (pathStart <= 0 || !byName.TryGetValue(path[..pathStart], out var root))
+        {
+            return null;
+        }
+
+        var hint = $"references '[[{raw}]]' without the object sigil '@': to read a path inside JSON object '{root.Name}' write '[[@{path}]]'";
+        return string.Equals(root.Kind, "object", StringComparison.OrdinalIgnoreCase)
+            ? hint + "."
+            : hint + $" and declare '{root.Name}' with kind 'object' (it is declared as kind '{root.Kind}').";
     }
 }
 

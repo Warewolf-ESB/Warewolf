@@ -75,6 +75,17 @@ class LmStudioTextTests {
     }
 }
 
+class WorkflowFormatTests {
+    @Test
+    fun `the envelope may declare working variables, shaped like inputs and outputs`() {
+        val envelope = workflowFormat(testCatalog).getValue("properties").jsonObject.getValue("envelope").jsonObject
+        val properties = envelope.getValue("properties").jsonObject
+
+        assertEquals(properties.getValue("inputs"), properties.getValue("variables"))
+        assertFalse("variables" in envelope["required"].toString())
+    }
+}
+
 class LmStudioHttpPostTests {
     /** A local HTTP server on a free port whose single route is [handle]; stopped by [use]. */
     private fun <T> withServer(handle: (HttpExchange) -> Unit, use: (url: String) -> T): T {
