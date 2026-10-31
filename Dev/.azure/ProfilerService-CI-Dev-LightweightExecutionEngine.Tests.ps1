@@ -299,7 +299,18 @@ Describe 'Profiler pipelines - package layout' -Skip:(-not $script:HaveYaml) {
     }
 
     It 'ships secure.config and the license at the package root, and persistence under Settings' {
-        Test-Path -LiteralPath (Join-Path $script:EngineDir 'secure.config') | Should -BeTrue
+        # secure.config is git-ignored (never committed), so a checkout has none: both pipelines take
+        # it from the Library, like the license, and never from the repo.
+        foreach ($doc in $script:Dev, $script:Uat) {
+            $download = Find-Step $doc 'Download Profiler secure.config'
+            $download['task'] | Should -Be 'DownloadSecureFile@1'
+            $download['name'] | Should -Be 'profilerSecureConfig'
+            $download['inputs']['secureFile'] | Should -Be 'Profiler secure.config'
+            $stage = Get-StepScript (Find-Step $doc 'Add the profiler workflows, sources and settings')
+            $stage | Should -Match ([regex]::Escape('''$(profilerSecureConfig.secureFilePath)'' -Destination "$stage\secure.config"'))
+            $stage | Should -Not -Match ([regex]::Escape('$templates\secure.config'))
+            (Get-StepIndex $doc 'Download Profiler secure.config') | Should -BeLessThan (Get-StepIndex $doc 'Add the profiler workflows, sources and settings')
+        }
         $script:Stage | Should -Match ([regex]::Escape('"$stage\Settings\persistencesettings.json"'))
         $script:Stage | Should -Match ([regex]::Escape('"$stage\Settings\persistencesettingsdbsource.bite"'))
         $script:Stage | Should -Match ([regex]::Escape('"$stage\Warewolf License.secureconfig"'))
