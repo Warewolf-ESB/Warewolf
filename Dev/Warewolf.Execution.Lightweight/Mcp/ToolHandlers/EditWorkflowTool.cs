@@ -79,7 +79,7 @@ internal static class EditWorkflowTool
         ClaimsPrincipal? user,
         [Description("The existing workflow's name — a relative path (forward slashes), no extension. Must already exist; use create_workflow to create a new workflow.")]
         string name,
-        [Description("The workflow envelope — { name?, description?, inputs: EnvelopeVariable[], outputs: EnvelopeVariable[] } per get_workflow_schema's envelope_schema.")]
+        [Description("The workflow envelope — { name?, description?, inputs: EnvelopeVariable[], outputs: EnvelopeVariable[], variables?: EnvelopeVariable[] (working variables, neither input nor output) } per get_workflow_schema's envelope_schema.")]
         System.Text.Json.JsonElement envelope,
         [Description("The workflow body — the X6 graph { resourcename, cells[] } per get_workflow_schema's body_schema.")]
         System.Text.Json.JsonElement body)

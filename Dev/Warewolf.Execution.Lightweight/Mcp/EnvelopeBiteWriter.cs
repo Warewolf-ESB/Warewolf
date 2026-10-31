@@ -115,12 +115,15 @@ internal static class EnvelopeBiteWriter
         return service.ToString(SaveOptions.DisableFormatting);
     }
 
-    // ── envelope.inputs/outputs → <DataList> ──────────────────────────────────
+    // ── envelope.inputs/outputs/variables → <DataList> ────────────────────────
 
     /// <summary>
     /// Builds the <c>&lt;DataList&gt;</c> element from <c>envelope.inputs</c>/<c>outputs</c>,
     /// merging entries that appear in both arrays (or whose recordset fields are split across
-    /// both) into a single <c>ColumnIODirection="Both"</c> declaration — the same shape
+    /// both) into a single <c>ColumnIODirection="Both"</c> declaration. <c>envelope.variables</c>
+    /// declares the workflow's working variables — Studio's <c>ColumnIODirection="None"</c>, neither
+    /// input nor output — and never narrows an entry <c>inputs</c>/<c>outputs</c> also declares. The
+    /// result is the same shape
     /// <see cref="Dev2.Data.DataListTO"/> reads back on the next <c>get_workflow_definition</c>
     /// call. Throws <see cref="ModelContextProtocol.McpException"/> (not a raw
     /// <see cref="XmlException"/>/<see cref="ArgumentException"/>) when a variable or field name
@@ -133,6 +136,7 @@ internal static class EnvelopeBiteWriter
 
         ParseArray(envelope, "inputs", isInput: true, isOutput: false, scalars, recordsets);
         ParseArray(envelope, "outputs", isInput: false, isOutput: true, scalars, recordsets);
+        ParseArray(envelope, "variables", isInput: false, isOutput: false, scalars, recordsets);
 
         var root = new XElement("DataList");
 
@@ -187,13 +191,17 @@ internal static class EnvelopeBiteWriter
         // execution's outputs. The element's direction is the union of its fields' — a recordset
         // that is input-only in one field and output-only in another is "Both" at the element
         // level, and the per-field attributes below still decide which fields are emitted.
+        // A recordset whose fields are all working variables is "None"; one named in inputs/outputs
+        // without any input/output field keeps the "Output" it has always been written with.
         var anyInput = recordset.Fields.Values.Any(field => field.IsInput);
         var anyOutput = recordset.Fields.Values.Any(field => field.IsOutput);
+        var direction = anyInput || anyOutput ? Direction(anyInput, anyOutput)
+            : recordset.InInputsOrOutputs ? "Output" : "None";
 
         var element = new XElement(recordset.Name,
             new XAttribute("Description", string.Empty),
             new XAttribute("IsEditable", "True"),
-            new XAttribute("ColumnIODirection", Direction(anyInput, anyOutput)));
+            new XAttribute("ColumnIODirection", direction));
 
         foreach (var field in recordset.Fields)
         {
@@ -207,7 +215,7 @@ internal static class EnvelopeBiteWriter
     }
 
     static string Direction(bool isInput, bool isOutput) =>
-        isInput && isOutput ? "Both" : isInput ? "Input" : "Output";
+        isInput && isOutput ? "Both" : isInput ? "Input" : isOutput ? "Output" : "None";
 
     /// <summary>
     /// Builds a single scalar/object <c>&lt;DataList&gt;</c> child element, declared both-directions
@@ -282,6 +290,8 @@ internal static class EnvelopeBiteWriter
                     recordsets[name] = recordset;
                 }
 
+                recordset.InInputsOrOutputs |= isInput || isOutput;
+
                 if (item.TryGetProperty("fields", out var fieldsEl) && fieldsEl.ValueKind == JsonValueKind.Array)
                 {
                     foreach (var fieldEl in fieldsEl.EnumerateArray())
@@ -329,6 +339,7 @@ internal static class EnvelopeBiteWriter
     sealed class RecordsetEntry(string name)
     {
         internal string Name { get; } = name;
+        internal bool InInputsOrOutputs { get; set; }
         internal Dictionary<string, (bool IsInput, bool IsOutput)> Fields { get; } = new(StringComparer.Ordinal);
     }
 }

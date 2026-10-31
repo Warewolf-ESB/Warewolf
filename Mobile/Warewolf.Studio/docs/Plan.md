@@ -350,6 +350,13 @@ run it? Subjects: the 50 valid workflows Opus produced above (`bakeoff subjects`
   7. `create_test`/`edit_test` pointed callers at `get_workflow_schema`'s `test_schema`, which did not exist. **Fixed:**
      `test_schema` is now returned, and `GetWorkflowSchemaToolTests` checks it lists every `AuthenticationType`,
      `StepType` and assert operator the engine accepts.
+  8. The envelope had only `inputs` and `outputs`, so a working variable (Studio's `ColumnIODirection="None"`, the most
+     common direction in the repo's workflows) could not be declared: `validate_workflow` rejected every reference to
+     one, and `get_workflow_definition` dropped them, so a Studio workflow could not be read, edited and saved back.
+     Local models lost whole goals to it (muse-glimmer's first four failures were each one undeclared scratch
+     variable). **Fixed:** an optional `envelope.variables` array is written as `None`, read back by
+     `get_workflow_definition`, and documented in `envelope_schema`; references to it validate. `add_step` still
+     auto-declares as `Both`. Bakeoff runs before this fix are scored without it.
 
 ## Test strategy
 
@@ -366,7 +373,9 @@ The detailed test plan is presented for approval before any test is written (CLA
   the LM Studio client (done).
 - **Artifact tasks (`eval/bakeoff`):** service-test prompt, store/repair/run loop and output coverage; form check
   (meta-schema, coverage, shapes) and repair loop; GUID id rewrite; artifact judge (done).
-- **Engine (C#):** `GetWorkflowSchemaToolTests` covers `test_schema` (done).
+- **Engine (C#):** `GetWorkflowSchemaToolTests` covers `test_schema` (done); `envelope.variables` is covered in
+  `EnvelopeBiteWriterTests`, `ValidateWorkflowToolTests`, `GetWorkflowDefinitionToolTests` and
+  `GetWorkflowSchemaToolTests`, including a round trip through the envelope writer (done).
 - **Python (`train/tests`):** label encoding, class weights, ONNX export parity on a tiny synthetic model (done).
 - **Evaluation harness:** System 1 next-tool accuracy; end-to-end `validate_workflow` pass rate per
   model tier.

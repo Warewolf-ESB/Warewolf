@@ -1031,5 +1031,85 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
             Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
         }
+
+        // ── envelope.variables: working variables (ColumnIODirection="None") ──
+
+        static Cell AssignNode(string id, string fieldName, string fieldValue) =>
+            MakeNode(id, "dsfdotnetmultiassignactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "Assign",
+                ["fields"] = new JArray(new JObject { ["FieldName"] = fieldName, ["FieldValue"] = fieldValue, ["IndexNumber"] = 1 })
+            });
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_ReferenceToWorkingScalar_IsNotUndeclared()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "phrase", kind = "scalar" } },
+                outputs = new object[0],
+                variables = new[] { new { name = "encodedPhrase", kind = "scalar" } }
+            });
+            var body = BodyOf("Wf", MakeStartNode(), AssignNode("assign1", "[[encodedPhrase]]", "[[phrase]]"),
+                MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_WorkingRecordsetField_ResolvesAndAnUndeclaredFieldStillErrors()
+        {
+            // rows is an output in one field and a working variable in another; both fields resolve.
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new object[0],
+                outputs = new[] { new { name = "rows", kind = "recordset", fields = new[] { "total" } } },
+                variables = new[] { new { name = "rows", kind = "recordset", fields = new[] { "scratch" } } }
+            });
+            var body = BodyOf("Wf", MakeStartNode(),
+                AssignNode("assign1", "[[rows(*).scratch]]", "1"),
+                AssignNode("assign2", "[[rows(*).total]]", "[[rows(*).missing]]"),
+                MakeEdge("e1", "start", "assign1"), MakeEdge("e2", "assign1", "assign2"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+            var errors = result.Errors.Where(e => e.Severity == "error").Select(e => e.Message).ToList();
+
+            Assert.IsFalse(errors.Any(m => m.Contains("'scratch'") || m.Contains("'total'")), string.Join("; ", errors));
+            Assert.IsTrue(errors.Any(m => m.Contains("'missing'")), string.Join("; ", errors));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_NonObjectVariablesEntry_ThrowsLikeInputsAndOutputs()
+        {
+            var envelope = EnvelopeOf(new { inputs = new object[0], outputs = new object[0], variables = new[] { "[[x]]" } });
+
+            var ex = Assert.ThrowsException<McpException>(() => ValidateWorkflowTool.Handle(envelope, BodyOf("Wf", MakeStartNode())));
+
+            StringAssert.Contains(ex.Message, "envelope.variables[0]");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_UnreferencedWorkingVariable_IsAWarningNotAnError()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new object[0],
+                outputs = new object[0],
+                variables = new[] { new { name = "unused", kind = "scalar" } }
+            });
+            var body = BodyOf("Wf", MakeStartNode(), MakeNode("assign1", "dsfdotnetmultiassignactivity",
+                new Dictionary<string, object> { ["displayName"] = "Assign" }), MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            Assert.IsTrue(result.Valid, string.Join("; ", result.Errors.Select(e => e.Message)));
+            Assert.IsTrue(result.Errors.Any(e => e.Severity == "warning" && e.Message.Contains("'unused'") && e.Message.Contains("never referenced")));
+        }
     }
 }

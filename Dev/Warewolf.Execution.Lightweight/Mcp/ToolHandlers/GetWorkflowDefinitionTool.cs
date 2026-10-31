@@ -130,8 +130,8 @@ internal static class GetWorkflowDefinitionTool
             throw new McpException($"You do not have permission to view workflow '{label}'.");
         }
 
-        var (description, inputs, outputs) = ReadEnvelopeDetail(filePath);
-        var envelope = new WorkflowEnvelope(headerName, description, inputs, outputs);
+        var (description, inputs, outputs, variables) = ReadEnvelopeDetail(filePath);
+        var envelope = new WorkflowEnvelope(headerName, description, inputs, outputs, variables);
 
         var (bodyEditable, body, nonEditableReason) = BuildBody(filePath, headerName);
         var xaml = includeXaml ? WorkflowExecutor.ReadWorkflowFile(filePath).ToString() : null;
@@ -276,7 +276,7 @@ internal static class GetWorkflowDefinitionTool
 
     /// <summary>
     /// Reads a workflow's <c>&lt;Comment&gt;</c> (→ <c>description</c>) and <c>&lt;DataList&gt;</c>
-    /// (→ <c>inputs</c>/<c>outputs</c>) directly, producing the same rich <c>{kind, name, fields?}</c>
+    /// (→ <c>inputs</c>/<c>outputs</c>/<c>variables</c>) directly, producing the same rich <c>{kind, name, fields?}</c>
     /// shape <c>get_workflow_schema</c>'s <c>envelope_schema</c> documents and
     /// <c>create_workflow</c>/<c>edit_workflow</c>/<c>validate_workflow</c> all expect — replacing
     /// the previous flat bracket-notation strings (<see cref="Dev2.Data.DataListTO"/>'s shape, cheap
@@ -284,18 +284,18 @@ internal static class GetWorkflowDefinitionTool
     /// <c>fields</c> are both lost). Malformed/unreadable bodies degrade to an empty envelope
     /// rather than throwing, mirroring <see cref="ListWorkflowsTool.ReadDetail"/>'s leniency.
     /// </summary>
-    static (string Description, List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs) ReadEnvelopeDetail(string filePath)
+    static (string Description, List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs, List<EnvelopeVariableDto> Variables) ReadEnvelopeDetail(string filePath)
     {
         try
         {
             var root = XElement.Load(filePath);
             var description = root.Element("Comment")?.Value.Trim() ?? string.Empty;
-            var (inputs, outputs) = ParseDataListVariables(root.Element("DataList"));
-            return (description, inputs, outputs);
+            var (inputs, outputs, variables) = ParseDataListVariables(root.Element("DataList"));
+            return (description, inputs, outputs, variables);
         }
         catch
         {
-            return (string.Empty, new List<EnvelopeVariableDto>(), new List<EnvelopeVariableDto>());
+            return (string.Empty, new List<EnvelopeVariableDto>(), new List<EnvelopeVariableDto>(), new List<EnvelopeVariableDto>());
         }
     }
 
@@ -306,15 +306,18 @@ internal static class GetWorkflowDefinitionTool
     /// vs. recordset) and — for a recordset — which of its fields carry which direction, all of
     /// which <c>DataListTO</c>'s flattened <c>List&lt;string&gt;</c> shape discards. A recordset
     /// field's direction comes from that field's own attribute, not its parent's — a recordset can
-    /// legitimately be part-input, part-output.
+    /// legitimately be part-input, part-output. An explicit <c>ColumnIODirection="None"</c> (Studio's
+    /// working variable) goes to <c>variables</c>, so a re-submitted envelope still declares every
+    /// variable the body references.
     /// </summary>
-    static (List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs) ParseDataListVariables(XElement? dataList)
+    static (List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs, List<EnvelopeVariableDto> Variables) ParseDataListVariables(XElement? dataList)
     {
         var inputs = new List<EnvelopeVariableDto>();
         var outputs = new List<EnvelopeVariableDto>();
+        var variables = new List<EnvelopeVariableDto>();
         if (dataList is null)
         {
-            return (inputs, outputs);
+            return (inputs, outputs, variables);
         }
 
         foreach (var element in dataList.Elements())
@@ -326,15 +329,18 @@ internal static class GetWorkflowDefinitionTool
             {
                 var inputFields = new List<string>();
                 var outputFields = new List<string>();
+                var workingFields = new List<string>();
                 foreach (var field in element.Elements())
                 {
                     var fieldDirection = field.Attribute("ColumnIODirection")?.Value;
                     if (fieldDirection is "Input" or "Both") inputFields.Add(field.Name.LocalName);
                     if (fieldDirection is "Output" or "Both") outputFields.Add(field.Name.LocalName);
+                    if (fieldDirection is "None") workingFields.Add(field.Name.LocalName);
                 }
 
                 if (inputFields.Count > 0) inputs.Add(new EnvelopeVariableDto("recordset", name, inputFields));
                 if (outputFields.Count > 0) outputs.Add(new EnvelopeVariableDto("recordset", name, outputFields));
+                if (workingFields.Count > 0) variables.Add(new EnvelopeVariableDto("recordset", name, workingFields));
                 continue;
             }
 
@@ -342,9 +348,10 @@ internal static class GetWorkflowDefinitionTool
             var direction = element.Attribute("ColumnIODirection")?.Value;
             if (direction is "Input" or "Both") inputs.Add(new EnvelopeVariableDto(kind, name, null));
             if (direction is "Output" or "Both") outputs.Add(new EnvelopeVariableDto(kind, name, null));
+            if (direction is "None") variables.Add(new EnvelopeVariableDto(kind, name, null));
         }
 
-        return (inputs, outputs);
+        return (inputs, outputs, variables);
     }
 }
 
@@ -353,7 +360,8 @@ internal sealed record WorkflowEnvelope(
     [property: JsonPropertyName("name")] string Name,
     [property: JsonPropertyName("description")] string Description,
     [property: JsonPropertyName("inputs")] IReadOnlyList<EnvelopeVariableDto> Inputs,
-    [property: JsonPropertyName("outputs")] IReadOnlyList<EnvelopeVariableDto> Outputs);
+    [property: JsonPropertyName("outputs")] IReadOnlyList<EnvelopeVariableDto> Outputs,
+    [property: JsonPropertyName("variables")] IReadOnlyList<EnvelopeVariableDto> Variables);
 
 /// <summary>One <c>envelope.inputs</c>/<c>outputs</c> entry, per <c>envelope_schema</c>'s
 /// <c>{kind, name, fields?}</c> shape (F6).</summary>

@@ -4,9 +4,18 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
+import com.sun.net.httpserver.HttpExchange
+import com.sun.net.httpserver.HttpServer
+import java.net.InetSocketAddress
+import java.time.Duration
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
+import kotlin.test.assertTrue
 
 class LmStudioTextTests {
     /** A fake LM Studio that records the request and answers [content] in the OpenAI chat-completion shape. */
@@ -63,5 +72,63 @@ class LmStudioTextTests {
         LmStudioText("gemma", post = lmStudio.post).complete("goal", null)
 
         assertFalse("response_format" in lmStudio.requests.single())
+    }
+}
+
+class LmStudioHttpPostTests {
+    /** A local HTTP server on a free port whose single route is [handle]; stopped by [use]. */
+    private fun <T> withServer(handle: (HttpExchange) -> Unit, use: (url: String) -> T): T {
+        val server = HttpServer.create(InetSocketAddress("127.0.0.1", 0), 0)
+        server.createContext("/v1/chat/completions") { exchange -> handle(exchange) }
+        server.executor = Executors.newCachedThreadPool()
+        server.start()
+        try {
+            return use("http://127.0.0.1:${server.address.port}/v1/chat/completions")
+        } finally {
+            server.stop(0)
+        }
+    }
+
+    private fun reply(exchange: HttpExchange, status: Int, body: String) {
+        val bytes = body.toByteArray()
+        exchange.sendResponseHeaders(status, bytes.size.toLong())
+        exchange.responseBody.use { it.write(bytes) }
+    }
+
+    @Test
+    fun `a reply that never comes ends in a timeout instead of hanging`() {
+        val release = CountDownLatch(1)
+        withServer({ release.await(30, TimeUnit.SECONDS) }) { url ->
+            val post = LmStudioText.httpPost(url, "key", Duration.ofSeconds(1))
+            val started = System.nanoTime()
+
+            val error = assertFailsWith<IllegalStateException> { post("{}") }
+
+            assertTrue("did not answer" in error.message.orEmpty())
+            assertTrue(Duration.ofNanos(System.nanoTime() - started) < Duration.ofSeconds(10))
+            release.countDown()
+        }
+    }
+
+    @Test
+    fun `the body comes back and the API key goes out as a bearer token`() {
+        var authorization: String? = null
+        withServer({ exchange ->
+            authorization = exchange.requestHeaders.getFirst("Authorization")
+            reply(exchange, 200, """{"ok":true}""")
+        }) { url ->
+            assertEquals("""{"ok":true}""", LmStudioText.httpPost(url, "secret")("{}"))
+        }
+
+        assertEquals("Bearer secret", authorization)
+    }
+
+    @Test
+    fun `a non-200 status is an error naming the status`() {
+        withServer({ exchange -> reply(exchange, 524, "error code: 524") }) { url ->
+            val error = assertFailsWith<IllegalStateException> { LmStudioText.httpPost(url, "key")("{}") }
+
+            assertTrue("524" in error.message.orEmpty())
+        }
     }
 }

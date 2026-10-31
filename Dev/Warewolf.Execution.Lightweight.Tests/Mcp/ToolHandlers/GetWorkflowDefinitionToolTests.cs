@@ -231,6 +231,80 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             CollectionAssert.AreEqual(new[] { "Age" }, customersOutput.Fields!.ToList());
         }
 
+        /// <summary>
+        /// Studio's working variables (ColumnIODirection="None") were dropped from the envelope, so a
+        /// workflow read here and re-submitted to edit_workflow failed validation on its own variables.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_Envelope_WorkingScalar_GoesToVariablesOnly()
+        {
+            WriteWorkflow("Working.bite", "Working",
+                dataListXml: "<DataList><Scratch Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" /></DataList>");
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Working");
+
+            var scratch = result.Envelope.Variables.Single(v => v.Name == "Scratch");
+            Assert.AreEqual("scalar", scratch.Kind);
+            Assert.IsFalse(result.Envelope.Inputs.Any(v => v.Name == "Scratch"));
+            Assert.IsFalse(result.Envelope.Outputs.Any(v => v.Name == "Scratch"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_Envelope_RecordsetWithWorkingField_IsSplitAcrossOutputsAndVariables()
+        {
+            WriteWorkflow("Mixed.bite", "Mixed",
+                dataListXml: "<DataList><Rows Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\">" +
+                             "<Total Description=\"\" IsEditable=\"True\" ColumnIODirection=\"Output\" />" +
+                             "<Scratch Description=\"\" IsEditable=\"True\" ColumnIODirection=\"None\" />" +
+                             "</Rows></DataList>");
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "Mixed");
+
+            CollectionAssert.AreEqual(new[] { "Total" }, result.Envelope.Outputs.Single(v => v.Name == "Rows").Fields!.ToList());
+            CollectionAssert.AreEqual(new[] { "Scratch" }, result.Envelope.Variables.Single(v => v.Name == "Rows").Fields!.ToList());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_Envelope_ElementWithoutDirection_IsStillExcluded()
+        {
+            WriteWorkflow("NoDirection.bite", "NoDirection",
+                dataListXml: "<DataList><Bare Description=\"\" IsEditable=\"True\" /></DataList>");
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "NoDirection");
+
+            Assert.AreEqual(0, result.Envelope.Inputs.Count + result.Envelope.Outputs.Count + result.Envelope.Variables.Count);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_Envelope_WorkingVariables_RoundTripThroughTheEnvelopeWriter()
+        {
+            // The DataList create_workflow/edit_workflow write from an envelope reads back as that envelope.
+            var envelope = new
+            {
+                inputs = new[] { new { kind = "scalar", name = "phrase", fields = (string[]?)null } },
+                outputs = new[] { new { kind = "recordset", name = "rows", fields = (string[]?)new[] { "total" } } },
+                variables = new[]
+                {
+                    new { kind = "object", name = "ResponseBody", fields = (string[]?)null },
+                    new { kind = "recordset", name = "rows", fields = (string[]?)new[] { "scratch" } },
+                }
+            };
+            var dataList = Warewolf.Execution.Lightweight.Mcp.EnvelopeBiteWriter.BuildDataListElement(JsonSerializer.SerializeToElement(envelope));
+            WriteWorkflow("RoundTrip.bite", "RoundTrip", dataListXml: dataList.ToString());
+
+            var result = Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false }, null, "RoundTrip");
+
+            static string Shape(IEnumerable<EnvelopeVariableDto> variables) =>
+                string.Join(";", variables.Select(v => $"{v.Kind}:{v.Name}:{string.Join(",", v.Fields ?? Array.Empty<string>())}").OrderBy(s => s));
+            Assert.AreEqual("scalar:phrase:", Shape(result.Envelope.Inputs));
+            Assert.AreEqual("recordset:rows:total", Shape(result.Envelope.Outputs));
+            Assert.AreEqual("object:ResponseBody:;recordset:rows:scratch", Shape(result.Envelope.Variables));
+        }
+
         [TestMethod]
         [TestCategory("UnitTest")]
         public void Handle_NameCanBeResolvedViaNestedFolderPath()

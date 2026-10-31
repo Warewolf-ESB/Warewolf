@@ -41,6 +41,9 @@ internal static class GetWorkflowSchemaTool
           ],
           "outputs": [
             { "kind": "scalar | object | recordset", "name": "string", "fields": ["string (recordset only)"] }
+          ],
+          "variables": [
+            { "kind": "scalar | object | recordset", "name": "string", "fields": ["string (recordset only)"], "...": "optional — working variables the body uses that are neither an input nor an output" }
           ]
         }
         """);

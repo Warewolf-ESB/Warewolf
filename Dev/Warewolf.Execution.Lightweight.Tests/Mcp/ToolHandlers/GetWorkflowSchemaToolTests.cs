@@ -95,6 +95,17 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public void Handle_EnvelopeSchema_DocumentsWorkingVariables()
+        {
+            var result = GetWorkflowSchemaTool.Handle();
+
+            Assert.IsTrue(result.EnvelopeSchema.TryGetProperty("variables", out var variables));
+            Assert.AreEqual(JsonValueKind.Array, variables.ValueKind);
+            StringAssert.Contains(variables[0].GetRawText(), "neither an input nor an output");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public void Handle_BodySchema_HasResourcenameAndCells()
         {
             var result = GetWorkflowSchemaTool.Handle();

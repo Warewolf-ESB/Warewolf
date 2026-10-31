@@ -97,7 +97,7 @@ internal static class ValidateWorkflowTool
     static readonly Regex VariableReferencePattern = new(@"\[\[([^\[\]]+)\]\]", RegexOptions.Compiled);
 
     internal static ValidateWorkflowResult Handle(
-        [Description("The workflow envelope — { name?, description?, inputs: EnvelopeVariable[], outputs: EnvelopeVariable[] } per get_workflow_schema's envelope_schema.")]
+        [Description("The workflow envelope — { name?, description?, inputs: EnvelopeVariable[], outputs: EnvelopeVariable[], variables?: EnvelopeVariable[] (working variables, neither input nor output) } per get_workflow_schema's envelope_schema.")]
         JsonElement envelope,
         [Description("The workflow body — the X6 graph { resourcename, cells[] } per get_workflow_schema's body_schema.")]
         JsonElement body)
@@ -606,12 +606,12 @@ internal static class ValidateWorkflowTool
         }
     }
 
-    // ── envelope.inputs/outputs ⇄ body [[...]] reference cross-check ──────────
+    // ── envelope.inputs/outputs/variables ⇄ body [[...]] reference cross-check ─
 
     static List<EnvelopeVariable> ParseEnvelopeVariables(JsonElement envelope)
     {
         var result = new List<EnvelopeVariable>();
-        foreach (var arrayName in new[] { "inputs", "outputs" })
+        foreach (var arrayName in new[] { "inputs", "outputs", "variables" })
         {
             if (!envelope.TryGetProperty(arrayName, out var array) || array.ValueKind != JsonValueKind.Array)
             {
@@ -659,9 +659,14 @@ internal static class ValidateWorkflowTool
         List<EnvelopeVariable> envelopeVariables,
         List<ValidationIssue> errors)
     {
+        // A recordset can be declared in more than one array with different fields (read in one field,
+        // written in another, worked in a third), so its declared fields are the union of every entry's.
         var byName = envelopeVariables
             .GroupBy(v => v.Name, StringComparer.Ordinal)
-            .ToDictionary(g => g.Key, g => g.First(), StringComparer.Ordinal);
+            .ToDictionary(
+                g => g.Key,
+                g => g.First() with { Fields = g.SelectMany(v => v.Fields).Distinct(StringComparer.Ordinal).ToList() },
+                StringComparer.Ordinal);
 
         var referencedNames = new HashSet<string>(StringComparer.Ordinal);
 
@@ -680,7 +685,7 @@ internal static class ValidateWorkflowTool
                 if (!byName.TryGetValue(baseName, out var declared))
                 {
                     errors.Add(ValidationIssue.Error(
-                        $"cell '{cell.id}' references undeclared variable '[[{raw}]]' — '{baseName}' is not declared in envelope.inputs/outputs.",
+                        $"cell '{cell.id}' references undeclared variable '[[{raw}]]' — '{baseName}' is not declared in envelope.inputs/outputs/variables.",
                         $"/cells/{index}"));
                     continue;
                 }

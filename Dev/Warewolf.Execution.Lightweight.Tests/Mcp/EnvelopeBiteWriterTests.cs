@@ -133,5 +133,83 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
             Assert.AreEqual("Input", text?.Attribute("ColumnIODirection")?.Value);
             Assert.IsFalse(text!.HasElements, "a scalar must not gain field children");
         }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void BuildDataListElement_WorkingScalar_IsNone()
+        {
+            var dataList = EnvelopeBiteWriter.BuildDataListElement(Envelope(new
+            {
+                inputs = new object[0],
+                outputs = new object[0],
+                variables = new[] { new { kind = "scalar", name = "encodedPhrase" } }
+            }));
+
+            Assert.AreEqual("None", dataList.Element("encodedPhrase")?.Attribute("ColumnIODirection")?.Value);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void BuildDataListElement_WorkingObject_IsJsonAndNone()
+        {
+            var dataList = EnvelopeBiteWriter.BuildDataListElement(Envelope(new
+            {
+                inputs = new object[0],
+                outputs = new object[0],
+                variables = new[] { new { kind = "object", name = "ResponseBody" } }
+            }));
+
+            var body = dataList.Element("ResponseBody");
+            Assert.AreEqual("None", body?.Attribute("ColumnIODirection")?.Value);
+            Assert.AreEqual("True", body?.Attribute("IsJson")?.Value);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void BuildDataListElement_WorkingRecordset_IsNoneAtElementAndFieldLevel()
+        {
+            var dataList = EnvelopeBiteWriter.BuildDataListElement(Envelope(new
+            {
+                inputs = new object[0],
+                outputs = new object[0],
+                variables = new[] { new { kind = "recordset", name = "pending", fields = new[] { "id", "amount" } } }
+            }));
+
+            var pending = dataList.Element("pending");
+            Assert.AreEqual("None", pending?.Attribute("ColumnIODirection")?.Value);
+            Assert.IsTrue(pending!.Elements().All(f => f.Attribute("ColumnIODirection")?.Value == "None"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void BuildDataListElement_NameInOutputsAndVariables_StaysOutput()
+        {
+            // variables never narrows a declaration inputs/outputs also makes.
+            var dataList = EnvelopeBiteWriter.BuildDataListElement(Envelope(new
+            {
+                inputs = new object[0],
+                outputs = new[] { new { kind = "scalar", name = "result" } },
+                variables = new[] { new { kind = "scalar", name = "result" } }
+            }));
+
+            Assert.AreEqual("Output", dataList.Element("result")?.Attribute("ColumnIODirection")?.Value);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void BuildDataListElement_RecordsetSplitAcrossOutputsAndVariables_IsOutputAtElementLevelAndPerFieldBelow()
+        {
+            var dataList = EnvelopeBiteWriter.BuildDataListElement(Envelope(new
+            {
+                inputs = new object[0],
+                outputs = new[] { new { kind = "recordset", name = "rows", fields = new[] { "total" } } },
+                variables = new[] { new { kind = "recordset", name = "rows", fields = new[] { "scratch" } } }
+            }));
+
+            var rows = dataList.Element("rows");
+            Assert.AreEqual("Output", rows?.Attribute("ColumnIODirection")?.Value);
+            Assert.AreEqual("Output", rows?.Element("total")?.Attribute("ColumnIODirection")?.Value);
+            Assert.AreEqual("None", rows?.Element("scratch")?.Attribute("ColumnIODirection")?.Value);
+        }
     }
 }

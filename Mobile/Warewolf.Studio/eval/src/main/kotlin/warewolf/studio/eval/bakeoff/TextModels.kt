@@ -15,7 +15,9 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.time.Duration
+import java.util.concurrent.ExecutionException
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 /** A model that answers one prompt with text. Every attempt is a fresh, single prompt, so runs stay comparable. */
 fun interface TextModel {
@@ -102,16 +104,28 @@ class LmStudioText(
     }
 
     companion object {
-        fun httpPost(url: String, apiKey: String): (String) -> String {
-            val http = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()
+        /**
+         * Posts to LM Studio with a hard [timeout] on the whole exchange. `send` alone hung for over an hour when LM
+         * Studio reloaded the model mid-request and the connection never closed, so the wait is bounded here instead.
+         */
+        fun httpPost(url: String, apiKey: String, timeout: Duration = Duration.ofMinutes(15)): (String) -> String {
+            val http = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).connectTimeout(Duration.ofSeconds(10)).build()
             return { body ->
                 val request = HttpRequest.newBuilder(URI.create(url))
-                    .timeout(Duration.ofMinutes(15))
+                    .timeout(timeout)
                     .header("Content-Type", "application/json")
                     .header("Authorization", "Bearer $apiKey")
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build()
-                val response = http.send(request, HttpResponse.BodyHandlers.ofString())
+                val pending = http.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                val response = try {
+                    pending.get(timeout.toMillis(), TimeUnit.MILLISECONDS)
+                } catch (e: TimeoutException) {
+                    pending.cancel(true)
+                    throw IllegalStateException("LM Studio did not answer within $timeout", e)
+                } catch (e: ExecutionException) {
+                    throw e.cause ?: e
+                }
                 check(response.statusCode() == 200) { "LM Studio returned ${response.statusCode()}: ${response.body().take(300)}" }
                 response.body()
             }
