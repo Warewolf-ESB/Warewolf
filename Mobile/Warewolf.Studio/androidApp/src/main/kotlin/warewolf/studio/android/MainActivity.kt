@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.ViewGroup
 import android.webkit.CookieManager
 import android.webkit.WebStorage
 import android.webkit.WebView
@@ -99,6 +100,9 @@ private fun StudioWebView(url: String, modifier: Modifier, onPageFinished: (Stri
         modifier = modifier,
         factory = { context ->
             WebView(context).apply {
+                // Without this the WebView keeps the WRAP_CONTENT default from AndroidView, and sizes its
+                // viewport to the page: CSS 100vh becomes 0 and the studio's 100vh layout collapses (white page).
+                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
                 settings.javaScriptEnabled = true
                 settings.domStorageEnabled = true
                 // MSAL's silent token renewal runs login.microsoftonline.com in a hidden frame.

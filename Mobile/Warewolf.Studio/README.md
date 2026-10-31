@@ -55,4 +55,10 @@ Needs JDK 21. The Gradle wrapper fetches everything else.
 - Signing in to Microsoft (MSAL) inside the WebView for engine calls from a UI. The studio uses
   redirects, which WebViews handle. Its Azure guest check uses a pop-up, which the WebView doesn't
   open, and some Entra tenants block sign-in in WebViews.
-- Anything on a real device or emulator, and the whole iOS host.
+- The whole iOS host. Android has run on one phone (Galaxy S22+, WebView 134): sign-in, the UI list
+  and a fullscreen UI. A WebView in Compose's `AndroidView` must get `MATCH_PARENT` layout params; with
+  the `WRAP_CONTENT` default, CSS `100vh` is 0 and the studio's layout collapses to a white page. The iOS
+  host may need the same check.
+
+**Debugging the app's WebViews:** a debug build can be inspected from `chrome://inspect`, or with
+`adb forward tcp:9333 localabstract:webview_devtools_remote_<pid>` and the DevTools protocol on port 9333.
