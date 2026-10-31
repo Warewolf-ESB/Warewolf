@@ -391,8 +391,7 @@ internal static class AddStepTool
             var isTrueArm = string.Equals(branch, "true", StringComparison.OrdinalIgnoreCase);
             var armAlreadyWired = edges.Any(e =>
                 string.Equals(e.Source?.Id, tail.id, StringComparison.Ordinal) &&
-                CommonHelper.TryGetBool(e.data, Constants.ISDECISIONARM, out var isDecisionArm) && isDecisionArm &&
-                CommonHelper.TryGetBool(e.data, Constants.ISTRUEARM, out var existingIsTrue) && existingIsTrue == isTrueArm);
+                CommonHelper.TryGetDecisionArm(e, out var existingIsTrue) && existingIsTrue == isTrueArm);
 
             if (armAlreadyWired)
             {

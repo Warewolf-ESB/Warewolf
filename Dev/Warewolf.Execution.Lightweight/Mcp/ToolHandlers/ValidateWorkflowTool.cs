@@ -53,11 +53,10 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <item>Every non-edge, non-start cell's <c>data.type</c> must resolve via
 /// <see cref="ToolCatalog.Resolve"/> — an unresolved type is a hard error naming the cell
 /// (closes the converter's former silent "Unknown type" fallback, per spec).</item>
-/// <item>Decision (<c>flowdecision</c>/<c>dsfdecision</c>) nodes must have at least one outgoing
-/// edge flagged <c>isDecisionArm</c>+<c>isTrue</c> and at least one flagged
-/// <c>isDecisionArm</c>+not-<c>isTrue</c> — the exact flags
-/// <c>X6ToWorkflowConverter.HandleDecisionConnection</c> reads back (not edge <c>label</c> text,
-/// which that method ignores for Decision). Switch (<c>dsfflowswitchactivity</c>/<c>flowswitch</c>)
+/// <item>Decision (<c>flowdecision</c>/<c>dsfdecision</c>) nodes must have a True and a False arm,
+/// recognised exactly as <c>X6ToWorkflowConverter.HandleDecisionConnection</c> reads them back
+/// (<c>CommonHelper.TryGetDecisionArm</c>: the <c>isDecisionArm</c>/<c>isTrue</c> flags when present,
+/// otherwise a <c>"true"</c>/<c>"false"</c> edge label). Switch (<c>dsfflowswitchactivity</c>/<c>flowswitch</c>)
 /// nodes must have at least one outgoing edge with a resolvable case key
 /// (<c>data.caseKey</c>, falling back to <c>label</c>, exactly as
 /// <c>X6ToWorkflowConverter.HandleSwitchConnection</c> resolves it).</item>
@@ -492,9 +491,9 @@ internal static class ValidateWorkflowTool
     // ── Decision / Switch branch checks ───────────────────────────────────────
 
     /// <summary>
-    /// Mirrors <c>X6ToWorkflowConverter.HandleDecisionConnection</c> exactly: a Decision edge is
-    /// only recognised via <c>data.isDecisionArm == true</c> + <c>data.isTrue</c>, never via edge
-    /// <c>label</c> text (the converter ignores label entirely for Decision edges).
+    /// Mirrors <c>X6ToWorkflowConverter.HandleDecisionConnection</c> exactly — both call
+    /// <c>CommonHelper.TryGetDecisionArm</c>: the <c>data.isDecisionArm</c>/<c>data.isTrue</c> flags
+    /// decide when present, otherwise an edge <c>label</c> of "true"/"false" does.
     /// </summary>
     static void ValidateDecisionBranches(Cell node, List<Cell> edges, int index, List<ValidationIssue> errors)
     {
@@ -506,32 +505,19 @@ internal static class ValidateWorkflowTool
         if (!hasTrue)
         {
             errors.Add(ValidationIssue.Error(
-                $"Decision node '{node.id}' has no outgoing edge for its True branch (an edge with data.isDecisionArm=true, data.isTrue=true).",
+                $"Decision node '{node.id}' has no outgoing edge for its True branch (an edge with data.isDecisionArm=true, data.isTrue=true, or labelled \"true\").",
                 $"/cells/{index}"));
         }
         if (!hasFalse)
         {
             errors.Add(ValidationIssue.Error(
-                $"Decision node '{node.id}' has no outgoing edge for its False branch (an edge with data.isDecisionArm=true, data.isTrue=false).",
+                $"Decision node '{node.id}' has no outgoing edge for its False branch (an edge with data.isDecisionArm=true, data.isTrue=false, or labelled \"false\").",
                 $"/cells/{index}"));
         }
     }
 
-    static bool IsDecisionArm(Cell edge, bool wantTrue)
-    {
-        if (edge.data is null)
-        {
-            return false;
-        }
-
-        if (!CommonHelper.TryGetBool(edge.data, Constants.ISDECISIONARM, out var isDecisionArm) || !isDecisionArm)
-        {
-            return false;
-        }
-
-        CommonHelper.TryGetBool(edge.data, Constants.ISTRUEARM, out var isTrue);
-        return isTrue == wantTrue;
-    }
+    static bool IsDecisionArm(Cell edge, bool wantTrue) =>
+        CommonHelper.TryGetDecisionArm(edge, out var isTrue) && isTrue == wantTrue;
 
     /// <summary>
     /// Mirrors <c>X6ToWorkflowConverter.HandleSwitchConnection</c>: a Switch case key comes from

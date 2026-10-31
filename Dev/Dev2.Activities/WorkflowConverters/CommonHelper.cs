@@ -52,6 +52,38 @@ namespace Dev2.WorkflowConverters
             };
         }
 
+        /// <summary>
+        /// Whether an edge leaving a Decision is one of its arms, and which. The data flags decide when present
+        /// (<see cref="Constants.ISDECISIONARM"/>/<see cref="Constants.ISTRUEARM"/>, as <see cref="CreateEdge"/>
+        /// writes them); otherwise a label of "true" or "false", in any case, does — the way get_workflow_schema's
+        /// body_schema describes Decision edges, and the way people and models write them.
+        /// </summary>
+        public static bool TryGetDecisionArm(Cell edge, out bool isTrue)
+        {
+            isTrue = false;
+            if (edge == null)
+                return false;
+
+            if (edge.data != null && edge.data.TryGetValue(Constants.ISDECISIONARM, out var isDecisionArmObj) &&
+                bool.TryParse(isDecisionArmObj?.ToString(), out var isDecisionArm))
+            {
+                if (!isDecisionArm)
+                    return false;
+
+                isTrue = edge.data.TryGetValue(Constants.ISTRUEARM, out var isTrueArmObj) &&
+                         bool.TryParse(isTrueArmObj?.ToString(), out var isTrueArm) && isTrueArm;
+                return true;
+            }
+
+            if (string.Equals(edge.label?.Trim(), Constants.TRUE, StringComparison.OrdinalIgnoreCase))
+            {
+                isTrue = true;
+                return true;
+            }
+
+            return string.Equals(edge.label?.Trim(), Constants.FALSE, StringComparison.OrdinalIgnoreCase);
+        }
+
         public static bool TryGetBool(Dictionary<string, object> data, string key, out bool value)
         {
             value = false;

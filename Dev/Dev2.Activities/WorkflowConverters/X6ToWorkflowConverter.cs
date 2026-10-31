@@ -1014,15 +1014,7 @@ namespace Dev2.Activities.WF
 
         private static void HandleDecisionConnection(Cell connection, FlowDecisionModel decision, FlowNodeModel targetNode)
         {
-            if (connection.data == null) return;
-
-            var isDecisionArm = connection.data.TryGetValue(Constants.ISDECISIONARM, out var isDecisionArmObj) &&
-                               bool.TryParse(isDecisionArmObj?.ToString(), out var isDecision) && isDecision;
-
-            if (!isDecisionArm) return;
-
-            var isTrue = connection.data.TryGetValue(Constants.ISTRUEARM, out var isTrueArmObj) &&
-                        bool.TryParse(isTrueArmObj?.ToString(), out var isTrueArm) && isTrueArm;
+            if (!CommonHelper.TryGetDecisionArm(connection, out var isTrue)) return;
 
             if (isTrue)
                 decision.True = targetNode;

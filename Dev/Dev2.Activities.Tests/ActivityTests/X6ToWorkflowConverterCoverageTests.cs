@@ -559,6 +559,97 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         /// <summary>
+        /// A Decision whose two arms are edges carrying only <paramref name="trueLabel"/>/<paramref name="falseLabel"/>,
+        /// no isDecisionArm/isTrue data, converted to XAML.
+        /// </summary>
+        string ConvertDecisionWithLabelOnlyArms(string trueLabel, string falseLabel)
+        {
+            var start = MakeStartNode();
+            start.id = Guid.NewGuid().ToString();
+            var decisionId = Guid.NewGuid().ToString();
+            var decision = new Cell
+            {
+                id = decisionId,
+                data = new Dictionary<string, object>
+                {
+                    ["type"] = Constants.FLOWDECISION,
+                    [Constants.DISPLAYNAME] = "Is x == 42",
+                    [Constants.DISPLAYTEXT] = "Is x == 42",
+                    [Constants.EXPRESSION] = "[[x]] = 42",
+                    [Constants.PROPERTY_UNIQUEID] = decisionId
+                }
+            };
+            var onTrue = MakeNode("DsfDotNetMultiAssignActivity", "OnTrue", new Dictionary<string, object>
+            {
+                ["fields"] = JsonConvert.SerializeObject(new[] { new { FieldName = "[[r]]", FieldValue = "true-branch" } })
+            });
+            onTrue.id = Guid.NewGuid().ToString();
+            var onFalse = MakeNode("DsfDotNetMultiAssignActivity", "OnFalse", new Dictionary<string, object>
+            {
+                ["fields"] = JsonConvert.SerializeObject(new[] { new { FieldName = "[[r]]", FieldValue = "false-branch" } })
+            });
+            onFalse.id = Guid.NewGuid().ToString();
+
+            Cell Edge(string source, string target, string label) => new Cell
+            {
+                id = Guid.NewGuid().ToString(), shape = "edge", label = label, Source = new Connector(source), Target = new Connector(target)
+            };
+
+            return Convert("DecisionLabelOnlyFlow", start, decision, onTrue, onFalse,
+                Edge(start.id, decisionId, null), Edge(decisionId, onTrue.id, trueLabel), Edge(decisionId, onFalse.id, falseLabel)).ToString();
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_DecisionArmsLabelledTrueFalseWithoutFlags_WiresBothBranches()
+        {
+            // get_workflow_schema's body_schema describes Decision edges by label, and that is what models wrote;
+            // the converter used to ignore the label and drop both branches.
+            var xaml = ConvertDecisionWithLabelOnlyArms("true", "false");
+
+            Assert.IsTrue(xaml.Contains("FlowDecision.True"), "Decision should have its True branch wired.\n" + xaml);
+            Assert.IsTrue(xaml.Contains("FlowDecision.False"), "Decision should have its False branch wired.\n" + xaml);
+        }
+
+        [TestMethod, Timeout(60000), TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void X6JsonToWorkflow_DecisionEdgesWithOtherLabels_AreNotArms()
+        {
+            var xaml = ConvertDecisionWithLabelOnlyArms("yes", "no");
+
+            Assert.IsFalse(xaml.Contains("FlowDecision.True"), "A \"yes\" edge is not a Decision arm.\n" + xaml);
+            Assert.IsFalse(xaml.Contains("FlowDecision.False"), "A \"no\" edge is not a Decision arm.\n" + xaml);
+        }
+
+        [DataTestMethod, TestCategory("X6ToWorkflowConverter_Coverage")]
+        [DataRow("True", true)]
+        [DataRow(" FALSE ", false)]
+        public void TryGetDecisionArm_LabelWithoutFlags_MatchesIgnoringCase(string label, bool expectedIsTrue)
+        {
+            var edge = new Cell { label = label, data = new Dictionary<string, object>() };
+
+            Assert.IsTrue(Dev2.WorkflowConverters.CommonHelper.TryGetDecisionArm(edge, out var isTrue));
+            Assert.AreEqual(expectedIsTrue, isTrue);
+        }
+
+        [TestMethod, TestCategory("X6ToWorkflowConverter_Coverage")]
+        public void TryGetDecisionArm_FlagsWinOverAContradictingLabel()
+        {
+            var falseArmLabelledTrue = new Cell
+            {
+                label = "true",
+                data = new Dictionary<string, object> { [Constants.ISDECISIONARM] = true, [Constants.ISTRUEARM] = false }
+            };
+            var notAnArmLabelledTrue = new Cell
+            {
+                label = "true",
+                data = new Dictionary<string, object> { [Constants.ISDECISIONARM] = false }
+            };
+
+            Assert.IsTrue(Dev2.WorkflowConverters.CommonHelper.TryGetDecisionArm(falseArmLabelledTrue, out var isTrue));
+            Assert.IsFalse(isTrue);
+            Assert.IsFalse(Dev2.WorkflowConverters.CommonHelper.TryGetDecisionArm(notAnArmLabelledTrue, out _));
+        }
+
+        /// <summary>
         /// Regression test: a Decision whose <c>displaytext</c> is absent, null or blank must still
         /// convert. WorkflowToX6Converter writes an unnamed FlowDecision back with
         /// <c>"displaytext": null</c>, and CreateFlowDecisionActivity used to return null for it,

@@ -69,7 +69,8 @@ internal static class GetWorkflowSchemaTool
               "shape": "string, required — must be exactly \"edge\"; this is how a cell is told apart from a node",
               "source": { "cell": "string (a node id)" },
               "target": { "cell": "string (a node id)" },
-              "label": "string, optional (branch/case label — e.g. true/false for Decision, a case name for Switch)"
+              "label": "string, optional (branch/case label — true/false for a Decision arm, a case name for Switch)",
+              "data": { "isDecisionArm": "boolean, optional (true on a Decision arm; with isTrue, preferred over label)", "isTrue": "boolean, optional (which Decision arm)" }
             }
           ]
         }

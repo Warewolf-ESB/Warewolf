@@ -791,6 +791,21 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        [ExpectedException(typeof(McpException))]
+        public void BuildConnectingEdge_Decision_ArmAlreadyWiredByLabelOnly_Throws()
+        {
+            // A label-only arm counts as wired, as it does for validate_workflow and the converter.
+            var tail = new Cell { id = "dec1", shape = "rect", data = new Dictionary<string, object> { ["type"] = "flowdecision" } };
+            var existingEdges = new List<Cell>
+            {
+                new Cell { id = "e1", shape = "edge", label = "true", Source = new Connector("dec1"), Target = new Connector("other"), data = new Dictionary<string, object>() },
+            };
+
+            AddStepTool.BuildConnectingEdge(tail, branch: "true", edges: existingEdges, newNodeId: "new1");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public void BuildConnectingEdge_Decision_OtherArmStillAvailable_Succeeds()
         {
             var tail = new Cell { id = "dec1", shape = "rect", data = new Dictionary<string, object> { ["type"] = "flowdecision" } };

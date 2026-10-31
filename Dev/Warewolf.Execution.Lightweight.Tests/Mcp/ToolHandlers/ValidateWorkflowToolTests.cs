@@ -634,14 +634,30 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
-        public void Handle_DecisionBranches_IgnoreEdgeLabelText()
+        public void Handle_DecisionBranches_AcceptTrueFalseLabelsWithoutFlags()
         {
-            // A "true"/"false" labeled edge without isDecisionArm/isTrue data must NOT satisfy
-            // the check — X6ToWorkflowConverter.HandleDecisionConnection ignores label for Decision.
+            // body_schema describes a Decision arm by its "true"/"false" label, and that is what models
+            // wrote; CommonHelper.TryGetDecisionArm (shared with the converter) now accepts it.
             var decision = MakeNode("dec1", "flowdecision");
-            var labeledOnly = MakeEdge("e-true", "dec1", "start", label: "true");
             var body = BodyOf("DecisionLabelOnly", MakeStartNode(), decision,
-                MakeEdge("e0", "start", "dec1"), labeledOnly);
+                MakeEdge("e0", "start", "dec1"),
+                MakeEdge("e-true", "dec1", "start", label: "true"),
+                MakeEdge("e-false", "dec1", "start", label: "False"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            Assert.IsFalse(result.Errors.Any(e => e.Message.Contains("True branch") || e.Message.Contains("False branch")),
+                string.Join("; ", result.Errors.Select(e => e.Message)));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_DecisionBranches_OtherLabelsAreStillNotArms()
+        {
+            var decision = MakeNode("dec1", "flowdecision");
+            var body = BodyOf("DecisionYesNo", MakeStartNode(), decision,
+                MakeEdge("e0", "start", "dec1"),
+                MakeEdge("e-yes", "dec1", "start", label: "yes"));
 
             var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
 

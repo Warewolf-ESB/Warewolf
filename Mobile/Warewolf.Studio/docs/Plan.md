@@ -357,6 +357,12 @@ run it? Subjects: the 50 valid workflows Opus produced above (`bakeoff subjects`
      variable). **Fixed:** an optional `envelope.variables` array is written as `None`, read back by
      `get_workflow_definition`, and documented in `envelope_schema`; references to it validate. `add_step` still
      auto-declares as `Both`. Bakeoff runs before this fix are scored without it.
+  9. A Decision arm was recognised only by the edge flags `data.isDecisionArm`/`data.isTrue`, while `body_schema`
+     described Decision edges by their `true`/`false` label. Models that followed it (all 6 of Gemma 4 12B's arm
+     errors, 6 of muse-glimmer's 12) connected both arms and still failed; LFM2 and the small Qwens left arms
+     genuinely unconnected, and Opus and Sonnet never hit either. **Fixed:** `CommonHelper.TryGetDecisionArm`,
+     shared by the converter, `validate_workflow` and `add_step`, uses the flags when present and otherwise a
+     `true`/`false` label. The converter is shared with `Dev2.Server`, so both engines accept it.
 
 ## Test strategy
 
