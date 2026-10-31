@@ -12,6 +12,8 @@
       * pipeline.yml runs the app tests in the Test stage and fails on a red or missing result;
       * pipeline.yml builds the APK in Compile_Release with the stamped version, the secure-file
         keystore and the signing variables, and publishes the artifact pipeline-MOBILE.yml downloads;
+        the job is emitted on main branches only, because Azure DevOps validates a secure file at
+        compile time even for a skipped stage (run 31115 was invalid on a feature branch);
       * pipeline-MOBILE.yml is triggered by, and its Release stage gated on, exactly the main branches
         pipeline.yml's IsMainBranch covers;
       * 'Read APK version' - EXECUTED against a fake artifact - accepts a valid one and rejects a
@@ -49,9 +51,18 @@ BeforeAll {
         @($Doc['stages']) | Where-Object { $_['stage'] -eq $Name } | Select-Object -First 1
     }
 
+    # A stage's jobs, including those inside a compile-time '${{ if ... }}:' insertion.
+    function script:Get-Jobs {
+        param($Doc, [string] $Stage)
+        foreach ($entry in @((Get-Stage $Doc $Stage)['jobs'])) {
+            if ($entry.Contains('job')) { $entry; continue }
+            foreach ($key in @($entry.Keys)) { if ($key -like '${{*') { @($entry[$key]) } }
+        }
+    }
+
     function script:Get-Job {
         param($Doc, [string] $Stage, [string] $Name)
-        @((Get-Stage $Doc $Stage)['jobs']) | Where-Object { $_['job'] -eq $Name } | Select-Object -First 1
+        @(Get-Jobs $Doc $Stage) | Where-Object { $_['job'] -eq $Name } | Select-Object -First 1
     }
 
     function script:Find-Step {
@@ -152,6 +163,14 @@ Describe 'pipeline.yml - Mobile Studio jobs' -Skip:(-not $script:HaveYaml) {
         $publish['inputs']['testResultsFiles'] | Should -Match 'shared/app/build/test-results/desktopTest/\*\.xml$'
         $publish['inputs']['failTaskOnFailedTests'] | Should -BeTrue
         $publish['inputs']['failTaskOnMissingResultsFile'] | Should -BeTrue
+    }
+
+    It 'emits the APK job only on main branches, so its secure file is never validated on a feature branch (run 31115)' {
+        $guarded = @(@((Get-Stage $script:Ci 'Compile_Release')['jobs']) | Where-Object { -not $_.Contains('job') })
+        $guarded.Count | Should -Be 1
+        $key = @($guarded[0].Keys)[0]
+        $key | Should -Be "`${{ if eq(variables['IsMainBranch'], 'true') }}"
+        @($guarded[0][$key] | ForEach-Object { $_['job'] }) | Should -Be @('build_release_apk')
     }
 
     It 'builds the APK after build_release, with its stamped version as an output variable' {
