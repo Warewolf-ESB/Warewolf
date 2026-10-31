@@ -209,6 +209,9 @@ Built as `shared/app` (Kotlin Multiplatform: Android, iOS, desktop JVM) and `and
   compiled, since Kotlin/Native iOS needs macOS; there is no Xcode project yet.
 - Tests: `shared/app/src/commonTest` (API client, auto-start and launch, links, home model), run on the
   desktop JVM. No Android instrumented or iOS tests yet.
+- CI and release (2026-10-31): `pipeline.yml` runs these tests (Test stage, `Mobile_Studio_Tests`) and, on
+  main branches, builds a signed release APK in `Compile_Release`; `pipeline-MOBILE.yml` publishes it to
+  `stwwreleases` with a download link (README, *CI and release*). Not yet run on a hosted agent.
 
 ## Phases
 
@@ -475,4 +478,5 @@ The detailed test plan is presented for approval before any test is written (CLA
 
 - `engine/npm/README.md` and `Build-NpmPackages.ps1` (new mobile runtimes, or a sibling build script).
 - `warewolf-build` and `warewolf-architecture` skills, and `CLAUDE.md` (a third way to host the engine).
+- `Dev/.azure/pipeline.yml` (`Mobile_Studio_Tests`, `build_release_apk`), `pipeline-MOBILE.yml` and `pipeline-MOBILE.Tests.ps1` (module or task names, signing, SDK level).
 - `README.md` (build steps, modules) and `~/angular`'s `/organization-ui/` standalone page and `/workflow?engine=&path=` link, which the app depends on.
