@@ -12,7 +12,8 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 /// previously 3 independent env vars — still described in the historical form in
 /// <c>EasyAuth-Runbook.md</c>):
 /// <list type="bullet">
-///   <item><c>tenantId</c> – Entra tenant GUID.</item>
+///   <item><c>tenantId</c> – Entra tenant GUID, or <c>common</c> / <c>organizations</c> to accept
+///   sign-ins from any tenant (see <see cref="EntraTenants"/>).</item>
 ///   <item><c>audience</c>  – Expected <c>aud</c> claim (e.g. <c>api://{clientId}</c>).
 ///   A bare identifier with no URI scheme (e.g. just the client GUID) is auto-prefixed with
 ///   <c>api://</c> — see <see cref="Audience"/> — since that is the <c>aud</c> value Entra
@@ -22,8 +23,17 @@ namespace Warewolf.Execution.Lightweight.Auth.Models;
 /// </summary>
 public class EntraAuthOptions
 {
-    /// <summary>Entra tenant GUID. <c>null</c> when not configured (token path disabled).</summary>
+    /// <summary>
+    /// Entra tenant GUID, or a multi-tenant alias (<c>common</c>, <c>organizations</c>).
+    /// <c>null</c> when not configured (token path disabled).
+    /// </summary>
     public string? TenantId { get; init; }
+
+    /// <summary>
+    /// <c>true</c> when <see cref="TenantId"/> is a multi-tenant alias, so the issuer is checked
+    /// against the token's own <c>tid</c> claim instead of <see cref="ValidIssuers"/>.
+    /// </summary>
+    public bool IsMultiTenant => EntraTenants.IsMultiTenant(TenantId);
 
     private readonly string? _audience;
 
@@ -60,16 +70,18 @@ public class EntraAuthOptions
         !string.IsNullOrWhiteSpace(TenantId) &&
         (!string.IsNullOrWhiteSpace(Audience) || !string.IsNullOrWhiteSpace(ClientId));
 
-    /// <summary>v2.0 OIDC metadata document URL for the configured tenant.</summary>
+    /// <summary>
+    /// v2.0 OIDC metadata document URL for the configured tenant. For a multi-tenant alias this is
+    /// the alias's own document, whose signing keys are the ones every tenant's tokens are signed with.
+    /// </summary>
     public string MetadataAddress =>
         $"https://login.microsoftonline.com/{TenantId}/v2.0/.well-known/openid-configuration";
 
-    /// <summary>Acceptable issuer URLs for tokens issued to this tenant (v1 + v2).</summary>
-    public IReadOnlyCollection<string> ValidIssuers => new[]
-    {
-        $"https://login.microsoftonline.com/{TenantId}/v2.0",
-        $"https://sts.windows.net/{TenantId}/",
-    };
+    /// <summary>
+    /// Acceptable issuer URLs for tokens issued to this tenant (v1 + v2). Not used when
+    /// <see cref="IsMultiTenant"/>: the issuer then has to name the token's own tenant.
+    /// </summary>
+    public IReadOnlyCollection<string> ValidIssuers => EntraTenants.IssuersFor(TenantId ?? string.Empty);
 
     /// <summary>Audiences accepted on the <c>aud</c> claim.</summary>
     public IReadOnlyCollection<string> ValidAudiences =>
