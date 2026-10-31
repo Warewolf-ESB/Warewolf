@@ -99,7 +99,31 @@ internal static class GetWorkflowDefinitionTool
                 : throw new McpException($"`format` must be \"{FormatX6}\" or \"{FormatXaml}\".");
 
         var principal = user as WorkflowClaimsPrincipal;
-        var workflowsDirectory = hostConfig.WorkflowsDirectory;
+        var (filePath, relativePath, headerName, label) = ResolveByNameOrId(hostConfig.WorkflowsDirectory, name, resourceId);
+
+        if (!ListWorkflowsTool.HasViewPermission(authPolicyLoader, principal, relativePath))
+        {
+            throw new McpException($"You do not have permission to view workflow '{label}'.");
+        }
+
+        var (description, inputs, outputs, variables) = ReadEnvelopeDetail(filePath);
+        var envelope = new WorkflowEnvelope(headerName, description, inputs, outputs, variables);
+
+        var (bodyEditable, body, nonEditableReason) = BuildBody(filePath, headerName);
+        var xaml = includeXaml ? WorkflowExecutor.ReadWorkflowFile(filePath).ToString() : null;
+
+        return new GetWorkflowDefinitionResult(headerName, envelope, bodyEditable, body, nonEditableReason, xaml);
+    }
+
+    /// <summary>
+    /// Finds an existing workflow (not a source) by ResourceID when <paramref name="resourceId"/> is
+    /// given, else by <paramref name="name"/>, or throws "not found". <c>internal</c> so the
+    /// workflow-form tools (<see cref="CreateUiTool"/>, <see cref="GetUiTool"/>) look a workflow up
+    /// exactly as this tool does — the web Studio names workflows by id, an MCP client by name.
+    /// </summary>
+    internal static (string FilePath, string RelativePath, string HeaderName, string Label) ResolveByNameOrId(
+        string workflowsDirectory, string name, Guid? resourceId)
+    {
         string? filePath;
         string relativePath;
         string label;
@@ -125,18 +149,7 @@ internal static class GetWorkflowDefinitionTool
             throw new McpException($"Workflow '{label}' was not found.");
         }
 
-        if (!ListWorkflowsTool.HasViewPermission(authPolicyLoader, principal, relativePath))
-        {
-            throw new McpException($"You do not have permission to view workflow '{label}'.");
-        }
-
-        var (description, inputs, outputs, variables) = ReadEnvelopeDetail(filePath);
-        var envelope = new WorkflowEnvelope(headerName, description, inputs, outputs, variables);
-
-        var (bodyEditable, body, nonEditableReason) = BuildBody(filePath, headerName);
-        var xaml = includeXaml ? WorkflowExecutor.ReadWorkflowFile(filePath).ToString() : null;
-
-        return new GetWorkflowDefinitionResult(headerName, envelope, bodyEditable, body, nonEditableReason, xaml);
+        return (filePath, relativePath, headerName, label);
     }
 
     /// <summary>
@@ -284,7 +297,7 @@ internal static class GetWorkflowDefinitionTool
     /// <c>fields</c> are both lost). Malformed/unreadable bodies degrade to an empty envelope
     /// rather than throwing, mirroring <see cref="ListWorkflowsTool.ReadDetail"/>'s leniency.
     /// </summary>
-    static (string Description, List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs, List<EnvelopeVariableDto> Variables) ReadEnvelopeDetail(string filePath)
+    internal static (string Description, List<EnvelopeVariableDto> Inputs, List<EnvelopeVariableDto> Outputs, List<EnvelopeVariableDto> Variables) ReadEnvelopeDetail(string filePath)
     {
         try
         {

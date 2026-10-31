@@ -21,8 +21,9 @@ BeforeDiscovery {
 }
 
 BeforeAll {
-    $script:Files = 'ProfilerService-CI-Dev-LightweightExecutionEngine.yml', 'ProfilerService-CI-UAT-LightweightExecutionEngine.yml',
-                    'pipeline-CLOUD.yml', 'pipeline-LOADTEST.yml'
+    # The Profiler engine-package pipelines (ProfilerService-CI-*-LightweightExecutionEngine.yml) only build
+    # and call no az; their own suite fails any az call they gain.
+    $script:Files = 'pipeline-CLOUD.yml', 'pipeline-LOADTEST.yml'
     $script:ModulePath = Join-Path $PSScriptRoot '..\Warewolf.Execution.Lightweight\Scripts\WwAzCli.psm1'
     $script:RepoModule     = '$(Build.SourcesDirectory)\Dev\Warewolf.Execution.Lightweight\Scripts\WwAzCli.psm1'
     $script:ArtifactModule = '$(Agent.BuildDirectory)\DeployScripts\Scripts\WwAzCli.psm1'
@@ -73,8 +74,8 @@ BeforeAll {
 Describe 'Inline az steps retry transient failures (build 30844)' -Skip:(-not $script:HaveYaml) {
 
     It 'finds every inline az step (guards against a vacuous pass)' {
-        # 6 Dev + 8 UAT + 7 CLOUD + 9 LOADTEST at the time of writing.
-        $script:AzSteps.Count | Should -BeGreaterOrEqual 30
+        # CLOUD + LOADTEST: 19 at the time of writing.
+        $script:AzSteps.Count | Should -BeGreaterOrEqual 19
     }
 
     It 'imports WwAzCli.psm1 and aliases az to Invoke-WwAz before the first az call' {

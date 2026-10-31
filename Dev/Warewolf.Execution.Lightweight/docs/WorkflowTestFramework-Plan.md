@@ -1,15 +1,30 @@
-# Workflow Test Framework in Lightweight — Plan (Phases 1 and 3 implemented)
+# Workflow Test Framework in Lightweight — Plan (Phases 1, 2 and 3 implemented)
 
-> **Status:** Phase 1 (`create_test`/`edit_test`) and Phase 3 (`execute_test`) are implemented —
-> see "Implementation status" below for the concrete design decisions made when Phase 3's §6.1
-> design review happened and the files that resulted. Phase 2 (`list_tests`/`get_test`/
-> `delete_test`) and Phase 4 (the `warewolf-devops-mcp` wrappers) remain not started.
+> **Status:** Phase 1 (`create_test`/`edit_test`), Phase 2 (`list_tests`/`get_test`/`delete_test`)
+> and Phase 3 (`execute_test`) are implemented — see "Implementation status" below for the concrete
+> design decisions and the files that resulted. Phase 4 (the `warewolf-devops-mcp` wrappers) has
+> `warewolf_create_test`/`warewolf_edit_test`/`warewolf_run_tests` done (2026-10-28).
 >
 > **Companion document:** `docs/plans/create-edit-test-tools.md` in the `warewolf-devops-mcp`
-> repo covers the MCP-server-side tool wrappers (Phase 4 below), which are blocked on this plan's
-> Phase 1 shipping first — Phase 1 has now shipped.
+> repo covers the MCP-server-side tool wrappers (Phase 4 below).
 
-## 0. Implementation status (Phases 1 and 3)
+## 0. Implementation status (Phases 1, 2 and 3)
+
+**Phase 2** (2026-10-28): `Mcp/ToolHandlers/ListTestsTool.cs`, `GetTestTool.cs`, `DeleteTestTool.cs`,
+their shared opening checks in `Mcp/ToolHandlers/TestToolGuard.cs`, `TestCatalog.List`/`Delete`, and
+the `list_tests`/`get_test`/`delete_test` routes. Decisions:
+- `list_tests` and `get_test` need **View** (they read, run nothing); `delete_test` needs
+  **Contribute**, like `create_test`/`edit_test`. All three check permission *before* existence,
+  `delete_workflow`'s rule, so they are no existence oracle. (Phase 1/3's tools check existence first.)
+- `list_tests` returns `{ testName, enabled, inputs, outputs, mocks, asserts }` per test (counts, mocks
+  and asserts counted through `children`), ordinal-sorted. A `.test.json` that doesn't parse is
+  listed with `invalid: true` and its `error` instead of failing the call.
+- `get_test` returns the §4 shape `create_test` takes, so get → change → `edit_test` round-trips —
+  except `password`, which is DPAPI ciphertext with no record of its `${secret}` name: it comes back
+  `null` with `passwordSet`, and an `edit_test` must pass the `${secret}` again.
+- `delete_test` reports a missing test rather than succeeding, and removes the workflow's `.tests`
+  directory with its last test. `delete_workflow` still leaves a workflow's `.tests` behind.
+- Still no `TestCatalog` cache: one directory read per `list_tests` call.
 
 **Phase 1** shipped exactly per §7a below — `Mcp/TestCatalog.cs`, `Mcp/TestDefinitionModel.cs`,
 `Mcp/ToolHandlers/CreateTestTool.cs`, `Mcp/ToolHandlers/EditTestTool.cs`, plus the
@@ -240,9 +255,9 @@ shape, since Lightweight has no resource-ID concept to key by.
 | Phase | Scope | New engine-side artifacts |
 |---|---|---|
 | **1 — DONE** | `create_test`, `edit_test` — write-only CRUD, full schema (§4) persisted per §5, validated against the workflow's current `body` (activity-id references must resolve; variable-name references are **not** cross-checked against the envelope, per §6.6) but **not executable** by itself (see Phase 3). | `Mcp/ToolHandlers/CreateTestTool.cs`, `Mcp/ToolHandlers/EditTestTool.cs`, `Mcp/TestCatalog.cs`, `Mcp/TestDefinitionModel.cs`, `McpApiFunctions.cs` routing + request records for `create_test`/`edit_test` — see §7a for the concrete design |
-| **2** | `list_tests`, `get_test`, `delete_test` — completes read/delete so a caller can discover a test's current shape before editing it, rather than needing to remember the full definition it last wrote. Not started. | matching `ToolHandlers/*Tool.cs` + `TestCatalog` read/delete methods |
+| **2 — DONE** | `list_tests`, `get_test`, `delete_test` — completes read/delete so a caller can discover a test's current shape before editing it, rather than needing to remember the full definition it last wrote. See §0. | `Mcp/ToolHandlers/ListTestsTool.cs`, `GetTestTool.cs`, `DeleteTestTool.cs`, `TestToolGuard.cs`, `TestCatalog.List`/`Delete`, routes in `McpApiFunctions.cs` |
 | **3 — DONE** | `execute_test` — the real test runner: mock injection + `AssertOp` evaluation, pass/fail reporting. See §0 "Implementation status" for the resolved design and file list. | `Mcp/ToolHandlers/ExecuteTestTool.cs`, `Execution/TestMockActivityResolver.cs`, `Execution/TestOutputEvaluator.cs`, `Execution/TestDebugCapturer.cs`, `Mcp/Execution/TestDefinitionMapper.cs`, `Models/TestExecutionRequest.cs`, `Models/TestExecutionResult.cs`, `WorkflowExecutor.ExecuteTest`/`ExecuteTestActivityChain`/`BuildExclusivePreparedWorkflow` |
-| **4** | `warewolf-devops-mcp` repo: `warewolf_create_test`/`warewolf_edit_test` wrappers (then list/get/delete/execute in lockstep with phases 2-3) — see `docs/plans/create-edit-test-tools.md` in that repo. Not started. | (other repo) |
+| **4** | `warewolf-devops-mcp` repo: `warewolf_create_test`/`warewolf_edit_test`/`warewolf_run_tests` wrappers done; list/get/delete wrappers follow Phase 2 — see `docs/plans/create-edit-test-tools.md` in that repo. | (other repo) |
 
 Each phase ships independently; Phase 2 is recommended before Phase 4 wraps only Phase 1's two
 tools, since an `edit_test` caller with no `list_tests`/`get_test` has to already know the exact
@@ -392,10 +407,7 @@ internal sealed record EditTestResult(
 
 ### 7a.7 Confirming what remains out of scope (per §7's table)
 
-- No `list_tests`/`get_test`/`delete_test` (Phase 2, not started) — an `edit_test` caller must
-  already know the test's exact current shape; a persisted test can only be inspected by reading
-  the `.tests/*.test.json` file directly off disk, or by running it via `execute_test` (Phase 3,
-  done — see §0).
+- No `list_tests`/`get_test`/`delete_test` in Phase 1 — those are Phase 2, now done (see §0).
 - `execute_test` (Phase 3) is now implemented — see §0 "Implementation status".
 
 ## 8. Test strategy — DONE (Phases 1 and 3)

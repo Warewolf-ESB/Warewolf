@@ -130,9 +130,14 @@ internal static class AddSourceTool
         var workflowsDirectory = hostConfig.WorkflowsDirectory;
         var relativePath = name.Replace('\\', '/').TrimStart('/');
 
-        if (WorkflowNameResolver.Resolve(workflowsDirectory, relativePath) is not null)
+        if (WorkflowNameResolver.Resolve(workflowsDirectory, relativePath) is { } existingPath)
         {
-            throw new McpException($"A resource named '{name}' already exists.");
+            // Name the existing source's ID, so a caller after it (to set a step's sourceId) needn't
+            // overwrite the source through edit_source just to learn it.
+            var existingId = ListSourcesTool.TryReadSourceHeader(existingPath)?.Id;
+            throw new McpException(existingId is null
+                ? $"A resource named '{name}' already exists."
+                : $"A source named '{name}' already exists (resourceId {existingId}); use edit_source to change it, or list_sources to look sources up.");
         }
 
         if (!ListWorkflowsTool.HasPermission(authPolicyLoader, principal, relativePath, WorkflowPermission.Contribute))

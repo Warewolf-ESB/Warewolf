@@ -90,7 +90,8 @@ public sealed class EntraBearerTokenValidator
         var parameters = new TokenValidationParameters
         {
             ValidateIssuer           = true,
-            ValidIssuers             = _options.ValidIssuers,
+            ValidIssuers             = _options.IsMultiTenant ? null : _options.ValidIssuers,
+            IssuerValidator          = _options.IsMultiTenant ? (issuer, token, _) => ValidateMultiTenantIssuer(_options.TenantId, issuer, token) : null,
             ValidateAudience         = true,
             ValidAudiences           = _options.ValidAudiences,
             ValidateLifetime         = true,
@@ -110,6 +111,26 @@ public sealed class EntraBearerTokenValidator
             authenticationType: "Bearer",
             nameType:           ClaimTypes.Name,
             roleType:           ClaimTypes.Role);
+    }
+
+    /// <summary>
+    /// Issuer check for an engine configured with a multi-tenant alias: the token's tenant
+    /// (<c>tid</c>) must be one the alias accepts, and the issuer must be that tenant's own.
+    /// </summary>
+    internal static string ValidateMultiTenantIssuer(string? configuredTenant, string issuer, SecurityToken securityToken)
+    {
+        var tenantId = (securityToken as JwtSecurityToken)?.Payload.TryGetValue("tid", out var tid) == true ? tid as string : null;
+        if (EntraTenants.Accepts(configuredTenant, tenantId) &&
+            EntraTenants.IssuersFor(tenantId!).Contains(issuer, StringComparer.OrdinalIgnoreCase))
+        {
+            return issuer;
+        }
+
+        throw new SecurityTokenInvalidIssuerException(
+            $"Issuer '{issuer}' (tenant '{tenantId ?? "none"}') is not accepted by an engine configured for '{configuredTenant}'.")
+        {
+            InvalidIssuer = issuer,
+        };
     }
 
     /// <summary>Re-projects raw Entra claim types onto the standard <see cref="ClaimTypes"/> shape.</summary>

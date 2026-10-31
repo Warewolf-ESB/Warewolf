@@ -205,35 +205,24 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   and `WarewolfDevOpsTestDb`'s SQL budget. Verified via `Get-WwQueueRunReport.ps1` (worker+engine
   log reconciliation) rather than a database check, because `RequestForProfiling` no longer writes
   to `dbo.jobs1` — see that job's own header comment in `pipeline-LOADTEST.yml`.
-- **`wwqp-profilerdev-*` / `wwqp-profileruat-*`** (`Warewolf.Execution.QueueProcessor` Container Apps) —
-  deployed by the two Profiler pipelines, `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`
-  and `ProfilerService-CI-UAT-LightweightExecutionEngine.yml` (port of the Unlimited's AD-2383
-  pipelines). **Both files share one body** — everything from `jobs:` down is byte-identical (a Pester
-  test pins it) — and differ only in their variables: Dev deploys engine `wwprofilerlw`, UAT its own
-  `wwprofileruatlw` (created by its first run). The `queueArchitecture` parameter picks how messages
-  on `profiler.profile.request.<DEV|UAT>` reach the engine:
-  **ShovelBridge** (default) — self-hosted `rabbitmq.warewolf.online` → Shovel → Service Bus
-  (`wwprofilerlwsb` / `wwprofileruatlwsb`, trigger queue of the same name, dead-letters forwarded to
-  `profiler.profile.error.request.<ENV>`) → the engine's own `ServiceBusTrigger`;
-  **QueueProcessor** — CloudAMQP `bmkzdabu` → this Container App (KEDA 0..20, `Concurrency 20` in
-  `Dev/.azure/Profiler{Dev,Uat}.trigger.bite`) → `POST /Secure/{workflow}`, dead-letters to the
-  RabbitMQ queue `profiler.profile.error.request.<ENV>`. The two architectures run on **different
-  brokers** (CloudAMQP's free tier cannot shovel into Service Bus; the self-hosted broker publishes
-  only 443, so KEDA cannot reach it over AMQP), and each run tears the other down: ShovelBridge
-  stops the environment's workers, QueueProcessor deletes its shovel. Every run sends a
-  `ProfilerBurstMessageCount` (200) burst through the chosen architecture and checks it end to end
-  (QueueProcessor: per-message reconciliation; ShovelBridge: Service Bus drained with no new
-  dead-letters) plus the CloudAMQP result sink's publish counter.
-  **QueueProcessor prerequisites, each failing the build early with its remediation:** (1) the engine
-  has an Entra app registration (the worker calls only `/Secure/*`) — a one-off
-  `Configure-WwExecutionAuth.ps1` run by an Application Administrator; done for `wwprofilerlw`, still
-  needed for `wwprofileruatlw`. The pipeline reads the appId from the engine's `WAREWOLF_ENTRA_CONFIG`
-  on every run (it is not hardcoded; Easy Auth is kept disabled, auth is in-app); (2) a Key Vault
-  secret holding the CloudAMQP AMQP URI for the KEDA scaler (`ProfilerWorkerRabbitMqSecretUri`). The
-  worker deploy runs under a raw service-principal login (`AzureClientId/Secret/TenantId` pipeline
-  secrets), not the engine steps' service connection, because it must create role assignments.
-  Both architectures need the `CLOUDAMQP_SHOVEL_PASSWORD` and `ExternalRabbitMqPassword` secrets.
-  Both engines publish to `bmkzdabu` (40 connections) — never run Dev and UAT at the same time.
+- **Profiler engine packages** — built by the two Profiler pipelines,
+  `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml` (engine `wwprofilerlw`) and
+  `ProfilerService-CI-UAT-LightweightExecutionEngine.yml` (`wwprofileruatlw`), the DEV2 port of the
+  engine-package half of the Unlimited's `ProfilerService-CI-*.yml` (AD-2497). **They only build**: each
+  publishes the `ProfilerEngine` artifact (`profiler-engine.zip`) and deploys nothing. **Both files share
+  one body** — everything from `jobs:` down is byte-identical (a Pester test pins it) — and differ only in
+  their environment variables. The package is the published linux-x64 engine with the profiler laid out
+  as the Unlimited lays it out (`Resources/ProfilerServices/*` at the `Resources` root, its `Sources/*.bite`
+  flat beside it, plus `Resources/rabbit`), the `Settings/` files from `Dev/.azure/profiler-engine/*.txt`
+  and the persistence settings, and the Unlimited's `secure.config` with the license at the root. Every
+  `#{Token}` is replaced from the `WWExecutionEngine` Key Vault (one secret per token, named as the token;
+  DEV2-only placeholders for the Collection, Helper, comms and Elasticsearch endpoints) by
+  `profiler-engine/Set-ProfilerTokens.ps1`, then every source is WFAES-encrypted with
+  `WWExecutionEngineTestSecret` by `profiler-engine/Protect-ProfilerSources.ps1`. Deploying it, and the
+  engine app settings it needs (`WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`, a Linux `WAREWOLF_SECURE_CONFIG` or
+  none, no `bypassSecureConfig`), are in the Dev file's header. The ShovelBridge / QueueProcessor deploy and
+  burst those pipelines used to run (including the `wwqp-profilerdev-*` / `wwqp-profileruat-*` workers)
+  are in their git history; `Dev/.azure/Profiler{Dev,Uat}.trigger.bite` are those workers' triggers.
   Tests: `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.Tests.ps1`.
 
 Highlights:

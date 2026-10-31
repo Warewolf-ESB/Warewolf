@@ -187,6 +187,20 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public async Task Handle_NameAlreadyExists_NamesTheExistingSourcesResourceId()
+        {
+            var id = Guid.NewGuid();
+            File.WriteAllText(Path.Combine(_root, "ImagineApi.bite"),
+                $"<Source ID=\"{id}\" Name=\"ImagineApi\" ResourceType=\"WebSource\"></Source>");
+
+            var ex = await Assert.ThrowsExceptionAsync<McpException>(() =>
+                Handle(HostConfig(), OpenPolicy, null, "ImagineApi", "Web", ConfigOf(new { Address = "https://image.example.test" })));
+
+            StringAssert.Contains(ex.Message, id.ToString());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         [ExpectedException(typeof(McpException))]
         public async Task Handle_SecureConfigEffective_NoContributePermission_ThrowsPermissionDenied()
         {
