@@ -1,0 +1,1 @@
+{"inputs":[{"name":"city","kind":"scalar"},{"name":"days","kind":"scalar"}],"outputs":[{"name":"summary","kind":"scalar"}]}

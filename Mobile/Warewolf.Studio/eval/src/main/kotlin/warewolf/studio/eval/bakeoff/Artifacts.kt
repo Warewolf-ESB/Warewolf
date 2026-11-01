@@ -384,6 +384,13 @@ class ArtifactJudge(private val model: TextModel, private val rubric: Rubric) {
                 "right type, and sensible formats, choices, defaults and limits; 4 = minor gaps; 3 = usable but bare or with some " +
                 "wrong types; 2 = confusing or largely wrong; 1 = unusable.",
         ),
+        UI(
+            "the page (an Angular component) someone wrote for running the workflow: it collects the inputs, calls runWorkflow " +
+                "and shows the outputs",
+            "Rate this page for a person who has to run the workflow: 5 = a labelled control of the right kind for every input, " +
+                "sensible defaults and validation, clear results for every output, and errors shown; 4 = minor gaps; 3 = works but " +
+                "bare, with raw values or weak validation; 2 = confusing, or misses inputs or outputs; 1 = unusable.",
+        ),
     }
 
     fun rate(goal: String, summary: String, artifact: JsonObject): Judge.Verdict? = Judge.parse(model.complete(prompt(goal, summary, artifact), null))
@@ -398,7 +405,8 @@ class ArtifactJudge(private val model: TextModel, private val rubric: Rubric) {
         appendLine(summary)
         appendLine()
         appendLine("To review:")
-        appendLine(artifact.toString())
+        // A UI is code: shown as written, not as an escaped JSON string.
+        appendLine((artifact["source"] as? JsonPrimitive)?.contentOrNull ?: artifact.toString())
         appendLine()
         appendLine(rubric.scale)
         appendLine("Reply with JSON only: {\"score\": <1-5>, \"reason\": \"<one sentence>\"}")

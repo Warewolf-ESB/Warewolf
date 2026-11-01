@@ -52,8 +52,8 @@ object BakeOff {
             "judge" -> judge(Path.of(args[1]), option("--model") ?: "opus", option("--parallel")?.toInt() ?: 4)
             "score" -> score(Path.of(args[1]))
             "spotcheck" -> spotcheck(Path.of(args[1]), option("--count")?.toInt() ?: 15)
-            "subjects", "tests", "forms" -> ArtifactBakeOff.main(args)
-            else -> error("usage: bakeoff select|run|judge|score|spotcheck|subjects|tests|forms …")
+            "subjects", "tests", "forms", "uis" -> ArtifactBakeOff.main(args)
+            else -> error("usage: bakeoff select|run|judge|score|spotcheck|subjects|tests|forms|uis …")
         }
     }
 

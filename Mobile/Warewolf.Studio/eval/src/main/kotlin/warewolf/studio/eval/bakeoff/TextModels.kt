@@ -162,7 +162,8 @@ class ClaudeCli(private val model: String, private val timeoutMinutes: Long = 15
  * The JSON-schema constraint for a whole workflow: an envelope and a body whose node shapes and types come from the
  * catalog (so a node can never be mistaken for an edge), with each tool's own fields allowed inside `data`. The
  * envelope lists every property it may hold, `variables` (working variables) included: the grammar LM Studio builds
- * from it allows no other.
+ * from it allows no other. For the same reason an edge may carry an `id`: without one, an edge opened with `"id"` could
+ * only continue as a node, and the grammar forced it to `shape: "start"` (qwen3.8, 2026-10-31).
  */
 fun workflowFormat(catalog: Catalog): JsonObject {
     val types = (listOf("start") + catalog.tools.map { it.dataType }).joinToString(",") { "\"$it\"" }
@@ -189,7 +190,7 @@ private fun workflowFormatJson(types: String): JsonObject = Json.parseToJsonElem
           "type":{"enum":[$types]},
           "displayname":{"type":"string"}}}}},
       "edge":{"type":"object","required":["shape","source","target"],"properties":{
-        "shape":{"const":"edge"},
+        "id":{"type":"string"},"shape":{"const":"edge"},
         "source":{"type":"object","required":["cell"],"properties":{"cell":{"type":"string"}}},
         "target":{"type":"object","required":["cell"],"properties":{"cell":{"type":"string"}}},
         "label":{"type":"string"},
