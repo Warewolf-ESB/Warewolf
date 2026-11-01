@@ -63,7 +63,9 @@ private class IosHost(override val studio: StudioAddress) : AppHost {
         // Cookies (the Access session) and the studio's local storage (its MSAL tokens), all of it.
         WKWebsiteDataStore.defaultDataStore().removeDataOfTypes(
             WKWebsiteDataStore.allWebsiteDataTypes(),
-            modifiedSince = NSDate(timeIntervalSince1970 = 0.0),
+            // The Unix epoch (Foundation's reference date is 2001-01-01): everything ever stored.
+            // NSDate's 1970 initializer is a category member, not a Kotlin/Native constructor.
+            modifiedSince = NSDate(timeIntervalSinceReferenceDate = -978_307_200.0),
         ) { continuation.resume(Unit) }
     }
 
