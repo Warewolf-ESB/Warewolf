@@ -249,7 +249,11 @@ function git {
         $sideSha = Get-TagSha $script:Repo '3.0.3.16'
         $r = Invoke-TagStep $script:Repo '3.0.3.16'
         $r.ExitCode | Should -Not -Be 0
-        $r.Output | Should -Match "Version tag '3\.0\.3\.16' already exists on $sideSha"
+        # On the Linux agent PowerShell colours the error and wraps it to the console width, so the
+        # SHA lands on the next line after the error view's '|' gutter. Match the plain, unwrapped text
+        # (an escape character in a failure message would also break Pester's NUnit report).
+        $plain = ($r.Output -replace '\x1b\[[0-9;]*m', '') -replace '\s*\r?\n\s*(\|\s*)?', ' '
+        $plain | Should -Match "Version tag '3\.0\.3\.16' already exists on $sideSha"
         Get-Pushes | Should -BeNullOrEmpty
         Get-TagSha $script:Repo '3.0.3' | Should -Not -Be $script:Head
     }
