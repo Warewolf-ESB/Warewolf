@@ -84,6 +84,14 @@ class WorkflowFormatTests {
         assertEquals(properties.getValue("inputs"), properties.getValue("variables"))
         assertFalse("variables" in envelope["required"].toString())
     }
+
+    @Test
+    fun `an edge may carry an id, so one opened with an id is not forced into a node`() {
+        val edge = workflowFormat(testCatalog).getValue("\$defs").jsonObject.getValue("edge").jsonObject
+
+        assertTrue("id" in edge.getValue("properties").jsonObject)
+        assertFalse("id" in edge["required"].toString())
+    }
 }
 
 class LmStudioHttpPostTests {

@@ -251,7 +251,7 @@ to beat.
 | `shared/generator` (classifier) | `ClassifierChooser` (option a) and a pure-Kotlin `WordPieceTokenizer` that matches Hugging Face's, checked against a golden fixture |
 | `eval` (classifier) | `--export-features` (training rows built with `describeState`), `--client markov` (no-model baseline), `--client classifier` (`OnnxClassifier`, ONNX Runtime on the JVM) |
 | `eval/bakeoff` | Whole-workflow comparison: `bakeoff select|run|judge|score|spotcheck` against a self-hosted engine (`WAREWOLF_DATA_DIR` outside the repo); contenders `ollama:`, `lmstudio:` (LM Studio, `LLM_BASE_URL` + `LLM_API_KEY`) and `claude:` |
-| `eval/bakeoff` (artifacts) | Service tests and input forms: `bakeoff subjects`, `bakeoff tests|forms run|judge|score` (`Artifacts.kt`, `ArtifactBakeOff.kt`) |
+| `eval/bakeoff` (artifacts) | Service tests, input forms and organization UIs: `bakeoff subjects`, `bakeoff tests|forms|uis run|judge|score` (`Artifacts.kt`, `OrganizationUis.kt`, `ArtifactBakeOff.kt`; `eval/ui-check/` checks UIs) |
 | `train` | Python: fine-tunes a sentence encoder plus a linear head on the exported features, exports ONNX (float and int8); see `train/README.md` |
 
 Build: `gradlew test` here; `dotnet test corpus/Extractor.Tests`.
@@ -408,7 +408,15 @@ run it? Subjects: the 50 valid workflows Opus produced above (`bakeoff subjects`
 - **Forms:** one JSON Schema (2020-12) document, which the studio would render. Checked against the meta-schema
   (`networknt` validator), for exactly one property per input, and for shape (scalar → primitive, object → object,
   recordset → array of objects with one property per field); up to 2 repairs with the problems.
-- Both are rated 1–5 by the blind Opus judge (goal, workflow summary and artifact; the contender never shown).
+- **UIs** (`bakeoff uis`, 2026-11-01; replaces forms in the LM Studio runs from qwen3.8 on): an organization UI, the
+  Angular component Web Studio publishes under Organization settings → UIs. The model writes one TypeScript file;
+  `eval/ui-check/check-ui.mjs` compiles it with esbuild and runs it in the studio's real sandboxed frame and Worker
+  runtime (`~/angular/src/assets/organization-ui`) in headless Chromium, fills every control, presses submit, answers
+  `runWorkflow('main', …)` with marker outputs and checks every input was sent and every output shown; up to 2 repairs
+  with the problems. No engine involved. The compile matches what the published runtime can run as far as known; the
+  real save path's compiler was not found. It lowers `async`/`await` (target es2016): with native `async` the Worker's
+  zone.js never sees a run's result arrive, and the UI never shows it.
+- All are rated 1–5 by the blind Opus judge (goal, workflow summary and artifact; the contender never shown).
 
 | Tests | Runs | Stored 1st try | Stored | Ran | Passed | Outputs asserted | Mocks per test | Judge mean | Judge ≥4 | Median s |
 |---|---|---|---|---|---|---|---|---|---|---|

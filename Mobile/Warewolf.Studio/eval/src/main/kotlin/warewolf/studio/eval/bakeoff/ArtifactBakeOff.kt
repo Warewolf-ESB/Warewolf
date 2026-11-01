@@ -24,13 +24,15 @@ import kotlin.random.Random
  * produced:
  *
  *     gradlew :eval:run --args="bakeoff subjects <bakeoffDir> [--from claude_opus]"
- *     gradlew :eval:run --args="bakeoff tests|forms run <bakeoffDir> <contender> [--parallel N] [--limit N]"
- *     gradlew :eval:run --args="bakeoff tests|forms judge <bakeoffDir> [--model opus] [--parallel N]"
- *     gradlew :eval:run --args="bakeoff tests|forms score <bakeoffDir>"
+ *     gradlew :eval:run --args="bakeoff tests|forms|uis run <bakeoffDir> <contender> [--parallel N] [--limit N]"
+ *     gradlew :eval:run --args="bakeoff tests|forms|uis judge <bakeoffDir> [--model opus] [--parallel N]"
+ *     gradlew :eval:run --args="bakeoff tests|forms|uis score <bakeoffDir>"
  *
  * `subjects` stores the valid workflows from `results-<from>.jsonl` in the engine as `Bakeoff/<id>` (node ids made
  * GUIDs) and writes `artifacts-subjects.jsonl`. Contenders are `ollama:<model>`, `lmstudio:<model>` and
- * `claude:<model>`; results go to `<bakeoffDir>/tests/` and `<bakeoffDir>/forms/`. The engine runs at `--engine`.
+ * `claude:<model>`; results go to `<bakeoffDir>/<task>/`. The engine runs at `--engine`. `uis` needs no engine: it
+ * checks each UI with Node against the Web Studio checkout at `--angular` (default `~/angular`, with Playwright's
+ * Chromium installed) using `--ui-check` (default `ui-check/check-ui.mjs`, from this project's directory).
  */
 object ArtifactBakeOff {
     fun main(args: List<String>) {
@@ -39,11 +41,17 @@ object ArtifactBakeOff {
         if (args[0] == "subjects") return subjects(Path.of(args[1]), option("--from") ?: "claude_opus", engineUrl)
         val task = args[0]
         val dir = Path.of(args[2])
+        val uiCheck = {
+            UiCheck.node(
+                Path.of(option("--ui-check") ?: "ui-check/check-ui.mjs").toAbsolutePath(),
+                Path.of(option("--angular") ?: Path.of(System.getProperty("user.home"), "angular").toString()),
+            )
+        }
         when (args[1]) {
-            "run" -> run(task, dir, args[3], engineUrl, option("--parallel")?.toInt() ?: 1, option("--limit")?.toInt())
+            "run" -> run(task, dir, args[3], engineUrl, option("--parallel")?.toInt() ?: 1, option("--limit")?.toInt(), uiCheck)
             "judge" -> judge(task, dir, option("--model") ?: "opus", option("--parallel")?.toInt() ?: 4)
             "score" -> score(task, dir)
-            else -> error("usage: bakeoff tests|forms run|judge|score …")
+            else -> error("usage: bakeoff tests|forms|uis run|judge|score …")
         }
     }
 
@@ -94,7 +102,7 @@ object ArtifactBakeOff {
         }
     }
 
-    private fun run(task: String, dir: Path, contender: String, engineUrl: String, parallel: Int, limit: Int?) {
+    private fun run(task: String, dir: Path, contender: String, engineUrl: String, parallel: Int, limit: Int?, uiCheck: () -> UiCheck) {
         val engine = EngineClient(EngineClient.http(engineUrl))
         val catalog = catalog(dir)
         val (model, constrained) = textModel(contender)
@@ -108,6 +116,7 @@ object ArtifactBakeOff {
                 ServiceTestGenerator(model, engine, catalog, testSchema.toString(), constrained, prefix)
             }
             "forms" -> InputFormGenerator(model, catalog, constrained)
+            "uis" -> uiCheck().let { check -> OrganizationUiGenerator(model, catalog, check::check) }
             else -> error("unknown task '$task'")
         }
         val out = taskDir(dir, task).resolve("results-${BakeOff.fileSafe(contender)}.jsonl")
@@ -152,7 +161,7 @@ object ArtifactBakeOff {
             .filter { it["artifact"] is JsonObject && it.str("id") in subjects && (it.str("contender") + "|" + it.str("id")) !in done }
             .shuffled(Random(11))
         println("judging ${todo.size} $task with $model")
-        val judge = ArtifactJudge(ClaudeCli(model), if (task == "tests") ArtifactJudge.Rubric.TEST else ArtifactJudge.Rubric.FORM)
+        val judge = ArtifactJudge(ClaudeCli(model), rubric(task))
         val pool = Executors.newFixedThreadPool(parallel)
         Files.newBufferedWriter(out, StandardOpenOption.CREATE, StandardOpenOption.APPEND).use { writer ->
             todo.forEach { row ->
@@ -170,6 +179,12 @@ object ArtifactBakeOff {
         }
     }
 
+    internal fun rubric(task: String) = when (task) {
+        "tests" -> ArtifactJudge.Rubric.TEST
+        "uis" -> ArtifactJudge.Rubric.UI
+        else -> ArtifactJudge.Rubric.FORM
+    }
+
     /** The harness-assigned test name carries the contender, so the judge never sees it. */
     internal fun artifactForJudge(artifact: JsonObject): JsonObject = JsonObject(artifact - "testName")
 
@@ -181,6 +196,9 @@ object ArtifactBakeOff {
         if (task == "tests") {
             println("| Contender | Runs | Stored 1st try | Stored | Ran | Passed | Outputs asserted | Mocks per test | Judge mean | Judge ≥4 | Median s |")
             println("|---|---|---|---|---|---|---|---|---|---|---|")
+        } else if (task == "uis") {
+            println("| Contender | Runs | Accepted 1st try | Accepted | Compiled | Started | Ran | Inputs sent | Outputs shown | Judge mean | Judge ≥4 | Median s |")
+            println("|---|---|---|---|---|---|---|---|---|---|---|---|")
         } else {
             println("| Contender | Runs | Accepted 1st try | Accepted | Meta-schema valid | Inputs covered | Shapes right | Judge mean | Judge ≥4 | Median s |")
             println("|---|---|---|---|---|---|---|---|---|---|")
@@ -205,6 +223,10 @@ object ArtifactBakeOff {
                 println(String.format(Locale.ROOT, "%s | %s | %s | %s | %s | %s | %s | %.0f |", head, pct(ran), pct(scores.count { result(it) == "TestPassed" }),
                     ratio("outputsAsserted", "outputs"), if (mocks.isEmpty()) "—" else String.format(Locale.ROOT, "%.1f", mocks.average()),
                     judgeMean, judgeHigh, seconds))
+            } else if (task == "uis") {
+                val flag = { key: String -> pct(scores.count { it[key]?.jsonPrimitive?.boolean == true }) }
+                println(String.format(Locale.ROOT, "%s | %s | %s | %s | %s | %s | %s | %s | %.0f |", head, flag("compiled"), flag("started"),
+                    flag("ran"), ratio("inputsSent", "inputs"), ratio("outputsShown", "outputs"), judgeMean, judgeHigh, seconds))
             } else {
                 println(String.format(Locale.ROOT, "%s | %s | %s | %s | %s | %s | %.0f |", head,
                     pct(scores.count { it["metaValid"]?.jsonPrimitive?.boolean == true }),
