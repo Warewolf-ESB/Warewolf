@@ -177,7 +177,8 @@ Describe 'Profiler <Env> pipeline - structure' -ForEach $script:Environments -Sk
         $pub = Find-Step $script:Doc 'Publish Artifact: ProfilerEngine'
         $zip['inputs']['archiveFile'] | Should -BeLike '*\ProfilerEngine\profiler-engine.zip'
         $pub['inputs']['artifact'] | Should -Be 'ProfilerEngine'
-        $pub['inputs']['targetPath'] | Should -Be (Split-Path $zip['inputs']['archiveFile'])
+        # The YAML's own folder, as a string: Split-Path would turn its '\' into '/' on Linux.
+        $pub['inputs']['targetPath'] | Should -Be ($zip['inputs']['archiveFile'] -replace '\\[^\\]+$')
     }
 
     It 'fetches the engine only from the releases storage account, and only the linux-x64 package' {
@@ -354,11 +355,15 @@ Describe 'Set-ProfilerTokens.ps1' {
     }
 
     It 'keeps a file''s UTF-8 BOM, or its absence' {
-        [IO.File]::WriteAllText("$script:Dir\bom.bite", '#{PTA}', [Text.UTF8Encoding]::new($true))
-        [IO.File]::WriteAllText("$script:Dir\nobom.bite", '#{PTA}', [Text.UTF8Encoding]::new($false))
+        # Join-Path, not "$dir\x": .NET's file API takes '\' literally on Linux, which would put the
+        # files beside $script:Dir, where the token script never looks.
+        $bom   = Join-Path $script:Dir 'bom.bite'
+        $noBom = Join-Path $script:Dir 'nobom.bite'
+        [IO.File]::WriteAllText($bom, '#{PTA}', [Text.UTF8Encoding]::new($true))
+        [IO.File]::WriteAllText($noBom, '#{PTA}', [Text.UTF8Encoding]::new($false))
         & $script:TokenScript -Path $script:Dir | Out-Null
-        [IO.File]::ReadAllBytes("$script:Dir\bom.bite")[0..2] -join ',' | Should -Be '239,187,191'
-        [IO.File]::ReadAllBytes("$script:Dir\nobom.bite")[0] | Should -Be ([byte][char]'a')
+        [IO.File]::ReadAllBytes($bom)[0..2] -join ',' | Should -Be '239,187,191'
+        [IO.File]::ReadAllBytes($noBom)[0] | Should -Be ([byte][char]'a')
     }
 
     It 'fails on a token with no value, an unexpanded macro or an unsafe character, changing no file' -ForEach @(
