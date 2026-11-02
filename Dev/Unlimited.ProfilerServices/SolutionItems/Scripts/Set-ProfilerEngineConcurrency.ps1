@@ -1,7 +1,7 @@
 #Requires -Version 7.0
 <#
 .SYNOPSIS
-    Applies the profiler's trigger concurrency (profilerinfrastructure.json 'trigger') to a staged engine package.
+    Applies the profiler's trigger concurrency (ProfilerEngineConcurrency.json 'trigger') to a staged engine package.
 
 .DESCRIPTION
     host.json                              extensions.serviceBus.maxConcurrentCalls = trigger.maxConcurrentCalls, and
@@ -13,7 +13,7 @@
 param(
     # The staged engine package: host.json at its root, Settings/executionengine.settings.json under it.
     [Parameter(Mandatory)][string] $PackageRoot,
-    # The token-replaced Engine/profilerinfrastructure.json.
+    # The token-replaced Engine/ProfilerEngineConcurrency.json.
     [Parameter(Mandatory)][string] $ConfigPath
 )
 Set-StrictMode -Version Latest

@@ -1,4 +1,4 @@
-﻿<#
+<#
     Pester 5 suite for the two Profiler pipelines that test, locally, the Unlimited.ProfilerServices CI
     pipelines, and the queue triggers beside them:
 
@@ -172,7 +172,7 @@ Describe 'Profiler pipelines - the mirrored Unlimited.ProfilerServices content' 
 
     It 'ships the engine templates but never a token-replaced key or a committed secret' {
         $engine = Join-Path $script:Mirror 'Warewolf.ProfilerServices\Engine'
-        foreach ($f in 'executionengine.settings.json.txt', 'profilerinfrastructure.json.txt', 'servicebustrigger.bite.txt') {
+        foreach ($f in 'executionengine.settings.json.txt', 'ProfilerEngineConcurrency.json.txt', 'servicebustrigger.bite.txt') {
             Test-Path -LiteralPath (Join-Path $engine $f) | Should -BeTrue
         }
         # EngineEncryptionKey.txt holds the key's token only; it must never hold the key itself.
