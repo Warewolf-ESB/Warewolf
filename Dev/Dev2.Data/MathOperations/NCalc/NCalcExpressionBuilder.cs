@@ -91,7 +91,7 @@ namespace Dev2.MathOperations.NCalc
             processed = TrueRegex.Replace(processed, "true");
             processed = FalseRegex.Replace(processed, "false");
             processed = ChainedComparisonRegex.Replace(processed, "($1 $2 $3) and ($3 $4 $5)");
-            var expr = new Expression(processed, ExpressionOptions.IgnoreCaseAtBuiltInFunctions);
+            var expr = new Expression(processed, ExpressionOptions.IgnoreCaseAtBuiltInFunctions, System.Globalization.CultureInfo.InvariantCulture);
             expr.EvaluateFunction += HandleFunction;
             return expr;
         }

@@ -73,7 +73,7 @@ namespace Dev2.MathOperations
                         var result = ncalcExpr.Evaluate();
                         evaluation = result is DateTime dt
                             ? PerformEvaluation(dt)
-                            : result?.ToString() ?? string.Empty;
+                            : Convert.ToString(result, CultureInfo.InvariantCulture) ?? string.Empty;
                         evaluationState = true;
                     }
 #endif

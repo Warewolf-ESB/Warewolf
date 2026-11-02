@@ -101,6 +101,7 @@
     <Compile Include="InputsFromJsonTests.cs" />
     <Compile Include="InterfaceImplementorsTests\CoverageDataContextTests.cs" />
     <Compile Include="MathOperationTest\FunctionEvaluatorTest.cs" />
+    <Compile Include="MathOperationTest\FunctionEvaluatorCultureTests.cs" />
     <Compile Include="MathOperationTest\FunctionRepositoryTest.cs" />
     <Compile Include="MathOperationTest\FunctionTest.cs" />
     <Compile Include="MathOperationTest\InfragisticsEvaluationTest.cs" />
