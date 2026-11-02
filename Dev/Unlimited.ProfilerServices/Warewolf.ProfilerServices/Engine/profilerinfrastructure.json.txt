@@ -5,7 +5,7 @@
   "storageAccountName": "#{ProfilerEngineStorageAccount}",
   "keyVaultName": "#{ProfilerEngineKeyVaultName}",
   "keyVaultSecretName": "#{ProfilerEngineKeyVaultSecretName}",
-  "devopsKeyVaultName": "#{ProfilerDevopsKeyVaultName}",
+  "devopsKeyVaultName": "#{ProfilerEngineKeyVaultName}",
   "cdServicePrincipal": {
     "displayName": "#{ProfilerCdServicePrincipalName}",
     "objectId": ""
