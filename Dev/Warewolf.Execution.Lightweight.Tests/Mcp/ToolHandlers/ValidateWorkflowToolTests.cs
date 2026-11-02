@@ -551,6 +551,104 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
                 e.Message.Contains("no outgoing connection", StringComparison.OrdinalIgnoreCase)));
         }
 
+        static Cell AssignNode(string id) => MakeNode(id, "dsfdotnetmultiassignactivity",
+            new Dictionary<string, object> { ["displayName"] = "Assign", ["fields"] = new JArray() });
+
+        /// <summary>
+        /// Bakeoff 2026-10-31: every lfm2 workflow and most of bonsai's had steps but not one edge,
+        /// and "no outgoing connection" alone never got them to add any.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StepsWithNoEdgesAtAll_ErrorQuotesTheEdgeFromStartToTheFirstStep()
+        {
+            var body = BodyOf("NoEdges", MakeStartNode(), AssignNode("first"), AssignNode("second"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            var error = result.Errors.Single(e => e.Message.Contains("no outgoing connection")).Message;
+            StringAssert.Contains(error, "no step is connected to any other");
+            StringAssert.Contains(error, "{\"shape\": \"edge\", \"source\": {\"cell\": \"start\"}, \"target\": {\"cell\": \"first\"}}");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_EdgesButNoneFromStart_ErrorTargetsTheStepNothingPointsTo()
+        {
+            var body = BodyOf("NoStartEdge", MakeStartNode(), AssignNode("second"), AssignNode("first"),
+                MakeEdge("e1", "first", "second"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            var error = result.Errors.Single(e => e.Message.Contains("no outgoing connection")).Message;
+            StringAssert.Contains(error, "add an edge cell from it to the first step");
+            StringAssert.Contains(error, "\"target\": {\"cell\": \"first\"}");
+            Assert.IsFalse(error.Contains("no step is connected"), error);
+        }
+
+        /// <summary>
+        /// A second start node is nearly always an "end" marker (gemma-4-31b f42864e0), which was
+        /// reported as a start node going nowhere, so the model never removed it.
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_SecondStartNodeUsedAsAnEnd_IsReportedAsAnExtraStartNode_NotAsGoingNowhere()
+        {
+            var end = new Cell { id = "end", shape = "rect", data = new Dictionary<string, object> { ["type"] = Constants.START } };
+            var body = BodyOf("WithEnd", MakeStartNode(), AssignNode("a1"), end, MakeEdge("e1", "start", "a1"), MakeEdge("e2", "a1", "end"));
+
+            var result = ValidateWorkflowTool.Handle(EmptyEnvelope, body);
+
+            var errors = result.Errors.Where(e => e.Severity == "error").Select(e => e.Message).ToList();
+            Assert.IsTrue(errors.Any(m => m.Contains("cell 'end' is a second one") && m.Contains("needs no end node")), string.Join("; ", errors));
+            Assert.IsFalse(errors.Any(m => m.Contains("no outgoing connection")), string.Join("; ", errors));
+        }
+
+        /// <summary>gemma-4-31b 9bc70702 wrote the prompt's placeholder, [[recordset(1).SubmissionId]], for a declared PendingSubmissions.</summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_UndeclaredRecordsetReference_ErrorListsTheDeclaredRecordsets()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "PendingSubmissions", kind = "recordset", fields = new[] { "SubmissionId", "FileName" } } },
+                outputs = new object[0]
+            });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "Assign",
+                ["fields"] = new JArray(new JObject { ["FieldName"] = "[[Id]]", ["FieldValue"] = "[[recordset(1).SubmissionId]]", ["IndexNumber"] = 1 })
+            });
+            var body = BodyOf("PlaceholderRecordset", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            var error = result.Errors.Single(e => e.Message.Contains("'recordset' is not declared")).Message;
+            StringAssert.Contains(error, "Declared recordsets: PendingSubmissions (SubmissionId, FileName).");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_UndeclaredScalarReference_KeepsThePlainError()
+        {
+            var envelope = EnvelopeOf(new
+            {
+                inputs = new[] { new { name = "PendingSubmissions", kind = "recordset", fields = new[] { "SubmissionId" } } },
+                outputs = new object[0]
+            });
+            var assign = MakeNode("assign1", "dsfdotnetmultiassignactivity", new Dictionary<string, object>
+            {
+                ["displayName"] = "Assign",
+                ["fields"] = new JArray(new JObject { ["FieldName"] = "[[Missing]]", ["FieldValue"] = "1", ["IndexNumber"] = 1 })
+            });
+            var body = BodyOf("PlainUndeclared", MakeStartNode(), assign, MakeEdge("e1", "start", "assign1"));
+
+            var result = ValidateWorkflowTool.Handle(envelope, body);
+
+            var error = result.Errors.Single(e => e.Message.Contains("'Missing' is not declared")).Message;
+            Assert.IsFalse(error.Contains("Declared recordsets"), error);
+        }
+
         // ── edge detection tolerates a missing `shape` (F7) ───────────────
 
         [TestMethod]

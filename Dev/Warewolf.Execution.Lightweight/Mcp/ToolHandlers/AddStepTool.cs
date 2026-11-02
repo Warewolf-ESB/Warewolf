@@ -541,6 +541,16 @@ internal static class AddStepTool
                 continue;
             }
 
+            // A dotted name without '@' is a JSON-object path missing its sigil: declaring it would
+            // add a scalar literally named "A.b.c" (a legal XML name), which nothing ever writes.
+            if (!isObjectReference && baseName.Contains('.', StringComparison.Ordinal))
+            {
+                var root = baseName[..baseName.IndexOf('.', StringComparison.Ordinal)];
+                throw new McpException(
+                    $"The step references '[[{raw}]]' without the object sigil '@': to read a path inside JSON object " +
+                    $"'{root}' write '[[@{baseName}]]' (add_step declares '{root}' as an object if it is not declared yet).");
+            }
+
             var kind = isObjectReference ? "object" : "scalar";
             dataList.Add(EnvelopeBiteWriter.BuildScalarVariableElement(baseName, kind));
             declaredNames.Add(baseName);

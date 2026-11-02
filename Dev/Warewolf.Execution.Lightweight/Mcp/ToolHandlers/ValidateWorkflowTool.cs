@@ -203,8 +203,20 @@ internal static class ValidateWorkflowTool
             // (WorkflowExecutor.RentPreparedWorkflow → ActivityParser.Parse). Catching this here
             // turns that into a clean validation error instead of a persisted, unexecutable
             // workflow — reproduced 2026-08-20 against a start-node-only body.
-            foreach (var (index, startCell) in startNodes)
+            // A second start node is almost always an "end" marker (bakeoff, 2026-10-31): reported as
+            // what it is, not as a start node that goes nowhere. The one that is wired up counts as
+            // the real start.
+            var primary = startNodes.FirstOrDefault(s => edges.Any(e => e.Source?.Id == s.Cell.id), startNodes[0]);
+            foreach (var (index, extra) in startNodes.Where(s => s != primary))
             {
+                errors.Add(ValidationIssue.Error(
+                    $"A workflow has exactly one start node, but cell '{extra.id}' is a second one. A workflow needs no end " +
+                    $"node: remove cell '{extra.id}'; the last step simply has no outgoing edge.",
+                    $"/cells/{index}"));
+            }
+
+            {
+                var (index, startCell) = primary;
                 var hasOutgoingEdge = edges.Any(e => e.Source?.Id == startCell.id);
                 if (!hasOutgoingEdge)
                 {
@@ -221,8 +233,7 @@ internal static class ValidateWorkflowTool
                         ? $"The start node (cell '{startCell.id}') has no outgoing connection to another step, because a " +
                           "cell with a `source`/`target` pointing from it is missing the required `shape: \"edge\"` " +
                           "attribute (see get_workflow_schema's body_schema) and so was read as a node, not a connection."
-                        : $"The start node (cell '{startCell.id}') has no outgoing connection to another step; " +
-                          "a workflow must contain at least one activity reachable from its start node.";
+                        : NoOutgoingConnectionMessage(startCell, nodes, edges);
 
                     errors.Add(ValidationIssue.Error(message, $"/cells/{index}"));
                 }
@@ -677,8 +688,15 @@ internal static class ValidateWorkflowTool
                         continue;
                     }
 
+                    // A recordset reference to an undeclared name is usually a declared recordset
+                    // under a placeholder name ([[recordset(1).Id]], bakeoff 9bc70702), so name them.
+                    List<string> recordsets = fieldName is null ? [] : byName.Values
+                        .Where(v => string.Equals(v.Kind, "recordset", StringComparison.OrdinalIgnoreCase))
+                        .Select(v => $"{v.Name} ({string.Join(", ", v.Fields)})")
+                        .ToList();
                     errors.Add(ValidationIssue.Error(
-                        $"cell '{cell.id}' references undeclared variable '[[{raw}]]' — '{baseName}' is not declared in envelope.inputs/outputs/variables.",
+                        $"cell '{cell.id}' references undeclared variable '[[{raw}]]' — '{baseName}' is not declared in envelope.inputs/outputs/variables." +
+                        (recordsets.Count > 0 ? $" Declared recordsets: {string.Join("; ", recordsets)}." : ""),
                         $"/cells/{index}"));
                     continue;
                 }
@@ -836,6 +854,32 @@ internal static class ValidateWorkflowTool
         }
 
         return (baseName, null, isObjectReference);
+    }
+
+    /// <summary>
+    /// What to add when the start node goes nowhere. Saying only that it had no outgoing connection
+    /// left generators (bakeoff, 2026-10-31: every lfm2 workflow, most of bonsai's) to resubmit the
+    /// same graph, so this quotes the edge: from the start node to the first step, taken as the
+    /// first node no edge points to. With no edges at all, it says first that every connection is a
+    /// cell of its own.
+    /// </summary>
+    static string NoOutgoingConnectionMessage(Cell startCell, List<(int Index, Cell Cell)> nodes, List<Cell> edges)
+    {
+        var steps = nodes.Select(n => n.Cell)
+            .Where(c => !string.Equals(GetDataType(c), Constants.START, StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(c.id))
+            .ToList();
+        var first = steps.FirstOrDefault(c => !edges.Any(e => e.Target?.Id == c.id)) ?? steps.FirstOrDefault();
+        var prefix = $"The start node (cell '{startCell.id}') has no outgoing connection to another step";
+        if (first is null)
+        {
+            return prefix + "; a workflow must contain at least one activity reachable from its start node.";
+        }
+
+        var edge = $"{{\"shape\": \"edge\", \"source\": {{\"cell\": \"{startCell.id}\"}}, \"target\": {{\"cell\": \"{first.id}\"}}}}";
+        return edges.Count == 0
+            ? $"{prefix}: no step is connected to any other. Every connection is a cell of its own in `cells`, such as " +
+              $"{edge} from the start node to the first step, and one from each step to the next."
+            : $"{prefix}: add an edge cell from it to the first step, such as {edge}.";
     }
 
     /// <summary>

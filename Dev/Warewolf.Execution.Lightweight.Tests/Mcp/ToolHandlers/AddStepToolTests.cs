@@ -432,6 +432,25 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.AreEqual("True", newObj!.Attribute("IsJson")?.Value);
         }
 
+        /// <summary>
+        /// A dotted name without '@' was auto-declared as a scalar literally named "NewObj.city"
+        /// (dots are legal in an XML name), which nothing ever writes (Plan.md finding 10).
+        /// </summary>
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Handle_StepReferencingAnObjectPathWithoutItsSigil_IsRefused_AndDeclaresNothing()
+        {
+            SeedSimpleWorkflow("PathWithoutSigil");
+            var before = File.ReadAllText(Path.Combine(_root, "PathWithoutSigil.bite"));
+
+            var fields = new JArray(new JObject { ["FieldName"] = "[[City]]", ["FieldValue"] = "[[NewObj.city]]", ["IndexNumber"] = 1 });
+            var error = Assert.ThrowsException<McpException>(() => Handle(HostConfig(), new StubAuthPolicyLoader { IsConfigEffective = false },
+                Principal("Developers"), "PathWithoutSigil", AssignObjectStepOf("Reads a city", fields)));
+
+            StringAssert.Contains(error.Message, "write '[[@NewObj.city]]'");
+            Assert.AreEqual(before, File.ReadAllText(Path.Combine(_root, "PathWithoutSigil.bite")), "nothing may be saved");
+        }
+
         [TestMethod]
         [TestCategory("UnitTest")]
         public void Handle_StepReferencingUndeclaredRecordsetField_AutoDeclaresRecordsetWithField()

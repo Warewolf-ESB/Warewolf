@@ -460,8 +460,21 @@ run it? Subjects: the 50 valid workflows Opus produced above (`bakeoff subjects`
      undeclared variable `ISSResponseObject.iss.latitude`, although its root was declared. muse-glimmer (a4762f87,
      after the `envelope.variables` grammar fix) retried the same reference three times on that message. **Fixed:**
      `validate_workflow` still rejects it but names the fix: the `[[@...]]` form, and kind `object` when the root is
-     declared as another kind. Still open: `add_step` auto-declares such a reference as a scalar named with the
-     whole dotted path.
+     declared as another kind. `add_step` auto-declared such a reference as a scalar named with the whole dotted
+     path (a legal XML name); it now refuses the step with the same hint (2026-11-01).
+  11. Bakeoff 2026-10-31 (six LM Studio models), messages that left generators retrying the same mistake. **Fixed**
+     (2026-11-01):
+     - A start node with no outgoing edge now quotes the edge to add, from `start` to the first step (the first
+       node no edge points to), and says when no step is connected at all: every lfm2 workflow had no edges, and
+       bonsai left out the edge from `start` in 10 of 20.
+     - A second start node (gemma's `end` marker) is reported as an extra start node that a workflow does not need,
+       not as a start node that goes nowhere.
+     - An undeclared recordset reference lists the declared recordsets and their fields: gemma-4-31b copied the
+       prompt's `[[recordset(1).field]]` placeholder for a declared `PendingSubmissions`.
+     - `create_test`/`edit_test` refuse a *declared* variable addressed in the wrong shape: a recordset as
+       `[[Dates]]`, an object without `@`, a scalar as a recordset, or a field the recordset lacks. These were stored
+       and then failed at run time on empty values (4 of muse-glimmer's 10 failing tests). Undeclared names stay
+       allowed (test-framework plan §6.6).
 
 ## Test strategy
 

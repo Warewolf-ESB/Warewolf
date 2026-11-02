@@ -43,7 +43,8 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <b>Deliberately not cross-checked</b> (plan §6.6): <c>inputs</c>/<c>outputs</c>/<c>stepOutputs</c>
 /// variable names are not required to already be declared in the workflow's envelope —
 /// mocking/asserting mid-workflow state doesn't require that state to be a public envelope
-/// input/output.
+/// input/output. A name that <i>is</i> declared must be addressed in its declared shape (a recordset
+/// by row and field, an object with <c>@</c>, a scalar plainly; see <c>ValidateVariableShapes</c>).
 /// </para>
 ///
 /// <para>
@@ -102,7 +103,7 @@ internal static class CreateTestTool
             throw new McpException($"Workflow '{name}' cannot have tests authored against it: {nonEditableReason}");
         }
 
-        var json = await ValidateAndSerializeAsync(secretResolver, model, body.Value, cancellationToken).ConfigureAwait(false);
+        var json = await ValidateAndSerializeAsync(secretResolver, model, body.Value, filePath, cancellationToken).ConfigureAwait(false);
 
         TestCatalog.Save(workflowsDirectory, relativePath, model.TestName, json);
 
@@ -159,9 +160,10 @@ internal static class CreateTestTool
     /// <c>internal</c> so <see cref="EditTestTool"/> shares this identically.
     /// </summary>
     internal static async Task<string> ValidateAndSerializeAsync(
-        IMcpSecretResolver secretResolver, TestDefinitionModel model, JsonElement body, CancellationToken cancellationToken)
+        IMcpSecretResolver secretResolver, TestDefinitionModel model, JsonElement body, string filePath, CancellationToken cancellationToken)
     {
         var errors = new List<string>();
+        ValidateVariableShapes(model, DeclaredVariables(filePath), errors);
 
         if (model.AuthenticationType is { Length: > 0 } authType &&
             !Enum.TryParse<Dev2.Runtime.ServiceModel.Data.AuthenticationType>(authType, ignoreCase: true, out _))
@@ -195,6 +197,101 @@ internal static class CreateTestTool
 
         var toWrite = model with { Password = password };
         return JsonSerializer.Serialize(toWrite, TestDefinitionModel.SerializerOptions);
+    }
+
+    static readonly System.Text.RegularExpressions.Regex VariableReference = new(@"\[\[([^\[\]]+)\]\]");
+
+    /// <summary>
+    /// Every variable the workflow's DataList declares, by name: its inputs, outputs and working
+    /// variables. A recordset's fields are split across those by direction, so they are merged.
+    /// </summary>
+    static Dictionary<string, EnvelopeVariableDto> DeclaredVariables(string filePath)
+    {
+        var (_, inputs, outputs, variables) = GetWorkflowDefinitionTool.ReadEnvelopeDetail(filePath);
+        return inputs.Concat(outputs).Concat(variables)
+            .GroupBy(v => v.Name, StringComparer.Ordinal)
+            .ToDictionary(
+                g => g.Key,
+                g => g.First() with { Fields = g.SelectMany(v => v.Fields ?? []).Distinct(StringComparer.Ordinal).ToList() },
+                StringComparer.Ordinal);
+    }
+
+    /// <summary>
+    /// A test variable naming a declared variable must address it in its declared shape: a recordset
+    /// by row and field, an object with the '@' sigil, a scalar plainly. A recordset fed as
+    /// <c>[[Dates]]</c> or an object read as <c>[[Geo]]</c> was stored, then failed at run time on
+    /// an empty value nobody could explain (4 of muse-glimmer's 10 failing tests, bakeoff
+    /// 2026-10-31). Undeclared names stay allowed (plan §6.6).
+    /// </summary>
+    static void ValidateVariableShapes(TestDefinitionModel model, Dictionary<string, EnvelopeVariableDto> declared, List<string> errors)
+    {
+        void Check(string? variable, string path)
+        {
+            foreach (System.Text.RegularExpressions.Match match in VariableReference.Matches(variable ?? ""))
+            {
+                var raw = match.Groups[1].Value;
+                if (ShapeProblem(raw, declared) is { } problem)
+                {
+                    errors.Add($"`{path}` ('[[{raw}]]'): {problem}");
+                }
+            }
+        }
+
+        void CheckSteps(IReadOnlyList<TestStepModel>? steps, string prefix)
+        {
+            for (var i = 0; i < (steps?.Count ?? 0); i++)
+            {
+                var outputs = steps![i].StepOutputs;
+                for (var j = 0; j < (outputs?.Count ?? 0); j++)
+                {
+                    Check(outputs![j].Variable, $"{prefix}[{i}].stepOutputs[{j}].variable");
+                }
+
+                CheckSteps(steps[i].Children, $"{prefix}[{i}].children");
+            }
+        }
+
+        for (var i = 0; i < (model.Inputs?.Count ?? 0); i++)
+        {
+            Check(model.Inputs![i].Variable, $"test.inputs[{i}].variable");
+        }
+
+        for (var i = 0; i < (model.Outputs?.Count ?? 0); i++)
+        {
+            Check(model.Outputs![i].Variable, $"test.outputs[{i}].variable");
+        }
+
+        CheckSteps(model.TestSteps, "test.testSteps");
+    }
+
+    static string? ShapeProblem(string raw, Dictionary<string, EnvelopeVariableDto> declared)
+    {
+        var (baseName, fieldName, isObject) = ValidateWorkflowTool.SplitReference(raw);
+        if (!declared.TryGetValue(baseName, out var variable))
+        {
+            // [[Geo.city]]: an object path without its sigil reads as the undeclared "Geo.city".
+            var dot = baseName.IndexOf('.', StringComparison.Ordinal);
+            return !isObject && dot > 0 && declared.TryGetValue(baseName[..dot], out var root) &&
+                   string.Equals(root.Kind, "object", StringComparison.OrdinalIgnoreCase)
+                ? $"'{root.Name}' is a JSON object: read a path inside it with the sigil, '[[@{baseName}]]'."
+                : null;
+        }
+
+        var fields = variable.Fields ?? [];
+        switch (variable.Kind.ToLowerInvariant())
+        {
+            case "recordset" when !raw.Contains('(', StringComparison.Ordinal):
+                return $"'{baseName}' is a recordset (fields: {string.Join(", ", fields)}): address a row's field, " +
+                       $"such as '[[{baseName}(1).{fields.FirstOrDefault() ?? "Field"}]]'.";
+            case "recordset" when fieldName is not null && !fields.Contains(fieldName, StringComparer.Ordinal):
+                return $"recordset '{baseName}' has no field '{fieldName}' (fields: {string.Join(", ", fields)}).";
+            case "object" when !isObject:
+                return $"'{baseName}' is a JSON object: write '[[@{baseName}]]', or a path inside it such as '[[@{baseName}.<property>]]'.";
+            case "scalar" when isObject || fieldName is not null || raw.Contains('(', StringComparison.Ordinal):
+                return $"'{baseName}' is a scalar: write '[[{baseName}]]'.";
+            default:
+                return null;
+        }
     }
 
     static HashSet<string> CollectCellIds(JsonElement body)

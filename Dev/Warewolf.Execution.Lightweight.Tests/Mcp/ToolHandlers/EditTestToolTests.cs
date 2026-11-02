@@ -155,6 +155,19 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
 
         [TestMethod]
         [TestCategory("UnitTest")]
+        public async Task Handle_DeclaredScalarAddressedAsARecordset_IsRejected_AsCreateTestRejectsIt()
+        {
+            var name = CreateFixtureWorkflow();
+            var testName = await CreateExistingTest(name);
+
+            var error = await Assert.ThrowsExceptionAsync<McpException>(() => EditTestTool.Handle(HostConfig(), OpenPolicy, NoSecrets, null, name,
+                TestOf(new { testName, outputs = new[] { new { variable = "[[Result(1).Value]]", value = "hello", assertOp = "=" } } })));
+
+            StringAssert.Contains(error.Message, "'Result' is a scalar: write '[[Result]]'");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
         public async Task Handle_NoContributePermission_Throws()
         {
             var name = CreateFixtureWorkflow();

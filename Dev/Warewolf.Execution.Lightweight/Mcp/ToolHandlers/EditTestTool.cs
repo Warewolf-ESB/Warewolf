@@ -82,7 +82,7 @@ internal static class EditTestTool
             throw new McpException($"Workflow '{name}' cannot have tests authored against it: {nonEditableReason}");
         }
 
-        var json = await CreateTestTool.ValidateAndSerializeAsync(secretResolver, model, body.Value, cancellationToken).ConfigureAwait(false);
+        var json = await CreateTestTool.ValidateAndSerializeAsync(secretResolver, model, body.Value, filePath, cancellationToken).ConfigureAwait(false);
 
         TestCatalog.Save(workflowsDirectory, relativePath, model.TestName, json);
 

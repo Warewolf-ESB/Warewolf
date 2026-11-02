@@ -328,5 +328,137 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp.ToolHandlers
             Assert.AreEqual(1, doc.RootElement.GetProperty("testSteps").GetArrayLength());
             Assert.AreEqual(_assignActivityId, doc.RootElement.GetProperty("testSteps")[0].GetProperty("activityId").GetString());
         }
+
+        // ── Declared variables addressed in the wrong shape (bakeoff 2026-10-31) ──
+
+        /// <summary>The fixture workflow, also declaring recordset Dates(Date) as an input and object Geo as a working variable.</summary>
+        string CreateShapedFixtureWorkflow(string name)
+        {
+            var start = new Cell { id = "start", shape = "rect", data = new Dictionary<string, object> { ["type"] = Constants.START } };
+            var assign = new Cell
+            {
+                id = _assignActivityId,
+                shape = "rect",
+                data = new Dictionary<string, object>
+                {
+                    ["type"] = "dsfdotnetmultiassignactivity",
+                    ["displayName"] = "Assign",
+                    ["fields"] = new JArray(new JObject { ["FieldName"] = "[[Result]]", ["FieldValue"] = "[[Dates(1).Date]]", ["IndexNumber"] = 1 }),
+                }
+            };
+            var edge = new Cell { id = "e1", shape = "edge", data = new Dictionary<string, object>(), Source = new Connector("start"), Target = new Connector(_assignActivityId) };
+            var graph = new X6WorkflowSaveModel { ResourceName = name, Cells = new List<Cell> { start, assign, edge } };
+            var envelope = System.Text.Json.JsonSerializer.SerializeToElement(new
+            {
+                name,
+                description = "",
+                inputs = new[] { new { name = "Dates", kind = "recordset", fields = new[] { "Date" } } },
+                outputs = new[] { new { name = "Result", kind = "scalar", fields = Array.Empty<string>() } },
+                variables = new[] { new { name = "Geo", kind = "object", fields = Array.Empty<string>() } },
+            });
+
+            CreateWorkflowTool.Handle(HostConfig(), OpenPolicy, null, name, envelope, JsonDocument.Parse(JsonConvert.SerializeObject(graph)).RootElement);
+            return name;
+        }
+
+        async Task<string> RejectionFor(string name, object test) =>
+            (await Assert.ThrowsExceptionAsync<McpException>(() => Handle(HostConfig(), OpenPolicy, null, name, TestOf(test)))).Message;
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_DeclaredRecordsetFedAsAScalar_IsRejected_NamingAField()
+        {
+            var name = CreateShapedFixtureWorkflow("RecordsetAsScalarWf");
+
+            var message = await RejectionFor(name, new
+            {
+                testName = "T",
+                inputs = new[] { new { variable = "[[Dates]]", value = "[{\"Date\":\"2023-01-15\"}]" } },
+                outputs = Array.Empty<object>(),
+            });
+
+            StringAssert.Contains(message, "`test.inputs[0].variable` ('[[Dates]]')");
+            StringAssert.Contains(message, "'Dates' is a recordset (fields: Date)");
+            StringAssert.Contains(message, "'[[Dates(1).Date]]'");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_DeclaredObjectWithoutItsSigil_IsRejected_WithTheSigilForm()
+        {
+            var name = CreateShapedFixtureWorkflow("ObjectWithoutSigilWf");
+
+            var message = await RejectionFor(name, new
+            {
+                testName = "T",
+                outputs = new[]
+                {
+                    new { variable = "[[Geo]]", value = "", assertOp = "Is Not NULL" },
+                    new { variable = "[[Geo.city]]", value = "Cape Town", assertOp = "=" },
+                },
+            });
+
+            StringAssert.Contains(message, "`test.outputs[0].variable` ('[[Geo]]'): 'Geo' is a JSON object: write '[[@Geo]]'");
+            StringAssert.Contains(message, "`test.outputs[1].variable` ('[[Geo.city]]'): 'Geo' is a JSON object: read a path inside it with the sigil, '[[@Geo.city]]'");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_DeclaredScalarAddressedAsARecordset_IsRejected_InAStepOutput()
+        {
+            var name = CreateShapedFixtureWorkflow("ScalarAsRecordsetWf");
+
+            var message = await RejectionFor(name, new
+            {
+                testName = "T",
+                testSteps = new[]
+                {
+                    new
+                    {
+                        activityId = _assignActivityId, activityType = "Assign", type = "Assert",
+                        stepOutputs = new[] { new { variable = "[[Result(1).Value]]", value = "x", assertOp = "=" } },
+                    },
+                },
+            });
+
+            StringAssert.Contains(message, "`test.testSteps[0].stepOutputs[0].variable` ('[[Result(1).Value]]'): 'Result' is a scalar: write '[[Result]]'");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_DeclaredRecordsetWithAnUnknownField_IsRejected_ListingItsFields()
+        {
+            var name = CreateShapedFixtureWorkflow("UnknownFieldWf");
+
+            var message = await RejectionFor(name, new
+            {
+                testName = "T",
+                inputs = new[] { new { variable = "[[Dates(1).When]]", value = "2023-01-15" } },
+            });
+
+            StringAssert.Contains(message, "recordset 'Dates' has no field 'When' (fields: Date)");
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public async Task Handle_DeclaredVariablesInTheirOwnShapes_AndUndeclaredNames_AreAccepted()
+        {
+            var name = CreateShapedFixtureWorkflow("RightShapesWf");
+
+            var result = await Handle(HostConfig(), OpenPolicy, null, name, TestOf(new
+            {
+                testName = "RightShapes",
+                inputs = new[] { new { variable = "[[Dates(1).Date]]", value = "2023-01-15" } },
+                outputs = new[]
+                {
+                    new { variable = "[[Result]]", value = "2023-01-15", assertOp = "=" },
+                    new { variable = "[[@Geo.city]]", value = "Cape Town", assertOp = "=" },
+                    // Plan §6.6: mid-workflow state need not be declared.
+                    new { variable = "[[Intermediate]]", value = "x", assertOp = "=" },
+                },
+            }));
+
+            Assert.IsTrue(result.Created);
+        }
     }
 }
