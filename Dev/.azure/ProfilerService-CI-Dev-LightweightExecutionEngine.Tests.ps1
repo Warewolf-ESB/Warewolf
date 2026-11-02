@@ -149,7 +149,7 @@ Describe 'Profiler pipelines - Dev and UAT are the same pipeline apart from thei
     It 'differ only in the names of the environment' {
         $dev = (Get-Content -LiteralPath $script:DevPath -Raw)
         $uat = (Get-Content -LiteralPath $script:UatPath -Raw)
-        $expected = $dev.Replace('DevAzureDevopsKeyVault', 'UATAzureDevopsKeyVault').Replace('dev-sp-devops', 'uat-sp-devops').
+        $expected = $dev.Replace('DevAzureDevopsKeyVault', 'UATAzureDevopsKeyVault').Replace('devprofilerlwkv', 'uatprofilerlwkv').Replace('dev-sp-devops', 'uat-sp-devops').
             Replace("ProfilerEnvironment: 'dev'", "ProfilerEnvironment: 'uat'").Replace('profilerlwdev-timer-function', 'profilerlwuat-timer-function')
         $uat | Should -Be $expected
     }
