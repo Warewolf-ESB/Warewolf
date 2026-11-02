@@ -1,0 +1,22 @@
+
+<Source ID="2d79c4f6-a64f-40ea-902b-94b2c84b2199" Name="ProfilerDBSource" ResourceType="SqlDatabase" IsValid="false" ServerType="SqlDatabase" Type="DbSource" ConnectionString="Data Source=#{GenericDBSourceDBServer},1433;Initial Catalog=#{WarewolfProfilerServicesProfilerDBSourceDatabaseName};User ID=#{WarewolfGenericDBSourceDBUsername};Password=#{WarewolfGenericDBSourceDBPassword};" ServerVersion="2.4.3.3" ServerID="990ebdc0-9507-4524-8d82-1e244f900ce9">
+  <DisplayName>ProfilerDBSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+  <VersionInfo DateTimeStamp="2020-07-10T16:56:11.1967838+05:30" Reason="" User="NT AUTHORITY\SYSTEM" VersionNumber="2" ResourceId="2d79c4f6-a64f-40ea-902b-94b2c84b2199" VersionId="e370eff6-52b7-4f6f-9960-d23fc3b19231" />
+</Source>

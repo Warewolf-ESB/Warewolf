@@ -1,0 +1,7 @@
+CollectionNum;MandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-DebiCheck/DebitOrder;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-DebiCheck/DebitOrder;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;4;FALSE;FALSE;;;;;;;4;2022-05-04;DebitOrder;0;202205; Initial
+2;4;FALSE;TRUE;4;DebitOrder;202205;2022-05-04;2022-05-04;Failed;25;2022-07-25;DebitOrder;0;202207; Hunting period 4
+3;25;FALSE;TRUE;25;DebitOrder;202207;2022-07-25;2022-07-25;Failed;31;2022-08-31;DebitOrder;0;202208; Hunting period 3
+4;31;FALSE;TRUE;31;DebitOrder;202208;2022-08-31;2022-08-31;Failed;27;2022-09-27;DebitOrder;0;202209; Hunting period 2
+5;27;FALSE;TRUE;27;DebitOrder;202209;2022-09-27;2022-09-27;Failed;20;2022-10-20;DebitOrder;0;202210; Hunting period 1
+6;20;FALSE;TRUE;20;DebitOrder;202210;2022-10-20;2022-10-20;Failed;25;2022-11-25;DebitOrder;0;202211; Default DRI, Should already been terminated at this point

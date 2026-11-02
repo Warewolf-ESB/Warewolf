@@ -1,0 +1,2 @@
+CollectionNum;NewMandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-debicheck/do;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-debicheck/do;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;12;TRUE;TRUE;12;DebiCheck;202205;2022-05-12;2022-05-12;Failed;25;2022-06-24;DebiCheck;7;202206;

@@ -8,8 +8,6 @@ control plane.
 |-----------------------------------------------|-------------------------------------------------------------------------|
 | `Deploy-WwExecutionEngine.ps1`                | **End-to-end deployment orchestrator** — runs every step in `docs/Deployment-Steps.txt` (RG → storage → Function App → App Insights → Entra/Easy Auth → publish, with optional Key Vault setup + resource encryption). Thin: reuses the scripts below. **Hosting model:** `-HostingPlan Consumption` (default, classic Y1 Windows) or `-HostingPlan Flex` (Flex Consumption — Linux-only, per-app `-FlexInstanceMemoryMB` / `-FlexMaximumInstanceCount`, no content share). The `-PublishPath` package must match — `AzureFunctionsPackage-win-x64-*` for Consumption, `-linux-x64-*` for Flex; its `deps.json` runtime is checked at plan time (`-SkipPackageRuntimeCheck` opts out). The SKU is fixed by `functionapp create`, so an existing app is **never** converted between the two; moving one means delete-and-recreate, which mints a new managed identity and drops every RBAC grant it held. **Bound scale-out against your broker:** `-FunctionAppScaleLimit` caps classic Consumption instances (`-FlexMaximumInstanceCount` on Flex). The RabbitMQ connection cache is keyed per broker endpoint, so a single-broker workload holds **one connection per instance** whatever `maxConnections` says — instance count is what exhausts a vhost's connection limit (2026-09-15: 48 instances vs a 40-connection cap dead-lettered the losers). **Concurrency caps need two flags, not one:** `-ServiceBusMaxConcurrentCalls` is inert on its own because Azure Functions' dynamic concurrency overrides every static `host.json` concurrency setting — pair it with `-DisableDynamicConcurrency` (the plan output warns if you don't). It **does not build**: publish first, and make sure `-PublishPath` holds a *fresh* publish — a stale directory silently ships an old engine (2026-09-15: a correct deploy shipped a pre-WOLF-8517 binary that dead-lettered 5,000/5,000 messages). |
 | `Deploy-WwExecutionEngine.authconfig.example.json` | Template for the orchestrator's `-AuthConfigPath` (GroupPermissions + UserAssignments). Each GroupPermissions key becomes an MI-assignable app role; the `Warewolf_ClientApps` entry is the dedicated role for app-only client apps (daemon/MI callers get it via `Configure-WwExecutionAuth-Clients.ps1 -AppRolesToAssign`, and `secure.config` must grant the matching `WindowsGroup` Execute on the workflows they call). |
-| `persistencesettings.uat.json`                | **Git-tracked `Enable: true` override** for `-PersistenceSettingsPath` when deploying to `WarewolfServer-UAT` — identical to the repo default (`Settings/persistencesettings.json`) except persistence is turned on. Consumed by `Dev/.azure/pipeline-LOADTEST.yml`'s `Deploy_UAT` stage, which copies it to a file literally named `persistencesettings.json` first (the orchestrator validates the source file's exact leaf name). See `docs/Deploy-UAT-Redeploy-Spec.md` §14 for why this is mandatory on every full UAT redeploy. |
-| `persistencesettingsdbsource.uat.bite`        | **Git-tracked** `-PersistenceDbSourcePath` for `WarewolfServer-UAT` — a `DbSource` pointing at the dedicated Hangfire job-store database `wwexecution-uat-hangfire`. Its `ConnectionString` is WFAES-encrypted at rest (decryptable only via this app's own Key Vault key at runtime), same precedent as the already-committed `Settings/ElasticsearchLoggingSource.bite`, so it's safe to commit despite carrying a real DB credential. Consumed by `Deploy_UAT`, which copies it to `persistencesettingsdbsource.bite` first (exact leaf name required). |
 | `Deploy-WwJobProcessor.ps1`                   | **ExecutionEngineJobProcessor deploy orchestrator** — provisions the poller/reaper Function App (RG → storage → Function App + system-assigned MI → App Insights → Key Vault wiring → stage + WFAES-encrypt the persistence settings pair → app settings → publish). Standalone, or invoked by `Deploy-WwExecutionEngine.ps1 -DeployJobProcessor`. Same *params-first, prompt-if-missing*, `-DryRun`, masked-summary + transcript conventions. The persistence source files (`persistencesettings.json`, `persistencesettingsdbsource.bite`) are **prompted when not passed**. Role assignment (`Warewolf_JobProcessor`) is a separate step via `Configure-WwExecutionAuth-Clients.ps1` — see the runbook. |
 | `Deploy-WwExecutionServiceBusWorker.ps1`      | **Service Bus worker deploy orchestrator ("shovel bridge")** — provisions the Service Bus-triggered Function App published from `Warewolf.Execution.ServiceBusWorker` (RG → storage → Function App + system-assigned MI → App Insights → Service Bus namespace/queue with dead-lettering → RBAC or SAS listen auth → app settings → publish). Also provisions a queue-scoped **Send-only SAS rule** (`shovel-send` by default) — the credential a RabbitMQ Shovel plugin uses as its AMQP 1.0 destination to bridge RabbitMQ messages into this queue. `-ServiceBusQueueName` is live-wired to the worker's `[ServiceBusTrigger]` binding via the `WAREWOLF_SERVICEBUS_TRIGGER_QUEUE` app setting (not just queue provisioning), and four `-ServiceBusTrigger*` parameters (`MaxConcurrentCalls`/`PrefetchCount`/`MaxAutoLockRenewalMinutes`/`AutoCompleteMessages`) tune the trigger's binding via the `AzureFunctionsJobHost__extensions__serviceBus__*` app-setting override convention, defaulting to `host.json`'s committed values. Same *params-first, prompt-if-missing*, `-DryRun`, masked-summary + transcript conventions as `Deploy-WwJobProcessor.ps1`. No dedicated Rollback companion (same as the JobProcessor) — the run summary JSON records what to tear down manually. Role assignment (`Warewolf_ClientApps`) is a separate step — see `docs/KB-ClientApps-Configuration.md` §2.6. Can also be chained automatically from `Deploy-WwExecutionEngine.ps1 -DeployServiceBusWorker` (see below) — note the companion form does not forward `-ServiceBusQueueName`/`-ServiceBusTrigger*`, only the standalone form does. |
 | `Configure-RabbitMqShovel.ps1`                | **RabbitMQ → Service Bus shovel bridge configurator** — configures a dynamic RabbitMQ Shovel (via the RabbitMQ Management HTTP API, `PUT /api/parameters/shovel/{vhost}/{name}`) that forwards messages from an existing RabbitMQ source queue (AMQP 0.9.1) to the Service Bus queue provisioned by `Deploy-WwExecutionServiceBusWorker.ps1` (AMQP 1.0), per Microsoft's documented RabbitMQ-to-Service-Bus bridging pattern. Fetches the destination SAS key live via `az` (or accepts it directly as a SecureString) — never writes it to disk. Verifies the source queue exists and polls the shovel's running state after applying. Requires the `rabbitmq_shovel`/`rabbitmq_shovel_management` plugins to already be enabled on the broker (one-time, broker-host admin action — the script probes for this and gives the exact `rabbitmq-plugins enable` instruction if missing). Same conventions: params-first/prompt-if-missing, `-DryRun`, masked summary + transcript, `-LoadFunctionsOnly` test hook. Validated against a live `rabbitmq:3-management` Docker container (see docs/ShovelBridge-Architecture.md). |
@@ -184,11 +182,9 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   touching Azure if the released orchestrator lacks any parameter the pipeline passes. Automated per
   `docs/Deploy-UAT-Redeploy-Spec.md` §10 — previously this app was ONLY updated by manual,
   undocumented deploys, which is what let a source fix go un-deployed and silently fail an
-  otherwise-passing load test (see that spec's §9-§13). The Hangfire persistence DB source
-  (`Scripts/persistencesettingsdbsource.uat.bite`) is committed to source control like
-  `Settings/ElasticsearchLoggingSource.bite` — its `ConnectionString` is WFAES-encrypted at
-  rest and only decryptable via this app's own Key Vault key at runtime, so it does not need
-  Secure File / secret-variable handling. No manual operator step is required.
+  otherwise-passing load test (see that spec's §9-§13). The `persistencesettings.uat.json` / `persistencesettingsdbsource.uat.bite` files it staged
+  were deleted with the profiler resources move (see git history); the `Deploy_UAT` persistence
+  steps must be re-pointed before it is run again.
 - **`wwqp-loadtest-*`** (a `Warewolf.Execution.QueueProcessor` Container App) — deployed fresh on
   every `pipeline-LOADTEST.yml` run that ticks the `RunQueueProcessorLoadTest` parameter (opt-in,
   default `false`; otherwise the job is Skipped and nothing is deployed) by the `Load_Test` stage's
@@ -205,24 +201,19 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   and `WarewolfDevOpsTestDb`'s SQL budget. Verified via `Get-WwQueueRunReport.ps1` (worker+engine
   log reconciliation) rather than a database check, because `RequestForProfiling` no longer writes
   to `dbo.jobs1` — see that job's own header comment in `pipeline-LOADTEST.yml`.
-- **Profiler engine packages** — built by the two Profiler pipelines,
-  `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml` (engine `wwprofilerlw`) and
-  `ProfilerService-CI-UAT-LightweightExecutionEngine.yml` (`wwprofileruatlw`), the DEV2 port of the
-  engine-package half of the Unlimited's `ProfilerService-CI-*.yml` (AD-2497). **They only build**: each
-  publishes the `ProfilerEngine` artifact (`profiler-engine.zip`) and deploys nothing. **Both files share
-  one body** — everything from `jobs:` down is byte-identical (a Pester test pins it) — and differ only in
-  their environment variables. The package is the published linux-x64 engine with the profiler laid out
-  as the Unlimited lays it out (`Resources/ProfilerServices/*` at the `Resources` root, its `Sources/*.bite`
-  flat beside it, plus `Resources/rabbit`), the `Settings/` files from `Dev/.azure/profiler-engine/*.txt`
-  and the persistence settings, and the Unlimited's `secure.config` with the license at the root. Every
-  `#{Token}` is replaced from the `WWExecutionEngine` Key Vault (one secret per token, named as the token;
-  DEV2-only placeholders for the Collection, Helper, comms and Elasticsearch endpoints) by
-  `profiler-engine/Set-ProfilerTokens.ps1`, then every source is WFAES-encrypted with
-  `WWExecutionEngineTestSecret` by `profiler-engine/Protect-ProfilerSources.ps1`. Deploying it, and the
-  engine app settings it needs (`WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`, a Linux `WAREWOLF_SECURE_CONFIG` or
-  none, no `bypassSecureConfig`), are in the Dev file's header. The ShovelBridge / QueueProcessor deploy and
-  burst those pipelines used to run (including the `wwqp-profilerdev-*` / `wwqp-profileruat-*` workers)
-  are in their git history; `Dev/.azure/Profiler{Dev,Uat}.trigger.bite` are those workers' triggers.
+- **Profiler pipelines** — `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml` and
+  `ProfilerService-CI-UAT-LightweightExecutionEngine.yml` are the local tests of the Unlimited's
+  `ProfilerService-CI-Dev.yml` / `ProfilerService-CI-UAT.yml`, mirrored step for step (Key Vault
+  `{Dev,UAT}AzureDevopsKeyVault`, `replacetokens@5`, Build SQL, Azure Functions publish, Swagger/APIM, the
+  `ProfilerEngine` and `drop` artifacts) **except the container tests** (Docker build to Docker push) and the
+  `unlimited.devops` manifests. They add a deploy of the timer function app (`AzureFunctionApp@2`,
+  `ProfilerTimerFunctionAppName` in `DEV2`). The two files differ only in their environment names (a Pester
+  test pins it). The Unlimited content lives in `Dev/Unlimited.ProfilerServices/` (`Warewolf.ProfilerServices`,
+  `SolutionItems`, `AzureFunctions.ProfilerServices`, `Database`); `secure.config` and the license come from
+  the Library secure files because they are git-ignored here. Sources and settings are WFAES-encrypted in place
+  by `Encrypt-Resources.ps1` with the vault key. The ShovelBridge / QueueProcessor deploy and burst those
+  pipelines used to run are in their git history; `Dev/.azure/Profiler{Dev,Uat}.trigger.bite` are those
+  workers' triggers.
   Tests: `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.Tests.ps1`.
 
 Highlights:

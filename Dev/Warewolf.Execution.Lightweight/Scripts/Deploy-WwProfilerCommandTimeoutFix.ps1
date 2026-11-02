@@ -97,10 +97,10 @@ if ($Mode -eq 'Deploy') {
     }
 }
 
-$ScoreMandateCollectionDatesPath = Join-Path $PSScriptRoot '..\Resources\ProfilerServices\Profiler\V2\Private\DAL\usp_ScoreMandateCollectionDates.bite'
-$GetMandateScoredResultsPath     = Join-Path $PSScriptRoot '..\Resources\ProfilerServices\Profiler\V2\Private\DAL\usp_GetMandateScoredResults.bite'
+$ScoreMandateCollectionDatesPath = Join-Path $PSScriptRoot '..\..\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler\Profiler\V2\Private\DAL\usp_ScoreMandateCollectionDates.bite'
+$GetMandateScoredResultsPath     = Join-Path $PSScriptRoot '..\..\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler\Profiler\V2\Private\DAL\usp_GetMandateScoredResults.bite'
 $RabbitProcessPath               = Join-Path $PSScriptRoot '..\Resources\rabbit\RabbitProcess.bite'
-$RequestForProfilingPath         = Join-Path $PSScriptRoot '..\Resources\ProfilerServices\ProfilerWrapper\RequestForProfiling.bite'
+$RequestForProfilingPath         = Join-Path $PSScriptRoot '..\..\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler\ProfilerWrapper\RequestForProfiling.bite'
 
 foreach ($p in @($ScoreMandateCollectionDatesPath, $GetMandateScoredResultsPath, $RabbitProcessPath, $RequestForProfilingPath)) {
     if (-not (Test-Path -LiteralPath $p)) { throw "Expected edited .bite file not found: $p" }

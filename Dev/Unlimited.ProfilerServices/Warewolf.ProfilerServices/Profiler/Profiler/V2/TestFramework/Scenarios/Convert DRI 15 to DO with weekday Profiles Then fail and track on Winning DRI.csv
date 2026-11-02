@@ -1,0 +1,9 @@
+CollectionNum;NewMandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-debicheck/do;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-debicheck/do;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;15;TRUE;FALSE;;;;;;;15;2022-05-13;DebiCheck;4;202205; Initial recommendation is Sun-PayFri
+2;15;TRUE;TRUE;15;DebiCheck;202205;2022-05-13;2022-05-13;Success;15;2022-06-10;DebiCheck;6;202206;Tied DRI 13,14,15,16,35. Earliest Date on DRI 35
+3;15;TRUE;TRUE;15;DebiCheck;202206;2022-06-15;2022-06-15;Success;15;2022-07-15;DebiCheck;1;202207; Clear winner DRI 15 with score of 2,DRI 15 WeekDay score is 1
+4;15;TRUE;TRUE;15;DebiCheck;202207;2022-07-15;2022-07-15;Success;15;2022-08-15;DebiCheck;1;202208; Clear winner DRI 15 with score of 3,DRI 15 WeekDay score is 2
+5;15;TRUE;TRUE;15;DebiCheck;202208;2022-08-15;2022-08-15;Success;15;2022-09-15;DebiCheck;1;202209; Clear winner DRI 15 with score of 4,DRI 15 WeekDay score is 3
+6;15;TRUE;TRUE;15;DebiCheck;202209;2022-09-15;2022-09-15;Success;15;2022-10-14;DebiCheck;4;202210; Clear Winner DRI 15 with score of 5, recommendation is Sat-PayFri
+7;15;TRUE;TRUE;15;DebiCheck;202210;2022-10-14;2022-10-14;Success;15;2022-11-15;DebitOrder;0;202211; DRI 15 WeekDay score is now 4 and must convert to DO
+8;15;TRUE;TRUE;15;DebitOrder;202211;2022-11-15;2022-11-15;Failed;15;2022-12-14;DebiCheck;6;202212; Scoring for DO and can track puts DRI 14,15,16 as tied, DRI 15 WeekDay score is 1

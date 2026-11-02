@@ -1,0 +1,2 @@
+CollectionNum;NewMandateDRI;MandateCanTrack;ScoreThisResult;ResultDRI;ResultMethod;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType;RecommendationDRI;RecommendationDate;RecommendationMethod;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;25;1;1;25;DebiCheck;202207;2022-07-25;2022-07-27;Success;27;2022-08-27;DebiCheck;1;202208;PaymentId: 33551587

@@ -1,0 +1,2 @@
+CollectionNum;MandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-DebiCheck/DebitOrder;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-DebiCheck/DebitOrder;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;28;TRUE;TRUE;15;DebiCheck;202205;2022-05-13;2022-05-13;Success;28;2022-06-28;DebiCheck;3;202206;After scoring occured, a reset is done on all scores due to DRI diff

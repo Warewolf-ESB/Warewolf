@@ -1,0 +1,3 @@
+CollectionNum;MandateDRI;DebiCheckStatus-yes/no;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-debitorder/debicheck;RecommendationTracking;RecommendationPaymentCycle;;
+1;1;TRUE;FALSE;1;DebiCheck;202212;2022-12-01;2022-12-01;success;1;2022-12-30;DebiCheck;5;202301;;No Scores are generated
+2;1;TRUE;TRUE;1;DebiCheck;202301;2023-01-02;2023-01-09;success;7;2023-02-07;DebiCheck;3;202302;;DRI 7,8,9 are tied thus tracking over them

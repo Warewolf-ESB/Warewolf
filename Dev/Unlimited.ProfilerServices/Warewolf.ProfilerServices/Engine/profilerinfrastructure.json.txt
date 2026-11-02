@@ -1,0 +1,67 @@
+{
+  "environment": "#{ProfilerEnvironment}",
+  "location": "southafricanorth",
+  "engineAppName": "#{ProfilerEngineAppName}",
+  "storageAccountName": "#{ProfilerEngineStorageAccount}",
+  "keyVaultName": "#{ProfilerEngineKeyVaultName}",
+  "keyVaultSecretName": "#{ProfilerEngineKeyVaultSecretName}",
+  "devopsKeyVaultName": "#{ProfilerEngineKeyVaultName}",
+  "cdServicePrincipal": {
+    "displayName": "#{ProfilerCdServicePrincipalName}",
+    "objectId": ""
+  },
+  "networking": {
+    "engineSubnetId": "#{ProfilerEngineSubnetId}",
+    "shovelScriptSubnetId": "#{ProfilerShovelScriptSubnetId}"
+  },
+  "flex": {
+    "instanceMemoryMB": 4096,
+    "maximumInstanceCount": 30
+  },
+  "serviceBus": {
+    "namespace": "#{ProfilerServiceBusNamespace}",
+    "triggerQueue": "#{ProfilerTriggerQueue}",
+    "errorQueue": "#{ProfilerErrorQueue}",
+    "shovelSendRule": "shovel-send",
+    "lockDuration": "PT5M",
+    "maxDeliveryCount": 10
+  },
+  "shovel": {
+    "name": "#{ProfilerShovelName}",
+    "sourceQueue": "#{ProfilerTriggerQueue}",
+    "deadLetterQueue": "#{ProfilerErrorQueue}",
+    "sourceHost": "localhost",
+    "managementPort": 15672,
+    "destCaCertFile": "/etc/ssl/certs/ca-certificates.crt"
+  },
+  "trigger": {
+    "workflowName": "ProfilerWrapper/Queue/RequestForProfilingConsume",
+    "maxConcurrentCalls": 2,
+    "maxConcurrentExecutions": 2,
+    "disableDynamicConcurrency": true
+  },
+  "entra": {
+    "tenantId": "ca0cc53b-9af4-4067-bcdf-be9c648450d1",
+    "appUniqueName": "#{ProfilerEngineEntraAppUniqueName}",
+    "appId": "#{ProfilerEngineEntraAppId}",
+    "userImpersonationScopeId": "#{ProfilerEngineEntraUserImpersonationScopeId}",
+    "clientAppsRoleId": "#{ProfilerEngineEntraClientAppsRoleId}",
+    "queueProcessorRoleId": "#{ProfilerEngineEntraQueueProcessorRoleId}"
+  },
+  "engineSettings": {
+    "executionLogLevel": "INFO",
+    "licenseCheckEnabled": true,
+    "rabbitMqCache": "{\"enabled\":true,\"channelPool\":false,\"maxChannelsPerConnection\":32,\"idleTimeout\":\"00:05:00\",\"maxLifetime\":\"00:30:00\",\"topologyTtl\":\"00:00:30\",\"maxConnections\":4,\"sweepInterval\":\"00:01:00\"}",
+    "logging": {
+      "console": true,
+      "appInsights": true,
+      "elasticsearch": true,
+      "performanceCounters": true,
+      "structuredLogs": true
+    }
+  },
+  "timer": {
+    "appName": "#{ProfilerTimerAppName}"
+  },
+  "tags": {}
+}

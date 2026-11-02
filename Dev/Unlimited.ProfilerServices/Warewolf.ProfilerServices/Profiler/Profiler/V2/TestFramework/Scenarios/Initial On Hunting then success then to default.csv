@@ -1,0 +1,7 @@
+CollectionNum;MandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-DebiCheck/DebitOrder;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-DebiCheck/DebitOrder;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;4;TRUE;FALSE;;;;;;;4;2021-09-03;DebiCheck;4;202109;Initial recommendation
+2;4;TRUE;TRUE;4;DebiCheck;202109;2021-09-03;2021-09-06;Failed;25;2021-10-25;DebiCheck;6;202110;First Hunting Period
+3;25;TRUE;TRUE;25;DebiCheck;202110;2021-10-25;2021-10-30;Failed;20;2021-11-19;DebiCheck;4;202111;Second Hunting Period
+4;20;TRUE;TRUE;20;DebiCheck;202111;2021-11-19;2021-11-22;Success;20;2021-12-20;DebiCheck;3;202112;Success, try using positive scores
+5;20;TRUE;TRUE;20;DebiCheck;202112;2021-12-20;2021-12-22;Failed;15;2022-01-14;DebiCheck;4;202201;Third Hunting Period
+6;15;TRUE;TRUE;15;DebiCheck;202201;2022-01-14;2022-01-17;Failed;25;2022-02-25;DebiCheck;1;202202;All Hunting is exhausted. Default of 25

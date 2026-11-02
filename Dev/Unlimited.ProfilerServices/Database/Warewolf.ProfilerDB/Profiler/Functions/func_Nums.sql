@@ -1,0 +1,39 @@
+﻿CREATE FUNCTION [Profiler].[func_Nums] (@NumberToGenerate INT)
+RETURNS @Table TABLE (n INT)
+AS
+BEGIN
+
+	;WITH A AS (
+		SELECT 0 AS n UNION ALL SELECT 0
+	),
+	B AS (
+		SELECT	0 AS n UNION ALL SELECT 0
+	),
+	C AS (
+		SELECT a.n FROM A CROSS JOIN B 
+	),
+	D AS (
+		SELECT c.n FROM C CROSS JOIN B
+	),
+	E AS (
+		SELECT c.n FROM D CROSS JOIN C
+	),
+	F AS (
+		SELECT e.n FROM E CROSS JOIN D
+	),
+	G AS (
+		SELECT e.n FROM F CROSS JOIN E
+	),
+	H AS (
+		SELECT g.n FROM G CROSS JOIN F
+	)
+	INSERT @Table
+	SELECT	*
+	FROM	(
+				SELECT	ROW_NUMBER() OVER (ORDER BY n) RowId 
+				FROM	h
+			) r
+	WHERE	RowId <= @NumberToGenerate
+	
+	RETURN
+END	

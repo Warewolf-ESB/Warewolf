@@ -1,0 +1,7 @@
+CollectionNum;MandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-debicheck/do;ResultPaymentCycle;PresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-DebiCheck/DebitOrder;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;27;TRUE;TRUE;27;DebiCheck;202105;2021-05-27;2021-05-27;success;27;2021-06-25;DebiCheck;4;202106;Normal month (success 1)
+2;27;TRUE;TRUE;27;DebiCheck;202107;2021-07-27;2021-07-27;success;27;2021-08-27;DebiCheck;1;202108;Normal month (success 2)
+3;27;TRUE;TRUE;27;DebiCheck;202108;2021-08-27;2021-08-27;success;27;2021-09-27;DebiCheck;1;202109;Normal month (success 3)
+4;27;TRUE;TRUE;27;DebiCheck;202108;2021-08-27;2021-08-27;success;27;2021-09-27;DebiCheck;1;202109;Duplicated month Must not be DO 
+5;27;TRUE;TRUE;27;DebiCheck;202109;2021-09-27;2021-09-27;success;27;2021-10-27;DebitOrder;0;202110; Must be DO(success 4)
+6;27;TRUE;TRUE;27;DebiCheck;202112;2021-12-27;2021-12-27;success;27;2022-01-27;DebitOrder;0;202201;Must be DO (success 5)

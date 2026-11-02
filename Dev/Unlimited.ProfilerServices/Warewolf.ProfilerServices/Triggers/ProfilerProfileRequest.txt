@@ -1,0 +1,58 @@
+{
+  "$id": "1",
+  "$type": "Warewolf.Trigger.Queue.TriggerQueue, Warewolf.Trigger.Queue",
+  "Id": "9923dc51-c138-4944-a7a4-06cb468f2e86",
+  "TriggerId": "9923dc51-c138-4944-a7a4-06cb468f2e86",
+  "Name": "ProfilerProfileRequest",
+  "QueueSourceId": "0b142714-8f6d-41b7-9832-2aefa8c731ec",
+  "QueueName": "profiler.profile.request",
+  "WorkflowName": "ProfilerWrapper\\Queue\\RequestForProfilingConsume",
+  "Concurrency": #{WarewolfProfilerRequestForProfilingConsumeTriggerConcurrency},
+  "UserName": null,
+  "Password": null,
+  "Prefetch": "10",
+  "Options": [
+    {
+      "$id": "2",
+      "$type": "Warewolf.Options.OptionBool, Warewolf.Data",
+      "Name": "Durable",
+      "HelpText": "Set if the queue is durable",
+      "Tooltip": "Set if the queue is durable",
+      "Value": true,
+      "Default": true
+    }
+  ],
+  "QueueSinkId": "0b142714-8f6d-41b7-9832-2aefa8c731ec",
+  "DeadLetterQueue": "profiler.profile.error.request",
+  "DeadLetterOptions": [
+    {
+      "$id": "3",
+      "$type": "Warewolf.Options.OptionBool, Warewolf.Data",
+      "Name": "Durable",
+      "HelpText": "Set if the queue is durable",
+      "Tooltip": "Set if the queue is durable",
+      "Value": true,
+      "Default": true
+    }
+  ],
+  "MapEntireMessage": true,
+  "Inputs": [
+    {
+      "$id": "4",
+      "$type": "Warewolf.Core.ServiceInput, Warewolf.Core",
+      "Name": "ProfileRequest",
+      "Value": "",
+      "RequiredField": true,
+      "EmptyIsNull": true,
+      "TypeName": null,
+      "IntellisenseFilter": 0,
+      "IsObject": false,
+      "Dev2ReturnType": null,
+      "ShortTypeName": null,
+      "FullName": "ProfileRequest",
+      "ActionName": null,
+      "Path": null
+    }
+  ],
+  "ResourceId": "3551c2e3-f31a-4454-b76b-ee7c83a8a167"
+}
