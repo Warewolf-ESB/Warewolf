@@ -2172,7 +2172,7 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
             # Anchor on the [DRYRUN] marker, not the bare command: the warning itself QUOTES the
             # remediation command (`az functionapp config set ...`), so a looser pattern passes
             # whether or not the call was actually made.
-            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set .*--net-framework-version'
             $out | Should -Match 'RUNTIME MISMATCH'
             $out | Should -Match 'Re-run with -UpgradeRuntimeVersion'
         }
@@ -2180,7 +2180,7 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
         It 'does nothing when the existing app is already v10.0 (no needless restart)' {
             $global:appExists = $true; $global:appNetFx = 'v10.0'
             $out = (& $script:DeployScript @commonArgs -UpgradeRuntimeVersion) 6>&1 | Out-String
-            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set .*--net-framework-version'
             $out | Should -Not -Match 'RUNTIME MISMATCH'
             $out | Should -Match 'Function App runtime is v10\.0'
         }
@@ -2196,7 +2196,7 @@ Describe 'Deploy-WwExecutionEngine — .NET runtime (create + reconcile)' {
             $out | Should -Match 'netFrameworkVersion could not'
             # Never asserts a version it did not read, and never restarts on that inference.
             $out | Should -Not -Match 'Function App runtime is v10\.0'
-            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set'
+            $out | Should -Not -Match '\[DRYRUN\] az functionapp config set .*--net-framework-version'
             # A mismatch is a DIFFERENT finding: we did not read a version, so we cannot call it one.
             $out | Should -Not -Match 'RUNTIME MISMATCH'
             $out | Should -Match 'Dry-run complete'

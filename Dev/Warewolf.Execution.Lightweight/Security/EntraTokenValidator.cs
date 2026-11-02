@@ -5,6 +5,7 @@
  */
 
 using Newtonsoft.Json.Linq;
+using Warewolf.Execution.Lightweight.Auth.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -306,10 +307,15 @@ namespace Warewolf.Execution.Lightweight.Security
 
         /// <summary>
         /// Returns <c>true</c> when either the <c>tid</c> claim or the issuer URL
-        /// contains <paramref name="requiredTenantId"/>.
+        /// contains <paramref name="requiredTenantId"/>. A multi-tenant alias
+        /// (<c>common</c>, <c>organizations</c>) is checked against the <c>tid</c> claim alone
+        /// (see <see cref="EntraTenants"/>).
         /// </summary>
         static bool IsTenantMatch(string? tid, string? issuer, string requiredTenantId)
         {
+            if (EntraTenants.IsMultiTenant(requiredTenantId))
+                return EntraTenants.Accepts(requiredTenantId, tid);
+
             if (!string.IsNullOrEmpty(tid) &&
                 string.Equals(tid, requiredTenantId, StringComparison.OrdinalIgnoreCase))
                 return true;

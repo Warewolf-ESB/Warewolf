@@ -12,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ModelContextProtocol;
 using System;
 using System.IO;
+using System.Linq;
 using Warewolf.Execution.Lightweight.Mcp;
 
 namespace Warewolf.Execution.Lightweight.Tests.Mcp
@@ -76,6 +77,44 @@ namespace Warewolf.Execution.Lightweight.Tests.Mcp
         public void Load_ReturnsNull_WhenTestDoesNotExist()
         {
             Assert.IsNull(TestCatalog.Load(_root, "MyWorkflow", "NoSuchTest"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void List_IsEmpty_WhenTheWorkflowHasNoTestsDirectory()
+        {
+            Assert.AreEqual(0, TestCatalog.List(_root, "MyWorkflow").Count);
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void List_ReturnsTestNamesSorted_IgnoringOtherFiles()
+        {
+            TestCatalog.Save(_root, "Sales/CalculateTotal", "b", "{}");
+            TestCatalog.Save(_root, "Sales/CalculateTotal", "A", "{}");
+            File.WriteAllText(Path.Combine(_root, "Sales", "CalculateTotal.tests", "notes.txt"), "");
+
+            CollectionAssert.AreEqual(new[] { "A", "b" }, TestCatalog.List(_root, "Sales/CalculateTotal").ToArray());
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Delete_ReturnsFalse_WhenTestDoesNotExist()
+        {
+            Assert.IsFalse(TestCatalog.Delete(_root, "MyWorkflow", "NoSuchTest"));
+        }
+
+        [TestMethod]
+        [TestCategory("UnitTest")]
+        public void Delete_KeepsTheTestsDirectory_WhileOtherFilesRemain()
+        {
+            TestCatalog.Save(_root, "MyWorkflow", "One", "{}");
+            File.WriteAllText(Path.Combine(_root, "MyWorkflow.tests", "notes.txt"), "");
+
+            Assert.IsTrue(TestCatalog.Delete(_root, "MyWorkflow", "One"));
+
+            Assert.IsFalse(TestCatalog.Exists(_root, "MyWorkflow", "One"));
+            Assert.IsTrue(Directory.Exists(TestCatalog.TestsDirectoryFor(_root, "MyWorkflow")));
         }
 
         [TestMethod]
