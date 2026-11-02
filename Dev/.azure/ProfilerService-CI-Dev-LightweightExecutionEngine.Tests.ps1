@@ -8,11 +8,11 @@
         Invoke-Pester -Path ./ProfilerService-CI-Dev-LightweightExecutionEngine.Tests.ps1
 
     The mirror takes everything from the Unlimited pipelines except the container tests (Docker build to
-    Docker push), and adds the timer function app deployment. A pipeline file cannot be run locally, so this
+    Docker push). A pipeline file cannot be run locally, so this
     suite checks what CAN be proven without Azure:
 
       * the YAML parses, and every embedded PowerShell script is syntactically valid;
-      * the container steps are gone and the timer function app is deployed;
+      * the container steps are gone and the timer function app is not deployed;
       * Dev and UAT are the same pipeline apart from their environment names;
       * every repo path a step reads exists under Dev/Unlimited.ProfilerServices;
       * the sources and settings are encrypted in place by Encrypt-Resources.ps1 with the vault key, and the
@@ -123,20 +123,12 @@ Describe 'Profiler <Env> pipeline - structure' -ForEach $script:Environments -Sk
         $kv['inputs']['ConnectedServiceName'] | Should -Be "$($Env.ToLowerInvariant())-sp-devops"
     }
 
-    It 'deploys the published timer function package after publishing it and before generating Swagger' {
+    It 'publishes the timer function package but does not deploy it (the app is provisioned outside CI)' {
         $publish = Get-StepIndex $script:Doc 'Publish Azure Functions'
-        $deploy  = Get-StepIndex $script:Doc 'Deploy the timer function app'
         $swagger = Get-StepIndex $script:Doc 'Swagger: Generate Swagger.json'
         $publish | Should -BeGreaterOrEqual 0
-        $deploy  | Should -BeGreaterThan $publish
-        $swagger | Should -BeGreaterThan $deploy
-        $step = Find-Step $script:Doc 'Deploy the timer function app'
-        $step['task'] | Should -Be 'AzureFunctionApp@2'
-        $step['inputs']['connectedServiceNameARM'] | Should -Be "$($Env.ToLowerInvariant())-sp-devops"
-        $step['inputs']['appName'] | Should -Be '$(ProfilerTimerFunctionAppName)'
-        $step['inputs']['package'] | Should -BeLike '*/publish/AzureFunctions.ProfilerServices.zip'
-        $script:Doc['variables']['ProfilerTimerFunctionAppName'] | Should -Be "profilerlw$($Env.ToLowerInvariant())-timer-function"
-        $script:Doc['variables']['ProfilerTimerFunctionResourceGroup'] | Should -Be 'DEV2'
+        $swagger | Should -BeGreaterThan $publish
+        @(Get-Steps $script:Doc | ForEach-Object { $_['task'] }) | Where-Object { $_ -like 'AzureFunctionApp@*' } | Should -BeNullOrEmpty
     }
 
     It 'publishes the engine package and the drop artifacts' {

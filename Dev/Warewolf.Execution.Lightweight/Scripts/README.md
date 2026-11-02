@@ -206,8 +206,8 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   `ProfilerService-CI-Dev.yml` / `ProfilerService-CI-UAT.yml`, mirrored step for step (Key Vault
   `{Dev,UAT}AzureDevopsKeyVault`, `replacetokens@5`, Build SQL, Azure Functions publish, Swagger/APIM, the
   `ProfilerEngine` and `drop` artifacts) **except the container tests** (Docker build to Docker push) and the
-  `unlimited.devops` manifests. They add a deploy of the timer function app (`AzureFunctionApp@2`,
-  `ProfilerTimerFunctionAppName` in `DEV2`). The two files differ only in their environment names (a Pester
+  `unlimited.devops` manifests. Like the Unlimited pipelines they only publish the timer function package;
+  they do not deploy it. The two files differ only in their environment names (a Pester
   test pins it). The Unlimited content lives in `Dev/Unlimited.ProfilerServices/` (`Warewolf.ProfilerServices`,
   `SolutionItems`, `AzureFunctions.ProfilerServices`, `Database`); `secure.config` and the license come from
   the Library secure files because they are git-ignored here. Sources and settings are WFAES-encrypted in place
