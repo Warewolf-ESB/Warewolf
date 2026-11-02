@@ -216,6 +216,69 @@ Built as `shared/app` (Kotlin Multiplatform: Android, iOS, desktop JVM) and `and
   main branches, builds a signed release APK in `Compile_Release`; `pipeline-MOBILE.yml` publishes it to
   `stwwreleases` with a download link (README, *CI and release*). Not yet run on a hosted agent.
 
+### Add UI and credits (planned, 2026-11-02)
+
+Status: **plan only, not approved, no code.** Open questions are listed at the end of this section.
+
+An **Add UI** button pinned at the bottom of the UI list asks what to do, takes one text prompt, and has Claude
+Opus (`claude-opus-5`) produce the result through the Anthropic API. Version 1 has no user-supplied API key: the
+app is meant to work without anyone thinking about keys. Later, Warewolf chatbot sources (`ChatbotSourceViewModel`)
+can be offered for free-form chat.
+
+| Action | Credits | Notes |
+|---|---|---|
+| Generate a 3D scene | 200 | Assumed: a UI whose page uses WebGL / three.js, with its own system prompt, run in the same sandbox |
+| Generate a UI | 100 | New organization UI |
+| Regenerate a UI | 50 | Asks which existing UI first |
+| Update a UI | 25 | Asks which existing UI first; its current definition goes to the model with the prompt |
+
+Credits: every identity gets **1000 free** once; further credits cost **$1 per 1,000**.
+
+**Design**
+
+1. **The Anthropic key stays on the server.** The app never holds it. A new backend endpoint,
+   `POST /api/studio/ai/generate { action, prompt, uiId? }`, checks credits, calls Anthropic, saves the result as an
+   organization UI (the `create_ui` / `save_organization_ui` path, `McpApiFunctions.cs:296-324`) and returns the UI id.
+2. **Credit ledger** per Cloudflare Access identity (from `/api/studio/me`): entries are signup grant, purchase,
+   spend and refund; the balance is their sum. The free 1000 is granted once, on first call. Spending is reserve →
+   call → commit, with a refund when Anthropic fails or the output is invalid. A client request id makes retries
+   idempotent. An insufficient balance is refused before any Anthropic call.
+3. **Mobile (`shared/app`).**
+   - "Add UI" button at the bottom of the list, opening an action sheet with the four options, their costs and the
+     balance. Options the user can't afford are disabled and point to Buy credits.
+   - Prompt screen (one text field, not empty), then progress, then the new UI opens.
+   - A balance chip in the top bar opens Buy credits.
+   - New code: credits and generate calls in `StudioApi.kt` (same signed-out and failure handling), and an
+     `AddUiModel` in the style of `HomeModel`.
+4. **Buying credits.** Apple and Google require their own in-app purchase for digital credits, so Stripe inside the
+   app is not an option. Version 1 assumption: consumable packs through Play Billing on Android (StoreKit when iOS
+   ships); packs of $1, $5, $10 and $25 (1k, 5k, 10k, 25k credits). The backend verifies each receipt server-side
+   and credits the ledger once per receipt, so a purchase can't be replayed. After store fees the net is roughly
+   70–85% of the price.
+
+**Risks**
+
+- **Margin.** 100 credits is $0.10. A full-page Opus generation can cost several times that in tokens (at the
+  $15 / $75 per million input / output rates remembered, not checked against current prices). Check before launch;
+  options are metering by real tokens, raising prices, or a cheaper model for Update.
+- **Free-credit abuse.** Credits are tied to the Access identity; if sign-up is open, cap free grants per
+  organization or per day.
+- **Backend ownership.** `/api/studio/*` is not in this repo, so the endpoint, ledger and receipt verification
+  land elsewhere.
+
+**Test plan (to be approved before any test is written)**
+
+- Backend: ledger balance, free grant once, reserve/commit/refund, idempotent request id, cost table, duplicate
+  receipt rejected, insufficient balance makes no Anthropic call.
+- Mobile (`commonTest`, desktop JVM): `AddUiModel` (option enablement by balance, cost per option, empty prompt
+  refused, pick → generate → open) and the credits / generate calls' decoding and signed-out handling.
+
+**Artefacts to update when built:** this plan, `README.md`, the backend repo and its docs, the CI test job if a
+module is added.
+
+**Open questions:** where the `/api/studio` backend code lives; confirm what "3D scene" means; whether version 1
+purchases are Android-only; metered tokens or the fixed credit table.
+
 ## Phases
 
 | Phase | Scope | Exit |
@@ -226,6 +289,7 @@ Built as `shared/app` (Kotlin Multiplatform: Android, iOS, desktop JVM) and `and
 | P3 | Model catalog + tiering | right model downloaded and loaded per device |
 | P4 | Generator (baseline System 1, then trained) | generated workflows pass `validate_workflow` |
 | P5 | Editing parity | hand-editing matches the web studio's core flows |
+| P6 | [Add UI and credits](#add-ui-and-credits-planned-2026-11-02) | Add UI button, credit balance, purchases; **plan only** |
 
 ### P0 spikes
 
