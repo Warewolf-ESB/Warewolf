@@ -220,17 +220,20 @@ Built as `shared/app` (Kotlin Multiplatform: Android, iOS, desktop JVM) and `and
 
 Status: **plan only, not approved, no code.** Open questions are listed at the end of this section.
 
-An **Add UI** button pinned at the bottom of the UI list asks what to do, takes one text prompt, and has Claude
-Opus (`claude-opus-5`) produce the result through the Anthropic API. Version 1 has no user-supplied API key: the
-app is meant to work without anyone thinking about keys. Later, Warewolf chatbot sources (`ChatbotSourceViewModel`)
-can be offered for free-form chat.
+Two entry points, each with two options. Whichever option is picked, the user then gives one text prompt, and
+Claude Opus (`claude-opus-5`) produces the result through the Anthropic API. Version 1 has no user-supplied API
+key: the app is meant to work without anyone thinking about keys. Later, Warewolf chatbot sources
+(`ChatbotSourceViewModel`) can be offered for free-form chat.
 
-| Action | Credits | Notes |
-|---|---|---|
-| Generate a 3D scene | 200 | Assumed: a UI whose page uses WebGL / three.js, with its own system prompt, run in the same sandbox |
-| Generate a UI | 100 | New organization UI |
-| Regenerate a UI | 50 | Asks which existing UI first |
-| Update a UI | 25 | Asks which existing UI first; its current definition goes to the model with the prompt |
+- **Add UI** button pinned at the bottom of the UI list (new UIs).
+- **Edit** button on each existing UI's row (acts on that UI, so no "which UI?" step).
+
+| Entry point | Action | Credits | Notes |
+|---|---|---|---|
+| Add UI | Generate a 3D scene | 200 | Assumed: a UI whose page uses WebGL / three.js, with its own system prompt, run in the same sandbox |
+| Add UI | Generate a UI | 100 | New organization UI |
+| Edit (per UI) | Regenerate a UI | 50 | Replaces that UI |
+| Edit (per UI) | Update a UI | 25 | Its current definition goes to the model with the prompt |
 
 Credits: every identity gets **1000 free** once; further credits cost **$1 per 1,000**.
 
@@ -244,9 +247,13 @@ Credits: every identity gets **1000 free** once; further credits cost **$1 per 1
    call → commit, with a refund when Anthropic fails or the output is invalid. A client request id makes retries
    idempotent. An insufficient balance is refused before any Anthropic call.
 3. **Mobile (`shared/app`).**
-   - "Add UI" button at the bottom of the list, opening an action sheet with the four options, their costs and the
-     balance. Options the user can't afford are disabled and point to Buy credits.
-   - Prompt screen (one text field, not empty), then progress, then the new UI opens.
+   - "Add UI" button at the bottom of the list opens a sheet with its two options (3D scene, UI); each row's
+     **Edit** button opens a sheet with its two options (Regenerate, Update). Sheets show the costs and the balance;
+     options the user can't afford are disabled and point to Buy credits.
+   - Prompt screen (one text field, not empty), then progress, then the new or changed UI opens.
+   - The existing Edit action (Web Studio deep link, [App layout](#app-layout-2026-10-31)) keeps working but moves
+     off the Edit button so that it can hold exactly two options: it becomes a separate **Web Studio** action on
+     the row (assumption, see open questions).
    - A balance chip in the top bar opens Buy credits.
    - New code: credits and generate calls in `StudioApi.kt` (same signed-out and failure handling), and an
      `AddUiModel` in the style of `HomeModel`.
@@ -263,21 +270,30 @@ Credits: every identity gets **1000 free** once; further credits cost **$1 per 1
   options are metering by real tokens, raising prices, or a cheaper model for Update.
 - **Free-credit abuse.** Credits are tied to the Access identity; if sign-up is open, cap free grants per
   organization or per day.
-- **Backend ownership.** `/api/studio/*` is not in this repo, so the endpoint, ledger and receipt verification
-  land elsewhere.
+- **Backend ownership.** `/api/studio/*` is not in this repo. It lives in the `warewolf-admin` repo
+  (`gitlab.com/warewolf/warewolf-admin`, `C:\builds\warewolf-admin`): endpoints in `Dev/Warewolf.SubscriptionAPI`
+  (Azure Functions, e.g. `StudioSessionApi.cs`, `ChatbotApi.cs`), handlers and the Cloudflare Access check in
+  `Dev/Warewolf.Subscription` (`CloudflareAccessJwtValidator.cs`), tests in `Dev/Warewolf.SubscriptionTests`, schema
+  in `Database/warewolf-organizations/*.sql`. The new `ai/generate` endpoint, credits ledger tables and receipt
+  verification land there. Its `ChatbotProviderClient.cs` already speaks to Anthropic (`/v1/messages`), but with
+  per-organization chatbot sources; credits need a separate Warewolf-held key. The `organization-uis` list/get
+  endpoint was not found in that repo (the studio client is `organization-uis.service.ts` in `~/angular`), so
+  where the generate endpoint saves its UI must be confirmed first.
 
 **Test plan (to be approved before any test is written)**
 
 - Backend: ledger balance, free grant once, reserve/commit/refund, idempotent request id, cost table, duplicate
   receipt rejected, insufficient balance makes no Anthropic call.
-- Mobile (`commonTest`, desktop JVM): `AddUiModel` (option enablement by balance, cost per option, empty prompt
-  refused, pick → generate → open) and the credits / generate calls' decoding and signed-out handling.
+- Mobile (`commonTest`, desktop JVM): `AddUiModel` (the two options per entry point, enablement by balance, cost
+  per option, empty prompt refused, Regenerate/Update send the row's UI id, pick → generate → open) and the credits / generate calls' decoding and signed-out handling.
 
 **Artefacts to update when built:** this plan, `README.md`, the backend repo and its docs, the CI test job if a
 module is added.
 
-**Open questions:** where the `/api/studio` backend code lives; confirm what "3D scene" means; whether version 1
-purchases are Android-only; metered tokens or the fixed credit table.
+**Open questions:** where the `organization-uis` list/get endpoint is served (not found in `warewolf-admin`);
+confirm what "3D scene" means; whether version 1
+purchases are Android-only; metered tokens or the fixed credit table; the row already has an **Edit** that opens
+the Web Studio, so does it become a separate **Web Studio** action (assumed), get dropped, or live elsewhere?
 
 ## Phases
 
