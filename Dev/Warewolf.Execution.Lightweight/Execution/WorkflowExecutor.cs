@@ -694,12 +694,12 @@ namespace Warewolf.Execution.Lightweight
         /// <c>ExecutionEnvironmentUtils.UpdateEnvironmentFromInputPayload</c> call — the same one
         /// <c>execute_workflow</c> already uses — applies them, rather than porting
         /// <c>Evaluator.AddTestInputsToJsonOrRecordset</c>/<c>AddRecordsetsInputs</c> (private
-        /// <c>Dev2.Server</c>-only instance methods with no reuse surface). Deliberate Phase 3
-        /// simplification (per docs/WorkflowTestFramework-Plan.md decision 6): a recordset-field
-        /// reference (e.g. <c>[[Rows().Name]]</c>) does not match a top-level DataList variable name
-        /// and is silently not applied — only scalar test inputs are supported this way.
+        /// <c>Dev2.Server</c>-only instance methods with no reuse surface). Recordset-field inputs
+        /// (e.g. <c>[[Rows(2).Name]]</c>) are grouped by recordset name and row index into the nested
+        /// shape <c>{ "Rows": [ { "Name": ".." }, .. ] }</c> that <c>UpdateEnvironmentFromInputPayload</c>
+        /// expects; a flat <c>"Rows(2).Name"</c> key would not match any DataList variable and be dropped.
         /// </summary>
-        static string BuildTestInputsPayload(IServiceTestModelTO test)
+        internal static string BuildTestInputsPayload(IServiceTestModelTO test)
         {
             if (test.Inputs is not { Count: > 0 })
             {
@@ -707,6 +707,7 @@ namespace Warewolf.Execution.Lightweight
             }
 
             var payload = new JObject();
+            var recordsets = new Dictionary<string, SortedDictionary<int, JObject>>();
             foreach (var input in test.Inputs)
             {
                 if (string.IsNullOrEmpty(input.Variable))
@@ -720,11 +721,41 @@ namespace Warewolf.Execution.Lightweight
                 }
 
                 var key = input.Variable.Trim('[', ']');
-                payload[key] = input.Value;
+                var match = RecordsetInputKey.Match(key);
+                if (!match.Success)
+                {
+                    payload[key] = input.Value;
+                    continue;
+                }
+
+                var name = match.Groups["rs"].Value;
+                if (!recordsets.TryGetValue(name, out var rows))
+                {
+                    rows = new SortedDictionary<int, JObject>();
+                    recordsets[name] = rows;
+                }
+
+                var index = int.Parse(match.Groups["idx"].Value, System.Globalization.CultureInfo.InvariantCulture);
+                if (!rows.TryGetValue(index, out var row))
+                {
+                    row = new JObject();
+                    rows[index] = row;
+                }
+
+                row[match.Groups["field"].Value] = input.Value;
+            }
+
+            foreach (var recordset in recordsets)
+            {
+                payload[recordset.Key] = new JArray(recordset.Value.Values);
             }
 
             return payload.Count > 0 ? payload.ToString(Formatting.None) : null;
         }
+
+        static readonly System.Text.RegularExpressions.Regex RecordsetInputKey = new(
+            @"^(?<rs>[^().\s]+)\((?<idx>\d+)\)\.(?<field>[^().\s]+)$",
+            System.Text.RegularExpressions.RegexOptions.Compiled);
 
         /// <summary>
         /// WOLF-8512 (build 30658): does <paramref name="exception"/>, anywhere in its chain,
