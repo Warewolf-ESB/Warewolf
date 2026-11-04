@@ -11,14 +11,14 @@
       * nothing compiles the engine or the worker any more, and nothing deploys from the checkout's
         Deploy-WwExecutionEngine.ps1 / Deploy-WwQueueProcessor.ps1;
       * 'Resolve Published Release URLs' - EXECUTED against a stubbed release page - resolves all
-        three links, refuses an untrusted host and a linux-x64 engine, honours a pin, and publishes
+        three links, refuses an untrusted host and a win-x64 engine, honours a pin, and publishes
         the worker/scripts URLs as output variables the QueueProcessor job actually reads;
       * 'Deploy via Deployment Scripts' - EXECUTED against stub orchestrators - fails before
         deploying when the released script lacks a parameter, and passes every argument otherwise;
       * the splatted argument set is one the checkout's own Deploy-WwExecutionEngine.ps1 accepts,
-        and targets the Windows Consumption (Y1) plan rather than Flex;
-      * 'Assert WarewolfServer-UAT is not a Linux (Flex) app' - EXECUTED against a stubbed az -
-        fails on a Linux app and passes a Windows or missing one.
+        and targets the Flex Consumption plan with persistence disabled;
+      *       'Assert WarewolfServer-UAT is not a Windows (Y1) app' - EXECUTED against a stubbed az -
+              fails on a Windows app and passes a Linux or missing one.
 
     Requires the powershell-yaml module. The whole suite is skipped (not failed) without it.
 #>
@@ -89,12 +89,12 @@ BeforeAll {
 
     $script:Host_ = 'https://stwwreleases.blob.core.windows.net/releases'
     function script:New-ReleasePage {
-        param([string] $EngineUrl = "$script:Host_/AzureFunctionsPackage-win-x64-9.9.9.9.zip",
+        param([string] $EngineUrl = "$script:Host_/AzureFunctionsPackage-linux-x64-9.9.9.9.zip",
               [string] $ScriptsUrl = "$script:Host_/DeploymentScripts-9.9.9.9.zip",
               [string] $WorkerUrl = "$script:Host_/Warewolf-QueueProcessor-9.9.9.9.zip")
         @(
-            "<a class=`"btn`" data-role=`"engine-linux-zip-link`" href=`"$script:Host_/AzureFunctionsPackage-linux-x64-9.9.9.9.zip`">Linux</a>"
-            "<a class=`"btn`" data-role=`"engine-windows-zip-link`" href=`"$EngineUrl`">Windows</a>"
+            "<a class=`"btn`" data-role=`"engine-linux-zip-link`" href=`"$EngineUrl`">Linux</a>"
+            "<a class=`"btn`" data-role=`"engine-windows-zip-link`" href=`"$script:Host_/AzureFunctionsPackage-linux-x64-9.9.9.9.zip`">Windows</a>"
             "<a class=`"btn`" data-role=`"scripts-zip-link`" href=`"$ScriptsUrl`">Scripts</a>"
             "<a class=`"btn`" data-role=`"queueworker-zip-link`" href=`"$WorkerUrl`">Worker</a>"
         ) -join "`n"
@@ -199,22 +199,22 @@ Describe 'pipeline-LOADTEST - Resolve Published Release URLs' -Skip:(-not $scrip
 
     It 'resolves all three links off the page and publishes the worker + scripts URLs as outputs' {
         $out = Invoke-ResolveStep -Page (New-ReleasePage)
-        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-win-x64-9.9.9.9.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-linux-x64-9.9.9.9.zip"
         $out | Should -Contain "##vso[task.setvariable variable=ResolvedScriptsZipUrl]$script:Host_/DeploymentScripts-9.9.9.9.zip"
         $out | Should -Contain "##vso[task.setvariable variable=ResolvedScriptsZipUrl;isOutput=true]$script:Host_/DeploymentScripts-9.9.9.9.zip"
         $out | Should -Contain "##vso[task.setvariable variable=ResolvedQueueWorkerZipUrl;isOutput=true]$script:Host_/Warewolf-QueueProcessor-9.9.9.9.zip"
     }
 
     It 'uses the pins without fetching the page when all three are set' {
-        $out = Invoke-ResolveStep -Page '' -EngineZipUrl "$script:Host_/AzureFunctionsPackage-win-x64-1.2.3.4.zip" `
+        $out = Invoke-ResolveStep -Page '' -EngineZipUrl "$script:Host_/AzureFunctionsPackage-linux-x64-1.2.3.4.zip" `
             -ScriptsZipUrl "$script:Host_/DeploymentScripts-1.2.3.4.zip" -QueueWorkerZipUrl "$script:Host_/Warewolf-QueueProcessor-1.2.3.4.zip"
         $script:PageRequests | Should -Be 0
-        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-win-x64-1.2.3.4.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-linux-x64-1.2.3.4.zip"
         $out | Should -Contain "##vso[task.setvariable variable=ResolvedQueueWorkerZipUrl;isOutput=true]$script:Host_/Warewolf-QueueProcessor-1.2.3.4.zip"
     }
 
     It 'refuses a <What> link on an untrusted host' -ForEach @(
-        @{ What = 'engine';  Page = @{ EngineUrl  = 'https://evil.example.com/AzureFunctionsPackage-win-x64-9.zip' } }
+        @{ What = 'engine';  Page = @{ EngineUrl  = 'https://evil.example.com/AzureFunctionsPackage-linux-x64-9.zip' } }
         @{ What = 'scripts'; Page = @{ ScriptsUrl = 'https://evil.example.com/DeploymentScripts-9.zip' } }
         @{ What = 'worker';  Page = @{ WorkerUrl  = 'http://stwwreleases.blob.core.windows.net/releases/Warewolf-QueueProcessor-9.zip' } }
     ) {
@@ -226,29 +226,29 @@ Describe 'pipeline-LOADTEST - Resolve Published Release URLs' -Skip:(-not $scrip
     ) {
         $out = Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl $Value -ScriptsZipUrl $Value -QueueWorkerZipUrl $Value
         $script:PageRequests | Should -Be 1
-        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-win-x64-9.9.9.9.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/AzureFunctionsPackage-linux-x64-9.9.9.9.zip"
     }
 
     It 'mixes a pinned engine with page-resolved scripts and worker' {
-        $out = Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl "$script:Host_/branch-builds/AzureFunctionsPackage-win-x64-Branch-abc.zip"
+        $out = Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl "$script:Host_/branch-builds/AzureFunctionsPackage-linux-x64-Branch-abc.zip"
         $script:PageRequests | Should -Be 1
-        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/branch-builds/AzureFunctionsPackage-win-x64-Branch-abc.zip"
+        $out | Should -Contain "##vso[task.setvariable variable=ResolvedEngineZipUrl]$script:Host_/branch-builds/AzureFunctionsPackage-linux-x64-Branch-abc.zip"
         $out | Should -Contain "##vso[task.setvariable variable=ResolvedScriptsZipUrl;isOutput=true]$script:Host_/DeploymentScripts-9.9.9.9.zip"
         $out | Should -Contain "##vso[task.setvariable variable=ResolvedQueueWorkerZipUrl;isOutput=true]$script:Host_/Warewolf-QueueProcessor-9.9.9.9.zip"
     }
 
     It 'refuses a pinned engine on an untrusted host' {
-        { Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl 'https://evil.example.com/AzureFunctionsPackage-win-x64-9.zip' } |
+        { Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl 'https://evil.example.com/AzureFunctionsPackage-linux-x64-9.zip' } |
             Should -Throw '*Refusing to fetch*'
     }
 
-    It 'refuses a pinned linux-x64 engine package' {
-        { Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl "$script:Host_/AzureFunctionsPackage-linux-x64-9.9.9.9.zip" } |
-            Should -Throw '*linux-x64*'
+    It 'refuses a pinned win-x64 engine package' {
+        { Invoke-ResolveStep -Page (New-ReleasePage) -EngineZipUrl "$script:Host_/AzureFunctionsPackage-win-x64-9.9.9.9.zip" } |
+            Should -Throw '*win-x64*'
     }
 
     It 'fails naming the pin when the page lacks the <Role> link' -ForEach @(
-        @{ Role = 'engine-windows-zip-link'; Pin = 'WarewolfEngineZipUrl' }
+        @{ Role = 'engine-linux-zip-link'; Pin = 'WarewolfEngineZipUrl' }
         @{ Role = 'scripts-zip-link';        Pin = 'WarewolfScriptsZipUrl' }
         @{ Role = 'queueworker-zip-link';    Pin = 'WarewolfQueueWorkerZipUrl' }
     ) {
@@ -279,13 +279,14 @@ Describe 'pipeline-LOADTEST - Deploy via Deployment Scripts' -Skip:(-not $script
     It 'keeps the four throughput settings the load test is calibrated against' {
         $script:Deploy | Should -Match 'ServiceBusMaxConcurrentCalls\s+=\s+2\b'
         $script:Deploy | Should -Match 'ServiceBusTriggerMaxConcurrentExecutions\s+=\s+2\b'
-        $script:Deploy | Should -Match 'FunctionAppScaleLimit\s+=\s+30\b'
+        $script:Deploy | Should -Match 'FlexMaximumInstanceCount\s+=\s+16\b'
         $script:Deploy | Should -Match 'DisableDynamicConcurrency\s+=\s+\$true'
     }
 
-    It 'targets the Windows Consumption (Y1) plan, with no Flex-only parameter' {
-        $script:Deploy | Should -Match "HostingPlan\s+=\s+'Consumption'"
-        @($script:Keys | Where-Object { $_ -like 'Flex*' }) | Should -BeNullOrEmpty -Because 'Deploy-WwExecutionEngine.ps1 rejects -FlexMaximumInstanceCount without -HostingPlan Flex'
+    It 'targets the Flex Consumption plan with persistence disabled' {
+        $script:Deploy | Should -Match "HostingPlan\s+=\s+'Flex'"
+        $script:Deploy | Should -Match 'EnablePersistence\s+=\s+\$false'
+        @($script:Keys | Where-Object { $_ -like 'Persistence*' -or $_ -eq 'FunctionAppScaleLimit' }) | Should -BeNullOrEmpty -Because 'persistence is off, and -FunctionAppScaleLimit is rejected on Flex'
     }
 
     It 'gives the WAREWOLF_ENTRA_CONFIG self-heal a Graph-free appId for a recreated app' {
@@ -302,10 +303,10 @@ Describe 'pipeline-LOADTEST - Deploy via Deployment Scripts' -Skip:(-not $script
     It 'fails before deploying when the released orchestrator lacks a parameter, naming it and the pin' {
         $stub   = Join-Path $TestDrive 'Old-Deploy.ps1'
         $record = Join-Path $TestDrive 'old.bound'
-        New-StubScript -Path $stub -Params @($script:Keys | Where-Object { $_ -ne 'FunctionAppScaleLimit' }) -Record $record
+        New-StubScript -Path $stub -Params @($script:Keys | Where-Object { $_ -ne 'FlexMaximumInstanceCount' }) -Record $record
         $body = Expand-Macros $script:Deploy ($script:Macros + @{ DeployScriptPath = $stub })
 
-        { & ([scriptblock]::Create($body)) } | Should -Throw '*-FunctionAppScaleLimit*WarewolfScriptsZipUrl*'
+        { & ([scriptblock]::Create($body)) } | Should -Throw '*-FlexMaximumInstanceCount*WarewolfScriptsZipUrl*'
         Test-Path -LiteralPath $record | Should -BeFalse -Because 'nothing may be deployed once a parameter is missing'
     }
 
@@ -320,10 +321,10 @@ Describe 'pipeline-LOADTEST - Deploy via Deployment Scripts' -Skip:(-not $script
     }
 }
 
-Describe 'pipeline-LOADTEST - Assert WarewolfServer-UAT is not a Linux (Flex) app' -Skip:(-not $script:HaveYaml) {
+Describe 'pipeline-LOADTEST - Assert WarewolfServer-UAT is not a Windows (Y1) app' -Skip:(-not $script:HaveYaml) {
 
     BeforeAll {
-        $script:GuardName = 'Assert WarewolfServer-UAT is not a Linux (Flex) app'
+        $script:GuardName = 'Assert WarewolfServer-UAT is not a Windows (Y1) app'
         $script:Guard     = Get-StepScript (Find-Step 'Deploy_UAT' $script:GuardName)
 
         # A stand-in for Scripts/WwAzCli.psm1: Invoke-WwAz (what the step aliases `az` to) records
@@ -360,13 +361,13 @@ Export-ModuleMember -Function Invoke-WwAz
         $guard | Should -BeLessThan ([array]::IndexOf($names, 'Deploy via Deployment Scripts'))
     }
 
-    It 'fails on an existing Linux app, naming the delete it needs' {
-        { Invoke-GuardStep -Kind 'functionapp,linux' } | Should -Throw '*LINUX app*az functionapp delete --name WarewolfServer-UAT*'
+    It 'fails on an existing Windows app, naming the delete it needs' {
+        { Invoke-GuardStep -Kind 'functionapp' } | Should -Throw '*WINDOWS app*az functionapp delete --name WarewolfServer-UAT*'
         $global:WwAzStubArgs[0..1] | Should -Be @('functionapp', 'list')
     }
 
-    It 'passes an existing Windows app' {
-        Invoke-GuardStep -Kind 'functionapp' | Should -Match 'is a Windows app'
+    It 'passes an existing Linux app' {
+        Invoke-GuardStep -Kind 'functionapp,linux' | Should -Match 'is a Linux app'
     }
 
     It 'passes when the app does not exist yet' {
