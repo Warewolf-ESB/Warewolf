@@ -35,7 +35,8 @@ control plane.
 | `Publish-WwProfilerExact.ps1`                 | Publishes N exact-shape profiler messages and writes the manifest the reconciliation depends on. Wraps the fixture in the engine's documented `{"inputs":{…}}` envelope — a **flat** body is the trap this guards, and it fails differently per engine build (pre-WOLF-8517 dead-letters it as `Malformed`; current builds accept it but bind **nothing**, so the workflow runs against an empty datalist and fails on its own missing variables). Builds and validates the manifest **before** connecting, and writes only what was actually published. Runs the publish in an isolated **child process**: RabbitMQ.Client 7.0.0 on .NET 10 reliably crashes during connection teardown, so the result and manifest are both written *ahead* of the close calls and the launcher reads the result file rather than the exit code. **Ensures the exchange/queue/binding before publishing**, and with `-RabbitMqManagementUri` **proves** the burst against the broker's own `message_stats.publish` counter instead of its own loop count — on 2026-09-19 a queue declared without its same-named exchange swallowed 20,000 messages while the script reported every one as published. The counter is polled (`Wait-E2EPublishDelta`), because the management stats database refreshes on an interval rather than synchronously with the publish. |
 | `Measure-WwProfilerRun.ps1`                   | Post-hoc analysis of a completed exact-load run — reads the run's manifest and `dbo.jobs1` rows and reports the per-message reconciliation without re-running anything. |
 | `Tests/Invoke-WwQueueLoadTest.Tests.ps1`      | Pester 5 suite for the load test's decision logic via `-LoadFunctionsOnly` — concurrency arithmetic, four-bucket classification, verdict rules, pre-flight blockers, connection-string masking, percentiles. Includes four regressions: **numeric parameters must be nullable** (a bare `[int]` defaults to `0`, indistinguishable from an explicit `0`, so every unbound int silently overrode its default with zero); **a run that published nothing must FAIL** (every "no failures" condition is vacuously true on an empty run); **no `[datetime]::TryParse` with a `[ref]` on an untyped variable** (PowerShell cannot bind it — asserted against the AST, since the helper's doc comment names the broken pattern deliberately); **warm-up traffic must be excluded** (two watermarks, the reported pre-warm row count, the report-window clamp, and no row deletion anywhere); **a failure cause must be diagnosed, never assumed** (`Resolve-E2EBrokerUri` returns `$null` for six reasons — a mistyped filename was being blamed on WFAES encryption, sending the reader after a Key Vault problem that did not exist); **reconciliation must be scoped to this run's label** (a shared `-OutputDir` merged two runs' manifests and reported a flawless 1000/1000 run as `FAIL — 20 LOST`); and **`TRY_CONVERT` style 127 requires the `T` separator** (a space-separated timestamp column silently yielded NULL, blanking every latency figure). Runs offline. |
-| `Tests/Publish-WwQueueBurst.Tests.ps1`        | Pester 5 suite for the manifest invariants the reconciliation depends on — unique transaction ids across a 100-message burst, distinct bodies (identical ones make duplicate *execution* invisible in the database), empty failure bodies, and the parameter guards. Runs offline. |
+| `Tests/Publish-WwQueueBurst.Tests.ps1`        | Pester 5 suite for the manifest invariants the reconciliation depends on — unique transaction ids across a 100-message burst, distinct bodies (identical ones make duplicate *execution* invisible in the database), empty failure bodies, and the parameter guards. Also covers `-DataFilePath` (`Read-WwBurstDataFile` and `New-WwBurstManifest -Records`): one message per record in file order, bodies verbatim with empty values kept, MandateId as the manifest key, and the guards for a missing file, an empty array and a non-object record. Runs offline. |
+| `Tests/Integration/Test-ShovelBridgeE2E.Tests.ps1` | Pester 5 suite for `Test-ShovelBridgeE2E.ps1`'s pure helpers and Phase 0 guards (the rest of that script is a live-infrastructure harness). Includes `-DataFilePath` (`Read-WwShovelDataFile`, `Get-WwProfilerReconciliationQueries`): MandateIds must be unique GUIDs (they reach SQL, so a non-GUID is rejected rather than escaped), the reconciliation is chunked at 1000 rows per `VALUES` constructor with file-position `SeqNum`, and `-DataFilePath` is refused without `-VerifyWorkflowExecution`, with `-WorkflowInputsJson`, with `-DbVerificationMode Jobs1`, or with a disagreeing `-MessageCount`. Runs offline. |
 | `Tests/Run-WwProfilerExactLoad.Tests.ps1`     | Pester 5 suite for the control load run's pure helpers via `-LoadFunctionsOnly` (`Get-WwProfilerFieldsFromUrl`, `Get-WwProfilerPreWarmRoute`) plus four regressions, all for defects that were **silent** — each made a run report a successful warm-up that had warmed nothing: **`-PreWarmConcurrency` must default to 2**, not silently inherit the pre-warm script's 6 (the documented Y1 OOM trigger); **`-PreWarmRoute` must default to empty** so it derives the *workflow* route from `-Url`, because the previous `Public/apis.json` default is discovery-only and never populates the per-workflow pool; **the empty-datalist guard must require both a non-discovery route and zero inputs**; and **the run summary must record `preWarmRoute`/`preWarmInputCount`/`preWarmConcurrency`**, without which two runs are not comparable. Empty query values (`RequestType=`, `FASGroup=`) are asserted as *kept*, since dropping them warms a different workflow shape than the publish sends. Runs offline — no engine, no broker, no SQL. |
 | `Tests/Provision-WwPersistenceDatabase.Tests.ps1` | Pester 5 suite for the provisioner's DECISIONS, not its az plumbing: FQDN→server resolution (case, trailing dot, no match, and ambiguity throwing rather than picking one), the admin-login pivot and the remediation text it carries, verdict classification (a failed BLOCKER fails the run; an EXPECTED-LATER absence must NOT, or the first preflight against a bare environment reads as a broken pipeline), serverless-vs-provisioned SKU assembly, the what-if template describing exactly the target resource, authorization-failure recognition (so an unrelated error is never reported as a permissions problem), and that a password cannot reach a summary. Runs offline. |
 | `Tests/Publish-WwProfilerExact.Tests.ps1`     | Pester 5 suite for the exact-shape publisher — the `{"inputs":{…}}` envelope, manifest invariants (unique txn ids and unique `MandateId`s, since a collision in either makes duplicate *execution* invisible), and the child-process launcher contract. Runs offline. |
@@ -202,35 +203,24 @@ dotnet publish ..\Warewolf.Execution.Lightweight.csproj -c Release -o D:\Executi
   and `WarewolfDevOpsTestDb`'s SQL budget. Verified via `Get-WwQueueRunReport.ps1` (worker+engine
   log reconciliation) rather than a database check, because `RequestForProfiling` no longer writes
   to `dbo.jobs1` — see that job's own header comment in `pipeline-LOADTEST.yml`.
-- **`wwqp-profilerdev-*` / `wwqp-profileruat-*`** (`Warewolf.Execution.QueueProcessor` Container Apps) —
-  deployed by the two Profiler pipelines, `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml`
-  and `ProfilerService-CI-UAT-LightweightExecutionEngine.yml` (port of the Unlimited's AD-2383
-  pipelines). **Both files share one body** — everything from `jobs:` down is byte-identical (a Pester
-  test pins it) — and differ only in their variables: Dev deploys engine `wwprofilerlw`, UAT its own
-  `wwprofileruatlw` (created by its first run). The `queueArchitecture` parameter picks how messages
-  on `profiler.profile.request.<DEV|UAT>` reach the engine:
-  **ShovelBridge** (default) — self-hosted `rabbitmq.warewolf.online` → Shovel → Service Bus
-  (`wwprofilerlwsb` / `wwprofileruatlwsb`, trigger queue of the same name, dead-letters forwarded to
-  `profiler.profile.error.request.<ENV>`) → the engine's own `ServiceBusTrigger`;
-  **QueueProcessor** — CloudAMQP `bmkzdabu` → this Container App (KEDA 0..20, `Concurrency 20` in
-  `Dev/.azure/Profiler{Dev,Uat}.trigger.bite`) → `POST /Secure/{workflow}`, dead-letters to the
-  RabbitMQ queue `profiler.profile.error.request.<ENV>`. The two architectures run on **different
-  brokers** (CloudAMQP's free tier cannot shovel into Service Bus; the self-hosted broker publishes
-  only 443, so KEDA cannot reach it over AMQP), and each run tears the other down: ShovelBridge
-  stops the environment's workers, QueueProcessor deletes its shovel. Every run sends a
-  `ProfilerBurstMessageCount` (200) burst through the chosen architecture and checks it end to end
-  (QueueProcessor: per-message reconciliation; ShovelBridge: Service Bus drained with no new
-  dead-letters) plus the CloudAMQP result sink's publish counter.
-  **QueueProcessor prerequisites, each failing the build early with its remediation:** (1) the engine
-  has an Entra app registration (the worker calls only `/Secure/*`) — a one-off
-  `Configure-WwExecutionAuth.ps1` run by an Application Administrator; done for `wwprofilerlw`, still
-  needed for `wwprofileruatlw`. The pipeline reads the appId from the engine's `WAREWOLF_ENTRA_CONFIG`
-  on every run (it is not hardcoded; Easy Auth is kept disabled, auth is in-app); (2) a Key Vault
-  secret holding the CloudAMQP AMQP URI for the KEDA scaler (`ProfilerWorkerRabbitMqSecretUri`). The
-  worker deploy runs under a raw service-principal login (`AzureClientId/Secret/TenantId` pipeline
-  secrets), not the engine steps' service connection, because it must create role assignments.
-  Both architectures need the `CLOUDAMQP_SHOVEL_PASSWORD` and `ExternalRabbitMqPassword` secrets.
-  Both engines publish to `bmkzdabu` (40 connections) — never run Dev and UAT at the same time.
+- **Profiler engine packages** — built by the two Profiler pipelines,
+  `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.yml` (engine `wwprofilerlw`) and
+  `ProfilerService-CI-UAT-LightweightExecutionEngine.yml` (`wwprofileruatlw`), the DEV2 port of the
+  engine-package half of the Unlimited's `ProfilerService-CI-*.yml` (AD-2497). **They only build**: each
+  publishes the `ProfilerEngine` artifact (`profiler-engine.zip`) and deploys nothing. **Both files share
+  one body** — everything from `jobs:` down is byte-identical (a Pester test pins it) — and differ only in
+  their environment variables. The package is the published linux-x64 engine with the profiler laid out
+  as the Unlimited lays it out (`Resources/ProfilerServices/*` at the `Resources` root, its `Sources/*.bite`
+  flat beside it, plus `Resources/rabbit`), the `Settings/` files from `Dev/.azure/profiler-engine/*.txt`
+  and the persistence settings, and the Unlimited's `secure.config` with the license at the root. Every
+  `#{Token}` is replaced from the `WWExecutionEngine` Key Vault (one secret per token, named as the token;
+  DEV2-only placeholders for the Collection, Helper, comms and Elasticsearch endpoints) by
+  `profiler-engine/Set-ProfilerTokens.ps1`, then every source is WFAES-encrypted with
+  `WWExecutionEngineTestSecret` by `profiler-engine/Protect-ProfilerSources.ps1`. Deploying it, and the
+  engine app settings it needs (`WAREWOLF_SERVICEBUS_TRIGGER_QUEUE`, a Linux `WAREWOLF_SECURE_CONFIG` or
+  none, no `bypassSecureConfig`), are in the Dev file's header. The ShovelBridge / QueueProcessor deploy and
+  burst those pipelines used to run (including the `wwqp-profilerdev-*` / `wwqp-profileruat-*` workers)
+  are in their git history; `Dev/.azure/Profiler{Dev,Uat}.trigger.bite` are those workers' triggers.
   Tests: `Dev/.azure/ProfilerService-CI-Dev-LightweightExecutionEngine.Tests.ps1`.
 
 Highlights:

@@ -27,7 +27,7 @@ using Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 namespace Warewolf.Execution.Lightweight.Functions
 {
     /// <summary>
-    /// Plain REST wrappers around the 18 workflow-authoring and licensing tool handlers under
+    /// Plain REST wrappers around the workflow-authoring and licensing tool handlers under
     /// <c>Mcp/ToolHandlers/</c>, one HTTP-triggered POST route per tool under
     /// <c>/mcp-api/{tool_name}</c>. Replaces the retired <c>/mcp</c> JSON-RPC/SSE
     /// endpoint (formerly <c>McpFunction</c>).
@@ -117,6 +117,16 @@ namespace Warewolf.Execution.Lightweight.Functions
             {
                 var p = await ReadBody<ListWorkflowsRequest>(req, ct) ?? new ListWorkflowsRequest();
                 return ListWorkflowsTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Folder, p.Cursor, p.PageSize);
+            });
+
+        [Function("McpApiListSources")]
+        public Task<HttpResponseData> ListSources(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/list_sources")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<ListWorkflowsRequest>(req, ct) ?? new ListWorkflowsRequest();
+                return ListSourcesTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Folder, p.Cursor, p.PageSize);
             });
 
         [Function("McpApiListTools")]
@@ -269,6 +279,72 @@ namespace Warewolf.Execution.Lightweight.Functions
             {
                 var p = await ReadBody<ExecuteTestRequest>(req, ct) ?? new ExecuteTestRequest();
                 return await ExecuteTestTool.Handle(_hostConfig, _authPolicyLoader, _workflowExecutor, principal, p.Name, p.TestName, ct);
+            });
+
+        [Function("McpApiGetUiSchema")]
+        public Task<HttpResponseData> GetUiSchema(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_ui_schema")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, (_, _) => Task.FromResult<object>(GetUiSchemaTool.Handle()));
+
+        [Function("McpApiCreateUi")]
+        public Task<HttpResponseData> CreateUi(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/create_ui")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<WorkflowFormRequest>(req, ct) ?? new WorkflowFormRequest();
+                return CreateUiTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id, p.Form);
+            });
+
+        [Function("McpApiGetUi")]
+        public Task<HttpResponseData> GetUi(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_ui")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<WorkflowFormRequest>(req, ct) ?? new WorkflowFormRequest();
+                return GetUiTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id);
+            });
+
+        [Function("McpApiDeleteUi")]
+        public Task<HttpResponseData> DeleteUi(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/delete_ui")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<WorkflowFormRequest>(req, ct) ?? new WorkflowFormRequest();
+                return DeleteUiTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.Id);
+            });
+
+        [Function("McpApiListTests")]
+        public Task<HttpResponseData> ListTests(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/list_tests")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<NameRequest>(req, ct) ?? new NameRequest();
+                return ListTestsTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name);
+            });
+
+        [Function("McpApiGetTest")]
+        public Task<HttpResponseData> GetTest(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_test")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<TestNameRequest>(req, ct) ?? new TestNameRequest();
+                return GetTestTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.TestName);
+            });
+
+        [Function("McpApiDeleteTest")]
+        public Task<HttpResponseData> DeleteTest(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/delete_test")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, async (principal, ct) =>
+            {
+                var p = await ReadBody<TestNameRequest>(req, ct) ?? new TestNameRequest();
+                return DeleteTestTool.Handle(_hostConfig, _authPolicyLoader, principal, p.Name, p.TestName);
             });
 
         [Function("McpApiExecuteWorkflow")]
@@ -447,6 +523,9 @@ namespace Warewolf.Execution.Lightweight.Functions
 
     sealed record NamedEnvelopeBodyRequest(string Name = "", JsonElement Envelope = default, JsonElement Body = default);
 
+    /// <summary>A workflow named by <c>name</c> or <c>id</c>, and (create_ui only) its <c>form</c>.</summary>
+    sealed record WorkflowFormRequest(string Name = "", Guid? Id = null, JsonElement Form = default);
+
     sealed record DeployWorkflowRequest(string Name = "", string BiteContent = "", bool Overwrite = false);
 
     sealed record AddStepRequest(string Name = "", JsonElement Step = default, string? AfterStepId = null, string? Branch = null);
@@ -456,6 +535,8 @@ namespace Warewolf.Execution.Lightweight.Functions
     sealed record NamedTestRequest(string Name = "", JsonElement Test = default);
 
     sealed record ExecuteTestRequest(string Name = "", string TestName = "");
+
+    sealed record TestNameRequest(string Name = "", string TestName = "");
 
     sealed record ExecuteWorkflowRequest(string Name = "", JsonElement? Inputs = null);
 

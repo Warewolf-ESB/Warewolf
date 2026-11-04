@@ -218,7 +218,21 @@ internal static class Program
         var correlationIdPrefix = opts.GetValueOrDefault("correlation-id", Guid.NewGuid().ToString("N"));
         var workflowInputsJson = opts.GetValueOrDefault("workflow-inputs-json", string.Empty);
         var timeoutSeconds = int.Parse(opts.GetValueOrDefault("result-timeout-seconds", "90"));
+
+        // --data-file replaces the single templated --workflow-inputs-json body with one message
+        // per record, and sizes the run (see WorkflowInputDataFile). Read in every phase: a
+        // '--phase poll' run needs the same count the matching publish run derived from it.
+        IReadOnlyList<string>? dataRecords = null;
         var messageCount = int.Parse(opts.GetValueOrDefault("message-count", "1"));
+        if (opts.TryGetValue("data-file", out var dataFile))
+        {
+            if (!string.IsNullOrWhiteSpace(workflowInputsJson))
+            {
+                throw new ArgumentException("--data-file and --workflow-inputs-json are mutually exclusive: the data file supplies every message's inputs.");
+            }
+            dataRecords = WorkflowInputDataFile.Load(dataFile);
+            messageCount = WorkflowInputDataFile.ResolveMessageCount(dataRecords.Count, opts.GetValueOrDefault("message-count"));
+        }
         if (messageCount < 1)
         {
             throw new ArgumentException("--message-count must be at least 1.");
@@ -252,7 +266,8 @@ internal static class Program
             var publishStopwatch = Stopwatch.StartNew();
             await PublishManyWorkflowTriggerMessagesAsync(
                 rabbitMqManagementUri, rabbitMqUsername, rabbitMqPassword, rabbitMqVHost, sourceQueue,
-                workflowInputsJson, correlationIds, messageAuthToken, publishConcurrency);
+                workflowInputsJson, correlationIds, messageAuthToken, publishConcurrency,
+                dataRecords is null ? null : WorkflowInputDataFile.PairWithCorrelationIds(dataRecords, correlationIds));
             publishStopwatch.Stop();
             Console.WriteLine($"Published {messageCount} message(s) in {publishStopwatch.Elapsed.TotalSeconds:F1}s. Waiting for the Shovel to bridge them to Service Bus and the Lightweight engine's in-process trigger to process them ...");
         }
@@ -421,6 +436,15 @@ internal static class Program
                                                         message on the deployed trigger's queue
                                                         runs the ONE workflow named by its own
                                                         Settings/servicebustrigger.bite
+                [--data-file <json>]                   a JSON array of flat string-map records:
+                                                        ONE message per record, each published
+                                                        exactly as written (no placeholder
+                                                        expansion). Sizes the run - an explicit
+                                                        --message-count that disagrees is an
+                                                        error - and excludes
+                                                        --workflow-inputs-json. A
+                                                        --phase poll run needs only the
+                                                        resulting --message-count
                 [--correlation-id <id>]                default: a freshly generated GUID.
                                                         REQUIRED with --phase poll (must be the
                                                         prefix the matching --phase publish printed)
@@ -557,15 +581,19 @@ internal static class Program
     private static async Task PublishManyWorkflowTriggerMessagesAsync(
         string managementUri, string username, string password, string vhost, string queue,
         string workflowInputsJson, IReadOnlyList<string> correlationIds, string authToken,
-        int maxConcurrency = 1)
+        int maxConcurrency = 1, IReadOnlyDictionary<string, string>? recordsByCorrelationId = null)
     {
         using var http = new HttpClient();
         http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
             "Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($"{username}:{password}")));
 
+        // With --data-file each message carries its own record, published as written (no
+        // placeholder expansion); otherwise every message expands the one --workflow-inputs-json.
         await PublishManyBoundedAsync(
             correlationIds,
-            id => PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflowInputsJson, id, authToken),
+            id => recordsByCorrelationId is null
+                ? PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, workflowInputsJson, id, authToken)
+                : PublishWorkflowTriggerMessageAsync(http, managementUri, vhost, queue, recordsByCorrelationId[id], id, authToken, expandPlaceholders: false),
             maxConcurrency);
     }
 
@@ -620,14 +648,17 @@ internal static class Program
 
     private static async Task PublishWorkflowTriggerMessageAsync(
         HttpClient http, string managementUri, string vhost, string queue,
-        string workflowInputsJson, string correlationId, string authToken)
+        string workflowInputsJson, string correlationId, string authToken, bool expandPlaceholders = true)
     {
         var vhostSegment = vhost == "/" ? "%2f" : Uri.EscapeDataString(vhost);
 
         // Expand {correlationId} / {correlationGuid} so each message in a bulk run carries a
         // distinct inputs map - see WorkflowInputTemplate for why identical bodies serialise a
-        // load run, and why a uniqueidentifier input needs the GUID-shaped variant.
-        var expandedInputsJson = WorkflowInputTemplate.Expand(workflowInputsJson, correlationId);
+        // load run, and why a uniqueidentifier input needs the GUID-shaped variant. A --data-file
+        // record is already that message's own inputs and is sent untouched.
+        var expandedInputsJson = expandPlaceholders
+            ? WorkflowInputTemplate.Expand(workflowInputsJson, correlationId)
+            : workflowInputsJson;
 
         Dictionary<string, string>? inputs = null;
         if (!string.IsNullOrWhiteSpace(expandedInputsJson))

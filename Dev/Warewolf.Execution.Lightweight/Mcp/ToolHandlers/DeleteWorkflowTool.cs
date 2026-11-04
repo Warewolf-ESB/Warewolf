@@ -112,6 +112,16 @@ internal static class DeleteWorkflowTool
         WorkflowExecutor.EvictWorkflow(existingFilePath);
         WorkflowIndex.Instance.Remove(workflowsDirectory, relativePath);
 
+        // A form left behind would reappear on a new workflow that takes this name. The workflow is
+        // already gone, so failing to remove its form isn't worth failing the delete over.
+        try
+        {
+            WorkflowUiCatalog.Delete(workflowsDirectory, relativePath);
+        }
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+        }
+
         return new DeleteWorkflowResult(name, true);
     }
 }

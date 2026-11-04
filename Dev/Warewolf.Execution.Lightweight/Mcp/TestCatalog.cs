@@ -4,7 +4,10 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
+using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using ModelContextProtocol;
 
 namespace Warewolf.Execution.Lightweight.Mcp;
@@ -19,9 +22,9 @@ namespace Warewolf.Execution.Lightweight.Mcp;
 /// <para>
 /// Deliberately has NO in-memory cache, unlike <see cref="WorkflowIndex"/>'s <c>FrozenDictionary</c>
 /// cache — <c>create_test</c>/<c>edit_test</c> each do at most one <see cref="Exists"/> check plus
-/// one <see cref="Save"/>, and <c>execute_test</c> does exactly one <see cref="Load"/>; there is no
-/// repeated-read hot path yet to amortise a cache against. Revisit once Phase 2's
-/// <c>list_tests</c>/<c>get_test</c> add read pressure over a whole <c>.tests</c> directory.
+/// one <see cref="Save"/>, and <c>execute_test</c> does exactly one <see cref="Load"/>. Phase 2's
+/// <c>list_tests</c> reads one <c>.tests</c> directory per call and <c>get_test</c>/<c>delete_test</c>
+/// touch one file, so there is still no repeated-read hot path to amortise a cache against.
 /// </para>
 /// </summary>
 internal static class TestCatalog
@@ -53,8 +56,10 @@ internal static class TestCatalog
     internal static string TestsDirectoryFor(string workflowsDirectory, string workflowRelativePath) =>
         Path.Combine(workflowsDirectory, workflowRelativePath.Replace('/', Path.DirectorySeparatorChar) + ".tests");
 
+    const string TestFileSuffix = ".test.json";
+
     internal static string TestFilePath(string workflowsDirectory, string workflowRelativePath, string testName) =>
-        Path.Combine(TestsDirectoryFor(workflowsDirectory, workflowRelativePath), testName + ".test.json");
+        Path.Combine(TestsDirectoryFor(workflowsDirectory, workflowRelativePath), testName + TestFileSuffix);
 
     internal static bool Exists(string workflowsDirectory, string workflowRelativePath, string testName) =>
         File.Exists(TestFilePath(workflowsDirectory, workflowRelativePath, testName));
@@ -75,5 +80,47 @@ internal static class TestCatalog
     {
         var path = TestFilePath(workflowsDirectory, workflowRelativePath, testName);
         return File.Exists(path) ? File.ReadAllText(path) : null;
+    }
+
+    /// <summary>
+    /// The names of every test persisted for the workflow, ordinal-sorted so <c>list_tests</c> is
+    /// stable across calls; empty when the workflow has no <c>.tests</c> directory.
+    /// </summary>
+    internal static IReadOnlyList<string> List(string workflowsDirectory, string workflowRelativePath)
+    {
+        var directory = TestsDirectoryFor(workflowsDirectory, workflowRelativePath);
+        if (!Directory.Exists(directory))
+        {
+            return Array.Empty<string>();
+        }
+
+        return Directory.EnumerateFiles(directory, "*" + TestFileSuffix)
+            .Select(file => Path.GetFileName(file)[..^TestFileSuffix.Length])
+            .OrderBy(name => name, StringComparer.Ordinal)
+            .ToList();
+    }
+
+    /// <summary>
+    /// Deletes the persisted test, then its <c>.tests</c> directory once nothing is left in it, so
+    /// deleting a workflow's last test leaves no trace beside the workflow. Returns <c>false</c> when
+    /// there was no such test.
+    /// </summary>
+    internal static bool Delete(string workflowsDirectory, string workflowRelativePath, string testName)
+    {
+        var path = TestFilePath(workflowsDirectory, workflowRelativePath, testName);
+        if (!File.Exists(path))
+        {
+            return false;
+        }
+
+        File.Delete(path);
+
+        var directory = TestsDirectoryFor(workflowsDirectory, workflowRelativePath);
+        if (!Directory.EnumerateFileSystemEntries(directory).Any())
+        {
+            Directory.Delete(directory);
+        }
+
+        return true;
     }
 }

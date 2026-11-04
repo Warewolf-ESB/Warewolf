@@ -30,6 +30,8 @@
     -->
     <Compile Include="..\Warewolf.Execution.ServiceBusWorker.E2EHarness\WorkflowInputTemplate.cs"
              Link="Harness\WorkflowInputTemplate.cs" />
+    <Compile Include="..\Warewolf.Execution.ServiceBusWorker.E2EHarness\WorkflowInputDataFile.cs"
+             Link="Harness\WorkflowInputDataFile.cs" />
   </ItemGroup>
 
   <ItemGroup>
