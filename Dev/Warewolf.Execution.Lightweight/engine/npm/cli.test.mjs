@@ -3,6 +3,29 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { join } from "node:path";
 import { LINUX_DATA_DIR, SERVICE_USER, enginePath, platformPackage, systemdUnit } from "./cli.mjs";
+import { runArguments } from "./index.mjs";
+import { engineArguments } from "./warewolf.mjs";
+
+test("--set pairs become the engine's JSON input", () => {
+  assert.deepEqual(engineArguments(["run", "a.bite", "--set", "Name=Wolf", "--set", "n=a=b"]),
+    ["--run", "a.bite", "--input", JSON.stringify({ Name: "Wolf", n: "a=b" })]);
+});
+
+test("--set can't be mixed with --input, and must be name=value", () => {
+  assert.throws(() => engineArguments(["run", "a.bite", "--set", "a=1", "--input", "{}"]), /not a mix/);
+  assert.throws(() => engineArguments(["run", "a.bite", "--set", "oops"]), /name=value/);
+});
+
+test("anything other than run isn't an engine invocation", () => {
+  assert.equal(engineArguments(["help"]), null);
+});
+
+test("runArguments serialises an input object and the flags", () => {
+  assert.deepEqual(runArguments("a.bite", { input: { x: 1 }, xml: true, debug: true }),
+    ["--run", "a.bite", "--input", "{\"x\":1}", "--xml", "--debug"]);
+  assert.throws(() => runArguments("a.bite", { input: {}, inputFile: "f" }), /not both/);
+  assert.throws(() => runArguments(""), /required/);
+});
 
 test("each supported platform has its own package, and others are refused", () => {
   assert.equal(platformPackage("linux", "x64"), "@warewolf/engine-linux-x64");

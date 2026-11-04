@@ -99,6 +99,14 @@ namespace Warewolf.Execution.Lightweight
             internal IDev2Activity StartActivity { get; init; }
 
             /// <summary>
+            /// Read by the WF-free <see cref="BiteReader"/> from a JSON <c>&lt;BiteDefinition&gt;</c>:
+            /// there is no <see cref="Activity"/>, only the linked <see cref="StartActivity"/> graph.
+            /// </summary>
+            internal bool FromBite { get; init; }
+
+            internal bool IsLoaded => Activity != null || FromBite;
+
+            /// <summary>
             /// The pool key this instance was compiled under, stamped at rent time. Returning uses
             /// THIS rather than recomputing from the file, so an instance compiled from the old
             /// definition can never be filed under the key of a definition that changed while it
@@ -238,10 +246,11 @@ namespace Warewolf.Execution.Lightweight
 
                 // Step 2: Extract XamlDefinition and DataList from the XML
                 var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
+                var biteEnvelope = HasBiteDefinition(fileContents) ? fileContents.ToString() : null;
 
-                if (xamlDefinition == null || xamlDefinition.Length == 0)
+                if (biteEnvelope == null && (xamlDefinition == null || xamlDefinition.Length == 0))
                 {
-                    Dev2Logger.Error("WorkflowExecutor Execute: No XamlDefinition found in workflow file", executionId.ToString());
+                    Dev2Logger.Error("WorkflowExecutor Execute: No XamlDefinition or BiteDefinition found in workflow file", executionId.ToString());
                     return WorkflowExecutionResult.Failure("No XamlDefinition found in the workflow file.");
                 }
 
@@ -275,10 +284,10 @@ namespace Warewolf.Execution.Lightweight
                 // than shared because the activity instances carry per-execution state - see the
                 // _workflowPool comment. Released in the finally at the end of this method.
                 Dev2Logger.Debug("WorkflowExecutor Step 3: Renting prepared workflow (compile+parse)", executionId.ToString());
-                prepared = RentPreparedWorkflow(request.WorkflowFilePath, xamlDefinition);
+                prepared = RentPreparedWorkflow(request.WorkflowFilePath, xamlDefinition, biteEnvelope);
                 Dev2Logger.Debug("WorkflowExecutor Step 3 completed: Prepared workflow rented", executionId.ToString());
 
-                if (prepared?.Activity == null)
+                if (prepared?.IsLoaded != true)
                 {
                     Dev2Logger.Error("WorkflowExecutor Execute: Failed to load DynamicActivity from XAML", executionId.ToString());
                     return WorkflowExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
@@ -552,7 +561,9 @@ namespace Warewolf.Execution.Lightweight
                 var fileContents = ReadWorkflowFile(request.WorkflowFilePath);
                 var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
 
-                if (xamlDefinition is null || xamlDefinition.Length == 0)
+                var biteEnvelope = HasBiteDefinition(fileContents) ? fileContents.ToString() : null;
+
+                if (biteEnvelope is null && (xamlDefinition is null || xamlDefinition.Length == 0))
                 {
                     return TestExecutionResult.Failure("No XamlDefinition found in the workflow file.");
                 }
@@ -561,8 +572,10 @@ namespace Warewolf.Execution.Lightweight
                     ?? workflowName
                     ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
 
-                var prepared = BuildExclusivePreparedWorkflow(xamlDefinition);
-                if (prepared?.Activity == null)
+                var prepared = biteEnvelope != null
+                    ? BuildBitePreparedWorkflow(biteEnvelope)
+                    : BuildExclusivePreparedWorkflow(xamlDefinition);
+                if (prepared?.IsLoaded != true)
                 {
                     return TestExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
                 }
@@ -1090,7 +1103,22 @@ namespace Warewolf.Execution.Lightweight
             }
         }
 
-        internal static PreparedWorkflow RentPreparedWorkflow(string filePath, StringBuilder xamlDefinition)
+        /// <summary>True when the resource carries a JSON <c>&lt;BiteDefinition&gt;</c> body, which takes precedence over any XAML.</summary>
+        internal static bool HasBiteDefinition(StringBuilder fileContents)
+        {
+            var xe = fileContents.ToXElement();
+            var action = xe.Element("Actions")?.Element("Action") ?? xe.Element("Action");
+            return action?.Element("BiteDefinition") != null;
+        }
+
+        /// <summary>
+        /// Reads a whole resource whose body is a JSON <c>&lt;BiteDefinition&gt;</c> with the WF-free
+        /// <see cref="BiteReader"/>. Nothing is compiled; a malformed body throws <see cref="BiteFormatException"/>.
+        /// </summary>
+        internal static PreparedWorkflow BuildBitePreparedWorkflow(string biteEnvelope) =>
+            new PreparedWorkflow { FromBite = true, StartActivity = new BiteReader().Read(biteEnvelope) };
+
+        internal static PreparedWorkflow RentPreparedWorkflow(string filePath, StringBuilder xamlDefinition, string biteEnvelope = null)
         {
             var key = BuildPoolKey(filePath);
 
@@ -1100,7 +1128,9 @@ namespace Warewolf.Execution.Lightweight
                 return reused;
             }
 
-            var prepared = BuildExclusivePreparedWorkflow(xamlDefinition, filePath);
+            var prepared = biteEnvelope != null
+                ? BuildBitePreparedWorkflow(biteEnvelope)
+                : BuildExclusivePreparedWorkflow(xamlDefinition, filePath);
             if (prepared != null)
             {
                 prepared.PoolKey = key;
@@ -1172,7 +1202,7 @@ namespace Warewolf.Execution.Lightweight
         /// </summary>
         internal static void ReturnPreparedWorkflow(string filePath, PreparedWorkflow? prepared)
         {
-            if (prepared?.Activity == null || string.IsNullOrEmpty(filePath))
+            if (prepared?.IsLoaded != true || string.IsNullOrEmpty(filePath))
             {
                 return;
             }

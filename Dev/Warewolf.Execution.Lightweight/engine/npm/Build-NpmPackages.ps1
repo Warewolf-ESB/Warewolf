@@ -8,8 +8,9 @@
 .DESCRIPTION
     The esbuild pattern. @warewolf/engine-linux-x64, -linux-arm64 and -win32-x64 each hold a
     self-contained publish (no .NET runtime needed) restricted to their os/cpu, so npm installs only
-    the one that matches. @warewolf/engine lists them as optionalDependencies and carries the
-    warewolf-server CLI (cli.mjs), which runs the engine self-hosted on 127.0.0.1:3142 and installs it
+    the one that matches. @warewolf/engine lists them as optionalDependencies and carries two commands:
+    `warewolf run` (cli: warewolf.mjs; API: index.mjs), which runs one workflow and exits with no server,
+    and `warewolf-server` (cli.mjs), which runs the engine self-hosted on 127.0.0.1:3142 and installs it
     as the "Warewolf Server" service.
 
     Azure-only files are left out: the deployment scripts, and the Key Vault-encrypted Elasticsearch
@@ -77,17 +78,21 @@ foreach ($rid in $Runtimes) {
 $meta = Join-Path $Output "engine"
 New-Item -ItemType Directory -Path $meta | Out-Null
 Copy-Item (Join-Path $PSScriptRoot "cli.mjs") $meta
+Copy-Item (Join-Path $PSScriptRoot "index.mjs") $meta
+Copy-Item (Join-Path $PSScriptRoot "warewolf.mjs") $meta
 Copy-Item (Join-Path $PSScriptRoot "README.md") $meta
 Write-Json (Join-Path $meta "package.json") ([ordered]@{
     name                 = "@warewolf/engine"
     version              = $Version
-    description          = "The Warewolf execution engine, self-hosted on 127.0.0.1:3142, with a warewolf-server CLI to run it as a service."
+    description          = "The Warewolf execution engine: run workflows from the command line or Node with no server (warewolf run), or self-hosted on 127.0.0.1:3142 as a service (warewolf-server)."
     private              = $true
     license              = "AGPL-3.0-or-later"
     type                 = "module"
-    bin                  = [ordered]@{ "warewolf-server" = "cli.mjs" }
+    main                 = "index.mjs"
+    exports              = [ordered]@{ "." = "./index.mjs" }
+    bin                  = [ordered]@{ "warewolf" = "warewolf.mjs"; "warewolf-server" = "cli.mjs" }
     engines              = [ordered]@{ node = ">=18" }
-    files                = @("cli.mjs", "README.md")
+    files                = @("cli.mjs", "index.mjs", "warewolf.mjs", "README.md")
     optionalDependencies = $optional
 })
 

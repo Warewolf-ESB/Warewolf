@@ -22,6 +22,13 @@ try
     // it — see SqlClientCompatibilityConfigurator's own doc comment for the incident this guards.
     SqlClientCompatibilityConfigurator.Configure();
 
+    // A packaged engine can also run one workflow and exit, without a server (RunOnceCommand: --run <file.bite>).
+    if (RunOnceCommand.IsRequested(args))
+    {
+        Environment.ExitCode = await RunOnceCommand.RunAsync(args, Console.Out, Console.Error, () => Console.In);
+        return;
+    }
+
     // A packaged engine runs without the Functions host (SelfHostedEngine: --self-host or
     // WAREWOLF_SELF_HOST=1). Its defaults go in before the configuration below reads them.
     var selfHosted = SelfHostedEngine.IsRequested(args, Environment.GetEnvironmentVariable);

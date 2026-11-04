@@ -82,6 +82,16 @@ public class CloudSecureConfigTests
     }
 
     [TestMethod]
+    public void AshleyLewis_CanViewExecuteAndContribute_OnAnyNewWorkflow()
+    {
+        var ashley = new[] { "Authenticated Users", "ashley.lewis@theunlimited.co.za" };
+
+        var permissions = _loader.GetEffectivePermissions("A Brand New Workflow", ashley);
+
+        Assert.IsTrue(permissions.HasFlag(WorkflowPermission.View | WorkflowPermission.Execute | WorkflowPermission.Contribute));
+    }
+
+    [TestMethod]
     public void AuthenticatedUsersRow_GrantsNoExecute()
     {
         foreach (var entry in SecureConfigLoader.Config.Permissions)

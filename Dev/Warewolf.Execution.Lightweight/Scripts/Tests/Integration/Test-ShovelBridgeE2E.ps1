@@ -952,6 +952,33 @@ ORDER BY e.SeqNum;
     }
 }
 
+function Invoke-WwProfilerReconciliation {
+    <#
+        Runs every chunk of Get-WwProfilerReconciliationQueries and returns ALL their rows as one
+        flat array, for the same verdict code the generated-GUID reconciliation uses.
+
+        The flattening is the point. Invoke-WwSqlQuery ends in "return , @(...)", so each call
+        emits its rows as ONE array: harmless on a plain assignment, but a foreach collecting
+        those calls ends up with an array of arrays, and [int]$_.RowsForMandate then sees a whole
+        chunk's values at once ("Cannot convert System.Object[] to System.Int32"). Builds 31074
+        and 31077 lost Phase 4c to exactly that, reported only as a non-fatal note.
+
+        Needs Invoke-WwSqlQuery loaded (Invoke-WwQueueLoadTest.ps1).
+    #>
+    param(
+        [Parameter(Mandatory)][string] $ConnectionString,
+        [Parameter(Mandatory)][string[]] $MandateIds
+    )
+
+    $rows = [System.Collections.Generic.List[object]]::new()
+    foreach ($query in (Get-WwProfilerReconciliationQueries -MandateIds $MandateIds)) {
+        foreach ($row in (Invoke-WwSqlQuery -ConnectionString $ConnectionString -Query $query)) {
+            $rows.Add($row)
+        }
+    }
+    return , $rows.ToArray()
+}
+
 if ($LoadFunctionsOnly) { return }
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -1779,9 +1806,7 @@ try {
             $profilerRows = $null
             if ($null -ne $dataRecords) {
                 Write-Step "Reconciling Profiler.ProfilerRecommendation for the $($dataRecords.Count) MandateId(s) in the data file (expecting $MessageCount)"
-                $profilerRows = foreach ($reconQuery in (Get-WwProfilerReconciliationQueries -MandateIds $dataRecords.MandateIds)) {
-                    Invoke-WwSqlQuery -ConnectionString $jobsDbConnStringPlain -Query $reconQuery
-                }
+                $profilerRows = Invoke-WwProfilerReconciliation -ConnectionString $jobsDbConnStringPlain -MandateIds $dataRecords.MandateIds
             } else {
             $guidStem    = Get-WwCorrelationGuidStem -CorrelationIdPrefix $CorrelationId
             $escapedStem = $guidStem.Replace("'", "''")

@@ -126,6 +126,8 @@ const HELP = `warewolf-server — the Warewolf execution engine, self-hosted on 
   warewolf-server uninstall-service   remove the service, keeping its data
   warewolf-server path                print the engine executable's path
 
+To run one workflow and exit, with no server, use the warewolf command: warewolf run <workflow.bite>
+
 It runs without a secure.config, so anything that can reach the port can run every workflow:
 keep it on loopback (WAREWOLF_SELFHOST_URLS) and don't open 3142 in a firewall.
 `;
