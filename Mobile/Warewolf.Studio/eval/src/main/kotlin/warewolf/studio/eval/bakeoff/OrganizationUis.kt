@@ -33,7 +33,7 @@ class OrganizationUiGenerator(
         var result = UiCheck.Result.failed(NOT_CODE)
         for (attempt in 1..repairs + 1) {
             // Code has no decoding grammar, so local models answer unconstrained, as Claude does.
-            val reply = model.complete(prompt, null)
+            val reply = model.complete(prompt, null, attempt)
             val source = source(reply)
             result = if (source == null) UiCheck.Result.failed(NOT_CODE) else {
                 last = buildJsonObject { put("source", source) }
@@ -72,7 +72,13 @@ class OrganizationUiGenerator(
         appendLine("  output once the workflow answers.")
         appendLine("- It runs in a Web Worker with no DOM: render only through the template, no document, window, storage or")
         appendLine("  network. Use inject() rather than constructor parameters. No links (href), [innerHTML] or external images.")
-        appendLine("- Reply with the TypeScript only.")
+        appendLine("- Follow the example's style of page: a heading, a label and placeholder for every input (number, date or textarea")
+        appendLine("  where they fit), a submit button disabled while running, outputs under readable headings (a recordset as a table,")
+        appendLine("  booleans as Yes/No), and a visible error box. A recordset input is a list of rows to add to and remove from.")
+        appendLine("- Reply with ONE complete TypeScript file in a single ```ts block and nothing else: no reasoning, no notes, and no")
+        appendLine("  partial snippets or placeholders: every template and style must be written out in full. A complete example for")
+        appendLine("  a different workflow (one text input, one text output) shows the shape; write yours for the workflow above:")
+        appendLine(EXAMPLE)
     }
 
     private fun repairPrompt(previous: String?, errors: List<String>): String = buildString {
@@ -97,9 +103,71 @@ class OrganizationUiGenerator(
     internal companion object {
         /** The key the UI runs its workflow by; the check answers no other. */
         const val KEY = "main"
-        const val NOT_CODE = "the reply has no TypeScript in it"
+        const val NOT_CODE = "the reply has no TypeScript in it: it ran out of room while thinking. Do not deliberate or repeat yourself; " +
+            "decide quickly and write the whole file"
+
+        /** Written out in full: a skeleton with placeholders gets copied with its placeholders. */
+        private val EXAMPLE = """
+            |```ts
+            |import { Component } from '@angular/core';
+            |import { FormsModule } from '@angular/forms';
+            |import { CommonModule } from '@angular/common';
+            |import { runWorkflow } from '@warewolf/ui';
+            |
+            |@Component({
+            |  selector: 'organization-ui',
+            |  standalone: true,
+            |  imports: [CommonModule, FormsModule],
+            |  template: `
+            |    <main class="card">
+            |      <h1>Shout a message</h1>
+            |      <form (ngSubmit)="run()">
+            |        <label for="message">Message</label>
+            |        <input id="message" name="message" [(ngModel)]="message" placeholder="e.g. hello world" required>
+            |        <button type="submit" [disabled]="running || !message">{{ running ? 'Running…' : 'Run' }}</button>
+            |      </form>
+            |      @if (error) { <p class="error">{{ error }}</p> }
+            |      @if (outputs) {
+            |        <section>
+            |          <h2>Result</h2>
+            |          <p><strong>Shouted message</strong> {{ outputs.ShoutedMessage || 'Nothing returned' }}</p>
+            |        </section>
+            |      }
+            |    </main>
+            |  `,
+            |  styles: `
+            |    .card { max-width: 32rem; margin: 1rem auto; padding: 1.5rem; font: 16px sans-serif; }
+            |    label, input, button { display: block; width: 100%; box-sizing: border-box; margin-bottom: .75rem; }
+            |    input { padding: .5rem; }
+            |    button { padding: .6rem; background: #2563eb; color: white; border: 0; border-radius: .25rem; }
+            |    button:disabled { background: #94a3b8; }
+            |    .error { padding: .75rem; background: #fee2e2; color: #991b1b; border-radius: .25rem; }
+            |  `,
+            |})
+            |export default class ShoutUi {
+            |  message = '';
+            |  running = false;
+            |  error = '';
+            |  outputs: any = null;
+            |
+            |  async run() {
+            |    this.running = true;
+            |    this.error = '';
+            |    this.outputs = null;
+            |    try {
+            |      this.outputs = await runWorkflow('main', { Message: this.message });
+            |    } catch (e: any) {
+            |      this.error = e?.message ?? String(e);
+            |    } finally {
+            |      this.running = false;
+            |    }
+            |  }
+            |}
+            |```
+        """.trimMargin()
 
         private val FENCE = Regex("```[A-Za-z]*[ \\t]*\\r?\\n(.*?)```", RegexOption.DOT_MATCHES_ALL)
+        private val OPEN_FENCE = Regex("```[A-Za-z]*[ \\t]*\\r?\\n")
 
         private const val MESSAGE = "<|message|>"
 
@@ -110,7 +178,23 @@ class OrganizationUiGenerator(
          */
         fun source(reply: String): String? {
             val answer = if (MESSAGE in reply) reply.substringAfterLast(MESSAGE).substringBefore("<|") else reply
-            return (FENCE.find(answer)?.groupValues?.get(1) ?: answer).trim().ifEmpty { null }
+            val blocks = FENCE.findAll(answer).map { it.groupValues[1] }.toList()
+            // A reply cut off mid-code has an opening fence and no closing one.
+            val open = OPEN_FENCE.findAll(answer).lastOrNull()?.let { answer.substring(it.range.last + 1) }
+            // Models that think aloud in the reply quote fragments in earlier fences; the answer is the last full component.
+            val chosen = blocks.lastOrNull { "export default" in it } ?: open?.takeIf { "export default" in it }
+                ?: blocks.firstOrNull() ?: answer
+            // Reasoning prose with no component in it is no answer, and is not echoed back for repair.
+            if (blocks.isEmpty() && "export default" !in chosen && "@Component" !in chosen) return null
+            return dedent(chosen).trim().ifEmpty { null }
+        }
+
+        /** Models often indent the whole answer, with the first line flush: strip the indent the later lines share. */
+        private fun dedent(code: String): String {
+            val lines = code.lines()
+            val indent = lines.drop(1).filter { it.isNotBlank() }.minOfOrNull { it.length - it.trimStart().length } ?: 0
+            return lines.mapIndexed { i, line -> if (i == 0) line.trimStart() else line.drop(minOf(indent, line.length - line.trimStart().length)) }
+                .joinToString("\n")
         }
     }
 }

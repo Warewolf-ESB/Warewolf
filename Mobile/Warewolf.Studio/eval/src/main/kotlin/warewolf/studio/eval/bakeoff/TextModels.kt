@@ -22,6 +22,9 @@ import java.util.concurrent.TimeoutException
 /** A model that answers one prompt with text. Every attempt is a fresh, single prompt, so runs stay comparable. */
 fun interface TextModel {
     fun complete(prompt: String, format: JsonObject?): String
+
+    /** The [attempt]th try (from 1) at the same task; a model may sample differently so a retry can leave a loop the first fell into. */
+    fun complete(prompt: String, format: JsonObject?, attempt: Int): String = complete(prompt, format)
 }
 
 /**
@@ -83,12 +86,14 @@ class LmStudioText(
         System.getenv("LLM_API_KEY") ?: error("LLM_API_KEY is not set"),
     ),
 ) : TextModel {
-    override fun complete(prompt: String, format: JsonObject?): String {
+    override fun complete(prompt: String, format: JsonObject?): String = complete(prompt, format, 1)
+
+    override fun complete(prompt: String, format: JsonObject?, attempt: Int): String {
         val request = buildJsonObject {
             put("model", model)
             put("stream", false)
-            put("temperature", temperature)
-            put("seed", seed)
+            put("temperature", temperature + 0.3 * (attempt - 1))
+            put("seed", seed + attempt - 1)
             put("max_tokens", maxReplyTokens)
             putJsonArray("messages") { add(buildJsonObject { put("role", "user"); put("content", prompt) }) }
             if (format != null) putJsonObject("response_format") {
@@ -98,9 +103,10 @@ class LmStudioText(
         }
         val response = Json.parseToJsonElement(post(request.toString())).jsonObject
         val message = response.getValue("choices").jsonArray.first().jsonObject.getValue("message").jsonObject
-        // A thinking model (Qwen 3.x) under a grammar can leave the whole reply in reasoning_content.
+        // A thinking model under a grammar can leave the whole reply in reasoning_content. Free-form code has no grammar:
+        // there it is only the model's reasoning, never the answer.
         return message["content"]?.jsonPrimitive?.contentOrNull?.takeIf { it.isNotBlank() }
-            ?: message["reasoning_content"]?.jsonPrimitive?.contentOrNull.orEmpty()
+            ?: if (format != null) message["reasoning_content"]?.jsonPrimitive?.contentOrNull.orEmpty() else ""
     }
 
     companion object {

@@ -96,7 +96,7 @@ object ArtifactBakeOff {
         val model = contender.substringAfter(':')
         return when (contender.substringBefore(':')) {
             "ollama" -> OllamaText(model) to true
-            "lmstudio" -> LmStudioText(model) to true
+            "lmstudio" -> LmStudioText(model, maxReplyTokens = 16_384) to true
             "claude" -> ClaudeCli(model) to false
             else -> error("unknown contender '$contender'")
         }

@@ -64,6 +64,19 @@ class OrganizationUiGeneratorTests {
     }
 
     @Test
+    fun `an answer after fenced fragments of the model's reasoning is the one chosen, and its indent is removed`() {
+        val reply = "Plan:\n```ts\n@Component({})\n```\nFinal:\n```ts\nimport { a } from 'a';\n    export default class A {\n      x = 1;\n    }\n```"
+
+        assertEquals("import { a } from 'a';\nexport default class A {\n  x = 1;\n}", OrganizationUiGenerator.source(reply))
+    }
+
+    @Test
+    fun `a reply cut off inside its fence still yields the code so far, and prose with no component is no answer`() {
+        assertEquals("export default class A {", OrganizationUiGenerator.source("Here:\n```ts\nexport default class A {"))
+        assertNull(OrganizationUiGenerator.source("*   Goal: build a UI\n*   Wait, the prompt says"))
+    }
+
+    @Test
     fun `leaked chat-template channels are dropped and only the last message is the answer`() {
         val leaked = "to=self<|message|>The user wants TypeScript only.<|eom|><|start|>assistant to=user<|message|>export default class A {}<|return|>"
 

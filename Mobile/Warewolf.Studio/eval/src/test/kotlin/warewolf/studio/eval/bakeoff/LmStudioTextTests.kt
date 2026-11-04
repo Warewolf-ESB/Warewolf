@@ -59,6 +59,13 @@ class LmStudioTextTests {
     }
 
     @Test
+    fun `reasoning_content is not the answer when the reply is free-form code`() {
+        val post: (String) -> String = { """{"choices":[{"message":{"content":"","reasoning_content":"Wait, the prompt says"}}]}""" }
+
+        assertEquals("", LmStudioText("gemma", post = post).complete("goal", null))
+    }
+
+    @Test
     fun `content wins over reasoning_content when both are present`() {
         val post: (String) -> String = { """{"choices":[{"message":{"content":"{\"a\":1}","reasoning_content":"thinking"}}]}""" }
 
