@@ -12,6 +12,7 @@ secure.config
 # operator artifacts, not source.
 /Dev/Warewolf.Execution.Lightweight/Scripts/logs/
 /Dev/Warewolf.Execution.Lightweight/Scripts/rollback-*.summary.json
+/Dev/Warewolf.Execution.Lightweight/Scripts/*.output.json
 *.force
 *.usi
 *.uws

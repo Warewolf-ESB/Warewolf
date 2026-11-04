@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>Pointing the timer app at the Warewolf Engine</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;padding:12px;width:1180px;background:#0d1117;color:#e6edf3;font:14px/1.35 "Segoe UI",Arial,sans-serif}
+h1{margin:0 0 4px;font-size:30px}
+h2{margin:0 0 12px;font-size:19px}
+h2 small{font-size:11px;color:#8b949e;letter-spacing:.06em;margin-left:10px;text-transform:uppercase;font-weight:600}
+.legend span{margin-right:14px;color:#c9d1d9}
+.tag{display:inline-block;width:18px;height:18px;border-radius:4px;text-align:center;font-weight:700;line-height:18px;font-size:13px;margin-right:5px;color:#0d1117}
+.keep{background:#8b949e}.add{background:#3fb950}.rem{background:#f0883e}
+section{margin:14px 0;padding:16px 18px;border:1px solid #30363d;border-radius:8px;background:#161b22}
+section.end{background:#0c2d6b22;border-color:#1f6feb}
+.row{display:flex;align-items:stretch;gap:0;flex-wrap:nowrap}
+.card{flex:1;min-width:0;padding:10px 12px;border:1px solid #30363d;border-radius:6px;background:#1c2128;font-size:13px}
+.card b{display:block;font-size:14px;margin-bottom:3px}
+.card.add{background:#0f2d1a;border-color:#3fb950;color:inherit}
+.card.rem{background:#3a1d1a;border-color:#da3633;color:inherit}
+.card.rem b{text-decoration:line-through}
+.card small,.muted{color:#8b949e;font-size:12px}
+.arrow{width:26px;display:flex;align-items:center;justify-content:center;color:#6e7681;flex:none}
+.dash{border:1.5px dashed #da3633;border-radius:6px;padding:8px;margin-top:10px}
+.dash>.lbl{font-size:11px;font-weight:700;color:#f0883e;letter-spacing:.06em;margin-bottom:6px}
+.num{display:inline-block;width:22px;height:22px;border-radius:50%;background:#1f6feb44;border:1px solid #1f6feb;text-align:center;line-height:20px;font-size:12px;margin-right:6px;color:#79c0ff}
+table{border-collapse:collapse;width:100%}
+td,th{border-bottom:1px solid #30363d;padding:7px 10px;text-align:left;vertical-align:top;font-size:13px}
+th{color:#8b949e;font-weight:600;width:210px}
+code,.mono{font-family:Consolas,"Courier New",monospace;font-size:12.5px;color:#e6edf3}
+pre{margin:8px 0 0;padding:10px 12px;background:#0d1117;border:1px solid #30363d;border-radius:6px;font:12px/1.45 Consolas,monospace;white-space:pre-wrap;word-break:break-all;color:#c9d1d9}
+.cols{display:flex;gap:18px}.cols>div{flex:1;min-width:0}
+ul{margin:6px 0 0;padding-left:20px}li{margin:3px 0}
+.warn{margin-top:10px;padding:8px 12px;border-left:3px solid #d29922;background:#d2992218;color:#e3b341;font-size:13px}
+.ck{margin:4px 0}.ck:before{content:"\2610  ";color:#8b949e}
+.who{display:inline-block;padding:1px 8px;border-radius:10px;background:#388bfd26;color:#79c0ff;font-size:11px;font-weight:600;margin-left:8px;vertical-align:middle}
+</style></head><body>
+
+<h1>Pointing the timer app at the Warewolf Engine</h1>
+<div class="legend"><span><i class="tag keep">=</i>Keep</span><span><i class="tag add">+</i>Add</span><span><i class="tag rem">&minus;</i>Remove</span>
+<span class="muted">Everything below is done in the Azure DevOps and Azure portal UIs. No scripts.</span></div>
+
+<section class="end">
+<h2>End state of the new release <small>Agent job &middot; pool Default &middot; dev-sp-devops</small></h2>
+<div class="row">
+<div class="card"><b>Azure Key Vault</b>DevAzureDevopsKeyVault</div><div class="arrow">&rarr;</div>
+<div class="card"><b>Deploy Database</b>DacpacTask</div><div class="arrow">&rarr;</div>
+<div class="card"><b>Deploy Timer</b>tuprofilerdev-function</div><div class="arrow">&rarr;</div>
+<div class="card add"><b>Deploy Engine</b>$(ProfilerEngineAppName), Flex</div>
+</div></section>
+
+<section>
+<h2>Part 1 &mdash; New classic release pipeline <small>Azure DevOps &middot; Pipelines &rsaquo; Releases</small> <span class="who">DevOps team</span></h2>
+<div class="row">
+<div class="card"><span class="num">1</span><b style="display:inline">Clone the -VM release</b><br>Releases &rsaquo; <code>ProfilerServices-CD-DEV-VM</code> &rsaquo; <code>&hellip;</code> &rsaquo; Clone</div><div class="arrow">&rarr;</div>
+<div class="card"><span class="num">2</span><b style="display:inline">Rename</b><br>e.g. <code>ProfilerServices-CD-DEV</code> (drop the -VM). Open it &rsaquo; Edit</div><div class="arrow">&rarr;</div>
+<div class="card"><span class="num">3</span><b style="display:inline">Edit stage tasks</b><br>Keep the <b style="display:inline">Agent job</b>. Delete the Deployment Group job (below)</div>
+</div>
+
+<div class="dash"><div class="lbl">DEPLOYMENT GROUP JOB (VM) &mdash; REMOVE THE WHOLE JOB (right-click the job &rsaquo; Remove)</div>
+<div class="row">
+<div class="card rem"><b>PowerShell Script</b><small>profiler-deployment.ps1</small></div><div class="arrow">&rarr;</div>
+<div class="card rem"><b>Command Line Script</b><small>catalogue reload</small></div><div class="arrow">&rarr;</div>
+<div class="card rem"><b>Unit Test</b><small>.tests / .coverage</small></div>
+</div></div>
+
+<p class="muted" style="margin:12px 0 6px"><span class="num">4</span>Agent job, final order. Keep the first three, add the fourth directly after the timer deploy:</p>
+<div class="row">
+<div class="card"><span class="tag keep">=</span><b style="display:inline">Azure Key Vault</b><br><small>DevAzureDevopsKeyVault</small></div><div class="arrow">&rarr;</div>
+<div class="card"><span class="tag keep">=</span><b style="display:inline">Azure SQL DacpacTask</b></div><div class="arrow">&rarr;</div>
+<div class="card"><span class="tag keep">=</span><b style="display:inline">Azure Function App Deploy:</b><br><code>tuprofilerdev-function</code></div><div class="arrow">&rarr;</div>
+<div class="card add"><span class="tag add">+</span><b style="display:inline">Azure Function App Deploy: Engine</b><br><small>Add task &rsaquo; &ldquo;Azure Functions Deploy&rdquo; 2.*</small></div>
+</div>
+<p class="muted" style="margin:12px 0 4px"><span class="num">5</span>Save (name and folder) &rarr; <span class="num">6</span>Create release, pick the CI-DEV build &rarr; <span class="num">7</span>Disable the old -VM release (keep it until the new one is proven, for rollback).</p>
+</section>
+
+<div class="cols">
+<section style="margin:0 0 14px">
+<h2>Deploy Engine task settings</h2>
+<table>
+<tr><th>Task</th><td>Azure Functions Deploy, version 2.*</td></tr>
+<tr><th>Azure subscription</th><td>dev-sp-devops</td></tr>
+<tr><th>App type</th><td>Function App on Linux, <b>Flex Consumption ticked</b></td></tr>
+<tr><th>App name</th><td class="mono">$(ProfilerEngineAppName)</td></tr>
+<tr><th>Package</th><td class="mono">$(System.DefaultWorkingDirectory)/_ProfilerServices-CI-DEV/ProfilerEngine/profiler-engine.zip</td></tr>
+<tr><th>Slot, app settings</th><td>None</td></tr>
+</table>
+</section>
+<section style="margin:0 0 14px">
+<h2>Before the first deploy</h2>
+<div class="ck">Engine Function App exists (<code>wwprofilerlw</code>)</div>
+<div class="ck"><code>ProfilerEngineAppName</code> and <code>ProfilerEngineEncryptionKey</code> are in DevAzureDevopsKeyVault / release variables</div>
+<div class="ck"><code>dev-sp-devops</code> has Website Contributor on the engine app</div>
+<div class="ck">CI-DEV publishes the <code>ProfilerEngine</code> artifact</div>
+</section>
+</div>
+
+<section>
+<h2>Part 2 &mdash; Change the timer app settings <small>Azure portal &rsaquo; Function App &rsaquo; Settings &rsaquo; Environment variables</small> <span class="who">Infrastructure team</span></h2>
+<div class="row">
+<div class="card"><span class="num">1</span>Open the timer Function App <code>tuprofilerdev2-function</code> &rsaquo; <b style="display:inline">Settings &rsaquo; Identity</b>. <b style="display:inline">System assigned</b> must be <b style="display:inline">On</b>. Note the <b style="display:inline">Object (principal) ID</b>.</div><div class="arrow">&rarr;</div>
+<div class="card"><span class="num">2</span><b style="display:inline">Environment variables &rsaquo; App settings &rsaquo; Add</b> the two settings below. Write down the old values first.</div><div class="arrow">&rarr;</div>
+<div class="card"><span class="num">3</span><b style="display:inline">Apply</b>, then <b style="display:inline">Confirm</b>. The app restarts.</div>
+</div>
+<table style="margin-top:12px">
+<tr><th>Setting</th><td><b>Value</b></td></tr>
+<tr><th class="mono">GenericBaseURL</th><td class="mono">https://wwprofilerlw.azurewebsites.net/ <span class="muted">&nbsp;(keep the trailing slash)</span></td></tr>
+<tr><th class="mono">GenericEngineResourceAppId</th><td class="mono">fd3359c7-13e1-4a6e-8ab2-2fe6c56df1f7 <span class="muted">&nbsp;(Application (client) ID of the engine's Entra app <code>wwprofilerlw-auth</code>)</span></td></tr>
+</table>
+<div class="warn">Setting <code>GenericEngineResourceAppId</code> switches the app from the VM server to the engine: it drops the <code>Profiler/</code> URL prefix and calls with its managed-identity token instead of <code>GenericSecureWarewolfAuthorizationToken</code>. Leave the old token setting in place for rollback. To roll back, restore the old <code>GenericBaseURL</code> and delete <code>GenericEngineResourceAppId</code>.</div>
+</section>
+
+<section>
+<h2>Part 3 &mdash; Give the timer's managed identity the <code>Warewolf_ClientApps</code> role <small>Microsoft Entra admin center</small> <span class="who">Infrastructure team &middot; Application Administrator or Cloud Application Administrator</span></h2>
+<div class="cols">
+<div>
+<p style="margin:0 0 6px"><b>A. Create the app role</b> <span class="muted">(skip if it already exists)</span></p>
+<div class="row"><div class="card"><span class="num">1</span>Entra admin center &rsaquo; <b style="display:inline">App registrations &rsaquo; All applications</b> &rsaquo; <code>wwprofilerlw-auth</code></div></div>
+<div class="row" style="margin-top:6px"><div class="card"><span class="num">2</span><b style="display:inline">App roles &rsaquo; Create app role</b></div></div>
+<table style="margin-top:6px">
+<tr><th>Display name</th><td>Warewolf ClientApps</td></tr>
+<tr><th>Allowed member types</th><td><b>Applications</b></td></tr>
+<tr><th>Value</th><td class="mono">Warewolf_ClientApps</td></tr>
+<tr><th>Description</th><td>App-only callers of Warewolf workflows</td></tr>
+<tr><th>Enabled</th><td>Ticked &rsaquo; Apply</td></tr>
+</table>
+</div>
+<div>
+<p style="margin:0 0 6px"><b>B. Assign it to the timer's managed identity</b></p>
+<div class="card"><span class="num">3</span>The portal's <i>Users and groups</i> blade cannot pick a managed identity. Open <b style="display:inline">Cloud Shell</b> (Azure portal top bar, <code>&gt;_</code>, Bash) and run:
+<pre>az ad sp show --id fd3359c7-13e1-4a6e-8ab2-2fe6c56df1f7 \
+  --query "{sp:id, roleId:appRoles[?value=='Warewolf_ClientApps']|[0].id}"
+
+az rest --method POST \
+  --url https://graph.microsoft.com/v1.0/servicePrincipals/&lt;sp&gt;/appRoleAssignedTo \
+  --body '{"principalId":"&lt;timer principal ID from Part 2&gt;",
+           "resourceId":"&lt;sp&gt;","appRoleId":"&lt;roleId&gt;"}'</pre>
+<small>&lt;sp&gt; and &lt;roleId&gt; come from the first command's output.</small>
+</div>
+<div class="card" style="margin-top:6px"><span class="num">4</span><b style="display:inline">Check:</b> Entra &rsaquo; Enterprise applications &rsaquo; <code>wwprofilerlw-auth</code> &rsaquo; <b style="display:inline">Users and groups</b> lists <code>tuprofilerdev2-function</code> with role Warewolf_ClientApps.</div>
+</div>
+</div>
+<div class="warn">The engine must also grant the <code>Warewolf_ClientApps</code> group View + Execute on <code>secure/Profiler/V2/Functions/ProfilerAlerts/GrantDates.json</code> (its authorization config / <code>secure.config</code>). Without it the engine returns an authorization error even with the role assigned.</div>
+</section>
+
+<section>
+<h2>Part 4 &mdash; Verify</h2>
+<div class="row">
+<div class="card"><span class="num">1</span>Run the new release. All four tasks green.</div><div class="arrow">&rarr;</div>
+<div class="card"><span class="num">2</span>Browse <code>https://tuprofilerdev2-function.azurewebsites.net/api/smoke/grantdates</code></div><div class="arrow">&rarr;</div>
+<div class="card"><span class="num">3</span>Expect <b style="display:inline">HTTP 200</b> and <code>engineStatus: 200</code>. <small>401/403: role or engine permissions (Part 3). 400: Part 2 settings.</small></div>
+</div>
+<div class="warn">GrantDates sends the missing grant dates email when dates are missing, exactly as the Monday 08:00 timer run does.</div>
+</section>
+</body></html>
