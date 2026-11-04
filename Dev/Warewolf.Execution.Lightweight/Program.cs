@@ -5,6 +5,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Warewolf.Bite;
+using Warewolf.Execution.Lightweight;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
@@ -19,6 +21,13 @@ try
     // SqlConnection opens, and the switch is cached internally after SqlClient's first read of
     // it — see SqlClientCompatibilityConfigurator's own doc comment for the incident this guards.
     SqlClientCompatibilityConfigurator.Configure();
+
+    // A packaged engine can also run one workflow and exit, without a server (RunOnceCommand: --run <file.bite>).
+    if (RunOnceCommand.IsRequested(args))
+    {
+        Environment.ExitCode = await RunOnceCommand.RunAsync(args, Console.Out, Console.Error, () => Console.In);
+        return;
+    }
 
     // A packaged engine runs without the Functions host (SelfHostedEngine: --self-host or
     // WAREWOLF_SELF_HOST=1). Its defaults go in before the configuration below reads them.
@@ -161,6 +170,25 @@ try
 
     // Replace bootstrap sink with the full composite (Console + AI + Elastic + Audit).
     Dev2Logger.ExternalSink = new Dev2LoggerSinkAdapter(executionLogger);
+
+    // ── Step 5b: WF-free reader shadow mode (WF removal T1.7) ────────────────
+    // Off unless WAREWOLF_BITE_SHADOW=true. Each freshly built workflow is also read by BiteReader and
+    // compared; the WF graph is still the one executed. Mismatches log as warnings (paths + value hashes only).
+    if (BiteShadow.IsEnabled())
+    {
+        WorkflowExecutor.ShadowSink = result =>
+        {
+            if (result.Matched)
+            {
+                Dev2Logger.Info(result.ToString(), "BiteShadow");
+            }
+            else
+            {
+                Dev2Logger.Warn(result.ToString(), "BiteShadow");
+            }
+        };
+        Dev2Logger.Info($"Program {BiteShadow.EnabledVariable} is on: workflows are shadow-read by the WF-free reader", executionId);
+    }
 
 
     // ── Step 6: License check ────────────────────────────────────────────────

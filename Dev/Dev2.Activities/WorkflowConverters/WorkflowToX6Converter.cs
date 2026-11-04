@@ -1,5 +1,6 @@
 using Dev2.Activities.Exchange;
 using Dev2.Activities.DateAndTime;
+using Dev2.Activities.Flow;
 using Dev2.Activities.RabbitMQ.Consume;
 using Dev2.Activities.RabbitMQ.Publish;
 using Dev2.Activities.RedisCache;
@@ -41,12 +42,12 @@ namespace Dev2.Activities.WF
         private readonly List<string> _tempEndNodes = new(8);
 
         /// <summary>
-        /// Convert workflow (ActivityBuilder) to X6 Json
+        /// Convert a workflow definition (as Warewolf.Bite's BiteReader.ReadModel reads it) to X6 Json
         /// </summary>
-        /// <param name="workflow">ActivityBuilder</param>
+        /// <param name="workflow">The workflow's flowchart; null converts to the start node alone</param>
         /// <param name="xml">Workflow Xaml</param>
         /// <returns>Json serialized string</returns>
-        public string ConvertToX6Json(ActivityBuilder workflow, string xml)
+        public string ConvertToX6Json(FlowchartModel workflow, string xml)
         {
             try
             {
@@ -56,9 +57,9 @@ namespace Dev2.Activities.WF
                 var startNode = CreateStartNode();
                 graphData.Nodes.Add(startNode);
 
-                if (workflow.Implementation != null)
+                if (workflow != null)
                 {
-                    ProcessActivity(workflow.Implementation, graphData, activityNodeMap, startNode.id);
+                    ProcessFlowchart(workflow, graphData, activityNodeMap, startNode.id);
                 }
 
                 var json = JsonConvert.SerializeObject(graphData);
@@ -76,45 +77,35 @@ namespace Dev2.Activities.WF
         {
             if (activity == null) return previousNodeId;
 
-            string nodeId;
+            // Prefer the activity's own persisted UniqueID (set by X6ToWorkflowConverter's
+            // ApplyUniqueIdFromNode when this activity was originally authored from an X6 cell)
+            // so that node ids stay stable across repeated ConvertToX6Json calls on the same
+            // XAML. Without this, every call minted a fresh random id here, which meant a node
+            // id returned by one get_workflow_definition/add_step call could never be resolved
+            // by a later call's afterStepId lookup (add_step's own documented "stepId... usable
+            // as a future call's afterStepId" contract). Only fall back to a fresh id when the
+            // activity has no UniqueID (e.g. non-Dev2 WF-Foundation activities like the start
+            // WriteLine node), where stability isn't meaningful anyway.
+            var nodeId = activity is IDev2Activity dev2Activity && !string.IsNullOrWhiteSpace(dev2Activity.UniqueID)
+                ? dev2Activity.UniqueID
+                : CommonHelper.GenerateNodeId();
+            activityNodeMap[activity] = nodeId;
 
-            if (activity is not Flowchart)
+            if (!HasNestedActivities(activity))//if (activity is not DsfForEachActivity)
             {
-                // Prefer the activity's own persisted UniqueID (set by X6ToWorkflowConverter's
-                // ApplyUniqueIdFromNode when this activity was originally authored from an X6 cell)
-                // so that node ids stay stable across repeated ConvertToX6Json calls on the same
-                // XAML. Without this, every call minted a fresh random id here, which meant a node
-                // id returned by one get_workflow_definition/add_step call could never be resolved
-                // by a later call's afterStepId lookup (add_step's own documented "stepId... usable
-                // as a future call's afterStepId" contract). Only fall back to a fresh id when the
-                // activity has no UniqueID (e.g. non-Dev2 WF-Foundation activities like the start
-                // WriteLine node), where stability isn't meaningful anyway.
-                nodeId = activity is IDev2Activity dev2Activity && !string.IsNullOrWhiteSpace(dev2Activity.UniqueID)
-                    ? dev2Activity.UniqueID
-                    : CommonHelper.GenerateNodeId();
-                activityNodeMap[activity] = nodeId;
+                var node = CreateActivityNode(activity, nodeId);
+                graphData.Nodes.Add(node);
+                graphData.ActivityNodeMap[activity] = node;
 
-                if (!HasNestedActivities(activity))//if (activity is not DsfForEachActivity)
+                if (!string.IsNullOrEmpty(previousNodeId))
                 {
-                    var node = CreateActivityNode(activity, nodeId);
-                    graphData.Nodes.Add(node);
-                    graphData.ActivityNodeMap[activity] = node;
-
-                    if (!string.IsNullOrEmpty(previousNodeId))
-                    {
-                        graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, nodeId));
-                    }
+                    graphData.Edges.Add(CommonHelper.CreateEdge(previousNodeId, nodeId));
                 }
-            }
-            else
-            {
-                nodeId = previousNodeId;
             }
 
             return activity switch
             {
                 Sequence sequence => ProcessSequence(sequence, graphData, activityNodeMap, nodeId),
-                Flowchart flowchart => ProcessFlowchart(flowchart, graphData, activityNodeMap, nodeId),
                 If ifActivity => ProcessIfActivity(ifActivity, graphData, activityNodeMap, nodeId),
                 While whileActivity => ProcessWhileActivity(whileActivity, graphData, activityNodeMap, nodeId),
                 DoWhile doWhileActivity => ProcessDoWhileActivity(doWhileActivity, graphData, activityNodeMap, nodeId),
@@ -147,7 +138,7 @@ namespace Dev2.Activities.WF
             return currentNodeId;
         }
 
-        private string ProcessFlowchart(Flowchart flowchart, X6WorkflowLoadModel graphData,
+        private string ProcessFlowchart(FlowchartModel flowchart, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string parentNodeId)
         {
             if (flowchart.StartNode == null) return parentNodeId;
@@ -157,30 +148,27 @@ namespace Dev2.Activities.WF
 
             // Process additional nodes in the flowchart.Nodes collection
             // This ensures all nodes are processed, including disconnected ones
-            if (flowchart.Nodes != null)
+            foreach (var node in flowchart.Nodes)
             {
-                foreach (var node in flowchart.Nodes)
+                // Skip the start node as it's already processed
+                if (node == flowchart.StartNode)
+                    continue;
+
+                // Extract the activity from the flow node
+                var activity = GetActivityFromFlowNode(node);
+                if (activity == null)
+                    continue;
+
+                // Check if this activity has already been processed
+                if (!activityNodeMap.ContainsKey(activity))
                 {
-                    // Skip the start node as it's already processed
-                    if (node == flowchart.StartNode)
-                        continue;
-
-                    // Extract the activity from the flow node
-                    var activity = GetActivityFromFlowNode(node);
-                    if (activity == null)
-                        continue;
-
-                    // Check if this activity has already been processed
-                    if (!activityNodeMap.ContainsKey(activity))
-                    {
-                        // Activity not yet processed - process the node without creating an edge from parentNodeId
-                        // This handles disconnected nodes that aren't reachable from StartNode
-                        // The edges will be created during normal flow traversal
-                        ProcessFlowNode(node, graphData, activityNodeMap, null);
-                    }
-                    // If activity is already processed, it means it was reached during the normal flow traversal
-                    // from StartNode, so we don't need to do anything - edges are already correct
+                    // Activity not yet processed - process the node without creating an edge from parentNodeId
+                    // This handles disconnected nodes that aren't reachable from StartNode
+                    // The edges will be created during normal flow traversal
+                    ProcessFlowNode(node, graphData, activityNodeMap, null);
                 }
+                // If activity is already processed, it means it was reached during the normal flow traversal
+                // from StartNode, so we don't need to do anything - edges are already correct
             }
 
             return lastNodeId;
@@ -191,14 +179,13 @@ namespace Dev2.Activities.WF
         /// </summary>
         /// <param name="flowNode">The flow node to extract activity from</param>
         /// <returns>The activity contained in the flow node, or null if none found</returns>
-        private static Activity GetActivityFromFlowNode(FlowNode flowNode)
+        private static Activity GetActivityFromFlowNode(FlowNodeModel flowNode)
         {
             return flowNode switch
             {
-                FlowStep flowStep => flowStep.Action,
-                FlowDecision flowDecision => flowDecision.Condition,
-                FlowSwitch<string> flowSwitch => flowSwitch.Expression,
-                FlowSwitch<object> flowSwitchObj => flowSwitchObj.Expression,
+                FlowStepModel flowStep => flowStep.Action as Activity,
+                FlowDecisionModel flowDecision => flowDecision.Condition as Activity,
+                FlowSwitchModel flowSwitch => flowSwitch.Expression as Activity,
                 _ => null
             };
         }
@@ -246,7 +233,7 @@ namespace Dev2.Activities.WF
         /// <param name="sourceNodeId">The source node ID for edge creation</param>
         /// <param name="edgeLabel">Optional label for the edge</param>
         /// <returns>The node ID of the processed or existing node</returns>
-        private string ProcessOrLinkFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
+        private string ProcessOrLinkFlowNode(FlowNodeModel flowNode, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string sourceNodeId, string edgeLabel = "",
             bool isDecisionArm = false, bool isTrueArm = false)
         {
@@ -272,22 +259,22 @@ namespace Dev2.Activities.WF
             }
         }
 
-        private string ProcessFlowNode(FlowNode flowNode, X6WorkflowLoadModel graphData,
+        private string ProcessFlowNode(FlowNodeModel flowNode, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             return flowNode switch
             {
-                FlowStep flowStep => ProcessFlowStep(flowStep, graphData, activityNodeMap, previousNodeId),
-                FlowDecision flowDecision => ProcessFlowDecision(flowDecision, graphData, activityNodeMap, previousNodeId),
-                FlowSwitch<string> flowSwitchString => ProcessFlowSwitch(flowSwitchString, graphData, activityNodeMap, previousNodeId),
+                FlowStepModel flowStep => ProcessFlowStep(flowStep, graphData, activityNodeMap, previousNodeId),
+                FlowDecisionModel flowDecision => ProcessFlowDecision(flowDecision, graphData, activityNodeMap, previousNodeId),
+                FlowSwitchModel flowSwitch => ProcessFlowSwitch(flowSwitch, graphData, activityNodeMap, previousNodeId),
                 _ => previousNodeId
             };
         }
 
-        private string ProcessFlowStep(FlowStep flowStep, X6WorkflowLoadModel graphData,
+        private string ProcessFlowStep(FlowStepModel flowStep, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
-            var nodeId = ProcessActivity(flowStep.Action, graphData, activityNodeMap, previousNodeId);
+            var nodeId = ProcessActivity(flowStep.Action as Activity, graphData, activityNodeMap, previousNodeId);
 
             if (flowStep.Next != null)
             {
@@ -297,22 +284,22 @@ namespace Dev2.Activities.WF
             return nodeId;
         }
 
-        private string ProcessFlowDecision(FlowDecision flowDecision, X6WorkflowLoadModel graphData,
+        private string ProcessFlowDecision(FlowDecisionModel flowDecision, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             var decisionNodeId = CommonHelper.GenerateNodeId();
             var decisionNode = CreateDecisionNode(flowDecision, decisionNodeId);
             graphData.Nodes.Add(decisionNode);
 
-            // GetTargetNodeId resolves a FlowDecision back to its node through
+            // ProcessOrLinkFlowNode resolves a decision back to its node through
             // flowDecision.Condition, so the mapping has to be recorded here. Without it a
             // decision reached from more than one path (or re-enumerated from Flowchart.Nodes)
             // mints a second node instead of linking to this one — observed as two DsfDecision
             // cells for the single <FlowDecision> in GetFalse.bite, leaving an unreachable
             // duplicate in the round-tripped XAML.
-            if (flowDecision.Condition != null)
+            if (flowDecision.Condition is Activity condition)
             {
-                activityNodeMap[flowDecision.Condition] = decisionNodeId;
+                activityNodeMap[condition] = decisionNodeId;
             }
 
             CreateEdgeIfNotExists(graphData, previousNodeId, decisionNodeId);
@@ -332,21 +319,20 @@ namespace Dev2.Activities.WF
             return decisionNodeId;
         }
 
-        private string ProcessFlowSwitch(FlowSwitch<string> flowSwitch, X6WorkflowLoadModel graphData,
+        private string ProcessFlowSwitch(FlowSwitchModel flowSwitch, X6WorkflowLoadModel graphData,
             Dictionary<Activity, string> activityNodeMap, string previousNodeId)
         {
             var switchNodeId = CommonHelper.GenerateNodeId();
-            //var switchNode = CreateSwitchNodeString(flowSwitch, switchNodeId);
             var helper = new SwitchActivityDataHelper(this._currentX, this._currentY);
-            var switchNode = helper.CreateSwitchNodeString(flowSwitch, switchNodeId);
+            var switchNode = helper.CreateSwitchNode(flowSwitch, switchNodeId);
 
             this._currentX = helper.CurrentX;
             this._currentY = helper.CurrentY;
 
             // Store the switch activity in the activity map if it has an expression
-            if (flowSwitch.Expression != null)
+            if (flowSwitch.Expression is Activity expression)
             {
-                activityNodeMap[flowSwitch.Expression] = switchNodeId;
+                activityNodeMap[expression] = switchNodeId;
             }
 
             graphData.Nodes.Add(switchNode);
@@ -357,7 +343,7 @@ namespace Dev2.Activities.WF
             // Process each case
             foreach (var caseItem in flowSwitch.Cases)
             {
-                var label = caseItem.Key?.ToString() ?? "Case";
+                var label = caseItem.Key ?? "Case";
                 ProcessOrLinkFlowNode(caseItem.Value, graphData, activityNodeMap, switchNodeId, label);
             }
 
@@ -368,27 +354,6 @@ namespace Dev2.Activities.WF
             }
 
             return switchNodeId;
-        }
-
-        private static string GetTargetNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap, string fallbackNodeId)
-        {
-            // First try to get the node ID from the activity map
-            if (flowNode is FlowStep flowStep && flowStep.Action != null && activityNodeMap.ContainsKey(flowStep.Action))
-            {
-                return activityNodeMap[flowStep.Action];
-            }
-
-            if (flowNode is FlowDecision flowDecision && flowDecision.Condition != null && activityNodeMap.ContainsKey(flowDecision.Condition))
-            {
-                return activityNodeMap[flowDecision.Condition];
-            }
-
-            if (flowNode is FlowSwitch<object> flowSwitch && flowSwitch.Expression != null && activityNodeMap.ContainsKey(flowSwitch.Expression))
-            {
-                return activityNodeMap[flowSwitch.Expression];
-            }
-
-            return fallbackNodeId;
         }
 
         private string ProcessIfActivity(If ifActivity, X6WorkflowLoadModel graphData,
@@ -1043,11 +1008,11 @@ namespace Dev2.Activities.WF
             }
         }
 
-        private Cell CreateDecisionNode(FlowDecision decision, string nodeId)
+        private Cell CreateDecisionNode(FlowDecisionModel decision, string nodeId)
         {
-            var parser = new ActivityParser();
-            var dsfDecision = parser.ParseDsfDecisionOnly(decision, new List<IDev2Activity>()) ??
-                             new DsfDecision { Conditions = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() } };
+            var dsfDecision = decision.Condition is DsfFlowDecisionActivity condition
+                ? FlowNodeFactory.CreateDecision(condition)
+                : new DsfDecision { Conditions = new Dev2DecisionStack { TheStack = new List<Dev2Decision>() } };
 
             var cell = CreateDecisionNode(dsfDecision, nodeId);
 
@@ -1446,14 +1411,6 @@ namespace Dev2.Activities.WF
                    type == typeof(decimal) || type.IsEnum;
         }
 
-        private static string GetFirstNodeId(FlowNode flowNode, Dictionary<Activity, string> activityNodeMap)
-        {
-            return flowNode switch
-            {
-                FlowStep flowStep when activityNodeMap.ContainsKey(flowStep.Action) => activityNodeMap[flowStep.Action],
-                _ => CommonHelper.GenerateNodeId()
-            };
-        }
     }
 
 }

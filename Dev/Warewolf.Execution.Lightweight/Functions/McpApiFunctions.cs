@@ -161,6 +161,12 @@ namespace Warewolf.Execution.Lightweight.Functions
             FunctionContext context)
             => Invoke(req, context, (_, _) => Task.FromResult<object>(GetWorkflowSchemaTool.Handle()));
 
+        [Function("McpApiGetBiteDefinitionSchema")]
+        public Task<HttpResponseData> GetBiteDefinitionSchema(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_bite_definition_schema")] HttpRequestData req,
+            FunctionContext context)
+            => Invoke(req, context, (_, _) => Task.FromResult<object>(GetBiteDefinitionSchemaTool.Handle()));
+
         [Function("McpApiGetToolSchema")]
         public Task<HttpResponseData> GetToolSchema(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "mcp-api/get_tool_schema")] HttpRequestData req,

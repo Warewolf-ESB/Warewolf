@@ -4,11 +4,11 @@ using Dev2.Common.X6;
 using Dev2.Utilities;
 using Dev2.Activities.Exchange;
 using Dev2.Activities.DateAndTime;
+using Dev2.Activities.Flow;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Activities;
-using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -53,30 +53,12 @@ namespace Dev2.Activities.WF
         }
 
         /// <summary>
-        /// Converts X6 Json to Xaml representing a workflow
-        /// </summary>
-        /// <param name="values">Dictionary containing ResourceJSON</param>
-        /// <returns></returns>
-        public static StringBuilder X6JsonToXaml(Dictionary<string, System.Text.StringBuilder> values)
-        {
-            values.TryGetValue("ResourceJSON", out StringBuilder resourceDefinition);
-
-            if (resourceDefinition != null && resourceDefinition.Length > 0)
-            {
-                var xaml = new X6ToWorkflowConverter().X6JsonToWorkflow(resourceDefinition.ToString());
-                xaml = AddReplaceNameSpace(xaml);
-                return xaml;
-            }
-
-            return new StringBuilder();
-        }
-
-        /// <summary>
-        /// Converts X6 Json to Xaml representing a workflow
+        /// Converts X6 Json to the workflow definition it describes. Warewolf.Bite's BiteFormat.X6ToXaml writes it as
+        /// XAML, so this converter needs neither WF's ActivityBuilder nor its XAML writer (WF removal T3.3).
         /// </summary>
         /// <param name="x6Json"></param>
-        /// <returns>StringBuilder</returns>
-        public StringBuilder X6JsonToWorkflow(string x6Json)
+        /// <returns>FlowchartModel</returns>
+        public FlowchartModel X6JsonToModel(string x6Json)
         {
             try
             {
@@ -89,20 +71,9 @@ namespace Dev2.Activities.WF
 
                 var x6Graph = JsonConvert.DeserializeObject<X6WorkflowSaveModel>(x6Json, settings);
 
-                var activityBuilder = X6JsonToActivityBuilder(x6Graph);
-                var flowChart = activityBuilder.Implementation as Flowchart;
-                if (flowChart == null)
-                {
-                    // Either the graph had no cells, or none of its cells resolved to a start
-                    // node — BuildWorkflow falls back to a bare Sequence in that case, which
-                    // WorkflowHelper.EnsureImplementation cannot finalise. Fail with a structured,
-                    // named exception here instead of letting it throw a raw NullReferenceException.
-                    throw new EmptyWorkflowGraphException();
-                }
-                var workflowHelper = new WorkflowHelper();
-                workflowHelper.EnsureImplementation(activityBuilder, flowChart);
-                var workflowXaml = workflowHelper.GetXamlDefinition(activityBuilder);
-                return workflowXaml;
+                // Either the graph had no cells, or none of its cells resolved to a start node, so there is no
+                // flowchart to write. Fail with a structured, named exception.
+                return X6JsonToFlowchart(x6Graph) ?? throw new EmptyWorkflowGraphException();
             }
             catch (Exception ex)
             {
@@ -112,17 +83,13 @@ namespace Dev2.Activities.WF
         }
 
         /// <summary>
-        /// Builds a workflow from X6WorkflowSaveModel and returns ActivityBuilder
+        /// Builds a workflow from X6WorkflowSaveModel
         /// </summary>
         /// <param name="x6Graph">X6WorkflowSaveModel representing workflow data in X6</param>
-        /// <returns>ActivityBuilder</returns>
-        private ActivityBuilder X6JsonToActivityBuilder(X6WorkflowSaveModel x6Graph)
+        /// <returns>The flowchart, or null when no cell is the start node</returns>
+        private FlowchartModel X6JsonToFlowchart(X6WorkflowSaveModel x6Graph)
         {
             var workflowName = x6Graph.ResourceName ?? "ConvertedWorkflow";
-            var activityBuilder = new ActivityBuilder
-            {
-                Name = workflowName
-            };
 
             // Separate nodes and edges
             var allNodes = x6Graph.Cells.Where(c => c.shape != "edge").ToList();
@@ -173,9 +140,12 @@ namespace Dev2.Activities.WF
             EmbedNestedActivities(allNodes);
 
             // Build the workflow structure
-            activityBuilder.Implementation = BuildWorkflow(topLevelNodes, startcell);
-
-            return activityBuilder;
+            var flowchart = BuildWorkflow(topLevelNodes, startcell);
+            if (flowchart != null)
+            {
+                flowchart.Name = workflowName;
+            }
+            return flowchart;
         }
 
         private void EmbedNestedActivities(List<Cell> allNodes)
@@ -422,17 +392,16 @@ namespace Dev2.Activities.WF
         /// </summary>
         /// <param name="nodes">X6 Nodes (also known as Cell)</param>
         /// <param name="startcell">Start Node (i.e., X6 Cell)</param>
-        /// <returns>Activity</returns>
-        private Activity BuildWorkflow(List<Cell> nodes, Cell startcell)
+        /// <returns>The flowchart, or null without a start cell</returns>
+        private FlowchartModel BuildWorkflow(List<Cell> nodes, Cell startcell)
         {
-            var sequence = new Sequence();
-            var flowchart = new Flowchart();
+            if (startcell == null) return null;
 
-            if (startcell == null) return sequence;
+            var flowchart = new FlowchartModel();
 
             // Build flowchart structure
-            var flowNodes = new Dictionary<string, FlowNode>();
-            FlowStep startFlowNode = null;
+            var flowNodes = new Dictionary<string, FlowNodeModel>();
+            FlowStepModel startFlowNode = null;
             foreach (var node in nodes)
             {
                 // Only process nodes that have activities in the activityMap
@@ -452,7 +421,7 @@ namespace Dev2.Activities.WF
 
                     if (node.id == startcell.id)
                     {
-                        startFlowNode = flowNode as FlowStep;
+                        startFlowNode = flowNode as FlowStepModel;
                     }
                     else
                     {
@@ -463,9 +432,9 @@ namespace Dev2.Activities.WF
 
             CreateConnections(flowNodes);
 
-            // Set Start Node
-            if (startFlowNode != null)
-                flowchart.StartNode = startFlowNode.Next ?? startFlowNode;
+            // Set Start Node: the step the designer's start cell connects to. A start cell connected to nothing
+            // leaves the flowchart without one, which every engine reports as a workflow with nothing to run.
+            flowchart.StartNode = startFlowNode?.Next;
 
             return flowchart;
         }
@@ -510,72 +479,19 @@ namespace Dev2.Activities.WF
         /// Activity Factory: Creates Flow Node from Activity (action) 
         /// </summary>
         /// <param name="action"></param>
-        /// <returns>FlowNode</returns>
-        private static FlowNode CreateFlowNode(Activity action)
+        /// <returns>FlowNodeModel</returns>
+        private static FlowNodeModel CreateFlowNode(Activity action)
         {
             if (action is DsfFlowDecisionActivity flowAction)
             {
-                return new FlowDecision { DisplayName = flowAction.DisplayName, Condition = flowAction };
+                return new FlowDecisionModel { DisplayName = flowAction.DisplayName, Condition = flowAction };
             }
             else if (action is DsfFlowSwitchActivity switchAction)
             {
-                return new FlowSwitch<string> { DisplayName = switchAction.DisplayName, Expression = switchAction };
+                return new FlowSwitchModel { DisplayName = switchAction.DisplayName, Expression = switchAction };
             }
 
-            return new FlowStep { Action = action };
-        }
-
-        /// <summary>
-        /// Activity Factory: Creates Activity from X6 Json Cell
-        /// </summary>
-        /// <param name="node">X6 Json Cell</param>
-        /// <param name="isStartNode">flag to indicate if node is a start node</param>
-        /// <returns>Activity</returns>
-        private static Activity CreateActivityFromNode_old(Cell node, out bool isStartNode)
-        {
-            isStartNode = false;
-
-            if (!node.data.TryGetValue("type", out var typeObj) || typeObj is not string type || string.IsNullOrWhiteSpace(type))
-                return null;
-
-            var nodeType = type.ToLowerInvariant();
-            if (nodeType == Constants.START)
-            {
-                isStartNode = true;
-                return new WriteLine { Text = "Workflow Start Node" };
-            }
-            else if (nodeType.Contains("dsfdotnetmultiassignactivity"))
-            {
-                return CreateAssignActivity(node);
-            }
-            else if (nodeType.Contains("dsfdotnetmultiassignobjectactivity"))
-            {
-                return CreateAssignObectActivity(node);
-            }
-            else if (nodeType.Contains("flowdecision"))
-            {
-                return CreateFlowDecisionActivity(node);
-            }
-            else if (nodeType.Contains("dsfdecision"))
-            {
-                return CreateDecisionActivity(node);
-            }
-            else if (nodeType.Contains("dsfflowswitchactivity") || nodeType.Contains("flowswitch"))
-            {
-                return CreateSwitchActivity(node);
-            }
-            else if (nodeType.Contains("dsfforeachactivity") || nodeType.Contains("foreach"))
-            {
-                return CreateForEachActivity(node);
-            }
-            else if (nodeType.Contains("dsfsequenceactivity"))
-            {
-                return CreateSequenceActivity(node);
-            }
-            else
-            {
-                return new WriteLine { Text = "Unknown type" };
-            }
+            return new FlowStepModel { Action = action };
         }
 
         /// <summary>
@@ -597,7 +513,8 @@ namespace Dev2.Activities.WF
             {
                 case var t when t == Constants.START:
                     isStartNode = true;
-                    return new WriteLine { Text = "Workflow Start Node" };
+                    // A marker for the designer's start cell; BuildWorkflow never puts it in the flowchart.
+                    return new System.Activities.Statements.WriteLine { Text = "Workflow Start Node" };
                 case var t when t.Contains("dsfdotnetmultiassignactivity"):
                     return CreateAssignActivity(node);
                 case var t when t.Contains("dsfdotnetmultiassignobjectactivity"):
@@ -822,7 +739,7 @@ namespace Dev2.Activities.WF
         ///
         /// A Decision's display text is cosmetic, and a FlowDecision with no name is legitimate:
         /// WorkflowToX6Converter writes such a node back with <c>"displaytext": null</c>. These
-        /// factories used to return null for it, which X6JsonToActivityBuilder reports as "Could not
+        /// factories used to return null for it, which X6JsonToFlowchart reports as "Could not
         /// convert node ... into an activity" — so a workflow the engine itself returned from
         /// get_workflow_definition could not be saved again by edit_workflow. Fall back to the
         /// other places a caller may have put the name, then to a constant, so a blank label never
@@ -919,7 +836,7 @@ namespace Dev2.Activities.WF
         /// Creates Connections among flow nodes
         /// </summary>
         /// <param name="flowNodes">Flow Nodes</param>
-        private void CreateConnections(Dictionary<string, FlowNode> flowNodes)
+        private void CreateConnections(Dictionary<string, FlowNodeModel> flowNodes)
         {
             // First, create connections from switch case data
             CreateSwitchCaseConnections(flowNodes);
@@ -937,20 +854,20 @@ namespace Dev2.Activities.WF
 
                 switch (sourceNode)
                 {
-                    case FlowDecision decision:
+                    case FlowDecisionModel decision:
                         HandleDecisionConnection(connection, decision, targetNode);
                         break;
-                    case FlowSwitch<string> switchNode:
+                    case FlowSwitchModel switchNode:
                         HandleSwitchConnection(connection, switchNode, targetNode);
                         break;
-                    case FlowStep step:
+                    case FlowStepModel step:
                         step.Next = targetNode;
                         break;
                 }
             }
         }
 
-        private void CreateSwitchCaseConnections(Dictionary<string, FlowNode> flowNodes)
+        private void CreateSwitchCaseConnections(Dictionary<string, FlowNodeModel> flowNodes)
         {
             foreach (var kvp in switchCaseMap)
             {
@@ -962,26 +879,26 @@ namespace Dev2.Activities.WF
             }
         }
 
-        private static bool TryGetSwitchNode(Dictionary<string, FlowNode> flowNodes, string switchNodeId, out FlowSwitch<string> switchNode)
+        private static bool TryGetSwitchNode(Dictionary<string, FlowNodeModel> flowNodes, string switchNodeId, out FlowSwitchModel switchNode)
         {
             switchNode = null;
             return flowNodes.TryGetValue(switchNodeId, out var flowNode) &&
-                   (switchNode = flowNode as FlowSwitch<string>) != null;
+                   (switchNode = flowNode as FlowSwitchModel) != null;
         }
 
-        private void ProcessSwitchCases(SwitchCaseData caseData, string switchNodeId, FlowSwitch<string> switchNode, Dictionary<string, FlowNode> flowNodes)
+        private void ProcessSwitchCases(SwitchCaseData caseData, string switchNodeId, FlowSwitchModel switchNode, Dictionary<string, FlowNodeModel> flowNodes)
         {
             foreach (var switchCase in caseData.Cases)
             {
                 var matchingConnection = FindMatchingConnection(switchNodeId, switchCase.Key, switchCase.Value);
                 if (TryGetTargetNode(matchingConnection, flowNodes, out var targetNode))
                 {
-                    switchNode.Cases[switchCase.Key] = targetNode;
+                    switchNode.SetCase(switchCase.Key, targetNode);
                 }
             }
         }
 
-        private void ProcessDefaultCase(SwitchCaseData caseData, string switchNodeId, FlowSwitch<string> switchNode, Dictionary<string, FlowNode> flowNodes)
+        private void ProcessDefaultCase(SwitchCaseData caseData, string switchNodeId, FlowSwitchModel switchNode, Dictionary<string, FlowNodeModel> flowNodes)
         {
             if (string.IsNullOrEmpty(caseData.DefaultCase))
                 return;
@@ -1007,7 +924,7 @@ namespace Dev2.Activities.WF
                 (c.label == "Default" || c.label == "default" || c.label == defaultCase));
         }
 
-        private static bool TryGetTargetNode(Cell connection, Dictionary<string, FlowNode> flowNodes, out FlowNode targetNode)
+        private static bool TryGetTargetNode(Cell connection, Dictionary<string, FlowNodeModel> flowNodes, out FlowNodeModel targetNode)
         {
             targetNode = null;
             return connection?.Target?.Id != null &&
@@ -1095,7 +1012,7 @@ namespace Dev2.Activities.WF
             return caseData;
         }
 
-        private static void HandleDecisionConnection(Cell connection, FlowDecision decision, FlowNode targetNode)
+        private static void HandleDecisionConnection(Cell connection, FlowDecisionModel decision, FlowNodeModel targetNode)
         {
             if (connection.data == null) return;
 
@@ -1113,7 +1030,7 @@ namespace Dev2.Activities.WF
                 decision.False = targetNode;
         }
 
-        private static void HandleSwitchConnection(Cell connection, FlowSwitch<string> switchNode, FlowNode targetNode)
+        private static void HandleSwitchConnection(Cell connection, FlowSwitchModel switchNode, FlowNodeModel targetNode)
         {
             string caseKey = null;
 
@@ -1136,223 +1053,7 @@ namespace Dev2.Activities.WF
             }
             else
             {
-                switchNode.Cases[caseKey] = targetNode;
-            }
-        }
-
-        /// <summary>
-        /// To open workflow in WW Studio, namespaces should be changed back to mscorlib
-        /// </summary>
-        /// <param name="root">Root Element</param>
-        public static void ReplaceDefaultNamespace(XElement root)
-        {
-            var oldNs = XNamespace.Get("clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib");
-            var newNs = XNamespace.Get("clr-namespace:System.Collections.Generic;assembly=mscorlib");
-
-            // Recursively update namespace of all elements that used the old default namespace
-            void UpdateNamespace(XElement element)
-            {
-                if (element.Name.Namespace == oldNs)
-                {
-                    element.Name = newNs + element.Name.LocalName;
-                }
-
-                foreach (var attr in element.Attributes())
-                {
-                    // Fix namespace in x:TypeArguments or other attributes that use oldNs in string form
-                    if ((attr.Name.LocalName == "x:TypeArguments") &&
-                        attr.Value.Contains("clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib"))
-                    {
-                        attr.Value = attr.Value.Replace(
-                            "clr-namespace:System.Collections.Generic;assembly=System.Private.CoreLib",
-                            "clr-namespace:System.Collections.Generic;assembly=mscorlib");
-                    }
-                }
-
-                foreach (var child in element.Elements())
-                {
-                    UpdateNamespace(child);
-                }
-            }
-
-            UpdateNamespace(root);
-
-            // Remove the old xmlns declaration if any, and add the new one explicitly
-            var oldAttr = root.Attributes().FirstOrDefault(a =>
-                a.IsNamespaceDeclaration && a.Value == oldNs.NamespaceName);
-            oldAttr?.Remove();
-        }
-
-        public static string ReplaceBadCollection(string xml)
-        {
-            if (string.IsNullOrWhiteSpace(xml)) return xml;
-
-            var doc = XDocument.Parse(xml, LoadOptions.PreserveWhitespace);
-
-            const string badNs = "clr-namespace:System.Collections.ObjectModel;assembly=System.Private.CoreLib";
-            var scoNs = XNamespace.Get("clr-namespace:System.Collections.ObjectModel;assembly=mscorlib");
-            var xNs = XNamespace.Get("http://schemas.microsoft.com/winfx/2006/xaml");
-
-            // ensure root has xmlns:sco declared
-            var root = doc.Root;
-            if (root != null && root.GetNamespaceOfPrefix("sco") == null)
-            {
-                root.Add(new XAttribute(XNamespace.Xmlns + "sco", scoNs.NamespaceName));
-            }
-
-            // find all <Collection> with bad namespace
-            var matches = doc
-                .Descendants()
-                .Where(el =>
-                    el.Name.LocalName == "Collection" &&
-                    el.Name.NamespaceName == badNs)
-                .ToList();
-
-            foreach (var el in matches)
-            {
-                // preserve TypeArguments if present
-                var typeArg = el.Attribute(xNs + "TypeArguments")?.Value ?? "Activity";
-
-                // replace only if it's empty (like your bad case)
-                if (!el.HasElements && string.IsNullOrWhiteSpace(el.Value))
-                {
-                    var replacement = new XElement(scoNs + "Collection",
-                        new XAttribute(xNs + "TypeArguments", typeArg));
-
-                    el.ReplaceWith(replacement);
-                }
-            }
-
-            return doc.ToString(SaveOptions.DisableFormatting);
-        }
-
-
-
-        /// <summary>
-        /// Add/replaces namespaces
-        /// </summary>
-        /// <param name="xmlString">xml</param>
-        /// <returns>Updated xml with added/replaced namespaces</returns>
-        public static StringBuilder AddReplaceNameSpace(StringBuilder xmlString)
-        {
-            try
-            {
-                var doc = XElement.Parse(xmlString.ToString());
-                ProcessNamespaceReplacements(doc);
-                ProcessNamespacesForImplementation(doc);
-                ProcessReferencesForImplementation(doc);
-                ReplaceDefaultNamespace(doc);
-                var finalXml = ReplaceBadCollection(doc.ToString());
-                finalXml = ReplaceSystemNamespace(finalXml);
-                return new StringBuilder(finalXml);
-            }
-            catch (Exception)
-            {
-                return xmlString;
-            }
-        }
-
-        private static void ProcessNamespaceReplacements(XElement doc)
-        {
-            XNamespace xmlnsNs = "http://www.w3.org/2000/xmlns/";
-
-            // Helper to replace assembly name in given prefix
-            void ReplaceAssembly(string prefix)
-            {
-                var attr = doc.Attribute(XName.Get(prefix, xmlnsNs.NamespaceName));
-                if (attr != null && attr.Value.Contains("System.Private.CoreLib"))
-                {
-                    attr.Value = attr.Value.Replace("System.Private.CoreLib", "mscorlib");
-                }
-            }
-
-            ReplaceAssembly("scg");
-            ReplaceAssembly("sco");
-
-            // Add missing xmlns declarations
-            EnsureNamespace(doc, xmlnsNs, "av", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            EnsureNamespace(doc, xmlnsNs, "sap", "http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation");
-        }
-
-        private static void EnsureNamespace(XElement doc, XNamespace xmlnsNs, string prefix, string uri)
-        {
-            if (!doc.Attributes().Any(a => a.Name.LocalName == prefix && a.Name.Namespace == xmlnsNs))
-            {
-                doc.Add(new XAttribute(XNamespace.Xmlns + prefix, uri));
-            }
-        }
-
-        private static void ProcessNamespacesForImplementation(XElement doc)
-        {
-            XNamespace defaultNs = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
-            var nsImpl = doc.Element(defaultNs + "TextExpression.NamespacesForImplementation");
-
-            if (nsImpl == null) return;
-
-            nsImpl.RemoveNodes();
-
-            const string nsImplBlock = @"
-<scg:List x:TypeArguments=""x:String"" Capacity=""6"" 
-          xmlns:scg=""clr-namespace:System.Collections.Generic;assembly=mscorlib"" 
-          xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
-  <x:String>Dev2.Common</x:String>
-  <x:String>Dev2.Data.Decisions.Operations</x:String>
-  <x:String>Dev2.Data.SystemTemplates.Models</x:String>
-  <x:String>Dev2.DataList.Contract</x:String>
-  <x:String>Dev2.DataList.Contract.Binary_Objects</x:String>
-  <x:String>Unlimited.Applications.BusinessDesignStudio.Activities</x:String>
-</scg:List>";
-
-            AddParsedElements(nsImpl, nsImplBlock);
-        }
-
-        private static void ProcessReferencesForImplementation(XElement doc)
-        {
-            XNamespace defaultNs = "http://schemas.microsoft.com/netfx/2009/xaml/activities";
-            var nsRImpl = doc.Element(defaultNs + "TextExpression.ReferencesForImplementation");
-
-            if (nsRImpl == null) return;
-
-            nsRImpl.RemoveNodes();
-
-            const string referencesXml = @"
-<sco:Collection xmlns:sco='clr-namespace:System.Collections.ObjectModel;assembly=mscorlib' 
-                x:TypeArguments='AssemblyReference'
-                xmlns:x='http://schemas.microsoft.com/winfx/2006/xaml'>
-  <AssemblyReference>Dev2.Common</AssemblyReference>
-  <AssemblyReference>Dev2.Data</AssemblyReference>
-  <AssemblyReference>Dev2.Activities</AssemblyReference>
-</sco:Collection>";
-
-            AddParsedElementsWithNamespace(nsRImpl, referencesXml, defaultNs);
-        }
-
-        private static void AddParsedElements(XElement parent, string xmlBlock)
-        {
-            var parsedElements = XElement.Parse($"<wrapper>{xmlBlock}</wrapper>").Elements();
-            foreach (var node in parsedElements)
-            {
-                node.Attributes().Where(a => a.IsNamespaceDeclaration).ToList().ForEach(a => a.Remove());
-                parent.Add(node);
-            }
-        }
-
-        private static void AddParsedElementsWithNamespace(XElement parent, string xmlBlock, XNamespace defaultNs)
-        {
-            var parsedCollection = XElement.Parse($"<wrapper>{xmlBlock}</wrapper>").Elements();
-            foreach (var node in parsedCollection)
-            {
-                node.Attributes().Where(a => a.IsNamespaceDeclaration).ToList().ForEach(a => a.Remove());
-
-                foreach (var descendant in node.DescendantsAndSelf())
-                {
-                    if (descendant.Name.Namespace == XNamespace.None)
-                    {
-                        descendant.Name = XName.Get(descendant.Name.LocalName, defaultNs.NamespaceName);
-                    }
-                }
-
-                parent.Add(node);
+                switchNode.SetCase(caseKey, targetNode);
             }
         }
 
@@ -1419,53 +1120,5 @@ namespace Dev2.Activities.WF
             return allNodes.FirstOrDefault(IsForEachNode)?.id;
         }
 
-        public static string ReplaceSystemNamespace(string xml)
-        {
-            if (string.IsNullOrWhiteSpace(xml)) return xml;
-
-            var doc = XDocument.Parse(xml, LoadOptions.PreserveWhitespace);
-
-            const string badNs = "clr-namespace:System;assembly=System.Private.CoreLib";
-            var systemNs = XNamespace.Get("clr-namespace:System;assembly=mscorlib");
-
-            // ensure root has xmlns:s declared with correct namespace
-            var root = doc.Root;
-            if (root != null)
-            {
-                var existingSystemNs = root.GetNamespaceOfPrefix("s");
-                if (existingSystemNs == null)
-                {
-                    // Add the correct namespace if it doesn't exist
-                    root.Add(new XAttribute(XNamespace.Xmlns + "s", systemNs.NamespaceName));
-                }
-                else if (existingSystemNs.NamespaceName == badNs)
-                {
-                    // Replace the bad namespace declaration
-                    var badAttr = root.Attributes()
-                        .FirstOrDefault(a => a.IsNamespaceDeclaration && 
-                                           a.Name.LocalName == "s" && 
-                                           a.Value == badNs);
-                    if (badAttr != null)
-                    {
-                        badAttr.Value = systemNs.NamespaceName;
-                    }
-                }
-            }
-
-            // find all elements with bad namespace
-            var elementMatches = doc
-                .Descendants()
-                .Where(el => el.Name.NamespaceName == badNs)
-                .ToList();
-
-            foreach (var el in elementMatches)
-            {
-                // Replace element namespace
-                el.Name = systemNs + el.Name.LocalName;
-            }
-
-
-            return doc.ToString(SaveOptions.DisableFormatting);
-        }
     }
 }

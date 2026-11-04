@@ -4,7 +4,6 @@
  *  Licensed under GNU Affero General Public License 3.0 or later.
  */
 
-using Dev2.Activities.WF;
 using ModelContextProtocol;
 using System;
 using System.ComponentModel;
@@ -12,6 +11,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text.Json.Serialization;
+using Warewolf.Bite;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -33,9 +33,8 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <item>Requires <b>Contribute</b> permission, resource-if-present else global, Public OR'd —
 /// the same rule <see cref="ListWorkflowsTool.HasPermission"/> already applies for View, generalised
 /// to accept the required flag.</item>
-/// <item>Compiles <c>body</c> to XAML via <see cref="X6ToWorkflowConverter.X6JsonToWorkflow"/>,
-/// fixes up namespaces via <see cref="X6ToWorkflowConverter.AddReplaceNameSpace"/> (mirroring
-/// <see cref="X6ToWorkflowConverter.X6JsonToXaml"/>'s own two-step pipeline), then wraps it in a
+/// <item>Compiles <c>body</c> to XAML via <see cref="BiteFormat.X6ToXaml(string)"/> (the same
+/// conversion Web Studio's save uses), then wraps it in a
 /// <c>&lt;Service&gt;</c> envelope via <see cref="EnvelopeBiteWriter"/> — new Lightweight-local
 /// code (mirrors <c>Hello World.bite</c>'s structure), not <c>Dev2.Runtime.Services</c>'s
 /// <c>Workflow.ToServiceDefinition()</c>, per spec.</item>
@@ -108,9 +107,7 @@ internal static class CreateWorkflowTool
         string xamlDefinition;
         try
         {
-            var xaml = new X6ToWorkflowConverter().X6JsonToWorkflow(body.GetRawText());
-            xaml = X6ToWorkflowConverter.AddReplaceNameSpace(xaml);
-            xamlDefinition = xaml.ToString();
+            xamlDefinition = BiteFormat.X6ToXaml(body.GetRawText()).ToString();
         }
         catch (Exception ex)
         {

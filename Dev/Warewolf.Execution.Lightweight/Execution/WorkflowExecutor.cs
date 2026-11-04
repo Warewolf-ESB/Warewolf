@@ -25,6 +25,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Xml.Linq;
+using Warewolf.Bite;
 using Warewolf.Execution.Lightweight.Infrastructure;
 using Warewolf.Execution.Lightweight.Logging;
 using Warewolf.Execution.Lightweight.Models;
@@ -96,6 +97,14 @@ namespace Warewolf.Execution.Lightweight
         {
             internal DynamicActivity Activity { get; init; }
             internal IDev2Activity StartActivity { get; init; }
+
+            /// <summary>
+            /// Read by the WF-free <see cref="BiteReader"/> from a JSON <c>&lt;BiteDefinition&gt;</c>:
+            /// there is no <see cref="Activity"/>, only the linked <see cref="StartActivity"/> graph.
+            /// </summary>
+            internal bool FromBite { get; init; }
+
+            internal bool IsLoaded => Activity != null || FromBite;
 
             /// <summary>
             /// The pool key this instance was compiled under, stamped at rent time. Returning uses
@@ -237,10 +246,11 @@ namespace Warewolf.Execution.Lightweight
 
                 // Step 2: Extract XamlDefinition and DataList from the XML
                 var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
+                var biteEnvelope = HasBiteDefinition(fileContents) ? fileContents.ToString() : null;
 
-                if (xamlDefinition == null || xamlDefinition.Length == 0)
+                if (biteEnvelope == null && (xamlDefinition == null || xamlDefinition.Length == 0))
                 {
-                    Dev2Logger.Error("WorkflowExecutor Execute: No XamlDefinition found in workflow file", executionId.ToString());
+                    Dev2Logger.Error("WorkflowExecutor Execute: No XamlDefinition or BiteDefinition found in workflow file", executionId.ToString());
                     return WorkflowExecutionResult.Failure("No XamlDefinition found in the workflow file.");
                 }
 
@@ -274,10 +284,10 @@ namespace Warewolf.Execution.Lightweight
                 // than shared because the activity instances carry per-execution state - see the
                 // _workflowPool comment. Released in the finally at the end of this method.
                 Dev2Logger.Debug("WorkflowExecutor Step 3: Renting prepared workflow (compile+parse)", executionId.ToString());
-                prepared = RentPreparedWorkflow(request.WorkflowFilePath, xamlDefinition);
+                prepared = RentPreparedWorkflow(request.WorkflowFilePath, xamlDefinition, biteEnvelope);
                 Dev2Logger.Debug("WorkflowExecutor Step 3 completed: Prepared workflow rented", executionId.ToString());
 
-                if (prepared?.Activity == null)
+                if (prepared?.IsLoaded != true)
                 {
                     Dev2Logger.Error("WorkflowExecutor Execute: Failed to load DynamicActivity from XAML", executionId.ToString());
                     return WorkflowExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
@@ -551,7 +561,9 @@ namespace Warewolf.Execution.Lightweight
                 var fileContents = ReadWorkflowFile(request.WorkflowFilePath);
                 var (xamlDefinition, dataList, workflowName) = ExtractWorkflowParts(fileContents);
 
-                if (xamlDefinition is null || xamlDefinition.Length == 0)
+                var biteEnvelope = HasBiteDefinition(fileContents) ? fileContents.ToString() : null;
+
+                if (biteEnvelope is null && (xamlDefinition is null || xamlDefinition.Length == 0))
                 {
                     return TestExecutionResult.Failure("No XamlDefinition found in the workflow file.");
                 }
@@ -560,8 +572,10 @@ namespace Warewolf.Execution.Lightweight
                     ?? workflowName
                     ?? Path.GetFileNameWithoutExtension(request.WorkflowFilePath);
 
-                var prepared = BuildExclusivePreparedWorkflow(xamlDefinition);
-                if (prepared?.Activity == null)
+                var prepared = biteEnvelope != null
+                    ? BuildBitePreparedWorkflow(biteEnvelope)
+                    : BuildExclusivePreparedWorkflow(xamlDefinition);
+                if (prepared?.IsLoaded != true)
                 {
                     return TestExecutionResult.Failure("Failed to load DynamicActivity from XAML.");
                 }
@@ -1058,7 +1072,22 @@ namespace Warewolf.Execution.Lightweight
             }
         }
 
-        internal static PreparedWorkflow RentPreparedWorkflow(string filePath, StringBuilder xamlDefinition)
+        /// <summary>True when the resource carries a JSON <c>&lt;BiteDefinition&gt;</c> body, which takes precedence over any XAML.</summary>
+        internal static bool HasBiteDefinition(StringBuilder fileContents)
+        {
+            var xe = fileContents.ToXElement();
+            var action = xe.Element("Actions")?.Element("Action") ?? xe.Element("Action");
+            return action?.Element("BiteDefinition") != null;
+        }
+
+        /// <summary>
+        /// Reads a whole resource whose body is a JSON <c>&lt;BiteDefinition&gt;</c> with the WF-free
+        /// <see cref="BiteReader"/>. Nothing is compiled; a malformed body throws <see cref="BiteFormatException"/>.
+        /// </summary>
+        internal static PreparedWorkflow BuildBitePreparedWorkflow(string biteEnvelope) =>
+            new PreparedWorkflow { FromBite = true, StartActivity = new BiteReader().Read(biteEnvelope) };
+
+        internal static PreparedWorkflow RentPreparedWorkflow(string filePath, StringBuilder xamlDefinition, string biteEnvelope = null)
         {
             var key = BuildPoolKey(filePath);
 
@@ -1068,7 +1097,9 @@ namespace Warewolf.Execution.Lightweight
                 return reused;
             }
 
-            var prepared = BuildExclusivePreparedWorkflow(xamlDefinition);
+            var prepared = biteEnvelope != null
+                ? BuildBitePreparedWorkflow(biteEnvelope)
+                : BuildExclusivePreparedWorkflow(xamlDefinition, filePath);
             if (prepared != null)
             {
                 prepared.PoolKey = key;
@@ -1085,8 +1116,12 @@ namespace Warewolf.Execution.Lightweight
         /// see <see cref="TestMockActivityResolver"/>) without ever touching the pool other
         /// concurrent <see cref="Execute(WorkflowExecutionRequest)"/> calls share.
         /// </summary>
-        internal static PreparedWorkflow BuildExclusivePreparedWorkflow(StringBuilder xamlDefinition)
+        internal static PreparedWorkflow BuildExclusivePreparedWorkflow(StringBuilder xamlDefinition, string shadowLabel = null)
         {
+            // LoadDynamicActivity cleans the StringBuilder in place, so the shadow reader takes the text first.
+            var shadowSink = ShadowSink;
+            var shadowXaml = shadowSink != null ? xamlDefinition.ToString() : null;
+
             var activity = LoadDynamicActivity(xamlDefinition);
             if (activity == null)
             {
@@ -1096,11 +1131,38 @@ namespace Warewolf.Execution.Lightweight
             // Parsed once per compiled instance rather than once per execution: Parse() only walks
             // the activity's own object graph, so the chain it returns belongs to this instance and
             // is as exclusively owned as the instance itself.
-            return new PreparedWorkflow
+            var prepared = new PreparedWorkflow
             {
                 Activity      = activity,
                 StartActivity = new ActivityParser().Parse(activity),
             };
+
+            if (shadowSink != null)
+            {
+                RunShadow(shadowSink, prepared.StartActivity, shadowXaml, shadowLabel);
+            }
+            return prepared;
+        }
+
+        /// <summary>
+        /// WF removal T1.7 shadow mode: when set (only if <c>WAREWOLF_BITE_SHADOW</c> is on, see Program.cs), every
+        /// freshly built workflow is also read by the WF-free <see cref="BiteReader"/> and compared. The WF graph is
+        /// the one executed either way.
+        /// </summary>
+        internal static Action<BiteShadowResult> ShadowSink { get; set; }
+
+        // Synchronous and before the graph is handed out: comparing later would read activity state that a running
+        // execution is changing. Nothing here may affect the prepared workflow, so every failure is swallowed.
+        static void RunShadow(Action<BiteShadowResult> sink, IDev2Activity startActivity, string xaml, string label)
+        {
+            try
+            {
+                sink(BiteShadow.Compare(startActivity, xaml, label ?? "(unknown)"));
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Warn($"BiteShadow failed and was ignored: {e.GetType().Name}: {e.Message}", GlobalConstants.WarewolfWarn);
+            }
         }
 
         /// <summary>
@@ -1109,7 +1171,7 @@ namespace Warewolf.Execution.Lightweight
         /// </summary>
         internal static void ReturnPreparedWorkflow(string filePath, PreparedWorkflow? prepared)
         {
-            if (prepared?.Activity == null || string.IsNullOrEmpty(filePath))
+            if (prepared?.IsLoaded != true || string.IsNullOrEmpty(filePath))
             {
                 return;
             }

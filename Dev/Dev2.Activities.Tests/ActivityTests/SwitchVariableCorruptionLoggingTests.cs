@@ -6,9 +6,10 @@ using Moq;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Activities.Flow;
 using Dev2.Activities.WF;
 using System.Activities.Statements;
-using System.Activities;
+using Warewolf.Bite;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -49,10 +50,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Cells = new List<Cell> { corruptedCell }
             };
 
-            var converter = new X6ToWorkflowConverter();
-
             //------------Execute Test---------------------------
-            var result = converter.X6JsonToWorkflow(JsonConvert.SerializeObject(x6Graph));
+            var result = BiteFormat.X6ToXaml(JsonConvert.SerializeObject(x6Graph));
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
@@ -95,10 +94,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Cells = new List<Cell> { cleanCell }
             };
 
-            var converter = new X6ToWorkflowConverter();
-
             //------------Execute Test---------------------------
-            var result = converter.X6JsonToWorkflow(JsonConvert.SerializeObject(x6Graph));
+            var result = BiteFormat.X6ToXaml(JsonConvert.SerializeObject(x6Graph));
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
@@ -121,17 +118,17 @@ namespace Dev2.Tests.Activities.ActivityTests
                 DisplayName = "Test Switch Logging"
             };
 
-            var flowSwitch = new FlowSwitch<string>
+            var flowSwitch = new FlowSwitchModel
             {
                 Expression = flowSwitchActivity
             };
 
-            flowSwitch.Cases.Add("Case1", new FlowStep { Action = new DsfMultiAssignActivity() });
-            flowSwitch.Cases.Add("Case2", new FlowStep { Action = new DsfMultiAssignActivity() });
-            flowSwitch.Default = new FlowStep { Action = new DsfMultiAssignActivity() };
+            flowSwitch.SetCase("Case1", new FlowStepModel { Action = new DsfMultiAssignActivity() });
+            flowSwitch.SetCase("Case2", new FlowStepModel { Action = new DsfMultiAssignActivity() });
+            flowSwitch.Default = new FlowStepModel { Action = new DsfMultiAssignActivity() };
 
             //------------Execute Test---------------------------
-            var result = converter.ConvertToX6Json(new ActivityBuilder { Implementation = new Flowchart { StartNode = flowSwitch } }, "<TestXml/>");
+            var result = converter.ConvertToX6Json(new FlowchartModel { StartNode = flowSwitch }, "<TestXml/>");
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);
@@ -164,7 +161,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var originalConverter = new WorkflowToX6Converter();
-            var roundTripConverter = new X6ToWorkflowConverter();
             
             var flowSwitchActivity = new DsfFlowSwitchActivity("Round Trip Switch", new Mock<IDebugDispatcher>().Object)
             {
@@ -173,21 +169,21 @@ namespace Dev2.Tests.Activities.ActivityTests
                 DisplayName = "Round Trip Switch"
             };
 
-            var flowSwitch = new FlowSwitch<string>
+            var flowSwitch = new FlowSwitchModel
             {
                 Expression = flowSwitchActivity
             };
 
-            flowSwitch.Cases.Add("TestCase", new FlowStep { Action = new DsfMultiAssignActivity() });
-            flowSwitch.Default = new FlowStep { Action = new DsfMultiAssignActivity() };
+            flowSwitch.SetCase("TestCase", new FlowStepModel { Action = new DsfMultiAssignActivity() });
+            flowSwitch.Default = new FlowStepModel { Action = new DsfMultiAssignActivity() };
 
             //------------Execute Test - Serialize to X6---------------------------
-            var x6Json = originalConverter.ConvertToX6Json(new ActivityBuilder { Implementation = new Flowchart { StartNode = flowSwitch } }, "<TestXml/>");
+            var x6Json = originalConverter.ConvertToX6Json(new FlowchartModel { StartNode = flowSwitch }, "<TestXml/>");
             
             Assert.IsNotNull(x6Json);
             
             //------------Execute Test - Deserialize back to Workflow---------------------------
-            var roundTripXaml = roundTripConverter.X6JsonToWorkflow(x6Json);
+            var roundTripXaml = BiteFormat.X6ToXaml(x6Json);
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(roundTripXaml);
@@ -234,22 +230,22 @@ namespace Dev2.Tests.Activities.ActivityTests
                 DisplayName = "Second Switch"
             };
 
-            var flowSwitch1 = new FlowSwitch<string> { Expression = switch1 };
-            var flowSwitch2 = new FlowSwitch<string> { Expression = switch2 };
+            var flowSwitch1 = new FlowSwitchModel { Expression = switch1 };
+            var flowSwitch2 = new FlowSwitchModel { Expression = switch2 };
             
-            flowSwitch1.Cases.Add("A", new FlowStep { Action = new DsfMultiAssignActivity(), Next = flowSwitch2 });
-            flowSwitch1.Cases.Add("B", new FlowStep { Action = new DsfMultiAssignActivity() });
-            flowSwitch1.Default = new FlowStep { Action = new DsfMultiAssignActivity() };
+            flowSwitch1.SetCase("A", new FlowStepModel { Action = new DsfMultiAssignActivity(), Next = flowSwitch2 });
+            flowSwitch1.SetCase("B", new FlowStepModel { Action = new DsfMultiAssignActivity() });
+            flowSwitch1.Default = new FlowStepModel { Action = new DsfMultiAssignActivity() };
             
-            flowSwitch2.Cases.Add("X", new FlowStep { Action = new DsfMultiAssignActivity() });
-            flowSwitch2.Cases.Add("Y", new FlowStep { Action = new DsfMultiAssignActivity() });
-            flowSwitch2.Default = new FlowStep { Action = new DsfMultiAssignActivity() };
+            flowSwitch2.SetCase("X", new FlowStepModel { Action = new DsfMultiAssignActivity() });
+            flowSwitch2.SetCase("Y", new FlowStepModel { Action = new DsfMultiAssignActivity() });
+            flowSwitch2.Default = new FlowStepModel { Action = new DsfMultiAssignActivity() };
 
-            var flowchart = new Flowchart { StartNode = flowSwitch1 };
+            var flowchart = new FlowchartModel { StartNode = flowSwitch1 };
             flowchart.Nodes.Add(flowSwitch2);
 
             //------------Execute Test---------------------------
-            var result = converter.ConvertToX6Json(new ActivityBuilder { Implementation = flowchart }, "<ComplexTestXml/>");
+            var result = converter.ConvertToX6Json(flowchart, "<ComplexTestXml/>");
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);

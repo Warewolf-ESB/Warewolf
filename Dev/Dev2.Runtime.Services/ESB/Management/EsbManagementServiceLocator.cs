@@ -20,7 +20,6 @@ namespace Dev2.Runtime.ESB.Management
 {
     /// <summary>
     /// Responsible for loading all the managment services ;)
-    /// Replaces GetDefaultServices() in DynamicservicesHost
     /// </summary>
     public class EsbManagementServiceLocator : SpookyAction<IEsbManagementEndpoint, string>, IEsbManagementServiceLocator
     {

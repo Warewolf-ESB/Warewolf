@@ -1,9 +1,9 @@
-﻿using Dev2.Activities.WF;
-using Dev2.Common;
+﻿using Dev2.Common;
 using Dev2.Communication;
 using Newtonsoft.Json;
 using System;
 using System.Text;
+using Warewolf.Bite;
 
 namespace Dev2.Runtime.ESB.WF
 {
@@ -49,16 +49,12 @@ namespace Dev2.Runtime.ESB.WF
         {
             try
             {
-                var activityXamlLength = requestInfo?.ActivityXaml?.Length ?? 0;
-                var builder = XamlActivityHelper.GetXamlActivityBuilderAsDataActivities(new StringBuilder(requestInfo.ActivityXaml));
-                if (builder == null)
+                if (string.IsNullOrEmpty(requestInfo?.ActivityXaml))
                 {
                     return string.Empty;
                 }
 
-                var converter = new WorkflowToX6Converter();
-                var graph = converter.ConvertToX6Json(builder, requestInfo.WorkflowXML);
-                return graph;
+                return BiteFormat.XamlToX6(requestInfo.ActivityXaml);
             }
             catch (Exception ex)
             {

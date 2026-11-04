@@ -16,6 +16,7 @@ using System.Text.Json.Serialization;
 using System.Xml.Linq;
 using ModelContextProtocol;
 using Newtonsoft.Json.Linq;
+using Warewolf.Bite;
 using Warewolf.Execution.Lightweight.Auth;
 using Warewolf.Execution.Lightweight.Auth.Models;
 using Warewolf.Execution.Lightweight.Infrastructure;
@@ -36,15 +37,14 @@ namespace Warewolf.Execution.Lightweight.Mcp.ToolHandlers;
 /// <para>
 /// <b>Body production.</b> Per spec, the body is never stored/cached — it is produced fresh
 /// on every call by reading the workflow's XAML (<see cref="WorkflowExecutor.ReadWorkflowFile"/>
-/// / <see cref="WorkflowExecutor.ExtractWorkflowParts"/>), compiling it to an
-/// <see cref="System.Activities.ActivityBuilder"/> (<see cref="XamlActivityBuilderLoader"/>),
-/// and running <c>WorkflowToX6Converter.ConvertToX6Json</c>. That call returns
+/// / <see cref="WorkflowExecutor.ExtractWorkflowParts"/>) and converting it with
+/// <see cref="BiteFormat.XamlToX6"/> (Warewolf.Bite's reader, no WF load). That call returns
 /// <c>X6WorkflowLoadModel</c>-shaped JSON (<c>{workflowxml, nodes, edges}</c>) — a different
 /// shape from the <c>X6WorkflowSaveModel</c> (<c>{resourcename, cells}</c>) the spec's
-/// <c>body_schema</c> and <c>X6ToWorkflowConverter.X6JsonToWorkflow</c> (used by
+/// <c>body_schema</c> and <see cref="BiteFormat.X6ToXaml(string)"/> (used by
 /// <c>create_workflow</c>/<c>edit_workflow</c>) expect. <see cref="Handle"/> merges
 /// <c>nodes</c>++<c>edges</c> into a single <c>cells</c> array so the returned body is both
-/// spec-compliant and directly round-trippable back through <c>X6JsonToWorkflow</c>.
+/// spec-compliant and directly round-trippable back through <c>X6ToXaml</c>.
 /// </para>
 ///
 /// <para>
@@ -188,25 +188,14 @@ internal static class GetWorkflowDefinitionTool
             return (false, null, "the workflow has no XAML definition to convert");
         }
 
-        System.Activities.ActivityBuilder? activityBuilder;
-        try
-        {
-            activityBuilder = XamlActivityBuilderLoader.Load(xamlDefinition);
-        }
-        catch (Exception ex)
-        {
-            return (false, null, $"the workflow's XAML could not be compiled: {ex.Message}");
-        }
-
-        if (activityBuilder is null)
-        {
-            return (false, null, "the workflow's XAML could not be compiled into an ActivityBuilder");
-        }
-
         string x6Json;
         try
         {
-            x6Json = new Dev2.Activities.WF.WorkflowToX6Converter().ConvertToX6Json(activityBuilder, xamlDefinition.ToString());
+            x6Json = BiteFormat.XamlToX6(xamlDefinition.ToString());
+        }
+        catch (BiteFormatException ex)
+        {
+            return (false, null, $"the workflow's XAML could not be read: {ex.Message}");
         }
         catch (Exception ex)
         {

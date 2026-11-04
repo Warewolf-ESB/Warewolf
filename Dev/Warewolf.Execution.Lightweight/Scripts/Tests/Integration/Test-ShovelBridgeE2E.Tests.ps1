@@ -639,3 +639,41 @@ Describe 'Test-ShovelBridgeE2E — Get-WwQueueCountDetails / Get-WwDeadLetterCou
         Get-WwDeadLetterCount -NamespaceName 'ns' -ResourceGroup 'rg' -QueueName 'q' | Should -BeNullOrEmpty
     }
 }
+
+Describe 'Test-ShovelBridgeE2E — Invoke-WwProfilerReconciliation (no DB; builds 31074/31077)' {
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+
+        # Wraps its rows exactly as the real Invoke-WwSqlQuery does; the first It below reads the
+        # real one's source, so this can't silently stop matching it.
+        $script:SqlQuerySource = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot '..\..\Invoke-WwQueueLoadTest.ps1')
+
+        function Invoke-WwSqlQuery {
+            param([string] $ConnectionString, [string] $Query)
+            $rows = [regex]::Matches($Query, "\((\d+),'[0-9a-fA-F-]{36}'\)") | ForEach-Object {
+                [pscustomobject]@{ SeqNum = [int]$_.Groups[1].Value; RowsForMandate = 1; ScoreRows = 1 }
+            }
+            return , @($rows)
+        }
+        function New-Ids([int] $Count) { 1..$Count | ForEach-Object { [guid]::NewGuid().ToString() } }
+    }
+
+    It 'stub matches how Invoke-WwSqlQuery really returns rows (one wrapped array per call)' {
+        $script:SqlQuerySource | Should -Match 'return\s*,\s*@\(\$result\.rows'
+    }
+
+    It 'returns one flat row per MandateId across chunks, each readable by the verdict code' {
+        $rows = Invoke-WwProfilerReconciliation -ConnectionString 'cs' -MandateIds (New-Ids 2500)
+
+        $rows.Count | Should -Be 2500
+        @($rows | Where-Object { [int]$_.RowsForMandate -eq 0 }).Count | Should -Be 0
+        @($rows | ForEach-Object { [int]$_.SeqNum }) | Should -Be (0..2499)
+    }
+
+    It 'keeps a single chunk flat too' {
+        $rows = Invoke-WwProfilerReconciliation -ConnectionString 'cs' -MandateIds (New-Ids 3)
+
+        $rows.Count | Should -Be 3
+        [int]$rows[2].SeqNum | Should -Be 2
+    }
+}
