@@ -220,7 +220,8 @@
     OPT-IN, all four together. Client credentials used to mint the result-poll bearer token
     LATE - after the trigger queue has drained - instead of taking a pre-minted one via
     -ResultPollAuthToken. Supply these INSTEAD OF -ResultPollAuthToken; supplying both is an
-    error, and supplying an incomplete set is an error naming what is missing.
+    error, and supplying an incomplete set is an error naming what is missing. Not allowed with
+    -SkipResultPoll.
 
     WHY THIS EXISTS. GET /secure/servicebus-result/{correlationId} is an ordinary
     Entra-protected HTTP route - the Service Bus trigger's "trust the configured queue's
@@ -248,8 +249,26 @@
     registration); -ResultPollResourceAppId is the ENGINE's app registration, i.e. the
     audience, requested as 'api://<ResourceAppId>/.default'. They are different apps - see
     Get-E2EEngineToken in WwE2E.Common.psm1.
+.PARAMETER SkipResultPoll
+    OPT-IN. Only valid with -VerifyWorkflowExecution. Publishes, waits for the trigger queue to
+    drain, and then does NOT poll GET /secure/servicebus-result/{correlationId} at all - no
+    result-poll token or credentials are taken (supplying any is an error).
+
+    WHY THIS EXISTS. With persistence off on the target engine, results live only in each
+    instance's memory, and a Flex Consumption app scales to zero during the drain's quiet window.
+    The post-drain poll then reaches fresh instances and 404s on every id: build 31194 reported
+    0/20000 results while Profiler.ProfilerRecommendation held all 20000 rows.
+
+    Because the poll is what normally decides pass/fail, skipping it makes the other checks the
+    gate instead. The run passes only when ALL of these hold:
+      * the publish leg succeeded and the trigger queue drained within -DrainTimeoutSeconds;
+      * Phase 4c's database reconciliation ran without error and found 0 missing and 0 duplicate
+        rows (normally that phase is advisory only);
+      * Phase 4d found 0 new dead-letters (an unreadable count also fails).
+    So it REQUIRES -JobsDbConnectionString, -ServiceBusNamespaceName and
+    -ServiceBusResourceGroup.
 .PARAMETER DrainQuietSeconds
-    Only used in the late-mint mode above. How long the trigger queue's active+scheduled
+    Only used in the late-mint and -SkipResultPoll modes above. How long the trigger queue's active+scheduled
     message counts must stay at ZERO before the drain is considered finished. Default: 360.
 
     DO NOT LOWER THIS BELOW ~360 without understanding both reasons it is not merely padding:
@@ -261,7 +280,7 @@
          missing - the exact artefact that made an earlier 5,000-message baseline report 878
          false losses.
 .PARAMETER DrainTimeoutSeconds
-    Only used in the late-mint mode above. Hard ceiling on the drain wait, after which the run
+    Only used in the late-mint and -SkipResultPoll modes above. Hard ceiling on the drain wait, after which the run
     fails with the last observed queue counts rather than hanging until the CI job's own
     timeout kills it (which would lose every diagnostic this script prints afterwards).
     Default: 3600. Size it from measured throughput - a 20,000-message run against an engine
@@ -406,6 +425,8 @@ param(
     [string] $ResultPollClientId,
     [string] $ResultPollResourceAppId,
     [securestring] $ResultPollClientSecret,
+    # Publish + drain, no result poll; the database and dead-letter checks become the gate.
+    [switch] $SkipResultPoll,
     [int]    $DrainQuietSeconds = 360,
     [int]    $DrainTimeoutSeconds = 3600,
 
@@ -979,6 +1000,45 @@ function Invoke-WwProfilerReconciliation {
     return , $rows.ToArray()
 }
 
+function Get-WwSkipPollVerdict {
+    <#
+        Pass/fail for a -SkipResultPoll run, where there is no result poll to decide it. Pure, so
+        it is unit-tested directly.
+
+        -DbOutcome is Phase 4c's summary ($null when it never ran): Clean (bool), Detail (string),
+        Error (string, set when the reconciliation itself threw). -DlqDelta is Phase 4d's new
+        dead-letter count ($null when it could not be read). Missing evidence fails the run: with
+        the poll skipped, these checks are the only proof the messages were processed.
+    #>
+    param(
+        [Parameter(Mandatory)][int] $PublishExitCode,
+        [AllowNull()][object] $DbOutcome,
+        [AllowNull()][Nullable[int]] $DlqDelta
+    )
+
+    $reasons = [System.Collections.Generic.List[string]]::new()
+    if ($PublishExitCode -ne 0) {
+        $reasons.Add("the publish leg failed (exit code $PublishExitCode)")
+    }
+    if ($null -eq $DbOutcome) {
+        $reasons.Add('the Phase 4c database reconciliation did not run')
+    } elseif (-not [string]::IsNullOrEmpty($DbOutcome.Error)) {
+        $reasons.Add("the Phase 4c database reconciliation failed: $($DbOutcome.Error)")
+    } elseif (-not $DbOutcome.Clean) {
+        $reasons.Add("the Phase 4c database reconciliation was not clean: $($DbOutcome.Detail)")
+    }
+    if ($null -eq $DlqDelta) {
+        $reasons.Add('the Phase 4d dead-letter count could not be read')
+    } elseif ($DlqDelta -gt 0) {
+        $reasons.Add("$DlqDelta message(s) were dead-lettered during this run")
+    }
+
+    return [pscustomobject]@{
+        Passed  = ($reasons.Count -eq 0)
+        Reasons = $reasons.ToArray()
+    }
+}
+
 if ($LoadFunctionsOnly) { return }
 
 # ════════════════════════════════════════════════════════════════════════════
@@ -1040,6 +1100,10 @@ if (-not [string]::IsNullOrWhiteSpace($DataFilePath)) {
     Write-Ok "-DataFilePath: $MessageCount record(s), one message each; Phase 4c will reconcile their own MandateIds."
 }
 
+if ($SkipResultPoll -and -not $VerifyWorkflowExecution) {
+    throw '-SkipResultPoll requires -VerifyWorkflowExecution (it only changes how that mode decides pass/fail).'
+}
+
 if ($VerifyWorkflowExecution) {
     # A live engine must already be listening (Managed Identity) on -DestinationQueueName —
     # the local emulator has no engine attached to it, so this mode only makes sense against
@@ -1062,7 +1126,19 @@ if ($VerifyWorkflowExecution) {
     $useLateMintedResultToken = $lateMintSupplied -gt 0
     $haveStaticResultToken = ($null -ne $ResultPollAuthToken -and $ResultPollAuthToken.Length -gt 0)
 
-    if ($useLateMintedResultToken) {
+    if ($SkipResultPoll) {
+        # No poll, so no token: the database and dead-letter checks decide the run instead
+        # (Get-WwSkipPollVerdict), and each of them needs its own inputs.
+        if ($useLateMintedResultToken -or $haveStaticResultToken) {
+            throw '-SkipResultPoll takes no result-poll token or credentials (-ResultPollAuthToken, -ResultPollTenantId/-ResultPollClientId/-ResultPollResourceAppId/-ResultPollClientSecret): nothing is polled, so passing them hides which Phase 4 shape is in effect.'
+        }
+        if ($null -eq $JobsDbConnectionString -or $JobsDbConnectionString.Length -eq 0) {
+            throw '-SkipResultPoll requires -JobsDbConnectionString: with no result poll, the Phase 4c database reconciliation is what proves the messages were processed.'
+        }
+        if ([string]::IsNullOrWhiteSpace($ServiceBusNamespaceName) -or [string]::IsNullOrWhiteSpace($ServiceBusResourceGroup)) {
+            throw '-SkipResultPoll requires -ServiceBusNamespaceName and -ServiceBusResourceGroup: it waits for the trigger queue to drain and gates on the Phase 4d dead-letter count, both read via the Azure CLI.'
+        }
+    } elseif ($useLateMintedResultToken) {
         if ($lateMintSupplied -lt 4) {
             $missing = @($lateMintParts.GetEnumerator() | Where-Object { [string]::IsNullOrWhiteSpace($_.Value) } | ForEach-Object { $_.Key })
             if (-not $ResultPollClientSecret -or $ResultPollClientSecret.Length -eq 0) { $missing += '-ResultPollClientSecret' }
@@ -1083,7 +1159,7 @@ if ($VerifyWorkflowExecution) {
     if ([string]::IsNullOrWhiteSpace($CorrelationId)) {
         $CorrelationId = [Guid]::NewGuid().ToString('N')
     }
-    Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish $(if ($MessageCount -eq 1) { "a workflow-trigger message (correlationId '$CorrelationId')" } else { "$MessageCount workflow-trigger messages (correlationId prefix '$CorrelationId')" }) to the deployed trigger's queue and poll $EngineBaseUrl for $(if ($MessageCount -eq 1) { 'its' } else { 'their' }) execution result, instead of proving bare message arrival. Whichever workflow -DestinationQueueName's trigger is configured to run (Settings/servicebustrigger.bite) is what executes — this script no longer selects it."
+    Write-Ok "VerifyWorkflowExecution is set: Phase 4 will publish $(if ($MessageCount -eq 1) { "a workflow-trigger message (correlationId '$CorrelationId')" } else { "$MessageCount workflow-trigger messages (correlationId prefix '$CorrelationId')" }) to the deployed trigger's queue and $(if ($SkipResultPoll) { 'verify execution from the database (no result poll)' } else { "poll $EngineBaseUrl for $(if ($MessageCount -eq 1) { 'its' } else { 'their' }) execution result" }), instead of proving bare message arrival. Whichever workflow -DestinationQueueName's trigger is configured to run (Settings/servicebustrigger.bite) is what executes — this script no longer selects it."
 
     # Fail fast on a stale bearer token rather than discovering it 30 minutes and (at
     # load-test volumes) 1000 messages later as a wall of "401: Authentication required"
@@ -1094,7 +1170,9 @@ if ($VerifyWorkflowExecution) {
     $setupBufferSeconds = 300
     $requiredLifetimeSeconds = $ResultTimeoutSeconds + $setupBufferSeconds
     $tokensToCheck = [ordered]@{}
-    if ($haveStaticResultToken) {
+    if ($SkipResultPoll) {
+        Write-Ok '-SkipResultPoll: no result poll. Pass/fail comes from the drain, the Phase 4c database reconciliation and the Phase 4d dead-letter count.'
+    } elseif ($haveStaticResultToken) {
         $tokensToCheck['-ResultPollAuthToken'] = ConvertFrom-SecureStringPlain $ResultPollAuthToken
     } else {
         # Nothing to check yet - the whole point of the late-mint mode is that no result-poll
@@ -1571,11 +1649,16 @@ try {
     # history" caveat in Resources/rabbit/Provision-ShovelBridgeSchema.sql).
     $runStartUtc = (Get-Date).ToUniversalTime()
 
-    if ($VerifyWorkflowExecution -and $useLateMintedResultToken) {
+    # -SkipResultPoll implies -VerifyWorkflowExecution (validated in Phase 0); the -and
+    # short-circuit keeps $useLateMintedResultToken unread when it was never set.
+    $splitPhase4 = $VerifyWorkflowExecution -and ($SkipResultPoll -or $useLateMintedResultToken)
+    if ($splitPhase4) {
         # ── Split Phase 4: publish -> drain -> mint -> poll ───────────────────
+        # (-SkipResultPoll stops after the drain.)
         # See -ResultPollClientId's help for why these cannot be one invocation at load-test
         # volumes. Note $harnessExitCode is set from the POLL leg (or from the publish leg if
-        # that fails first), so Phases 4b-4d downstream read it exactly as before.
+        # that fails first, or when -SkipResultPoll), so Phases 4b-4d downstream read it
+        # exactly as before.
         $publishArgs = @(
             'run', '--project', $harnessProjectDir, '-c', 'Release', '--'
             '--mode', 'workflow-execution'
@@ -1609,6 +1692,11 @@ try {
                 -QuietSeconds    $DrainQuietSeconds `
                 -TimeoutSeconds  $DrainTimeoutSeconds | Out-Null
 
+            if ($SkipResultPoll) {
+            # $harnessExitCode stays the publish leg's; Get-WwSkipPollVerdict decides the run
+            # after Phases 4c and 4d.
+            Write-Ok "Result poll skipped (-SkipResultPoll) - Phases 4c and 4d decide the run."
+            } else {
             Write-Step "Minting a fresh result-poll token (client '$ResultPollClientId' -> audience 'api://$ResultPollResourceAppId')"
             Import-Module (Join-Path $PSScriptRoot '..' '..' 'WwE2E.Common.psm1') -Force -ErrorAction Stop
             $freshPollToken = Get-E2EEngineToken `
@@ -1642,6 +1730,7 @@ try {
             Write-Step "dotnet run (E2EHarness --phase poll, $MessageCount correlationId(s))"
             & dotnet @pollArgs 2>&1 | ForEach-Object { Write-Host "    $_" }
             $harnessExitCode = $LASTEXITCODE
+            }
         }
     } elseif ($VerifyWorkflowExecution) {
         $harnessArgs = @(
@@ -1676,9 +1765,9 @@ try {
             '--publish-concurrency', $PublishConcurrency
         )
     }
-    # The late-mint branch above already ran its own publish/poll invocations (and set
-    # $harnessExitCode from them), so there is no single combined command left to run here.
-    if (-not ($VerifyWorkflowExecution -and $useLateMintedResultToken)) {
+    # The split branch above already ran its own publish (and poll) invocations, and set
+    # $harnessExitCode from them, so there is no single combined command left to run here.
+    if (-not $splitPhase4) {
         Write-Step 'dotnet run (Warewolf.Execution.ServiceBusWorker.E2EHarness)'
         # Stream the harness's output live rather than buffering it and dumping it only
         # after the process exits — at load-test volumes this run can take many minutes
@@ -1752,6 +1841,8 @@ try {
     # survives whatever bugs the result-poll path itself has had historically (see
     # docs/ShovelBridge-Architecture.md's 24-unexplained-HttpError and load-balanced-instance-404
     # entries). Always attempted when supplied (pass or fail), same as Phase 4b above.
+    # Advisory only, EXCEPT under -SkipResultPoll, where $dbOutcome feeds Get-WwSkipPollVerdict.
+    $dbOutcome = $null
     if ($JobsDbConnectionString) {
         Write-Phase $(if ($DbVerificationMode -eq 'ProfilerRecommendation') {
             'Phase 4c  Database verification (Profiler.ProfilerRecommendation)'
@@ -1860,6 +1951,11 @@ ORDER BY e.SeqNum;
             Write-Host "    Missing (no row for that MandateId) : $($missingSeq.Count)" -ForegroundColor White
             Write-Host "    Duplicate rows for one MandateId    : $($duplicateSeq.Count)" -ForegroundColor White
             Write-Host "    Also scored (MandateScores rows)    : $scoredCount" -ForegroundColor White
+            $dbOutcome = [pscustomobject]@{
+                Clean  = ($missingSeq.Count -eq 0 -and $duplicateSeq.Count -eq 0)
+                Detail = "$($missingSeq.Count) missing and $($duplicateSeq.Count) duplicated of $MessageCount in Profiler.ProfilerRecommendation"
+                Error  = $null
+            }
 
             if ($missingSeq.Count -eq 0 -and $duplicateSeq.Count -eq 0) {
                 Write-Ok "Profiler.ProfilerRecommendation confirms all $MessageCount messages produced exactly one recommendation."
@@ -1917,6 +2013,11 @@ ORDER BY Nums.SeqNum;
             Write-Host "    Duplicate successes (bug)       : $($verdict.DuplicateSuccessCount)" -ForegroundColor White
             Write-Host "    Still incomplete                : $($verdict.StillIncomplete)" -ForegroundColor White
             Write-Host "    Stuck past threshold            : $($verdict.StuckPastThreshold)" -ForegroundColor White
+            $dbOutcome = [pscustomobject]@{
+                Clean  = [bool]$verdict.IsClean
+                Detail = "$($verdict.MissingCount) missing, $($verdict.DuplicateSuccessCount) duplicate successes, $($verdict.StillIncomplete) incomplete of $($verdict.Expected) in dbo.jobs1"
+                Error  = $null
+            }
 
             if ($verdict.IsClean) {
                 Write-Ok "dbo.jobs1 confirms all $($verdict.Expected) messages were delivered and succeeded exactly once."
@@ -1950,7 +2051,12 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
             }
             }
         } catch {
-            Write-Note "Phase 4c database verification itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"
+            $dbOutcome = [pscustomobject]@{ Clean = $false; Detail = $null; Error = $_.Exception.Message }
+            if ($SkipResultPoll) {
+                Write-Note "Phase 4c database verification itself failed (FAILS the run: with -SkipResultPoll it is the pass/fail gate): $($_.Exception.Message)"
+            } else {
+                Write-Note "Phase 4c database verification itself failed (non-fatal, does not affect the test result): $($_.Exception.Message)"
+            }
         }
     }
 
@@ -1967,6 +2073,10 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
     # still a finding (messages failed and were retried into success, or something else
     # dead-lettered), and a failing run with a delta SMALLER than its loss count is the
     # silent-destruction signature itself.
+    #
+    # Under -SkipResultPoll there is no poll to report "losses", so the WOLF-8512 reading below
+    # does not apply: the delta is simply a gate (Get-WwSkipPollVerdict).
+    $dlqDelta = $null
     if ($null -ne $dlqBaseline) {
         Write-Phase 'Phase 4d  Dead-letter reconciliation'
         $dlqFinal = Get-WwDeadLetterCount -NamespaceName $ServiceBusNamespaceName -ResourceGroup $ServiceBusResourceGroup -QueueName $DestinationQueueName
@@ -1978,7 +2088,13 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
             Write-Host "  Dead-letter final    : $dlqFinal" -ForegroundColor White
             Write-Host "  Delta (this run)     : $dlqDelta" -ForegroundColor White
 
-            if ($harnessExitCode -eq 0) {
+            if ($SkipResultPoll) {
+                if ($dlqDelta -le 0) {
+                    Write-Ok 'No messages were dead-lettered during this run.'
+                } else {
+                    Write-Note "$dlqDelta message(s) were dead-lettered during this run (FAILS the run under -SkipResultPoll). Inspect the DLQ entries' reason/description for the terminal cause."
+                }
+            } elseif ($harnessExitCode -eq 0) {
                 if ($dlqDelta -eq 0) {
                     Write-Ok "No messages were dead-lettered — all $MessageCount accounted for as successes."
                 } else {
@@ -1998,7 +2114,12 @@ ORDER BY SeqNum, TRY_CONVERT(INT, AttemptNumber) DESC;
         Write-Note 'Phase 4d dead-letter reconciliation skipped (-ServiceBusNamespaceName / -ServiceBusResourceGroup not supplied, or the baseline read failed).'
     }
 
-    if ($harnessExitCode -ne 0) {
+    if ($SkipResultPoll) {
+        $skipVerdict = Get-WwSkipPollVerdict -PublishExitCode $harnessExitCode -DbOutcome $dbOutcome -DlqDelta $dlqDelta
+        if (-not $skipVerdict.Passed) {
+            throw "Load test FAILED (-SkipResultPoll: verified from the database and dead-letter count): $($skipVerdict.Reasons -join '; '). See output above."
+        }
+    } elseif ($harnessExitCode -ne 0) {
         throw "E2E harness reported failure (exit code $harnessExitCode). See output above."
     }
 

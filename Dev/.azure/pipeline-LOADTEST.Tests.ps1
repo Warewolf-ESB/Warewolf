@@ -19,6 +19,8 @@
         and targets the Flex Consumption plan with persistence disabled;
       *       'Assert WarewolfServer-UAT is not a Windows (Y1) app' - EXECUTED against a stubbed az -
               fails on a Windows app and passes a Linux or missing one.
+      * 'Run ShovelBridge load test ...' - passes -SkipResultPoll and its gate inputs, no
+        result-poll token/credentials, and only parameters Test-ShovelBridgeE2E.ps1 declares.
       * 'Enable Service Bus Secure Trigger on WarewolfServer-UAT' - EXECUTED against a stub released
         script and a stub engine zip - stages the script next to the package's host.json, passes
         every argument, and fails on a missing parameter or a missing host.json.
@@ -473,6 +475,40 @@ Describe 'pipeline-LOADTEST - Enable Service Bus Secure Trigger on WarewolfServe
 
     It 'fails when the engine package has no host.json' {
         { Invoke-EnableStep -Name 'nohost' -Params $script:EnableKeys -NoHostJson } | Should -Throw '*host.json not found*'
+    }
+}
+
+Describe 'pipeline-LOADTEST - ShovelBridge load test skips the result poll' -Skip:(-not $script:HaveYaml) {
+    <#
+        Persistence is off on WarewolfServer-UAT, so results are per-instance memory and the Flex app
+        scales to zero during the drain's quiet window: build 31194's post-drain poll got 0/20000
+        while the database held all 20000. The step therefore passes -SkipResultPoll, which makes
+        the database reconciliation and dead-letter delta the gate.
+    #>
+
+    BeforeAll {
+        $script:LoadStep   = Find-Step 'ShovelBridgeLoadTest_ExternalServiceBus' 'Run ShovelBridge load test (20000 messages, VerifyWorkflowExecution mode, UAT engine)'
+        $script:Load       = Get-StepScript $script:LoadStep
+        $script:E2EScript  = Join-Path $PSScriptRoot '..\Warewolf.Execution.Lightweight\Scripts\Tests\Integration\Test-ShovelBridgeE2E.ps1'
+        $invocation        = $script:Load.Substring($script:Load.IndexOf('Test-ShovelBridgeE2E.ps1'))
+        $script:PassedArgs = @([regex]::Matches($invocation, '(?m)^\s*-([A-Za-z][A-Za-z0-9]*)\b') | ForEach-Object { $_.Groups[1].Value })
+    }
+
+    It 'passes -SkipResultPoll with the inputs its gate needs' {
+        $script:PassedArgs.Count | Should -BeGreaterThan 10 -Because 'the argument list must be found (guards against a vacuous pass)'
+        foreach ($name in 'VerifyWorkflowExecution', 'SkipResultPoll', 'JobsDbConnectionString', 'ServiceBusNamespaceName', 'ServiceBusResourceGroup') {
+            $script:PassedArgs | Should -Contain $name
+        }
+    }
+
+    It 'passes no result-poll token, credentials or poll timeout (the script rejects them with -SkipResultPoll)' {
+        @($script:PassedArgs | Where-Object { $_ -like 'ResultPoll*' -or $_ -eq 'ResultTimeoutSeconds' }) | Should -BeNullOrEmpty
+        $script:LoadStep['env'].Contains('ShovelE2EDaemonClientSecretValue') | Should -BeFalse -Because 'the client secret is only needed to mint a poll token'
+    }
+
+    It 'passes only parameters the checkout''s Test-ShovelBridgeE2E.ps1 declares' {
+        $declared = (Get-Command -Name (Resolve-Path $script:E2EScript).Path -CommandType ExternalScript).Parameters
+        @($script:PassedArgs | Where-Object { -not $declared.ContainsKey($_) }) | Should -BeNullOrEmpty
     }
 }
 

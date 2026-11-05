@@ -2781,6 +2781,19 @@ consequences worth knowing before copying the pattern to another rig:
   `/secure/servicebus-result` poll mostly gets 404s and waits out its full `-ResultTimeoutSeconds`
   (1800 s) before Phase 4c runs.
 
+- **2026-11-05 — the LOADTEST ShovelBridge job no longer polls for results (`-SkipResultPoll`).**
+  Build 31194 failed with 0/20000 results although Phase 4c found all 20,000
+  `Profiler.ProfilerRecommendation` rows (0 missing, 0 duplicates) and the dead-letter delta was 0.
+  With persistence off, results are per-instance memory, and the Flex app had scaled to zero
+  (no `InstanceCount` at 21:50 UTC) during the 360 s quiet window, so the 21:54 poll reached new,
+  empty instances. Persistence stays off by choice, so `Test-ShovelBridgeE2E.ps1` gained
+  `-SkipResultPoll`: publish, wait for the drain, then pass only if Phase 4c is clean (it becomes a
+  gate rather than advisory, and a query error fails the run) and the Phase 4d delta is 0
+  (`Get-WwSkipPollVerdict`). The switch requires `-JobsDbConnectionString` and the Service Bus
+  namespace/resource group, and rejects any result-poll token or credentials. Phase 4d's WOLF-8512
+  "destroyed in flight" hint is not printed in this mode. The 220,000 futile 404 polls had also been
+  ~60% of the run's Flex cost (~$0.66 of ~$1.05). `pipeline-CLOUD.yml`'s single-message leg still polls.
+
 
 ## Promotion status
 

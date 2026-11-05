@@ -677,3 +677,133 @@ Describe 'Test-ShovelBridgeE2E — Invoke-WwProfilerReconciliation (no DB; build
         [int]$rows[2].SeqNum | Should -Be 2
     }
 }
+
+Describe 'Test-ShovelBridgeE2E — -SkipResultPoll parameter validation' {
+    <#
+        -SkipResultPoll drops the /secure/servicebus-result poll (persistence off + Flex
+        scale-to-zero made it 404 on every id: build 31194, 0/20000 while the database held all
+        20000). The database and dead-letter checks become the gate, so their inputs are required.
+        As in the late-mint suite above, every case asserts a Phase 0 THROW, before any network
+        access. The last case also proves the token requirement is lifted: it gets past the
+        "-ResultPollAuthToken is required" check and stops at a later guard.
+    #>
+
+    BeforeAll {
+        $script:TargetScript = Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1'
+        function script:New-TestSecureString {
+            param([string] $Value = 'secret')
+            ConvertTo-SecureString $Value -AsPlainText -Force
+        }
+        function script:Invoke-SkipPoll {
+            param([hashtable] $Extra)
+            $splat = @{
+                DestinationMode         = 'ExternalServiceBus'
+                ExternalShovelDestUri   = 'amqps://example.invalid:5671/?sasl=plain'
+                VerifyWorkflowExecution = $true
+                SkipResultPoll          = $true
+                EngineBaseUrl           = 'https://engine.invalid'
+                ServiceBusNamespaceName = 'ns'
+                ServiceBusResourceGroup = 'rg'
+                JobsDbConnectionString  = (New-TestSecureString 'Server=db.invalid')
+            }
+            foreach ($k in $Extra.Keys) { $splat[$k] = $Extra[$k] }
+            & $script:TargetScript @splat
+        }
+    }
+
+    It 'throws without -VerifyWorkflowExecution' {
+        $extra = @{
+            VerifyWorkflowExecution            = $false
+            ExternalServiceBusConnectionString = (New-TestSecureString 'Endpoint=sb://ns.invalid/')
+        }
+        { Invoke-SkipPoll -Extra $extra } | Should -Throw -ExpectedMessage '*-SkipResultPoll requires -VerifyWorkflowExecution*'
+    }
+
+    It 'throws when a pre-minted result-poll token is also supplied' {
+        { Invoke-SkipPoll -Extra @{ ResultPollAuthToken = New-TestSecureString } } |
+            Should -Throw -ExpectedMessage '*-SkipResultPoll takes no result-poll token*'
+    }
+
+    It 'throws when late-mint result-poll credentials are also supplied' {
+        $extra = @{
+            ResultPollTenantId      = 'tenant'
+            ResultPollClientId      = 'client'
+            ResultPollResourceAppId = 'resource'
+            ResultPollClientSecret  = New-TestSecureString
+        }
+        { Invoke-SkipPoll -Extra $extra } | Should -Throw -ExpectedMessage '*-SkipResultPoll takes no result-poll token*'
+    }
+
+    It 'throws without -JobsDbConnectionString, since the database check is the gate' {
+        { Invoke-SkipPoll -Extra @{ JobsDbConnectionString = $null } } |
+            Should -Throw -ExpectedMessage '*-SkipResultPoll requires -JobsDbConnectionString*'
+    }
+
+    It 'needs no result-poll token, but throws without the Service Bus namespace used for the drain and dead-letter gate' {
+        $ex = { Invoke-SkipPoll -Extra @{ ServiceBusNamespaceName = '' } } | Should -Throw -PassThru
+        $ex.Exception.Message | Should -BeLike '*-SkipResultPoll requires -ServiceBusNamespaceName*'
+        $ex.Exception.Message | Should -Not -BeLike '*-ResultPollAuthToken is required*'
+    }
+}
+
+Describe 'Test-ShovelBridgeE2E — Get-WwSkipPollVerdict (pure)' {
+    BeforeAll {
+        . (Join-Path $PSScriptRoot 'Test-ShovelBridgeE2E.ps1') -LoadFunctionsOnly
+        function script:New-Db {
+            param([bool] $Clean = $true, [string] $Detail = '0 missing and 0 duplicated of 20000', [string] $ErrorText = $null)
+            [pscustomobject]@{ Clean = $Clean; Detail = $Detail; Error = $ErrorText }
+        }
+    }
+
+    It 'passes when the publish succeeded, the database is clean and nothing was dead-lettered (build 31194''s actual outcome)' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 0 -DbOutcome (New-Db) -DlqDelta 0
+        $v.Passed | Should -BeTrue
+        $v.Reasons | Should -BeNullOrEmpty
+    }
+
+    It 'passes when the dead-letter count went down (queue purged mid-run is not a failure)' {
+        (Get-WwSkipPollVerdict -PublishExitCode 0 -DbOutcome (New-Db) -DlqDelta -5).Passed | Should -BeTrue
+    }
+
+    It 'fails when the publish leg failed' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 1 -DbOutcome (New-Db) -DlqDelta 0
+        $v.Passed | Should -BeFalse
+        $v.Reasons | Should -Contain 'the publish leg failed (exit code 1)'
+    }
+
+    It 'fails when the database reconciliation never ran' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 0 -DbOutcome $null -DlqDelta 0
+        $v.Passed | Should -BeFalse
+        $v.Reasons | Should -Contain 'the Phase 4c database reconciliation did not run'
+    }
+
+    It 'fails, carrying the error, when the database reconciliation threw' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 0 -DbOutcome (New-Db -Clean $false -Detail $null -ErrorText 'Login failed') -DlqDelta 0
+        $v.Passed | Should -BeFalse
+        $v.Reasons | Should -Contain 'the Phase 4c database reconciliation failed: Login failed'
+    }
+
+    It 'fails, carrying the detail, when rows are missing or duplicated' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 0 -DbOutcome (New-Db -Clean $false -Detail '3 missing and 1 duplicated of 20000') -DlqDelta 0
+        $v.Passed | Should -BeFalse
+        $v.Reasons | Should -Contain 'the Phase 4c database reconciliation was not clean: 3 missing and 1 duplicated of 20000'
+    }
+
+    It 'fails when the dead-letter count could not be read' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 0 -DbOutcome (New-Db) -DlqDelta $null
+        $v.Passed | Should -BeFalse
+        $v.Reasons | Should -Contain 'the Phase 4d dead-letter count could not be read'
+    }
+
+    It 'fails when messages were dead-lettered' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 0 -DbOutcome (New-Db) -DlqDelta 7
+        $v.Passed | Should -BeFalse
+        $v.Reasons | Should -Contain '7 message(s) were dead-lettered during this run'
+    }
+
+    It 'reports every failing check, not just the first' {
+        $v = Get-WwSkipPollVerdict -PublishExitCode 2 -DbOutcome $null -DlqDelta 1
+        $v.Passed | Should -BeFalse
+        @($v.Reasons).Count | Should -Be 3
+    }
+}
