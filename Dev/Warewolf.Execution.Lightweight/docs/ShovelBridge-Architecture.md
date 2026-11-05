@@ -2761,6 +2761,25 @@ consequences worth knowing before copying the pattern to another rig:
   the next run's apply step would have deleted the new rows again, because the `ProfileDates` seed
   deletes rows missing from its source. Re-applying the regenerated script to the live database
   changed 0 rows.
+- **2026-11-04 — `pipeline-LOADTEST.yml` now runs `Enable-ServiceBusSecureTrigger.ps1` on every
+  deploy (build 31194).** `WarewolfServer-UAT` had been deleted for the Flex move, so `Deploy_UAT`
+  created it (the settings-backup step failed with `ResourceNotFound`). The new managed identity
+  got its Key Vault grant from `Deploy-WwExecutionEngine.ps1` but had no *Azure Service Bus Data
+  Receiver* grant and no `ServiceBusConnection__fullyQualifiedNamespace` setting, so the trigger
+  never bound. All 20,000 messages sat active on `wwexecution-secure-trigger-queue-e2e` for about
+  15 minutes until the script was run by hand mid-run; the queue then drained in about 8 minutes
+  (21:40–21:48 UTC). A new step, **Enable Service Bus Secure Trigger on WarewolfServer-UAT**, runs
+  between the WOLF-8522 settings step and the Stop/Start. It runs the *released* script, copied
+  next to the engine package's `host.json` (the script reads `../host.json` for the WOLF-8512
+  delivery-budget invariant, and the scripts zip does not ship one), and fails the deploy if it
+  fails. The pipeline SP (*Warewolf DevOps*, appId `a15fdb40-…`) was granted *Role Based Access
+  Control Administrator* on the `WarewolfShovelBridgeTesting` namespace only, ABAC-conditioned to
+  assign or remove *Azure Service Bus Data Receiver* and nothing else; Contributor alone cannot write
+  role assignments. The namespace is now the pipeline variable `WwExecutionServiceBusNamespace`,
+  shared by the deploy step and the ShovelBridge job. Side note from the same run: with persistence
+  disabled, results live only in each instance's memory, so after the drain the harness's
+  `/secure/servicebus-result` poll mostly gets 404s and waits out its full `-ResultTimeoutSeconds`
+  (1800 s) before Phase 4c runs.
 
 
 ## Promotion status

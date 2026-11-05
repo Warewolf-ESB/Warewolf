@@ -724,7 +724,9 @@ The third row of the table above was an **unresolved deploy-time gap** until §1
 `WAREWOLF_ENTRA_CONFIG` is written only by `Configure-WwExecutionAuth.ps1`, which
 `-SkipAuthProvisioning` skips, so for any app deployed that way it used to be a **one-time
 manual operator step**, in the same category `Enable-ServiceBusSecureTrigger.ps1` occupies for
-these two apps (the profiler pipeline now runs that one automatically against `wwprofilerlw`).
+these two apps (`pipeline-LOADTEST.yml` now runs that one automatically against
+`WarewolfServer-UAT` on every deploy - see the operator-migration steps and ShovelBridge-Architecture.md's
+2026-11-04 entry).
 As of §17, `Deploy-WwExecutionEngine.ps1` itself now detects a missing `WAREWOLF_ENTRA_CONFIG`
 under `-SkipAuthProvisioning` and repairs it automatically — the manual command below is now a
 fallback for out-of-pipeline use, not a required step:
@@ -913,9 +915,11 @@ the Windows `Y1` engine.
 2. **Delete the app:** `az functionapp delete --name WarewolfServer-UAT --resource-group DEV2`.
 3. **Re-run the pipeline.** The deploy recreates the app on `Y1` (`--os-type Windows`, storage
    `warewolfuatsa`) and self-heals `WAREWOLF_ENTRA_CONFIG`.
-4. **Re-grant the new managed identity's RBAC.**
-   - Re-run `Enable-ServiceBusSecureTrigger.ps1` against the trigger queue for the Service Bus
-     receiver role.
+4. **Check the new managed identity's RBAC.** No manual grant is needed any more.
+   - Since 2026-11-04 the pipeline's **Enable Service Bus Secure Trigger on WarewolfServer-UAT**
+     step runs `Enable-ServiceBusSecureTrigger.ps1` on every deploy, granting **Azure Service Bus
+     Data Receiver** and setting `ServiceBusConnection__fullyQualifiedNamespace` (build 31194 showed
+     what a recreated app does without it: no messages consumed).
    - Check that the deploy applied **Key Vault Secrets User** (it does this through
      `-KeyVaultName`).
 5. **Re-apply Easy Auth platform config** (`az webapp auth ...`), because `-SkipAuthProvisioning`

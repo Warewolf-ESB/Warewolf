@@ -7,21 +7,22 @@
     identity the Service Bus Data Receiver role, and sets the app settings the trigger binding
     requires.
 
-    ⚠ ONLY THE PROFILER PIPELINES RUN THIS SCRIPT; FOR EVERY OTHER APP IT IS A MANUAL OPERATOR STEP. ⚠
-    Dev/.azure/ProfilerService-CI-{Dev,UAT}-LightweightExecutionEngine.yml run it against
-    'wwprofilerlw' / 'wwprofileruatlw' on every ShovelBridge deploy ("Enable Service Bus Secure Trigger" step, added after build
-    30756 spent 301s watching a bridged message sit unconsumed because neither the RBAC grant nor
-    the app setting had ever been applied to that rig). pipeline-CLOUD.yml ('warewolfserver') and
-    pipeline-LOADTEST.yml ('WarewolfServer-UAT') deliberately still do NOT — it mutates a live
-    Function App's authentication/authorization surface, so automating it per-app is a reviewed
-    decision, not a default. For any app other than wwprofilerlw, run it yourself (ideally with
-    -DryRun first) — never assume it has already been run against a shared deployment without
-    checking `az functionapp config appsettings list` first.
+    ⚠ ONLY pipeline-LOADTEST.yml RUNS THIS SCRIPT; FOR EVERY OTHER APP IT IS A MANUAL OPERATOR STEP. ⚠
+    Dev/.azure/pipeline-LOADTEST.yml runs it against 'WarewolfServer-UAT' on every deploy
+    ("Enable Service Bus Secure Trigger on WarewolfServer-UAT" step, added 2026-11-04 after build
+    31194's recreated app left 20,000 messages unconsumed because its new managed identity had
+    neither the RBAC grant nor the app setting). The Profiler pipelines used to run it against
+    'wwprofilerlw' / 'wwprofileruatlw' but no longer do. pipeline-CLOUD.yml ('warewolfserver')
+    deliberately does NOT — it mutates a live Function App's authentication/authorization surface,
+    so automating it per-app is a reviewed decision, not a default. For any other app, run it
+    yourself (ideally with -DryRun first) — never assume it has already been run against a shared
+    deployment without checking `az functionapp config appsettings list` first.
 
     PRIVILEGE NOTE: Phase 2 writes a role assignment, which Contributor cannot do
     (Microsoft.Authorization/roleAssignments/write is excluded from it). The profiler pipeline's
     service principal was therefore granted 'Role Based Access Control Administrator' on the DEV2
-    resource group, condition-constrained (ABAC v2.0) to the 'Azure Service Bus Data Receiver'
+    resource group, and pipeline-LOADTEST's ('Warewolf DevOps') on the WarewolfShovelBridgeTesting
+    namespace only - both condition-constrained (ABAC v2.0) to the 'Azure Service Bus Data Receiver'
     role definition and nothing else. Any other automation of this script needs the equivalent.
 
 .DESCRIPTION

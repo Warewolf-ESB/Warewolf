@@ -19,6 +19,9 @@
         and targets the Flex Consumption plan with persistence disabled;
       *       'Assert WarewolfServer-UAT is not a Windows (Y1) app' - EXECUTED against a stubbed az -
               fails on a Windows app and passes a Linux or missing one.
+      * 'Enable Service Bus Secure Trigger on WarewolfServer-UAT' - EXECUTED against a stub released
+        script and a stub engine zip - stages the script next to the package's host.json, passes
+        every argument, and fails on a missing parameter or a missing host.json.
 
     Requires the powershell-yaml module. The whole suite is skipped (not failed) without it.
 #>
@@ -376,6 +379,100 @@ Export-ModuleMember -Function Invoke-WwAz
 
     It 'fails when az itself fails, rather than reading that as a missing app' {
         { Invoke-GuardStep -Kind '' -Exit 1 } | Should -Throw '*az failed to list*'
+    }
+}
+
+Describe 'pipeline-LOADTEST - Enable Service Bus Secure Trigger on WarewolfServer-UAT' -Skip:(-not $script:HaveYaml) {
+
+    BeforeAll {
+        $script:EnableName   = 'Enable Service Bus Secure Trigger on WarewolfServer-UAT'
+        $script:EnableStep   = Find-Step 'Deploy_UAT' $script:EnableName
+        $script:Enable       = Get-StepScript $script:EnableStep
+        $script:EnableScript = Join-Path $PSScriptRoot '..\Warewolf.Execution.Lightweight\Scripts\Enable-ServiceBusSecureTrigger.ps1'
+        $script:EnableKeys   = @([regex]::Match($script:Enable, '(?s)\$enableArgs = \[ordered\]@\{(.*?)\n\s*\}').Groups[1].Value |
+            ForEach-Object { [regex]::Matches($_, '(?m)^\s*([A-Za-z][A-Za-z0-9]*)\s*=') } | ForEach-Object { $_.Groups[1].Value })
+
+        # Lays out an agent build directory holding a released scripts package (a stub
+        # Enable-ServiceBusSecureTrigger.ps1 declaring -Params) and an engine zip (with host.json
+        # unless -NoHostJson), then runs the step against it. The stub records each bound
+        # parameter as name=value, plus whether ../host.json exists next to where it was run from.
+        function script:Invoke-EnableStep {
+            param([string] $Name, [string[]] $Params, [switch] $NoHostJson)
+            $build = Join-Path $TestDrive $Name
+            $released = Join-Path $build 'DeploymentScripts\Wrapped\Scripts'
+            New-Item -ItemType Directory -Force -Path $released | Out-Null
+            $record = Join-Path $build 'enable.bound'
+            $decl = ($Params | ForEach-Object { "[object] `$$_" }) -join ', '
+            Set-Content -LiteralPath (Join-Path $released 'Enable-ServiceBusSecureTrigger.ps1') -Value (
+                "param($decl)`n" +
+                "`$lines = @(`$PSBoundParameters.GetEnumerator() | ForEach-Object { `"`$(`$_.Key)=`$(`$_.Value)`" })`n" +
+                "`$lines += `"hostjson=`$(Test-Path -LiteralPath (Join-Path `$PSScriptRoot '..' 'host.json'))`"`n" +
+                "`$lines | Set-Content -LiteralPath '$record'")
+
+            $pkg = Join-Path $build 'pkg'
+            New-Item -ItemType Directory -Force -Path $pkg | Out-Null
+            Set-Content -LiteralPath (Join-Path $pkg 'Warewolf.dll') -Value 'x'
+            if (-not $NoHostJson) { Set-Content -LiteralPath (Join-Path $pkg 'host.json') -Value '{ "functionTimeout": "00:10:00" }' }
+            $zip = Join-Path $build 'engine.zip'
+            Compress-Archive -Path (Join-Path $pkg '*') -DestinationPath $zip -Force
+
+            $body = Expand-Macros $script:Enable @{
+                'Agent.BuildDirectory'                = $build
+                EngineZipPath                         = $zip
+                WwExecutionServiceBusNamespace        = 'ns-under-test'
+                WwExecutionServiceBusTriggerQueueName = 'q-under-test'
+            }
+            & ([scriptblock]::Create($body)) | Out-Null
+            return $record
+        }
+    }
+
+    It 'runs after the deploy and the WOLF-8522 settings, and before the Stop/Start' {
+        $names  = @(@((Get-Job 'Deploy_UAT')['steps']) | ForEach-Object { $_['displayName'] })
+        $enable = [array]::IndexOf($names, $script:EnableName)
+        $enable | Should -BeGreaterThan ([array]::IndexOf($names, 'Deploy via Deployment Scripts'))
+        $enable | Should -BeGreaterThan ([array]::IndexOf($names, 'Disable host-restart-triggering features (WOLF-8522)'))
+        $enable | Should -BeLessThan ([array]::IndexOf($names, 'Stop/Start WarewolfServer-UAT (apply package + resources)'))
+    }
+
+    It 'fails the deploy when it fails (no continueOnError)' {
+        $script:EnableStep.Contains('continueOnError') | Should -BeFalse -Because 'without the grant the load test cannot pass, so it must not run'
+    }
+
+    It 'targets the same queue the deploy configures the trigger for, and the namespace the ShovelBridge job sends into' {
+        $script:Enable | Should -Match "TriggerQueueName\s+=\s+'\`$\(WwExecutionServiceBusTriggerQueueName\)'"
+        Get-StepScript (Find-Step 'Deploy_UAT' 'Deploy via Deployment Scripts') | Should -Match "ServiceBusTriggerQueueName\s+=\s+'\`$\(WwExecutionServiceBusTriggerQueueName\)'"
+        $script:Enable | Should -Match "ServiceBusNamespace\s+=\s+'\`$\(WwExecutionServiceBusNamespace\)'"
+        (Get-Job 'ShovelBridgeLoadTest_ExternalServiceBus')['variables']['ServiceBusNamespace'] | Should -Be '$(WwExecutionServiceBusNamespace)'
+        $script:Doc['variables']['WwExecutionServiceBusNamespace'] | Should -Be 'WarewolfShovelBridgeTesting'
+    }
+
+    It 'passes only parameters the checkout''s Enable-ServiceBusSecureTrigger.ps1 declares' {
+        $script:EnableKeys.Count | Should -Be 5 -Because 'the splat must be found (guards against a vacuous pass)'
+        $declared = (Get-Command -Name (Resolve-Path $script:EnableScript).Path -CommandType ExternalScript).Parameters
+        @($script:EnableKeys | Where-Object { -not $declared.ContainsKey($_) }) | Should -BeNullOrEmpty
+    }
+
+    It 'runs the released script, staged next to the engine package''s host.json, with every argument' {
+        $record = Invoke-EnableStep -Name 'ok' -Params $script:EnableKeys
+        $bound = @(Get-Content -LiteralPath $record)
+        $bound | Should -Contain 'FunctionAppName=WarewolfServer-UAT'
+        $bound | Should -Contain 'ResourceGroup=DEV2'
+        $bound | Should -Contain 'ServiceBusNamespace=ns-under-test'
+        $bound | Should -Contain 'TriggerQueueName=q-under-test'
+        $bound | Should -Contain 'NonInteractive=True'
+        $bound | Should -Contain 'hostjson=True' -Because 'the script reads ../host.json for the WOLF-8512 delivery-budget invariant'
+    }
+
+    It 'fails before running when the released script lacks a parameter, naming it and the pin' {
+        $build = Join-Path $TestDrive 'old'
+        { Invoke-EnableStep -Name 'old' -Params @($script:EnableKeys | Where-Object { $_ -ne 'TriggerQueueName' }) } |
+            Should -Throw '*-TriggerQueueName*WarewolfScriptsZipUrl*'
+        Test-Path -LiteralPath (Join-Path $build 'enable.bound') | Should -BeFalse
+    }
+
+    It 'fails when the engine package has no host.json' {
+        { Invoke-EnableStep -Name 'nohost' -Params $script:EnableKeys -NoHostJson } | Should -Throw '*host.json not found*'
     }
 }
 
