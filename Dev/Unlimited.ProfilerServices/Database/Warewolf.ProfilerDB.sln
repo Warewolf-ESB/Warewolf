@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.705
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Warewolf.ProfilerDB", "Warewolf.ProfilerDB\Warewolf.ProfilerDB.sqlproj", "{36488527-A122-473A-B007-B0A378FE4F80}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{36488527-A122-473A-B007-B0A378FE4F80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{36488527-A122-473A-B007-B0A378FE4F80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{36488527-A122-473A-B007-B0A378FE4F80}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{36488527-A122-473A-B007-B0A378FE4F80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{36488527-A122-473A-B007-B0A378FE4F80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{36488527-A122-473A-B007-B0A378FE4F80}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8A3A4D97-9DBD-4B33-8E7B-B25C6E294E2A}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,1 @@
+{"EnableDetailedLogging":true,"ExecutionLogLevel":"ERROR","Sink":"AuditingSettingsData","AuditFilePath":"C:\\ProgramData\\Warewolf\\Audits","IncludeEnvironmentVariable": true,"WebServerPort":0,"WebServerSslPort":0,"SslCertificateName":null,"CollectUsageStats":false,"DaysToKeepTempFiles":0,"LogFlushInterval":200}

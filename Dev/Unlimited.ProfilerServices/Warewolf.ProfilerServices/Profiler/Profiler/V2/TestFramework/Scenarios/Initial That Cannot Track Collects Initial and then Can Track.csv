@@ -1,0 +1,4 @@
+CollectionNum;MandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-DebiCheck/DebitOrder;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-DebiCheck/DebitOrder;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;7;FALSE;FALSE;;;;;;;7;2022-10-07;DebitOrder;0;202210; Intial
+2;7;FALSE;TRUE;7;DebitOrder;202101;2022-10-07;2022-10-07;Success;7;2022-11-07;DebitOrder;0;202211;Must stay on Mandate DRI for this collection
+3;7;TRUE;TRUE;7;DebitOrder;202211;2022-11-07;2022-11-07;Success;7;2022-12-05;DebiCheck;3;202212;Mandate Can now track, DRI 5,6,7 tied. Track from DRI 5 to 7

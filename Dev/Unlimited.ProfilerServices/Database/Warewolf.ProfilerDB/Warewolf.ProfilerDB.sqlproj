@@ -1,0 +1,229 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name>Warewolf.ProfilerDB</Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{36488527-a122-473a-b007-b0a378fe4f80}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql130DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath />
+    <RootNamespace>Warewolf.ProfilerDB</RootNamespace>
+    <AssemblyName>Warewolf.ProfilerDB</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">11.0</VisualStudioVersion>
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">11.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Condition="'$(SQLDBExtensionsRefPath)' != ''" Project="$(SQLDBExtensionsRefPath)\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <Import Condition="'$(SQLDBExtensionsRefPath)' == ''" Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+    <Folder Include="dbo" />
+    <Folder Include="dbo\Stored Procedures" />
+    <Folder Include="dbo\Tables" />
+    <Folder Include="Scripts" />
+    <Folder Include="Scripts\PostDeployments" />
+    <Folder Include="Profiler" />
+    <Folder Include="Profiler\Tables" />
+    <Folder Include="dbo\Views" />
+    <Folder Include="Profiler\Views" />
+    <Folder Include="Profiler\Stored Procedures" />
+    <Folder Include="Profiler\Functions" />
+    <Folder Include="Scripts\PostDeployments\Masters" />
+    <Folder Include="Scripts\PostDeployments\Masters\dbo" />
+    <Folder Include="Scripts\PostDeployments\Masters\Profiler" />
+  </ItemGroup>
+  <ItemGroup>
+    <Build Include="dbo\Tables\ProfileDates.sql" />
+    <Build Include="dbo\Tables\ProfileDebitScore.sql" />
+    <Build Include="dbo\Tables\ProfilerRecommendationOverride.sql" />
+    <Build Include="dbo\Tables\Profiles.sql" />
+    <Build Include="dbo\Stored Procedures\sp_generate_merge.sql" />
+    <Build Include="dbo\Tables\DebitRunIds.sql" />
+    <Build Include="dbo\Tables\Holiday.sql" />
+    <Build Include="dbo\Tables\CollectionRecommendation.sql" />
+    <Build Include="dbo\Tables\ProfilerTypes.sql" />
+    <Build Include="dbo\Tables\ActivityLog.sql" />
+    <Build Include="dbo\Views\view_ProfileDates.sql" />
+    <Build Include="Profiler.sql" />
+    <Build Include="Profiler\Tables\RecommendationType.sql" />
+    <Build Include="Profiler\Tables\MandateScores.sql" />
+    <Build Include="Profiler\Tables\ProfileDates.sql" />
+    <Build Include="Profiler\Tables\Profiles.sql" />
+    <Build Include="Profiler\Tables\ProfilerRecommendation.sql" />
+    <Build Include="Profiler\Views\view_WeekdayPublicHolidayPayDayBefore.sql" />
+    <Build Include="Profiler\Views\MasterDates.sql" />
+    <Build Include="Profiler\Views\view_CrossApplyLastDayToProfiles.sql" />
+    <Build Include="Profiler\Views\view_FriPubHolFriPayMon.sql" />
+    <Build Include="Profiler\Views\view_FriPubHolFriPaySat.sql" />
+    <Build Include="Profiler\Views\view_FriPubHolFriPayThu.sql" />
+    <Build Include="Profiler\Views\view_MonPubHolMonPayFri.sql" />
+    <Build Include="Profiler\Views\view_MonPubHolMonPaySat.sql" />
+    <Build Include="Profiler\Views\view_MonPubHolMonPayTue.sql" />
+    <Build Include="Profiler\Views\view_SatPayFri.sql" />
+    <Build Include="Profiler\Views\view_SatPayMon.sql" />
+    <Build Include="Profiler\Views\view_SatPaySat.sql" />
+    <Build Include="Profiler\Views\view_SatPubHolFriPayMon.sql" />
+    <Build Include="Profiler\Views\view_SatPubHolFriPayThu.sql" />
+    <Build Include="Profiler\Views\view_SatPubHolMonPayFri.sql" />
+    <Build Include="Profiler\Views\view_SatPubHolMonPayTue.sql" />
+    <Build Include="Profiler\Views\view_SatPubHolSatPayFri.sql" />
+    <Build Include="Profiler\Views\view_SatPubHolSatPayMon.sql" />
+    <Build Include="Profiler\Views\view_SunPayFri.sql" />
+    <Build Include="Profiler\Views\view_SunPayMon.sql" />
+    <Build Include="Profiler\Views\view_SunPaySat.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolFriPayMon.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolFriPaySat.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolFriPayThu.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolMonFriPaySat.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolMonPayFri.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolMonPaySat.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolMonPayTue.sql" />
+    <Build Include="Profiler\Views\view_WeekDay.sql" />
+    <Build Include="Profiler\Views\view_Weekday_FirstFriday.sql" />
+    <Build Include="Profiler\Views\view_Weekday_FourthFriday.sql" />
+    <Build Include="Profiler\Views\view_Weekday_LastFriday.sql" />
+    <Build Include="Profiler\Views\view_Weekday_SecondFriday.sql" />
+    <Build Include="Profiler\Views\view_Weekday_ThirdFriday.sql" />
+    <Build Include="Profiler\Views\view_WeekdayPublicHolidayPayDayAfter.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_ScoreMandateCollectionDates.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_ResetMandateScores.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_ApplyRelatedMandatesScoring.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_AddNewDebitRunIdProfileAsTied.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetMandateScoredResults.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetMandateProfilesDatesForDRIs.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_InsertProfilerRecommendation.sql" />
+    <Build Include="Profiler\Views\view_CrossApplyLastWorkingDayProfiles.sql" />
+    <Build Include="Profiler\Functions\func_dates.sql" />
+    <Build Include="Profiler\Functions\func_Nums.sql" />
+    <Build Include="Profiler\Functions\func_PublicHolidaysByYear.sql" />
+    <None Include="Scripts\PostDeployments\Masters\dbo\SeedDebitRunIds.sql" />
+    <None Include="Scripts\PostDeployments\Masters\dbo\SeedHoliday.sql" />
+    <None Include="Scripts\PostDeployments\Masters\dbo\SeedProfileDates.sql" />
+    <None Include="Scripts\PostDeployments\Masters\dbo\SeedProfiles.sql" />
+    <None Include="Scripts\PostDeployments\Masters\dbo\SeedProfileTypes.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetProfilerRecommendation.sql" />
+    <Build Include="Profiler\Tables\DebitRunIds.sql" />
+    <Build Include="Profiler\Views\view_LastDayClearsInBankDays.sql" />
+    <None Include="Scripts\PostDeployments\Masters\Profiler\SeedDebitRunIds.sql" />
+    <None Include="Scripts\PostDeployments\Masters\Profiler\SeedProfileDates.sql" />
+    <None Include="Scripts\PostDeployments\Masters\Profiler\SeedProfiles.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_CheckIfHasRecommendationType.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_UpdateProfilerRecommendation.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetFirstEarlierCollectionDate.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetPublicHolidaysInDateRange.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetMandateProfilesDatesForDRIsInitials.sql" />
+    <Build Include="Profiler\Tables\SpecialHolidays.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_FriPubHolFriPayMon.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_FriPubHolFriPaySat.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_FriPubHolFriPayThu.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_LastDayClearsInBankDays.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_MonPubHolMonPayFri.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_MonPubHolMonPaySat.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_MonPubHolMonPayTue.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPayFri.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPayMon.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_WeekdayPublicHolidayPayDayBefor.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPubHolFriPayMon.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPubHolFriPayThu.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPubHolMonPayFri.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPubHolMonPayTue.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPubHolSatPayFri.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPubHolSatPayMon.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPayFri.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPayMon.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPaySat.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolFriPayMon.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolFriPaySat.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolFriPayThu.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolMonFriPaySat.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolMonPayFri.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolMonPaySat.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolMonPayTue.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_WeekDay.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_Weekday_FirstFriday.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_Weekday_FourthFriday.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_Weekday_LastFriday.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_Weekday_SecondFriday.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_Weekday_ThirdFriday.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_WeekdayPublicHolidayPayDayAfter.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_CrossApplyLastWorkingDayProfiles.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_CrossApplyLastDayToProfiles.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPaySat.sql" />
+    <Build Include="Profiler\Functions\func_MasterDates.sql" />
+    <Build Include="Profiler\Functions\func_GetProfileDatesFromFunctions.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_AddSpecialHoliday.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetSpecialHolidays.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_UpdateSpecialHoliday.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_CompareNewProfilesDatesToExistingDates.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetMandateProfilesDatesForDRIsABTest.sql" />
+    <Build Include="Profiler\Tables\ProfilerRecommendationLabels.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_ClearLabelsForRecommendation.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_DeleteFutureProfilerRecommendation.sql" />
+    <Build Include="Profiler\Views\view_WeekDay_ChildrensGrant.sql" />
+    <Build Include="Profiler\Views\view_WeekDay_OlderPersonGrant.sql" />
+    <Build Include="Profiler\Views\view_WeekDay_DisabilityGrant.sql" />
+    <Build Include="Profiler\Tables\GrantDates.sql" />
+    <Build Include="Profiler\Tables\GrantType.sql" />
+    <None Include="Scripts\PostDeployments\Masters\Profiler\SeedGrantDates.sql" />
+    <None Include="Scripts\PostDeployments\Masters\Profiler\SeedGrantTypes.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_WeekDay_OlderPersonGrant.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_WeekDay_DisabilityGrant.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_WeekDay_ChildrensGrant.sql" />
+    <Build Include="Profiler\Views\view_MonPubHolMonFriPayThu.sql" />
+    <Build Include="Profiler\Stored Procedures\usp_GetGrantDatesByPaymentCycle.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SatPubHolThuFriPayWed.sql" />
+    <Build Include="Profiler\Views\view_FriPubHolThuFriPayWed.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_FriPubHolThuFriPayWed.sql" />
+    <Build Include="Profiler\Views\view_SunPubHolThuFriPayWed.sql" />
+    <Build Include="Profiler\Functions\func_Profiles_SunPubHolThuFriPayWed.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <PostDeploy Include="Scripts\PostDeployments\Script.PostDeployment.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <RefactorLog Include="Warewolf.ProfilerDB.refactorlog" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Scripts\PostDeployments\Masters\Profiler\SeedSpecialHolidays.sql" />
+    <None Include="Scripts\PostDeployments\Masters\Profiler\SeedRecommendationType.sql" />
+    <Build Include="Profiler\Views\view_SatPubHolThuFriPayWed.sql" />
+  </ItemGroup>
+</Project>

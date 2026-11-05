@@ -1,0 +1,8 @@
+{
+  "trigger": {
+    "workflowName": "ProfilerWrapper/Queue/RequestForProfilingConsume",
+    "maxConcurrentCalls": 2,
+    "maxConcurrentExecutions": 2,
+    "disableDynamicConcurrency": true
+  }
+}

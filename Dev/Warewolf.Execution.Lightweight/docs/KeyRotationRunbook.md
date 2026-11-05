@@ -43,6 +43,11 @@ What happens internally:
    (Key Vault retains the old version automatically).
 4. All files are re-encrypted with the new key. Deploy them separately (Phase 2).
 
+Rotation needs `az` and Key Vault write access: `-GenerateKeys` cannot be combined
+with `-KVSecret`. Pipelines that encrypt with `-KVSecret` / `Encrypt-Resources.ps1`
+take the new key from their next `AzureKeyVault@2` load (it reads the latest secret
+version), so re-run them after rotating.
+
 ### Phase 2 — Deploy and verify
 
 ```bash

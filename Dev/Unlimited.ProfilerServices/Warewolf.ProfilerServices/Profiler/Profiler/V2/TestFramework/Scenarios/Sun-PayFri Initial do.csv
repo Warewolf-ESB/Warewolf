@@ -1,0 +1,2 @@
+CollectionNum;MandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-DebiCheck/DebitOrder;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-DebiCheck/DebitOrder;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;10;FALSE;FALSE;;;;;;;10;2021-01-08;DebitOrder;0;202101;No debicheck must recommend do Question: Should ResultPaymentCycle not be 202012?

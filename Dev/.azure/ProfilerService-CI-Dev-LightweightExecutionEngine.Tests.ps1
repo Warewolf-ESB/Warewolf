@@ -1,24 +1,22 @@
 <#
-    Pester 5 suite for the two Profiler engine-package pipelines, the scripts they run and the queue triggers
-    beside them:
+    Pester 5 suite for the two Profiler pipelines that test, locally, the Unlimited.ProfilerServices CI
+    pipelines, and the queue triggers beside them:
 
-        ProfilerService-CI-Dev-LightweightExecutionEngine.yml   + ProfilerDev.trigger.bite
-        ProfilerService-CI-UAT-LightweightExecutionEngine.yml   + ProfilerUat.trigger.bite
-        profiler-engine/  Set-ProfilerTokens.ps1, Protect-ProfilerSources.ps1, Set-ProfilerEngineConcurrency.ps1
+        ProfilerService-CI-Dev-LightweightExecutionEngine.yml   mirrors  Unlimited.ProfilerServices/ProfilerService-CI-Dev.yml  + ProfilerDev.trigger.bite
+        ProfilerService-CI-UAT-LightweightExecutionEngine.yml   mirrors  Unlimited.ProfilerServices/ProfilerService-CI-UAT.yml  + ProfilerUat.trigger.bite
 
         Invoke-Pester -Path ./ProfilerService-CI-Dev-LightweightExecutionEngine.Tests.ps1
 
-    A pipeline file cannot be run locally, so this suite checks what CAN be proven without Azure:
+    The mirror takes everything from the Unlimited pipelines except the container tests (Docker build to
+    Docker push). A pipeline file cannot be run locally, so this
+    suite checks what CAN be proven without Azure:
 
-      * the YAML parses, and every embedded PowerShell script is syntactically valid (a bad
-        script otherwise fails only after the agent has spent minutes on the steps before it);
-      * both files only BUILD the ProfilerEngine artifact - nothing is deployed - and share ONE
-        body: everything from 'jobs:' down is byte-identical, so the environments differ only in
-        their variables;
-      * every release token the package carries has a value: a pipeline variable, or a Key Vault
-        secret that is both loaded and mapped into the token step;
-      * the package lays the profiler out so the timer's and the trigger's routes resolve;
-      * the token, encryption and concurrency scripts do what the pipeline relies on;
+      * the YAML parses, and every embedded PowerShell script is syntactically valid;
+      * the container steps are gone and the timer function app is not deployed;
+      * Dev and UAT are the same pipeline apart from their environment names;
+      * every repo path a step reads exists under Dev/Unlimited.ProfilerServices;
+      * the sources and settings are encrypted in place by Encrypt-Resources.ps1 with the vault key, and the
+        key file never reaches the 'drop' artifact;
       * each trigger file is internally consistent.
 
     The YAML tests need the powershell-yaml module and are skipped (not failed) without it.
@@ -30,22 +28,15 @@ BeforeDiscovery {
         @{ Env = 'DEV'; File = 'ProfilerService-CI-Dev-LightweightExecutionEngine.yml'; Trigger = 'ProfilerDev.trigger.bite' }
         @{ Env = 'UAT'; File = 'ProfilerService-CI-UAT-LightweightExecutionEngine.yml'; Trigger = 'ProfilerUat.trigger.bite' }
     )
-
-    # Every #{Token} in the files the pipeline stages and replaces: the profiler resources, the rabbit
-    # resources and the profiler-engine templates.
-    $resources = Join-Path $PSScriptRoot '..\Warewolf.Execution.Lightweight\Resources'
-    $files = @(Get-ChildItem -LiteralPath (Join-Path $resources 'ProfilerServices'), (Join-Path $resources 'rabbit') -Recurse -File -Filter '*.bite') +
-             @(Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'profiler-engine') -File -Filter '*.txt')
-    $script:PackageTokens = @($files | Select-String -Pattern '#\{([A-Za-z0-9_.-]+)\}' -AllMatches | ForEach-Object { $_.Matches } |
-        ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
 }
 
 BeforeAll {
     $script:DevPath     = Join-Path $PSScriptRoot 'ProfilerService-CI-Dev-LightweightExecutionEngine.yml'
     $script:UatPath     = Join-Path $PSScriptRoot 'ProfilerService-CI-UAT-LightweightExecutionEngine.yml'
     $script:LoadTestTriggerPath = Join-Path $PSScriptRoot 'ProfilerLoadTest.trigger.bite'
-    $script:EngineDir   = Join-Path $PSScriptRoot 'profiler-engine'
-    $script:Resources   = Join-Path $PSScriptRoot '..\Warewolf.Execution.Lightweight\Resources'
+    $script:Resources   = Join-Path $PSScriptRoot '..\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler'
+    $script:Mirror      = Join-Path $PSScriptRoot '..\Unlimited.ProfilerServices'
+    $script:RepoRoot    = Join-Path $PSScriptRoot '..\..'
 
     if (Get-Module -ListAvailable -Name powershell-yaml) {
         Import-Module powershell-yaml -ErrorAction Stop
@@ -62,8 +53,10 @@ BeforeAll {
         param($Step)
         if ($Step.Contains('pwsh'))       { return [string]$Step['pwsh'] }
         if ($Step.Contains('powershell')) { return [string]$Step['powershell'] }
-        if ($Step.Contains('inputs') -and $Step['inputs'] -is [System.Collections.IDictionary] -and $Step['inputs'].Contains('inlineScript')) {
-            return [string]$Step['inputs']['inlineScript']
+        if ($Step.Contains('inputs') -and $Step['inputs'] -is [System.Collections.IDictionary]) {
+            foreach ($key in 'inlineScript', 'script') {
+                if ($Step['inputs'].Contains($key)) { return [string]$Step['inputs'][$key] }
+            }
         }
         return $null
     }
@@ -85,28 +78,11 @@ BeforeAll {
         return -1
     }
 
-    function script:Get-Body([string] $Path) {
-        $text = Get-Content -LiteralPath $Path -Raw
-        $text.Substring($text.IndexOf("`njobs:"))
-    }
-
-    # The run-phase copy of BeforeDiscovery's token list (discovery variables do not reach the run).
-    function script:Get-PackageTokens {
-        $files = @(Get-ChildItem -LiteralPath (Join-Path $script:Resources 'ProfilerServices'), (Join-Path $script:Resources 'rabbit') -Recurse -File -Filter '*.bite') +
-                 @(Get-ChildItem -LiteralPath $script:EngineDir -File -Filter '*.txt')
-        @($files | Select-String -Pattern '#\{([A-Za-z0-9_.-]+)\}' -AllMatches | ForEach-Object { $_.Matches } |
-            ForEach-Object { $_.Groups[1].Value } | Sort-Object -Unique)
-    }
-
-    function script:Get-SecretsFilter {
-        param($Doc)
-        @(([string](Find-Step $Doc 'Azure Key Vault: release tokens and the WFAES key')['inputs']['SecretsFilter']).Split(',') | ForEach-Object Trim)
-    }
-
     # The workflow a trigger's WorkflowName ('ProfilerServices\...\Name') resolves to, as XML.
     function script:Get-TriggerWorkflow {
         param([string] $WorkflowName)
-        $path = Join-Path $script:Resources "$($WorkflowName.Replace('\', '/')).bite"
+        $relative = $WorkflowName -replace '^ProfilerServices[\\/]', ''
+        $path = Join-Path $script:Resources "$($relative.Replace('\', '/')).bite"
         [xml](Get-Content -LiteralPath $path -Raw)
     }
 }
@@ -115,329 +91,123 @@ Describe 'Profiler <Env> pipeline - structure' -ForEach $script:Environments -Sk
 
     BeforeAll { $script:Doc = $script:Docs[$File] }
 
-    It 'parses as a single-job, manually-triggered pipeline with no parameters' {
+    It 'parses as a single-job, manually-triggered pipeline' {
         $script:Doc['trigger'] | Should -Be 'none'
-        $script:Doc.Contains('parameters') | Should -BeFalse
         @($script:Doc['jobs']).Count | Should -Be 1
-        foreach ($item in (Get-Steps $script:Doc)) { @($item.Keys)[0] | Should -Not -BeLike '${{*' }
+        $script:Doc['jobs'][0]['pool']['vmImage'] | Should -Be 'windows-2022'
     }
 
-    It 'has a unique displayName on every step (the tests below look steps up by name)' {
-        $names = @(Get-Steps $script:Doc | Where-Object { -not $_.Contains('checkout') } | ForEach-Object { $_['displayName'] })
-        ($names | Where-Object { -not $_ }).Count | Should -Be 0
-        ($names | Group-Object | Where-Object Count -gt 1 | ForEach-Object Name) | Should -BeNullOrEmpty
-    }
-
-    It 'every embedded script is syntactically valid PowerShell' {
-        $failures = @()
-        $parsed = 0
-        foreach ($step in (Get-Steps $script:Doc)) {
+    It 'has a syntactically valid script in every PowerShell step' {
+        foreach ($step in Get-Steps $script:Doc) {
             $body = Get-StepScript $step
-            if (-not $body) { continue }
-            $parsed++
-            # Azure DevOps expands $(name) and ${{ ... }} before the script runs; stand a token in for
-            # each. A sub-expression '$( ... )' or '$($x)' does not match the name pattern and is left alone.
-            $expanded = [regex]::Replace($body, '\$\([A-Za-z_][A-Za-z0-9_.]*\)', 'MACRO')
-            $expanded = [regex]::Replace($expanded, '\$\{\{[^}]*\}\}', 'TEMPLATE')
+            if ($null -eq $body) { continue }
             $tokens = $null; $errors = $null
-            [void][System.Management.Automation.Language.Parser]::ParseInput($expanded, [ref]$tokens, [ref]$errors)
-            foreach ($e in $errors) { $failures += "[$($step['displayName'])] line $($e.Extent.StartLineNumber): $($e.Message)" }
-        }
-        # Guard against a vacuous pass.
-        $parsed | Should -BeGreaterOrEqual 6
-        $failures | Should -BeNullOrEmpty
-    }
-
-    It 'only builds: no Azure CLI step and no az call' {
-        foreach ($step in (Get-Steps $script:Doc)) {
-            [string]$step['task'] | Should -Not -BeLike 'AzureCLI*' -Because "$($step['displayName']) would act on Azure"
-            $body = Get-StepScript $step
-            if ($body) { $body | Should -Not -Match '(?m)^(?!\s*#).*(^|[\s(=|;{])az\s+[a-z]' -Because "$($step['displayName']) calls az" }
+            [void][System.Management.Automation.Language.Parser]::ParseInput($body, [ref]$tokens, [ref]$errors)
+            $errors | Should -BeNullOrEmpty -Because "step '$($step['displayName'])' must parse"
         }
     }
 
-    It 'loads the vault, then stages, replaces, encrypts, verifies, zips and publishes, in that order' {
-        $order = 'Azure Key Vault: release tokens and the WFAES key',
-                 'Resolve the published Lightweight Engine package',
-                 'Download and extract the Lightweight Engine package',
-                 'Add the profiler workflows, sources and settings',
-                 'Replace tokens in the staged resources and settings',
-                 'Encrypt the sources and apply the trigger concurrency',
-                 'Verify the staged package',
-                 'Zip the profiler engine package',
-                 'Publish Artifact: ProfilerEngine'
-        $indexes = @($order | ForEach-Object { Get-StepIndex $script:Doc $_ })
-        $indexes | Should -Not -Contain -1
-        ($indexes -join ',') | Should -Be ((@($indexes) | Sort-Object) -join ',')
-        (Get-Steps $script:Doc)[0].Contains('checkout') | Should -BeTrue
+    It 'has no container steps and no second repository checkout' {
+        $tasks = @(Get-Steps $script:Doc | ForEach-Object { $_['task'] })
+        $tasks | Where-Object { $_ -like 'Docker@*' } | Should -BeNullOrEmpty
+        @(Get-Steps $script:Doc | Where-Object { $_.Contains('checkout') }).Count | Should -Be 1
+        (Get-Content -LiteralPath (Join-Path $PSScriptRoot $File) -Raw) | Should -Not -Match 'unlimited\.devops|docker-stop|Unit Tests'
     }
 
-    It 'publishes profiler-engine.zip as the ProfilerEngine artifact' {
-        $zip = Find-Step $script:Doc 'Zip the profiler engine package'
-        $pub = Find-Step $script:Doc 'Publish Artifact: ProfilerEngine'
-        $zip['inputs']['archiveFile'] | Should -BeLike '*\ProfilerEngine\profiler-engine.zip'
-        $pub['inputs']['artifact'] | Should -Be 'ProfilerEngine'
-        # The YAML's own folder, as a string: Split-Path would turn its '\' into '/' on Linux.
-        $pub['inputs']['targetPath'] | Should -Be ($zip['inputs']['archiveFile'] -replace '\\[^\\]+$')
+    It 'reads the tokens and the WFAES key from this environment''s vault, through its service connection' {
+        $prefix = $Env.Substring(0, 1) + $Env.Substring(1).ToLowerInvariant()   # Dev / Uat
+        $vault = $Env -eq 'DEV' ? 'Dev2AzureDevopsKeyVault' : 'UATAzureDevopsKeyVault'
+        $kv = Find-Step $script:Doc "Azure Key Vault: $vault"
+        $kv | Should -Not -BeNullOrEmpty
+        $kv['inputs']['KeyVaultName'] | Should -Be $vault
+        $kv['inputs']['ConnectedServiceName'] | Should -Be "$($Env.ToLowerInvariant())-sp-devops"
     }
 
-    It 'fetches the engine only from the releases storage account, and only the linux-x64 package' {
-        $body = Get-StepScript (Find-Step $script:Doc 'Resolve the published Lightweight Engine package')
-        $body | Should -Match ([regex]::Escape('$parsed.Host -ne $expectedHost'))
-        $body | Should -Match 'engine-linux-zip-link'
-        $body | Should -Match "-match 'win-x64'"
+    It 'publishes the timer function package but does not deploy it (the app is provisioned outside CI)' {
+        $publish = Get-StepIndex $script:Doc 'Publish Azure Functions'
+        $swagger = Get-StepIndex $script:Doc 'Swagger: Generate Swagger.json'
+        $publish | Should -BeGreaterOrEqual 0
+        $swagger | Should -BeGreaterThan $publish
+        @(Get-Steps $script:Doc | ForEach-Object { $_['task'] }) | Where-Object { $_ -like 'AzureFunctionApp@*' } | Should -BeNullOrEmpty
+    }
+
+    It 'publishes the engine package and the drop artifacts' {
+        (Find-Step $script:Doc 'Publish Artifact: ProfilerEngine')['inputs']['artifact'] | Should -Be 'ProfilerEngine'
+        (Find-Step $script:Doc 'Publish Artifact: drop')['inputs']['artifact'] | Should -Be 'drop'
     }
 }
 
-Describe 'Profiler pipelines - syntax check sanity' {
-    It 'the syntax check itself detects a broken script' {
-        $tokens = $null; $errors = $null
-        [void][System.Management.Automation.Language.Parser]::ParseInput('if ($x { Write-Host "unbalanced"', [ref]$tokens, [ref]$errors)
-        $errors.Count | Should -BeGreaterThan 0
+Describe 'Profiler pipelines - Dev and UAT are the same pipeline apart from their environment' -Skip:(-not $script:HaveYaml) {
+
+    It 'differ only in the names of the environment' {
+        $dev = (Get-Content -LiteralPath $script:DevPath -Raw)
+        $uat = (Get-Content -LiteralPath $script:UatPath -Raw)
+        $expected = $dev.Replace('Dev2AzureDevopsKeyVault', 'UATAzureDevopsKeyVault').Replace('dev-sp-devops', 'uat-sp-devops').
+            Replace("ProfilerEnvironment: 'dev'", "ProfilerEnvironment: 'uat'").Replace('profilerlwdev-timer-function', 'profilerlwuat-timer-function')
+        $uat | Should -Be $expected
     }
 }
 
-Describe 'Profiler pipelines - Dev and UAT share one body, with their own engine' -Skip:(-not $script:HaveYaml) {
+Describe 'Profiler pipelines - the mirrored Unlimited.ProfilerServices content' -Skip:(-not $script:HaveYaml) {
 
-    BeforeAll { $script:Own = 'ProfilerEnvironment', 'ProfilerEngineAppName', 'ProfilerServiceBusTriggerQueueName' }
-
-    It 'are byte-identical from jobs: down, so the environments can only differ in their variables' {
-        $dev = Get-Body $script:DevPath
-        $uat = Get-Body $script:UatPath
-        $dev.Length | Should -BeGreaterThan 5000
-        $uat | Should -BeExactly $dev
-    }
-
-    It 'declare the same variable names' {
-        (@($script:Uat['variables'].Keys) | Sort-Object) -join ',' | Should -Be ((@($script:Dev['variables'].Keys) | Sort-Object) -join ',')
-    }
-
-    It 'give each environment its own <_>' -ForEach @('ProfilerEnvironment', 'ProfilerEngineAppName', 'ProfilerServiceBusTriggerQueueName') {
-        $script:Uat['variables'][$_] | Should -Not -Be $script:Dev['variables'][$_] -Because "$_ is per environment"
-    }
-
-    It 'keep the rest of the variables identical' {
-        foreach ($name in @($script:Dev['variables'].Keys | Where-Object { $_ -notin $script:Own })) {
-            $script:Uat['variables'][$name] | Should -Be $script:Dev['variables'][$name] -Because "$name is shared"
+    It 'has every repo path the Dev pipeline reads' {
+        $text = Get-Content -LiteralPath $script:DevPath -Raw
+        $paths = [regex]::Matches($text, 'Dev[\\/]Unlimited\.ProfilerServices[\\/][A-Za-z0-9_.\\/-]+') | ForEach-Object Value | Sort-Object -Unique
+        $paths | Should -Not -BeNullOrEmpty
+        foreach ($p in $paths) {
+            $clean = $p.TrimEnd('/', '\', '.', "'")
+            # Wildcards and files created at run time (templates are renamed, the key is token-replaced).
+            if ($clean -match '[*]' -or $clean -match 'EngineEncryptionKey') { continue }
+            Test-Path -LiteralPath (Join-Path $script:RepoRoot $clean) | Should -BeTrue -Because "$clean is read by the pipeline"
         }
     }
 
-    It 'build for wwprofilerlw / wwprofileruatlw, triggered from profiler.profile.request.<Env>' {
-        $script:Dev['variables']['ProfilerEngineAppName'] | Should -Be 'wwprofilerlw'
-        $script:Uat['variables']['ProfilerEngineAppName'] | Should -Be 'wwprofileruatlw'
-        foreach ($doc in $script:Dev, $script:Uat) {
-            $doc['variables']['ProfilerServiceBusTriggerQueueName'] | Should -Be "profiler.profile.request.$($doc['variables']['ProfilerEnvironment'])"
+    It 'ships the engine templates but never a token-replaced key or a committed secret' {
+        $engine = Join-Path $script:Mirror 'Warewolf.ProfilerServices\Engine'
+        foreach ($f in 'executionengine.settings.json.txt', 'ProfilerEngineConcurrency.json.txt', 'servicebustrigger.bite.txt') {
+            Test-Path -LiteralPath (Join-Path $engine $f) | Should -BeTrue
         }
+        # EngineEncryptionKey.txt holds the key's token only; it must never hold the key itself.
+        (Get-Content -LiteralPath (Join-Path $engine 'EngineEncryptionKey.txt') -Raw -ErrorAction SilentlyContinue) | Should -Not -Match '"key"\s*:\s*"[A-Za-z0-9+/=]{40,}"'
+    }
+
+    It 'has the timer function project' {
+        Test-Path -LiteralPath (Join-Path $script:Mirror 'AzureFunctions.ProfilerServices\AzureFunctions.ProfilerServices.csproj') | Should -BeTrue
     }
 }
 
-Describe 'Profiler pipelines - every release token has a value' -Skip:(-not $script:HaveYaml) {
+Describe 'Profiler pipelines - source encryption' -Skip:(-not $script:HaveYaml) -ForEach $script:Environments {
 
     BeforeAll {
-        $script:Tokens  = Get-PackageTokens
-        $script:Filter  = Get-SecretsFilter $script:Dev
-        $script:Replace = Find-Step $script:Dev 'Replace tokens in the staged resources and settings'
-        $script:KeyName = $script:Dev['variables']['ProfilerEngineKeyVaultSecretName']
+        $script:Doc    = $script:Docs[$File]
+        $script:Encrypt = Get-StepScript (Find-Step $script:Doc 'Encrypt the sources and apply the trigger concurrency')
     }
 
-    It 'finds the tokens (guards against a vacuous pass)' {
-        $script:Tokens.Count | Should -BeGreaterOrEqual 20
+    It 'encrypts the staged Resources and Settings in place with Encrypt-Resources.ps1 and the vault key' {
+        $script:Encrypt | Should -Match 'Encrypt-Resources\.ps1'
+        $script:Encrypt | Should -Match "foreach \(\`$dir in 'Resources', 'Settings'\)"
+        $script:Encrypt | Should -Match '-SourceDirectory "\$stage\\\$dir" -OutputDirectory "\$stage\\\$dir"'
+        $script:Encrypt | Should -Match 'EngineEncryptionKey\.txt'
+        $script:Encrypt | Should -Not -Match 'Protect-ProfilerSources'
+        Test-Path -LiteralPath (Join-Path $PSScriptRoot '..\Warewolf.Execution.Lightweight\Scripts\Encrypt-Resources.ps1') | Should -BeTrue
     }
 
-    It 'gives #{<_>} a value: a pipeline variable or a loaded Key Vault secret' -ForEach $script:PackageTokens {
-        ($script:Dev['variables'].Contains($_) -or $script:Filter -contains $_) | Should -BeTrue -Because "#{$_} is in a staged file"
+    It 'fails when nothing was encrypted and applies the trigger concurrency afterwards' {
+        $script:Encrypt | Should -Match "No source ConnectionString was encrypted"
+        $script:Encrypt.IndexOf('Encrypt-Resources.ps1') | Should -BeLessThan $script:Encrypt.IndexOf('Set-ProfilerEngineConcurrency.ps1')
+        Test-Path -LiteralPath (Join-Path $script:Mirror 'SolutionItems\Scripts\Set-ProfilerEngineConcurrency.ps1') | Should -BeTrue
     }
 
-    It 'maps every token into the token step''s environment by its own name' {
-        foreach ($token in $script:Tokens) {
-            $script:Replace['env'][$token] | Should -Be "`$($token)" -Because "Set-ProfilerTokens.ps1 reads #{$token} from env:$token"
-        }
+    It 'removes the key file even on failure, before drop is copied' {
+        $remove = Find-Step $script:Doc 'Remove the WFAES key file'
+        $remove['condition'] | Should -Be 'always()'
+        (Get-StepIndex $script:Doc 'Remove the WFAES key file') | Should -BeLessThan (Get-StepIndex $script:Doc 'Copy Files to: $(Build.ArtifactStagingDirectory)')
     }
 
-    It 'loads no secret that no file uses, bar the WFAES key' {
-        foreach ($secret in $script:Filter | Where-Object { $_ -ne $script:KeyName }) {
-            $script:Tokens | Should -Contain $secret -Because "$secret is loaded from the vault"
-        }
-    }
-
-    It 'encrypts with the key the engine is told to decrypt with' {
-        $script:Filter | Should -Contain $script:KeyName
-        (Find-Step $script:Dev 'Encrypt the sources and apply the trigger concurrency')['env']['WfaesKeyMaterial'] | Should -Be "`$($script:KeyName)"
-        $settings = Get-Content -LiteralPath (Join-Path $script:EngineDir 'executionengine.settings.json.txt') -Raw | ConvertFrom-Json
-        $settings.keyVaultName | Should -Be '#{ProfilerEngineKeyVaultName}'
-        $settings.keyVaultSecretName | Should -Be '#{ProfilerEngineKeyVaultSecretName}'
-    }
-
-    It 'reads the vault the variables name, through the service connection' {
-        $kv = Find-Step $script:Dev 'Azure Key Vault: release tokens and the WFAES key'
-        $kv['inputs']['KeyVaultName'] | Should -Be '$(ProfilerEngineKeyVaultName)'
-        # Compile-time form: service connections are authorised before runtime variables exist.
-        $kv['inputs']['azureSubscription'] | Should -Be '${{ variables.AzureServiceConnection }}'
-    }
-}
-
-Describe 'Profiler pipelines - package layout' -Skip:(-not $script:HaveYaml) {
-
-    BeforeAll {
-        $script:Trigger = Get-Content -LiteralPath (Join-Path $script:EngineDir 'servicebustrigger.bite.txt') -Raw | ConvertFrom-Json
-        $script:Stage   = Get-StepScript (Find-Step $script:Dev 'Add the profiler workflows, sources and settings')
-        $script:Verify  = Get-StepScript (Find-Step $script:Dev 'Verify the staged package')
-    }
-
-    It 'stages ProfilerServices at the Resources root, as the Unlimited does, so its routes resolve' {
-        # Staged path = path under Resources/ProfilerServices, so these are the routes on the engine.
-        Test-Path -LiteralPath (Join-Path $script:Resources 'ProfilerServices\Profiler\V2\Functions\ProfilerAlerts\GrantDates.bite') | Should -BeTrue
-        Test-Path -LiteralPath (Join-Path $script:Resources "ProfilerServices\$($script:Trigger.WorkflowName).bite") | Should -BeTrue
-        $script:Verify | Should -Match ([regex]::Escape('Resources\Profiler\V2\Functions\ProfilerAlerts\GrantDates.bite'))
-        $script:Verify | Should -Match ([regex]::Escape("Resources\$($script:Trigger.WorkflowName.Replace('/', '\')).bite"))
-    }
-
-    It 'binds the trigger''s whole message to the consume workflow''s only input' {
-        $workflow = Get-TriggerWorkflow "ProfilerServices/$($script:Trigger.WorkflowName)"
-        $declared = @($workflow.Service.DataList.ChildNodes | Where-Object { $_.ColumnIODirection -in 'Input', 'Both' } | ForEach-Object LocalName)
-        $declared -join ',' | Should -Be $script:Trigger.MapEntireMessageTo
-        $script:Trigger.QueueName | Should -Be '#{ProfilerServiceBusTriggerQueueName}'
-    }
-
-    It 'ships secure.config and the license at the package root, and persistence under Settings' {
-        # secure.config is git-ignored (never committed), so a checkout has none: both pipelines take
-        # it from the Library, like the license, and never from the repo.
-        foreach ($doc in $script:Dev, $script:Uat) {
-            $download = Find-Step $doc 'Download Profiler secure.config'
-            $download['task'] | Should -Be 'DownloadSecureFile@1'
-            $download['name'] | Should -Be 'profilerSecureConfig'
-            $download['inputs']['secureFile'] | Should -Be 'Profiler secure.config'
-            $stage = Get-StepScript (Find-Step $doc 'Add the profiler workflows, sources and settings')
-            $stage | Should -Match ([regex]::Escape('''$(profilerSecureConfig.secureFilePath)'' -Destination "$stage\secure.config"'))
-            $stage | Should -Not -Match ([regex]::Escape('$templates\secure.config'))
-            (Get-StepIndex $doc 'Download Profiler secure.config') | Should -BeLessThan (Get-StepIndex $doc 'Add the profiler workflows, sources and settings')
-        }
-        $script:Stage | Should -Match ([regex]::Escape('"$stage\Settings\persistencesettings.json"'))
-        $script:Stage | Should -Match ([regex]::Escape('"$stage\Settings\persistencesettingsdbsource.bite"'))
-        $script:Stage | Should -Match ([regex]::Escape('"$stage\Warewolf License.secureconfig"'))
-    }
-
-    It 'never replaces tokens or encrypts in the checkout' {
-        foreach ($name in 'Replace tokens in the staged resources and settings', 'Encrypt the sources and apply the trigger concurrency') {
-            (Get-StepScript (Find-Step $script:Dev $name)) | Should -Not -Match 'Build\.SourcesDirectory\)\\Dev\\Warewolf\.Execution\.Lightweight'
-        }
-    }
-}
-
-Describe 'Set-ProfilerTokens.ps1' {
-
-    BeforeAll {
-        $script:TokenScript = Join-Path $script:EngineDir 'Set-ProfilerTokens.ps1'
-        $script:Saved = @{}
-        foreach ($n in 'PTA', 'PTB', 'PTMissing', 'PTMacro', 'PTUnsafe') { $script:Saved[$n] = [Environment]::GetEnvironmentVariable($n) }
-    }
-    AfterAll {
-        foreach ($n in $script:Saved.Keys) { [Environment]::SetEnvironmentVariable($n, $script:Saved[$n]) }
-    }
-    BeforeEach {
-        $script:Dir = Join-Path $TestDrive ([guid]::NewGuid().ToString('N'))
-        New-Item -ItemType Directory -Path "$script:Dir\sub" | Out-Null
-        $env:PTA = 'alpha'; $env:PTB = 'beta'
-        foreach ($n in 'PTMissing', 'PTMacro', 'PTUnsafe') { [Environment]::SetEnvironmentVariable($n, $null) }
-    }
-
-    It 'replaces every token in .bite and .json files, recursively, and reports the count' {
-        Set-Content -LiteralPath "$script:Dir\a.bite" -Value '<Source ConnectionString="Host=#{PTA};User=#{PTB};Again=#{PTA}" />' -NoNewline
-        Set-Content -LiteralPath "$script:Dir\sub\b.json" -Value '{ "x": "#{PTB}" }' -NoNewline
-        Set-Content -LiteralPath "$script:Dir\c.txt" -Value '#{PTA}' -NoNewline
-        $r = & $script:TokenScript -Path $script:Dir
-        Get-Content -LiteralPath "$script:Dir\a.bite" -Raw | Should -Be '<Source ConnectionString="Host=alpha;User=beta;Again=alpha" />'
-        Get-Content -LiteralPath "$script:Dir\sub\b.json" -Raw | Should -Be '{ "x": "beta" }'
-        Get-Content -LiteralPath "$script:Dir\c.txt" -Raw | Should -Be '#{PTA}' -Because '.txt is not included'
-        $r.Files | Should -Be 2
-        $r.Tokens | Should -Be 2
-        $r.Replaced | Should -Be 4
-    }
-
-    It 'keeps a file''s UTF-8 BOM, or its absence' {
-        # Join-Path, not "$dir\x": .NET's file API takes '\' literally on Linux, which would put the
-        # files beside $script:Dir, where the token script never looks.
-        $bom   = Join-Path $script:Dir 'bom.bite'
-        $noBom = Join-Path $script:Dir 'nobom.bite'
-        [IO.File]::WriteAllText($bom, '#{PTA}', [Text.UTF8Encoding]::new($true))
-        [IO.File]::WriteAllText($noBom, '#{PTA}', [Text.UTF8Encoding]::new($false))
-        & $script:TokenScript -Path $script:Dir | Out-Null
-        [IO.File]::ReadAllBytes($bom)[0..2] -join ',' | Should -Be '239,187,191'
-        [IO.File]::ReadAllBytes($noBom)[0] | Should -Be ([byte][char]'a')
-    }
-
-    It 'fails on a token with no value, an unexpanded macro or an unsafe character, changing no file' -ForEach @(
-        @{ Name = 'PTMissing'; Value = $null }
-        @{ Name = 'PTMacro';   Value = '$(PTMacro)' }
-        @{ Name = 'PTUnsafe';  Value = 'a&b' }) {
-        if ($Value) { [Environment]::SetEnvironmentVariable($Name, $Value) }
-        Set-Content -LiteralPath "$script:Dir\ok.bite" -Value '#{PTA}' -NoNewline
-        Set-Content -LiteralPath "$script:Dir\bad.bite" -Value "#{$Name}" -NoNewline
-        { & $script:TokenScript -Path $script:Dir 6>$null } | Should -Throw '*cannot be replaced*'
-        Get-Content -LiteralPath "$script:Dir\ok.bite" -Raw | Should -Be '#{PTA}'
-    }
-}
-
-Describe 'Protect-ProfilerSources.ps1' {
-
-    BeforeAll {
-        $script:ProtectScript = Join-Path $script:EngineDir 'Protect-ProfilerSources.ps1'
-        $script:KeyBytes = [byte[]](1..32)
-        $script:KeyFile = Join-Path $TestDrive 'key.json'
-        @{ version = 1; keyId = 'test-key'; key = [Convert]::ToBase64String($script:KeyBytes); created = '2026-10-30'; previousKeys = @() } |
-            ConvertTo-Json | Set-Content -LiteralPath $script:KeyFile
-    }
-
-    It 'WFAES-encrypts a plain ConnectionString so that it decrypts back, and leaves WFAES values alone' {
-        $dir = Join-Path $TestDrive 'protect'
-        New-Item -ItemType Directory -Path $dir | Out-Null
-        Set-Content -LiteralPath "$dir\plain.bite" -Value '<Source ID="1" Name="S" ConnectionString="HostName=h;Password=p" Type="RabbitMQSource"><DisplayName>S</DisplayName></Source>'
-        Set-Content -LiteralPath "$dir\done.bite" -Value '<Source ID="2" Name="T" ConnectionString="WFAES::already" Type="SqlDatabase" />'
-        Set-Content -LiteralPath "$dir\workflow.bite" -Value '<Service ID="3" Name="W"><Action /></Service>'
-
-        $r = & $script:ProtectScript -Path $dir -KeyMaterialPath $script:KeyFile 6>$null
-        $r.Encrypted | Should -Be 1
-        $r.AlreadyEncrypted | Should -Be 1
-
-        $value = ([xml](Get-Content -LiteralPath "$dir\plain.bite" -Raw)).Source.ConnectionString
-        $value | Should -BeLike 'WFAES::*'
-        $data = [Convert]::FromBase64String($value.Substring(7))
-        [ProfilerWfAes]::Decrypt($script:KeyBytes, $data) | Should -Be 'HostName=h;Password=p'
-        ([xml](Get-Content -LiteralPath "$dir\done.bite" -Raw)).Source.ConnectionString | Should -Be 'WFAES::already'
-    }
-
-    It 'refuses key material that is not a 32-byte key' {
-        $bad = Join-Path $TestDrive 'bad.json'
-        @{ keyId = 'short'; key = [Convert]::ToBase64String([byte[]](1..16)) } | ConvertTo-Json | Set-Content -LiteralPath $bad
-        { & $script:ProtectScript -Path $TestDrive -KeyMaterialPath $bad } | Should -Throw '*32 bytes*'
-    }
-}
-
-Describe 'Set-ProfilerEngineConcurrency.ps1' {
-
-    It 'sets maxConcurrentCalls and pins dynamic concurrency off in host.json, and maxConcurrentExecutions in the settings' {
-        $root = Join-Path $TestDrive 'pkg'
-        New-Item -ItemType Directory -Path "$root\Settings" | Out-Null
-        '{ "version": "2.0", "extensions": { "serviceBus": { "prefetchCount": 0 } } }' | Set-Content -LiteralPath "$root\host.json"
-        '{ "keyVaultName": "kv", "keyVaultSecretName": "s" }' | Set-Content -LiteralPath "$root\Settings\executionengine.settings.json"
-
-        & (Join-Path $script:EngineDir 'Set-ProfilerEngineConcurrency.ps1') -PackageRoot $root -MaxConcurrentCalls 2 -MaxConcurrentExecutions 3 -DisableDynamicConcurrency 6>$null
-
-        $hostJson = Get-Content -LiteralPath "$root\host.json" -Raw | ConvertFrom-Json
-        $hostJson.extensions.serviceBus.maxConcurrentCalls | Should -Be 2
-        $hostJson.extensions.serviceBus.prefetchCount | Should -Be 0
-        $hostJson.concurrency.dynamicConcurrencyEnabled | Should -BeFalse
-        $settings = Get-Content -LiteralPath "$root\Settings\executionengine.settings.json" -Raw | ConvertFrom-Json
-        $settings.serviceBusTrigger.maxConcurrentExecutions | Should -Be 3
-        $settings.keyVaultName | Should -Be 'kv'
-    }
-
-    It 'refuses a host.json with no serviceBus section' {
-        $root = Join-Path $TestDrive 'nosb'
-        New-Item -ItemType Directory -Path "$root\Settings" | Out-Null
-        '{ "version": "2.0" }' | Set-Content -LiteralPath "$root\host.json"
-        '{}' | Set-Content -LiteralPath "$root\Settings\executionengine.settings.json"
-        { & (Join-Path $script:EngineDir 'Set-ProfilerEngineConcurrency.ps1') -PackageRoot $root -MaxConcurrentCalls 2 -MaxConcurrentExecutions 2 } | Should -Throw '*serviceBus*'
+    It 'places secure.config and the license from the Library before staging the package' {
+        (Find-Step $script:Doc 'Download Profiler secure.config')['task'] | Should -Be 'DownloadSecureFile@1'
+        (Find-Step $script:Doc 'Download Warewolf License.secureconfig')['task'] | Should -Be 'DownloadSecureFile@1'
+        (Get-StepIndex $script:Doc 'Place secure.config and the license in the Engine folder') | Should -BeLessThan (Get-StepIndex $script:Doc 'Add the profiler workflows, sources and settings')
     }
 }
 

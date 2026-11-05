@@ -48,6 +48,14 @@
 .PARAMETER SecretName
     Name of the secret in Key Vault (e.g. "dp-keyring-v1").  Required — no default.
 
+.PARAMETER KVSecret
+    The key material itself — the full JSON value of the Key Vault secret
+    ({"version":1,"keyId":"<guid>","key":"<base64 32-byte key>","created":"<date>"}) —
+    in place of -VaultName/-SecretName.  Key Vault is never contacted and az is not
+    needed: encrypt, -Decrypt, -VerifyOnly and -WholeFile all use this one key.
+    For pipelines that cannot run az; pass it from a secret variable, never a literal.
+    Cannot be combined with -GenerateKeys, which has to store the new key in Key Vault.
+
 .PARAMETER GenerateKeys
     Generates a NEW AES-256 key, stores it in Key Vault under -SecretName, and
     (re-)encrypts all files.  Already WFAES-encrypted files are decrypted with
@@ -90,22 +98,34 @@
         -SecretName "dp-keyring-v1" `
         -Decrypt
 
+.EXAMPLE
+    # CI/CD without az: the key material comes from a pipeline secret variable
+    .\Encrypt-Config.ps1 `
+        -FilePath "C:\Warewolf\Resources" `
+        -KVSecret $env:WW_KV_SECRET `
+        -NonInteractive -NoBackup
+
 .NOTES
-    Requires: PowerShell 7+, az CLI (logged in), Windows (for DPAPI detection).
+    Requires: PowerShell 7+, az CLI (logged in) unless -KVSecret is used,
+    Windows (for DPAPI detection).
 #>
 
 #Requires -Version 7.0
 
-[CmdletBinding(SupportsShouldProcess)]
+[CmdletBinding(SupportsShouldProcess, DefaultParameterSetName = 'KeyVault')]
 param(
     [Parameter(Mandatory)]
     [string] $FilePath,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory, ParameterSetName = 'KeyVault')]
     [string] $VaultName,
 
-    [Parameter(Mandatory)]
+    [Parameter(Mandatory, ParameterSetName = 'KeyVault')]
     [string] $SecretName,
+
+    # The key material JSON itself, for callers that cannot run az (CI/CD). Skips Key Vault entirely.
+    [Parameter(Mandatory, ParameterSetName = 'KVSecret')]
+    [string] $KVSecret,
 
     [switch] $GenerateKeys,
 
@@ -146,6 +166,7 @@ $ErrorActionPreference = 'Stop'
 
 if ($Decrypt -and $GenerateKeys) { Write-Host '[!] -Decrypt and -GenerateKeys cannot be used together.' -ForegroundColor Red; exit 1 }
 if ($VerifyOnly -and $GenerateKeys) { Write-Host '[!] -VerifyOnly and -GenerateKeys cannot be used together.' -ForegroundColor Red; exit 1 }
+if ($KVSecret -and $GenerateKeys) { Write-Host '[!] -KVSecret and -GenerateKeys cannot be used together: a generated key has to be stored in Key Vault.' -ForegroundColor Red; exit 1 }
 
 # ── Constants ──────────────────────────────────────────────────────────────────
 $WFAES_PREFIX    = 'WFAES::'
@@ -279,100 +300,118 @@ function ConvertFrom-KeyMaterial ([string]$json) {
     #          [^,\}]+ keeps datetime values with colons as one token).
     $repaired = $repaired -replace ':\s*(?!")([^,\}]+)', ':"$1"'
     if ($repaired -ceq $json) {
-        Write-Fail "Key material JSON could not be parsed. Raw value: $json"
+        # A -KVSecret value is never echoed: unlike a Key Vault read, a pipeline may not mask it.
+        $shown = $KVSecret ? '(hidden: supplied through -KVSecret)' : $json
+        Write-Fail "Key material JSON could not be parsed. Raw value: $shown"
         throw
     }
     Write-Skip 'Note: Key Vault secret was not valid JSON (unquoted keys/values) — parsing was auto-repaired IN MEMORY (no Key Vault changes).'
     return $repaired | ConvertFrom-Json
 }
 
-# ── Prerequisite checks ────────────────────────────────────────────────────────
-Write-Step 'Checking prerequisites...'
-
-if (-not (Get-Command 'az' -ErrorAction SilentlyContinue)) {
-    Write-Fail 'Azure CLI (az) not found. Install from https://aka.ms/installazurecliwindows'
-    exit 1
-}
-
-$azCtx = az account show 2>$null | ConvertFrom-Json
-if (-not $azCtx) {
-    Write-Fail 'Not logged in to Azure. Run: az login'
-    exit 1
-}
-Write-OK "Azure context: $($azCtx.user.name) | Subscription: $($azCtx.name)"
-
-# ── Step 1: Resolve key material from Key Vault ────────────────────────────────
-Write-Step "Resolving key material from Key Vault '$VaultName' / secret '$SecretName'..."
-
 $keyMaterialJson = $null
 $oldKeyBytes     = $null
 
-if ($GenerateKeys) {
-    Write-Host ''
-    Write-Host '[!] WARNING: -GenerateKeys will generate a NEW AES-256 key in Key Vault and' -ForegroundColor Yellow
-    Write-Host '    re-encrypt ALL matching .bite files. Existing WFAES-encrypted files will' -ForegroundColor Yellow
-    Write-Host '    be decrypted with the current key, then re-encrypted with the new one.'   -ForegroundColor Yellow
-    Write-Host '    This cannot be undone without the previous key. Ensure a backup exists.'  -ForegroundColor Yellow
-    Write-Host ''
-
-    # GenerateKeys: fetch the current key first so we can re-encrypt existing WFAES:: values.
-    Write-Step '-GenerateKeys requested — fetching current key to decrypt existing values...'
-    $currentJson = az keyvault secret show `
-        --vault-name $VaultName `
-        --name $SecretName `
-        --query value -o tsv 2>$null
-
-    if ($currentJson) {
-        $oldKm       = ConvertFrom-KeyMaterial $currentJson
-        $oldKeyBytes = [Convert]::FromBase64String($oldKm.key)
-        Write-OK "Current (old) key fetched (KeyId=$($oldKm.keyId))"
-    } else {
-        Write-Skip 'No existing secret found — new key will be generated with no old values to migrate.'
-    }
-
-    Write-Step 'Generating new 256-bit AES key material...'
-    $rawKey = [byte[]]::new($AES_KEY_BYTES)
-    [System.Security.Cryptography.RandomNumberGenerator]::Fill($rawKey)
-
-    $newKm = [ordered]@{
-        version = $SECRET_VERSION
-        keyId   = [Guid]::NewGuid().ToString()
-        key     = [Convert]::ToBase64String($rawKey)
-        created = (Get-Date -Format 'o')
-    }
-    $keyMaterialJson = $newKm | ConvertTo-Json -Compress
-
-    Write-Step "Storing new key in Key Vault '$VaultName'..."
-    az keyvault secret set `
-        --vault-name $VaultName `
-        --name $SecretName `
-        --value $keyMaterialJson `
-        --output none
-
-    Write-OK "New key stored as secret '$SecretName' in '$VaultName'"
-
-    # Wipe raw key bytes from memory immediately after storage.
-    [Array]::Clear($rawKey, 0, $rawKey.Length)
+if ($KVSecret) {
+    # ── Key material supplied by the caller: no az, no Key Vault ──────────────────
+    Write-Step 'Using the key material supplied through -KVSecret (Key Vault is not contacted)...'
+    $keyMaterialJson = $KVSecret
 } else {
-    # Normal run: fetch existing key from Key Vault. Key generation requires -GenerateKeys.
-    $existingJson = az keyvault secret show `
-        --vault-name $VaultName `
-        --name $SecretName `
-        --query value -o tsv 2>$null
 
-    if ($existingJson) {
-        $keyMaterialJson = $existingJson
-        $km = ConvertFrom-KeyMaterial $keyMaterialJson
-        Write-OK "Retrieved existing key (KeyId=$($km.keyId), Created=$($km.created))"
-    } else {
-        Write-Fail "Secret '$SecretName' not found in '$VaultName'. Use -GenerateKeys to create a new key."
+    # ── Prerequisite checks ────────────────────────────────────────────────────────
+    Write-Step 'Checking prerequisites...'
+
+    if (-not (Get-Command 'az' -ErrorAction SilentlyContinue)) {
+        Write-Fail 'Azure CLI (az) not found. Install from https://aka.ms/installazurecliwindows'
         exit 1
     }
+
+    $azCtx = az account show 2>$null | ConvertFrom-Json
+    if (-not $azCtx) {
+        Write-Fail 'Not logged in to Azure. Run: az login'
+        exit 1
+    }
+    Write-OK "Azure context: $($azCtx.user.name) | Subscription: $($azCtx.name)"
+
+    # ── Step 1: Resolve key material from Key Vault ────────────────────────────────
+    Write-Step "Resolving key material from Key Vault '$VaultName' / secret '$SecretName'..."
+
+    if ($GenerateKeys) {
+        Write-Host ''
+        Write-Host '[!] WARNING: -GenerateKeys will generate a NEW AES-256 key in Key Vault and' -ForegroundColor Yellow
+        Write-Host '    re-encrypt ALL matching .bite files. Existing WFAES-encrypted files will' -ForegroundColor Yellow
+        Write-Host '    be decrypted with the current key, then re-encrypted with the new one.'   -ForegroundColor Yellow
+        Write-Host '    This cannot be undone without the previous key. Ensure a backup exists.'  -ForegroundColor Yellow
+        Write-Host ''
+
+        # GenerateKeys: fetch the current key first so we can re-encrypt existing WFAES:: values.
+        Write-Step '-GenerateKeys requested — fetching current key to decrypt existing values...'
+        $currentJson = az keyvault secret show `
+            --vault-name $VaultName `
+            --name $SecretName `
+            --query value -o tsv 2>$null
+
+        if ($currentJson) {
+            $oldKm       = ConvertFrom-KeyMaterial $currentJson
+            $oldKeyBytes = [Convert]::FromBase64String($oldKm.key)
+            Write-OK "Current (old) key fetched (KeyId=$($oldKm.keyId))"
+        } else {
+            Write-Skip 'No existing secret found — new key will be generated with no old values to migrate.'
+        }
+
+        Write-Step 'Generating new 256-bit AES key material...'
+        $rawKey = [byte[]]::new($AES_KEY_BYTES)
+        [System.Security.Cryptography.RandomNumberGenerator]::Fill($rawKey)
+
+        $newKm = [ordered]@{
+            version = $SECRET_VERSION
+            keyId   = [Guid]::NewGuid().ToString()
+            key     = [Convert]::ToBase64String($rawKey)
+            created = (Get-Date -Format 'o')
+        }
+        $keyMaterialJson = $newKm | ConvertTo-Json -Compress
+
+        Write-Step "Storing new key in Key Vault '$VaultName'..."
+        az keyvault secret set `
+            --vault-name $VaultName `
+            --name $SecretName `
+            --value $keyMaterialJson `
+            --output none
+
+        Write-OK "New key stored as secret '$SecretName' in '$VaultName'"
+
+        # Wipe raw key bytes from memory immediately after storage.
+        [Array]::Clear($rawKey, 0, $rawKey.Length)
+    } else {
+        # Normal run: fetch existing key from Key Vault. Key generation requires -GenerateKeys.
+        $existingJson = az keyvault secret show `
+            --vault-name $VaultName `
+            --name $SecretName `
+            --query value -o tsv 2>$null
+
+        if ($existingJson) {
+            $keyMaterialJson = $existingJson
+            $km = ConvertFrom-KeyMaterial $keyMaterialJson
+            Write-OK "Retrieved existing key (KeyId=$($km.keyId), Created=$($km.created))"
+        } else {
+            Write-Fail "Secret '$SecretName' not found in '$VaultName'. Use -GenerateKeys to create a new key."
+            exit 1
+        }
+    }
+
 }
 
 # Decode the active key bytes.
-$km       = ConvertFrom-KeyMaterial $keyMaterialJson
-$keyBytes = [Convert]::FromBase64String($km.key)
+try {
+    $km       = ConvertFrom-KeyMaterial $keyMaterialJson
+    $keyBytes = [Convert]::FromBase64String($km.key)
+} catch {
+    if (-not $KVSecret) { throw }
+    # No exception detail: a parser message can quote part of the secret.
+    Write-Fail '-KVSecret is not valid key material. Expected the full JSON value of the Key Vault secret: {"version":1,"keyId":"<guid>","key":"<base64 32-byte key>","created":"<date>"}.'
+    exit 1
+}
+if ($KVSecret) { Write-OK "Key material from -KVSecret (KeyId=$($km.keyId))" }
 
 if ($keyBytes.Length -ne $AES_KEY_BYTES) {
     Write-Fail "Invalid key length: expected $AES_KEY_BYTES bytes, got $($keyBytes.Length). Use -GenerateKeys to create a new key."

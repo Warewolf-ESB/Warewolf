@@ -1,0 +1,9 @@
+CollectionNum;MandateDRI;MandateCanTrack-true/false;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod-DebiCheck/DebitOrder;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-DebiCheck/DebitOrder;RecommendationTracking;RecommendationPaymentCycle;Notes
+1;15;TRUE;TRUE;15;DebiCheck;202105;2021-05-17;2021-05-17;success;15;2021-06-15;DebiCheck;1;202106;Setup (Question: Why didn’t the tracking cover 15,16,17 as the May outcome would have scored +1 for Sat15, Sun 16and Mon 17 as possiblepay dates - if this was collection 1 an initial)
+2;15;TRUE;TRUE;15;DebiCheck;202201;2022-01-17;2022-01-17;success;15;2022-02-15;DebiCheck;1;202202;Setup
+3;15;TRUE;TRUE;15;DebiCheck;202210;2022-10-17;2022-10-17;success;15;2022-11-15;DebiCheck;1;202211;Setup
+4;15;TRUE;TRUE;15;DebiCheck;202304;2023-04-17;2023-04-17;success;15;2023-05-15;DebiCheck;1;202305;Setup
+5;15;TRUE;TRUE;15;DebiCheck;202306;2023-06-15;2023-06-15;success;15;2023-07-17;DebitOrder;0;202307;Check move to DO
+6;15;TRUE;TRUE;15;DebitOrder;202307;2023-07-17;2023-07-17;failed;15;2023-08-15;DebiCheck;1;202308;Fail Do for same profile
+7;15;TRUE;TRUE;15;DebiCheck;202501;2025-01-15;2025-01-15;success;15;2025-02-17;DebiCheck;1;202502;Check move to DebiCheck
+8;15;TRUE;TRUE;15;DebiCheck;202502;2025-02-17;2025-02-17;failed;15;2025-03-14;DebiCheck;4;202503;Fail DebiCheck (all profiles for weekend now -1) check move to Default (track all profiles)

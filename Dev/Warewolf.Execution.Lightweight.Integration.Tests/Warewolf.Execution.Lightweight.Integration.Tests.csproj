@@ -31,6 +31,10 @@
     <ProjectReference Include="..\Warewolf.Sharepoint\Warewolf.Sharepoint.csproj" />
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <!-- Profiler mock journey-email API workflows, deployed to Resources\Mock\email by the Profiler engine package. -->
+    <Content Include="..\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler\Mock\email\*.bite" Link="Resources\Mock\email\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
   <Target Condition="'$(TargetFramework)' != '' and !$(TargetFramework.EndsWith('-windows'))" BeforeTargets="_CheckForTransitiveWindowsDesktopDependencies" Name="_FixStupidSdkError_NETSDK1136">
     <ItemGroup>
       <TransitiveFrameworkReference Remove="Microsoft.WindowsDesktop.App" />

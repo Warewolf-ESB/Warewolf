@@ -16,8 +16,8 @@
 #>
 
 BeforeAll {
-    $script:ProfilerRoot = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) 'Resources/ProfilerServices'
-    $script:SchemaSql    = Get-Content -LiteralPath (Join-Path $script:ProfilerRoot 'Provision-ProfilerSchema.sql') -Raw
+    $script:ProfilerRoot = Join-Path (Split-Path (Split-Path $PSScriptRoot -Parent) -Parent) '..\Unlimited.ProfilerServices\Warewolf.ProfilerServices\Profiler'
+    $script:SchemaSql    = Get-Content -LiteralPath (Join-Path $script:ProfilerRoot '..\..\Database\Provision-ProfilerSchema.sql') -Raw
 
     $guid = '[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}'
 

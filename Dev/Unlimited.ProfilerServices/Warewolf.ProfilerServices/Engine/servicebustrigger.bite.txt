@@ -1,0 +1,5 @@
+{
+  "QueueName": "#{ProfilerTriggerQueue}",
+  "WorkflowName": "ProfilerWrapper/Queue/RequestForProfilingConsume",
+  "MapEntireMessageTo": "ProfileRequest"
+}

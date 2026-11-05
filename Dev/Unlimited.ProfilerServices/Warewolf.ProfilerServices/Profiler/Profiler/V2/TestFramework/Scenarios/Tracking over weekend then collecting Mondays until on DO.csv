@@ -1,0 +1,6 @@
+CollectionNum;MandateDRI;DebiCheckStatus-yes/no;ScoreThisResult-TRUE/FALSE;ResultDRI;ResultMethod;ResultPaymentCycle;ResultPresentedOnDate;ResultDate;ResultType-success/failed;RecommendationDRI;RecommendationDate;RecommendationMethod-debitorder/debicheck;RecommendationTracking;RecommendationPaymentCycle;Note
+1;27;TRUE;TRUE;27;DebiCheck;202106;2021-06-25;2021-06-28;Success;27;2022-02-24;DebiCheck;5;202202;DRI 26,27,28,43 are tied
+2;27;TRUE;TRUE;27;DebiCheck;202202;2022-02-24;2022-02-28;Success;27;2022-03-28;DebiCheck;1;202203;DRI 26,27,28 are tied but negative profiles Sat-PayFri and Sat-PaySat
+3;27;TRUE;TRUE;27;DebiCheck;202203;2022-03-28;2022-03-28;Success;27;2022-04-26;DebiCheck;3;202204;
+4;27;TRUE;TRUE;27;DebiCheck;202204;2022-04-26;2022-04-28;Success;27;2022-11-28;DebiCheck;1;202211;
+4;27;TRUE;TRUE;27;DebiCheck;202211;2022-11-28;2022-11-28;Success;27;2023-08-28;DebitOrder;0;202308;

@@ -120,6 +120,43 @@ az functionapp deploy \
 
 ---
 
+## Encrypting in CI/CD Without az
+
+A pipeline that cannot run `az` supplies the key material itself: the full JSON
+value of the Key Vault secret, typically loaded as a secret variable by the
+Azure DevOps `AzureKeyVault@2` task. Nothing contacts Key Vault.
+
+- `Encrypt-Config.ps1 -KVSecret '<json>'` replaces `-VaultName`/`-SecretName`
+  for encrypt, `-Decrypt`, `-VerifyOnly` and `-WholeFile`. It cannot be combined
+  with `-GenerateKeys` (a new key has to be stored in Key Vault).
+- `Encrypt-Resources.ps1` encrypts a whole folder for staging:
+
+```yaml
+- pwsh: >
+    ./Encrypt-Resources.ps1
+    -SourceDirectory '$(Build.SourcesDirectory)/Resources'
+    -OutputDirectory '$(Build.ArtifactStagingDirectory)/Resources'
+  env:
+    WW_KV_SECRET: $(ProfilerEngineEncryptionKey)   # secret variable; never a literal
+```
+
+`Encrypt-Resources.ps1` takes one source and one output folder per call (the
+same folder encrypts in place). Every `.bite` `<Source ConnectionString>` is
+encrypted; every other file — workflows, Globals, JSON and `.txt` settings — is
+copied unchanged, so the output tree matches the source. Files that exist only
+in the output are kept. The run is all or nothing: the `.bite` files are
+encrypted in a temporary folder, decrypted in memory (`-VerifyOnly`) and checked
+for any plain-text `<Source>` value before anything is written, and a failed
+write rolls the output back. Key material comes from `-KVSecret` or the
+`WW_KV_SECRET` environment variable; there is no default.
+
+> Only `<Source ConnectionString>` values can be WFAES-encrypted: that is the
+> only place the engine decrypts them (`DpapiWrapper.AesDecryptHook`). Values
+> that token replacement writes into JSON settings, `.txt` files or workflow
+> `FieldValue`s stay plain text.
+
+---
+
 ## Local Development
 
 Set `AZURE_KEYVAULT_NAME` to enable encryption in local dev (uses Azure CLI

@@ -12,6 +12,9 @@
     unreadable on Linux. -WholeFile produces the same WFAES:: payload the worker's
     TriggerBiteReader already decrypts, under the same Key Vault key as the sources.
 
+    Also: -KVSecret, where the caller supplies the key material (CI/CD without az) and Key Vault
+    is never contacted.
+
     `az` is shadowed with a function so the suite runs offline: no Key Vault, no login. Functions
     win over applications in PowerShell's command resolution, so the script under test calls the
     stub without knowing.
@@ -28,7 +31,10 @@ BeforeAll {
         '{"version":1,"keyId":"11111111-2222-3333-4444-555555555555","key":"' +
         $global:FakeKeyB64 + '","created":"2026-01-01T00:00:00Z"}'
 
+    # Counted so the -KVSecret tests can prove az is never called.
+    $global:AzCallCount = 0
     function global:az {
+        $global:AzCallCount++
         $joined = $args -join ' '
         $global:LASTEXITCODE = 0
         if ($joined -match 'account show')        { return '{"user":{"name":"test@example.com"},"name":"Test Sub","id":"sub-1"}' }
@@ -64,13 +70,18 @@ BeforeAll {
         return $dir
     }
 
+    # -KVSecret replaces -VaultName/-SecretName. The script's exit code is left in $LASTEXITCODE.
     function script:Invoke-Encrypt {
-        param([string] $Path, [switch] $WholeFile, [switch] $VerifyOnly, [switch] $Decrypt, [string] $OutputDirectory)
-        $p = @{ FilePath = $Path; VaultName = 'kv'; SecretName = 'sec'; NonInteractive = $true; NoBackup = $true }
+        param([string] $Path, [switch] $WholeFile, [switch] $VerifyOnly, [switch] $Decrypt, [string] $OutputDirectory,
+              [string] $KVSecret, [switch] $GenerateKeys)
+        $p = @{ FilePath = $Path; NonInteractive = $true; NoBackup = $true }
+        if ($KVSecret)   { $p['KVSecret'] = $KVSecret } else { $p['VaultName'] = 'kv'; $p['SecretName'] = 'sec' }
         if ($WholeFile)  { $p['WholeFile']  = $true }
         if ($VerifyOnly) { $p['VerifyOnly'] = $true }
         if ($Decrypt)    { $p['Decrypt']    = $true }
+        if ($GenerateKeys) { $p['GenerateKeys'] = $true }
         if ($OutputDirectory) { $p['OutputDirectory'] = $OutputDirectory }
+        $global:LASTEXITCODE = 0
         # 6>&1 redirects the INFORMATION stream: the script reports through Write-Host, which
         # does not flow to stdout, so `2>&1` alone captures nothing.
         & $script:EncryptScript @p 6>&1 2>&1 | Out-String
@@ -204,6 +215,117 @@ Describe 'Encrypt-Config — attribute mode is unchanged' {
 
             $out | Should -Match 'Found 1 \.bite file'
             $out | Should -Not -Match "property 'Count' cannot be found"
+        }
+        finally { Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+}
+
+Describe 'Encrypt-Config -KVSecret — key material from the caller, no Key Vault' {
+    # For CI/CD steps that cannot run az: the key arrives as a pipeline secret variable. Every
+    # test asserts the az stub was never reached.
+
+    BeforeAll {
+        $script:OtherKeyMaterial =
+            '{"version":1,"keyId":"99999999-8888-7777-6666-555555555555","key":"' +
+            [Convert]::ToBase64String([byte[]](101..132)) + '","created":"2026-01-01T00:00:00Z"}'
+    }
+
+    BeforeEach { $global:AzCallCount = 0 }
+
+    It 'encrypts a source ConnectionString to WFAES:: without calling az' {
+        $dir = script:New-Sandbox
+        try {
+            $file = Join-Path $dir 'sources\s1.bite'
+            $null = script:Invoke-Encrypt -Path $file -KVSecret $global:FakeKeyMaterial
+
+            $LASTEXITCODE | Should -Be 0
+            ([xml](Get-Content -LiteralPath $file -Raw)).Source.ConnectionString | Should -Match '^WFAES::'
+            $global:AzCallCount | Should -Be 0
+        }
+        finally { Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It 'round-trips through -Decrypt with the same key' {
+        $dir = script:New-Sandbox
+        try {
+            $file   = Join-Path $dir 'sources\s1.bite'
+            $before = ([xml](Get-Content -LiteralPath $file -Raw)).Source.ConnectionString
+            $null = script:Invoke-Encrypt -Path $file -KVSecret $global:FakeKeyMaterial
+
+            $out = Join-Path $dir 'plain'
+            $null = script:Invoke-Encrypt -Path $file -KVSecret $global:FakeKeyMaterial -Decrypt -OutputDirectory $out
+
+            $LASTEXITCODE | Should -Be 0
+            ([xml](Get-Content -LiteralPath (Join-Path $out 's1.bite') -Raw)).Source.ConnectionString | Should -Be $before
+            $global:AzCallCount | Should -Be 0
+        }
+        finally { Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It '-VerifyOnly passes with the key that encrypted, and fails with any other key' {
+        $dir = script:New-Sandbox
+        try {
+            $file = Join-Path $dir 'sources\s1.bite'
+            $null = script:Invoke-Encrypt -Path $file -KVSecret $global:FakeKeyMaterial
+
+            $ok = script:Invoke-Encrypt -Path $file -KVSecret $global:FakeKeyMaterial -VerifyOnly
+            $LASTEXITCODE | Should -Be 0
+            $ok | Should -Match 'Decrypt OK \(in-memory\)\s*:\s*1'
+
+            $bad = script:Invoke-Encrypt -Path $file -KVSecret $script:OtherKeyMaterial -VerifyOnly
+            $LASTEXITCODE | Should -Be 1
+            $bad | Should -Match 'Verify FAILED'
+            $global:AzCallCount | Should -Be 0
+        }
+        finally { Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It 'round-trips a JSON trigger in -WholeFile mode' {
+        $dir = script:New-Sandbox
+        try {
+            $file   = Join-Path $dir 'triggers\t1.bite'
+            $before = (Get-Content -LiteralPath $file -Raw).Trim()
+            $null = script:Invoke-Encrypt -Path $file -WholeFile -KVSecret $global:FakeKeyMaterial
+            (Get-Content -LiteralPath $file -Raw).Trim() | Should -Match '^WFAES::'
+
+            $out = Join-Path $dir 'plain'
+            $null = script:Invoke-Encrypt -Path $file -WholeFile -Decrypt -OutputDirectory $out -KVSecret $global:FakeKeyMaterial
+
+            (Get-Content -LiteralPath (Join-Path $out 't1.bite') -Raw).Trim() | Should -Be $before
+            $global:AzCallCount | Should -Be 0
+        }
+        finally { Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It 'rejects -GenerateKeys, which would have to store the new key in Key Vault' {
+        $dir = script:New-Sandbox
+        try {
+            $file   = Join-Path $dir 'sources\s1.bite'
+            $before = Get-Content -LiteralPath $file -Raw
+            $out = script:Invoke-Encrypt -Path $file -KVSecret $global:FakeKeyMaterial -GenerateKeys
+
+            $LASTEXITCODE | Should -Be 1
+            $out | Should -Match '-KVSecret and -GenerateKeys cannot be used together'
+            Get-Content -LiteralPath $file -Raw | Should -Be $before
+            $global:AzCallCount | Should -Be 0
+        }
+        finally { Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue }
+    }
+
+    It 'fails without echoing the secret when it is <Case>' -ForEach @(
+        @{ Case = 'not JSON';          Secret = 'not-json-key-material-s3cr3t' }
+        @{ Case = 'a key of 16 bytes'; Secret = '{"version":1,"keyId":"k","key":"' + [Convert]::ToBase64String([byte[]](1..16)) + '","created":"c"}' }
+    ) {
+        $dir = script:New-Sandbox
+        try {
+            $file   = Join-Path $dir 'sources\s1.bite'
+            $before = Get-Content -LiteralPath $file -Raw
+            $out = script:Invoke-Encrypt -Path $file -KVSecret $Secret
+
+            $LASTEXITCODE | Should -Be 1
+            $out | Should -Not -Match ([regex]::Escape($Secret))
+            Get-Content -LiteralPath $file -Raw | Should -Be $before
+            $global:AzCallCount | Should -Be 0
         }
         finally { Remove-Item $dir -Recurse -Force -ErrorAction SilentlyContinue }
     }
